@@ -658,7 +658,7 @@
     </div>
 </div>
 
-<div id="AXGridTarget2" style="height:320px; width: 540px"></div>
+<div id="AXGridTarget2" style="height:320px;"></div>
 
 <div id="AXGridTarget2Empty" style="margin:30px;height:100px;display:none;" align="center">
     등록된 서비스가 없습니다. 서비스 추가를 클릭하여 연결하거나 <a href="#none">카탈로그</a>를 찾아보십시오
