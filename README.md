@@ -1,2 +1,2 @@
-# openPaasPaastaPortalWebUser
+# PAAS-TA-PORTAL-WEBUSER
 v2.0
