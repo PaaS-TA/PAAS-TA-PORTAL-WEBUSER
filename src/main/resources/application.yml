@@ -1,0 +1,52 @@
+# Spring properties
+spring:
+  application:
+    name: portal-web-user  # Identify this application
+
+
+multipart:
+  maxFileSize: 1000Mb
+  maxRequestSize: 1000Mb
+
+# HTTP Server
+server:
+  port: ${PORT:8080}   # HTTP (Tomcat) port
+
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.portal-eureka-service.credentials.uri:http://127.0.0.1:2221}/eureka/
+  instance:
+    hostname: ${vcap.application.uris[0]:localhost}
+
+# paasta
+paasta:
+  portal:
+    api:
+      authorization:
+        base64: Basic YWRtaW46b3BlbnBhYXN0YQ==
+      url: http://PORTAL-API
+      autoSchedulerUrl: http://PORTAL-AUTO-SCALING
+ribbon:
+    eureka:
+        enabled: true
+    ConnectTimeout: 30000
+    ReadTimeout: 30000
+cf:
+  uaa:
+    oauth:
+      info:
+        uri: YOUR_UAA_URL/userinfo
+      token:
+        check:
+          uri: YOUR_UAA_URL/check_token
+        access:
+          uri: YOUR_UAA_URL/oauth/token
+      logout:
+        url: YOUR_UAA_URL/logout
+      authorization:
+        uri: YOUR_UAA_URL/oauth/authorize
+      client:
+        id: YOUR_UAA_CLIENT_ID
+        secret: YOUR_UAA_UAA_CLINET_SECRET
