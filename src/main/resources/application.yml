@@ -1,7 +1,7 @@
 # Spring properties
 spring:
   application:
-    name: portal-web-user  # Identify this application
+    name: PortalWebUser  # Identify this application
 
 
 multipart:
@@ -26,7 +26,7 @@ paasta:
     api:
       authorization:
         base64: Basic YWRtaW46b3BlbnBhYXN0YQ==
-      url: http://PORTAL-API
+      url: http://PORTALAPI
       autoSchedulerUrl: http://PORTAL-AUTO-SCALING
 ribbon:
     eureka:

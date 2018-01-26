@@ -33,17 +33,20 @@ public class CommonService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonService.class);
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
     private static final String CF_AUTHORIZATION_HEADER_KEY = "cf-Authorization";
-    private final RestTemplate restTemplate;
+
 
     @Value("${paasta.portal.api.url}")
     private String apiUrl;
     @Value("${paasta.portal.api.authorization.base64}")
     private String base64Authorization;
 
-    @Autowired
-    public CommonService(@Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+   @Autowired
+   private RestTemplate restTemplate;
+
+//    @Autowired
+//    public CommonService(@Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate) {
+//        this.restTemplate = restTemplate;
+//    }
 
 
     /**

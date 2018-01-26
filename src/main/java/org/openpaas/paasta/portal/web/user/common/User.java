@@ -1,4 +1,4 @@
-package org.openpaas.paasta.common.security.userdetails;
+package org.openpaas.paasta.portal.web.user.common;
 
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -54,7 +54,7 @@ public class User implements UserDetails, CredentialsContainer {
     private final boolean credentialsNonExpired;
     private final boolean enabled;
 
-    //~ 생성자 ===================================================================================================
+    //~ 생성자 ==================================================================================================
 
     /**
      * Calls the more complex constructor with all boolean arguments set to {@code true}.

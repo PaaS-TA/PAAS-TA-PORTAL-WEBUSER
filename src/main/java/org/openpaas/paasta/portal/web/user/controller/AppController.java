@@ -39,7 +39,6 @@ public class AppController extends Common {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppController.class);
 
     @Autowired
-    @Qualifier("loadBalancedRestTemplate")
     private RestTemplate restTemplate;
 
     @Value("${paasta.portal.api.autoSchedulerUrl}")

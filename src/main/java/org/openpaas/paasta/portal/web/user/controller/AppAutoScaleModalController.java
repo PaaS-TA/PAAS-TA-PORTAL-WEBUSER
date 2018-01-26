@@ -34,7 +34,6 @@ public class AppAutoScaleModalController extends Common {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppAutoScaleModalController.class);
 
     @Autowired
-    @Qualifier("loadBalancedRestTemplate")
     private RestTemplate restTemplate;
 
     @Value("${paasta.portal.api.autoSchedulerUrl}")

@@ -9,7 +9,7 @@ package org.openpaas.paasta.portal.web.user.security;
  * @version 1.0
  * @since 2016-05-12
  */
-import org.openpaas.paasta.common.security.userdetails.User;
+import org.openpaas.paasta.portal.web.user.common.User;
 import org.openpaas.paasta.portal.web.user.config.security.userdetail.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

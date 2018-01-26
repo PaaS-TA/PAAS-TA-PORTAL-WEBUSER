@@ -4,10 +4,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.ErrorPage;
+import org.springframework.boot.web.servlet.ErrorPageRegistrar;
+import org.springframework.boot.web.servlet.ErrorPageRegistry;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -72,5 +76,26 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
 	}
 
 
+	/**
+	 * Error page registrar error page registrar.
+	 *
+	 * @return the error page registrar
+	 */
+	@Bean
+	public ErrorPageRegistrar errorPageRegistrar() {
+		return new MyErrorPageRegistrar();
+	}
+
+	private static class MyErrorPageRegistrar implements ErrorPageRegistrar {
+		@Override
+		public void registerErrorPages(ErrorPageRegistry registry) {
+			registry.addErrorPages(new ErrorPage(HttpStatus.UNAUTHORIZED, "/common/error/401"));
+			registry.addErrorPages(new ErrorPage(HttpStatus.FORBIDDEN, "/common/error/403"));
+			registry.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND,"/common/error/404"));
+			registry.addErrorPages(new ErrorPage(HttpStatus.BAD_REQUEST,"/common/error/400"));
+			registry.addErrorPages(new ErrorPage(HttpStatus.CONFLICT,"/common/error/503"));
+			registry.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR,"/common/error/500"));
+		}
+	}
 
 }
