@@ -42,7 +42,7 @@ public class LogController extends Common {
         Map rspApp = new HashMap();
         LOGGER.info("getRecentLogs Start : " + app.getName());
 
-        ResponseEntity rssResponse = commonService.procRestTemplateV2("/app/getRecentLogs", HttpMethod.POST, app, getToken(), Map.class);
+        ResponseEntity rssResponse = commonService.procRestTemplate("/app/getRecentLogs", HttpMethod.POST, app, getToken(), Map.class);
         rspApp = (HashMap) rssResponse.getBody();
 
         LOGGER.info("getRecentLogs End ");
