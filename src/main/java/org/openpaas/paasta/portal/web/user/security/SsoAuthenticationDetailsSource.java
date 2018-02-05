@@ -61,7 +61,7 @@ public class SsoAuthenticationDetailsSource
         } catch (RestClientException e) {
             LOGGER.error("Error while user full name from [" + userInfoUrl + "].", e);
         }
-
+        LOGGER.info("TOKEN : " + ((OAuth2RestTemplate) restTemplate).getAccessToken());
         String token_id = uaaUserInfo.get("user_id");
         SsoAuthenticationDetails authenticationDetails = new SsoAuthenticationDetails(request, token_id, getUserId(uaaUserInfo));
         authenticationDetails.setAccessToken(((OAuth2RestTemplate) restTemplate).getAccessToken());

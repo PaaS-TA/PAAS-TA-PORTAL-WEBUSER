@@ -77,7 +77,7 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
             ssoAuthenticationDetails.setImgPath(user.getImgPath());
             authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(ssoAuthenticationDetails.getUserid(), "N/A", role));
             ((OAuth2Authentication) authentication).setDetails(ssoAuthenticationDetails);
-            LOGGER.info(((SsoAuthenticationDetails) details).getAccessToken().getValue());
+            LOGGER.info("token : " + ((SsoAuthenticationDetails) details).getAccessToken().getValue());
         } catch(UsernameNotFoundException e) {
             LOGGER.info(e.toString());
             throw new UsernameNotFoundException(e.getMessage());
