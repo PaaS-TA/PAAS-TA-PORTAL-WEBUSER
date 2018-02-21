@@ -87,9 +87,9 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 
 
 		http	//UAA 체크
-				.antMatcher("/webjars/**").antMatcher("/css/**").antMatcher("/js/**").antMatcher("/common/error/**").antMatcher("/myQuestion/**").antMatcher("/index").authorizeRequests().anyRequest().permitAll().and().csrf().disable();
+//				.antMatcher("/webjars/**").antMatcher("/css/**").antMatcher("/js/**").antMatcher("/common/error/**").antMatcher("/myQuestion/**").antMatcher("/index").authorizeRequests().anyRequest().permitAll().and().csrf().disable();
 		// 전체 체크안함
-		//.antMatcher("/**").authorizeRequests().permitAll().and().csrf().disable();
+		.antMatcher("/**").authorizeRequests().anyRequest().permitAll().and().csrf().disable();
 	}
 
 	/**
@@ -121,10 +121,9 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 
-			http
-				.csrf().disable()
-				.authorizeRequests()
-					.anyRequest().permitAll();
+//			http
+//				.csrf().disable()
+//				.authorizeRequests()
 //					.antMatchers("/").permitAll()
 //					.antMatchers("/index").permitAll()
 //					.antMatchers("/invitations/*").permitAll()
