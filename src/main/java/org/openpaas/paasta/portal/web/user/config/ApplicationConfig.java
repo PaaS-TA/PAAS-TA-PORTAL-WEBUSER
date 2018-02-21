@@ -34,12 +34,6 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
 	 */
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
-		System.out.println("#################################################");
-		System.out.println("#################################################");
-		System.out.println("#########여기 왔다." );
-		System.out.println("#################################################");
-		System.out.println("#################################################");
-
 
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
