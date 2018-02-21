@@ -1,4 +1,4 @@
-package org.openpaas.paasta;
+package org.openpaas.paasta.portal.web.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-
+@ComponentScan(basePackages = {"org.openpaas.paasta.portal.web.user"})
 public class WebUserApplication {
 
 	/**
