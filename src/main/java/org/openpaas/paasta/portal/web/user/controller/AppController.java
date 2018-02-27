@@ -44,6 +44,18 @@ public class AppController extends Common {
     @Value("${paasta.portal.api.autoSchedulerUrl}")
     private String autoSchedulerUrl;
 
+    /*
+    * CF v2 테스트용 화면입니다!!!!!!!!!!!!!
+    *
+    * */
+    @RequestMapping(value = "/app/tempAppView", method = RequestMethod.GET)
+    public ModelAndView tempAppView(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/app/testAppMain");
+        return mv;
+    }
+
+
     /**
      * 앱 메인의 화면이다.
      *
