@@ -49,6 +49,7 @@ public class AppController extends Common {
     *
     * */
     @RequestMapping(value = "/app/tempAppView", method = RequestMethod.GET)
+    @ResponseBody
     public ModelAndView tempAppView(){
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/app/testAppMain");
