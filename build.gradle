@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.9.RELEASE'
+        springBootVersion = '2.0.0.RC2'
     }
     repositories {
         mavenCentral()
@@ -43,6 +43,8 @@ dependencyManagement {
 
 
 dependencies {
+    //Admin Server Setting
+    compile ('de.codecentric:spring-boot-admin-starter-client')
     //Config Server Setting
     compile("org.springframework.cloud:spring-cloud-starter-config")
     //Eureka
