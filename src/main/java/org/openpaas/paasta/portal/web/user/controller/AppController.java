@@ -48,7 +48,7 @@ public class AppController extends Common {
     * CF v2 테스트용 화면입니다!!!!!!!!!!!!!
     *
     * */
-    @RequestMapping(value = "/app/tempAppView", method = RequestMethod.GET)
+    @RequestMapping(value = {"/app/tempAppView"}, method = RequestMethod.GET)
     public ModelAndView tempAppView(){
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/app/testAppMain");
