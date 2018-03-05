@@ -1,7 +1,9 @@
 package org.openpaas.paasta.portal.web.user.config.ssosecurity;
 
-import org.openpaas.paasta.portal.web.user.config.security.userdetail.CustomUserDetailsService;
-import org.openpaas.paasta.portal.web.user.security.*;
+import org.openpaas.paasta.portal.web.user.security.SsoAuthenticationDetailsSource;
+import org.openpaas.paasta.portal.web.user.security.SsoAuthenticationProcessingFilter;
+import org.openpaas.paasta.portal.web.user.security.SsoAuthenticationSuccessHandler;
+import org.openpaas.paasta.portal.web.user.security.SsoLogoutRedirectStrategy;
 import org.openpaas.paasta.portal.web.user.util.SSLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -22,16 +24,13 @@ import org.springframework.security.oauth2.client.token.AccessTokenRequest;
 import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.provider.token.*;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.context.WebApplicationContext;
 
-
 import javax.servlet.http.HttpServletRequest;
-
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 

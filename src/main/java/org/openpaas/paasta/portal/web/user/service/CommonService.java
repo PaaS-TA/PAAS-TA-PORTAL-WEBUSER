@@ -3,7 +3,6 @@ package org.openpaas.paasta.portal.web.user.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
@@ -33,17 +32,20 @@ public class CommonService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonService.class);
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
     private static final String CF_AUTHORIZATION_HEADER_KEY = "cf-Authorization";
-    private final RestTemplate restTemplate;
+
 
     @Value("${paasta.portal.api.url}")
     private String apiUrl;
     @Value("${paasta.portal.api.authorization.base64}")
     private String base64Authorization;
 
-    @Autowired
-    public CommonService(@Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+   @Autowired
+   private RestTemplate restTemplate;
+
+//    @Autowired
+//    public CommonService(@Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate) {
+//        this.restTemplate = restTemplate;
+//    }
 
 
     /**
@@ -184,6 +186,34 @@ public class CommonService {
         method.invoke(classObject, paramObject);
 
         return classObject;
+    }
+
+    /**
+     * REST TEMPLATE 처리
+     *
+     * @param reqUrl     the req url
+     * @param httpMethod the http method
+     * @param obj        the obj
+     * @param reqToken   the req token
+     * @return map map
+     */
+    public Map<String, Object> common(String reqUrl, HttpMethod httpMethod, Object obj, String reqToken) {
+
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
+        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
+
+        HttpEntity<Object> reqEntity = new HttpEntity<>(null, reqHeaders);
+
+        ResponseEntity<Map> resEntity = restTemplate.exchange("PORTALCOMMONAPI" + reqUrl, httpMethod, reqEntity, Map.class);
+        LOGGER.info("###################### " + resEntity.getBody().toString()  );
+        try {
+            Map<String, Object> resultMap = resEntity.getBody();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //LOGGER.info("procRestTemplate reqUrl :: {} || resultMap :: {}", reqUrl, resultMap.toString());
+        return null;
     }
 }
 

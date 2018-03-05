@@ -286,7 +286,7 @@ var procCallAjax = function(reqUrl, param, callback, reqAsyncBoolean) {
     var reqAsync = true;
 
     if (null == param) {
-        reqData = JSON.stringify({});
+        //reqData = JSON.stringify({}); --> 톰캣 8.5 부터는 특수문자 허용안함
         reqMethod = "GET";
     }
 

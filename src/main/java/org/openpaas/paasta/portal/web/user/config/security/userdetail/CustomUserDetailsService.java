@@ -1,15 +1,12 @@
 package org.openpaas.paasta.portal.web.user.config.security.userdetail;
 
-import org.openpaas.paasta.common.security.userdetails.User;
-import org.openpaas.paasta.portal.web.user.common.Common;
-import org.openpaas.paasta.portal.web.user.model.WebIdeUser;
+import org.openpaas.paasta.portal.web.user.common.User;
 import org.openpaas.paasta.portal.web.user.service.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

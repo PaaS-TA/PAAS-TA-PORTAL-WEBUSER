@@ -9,7 +9,7 @@ package org.openpaas.paasta.portal.web.user.security;
  * @version 1.0
  * @since 2016-05-12
  */
-import org.openpaas.paasta.common.security.userdetails.User;
+import org.openpaas.paasta.portal.web.user.common.User;
 import org.openpaas.paasta.portal.web.user.config.security.userdetail.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +77,7 @@ public class SsoAuthenticationProvider implements AuthenticationProvider {
             ssoAuthenticationDetails.setImgPath(user.getImgPath());
             authentication = new OAuth2Authentication(((OAuth2Authentication) authentication).getOAuth2Request(), new UsernamePasswordAuthenticationToken(ssoAuthenticationDetails.getUserid(), "N/A", role));
             ((OAuth2Authentication) authentication).setDetails(ssoAuthenticationDetails);
-            LOGGER.info(((SsoAuthenticationDetails) details).getAccessToken().getValue());
+            LOGGER.info("token : " + ((SsoAuthenticationDetails) details).getAccessToken().getValue());
         } catch(UsernameNotFoundException e) {
             LOGGER.info(e.toString());
             throw new UsernameNotFoundException(e.getMessage());

@@ -87,9 +87,9 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 
 
 		http	//UAA 체크
-				.antMatcher("/webjars/**").antMatcher("/css/**").antMatcher("/js/**").antMatcher("/common/error/**").antMatcher("/myQuestion/**").antMatcher("/index").authorizeRequests().anyRequest().permitAll().and().csrf().disable();
+//				.antMatcher("/webjars/**").antMatcher("/css/**").antMatcher("/js/**").antMatcher("/common/error/**").antMatcher("/myQuestion/**").antMatcher("/index").authorizeRequests().anyRequest().permitAll().and().csrf().disable();
 		// 전체 체크안함
-		//.antMatcher("/**").authorizeRequests().permitAll().and().csrf().disable();
+		.antMatcher("/**").authorizeRequests().anyRequest().permitAll().and().csrf().disable();
 	}
 
 	/**
@@ -121,50 +121,49 @@ public class SsoSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 
-			http
-				.csrf().disable()
-				.authorizeRequests()
-					.antMatchers("/").permitAll()
-					.antMatchers("/index").permitAll()
-					.antMatchers("/invitations/*").permitAll()
-					.antMatchers("/main").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-					.antMatchers("/org/*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-					.antMatchers("/space/*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-					.antMatchers("/app/*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-					.antMatchers("/user/authResetPassword").permitAll()
-					.antMatchers("/user/authPassword").permitAll()
-					.antMatchers("/user/authUser").permitAll()
-					.antMatchers("/user/authErrorUser").permitAll()
-					.antMatchers("/user/resetPassword").permitAll()
-					.antMatchers("/user/addUser").permitAll()
-					.antMatchers("/user/authUpdateUser").permitAll()
-					.antMatchers("/requestEmailAuthentication").permitAll()
-					.antMatchers("/user/*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-					.antMatchers("/main/userPage").access("hasRole('ROLE_USER')")
-					.antMatchers("/main/adminPage").access("hasRole('ROLE_ADMIN')")
-					.and()
-					.formLogin().loginPage("/login")
-					.defaultSuccessUrl("/org/orgMain")
-					.failureUrl("/login?error")
-					.usernameParameter("id").passwordParameter("password")
-					.and()
-					.addFilterBefore(ssoClientContextFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
-					.addFilterBefore(ssoSocialClientFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
-					.logout()
-					.logoutSuccessUrl("/index")
-					.addLogoutHandler(new SsoLogoutHandler())
-					.logoutSuccessHandler(ssoLogoutSuccessHandler)
-					.logoutRequestMatcher(ssoLogoutUrlMatcher)
-					.deleteCookies("JSESSIONID")
-					.invalidateHttpSession(true)
-					.and()
-					.exceptionHandling().accessDeniedPage("/login");
+//			http
+//				.csrf().disable()
+//				.authorizeRequests()
+//					.antMatchers("/").permitAll()
+//					.antMatchers("/index").permitAll()
+//					.antMatchers("/invitations/*").permitAll()
+//					.antMatchers("/main").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+//					.antMatchers("/org/*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+//					.antMatchers("/space/*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+//					.antMatchers("/app/*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+//					.antMatchers("/user/authResetPassword").permitAll()
+//					.antMatchers("/user/authPassword").permitAll()
+//					.antMatchers("/user/authUser").permitAll()
+//					.antMatchers("/user/authErrorUser").permitAll()
+//					.antMatchers("/user/resetPassword").permitAll()
+//					.antMatchers("/user/addUser").permitAll()
+//					.antMatchers("/user/authUpdateUser").permitAll()
+//					.antMatchers("/requestEmailAuthentication").permitAll()
+//					.antMatchers("/user/*").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+//					.antMatchers("/main/userPage").access("hasRole('ROLE_USER')")
+//					.antMatchers("/main/adminPage").access("hasRole('ROLE_ADMIN')")
+//					.and()
+//					.formLogin().loginPage("/login")
+//					.defaultSuccessUrl("/org/orgMain")
+//					.failureUrl("/login?error")
+//					.usernameParameter("id").passwordParameter("password")
+//					.and()
+//					.addFilterBefore(ssoClientContextFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
+//					.addFilterBefore(ssoSocialClientFilter.unwrap(), AbstractPreAuthenticatedProcessingFilter.class)
+//					.logout()
+//					.logoutSuccessUrl("/index")
+//					.addLogoutHandler(new SsoLogoutHandler())
+//					.logoutSuccessHandler(ssoLogoutSuccessHandler)
+//					.logoutRequestMatcher(ssoLogoutUrlMatcher)
+//					.deleteCookies("JSESSIONID")
+//					.invalidateHttpSession(true)
+//					.and()
+//					.exceptionHandling().accessDeniedPage("/login");
 
 
 
 		}
 
+
 	}
-
-
 }
