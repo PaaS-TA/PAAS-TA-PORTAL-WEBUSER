@@ -22,13 +22,38 @@ import java.util.Map;
 public class MenuController extends Common {
 
     /**
-     * 메뉴를 조회한다.
-     *
-     * @return Map(자바클래스)
+     * 메뉴 최대값을 조회한다.
      */
-    @RequestMapping(value = {"/getUserMenuList"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/getMenuMaxNoList"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getMenuMaxNoList() {
+        return commonService.common("/menu/getMenuMaxNoList", HttpMethod.POST, new Menu(), null);
+    }
+
+    /**
+     * 메뉴를 조회한다.
+     */
+    @RequestMapping(value = {"/getUserMenuList"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getUserMenuList() {
-        return commonService.procRestTemplate("/menu/getUserMenuList", HttpMethod.POST, new Menu(), null);
+        return commonService.common("/menu/getUserMenuList", HttpMethod.POST, new Menu(), null);
+    }
+
+    /**
+     * 메뉴를 상세 조회한다.
+     */
+    @RequestMapping(value = {"/getMenuDetail"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getMenuDetail() {
+        return commonService.common("/menu/getMenuDetail", HttpMethod.POST, new Menu(), "");
+    }
+
+    /**
+     * 메뉴를 등록한다.
+     */
+    @RequestMapping(value = {"/insertMenu"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> insertMenu(){
+        return commonService.common("/menu/insertMenu", HttpMethod.POST, new Menu(), null);
     }
 }
