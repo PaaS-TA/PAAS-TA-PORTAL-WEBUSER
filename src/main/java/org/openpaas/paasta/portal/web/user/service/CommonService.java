@@ -39,8 +39,29 @@ public class CommonService {
     @Value("${paasta.portal.api.authorization.base64}")
     private String base64Authorization;
 
-   @Autowired
-   private RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
+
+    // zuul 사용여부에 따른 request URL 적용
+    @Value("${paasta.zuulUrl.api}")
+    private String apiZuulUrl;
+
+    @Value("${paasta.portal.zuulDisabled:none}")
+    public void setRestTemplate(String value) {
+
+        if (!"true".equals(value)){
+            LOGGER.info("[zuulDisabled] config is activation(Request URL Use Zuul Route).");
+
+            restTemplate = new RestTemplate();
+            apiUrl = apiZuulUrl;    //"http://localhost:2225/portalapi";
+
+        }else{
+            LOGGER.info("[zuulDisabled] config is Inactive(Request URL Not Used Zuul Route).");
+            // Default apiUrl : paasta.portal.api.url -> http://PORTALAPI  (for EUREKA)
+        }
+        //LOGGER.info("Zuul Route Use Config value :"+value+"  targetUrl: "+apiUrl);
+    }
+
 
 //    @Autowired
 //    public CommonService(@Qualifier("loadBalancedRestTemplate") RestTemplate restTemplate) {
@@ -141,19 +162,37 @@ public class CommonService {
      * @param reqUrl       the req url
      * @param httpMethod   the http method
      * @param obj          the obj
-     * @param reqToken     the req token
      * @param responseType the response type
      * @return response entity
      */
-    public <T> ResponseEntity<T> procRestTemplateV2(String reqUrl, HttpMethod httpMethod, Object obj, String reqToken, Class<T> responseType) {
+//    public <T> ResponseEntity<T> procRestTemplateV2(String reqUrl, HttpMethod httpMethod, Object obj, String reqToken, Class<T> responseType) {
+//
+//        HttpHeaders reqHeaders = new HttpHeaders();
+//        reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
+//
+//        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
+//
+//        HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
+//        ResponseEntity<T> result = restTemplate.exchange("http://PORTAL-API-V2" + reqUrl, httpMethod, reqEntity, responseType);
+//
+//        //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
+//
+//        return result;
+//    }
+
+    // procRestTemplate getToken Argument 제거 메소드
+    public <T> ResponseEntity<T> procRestTemplateV2(String reqUrl, HttpMethod httpMethod, Object obj, Class<T> responseType) {
 
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
 
-        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
+//        if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
 
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        ResponseEntity<T> result = restTemplate.exchange("http://PORTAL-API-V2" + reqUrl, httpMethod, reqEntity, responseType);
+
+        //For Eureka / Zuul
+        LOGGER.info("apiUrl(TestLog)::"+apiUrl);
+        ResponseEntity<T> result = restTemplate.exchange( apiUrl + reqUrl, httpMethod, reqEntity, responseType);
 
         //LOGGER.info("procRestTemplate reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
 

@@ -1,8 +1,8 @@
 package gradle.cucumber;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+//import cucumber.api.java.en.And;
+//import cucumber.api.java.en.Then;
+//import cucumber.api.java.en.When;
 import org.apache.commons.collections.map.HashedMap;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class AppStepdefs extends AbstractDefs {
      * @param space 공간 이름
      * @throws Throwable
      */
-    @Then("^i will test \"(.+)\" in org \"(.+)\", space \"(.+)\"")
+//    @Then("^i will test \"(.+)\" in org \"(.+)\", space \"(.+)\"")
     public void i_will_test_application_in_org_space(String application, String org, String space) throws Throwable {
         LOGGER.info(">> i will test {} in org {}, space {}", application, org, space);
 
@@ -62,7 +62,7 @@ public class AppStepdefs extends AbstractDefs {
      * @param url API Url
      * @throws Throwable
      */
-    @When("^\"(.+)\" application with url \"(.+)\"")
+//    @When("^\"(.+)\" application with url \"(.+)\"")
     public void action_application_with_url(String action, String url) throws Throwable {
         LOGGER.info(">> '{}' application with url '{}'", action, url);
 
@@ -94,7 +94,7 @@ public class AppStepdefs extends AbstractDefs {
      * @param event 이벤트 이름
      * @throws Throwable
      */
-    @Then("^\"(.+)\" event occurs")
+//    @Then("^\"(.+)\" event occurs")
     public void event_occurs_in_app(String event) throws Throwable {
         LOGGER.info(">> '{}' event occurs", event);
 
@@ -126,7 +126,7 @@ public class AppStepdefs extends AbstractDefs {
      * @param state 어플리케이션의 상태
      * @throws Throwable
      */
-    @And("^It is the \"(.+)\" status")
+//    @And("^It is the \"(.+)\" status")
     public void It_is_the_state_status(String state) throws Throwable {
         String resBody = (String) lastResponse.getBody();
         JSONObject jsonBody = new JSONObject(resBody);

@@ -1,6 +1,6 @@
 package gradle.cucumber;
 
-import cucumber.api.java.en.Given;
+//import cucumber.api.java.en.Given;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -32,7 +32,7 @@ public class LoginStepdefs extends AbstractDefs {
      * @param password 로그인할 아이디의 비밀번호
      * @throws Throwable
      */
-    @Given("i login by \"(.+)\" and \"(.+)\"")
+//    @Given("i login by \"(.+)\" and \"(.+)\"")
     public void i_try_login_by_id_and_password(String id, String password) throws Throwable {
         LOGGER.info(">> i try login by {} and password", id);
 

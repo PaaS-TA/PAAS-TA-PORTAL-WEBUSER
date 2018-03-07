@@ -1,7 +1,7 @@
 package gradle.cucumber;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+//import cucumber.api.java.en.Then;
+//import cucumber.api.java.en.When;
 import org.apache.commons.collections.map.HashedMap;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -34,7 +34,7 @@ public class ServiceStepdefs extends AbstractDefs {
      * @param space 공간이름
      * @throws Throwable
      */
-    @Then("^i will test in organization \"(.+)\", space \"(.+)\"")
+//    @Then("^i will test in organization \"(.+)\", space \"(.+)\"")
     public void i_will_test_in_organization_space(String organization, String space) throws Throwable {
         testOrganization = organization;
         testSpace = space;
@@ -51,7 +51,7 @@ public class ServiceStepdefs extends AbstractDefs {
      * @param serviceName Service 이름
      * @throws Throwable
      */
-    @When("^create service instance \"(.+)\" with plan \"(.+)\" and service \"(.+)\"")
+//    @When("^create service instance \"(.+)\" with plan \"(.+)\" and service \"(.+)\"")
     public void create_service_with_plan(String serviceInstanceName, String planName, String serviceName) throws Throwable {
         // API URL
         final String SERVICE_PACK_CATALOG_LIST_PROC_URL = "/catalog/getServicePackCatalogList";
@@ -153,7 +153,7 @@ public class ServiceStepdefs extends AbstractDefs {
      * @param planName
      * @throws Throwable
      */
-    @Then("^service instance \"(.+)\" successfully created with plan \"(.+)\" and service \"(.+)\"")
+//    @Then("^service instance \"(.+)\" successfully created with plan \"(.+)\" and service \"(.+)\"")
     public void service_successfully_created_with_plan(String serviceInstanceName, String planName, String serviceName) throws Throwable {
         JSONObject jsonObject = getServiceInstanceInfo(testOrganization, testSpace, serviceInstanceName);
 
@@ -171,7 +171,7 @@ public class ServiceStepdefs extends AbstractDefs {
      * @param applicationName
      * @throws Throwable
      */
-    @When("^bind service instance \"(.+)\" and application \"(.+)\"")
+//    @When("^bind service instance \"(.+)\" and application \"(.+)\"")
     public void bind_service_and_application(String serviceInstanceName, String applicationName) throws Throwable {
         // API URL
         String url = "/app/bindService";
@@ -205,7 +205,7 @@ public class ServiceStepdefs extends AbstractDefs {
      *
      * @throws Throwable
      */
-    @Then("^service instance \"(.+)\" and application \"(.+)\" successfully bound")
+//    @Then("^service instance \"(.+)\" and application \"(.+)\" successfully bound")
     public void service_instance_and_application_successfully_bound(String serviceInstanceName, String applicationName) throws Throwable {
         JSONObject jsonObject = getServiceInstanceInfo(testOrganization, testSpace, serviceInstanceName);
 
@@ -221,7 +221,7 @@ public class ServiceStepdefs extends AbstractDefs {
      * @param applicationName
      * @throws Throwable
      */
-    @When("^unbind service instance \"(.+)\" and application \"(.+)\"")
+//    @When("^unbind service instance \"(.+)\" and application \"(.+)\"")
     public void unbind_service_and_application(String serviceInstanceName, String applicationName) throws Throwable {
         // API URL
         String url = "/app/unbindService";
@@ -255,7 +255,7 @@ public class ServiceStepdefs extends AbstractDefs {
      *
      * @throws Throwable
      */
-    @Then("^service instance \"(.+)\" and application \"(.+)\" successfully unbound")
+//    @Then("^service instance \"(.+)\" and application \"(.+)\" successfully unbound")
     public void service_instance_and_application_successfully_unbound(String serviceInstanceName, String applicationName) throws Throwable {
         String applicationGuid = null;
 
@@ -279,7 +279,7 @@ public class ServiceStepdefs extends AbstractDefs {
      * @param serviceInstanceName
      * @throws Throwable
      */
-    @When("^delete service instance \"(.+)\"")
+//    @When("^delete service instance \"(.+)\"")
     public void delete_service_instance(String serviceInstanceName) throws Throwable {
         // API URL
         String url = "/service/deleteInstanceService";
@@ -308,7 +308,7 @@ public class ServiceStepdefs extends AbstractDefs {
      *
      * @throws Throwable
      */
-    @Then("^service instance \"(.+)\" successfully deleted")
+//    @Then("^service instance \"(.+)\" successfully deleted")
     public void service_instance_successfully_deleted(String serviceInstanceName) throws Throwable {
         int statusCodeValue = 0;
 

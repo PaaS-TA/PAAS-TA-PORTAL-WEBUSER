@@ -97,7 +97,9 @@ public class AppController extends Common {
 
         LOGGER.info("getAppSummary Start : " + app.getGuid());
 
-        rspApp = commonService.procRestTemplate("/app/getAppSummary", HttpMethod.POST, app, getToken(), String.class).getBody();
+//        rspApp = commonService.procRestTemplate("/app/getAppSummary", HttpMethod.POST, app, getToken(), String.class).getBody();
+
+        rspApp = commonService.procRestTemplateV2("/app/getAppSummary", HttpMethod.POST, app, String.class).getBody();
 
         LOGGER.info("getAppSummary End ");
 

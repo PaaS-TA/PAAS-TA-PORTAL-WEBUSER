@@ -1,7 +1,7 @@
 package gradle.cucumber;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+//import cucumber.api.java.en.Then;
+//import cucumber.api.java.en.When;
 import org.apache.commons.collections.map.HashedMap;
 import org.openpaas.paasta.portal.web.user.model.Org;
 import org.openpaas.paasta.portal.web.user.model.Space;
@@ -33,7 +33,7 @@ public class OrgAndSpaceStepdefs extends AbstractDefs {
 	 * @param organization 조직이름
 	 * @throws Throwable
 	 */
-	@When("create organization \"(.+)\"")
+//	@When("create organization \"(.+)\"")
     public void create_organization_organization(String organization) throws Throwable {
         LOGGER.info(">> create organization '{}'", organization);
         // API URL
@@ -60,7 +60,7 @@ public class OrgAndSpaceStepdefs extends AbstractDefs {
 	 * @param organization 조직이름
 	 * @throws Throwable
 	 */
-	@Then("\"(.+)\" organization successfully created")
+//	@Then("\"(.+)\" organization successfully created")
     public void organization_successfully_created(String organization) throws Throwable {
         LOGGER.info(">> '{}' organization successfully created", organization);
         // API URL
@@ -87,7 +87,7 @@ public class OrgAndSpaceStepdefs extends AbstractDefs {
 	 * @param organization 조직이름
 	 * @throws Throwable
 	 */
-    @When("create space \"(.+)\" in organization \"(.+)\"")
+//    @When("create space \"(.+)\" in organization \"(.+)\"")
     public void create_space_space_in_organization(String space, String organization) throws Throwable {
         LOGGER.info(">> create space {} in organization '{}", space, organization);
         // API URL
@@ -116,7 +116,7 @@ public class OrgAndSpaceStepdefs extends AbstractDefs {
 	 * @param organization 조직이름
 	 * @throws Throwable
 	 */
-    @Then("\"(.+)\" space in organization \"(.+)\" successfully created")
+//    @Then("\"(.+)\" space in organization \"(.+)\" successfully created")
     public void space_in_organization_successfully_created(String space, String organization) throws Throwable {
         LOGGER.info(">> '{}'space in organization '{}' successfully created", space, organization);
         // API URL
@@ -144,7 +144,7 @@ public class OrgAndSpaceStepdefs extends AbstractDefs {
 	 * @param organization 조직이름
 	 * @throws Throwable
 	 */
-    @When("delete space \"(.+)\" in organization \"(.+)\"")
+//    @When("delete space \"(.+)\" in organization \"(.+)\"")
     public void delete_space_in_organization(String space, String organization) throws Throwable {
         LOGGER.info(">> delete space '{}' in organization '{}'", space, organization);
         // API URL
@@ -172,7 +172,7 @@ public class OrgAndSpaceStepdefs extends AbstractDefs {
 	 * @param organization 조직이름
 	 * @throws Throwable
 	 */
-    @Then("\"(.+)\" space in organization \"(.+)\" successfully delete")
+//    @Then("\"(.+)\" space in organization \"(.+)\" successfully delete")
     public void space_in_organization_successfully_delete(String space, String organization) throws Throwable {
         LOGGER.info(">> '{}' space in organization '{}' successfully delete", space, organization);
         // API URL
@@ -203,7 +203,7 @@ public class OrgAndSpaceStepdefs extends AbstractDefs {
 	 * @param organization 조직이름.
 	 * @throws Throwable
 	 */
-	@When("delete organization \"(.+)\"")
+//	@When("delete organization \"(.+)\"")
     public void delete_organization(String organization) throws Throwable {
         LOGGER.info(">> delete organization '{}'", organization);
         // API URL
@@ -229,7 +229,7 @@ public class OrgAndSpaceStepdefs extends AbstractDefs {
 	 * @param organization 조직이름
 	 * @throws Throwable
 	 */
-	@Then("\"(.+)\" organization successfully delete")
+//	@Then("\"(.+)\" organization successfully delete")
     public void organization_successfully_delete(String organization) throws Throwable {
         LOGGER.info(">> '{}' organization successfully delete", organization);
         // API URL

@@ -4,14 +4,14 @@ import org.apache.commons.collections.map.HashedMap;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.junit.runner.RunWith;
-import org.openpaas.paasta.portal.web.user.config.WebUserApplication;
+//import org.openpaas.paasta.portal.web.user.config.WebUserApplication;
 import org.openpaas.paasta.portal.web.user.model.App;
 import org.openpaas.paasta.portal.web.user.model.Space;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationContextLoader;
+//import org.springframework.boot.test.IntegrationTest;
+//import org.springframework.boot.test.SpringApplicationContextLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpEntity;
@@ -33,9 +33,9 @@ import java.util.Map;
  * @since 2016-08-26
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebUserApplication.class, loader = SpringApplicationContextLoader.class)
+//@ContextConfiguration(classes = WebUserApplication.class, loader = SpringApplicationContextLoader.class)
 @WebAppConfiguration
-@IntegrationTest
+//@IntegrationTest
 public class AbstractDefs
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDefs.class);

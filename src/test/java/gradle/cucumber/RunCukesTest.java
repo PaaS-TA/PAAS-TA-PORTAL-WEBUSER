@@ -1,7 +1,7 @@
 package gradle.cucumber;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
+//import cucumber.api.CucumberOptions;
+//import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
 /**
@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
  * @version 1.0
  * @since 2016-08-18
  */
-@RunWith(Cucumber.class)
-@CucumberOptions(plugin = {"pretty"}, features = "src/test/resources")
+//@RunWith(Cucumber.class)
+//@CucumberOptions(plugin = {"pretty"}, features = "src/test/resources")
 public class RunCukesTest {
 }
