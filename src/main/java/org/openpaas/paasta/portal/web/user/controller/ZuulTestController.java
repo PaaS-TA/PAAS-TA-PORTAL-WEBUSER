@@ -32,9 +32,9 @@ public class ZuulTestController extends Common {
 
     @RequestMapping(value = {"/testmain"}, method = RequestMethod.GET)
     public ModelAndView indevPage() {
-        try{
+        try {
             return new ModelAndView("/testmain");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -43,30 +43,27 @@ public class ZuulTestController extends Common {
 
     @RequestMapping(value = {"/zuul/login"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map login(String id, String password)  {
+    public Map login(String id, String password) {
 
 
-        LOGGER.info("login Start : " + id + "  "  + password);
-        Map<String,Object> resBody = new HashMap();
+        LOGGER.info("login Start : " + id + "  " + password);
+        Map<String, Object> resBody = new HashMap();
         resBody.put("id", id);
         resBody.put("password", password);
-        ResponseEntity<Map> resEntity =  apiCall("/login", HttpMethod.POST, resBody, "", Map.class);
+        ResponseEntity<Map> resEntity = apiCall("/login", HttpMethod.POST, resBody, "", Map.class);
         Map<String, Object> resultMap = resEntity.getBody();
         LOGGER.info("login End");
         return resultMap;
     }
 
 
-
-
-
     @RequestMapping(value = {"/zuul/getuser"}, method = RequestMethod.GET)
     @ResponseBody
-    public String getUser(String id)  {
+    public String getUser(String id) {
 
         String rspApp = "";
         LOGGER.info("getUser Start : " + id);
-        ResponseEntity rssResponse = commonapiCall("/user/getUser/"+id, HttpMethod.GET, "", "", String.class);
+        ResponseEntity rssResponse = commonapiCall("/user/getUser/" + id, HttpMethod.GET, "", "", String.class);
         rspApp = (String) rssResponse.getBody();
         LOGGER.info("getUser End ");
         return rspApp;
@@ -79,30 +76,38 @@ public class ZuulTestController extends Common {
     private String base64Authorization;
 
     public <T> ResponseEntity<T> apiCall(String reqUrl, HttpMethod httpMethod, Object obj, String reqToken, Class<T> responseType) {
+        String server = "http://10.30.80.51:2225";
+        //String server = "http://localhost:2225";
+
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
 
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        LOGGER.info("apiCall Target :: " + "http://localhost:2225/portalapi" + reqUrl);
+        LOGGER.info("apiCall Target :: " + server + "/portalapi" + reqUrl);
         LOGGER.info("apiCall :: SEND");
-        ResponseEntity<T> result = restTemplate.exchange("http://localhost:2225/portalapi" + reqUrl, httpMethod, reqEntity, responseType);
+        ResponseEntity<T> result = restTemplate.exchange(server + "/portalapi" + reqUrl, httpMethod, reqEntity, responseType);
         LOGGER.info("apiCall reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
 
         return result;
     }
 
     public <T> ResponseEntity<T> commonapiCall(String reqUrl, HttpMethod httpMethod, Object obj, String reqToken, Class<T> responseType) {
+        String server = "http://10.30.80.51:2225";
+        //String server = "http://localhost:2225";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
 
         if (null != reqToken && !"".equals(reqToken)) reqHeaders.add(CF_AUTHORIZATION_HEADER_KEY, reqToken);
         HttpEntity<Object> reqEntity = new HttpEntity<>(obj, reqHeaders);
-        LOGGER.info("commonapiTarget :: " + "http://localhost:2225/commonapi" + reqUrl);
+        LOGGER.info("commonapiTarget :: " + server + "/commonapi" + reqUrl);
+        LOGGER.info("commonapiTarget :: " + "/commonapi" + reqUrl);
+
+
         LOGGER.info("commonapiCall :: SEND");
-        ResponseEntity<T> result = restTemplate.exchange("http://localhost:2225/commonapi" + reqUrl, httpMethod, reqEntity, responseType);
+        ResponseEntity<T> result = restTemplate.exchange(server + "/commonapi" + reqUrl, httpMethod, reqEntity, responseType);
         LOGGER.info("commonapiCall reqUrl :: {} || resultBody :: {}", reqUrl, result.getBody().toString());
 
         return result;
