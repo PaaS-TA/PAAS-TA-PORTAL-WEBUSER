@@ -76,8 +76,8 @@ public class ZuulTestController extends Common {
     private String base64Authorization;
 
     public <T> ResponseEntity<T> apiCall(String reqUrl, HttpMethod httpMethod, Object obj, String reqToken, Class<T> responseType) {
-        String server = "http://10.30.80.51:2225";
-        //String server = "http://localhost:2225";
+//        String server = "http://10.30.80.51:2225";
+        String server = "http://localhost:2225";
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders reqHeaders = new HttpHeaders();
@@ -94,8 +94,8 @@ public class ZuulTestController extends Common {
     }
 
     public <T> ResponseEntity<T> commonapiCall(String reqUrl, HttpMethod httpMethod, Object obj, String reqToken, Class<T> responseType) {
-        String server = "http://10.30.80.51:2225";
-        //String server = "http://localhost:2225";
+//        String server = "http://10.30.80.51:2225";
+        String server = "http://localhost:2225";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
@@ -112,5 +112,18 @@ public class ZuulTestController extends Common {
 
         return result;
     }
+
+
+    /*
+     * CF v2 테스트용 화면입니다!!!!!!!!!!!!!
+     *
+     * */
+    @RequestMapping(value = {"/app/tempAppView"}, method = RequestMethod.GET)
+    public ModelAndView tempAppView(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/app/testAppMain");
+        return mv;
+    }
+
 }
 
