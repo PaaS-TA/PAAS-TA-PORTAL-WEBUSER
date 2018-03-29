@@ -105,7 +105,7 @@ SCRIPT BEGIN
 
 <script type="text/javascript">
 
-    var CATALOG_HISTORY_LIST_PROC_URL = "<c:url value='/catalog/getCatalogHistoryList' />";
+    var CATALOG_HISTORY_LIST_PROC_URL = "<c:url value='catalog/getCatalogHistoryList' />";
     var STARTER_CATALOG_LIST_PROC_URL = "<c:url value='/catalog/getStarterNamesList' />";
     var BUILD_PACK_CATALOG_LIST_PROC_URL = "<c:url value='/catalog/getBuildPackCatalogList' />";
     var SERVICE_PACK_CATALOG_LIST_PROC_URL = "<c:url value='/catalog/getServicePackCatalogList' />";
