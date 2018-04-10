@@ -1,0 +1,25 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<!--<div class="contents">-->
+  <!--<h2>PaasTa에 오신걸 환영 합니다.</h2>-->
+  <!--<div *ngIf="!isLogin">-->
+    <!--<button routerLink="/login">Login</button>&nbsp;-->
+  <!--</div>-->
+  <!--<div *ngIf="isLogin">-->
+    <!--<div>-->
+      <!--<button routerLink="dashboard" id="space">Dashboard</button>-->
+      <!--<button routerLink="logout">Logout</button>&nbsp;-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+<!--<router-outlet></router-outlet>-->
+
+
+<div layout="row">
+  <div flex>First item in row</div>
+  <div flex>Second item in row</div>
+</div>
+<div layout="column">
+  <div flex>First item in column</div>
+  <div flex>Second item in column</div>
+</div>
+

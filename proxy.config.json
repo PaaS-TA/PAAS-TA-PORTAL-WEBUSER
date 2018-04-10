@@ -1,0 +1,23 @@
+{
+  "/portalapi/*": {
+    "target": "http://localhost:2225/portalapi",
+    "logLevel": "debug",
+    "secure": false,
+    "changeOrigin": "true",
+    "pathRewrite": {"^/portalapi": ""}
+  },
+  "/commonapi/*": {
+    "target": "http://localhost:2225/commonapi",
+    "logLevel": "debug",
+    "secure": false,
+    "changeOrigin": "true",
+    "pathRewrite": {"^/commonapi": ""}
+  },
+  "/storageapi/*": {
+    "target": "http://localhost:2225/storageapi",
+    "logLevel": "debug",
+    "secure": false,
+    "changeOrigin": "true",
+    "pathRewrite": {"^/storageapi": ""}
+  }
+}
