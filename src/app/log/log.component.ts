@@ -42,9 +42,9 @@ export class LogComponent implements OnInit {
     });
   }
 
-  exitSubscribe(){
-    console.log("EXit");
-    this.subscription.unsubscribe();
-  }
+  // exitSubscribe(){
+  //   console.log("EXit");
+  //   this.subscription.unsubscribe();
+  // }
 
 }
