@@ -14,9 +14,9 @@ export class LogComponent implements OnInit {
   observableData: number;
 
   constructor() {
-    this.promise = this.getPromise();
-    this.observable = this.getObservable();
-    this.subscribeObservable();
+    // this.promise = this.getPromise();
+    // this.observable = this.getObservable();
+    // this.subscribeObservable();
 
   }
 

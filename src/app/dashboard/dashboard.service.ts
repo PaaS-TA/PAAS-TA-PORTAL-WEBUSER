@@ -65,25 +65,5 @@ export class DashboardService {
     }).do(console.log);
   }
 
-  observation() {
-
-    this.headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==')
-      .set('X-Broker-Api-Version', '2.4')
-      .set('X-Requested-With', 'XMLHttpRequest').set('cf-Authorization', this.commonService.getToken());
-
-
-    return this.commonService.doGET('/portalapi/v2/orgs', this.commonService.getToken()).map((res: Response) => {
-    }).do(console.log);
-  }
-
-
-  getSpace() {
-    return this.commonService.doGET('/portalapi/v2/orgs', this.commonService.getToken()).map((res: Response) => {
-    });
-  }
-
-
 }
 
