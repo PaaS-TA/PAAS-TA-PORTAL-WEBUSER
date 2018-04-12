@@ -19,7 +19,6 @@ import {CfAppComponent} from './cf-app/cf-app.component';
 import {IndexComponent} from './index/index.component';
 import {RoutingModule} from './app.routing';
 import {HttpClientModule} from '@angular/common/http';
-import {CommonService} from './common/common.service';
 import {TopComponent} from './layout/top/top.component';
 import {BottonComponent} from './layout/botton/botton.component';
 import {LeftComponent} from './layout/left/left.component';
@@ -33,6 +32,10 @@ import {LogoutComponent} from './logout/logout.component';
 import {DashboardService} from './dashboard/dashboard.service';
 import {JsonpModule} from '@angular/http';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
+import {CommonService} from "./common/common.service";
+import { UsermgmtComponent } from './usermgmt/usermgmt.component';
+
+
 
 
 @NgModule({
@@ -57,7 +60,8 @@ import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
     LeftComponent,
     AuthCodeComponent,
     CallbackComponent,
-    LogoutComponent
+    LogoutComponent,
+    UsermgmtComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
