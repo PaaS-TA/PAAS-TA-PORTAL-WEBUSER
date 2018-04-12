@@ -23,7 +23,7 @@ import {TopComponent} from './layout/top/top.component';
 import {BottonComponent} from './layout/botton/botton.component';
 import {LeftComponent} from './layout/left/left.component';
 import {FormsModule} from '@angular/forms';
-import {AuthCodeComponent} from './auth/auth-code/auth-code.component';
+
 import {UaaSecurityService} from './auth/uaa-security.service';
 import {CallbackComponent} from './callback/callback.component';
 import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
@@ -33,7 +33,7 @@ import {DashboardService} from './dashboard/dashboard.service';
 import {JsonpModule} from '@angular/http';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CommonService} from "./common/common.service";
-import { UsermgmtComponent } from './usermgmt/usermgmt.component';
+
 
 
 
@@ -58,10 +58,8 @@ import { UsermgmtComponent } from './usermgmt/usermgmt.component';
     TopComponent,
     BottonComponent,
     LeftComponent,
-    AuthCodeComponent,
     CallbackComponent,
     LogoutComponent,
-    UsermgmtComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
