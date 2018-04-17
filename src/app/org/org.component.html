@@ -1,3 +1,914 @@
-<div>
-  <h1>org</h1>
+<div class="wrap account">
+  <header class="header account">
+    <div class="logo">
+      <a href="#"><h1><img src="../../assets/resources/images/main/logo.png" alt=""/></h1></a>
+    </div>
+    <span class="nav_toggle">
+            <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+            <label for="checkbox-1"></label>
+        </span>
+    <ul class="gnb clearfix">
+      <li class="cur"><a href="dashboard.html">대시보드</a></li>
+      <li><a href="catalog_list.html">카달로그</a></li>
+      <li><a href="dashboard1.html">문서</a></li>
+    </ul>
+    <ul class="right_nav">
+      <li><!-- <a href="#" class="fas fa-user"></a> -->
+        <div class="btn-group">
+          <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          </button>
+          <div id="r_user" class="dropdown-menu">
+            <div class="">
+              <span class="dot"></span>
+              <dl>
+                <dt>
+                  <i href="#" class="fas fa-user"></i>
+                  <img src="http://blog.jinbo.net/attach/615/200937431.jpg" alt="temp" />
+                </dt>
+                <dd>
+                  <p>홍길동</p>
+                  <p>test@test.com</p>
+                </dd>
+              </dl>
+            </div>
+            <ul class="">
+              <li class="cur"><a href="#">내계정</a></li>
+              <li><a href="#">조직관리</a></li>
+              <li><a href="#">사용량조회</a></li>
+            </ul>
+            <p class="log_out">로그아웃</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="btn-group">
+          <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>3</span></button>
+          <div id="bell" class="dropdown-menu">
+            <div class="">
+              <span class="dot"></span>
+              <p class="">Notifications</p>
+            </div>
+            <div>
+              <ul class="">
+                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div id="globes" class="btn-group">
+          <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>
+          <ul class="dropdown-menu">
+            <li class="cur"><a href="#">Korean</a></li>
+            <li><a href="#">English</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </header>
+  <nav>
+    <div class="scroll_style">
+      <ul class="nav_1d">
+        <li onclick="location.href='account.html'">
+          <dl>
+            <dt>
+            <div id="lnbimg10">
+            </div>
+            </dt>
+            <dd>
+              <p>
+                내계정
+              </p>
+            </dd>
+          </dl>
+        </li>
+        <li class="cur" onclick="location.href='organization.html'">
+          <dl>
+            <dt>
+            <div id="lnbimg11">
+
+            </div>
+            </dt>
+            <dd>
+              <p>
+                조직관리
+              </p>
+            </dd>
+          </dl>
+        </li>
+        <li onclick="location.href='quantity.html'">
+          <dl>
+            <dt>
+            <div id="lnbimg12" class="">
+
+            </div>
+            </dt>
+            <dd>
+              <p>
+                사용량조회
+              </p>
+            </dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt>
+            <div id="lnbimg13" class="">
+
+            </div>
+            </dt>
+            <dd>
+              <p>
+                로그아웃
+              </p>
+            </dd>
+          </dl>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="contain">
+    <div class="content">
+      <div class="row one_line">
+        <h1>조직관리
+          <div class="pull-right btns_top_ww">
+            <button class="btns6 colors4 btns_top">
+              새 조직 추가
+            </button>
+          </div>
+        </h1>
+       <div  class="col-md-12 organization_wrap on" *ngFor="let org of orgs">
+          <div class="organization_title_wrap on">
+            <div class="organization_btn">
+              <div class="organization_btnin">
+                <input class="tempTitle" type="text">
+                <button class="btns6 colors4 yess2">변경하기</button>
+                <button class="btns6 colors5 nos2">취소</button>
+                <!--button class="btns6 colors4 colors5 organization_sw" style="margin-left:1.1%;">
+                    <i class="fas fa-chevron-up"></i> 세부사항보기
+                </button-->
+              </div>
+            </div>
+            <div class="pull-right on">
+              <div class="ri_up on">
+                <button class="btns6 colors4 organization_sw"><i class="fas fa-chevron-down"></i> 세부사항 보기</button>
+              </div>
+              <div class="organization_dot">
+                <i class="fas fa-ellipsis-v"></i>
+                <ul class="">
+                  <li class="name_inputTitle2">
+                    <p><i class="fas fa-edit"></i>&nbsp;&nbsp;이름변경</p>
+                  </li>
+                  <li data-target="#layerpop" data-toggle="modal">
+                    <p>
+                      <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;삭제
+                    </p>
+                  </li>
+                  <li data-target="#layerpop8" data-toggle="modal"><p><img src="../../assets/resources/images/web.png" alt="">&nbsp;&nbsp;WEB IDE 신청</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="tit">Paas-TA / {{org.orgname}}</p>
+          </div><!-- organization_title_wrap -->
+          <div class="organization_table_wrap">
+            <div class="organization_table">
+              <table>
+                <caption>
+                  공간<span>3</span>
+                  <div class="pull-right">
+                    <button class="btns6 colors4" data-target="#layerpop5" data-toggle="modal">
+                      <i class="fas fa-plus"></i> 공간 생성
+                    </button>
+                  </div>
+                </caption>
+                <colgroup>
+                  <col style="*">
+                  <col style="width: 30px;">
+                  <col style="width: 30px;">
+                </colgroup>
+                <tbody>
+                <tr>
+                  <td><p>Dev_00(공간명)</p></td>
+                  <th>
+                    <i class="fas fa-edit"></i>
+                  </th>
+                  <th data-target="#layerpop3" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
+                </tr>
+                <tr class="on">
+                  <td colspan="3">
+                    <div class="">
+                      <div class="account_table_in">
+                                                    <span>변경할 이름
+                                                    </span>
+                        <input type="text">
+                        <div class="">
+                          <button class="btns6 colors4 btns_sw">변경하기</button>
+                          <button class="btns6 colors5 btns_sw">취소</button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><p>Dev_00(공간명)</p></td>
+                  <th>
+                    <i class="fas fa-edit"></i>
+                  </th>
+                  <th data-target="#layerpop3" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
+                </tr>
+                <tr class="on">
+                  <td colspan="3">
+                    <div class="">
+                      <div class="account_table_in">
+                                                    <span>변경할 이름
+                                                    </span>
+                        <input type="text">
+                        <div class="">
+                          <button class="btns6 colors4 btns_sw">변경하기</button>
+                          <button class="btns6 colors5 btns_sw">취소</button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div><!-- organization_table -->
+            <div class="organization_table">
+              <table>
+                <caption>
+                  도메인<span>2</span>
+                  <div class="pull-right">
+                    <button class="btns6 colors4" data-target="#layerpop6" data-toggle="modal">
+                      <i class="fas fa-plus"></i> 도메인 추가
+                    </button>
+                  </div>
+                </caption>
+                <colgroup>
+                  <col style="*">
+                  <col style="width: 30px;">
+                </colgroup>
+                <tbody>
+                <tr>
+                  <td><p>115.68.46.187.xip.io</p></td>
+                  <th><i class="fas fa-link"></i></th>
+                </tr>
+                <tr>
+                  <td><p>115.68.46.187.xip.io</p></td>
+                  <th>
+                    <i class="fas fa-trash-alt" data-target="#layerpop9" data-toggle="modal"></i>
+                  </th>
+                </tr>
+                </tbody>
+              </table>
+            </div><!-- organization_table -->
+            <div class="organization_table2 paT30">
+              <table>
+                <caption>
+                  사용자<span>1</span>
+                  <div class="pull-right">
+                    <button class="btns6 colors4" data-target="#layerpop4" data-toggle="modal">
+                      <i class="fas fa-plus"></i> 사용자 초대
+                    </button>
+                  </div>
+                </caption>
+                <colgroup>
+                  <col style="width: 150px;">
+                  <col style="*">
+                  <col style="*">
+                  <col style="*">
+                  <col style="*">
+                </colgroup>
+                <thead>
+                <tr>
+                  <td>사용자</td>
+                  <td colspan="4">역할설정</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>test</td>
+                  <td>
+                    <input id="check1" type="checkbox" checked="checked">
+                    <label for="check1">OrgManager(조직 관리자)</label>
+                  </td>
+                  <td>
+                    <input id="check2" type="checkbox" checked="checked">
+                    <label for="check2">BillingManager(조직 결제 관리자)</label>
+                  </td>
+                  <td>
+                    <input id="check3" type="checkbox" checked="checked">
+                    <label for="check3">OrgAuditor(조직 참관인)</label>
+                  </td>
+                  <th><button class="btns4 colors8" data-target="#layerpop10" data-toggle="modal">초대 재전송</button></th>
+                </tr>
+                <tr>
+                  <td>test</td>
+                  <td>
+                    <input id="check1" type="checkbox" checked="checked">
+                    <label for="check1">OrgManager(조직 관리자)</label>
+                  </td>
+                  <td>
+                    <input id="check2" type="checkbox" checked="checked">
+                    <label for="check2">BillingManager(조직 결제 관리자)</label>
+                  </td>
+                  <td>
+                    <input id="check3" type="checkbox" checked="checked">
+                    <label for="check3">OrgAuditor(조직 참관인)</label>
+                  </td>
+                  <th><button class="btns4 colors8" data-target="#layerpop11" data-toggle="modal">초대 취소</button></th>
+                </tr>
+                <tr>
+                  <td>test</td>
+                  <td>
+                    <input id="check1" type="checkbox" checked="checked">
+                    <label for="check1">OrgManager(조직 관리자)</label>
+                  </td>
+                  <td>
+                    <input id="check2" type="checkbox" checked="checked">
+                    <label for="check2">BillingManager(조직 결제 관리자)</label>
+                  </td>
+                  <td>
+                    <input id="check3" type="checkbox" checked="checked">
+                    <label for="check3">OrgAuditor(조직 참관인)</label>
+                  </td>
+                  <th><button class="btns4 colors8" data-target="#layerpop12" data-toggle="modal">맴버 취소</button></th>
+                </tr>
+                </tbody>
+              </table>
+            </div><!-- organization_table2 -->
+            <div class="organization_table2 maT30 paB40">
+              <table class="line_tables">
+                <caption>
+                  할당량
+                </caption>
+                <colgroup>
+                  <col style="*">
+                  <col style="*">
+                  <col style="*">
+                  <col style="*">
+                  <col style="*">
+                  <col style="*">
+                  <col style="*">
+                  <col style="*">
+                  <col style="*">
+                </colgroup>
+                <thead>
+                <tr>
+                  <td>선택</td>
+                  <td>서비스명</td>
+                  <td>메모리</td>
+                  <td>인스턴트 메모리</td>
+                  <td>라우트</td>
+                  <td>서비스 인스턴트</td>
+                  <td>가격</td>
+                  <td>인스턴트</td>
+                  <td>인스턴트</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="cur" style="border-bottom: 1px solid rgb(0, 170, 204); border-top-color: rgb(0, 170, 204); border-right-color: rgb(0, 170, 204); border-left-color: rgb(0, 170, 204);">
+                  <td>
+                    <input id="radio1" type="radio" name="radio1" data-target="#layerpop7" data-toggle="modal" class="">
+                    <label for="radio1"></label>
+                  </td>
+                  <td>
+                    기본
+                  </td>
+                  <td>10G
+                  </td>
+                  <td>무제한
+                  </td>
+                  <td>100
+                  </td>
+                  <td>100
+                  </td>
+                  <td>무료
+                  </td>
+                  <td>무제한
+                  </td>
+                  <td>0
+                  </td>
+                </tr>
+                <tr class="" style="border-bottom: 1px solid rgb(231, 234, 236);">
+                  <td>
+                    <input id="radio2" type="radio" name="radio1" checked="" data-target="#layerpop7" data-toggle="modal">
+                    <label for="radio2"></label>
+                  </td>
+                  <td>
+                    기본
+                  </td>
+                  <td>10G
+                  </td>
+                  <td>무제한
+                  </td>
+                  <td>100
+                  </td>
+                  <td>100
+                  </td>
+                  <td>무료
+                  </td>
+                  <td>무제한
+                  </td>
+                  <td>0
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div><!-- organization_table2 -->
+          </div>
+        </div>
+      </div><!-- row one_line -->
+    </div>
+    <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">조직탈퇴</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p class="account_modal_p">조직을 탈퇴하면 되돌릴 수 없습니다.<br/>
+            <span>testorg</span> 를 탈퇴하시겠습니까?
+          </p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop2">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">계정삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p">계정 삭제를 선택 하면 모든 조직과 공간이 삭제 되며 되돌릴 수 없습니다.<br/>
+              <span>test@test.com</span>을 삭제하시겠습니까?
+            </p>
+            <input type="text" placeholder="이메일 입력" /><input type="text" placeholder="비밀번호 입력" />
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">조직 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p">조직을 삭제하면 되돌릴 수 없습니다.<br/>
+              <span>testorg</span>를 삭제하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop2">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">조직 탈퇴</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p">조직을 탈퇴하면 되돌릴 수 없습니다.<br/>
+              <span>testorg</span>를 탈퇴하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">탈퇴</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop3">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">공간 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p">공간 삭제를 하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br/>
+              <span>devtest123</span>을 삭제하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop4">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">사용자 초대</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <input class="w100" placeholder="sample@test.com"/>
+          <span class="red">* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.</span>
+          <table class="maT30">
+            <colgroup>
+              <col style='*'>
+              <col style='*'>
+              <col style='*'>
+              <col style='*'>
+            </colgroup>
+            <thead>
+            <tr>
+              <td>조직
+              </td>
+              <td colspan="3">할당된 조직
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>test</td>
+              <td>
+                <input class="checkSel" id="modal1" type="checkbox"/>
+                <label for="modal1">OrgManager(조직 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel" id="modal2" type="checkbox" checked="checked"/>
+                <label for="modal2">BillingManager(조직 결제 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel" id="modal3" type="checkbox" checked="checked"/>
+                <label for="modal3">OrgAuditor(조직 참관인)</label>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <input class="checkAll" id="checkAll" type="checkbox"/>
+          <label class="maT10" for="checkAll">전체선택</label>
+          <table class="maT30">
+            <colgroup>
+              <col style='*'>
+              <col style='*'>
+              <col style='*'>
+              <col style='*'>
+            </colgroup>
+            <thead>
+            <tr>
+              <td>조직
+              </td>
+              <td colspan="3">할당된 조직
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>test</td>
+              <td>
+                <input class="checkSel2" id="modal4" type="checkbox"/>
+                <label for="modal4">OrgManager(조직 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal5" type="checkbox" checked="checked"/>
+                <label for="modal5">BillingManager(조직 결제 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal6" type="checkbox" checked="checked"/>
+                <label for="modal6">OrgAuditor(조직 참관인)</label>
+              </td>
+            </tr>
+            <tr>
+              <td>공간명</td>
+              <td>
+                <input class="checkSel2" id="modal7" type="checkbox"/>
+                <label for="modal7">OrgManager(조직 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal8" type="checkbox" checked="checked"/>
+                <label for="modal8">BillingManager(조직 결제 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal9" type="checkbox" checked="checked"/>
+                <label for="modal9">OrgAuditor(조직 참관인)</label>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <input class="checkAll2" id="checkAll2" type="checkbox"/>
+          <label class="maT10" for="checkAll2">전체선택</label>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">초대</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop5">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">공간 생성</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <input type="text" placeholder="공간 이름을 입력하세요" />
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">생성</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop6">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">도메인추가</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <input type="text" placeholder="도메인 명을 입력하세요" />
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">추가</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop7">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">할당량 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>할당량</span>을 변경하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">추가</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop8">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">WEB IDE 사용 신청</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p">WEB IDE(Eclipse Che)는 브라우저 기반 IDE 입니다.<br/>
+              자세한 사항은 다음의 링크를 클릭해주십시요.<br/>
+              <a class="account_modal_a" href="http://www.eclipse.org/che/" target="_blank">
+                http://www.eclipse.org/che/
+              </a>
+            </p>
+            <p class="account_modal_p maT30">
+              WEB IDE를 신청 하시면 관리자의 승인 후 조직 단위로 WEB IDE 영역이 할당됩니다.<br/>
+              파스타 조직의 WEB IDE 사용을 신청하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">추가</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop9">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">도메인 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>000</span> 도메인을 삭제하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop10">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">초대 재전송</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>000@test.com</span>님을 초대 재전송 하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">확인</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop11">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">초대 취소</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>000@test.com</span>님을 초대 취소 하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">확인</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop12">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">멤버 취소</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>000@test.com</span>님을 멤버 취소 하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">확인</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
