@@ -1,0 +1,525 @@
+<div class="wrap dashboard">
+  <app-app-top></app-app-top>
+  <app-app-nav></app-app-nav>
+
+  <div class="contain">
+    <div class="content">
+      <div class="row one_line maT30">
+        <div class="col-md-6">
+          <div class="col-in col-d1">
+            <ul class="colright_btn">
+              <li class="monitoring">
+                <ul>
+                  <li><i class="fas fa-play"></i></li>
+                  <li><i class="fas fa-stop"></i></li>
+                  <li><i class="fas fa-stop"></i><!--i class="colorsR fas fa-sync-alt"></i--></li>
+                </ul>
+              </li>
+              <li class="rot_deg"><i class="rot fas fa-sync-alt"></i>
+              </li>
+              <li>
+                <i class="fas fa-ellipsis-v"></i>
+                <ol class="">
+                  <li class="name_inputTitle"><a class="fas fa-edit"> 이름변경</a>
+                  </li>
+                  <li><a class="fas fa-trash-alt"> 삭제</a></li>
+                </ol>
+              </li>
+            </ul>
+            <div class="col_in maT30" id="col_in1">
+              <h1 class="headTH2">
+                <span>{{appSummaryName}}</span>
+                <div class="headT">
+                  <input class="tempTitle" type="text" value="" autocomplete="off" />
+                  <button class="yess">
+                    <i class="far fa-save"></i>
+                  </button>
+                  <button class="nos">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </h1>
+              <p class="copy">Availability-monitoring-auto 개요 페이지 입니다.</p>
+              <button class="btns colors1"><img src="/assets/resources/images/main/RUNNING.svg" alt=""/>RUNNING</button>
+              <button class="btns colors2"><img src="/assets/resources/images/main/energy.svg" alt=""/>DOWN</button>
+              <button class="btns colors3"><img src="/assets/resources/images/main/moon.svg" alt=""/>STOP</button>
+            </div>
+            <div class="maT30">
+              <dl class="col_in1_dl">
+                <dt>
+                <ul>
+                  <li><span class="on_dot BGcolors"></span> 지역
+                  </li>
+                  <li>대한민국</li>
+                </ul>
+                <ul>
+                  <li>
+                    <span class="on_dot BGcolors2"></span> 조직
+                  </li>
+                  <li>dev_test</li>
+                </ul>
+                <ul>
+                  <li><span class="on_dot BGcolors3"></span> 공간
+                  </li>
+                  <li>dev_area</li>
+                </ul>
+                </dt>
+                <dt>
+                <ol class="monitor_pd">
+                  <li>
+                    <span>앱 URL:</span>
+                    <button class="btns4 colors4">URL Rink
+                      <div class="">
+                        <i>
+                          <img src="../resources/images/main/btn_url_dot.png" alt=""/>
+                        </i>
+                        test.115.68.64,187.xip.io
+                      </div>
+                    </button>
+                  </li>
+                  <li><span>마지막 푸시:</span>2018.01.22  12:12:12</li>
+                  <li><span>앱 개발환경:</span>C++_buildpack</li>
+                </ol>
+                </dt>
+              </dl>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div id="instance" class="col-in col-in-bg">
+            <dl>
+              <dt class="tit">INSTANCE
+                <span class="pull-right rights"></span>
+              </dt>
+              <dd><span class="instanceS">5</span><small> / 최대 <span>7</span>개</small>
+                <div class="pull-right">
+                  <div class="icon_wrap">
+                    <img src="/assets/resources/images/main/instance_ico.png" alt="" />
+                  </div>
+                  <div class="BG_wrap">
+                    <img src="/assets/resources/images/main/ico_bg.png" alt="" />
+                    <input value="75"/>
+                  </div>
+                </div>
+              </dd>
+              <dt>
+              <ul class="instance_ul">
+                <li>
+                  <button class="btns0 colors0">
+                    <i class="fas fa-angle-up"></i>
+                  </button>
+                </li>
+                <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
+                </li>
+                <li><button class="btns0 colors0 a0001">직접입력</button>
+                </li>
+                <li><button class="btns0 colors0 b0001">저장</button>
+                </li>
+              </ul>
+              </dt>
+            </dl>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div id="cpu" class="col-in col-in-bg">
+            <dl>
+              <dt class="tit">CPU
+                <span class="pull-right rights"></span>
+              </dt>
+              <dd><span>58</span><i>%</i><small> / 100</small>
+                <div class="pull-right">
+                  <div class="icon_wrap">
+                    <img src="/assets/resources/images/main/cpu_ico.png" alt="" />
+                  </div>
+                  <div class="BG_wrap">
+                    <img src="/assets/resources/images/main/ico_bg.png" alt="" />
+                    <input value="58"/>
+                  </div>
+                </div>
+              </dd>
+              <dt>
+              <ul class="instance_ul">
+                <!--li><button class="btns0 colors0"><i class="fas fa-angle-up"></i></button>
+                </li>
+                <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
+                </li>
+                <li><button class="btns0 colors0">저장</button>
+                </li-->
+              </ul>
+              </dt>
+            </dl>
+          </div>
+        </div>
+        <div class="col-md-3 maT30">
+          <div id="memory" class="col-in col-in-bg">
+            <dl>
+              <dt class="tit">MEMORY
+                <span class="pull-right rights"></span>
+              </dt>
+              <dd><span class="memS">90</span><i>G</i><small> / 최대 100G</small>
+                <div class="pull-right">
+                  <div class="icon_wrap">
+                    <img src="/assets/resources/images/main/memory_ico.png" alt="" />
+                  </div>
+                  <div class="BG_wrap">
+                    <img src="/assets/resources/images/main/ico_bg.png" alt="" />
+                    <input value="90"/>
+                  </div>
+                </div>
+              </dd>
+              <dt>
+              <ul class="instance_ul">
+                <li><button class="btns0 colors0"><i class="fas fa-angle-up"></i></button>
+                </li>
+                <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
+                </li>
+                <li><button class="btns0 colors0 a0002">직접입력</button>
+                </li>
+                <li><button class="btns0 colors0 b0002">저장</button>
+                </li>
+              </ul>
+              </dt>
+            </dl>
+          </div>
+        </div>
+        <div class="col-md-3 maT30">
+          <div id="disk" class="col-in col-in-bg">
+            <dl>
+              <dt class="tit">DISK
+                <span class="pull-right rights"></span>
+              </dt>
+              <dd><span class="diskS">100</span><i>G</i><small> / 최대 300G</small>
+                <div class="pull-right">
+                  <div class="icon_wrap">
+                    <img src="/assets/resources/images/main/disk_ico.png" alt="" />
+                  </div>
+                  <div class="BG_wrap">
+                    <img src="/assets/resources/images/main/ico_bg.png" alt="" />
+                    <input value="60"/>
+                  </div>
+                </div>
+              </dd>
+              <dt>
+              <ul class="instance_ul">
+                <li><button class="btns0 colors0"><i class="fas fa-angle-up"></i></button>
+                </li>
+                <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
+                </li>
+                <li><button class="btns0 colors0 a0003">직접입력</button>
+                </li>
+                <li><button class="btns0 colors0 b0003">저장</button>
+                </li>
+              </ul>
+              </dt>
+            </dl>
+          </div>
+        </div>
+      </div><!-- row one_line -->
+      <div class="row two_line cataloglast">
+        <ul id="sortable">
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>이벤트</p>
+                <ul class="sortable_right"><!--
+                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
+                  <li onclick="location.href='dashboard_event.html'"><i class="fas fa-expand"></i></li>
+                </ul>
+              </div>
+              <div class="table_wrap table_wraps">
+                <div>
+                  <table class="table_event">
+                    <!-- <caption>이벤트</caption> -->
+                    <colgroup>
+                      <col style='width: 30px;'>
+                      <col style='width: 40px;'>
+                      <col style='*'>
+                      <col style='*'>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                      <td>#
+                      </td>
+                      <td>Status
+                      </td>
+                      <td>Date
+                      </td>
+                      <td>Project
+                      </td>
+                      <td>Account
+                      </td>
+                      <td>Report
+                      </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>1</td>
+                      <th><i class="fas fa-pause"></i></th>
+                      <td>2018/01/29<span>05:51:34</span></td>
+                      <td>di01audit.app.update</td>
+                      <td>di01</td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <th><i class="fas fa-play"></i></th>
+                      <td>2018/01/29<span>05:51:34</span></td>
+                      <td>di01audit.app.update</td>
+                      <td>di01</td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <th><i class="fas fa-stop"></i></th>
+                      <td>2018/01/29<span>05:51:34</span></td>
+                      <td>di01audit.app.update</td>
+                      <td>di01</td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <th><i class="fas fa-play"></i></th>
+                      <td>2018/01/29<span>05:51:34</span></td>
+                      <td>di01audit.app.update</td>
+                      <td>di01</td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <th><i class="fas fa-pause"></i></th>
+                      <td>2018/01/29<span>05:51:34</span></td>
+                      <td>di01audit.app.update</td>
+                      <td>di01</td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <th><i class="fas fa-play"></i></th>
+                      <td>2018/01/29<span>05:51:34</span></td>
+                      <td>di01audit.app.update</td>
+                      <td>di01</td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <th><i class="fas fa-stop"></i></th>
+                      <td>2018/01/29<span>05:51:34</span></td>
+                      <td>di01audit.app.update</td>
+                      <td>di01</td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <th><i class="fas fa-play"></i></th>
+                      <td>2018/01/29<span>05:51:34</span></td>
+                      <td>di01audit.app.update</td>
+                      <td>di01</td>
+                      <td> </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>상태</p>
+                <ul class="sortable_right"><!--
+                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
+                  <li onclick="location.href='dashboard_state.html'"><i class="fas fa-expand"></i></li>
+                </ul>
+              </div>
+              <div class="table_wrap table_wraps">
+                <div>
+                  <table class="condition">
+                    <colgroup>
+                      <col style='width: 30px;'>
+                      <col style='width: 70px;'>
+                      <col style='*'>
+                      <col style='*'>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                      <td>#
+                      </td>
+                      <td>Status
+                      </td>
+                      <td>CPU
+                      </td>
+                      <td>Memory
+                      </td>
+                      <td>Disk
+                      </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>1</td>
+                      <th><span class="BGcolors">RUNNING</span></th>
+                      <td>0.38 %</td>
+                      <td>23,293,952 Byets</td>
+                      <td>23,293,952 Byets</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <th><span class="BGcolors2">STOP</span></th>
+                      <td>0.38 %</td>
+                      <td>23,293,952 Byets</td>
+                      <td>23,293,952 Byets</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <th><span class="BGcolors3">STARTING</span></th>
+                      <td>0.38 %</td>
+                      <td>23,293,952 Byets</td>
+                      <td>23,293,952 Byets</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <th><span class="BGcolors4">RESTART</span></th>
+                      <td>0.38 %</td>
+                      <td>23,293,952 Byets</td>
+                      <td>23,293,952 Byets</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>라우트</p>
+                <ul class="sortable_right"><!--
+                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
+                  <li onclick="location.href='dashboard_lauth.html'"><i class="fas fa-expand"></i></li>
+                </ul>
+              </div>
+              <div class="table_wrap table_wraps">
+                <div>
+                  <table class="nocondition">
+                    <colgroup>
+                      <col style='*'>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                      <td>555.115.68.46.187.xip.io </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>환경변수</p>
+                <ul class="sortable_right"><!--
+                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
+                                    <li><i class="fas fa-cog"></i></li> -->
+                  <li class="bar" data-clipboard-action="cut" data-clipboard-target="#out_a"><i class="fas fa-clipboard"></i></li>
+                  <li onclick="location.href='dashboard_variable.html'"><i class="fas fa-expand"></i></li>
+                </ul>
+              </div>
+              <div class="table_wrap table_wraps">
+                <div>
+                  <table class="variable">
+                    <colgroup>
+                      <col style='width:130px;'>
+                      <col style='*'>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                      <th>사용자 정의 URL
+                      </th>
+                      <td>aaa.aaaa
+                      </td>
+                    </tr>
+                    <tr class="H180">
+                      <th>시스템 정의</th>
+                      <td><!--data-clipboard-target="#bar"-->
+<textarea id="in_a">
+{
+     “staging_env_json": {},
+     "running_env_json": {},
+     "environment_json": {
+          "555": "555“
+ },
+      "system_env_json": {
+     "VCAP_SERVICES": {} }, "application_env_json</textarea>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>서비스</p>
+                <ul class="sortable_right"><!--
+                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
+                                    <li><i class="fas fa-cog"></i></li> -->
+                  <li onclick="location.href='dashboard_service.html'"><i class="fas fa-expand"></i></li>
+                </ul>
+              </div>
+              <div class="table_wrap">
+                <div>
+                  <p class="service_p">이 앱에 대해 서비스가 사용되지 않았습니다.<br>
+                    Delivery Pipeline, GitHub 등을 통해 빌드, 테스트 및 배치를<br>
+                    자동화하는 서비스를 사용하십시오.
+                  </p>
+                  <button class="btns2 colors4">
+                    <i class="fas fa-plus"></i>서비스 등록
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>로그</p>
+                <ul class="sortable_right"><!--
+                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
+                  <li onclick="location.href='dashboard_log.html'"><i class="fas fa-expand"></i></li>
+                </ul>
+              </div>
+              <div class="table_wrap table_wraps">
+                <div>
+                  <table class="nocondition">
+                    <colgroup>
+                      <col style='*'>
+                      <col style='*'>
+                      <col style='*'>
+                      <col style='*'>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                      <td>2016-05-11</td>
+                      <td>T06:25:49.000+00:00</td>
+                      <td>[CELL]</td>
+                      <td>OUT</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
+  </div>
+</div>
+
+<script src="/assets/resources/js/clipboard.min.js"></script>
