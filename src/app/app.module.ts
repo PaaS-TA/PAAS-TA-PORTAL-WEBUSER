@@ -20,6 +20,7 @@ import {IndexComponent} from './index/index.component';
 import {RoutingModule} from './app.routing';
 import {HttpClientModule} from '@angular/common/http';
 import {TopComponent} from './layout/top/top.component';
+import {NavComponent} from './layout/nav/nav.component';
 import {BottonComponent} from './layout/botton/botton.component';
 import {LeftComponent} from './layout/left/left.component';
 import {FormsModule} from '@angular/forms';
@@ -34,7 +35,7 @@ import {JsonpModule} from '@angular/http';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CommonService} from "./common/common.service";
 
-
+import { DashModule } from "./dash/dash.module";
 
 
 
@@ -56,6 +57,7 @@ import {CommonService} from "./common/common.service";
     WebIdeUserComponent,
     IndexComponent,
     TopComponent,
+    NavComponent,
     BottonComponent,
     LeftComponent,
     CallbackComponent,
@@ -66,6 +68,7 @@ import {CommonService} from "./common/common.service";
     FormsModule,
     RoutingModule,
     HttpClientModule,
+    DashModule,
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.rectangleBounce,
       backdropBackgroundColour: '#787878',
