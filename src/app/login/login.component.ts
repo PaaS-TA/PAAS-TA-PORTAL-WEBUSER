@@ -4,6 +4,9 @@ import {CommonService} from '../common/common.service';
 import {authConfig, UaaSecurityService} from '../auth/uaa-security.service';
 import {HttpHeaders} from '@angular/common/http';
 import {NGXLogger} from 'ngx-logger';
+import {LoginService, User} from './login.service';
+import construct = Reflect.construct;
+import {Observable} from 'rxjs/Observable';
 
 
 @Component({
@@ -12,19 +15,21 @@ import {NGXLogger} from 'ngx-logger';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private loading: boolean;
-  private username: string;
-  private password: string;
-  private token: string;
+  loading: boolean;
+  username: string;
+  password: string;
+  token: string;
+  user: Observable<User>;
 
-
-  constructor(private router: Router, private common: CommonService, private uaa: UaaSecurityService, private log: NGXLogger) {
+  constructor(private router: Router, private common: CommonService, private uaa: UaaSecurityService, private log: NGXLogger, private loginService: LoginService) {
     this.loading = false;
     this.username = '';
     this.password = '';
     this.token = '';
-    this.log.debug("DEBUG LOGIN")
+    this.log.debug('DEBUG LOGIN');
     // uaa.doAuthorization();
+
+    this.test();
   }
 
 
@@ -43,8 +48,15 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  oAuthLogin(){
+  oAuthLogin() {
     this.uaa.doAuthorization();
+  }
+
+  test() {
+    this.loginService.test('swmoon').subscribe(data => {
+      this.user = data;
+      return data;
+    });
   }
 
 }
