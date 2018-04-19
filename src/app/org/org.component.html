@@ -72,7 +72,7 @@
   <nav>
     <div class="scroll_style">
       <ul class="nav_1d">
-        <li onclick="location.href='account.html'">
+        <li (click)="location.href='account.html'">
           <dl>
             <dt>
             <div id="lnbimg10">
@@ -85,7 +85,7 @@
             </dd>
           </dl>
         </li>
-        <li class="cur" onclick="location.href='organization.html'">
+        <li class="cur" (click)="location.href='organization.html'">
           <dl>
             <dt>
             <div id="lnbimg11">
@@ -99,7 +99,7 @@
             </dd>
           </dl>
         </li>
-        <li onclick="location.href='quantity.html'">
+        <li (click)="location.href='quantity.html'">
           <dl>
             <dt>
             <div id="lnbimg12" class="">
@@ -140,7 +140,7 @@
             </button>
           </div>
         </h1>
-       <div  class="col-md-12 organization_wrap on" *ngFor="let org of orgs">
+       <div  class="col-md-12 organization_wrap on maT30" *ngFor="let org of orgs">
           <div class="organization_title_wrap on">
             <div class="organization_btn">
               <div class="organization_btnin">
@@ -172,7 +172,7 @@
                 </ul>
               </div>
             </div>
-            <p class="tit">Paas-TA / {{org.orgname}}</p>
+            <p class="tit">Paas-TA / {{org.getName()}}</p>
           </div><!-- organization_title_wrap -->
           <div class="organization_table_wrap">
             <div class="organization_table">

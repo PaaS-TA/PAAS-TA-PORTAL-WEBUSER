@@ -33,9 +33,10 @@ import {LogoutComponent} from './logout/logout.component';
 import {DashboardService} from './dashboard/dashboard.service';
 import {JsonpModule} from '@angular/http';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
-import {CommonService} from "./common/common.service";
+import {CommonService} from './common/common.service';
 
-import { DashModule } from "./dash/dash.module";
+import { DashModule } from './dash/dash.module';
+import { OrgService } from './org/org.service';
 
 
 
@@ -79,7 +80,7 @@ import { DashModule } from "./dash/dash.module";
     }),
     LoggerModule.forRoot({serverLoggingUrl: '/ps/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}), JsonpModule
   ],
-  providers: [CommonService, UaaSecurityService, DashboardService],
+  providers: [CommonService, UaaSecurityService, DashboardService, OrgService],
   bootstrap: [AppComponent],
   exports: []
 })
