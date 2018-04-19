@@ -39,10 +39,13 @@
                   </button>
                 </div>
               </h1>
-              <p class="copy">Availability-monitoring-auto 개요 페이지 입니다.</p>
-              <button class="btns colors1"><img src="/assets/resources/images/main/RUNNING.svg" alt=""/>RUNNING</button>
-              <button class="btns colors2"><img src="/assets/resources/images/main/energy.svg" alt=""/>DOWN</button>
-              <button class="btns colors3"><img src="/assets/resources/images/main/moon.svg" alt=""/>STOP</button>
+              <p class="copy">{{appSummaryName}}개요 페이지 입니다.</p>
+              <div [ngSwitch]="appSummaryState">
+                <button class="btns colors1" *ngSwitchCase="'STARTED'"><img src="/assets/resources/images/main/RUNNING.svg" alt=""/>RUNNING</button>
+                <button class="btns colors2" *ngSwitchCase="'DOWNED'"><img src="/assets/resources/images/main/energy.svg" alt=""/>DOWN</button>
+                <button  class="btns colors2"*ngSwitchCase="'CRASHED'"><img src="/assets/resources/images/main/energy.svg" alt=""/>CRASHED</button>
+                <button class="btns colors3" *ngSwitchDefault><img src="/assets/resources/images/main/moon.svg" alt=""/>STOP</button>
+              </div>
             </div>
             <div class="maT30">
               <dl class="col_in1_dl">
@@ -50,18 +53,18 @@
                 <ul>
                   <li><span class="on_dot BGcolors"></span> 지역
                   </li>
-                  <li>대한민국</li>
+                  <li>대한민국 ??</li>
                 </ul>
                 <ul>
                   <li>
                     <span class="on_dot BGcolors2"></span> 조직
                   </li>
-                  <li>dev_test</li>
+                  <li>dev_test ??</li>
                 </ul>
                 <ul>
                   <li><span class="on_dot BGcolors3"></span> 공간
                   </li>
-                  <li>dev_area</li>
+                  <li>dev_area ??</li>
                 </ul>
                 </dt>
                 <dt>
@@ -73,12 +76,12 @@
                         <i>
                           <img src="../resources/images/main/btn_url_dot.png" alt=""/>
                         </i>
-                        test.115.68.64,187.xip.io
+                        {{appSummaryRouteUri}}
                       </div>
                     </button>
                   </li>
-                  <li><span>마지막 푸시:</span>2018.01.22  12:12:12</li>
-                  <li><span>앱 개발환경:</span>C++_buildpack</li>
+                  <li><span>마지막 푸시:</span>{{appSummaryPackageUpdatedAt}}</li>
+                  <li><span>앱 개발환경:</span>{{appSummaryBuildpack}}</li>
                 </ol>
                 </dt>
               </dl>
@@ -92,14 +95,14 @@
               <dt class="tit">INSTANCE
                 <span class="pull-right rights"></span>
               </dt>
-              <dd><span class="instanceS">5</span><small> / 최대 <span>7</span>개</small>
+              <dd><span class="instanceS">{{appSummaryInstance}}</span><small> / 최대 <span>{{appSummaryInstanceMax}}</span>개</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/instance_ico.png" alt="" />
                   </div>
                   <div class="BG_wrap">
                     <img src="/assets/resources/images/main/ico_bg.png" alt="" />
-                    <input value="75"/>
+                    <input id="instancePer" value="0"/>
                   </div>
                 </div>
               </dd>
@@ -112,9 +115,9 @@
                 </li>
                 <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
                 </li>
-                <li><button class="btns0 colors0 a0001">직접입력</button>
+                <li><button class="btns0 colors0 a0001" (click)="instanceDirectInputClick()">직접입력</button>
                 </li>
-                <li><button class="btns0 colors0 b0001">저장</button>
+                <li><button class="btns0 colors0 b0001" (click)="instanceDirectSaveClick()">저장</button>
                 </li>
               </ul>
               </dt>
@@ -127,14 +130,14 @@
               <dt class="tit">CPU
                 <span class="pull-right rights"></span>
               </dt>
-              <dd><span>58</span><i>%</i><small> / 100</small>
+              <dd><span>{{appStatsCpuPer}}</span><i>%</i><small> / 100</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/cpu_ico.png" alt="" />
                   </div>
                   <div class="BG_wrap">
                     <img src="/assets/resources/images/main/ico_bg.png" alt="" />
-                    <input value="58"/>
+                    <input id="cpuPer" value="0"/>
                   </div>
                 </div>
               </dd>
@@ -157,14 +160,15 @@
               <dt class="tit">MEMORY
                 <span class="pull-right rights"></span>
               </dt>
-              <dd><span class="memS">90</span><i>G</i><small> / 최대 100G</small>
+              <!--<dd><span class="memS">{{ (appSummaryMemory < 1024) ? (appSummaryMemory) : (appSummaryMemory/1024) }}</span><i>{{ (appSummaryMemory < 1024) ? 'M' : 'G' }}</i><small> / 최대 100G</small>-->
+              <dd><span class="memS">{{appSummaryMemory}}</span><i>MB</i><small> / 최대 100G</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/memory_ico.png" alt="" />
                   </div>
                   <div class="BG_wrap">
                     <img src="/assets/resources/images/main/ico_bg.png" alt="" />
-                    <input value="90"/>
+                    <input id="memoryPer" value="0"/>
                   </div>
                 </div>
               </dd>
@@ -174,9 +178,9 @@
                 </li>
                 <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
                 </li>
-                <li><button class="btns0 colors0 a0002">직접입력</button>
+                <li><button class="btns0 colors0 a0002" (click)="memDirectInputClick()">직접입력</button>
                 </li>
-                <li><button class="btns0 colors0 b0002">저장</button>
+                <li><button class="btns0 colors0 b0002" (click)="memDirectSaveClick()">저장</button>
                 </li>
               </ul>
               </dt>
@@ -189,14 +193,15 @@
               <dt class="tit">DISK
                 <span class="pull-right rights"></span>
               </dt>
-              <dd><span class="diskS">100</span><i>G</i><small> / 최대 300G</small>
+              <!--<dd><span class="diskS">{{ (appSummaryDisk < 1024) ? (appSummaryDisk) : (appSummaryDisk/1024) }}</span><i>{{ (appSummaryDisk < 1024) ? 'M' : 'G' }}</i><small> / 최대 300G</small>-->
+              <dd><span class="diskS">{{appSummaryDisk}}</span><i>MB</i><small> / 최대 300G</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/disk_ico.png" alt="" />
                   </div>
                   <div class="BG_wrap">
                     <img src="/assets/resources/images/main/ico_bg.png" alt="" />
-                    <input value="60"/>
+                    <input id="diskPer" value="0"/>
                   </div>
                 </div>
               </dd>
@@ -206,9 +211,9 @@
                 </li>
                 <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
                 </li>
-                <li><button class="btns0 colors0 a0003">직접입력</button>
+                <li><button class="btns0 colors0 a0003" (click)="diskDirectInputClick()">직접입력</button>
                 </li>
-                <li><button class="btns0 colors0 b0003">저장</button>
+                <li><button class="btns0 colors0 b0003" (click)="diskDirectSaveClick()">저장</button>
                 </li>
               </ul>
               </dt>
@@ -253,71 +258,15 @@
                       </td>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                      <td>1</td>
-                      <th><i class="fas fa-pause"></i></th>
-                      <td>2018/01/29<span>05:51:34</span></td>
-                      <td>di01audit.app.update</td>
-                      <td>di01</td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <th><i class="fas fa-play"></i></th>
-                      <td>2018/01/29<span>05:51:34</span></td>
-                      <td>di01audit.app.update</td>
-                      <td>di01</td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <th><i class="fas fa-stop"></i></th>
-                      <td>2018/01/29<span>05:51:34</span></td>
-                      <td>di01audit.app.update</td>
-                      <td>di01</td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <th><i class="fas fa-play"></i></th>
-                      <td>2018/01/29<span>05:51:34</span></td>
-                      <td>di01audit.app.update</td>
-                      <td>di01</td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <th><i class="fas fa-pause"></i></th>
-                      <td>2018/01/29<span>05:51:34</span></td>
-                      <td>di01audit.app.update</td>
-                      <td>di01</td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <th><i class="fas fa-play"></i></th>
-                      <td>2018/01/29<span>05:51:34</span></td>
-                      <td>di01audit.app.update</td>
-                      <td>di01</td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <th><i class="fas fa-stop"></i></th>
-                      <td>2018/01/29<span>05:51:34</span></td>
-                      <td>di01audit.app.update</td>
-                      <td>di01</td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <th><i class="fas fa-play"></i></th>
-                      <td>2018/01/29<span>05:51:34</span></td>
-                      <td>di01audit.app.update</td>
-                      <td>di01</td>
-                      <td> </td>
-                    </tr>
+                    <tbody *ngFor="let item of appEventsEntitiesRe.slice().reverse(); let i = index">
+                      <tr>
+                        <td>{{i+1}}</td>
+                        <th><i class="fas fa-{{item.iconClass}}"></i></th>
+                        <td>{{item.date}}</td>
+                        <td>{{item.type}}</td>
+                        <td>{{item.actor_name}}</td>
+                        <td>{{item.requestText}}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -356,35 +305,14 @@
                       </td>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                      <td>1</td>
-                      <th><span class="BGcolors">RUNNING</span></th>
-                      <td>0.38 %</td>
-                      <td>23,293,952 Byets</td>
-                      <td>23,293,952 Byets</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <th><span class="BGcolors2">STOP</span></th>
-                      <td>0.38 %</td>
-                      <td>23,293,952 Byets</td>
-                      <td>23,293,952 Byets</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <th><span class="BGcolors3">STARTING</span></th>
-                      <td>0.38 %</td>
-                      <td>23,293,952 Byets</td>
-                      <td>23,293,952 Byets</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <th><span class="BGcolors4">RESTART</span></th>
-                      <td>0.38 %</td>
-                      <td>23,293,952 Byets</td>
-                      <td>23,293,952 Byets</td>
-                    </tr>
+                    <tbody *ngFor="let item of appStatusEntities; let i = index">
+                      <tr>
+                        <td>{{i+1}}</td>
+                        <th><span class="BGcolors{{item.statusClass}}">{{item.statusText}}</span></th>
+                        <td>{{item.cpu}} %</td>
+                        <td>{{item.memory}} Byets</td>
+                        <td>{{item.disk}} Byets</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>

@@ -8,14 +8,27 @@ export class AppMainService {
 
   constructor(private commonService: CommonService) { }
 
-  getAppSummary(name: string, guid: string) {
-    let params = {name: name, guid: guid};
-    return this.commonService.doPost('/portalapi/app/getAppSummary', params, '').map((res: Response) => {
+  getAppSummary(guid: string) {
+    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/summary', '').map((res: Response) => {
       return res;
-      // let resources = res['resources'];
-      // return resources.map(value => {
-      //   return value.entity;
-      // });
+    }).do(console.log);
+  }
+
+  getAppStats(guid: string) {
+    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/stats', '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  updateApp(params: any) {
+    return this.commonService.doPost('/portalapi/v2/apps/updateApp', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  getAppEvents(guid: string) {
+    return this.commonService.doGET('/portalapi/v2/apps/app-usage-events/'+guid, '').map((res: Response) => {
+      return res;
     }).do(console.log);
   }
 }

@@ -280,41 +280,41 @@
         $(this).closest('dl').find("span.rights").html(BG_wrap);
     });
 
-    $(".a0001").on("click" , function(){
-        $(this).attr("disabled","disabled");
-        var instanceS = $(".instanceS").text();
-        $(this).closest('dl').find("span.instanceS").html('<input class="instance_in" type="text" value='+ instanceS +' />');
-    });
-
-    $(".b0001").on("click" , function(){
-        $(".a0001").removeAttr("disabled");
-        var TempInput = $(this).closest('dl').find("input").val();
-        $(this).closest('dl').find("span.instanceS").text(TempInput);
-    });
-
-     $(".a0002").on("click" , function(){
-        $(this).attr("disabled","disabled");
-        var memS = $(".memS").text();
-        $(this).closest('dl').find("span.memS").html('<input class="instance_in" type="text" value='+ memS +' />');
-    });
-
-    $(".b0002").on("click" , function(){
-        $(".a0002").removeAttr("disabled");
-        var TempInput = $(this).closest('dl').find("input").val();
-        $(this).closest('dl').find("span.memS").text(TempInput);
-    });
-
-     $(".a0003").on("click" , function(){
-        $(this).attr("disabled","disabled");
-        var diskS = $(".diskS").text();
-        $(this).closest('dl').find("span.diskS").html('<input class="instance_in" type="text" value='+ diskS +' />');
-    });
-
-    $(".b0003").on("click" , function(){
-        $(".a0003").removeAttr("disabled");
-        var TempInput = $(this).closest('dl').find("input").val();
-        $(this).closest('dl').find("span.diskS").text(TempInput);
-    });
+    // $(".a0001").on("click" , function(){
+    //     $(this).attr("disabled","disabled");
+    //     var instanceS = $(".instanceS").text();
+    //     $(this).closest('dl').find("span.instanceS").html('<input class="instance_in" type="text" value='+ instanceS +' />');
+    // });
+    //
+    // $(".b0001").on("click" , function(){
+    //     $(".a0001").removeAttr("disabled");
+    //     var TempInput = $(this).closest('dl').find("input").val();
+    //     $(this).closest('dl').find("span.instanceS").text(TempInput);
+    // });
+    //
+    //  $(".a0002").on("click" , function(){
+    //     $(this).attr("disabled","disabled");
+    //     var memS = $(".memS").text();
+    //     $(this).closest('dl').find("span.memS").html('<input class="instance_in" type="text" value='+ memS +' />');
+    // });
+    //
+    // $(".b0002").on("click" , function(){
+    //     $(".a0002").removeAttr("disabled");
+    //     var TempInput = $(this).closest('dl').find("input").val();
+    //     $(this).closest('dl').find("span.memS").text(TempInput);
+    // });
+    //
+    //  $(".a0003").on("click" , function(){
+    //     $(this).attr("disabled","disabled");
+    //     var diskS = $(".diskS").text();
+    //     $(this).closest('dl').find("span.diskS").html('<input class="instance_in" type="text" value='+ diskS +' />');
+    // });
+    //
+    // $(".b0003").on("click" , function(){
+    //     $(".a0003").removeAttr("disabled");
+    //     var TempInput = $(this).closest('dl').find("input").val();
+    //     $(this).closest('dl').find("span.diskS").text(TempInput);
+    // });
 
     /*
     $('.BG_wrap input').each( function() {
