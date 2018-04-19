@@ -44,7 +44,8 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['dashboard']);
       this.loading = false;
       this.common.isLogin = true;
-      this.log.debug(data);
+      this.common.saveToken('',data['token'],'','','');
+      this.log.debug( data);
     });
   }
 
