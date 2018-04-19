@@ -35,9 +35,9 @@ import {JsonpModule} from '@angular/http';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CommonService} from "./common/common.service";
 
-import { DashModule } from "./dash/dash.module";
+import {DashModule} from "./dash/dash.module";
 import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
-
+import {UsermamtService} from "./usermgmt/usermamt.service";
 
 
 @NgModule({
@@ -79,9 +79,13 @@ import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
       secondaryColour: '#B2FA5C',
       tertiaryColour: '#3296FF'
     }),
-    LoggerModule.forRoot({serverLoggingUrl: '/ps/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}), JsonpModule
+    LoggerModule.forRoot({
+      serverLoggingUrl: '/ps/logs',
+      level: NgxLoggerLevel.DEBUG,
+      serverLogLevel: NgxLoggerLevel.ERROR
+    }), JsonpModule
   ],
-  providers: [CommonService, UaaSecurityService, DashboardService],
+  providers: [CommonService, UaaSecurityService, DashboardService, UsermamtService],
   bootstrap: [AppComponent],
   exports: []
 })
