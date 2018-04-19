@@ -36,6 +36,7 @@ import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CommonService} from "./common/common.service";
 
 import { DashModule } from "./dash/dash.module";
+import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
 
 
 
@@ -62,6 +63,7 @@ import { DashModule } from "./dash/dash.module";
     LeftComponent,
     CallbackComponent,
     LogoutComponent,
+    UsermgmtComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),

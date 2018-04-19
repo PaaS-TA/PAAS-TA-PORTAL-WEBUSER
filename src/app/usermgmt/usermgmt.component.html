@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<body>
+<div class="wrap account">
+  <header class="header account">
+    <div class="logo">
+      <a href="#"><h1><img src="../../assets/resources/images/main/logo.png" alt=""/></h1></a>
+    </div>
+    <span class="nav_toggle">
+            <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+            <label for="checkbox-1"></label>
+        </span>
+    <ul class="gnb clearfix">
+      <li class="cur"><a href="dashboard.html">대시보드</a></li>
+      <li><a href="catalog_list.html">카달로그</a></li>
+      <li><a href="dashboard1.html">문서</a></li>
+    </ul>
+    <ul class="right_nav">
+      <li><!-- <a href="#" class="fas fa-user"></a> -->
+        <div class="btn-group">
+          <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          </button>
+          <div id="r_user" class="dropdown-menu">
+            <div class="">
+              <span class="dot"></span>
+              <dl>
+                <dt>
+                  <i href="#" class="fas fa-user"></i>
+                  <img src="http://blog.jinbo.net/attach/615/200937431.jpg" alt="temp" />
+                </dt>
+                <dd>
+                  <p>홍길동</p>
+                  <p>test@test.com</p>
+                </dd>
+              </dl>
+            </div>
+            <ul class="">
+              <li class="cur"><a href="#">내계정</a></li>
+              <li><a href="#">조직관리</a></li>
+              <li><a href="#">사용량조회</a></li>
+            </ul>
+            <p class="log_out">로그아웃</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="btn-group">
+          <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>3</span></button>
+          <div id="bell" class="dropdown-menu">
+            <div class="">
+              <span class="dot"></span>
+              <p class="">Notifications</p>
+            </div>
+            <div>
+              <ul class="">
+                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div id="globes" class="btn-group">
+          <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>
+          <ul class="dropdown-menu">
+            <li class="cur"><a href="#">Korean</a></li>
+            <li><a href="#">English</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </header>
+  <nav>
+    <div class="scroll_style">
+      <ul class="nav_1d">
+        <li class="cur" onclick="location.href='account.html'">
+          <dl>
+            <dt>
+            <div id="lnbimg10">
+            </div>
+            </dt>
+            <dd>
+              <p>
+                내계정
+              </p>
+            </dd>
+          </dl>
+        </li>
+        <li onclick="location.href='organization.html'">
+          <dl>
+            <dt>
+            <div id="lnbimg11" class="">
+
+            </div>
+            </dt>
+            <dd>
+              <p>
+                조직관리
+              </p>
+            </dd>
+          </dl>
+        </li>
+        <li onclick="location.href='quantity.html'">
+          <dl>
+            <dt>
+            <div id="lnbimg12" class="">
+
+            </div>
+            </dt>
+            <dd>
+              <p>
+                사용량조회
+              </p>
+            </dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt>
+            <div id="lnbimg13" class="">
+
+            </div>
+            </dt>
+            <dd>
+              <p>
+                로그아웃
+              </p>
+            </dd>
+          </dl>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="contain">
+    <div class="content">
+      <div class="row one_line">
+        <h1>내 계정</h1>
+        <div class="col-md-2">
+          <div class="account_left">
+            <dl>
+              <dt><img src="https://post-phinf.pstatic.net/MjAxODAzMDVfMTgw/MDAxNTIwMjE2NDY0OTk4.cN9D63H7CpldxOjK4TEUs_knaak89GFsupYLzdW7Khgg.K8RPI6Ej247n0NX7DB47lZaosASz_iAJ2j9I023r33sg.JPEG/ALP_6823.jpg" />
+              </dt>
+              <dd>
+                <button class="btns colors4">사진등록</button>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="account_table">
+            <table>
+              <caption>로그인 정보
+              </caption>
+              <colgroup>
+                <col style='width: 123px;'>
+                <col style='*'>
+                <col style='width: 30px;'>
+              </colgroup>
+              <tbody>
+              <tr>
+                <td>이메일</td>
+                <th>test@test.com</th>
+                <td class="table_edit"><i class="fas fa-edit"></i><td>
+              </tr>
+              <tr class="on">
+                <td colspan="3">
+                  <div class="">
+                    <div class="account_table_in">
+                                                <span>새 이메일
+                                                </span>
+                      <input type="text" />
+                      <div class="">
+                        <button class="btns6 colors4 btns_sw">인증하기</button>
+                        <button class="btns6 colors5 btns_sw">취소</button>
+                      </div>
+                    </div>
+                    <div class="account_table_in maT10">
+                      <div class="">
+                        <button class="btns6 colors4">로그인</button>
+                      </div>
+                      <p>인증 이메일 발송 완료되었습니다. 이메일을 확인하시기 바랍니다.</p>
+                      <p class="red">5초 후 로그인 페이지로 이동합니다.</p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>비밀번호 변경</td>
+                <th> </th>
+                <td class="table_edit"><i class="fas fa-edit"></i><td>
+              </tr>
+              <tr class="on">
+                <td colspan="3">
+                  <div class="">
+                    <div class="account_table_in">
+                      <p>
+                                                    <span>현재비밀번호
+                                                    </span>
+                        <input type="text" />
+                        <span class="red passred">
+                                                        <span></span>
+                                                        <i class="fas fa-exclamation-circle"></i>
+                                                        비밀 번호가 맞지 않습니다.
+                                                    </span>
+                      </p>
+                      <p>
+                                                    <span>새 비밀번호
+                                                    </span>
+                        <input type="text" />
+                      </p>
+                      <span>새 비밀번호 확인
+                                                </span>
+                      <input type="text" />
+                      <div class="">
+                        <button class="btns6 colors4 btns_sw">변경하기</button>
+                        <button class="btns6 colors5 btns_sw">취소</button>
+                      </div>
+                      <span></span>
+                      <span class="red">
+                                                    <i class="fas fa-exclamation-circle"></i>
+                                                    입력한 비밀 번호와 다릅니다.
+                                                </span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="account_table maT30">
+            <table>
+              <caption>사용자 정보
+              </caption>
+              <colgroup>
+                <col style='width: 123px;'>
+                <col style='*'>
+                <col style='width: 30px;'>
+              </colgroup>
+              <tbody>
+              <tr>
+                <td>이름</td>
+                <th>홍길동</th>
+                <td class="table_edit"><i class="fas fa-edit"></i><td>
+              </tr>
+              <tr class="on">
+                <td colspan="3">
+                  <div class="">
+                    <div class="account_table_in">
+                                                <span>변경할 이름
+                                                </span>
+                      <input type="text" />
+                      <div class="">
+                        <button class="btns6 colors4 btns_sw">변경하기</button>
+                        <button class="btns6 colors5 btns_sw">취소</button>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>전화번호</td>
+                <th>01012341234</th>
+                <td class="table_edit"><i class="fas fa-edit"></i><td>
+              </tr>
+              <tr class="on">
+                <td colspan="3">
+                  <div class="">
+                    <div class="account_table_in">
+                                                <span>새 전화번호
+                                                </span>
+                      <input type="text" />
+                      <div class="">
+                        <button class="btns6 colors4 btns_sw">변경하기</button>
+                        <button class="btns6 colors5 btns_sw">취소</button>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="account_table maT30">
+            <table>
+              <caption>나의 조직
+              </caption>
+              <colgroup>
+                <col style='*'>
+                <col style='width: 30px;'>
+              </colgroup>
+              <tbody>
+              <tr>
+                <td>조직명이 들어갑니다.</td>
+                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
+              </tr>
+              <tr>
+                <td>조직명이 들어갑니다.</td>
+                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
+              </tr>
+              <tr>
+                <td>조직명이 들어갑니다.</td>
+                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
+              </tr>
+              <tr>
+                <td>조직명이 들어갑니다.</td>
+                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
+              </tr>
+              <tr>
+                <td>조직명이 들어갑니다.</td>
+                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td class="text-center" colspan="2">
+                  해당 조직명이 없습니다.
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+            <div class="text-right">
+              <button class="btns colors4"><i class="fas fa-angle-down"></i> 더 보기</button>
+            </div>
+          </div>
+          <div class="account_btn">
+            <button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>
+          </div>
+        </div>
+      </div><!-- row one_line -->
+    </div>
+    <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">조직탈퇴</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p class="account_modal_p">조직을 탈퇴하면 되돌릴 수 없습니다.<br/>
+            <span>testorg</span> 를  탈퇴하시겠습니까?
+          </p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop2">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">계정삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p">계정 삭제를 선택 하면 모든 조직과 공간이 삭제 되며 되돌릴 수 없습니다.<br/>
+              <span>test@test.com</span>을 삭제하시겠습니까?
+            </p>
+            <input type="text" placeholder="이메일 입력" /><input type="text" placeholder="비밀번호 입력" />
+            <p class="red"><i class="fas fa-exclamation-circle"></i> 비밀 번호가 일치하지 않습니다</p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
