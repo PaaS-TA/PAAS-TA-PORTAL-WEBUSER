@@ -12,7 +12,6 @@ export class LoginService {
 
   test(username: string) {
     return this.common.doGET('/commonapi/user/getUser/' + username, '').map((res: Response) => {
-      this.log.debug(res['User']);
       return res['User'];
     }).do(console.log);
   }
