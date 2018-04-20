@@ -182,11 +182,11 @@
         $(".tempTitle").val(MainTitle);
     });
 
-    $(".yess").on("click" , function(){
-        var asdasdasd = $(".tempTitle").val();
-        $(".headTH2 span").html(asdasdasd);
-        $(".headT").css("display","none");
-    });
+    // $(".yess").on("click" , function(){
+    //     var asdasdasd = $(".tempTitle").val();
+    //     $(".headTH2 span").html(asdasdasd);
+    //     $(".headT").css("display","none");
+    // });
 
     $(".nos,.nos2").on("click" , function(){
         //$(".headTH2 span").html(tempTitle);
@@ -325,12 +325,12 @@
     */
 
     //20180312
-    $("th .fa-edit,.table_edit .fa-edit").on("click" , function(){
-        $("body > div").addClass('account_modify');
-        $(this).toggleClass("on");
-        $(this).parents("tr").next("tr").toggleClass("on");
-        $(this).parents("tr").addClass("off");
-    });
+    // $("th .fa-edit,.table_edit .fa-edit").on("click" , function(){
+    //     $("body > div").addClass('account_modify');
+    //     $(this).toggleClass("on");
+    //     $(this).parents("tr").next("tr").toggleClass("on");
+    //     $(this).parents("tr").addClass("off");
+    // });
 
     $(".btns_sw").on("click" , function(){
         $(this).parents("tr").prev("tr").removeClass("off");

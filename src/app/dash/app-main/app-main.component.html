@@ -20,7 +20,7 @@
               <li>
                 <i class="fas fa-ellipsis-v"></i>
                 <ol class="">
-                  <li class="name_inputTitle"><a class="fas fa-edit"> 이름변경</a>
+                  <li class="name_inputTitle"><a class="fas fa-edit" (click)="renameAppClick()"> 이름변경</a>
                   </li>
                   <li><a class="fas fa-trash-alt"> 삭제</a></li>
                 </ol>
@@ -31,7 +31,7 @@
                 <span>{{appSummaryName}}</span>
                 <div class="headT">
                   <input class="tempTitle" type="text" value="" autocomplete="off" />
-                  <button class="yess">
+                  <button class="yess" (click)="renameAppSaveClick()">
                     <i class="far fa-save"></i>
                   </button>
                   <button class="nos">
@@ -323,8 +323,7 @@
             <div class="sortable_wrap">
               <div class="sortable_top">
                 <p>라우트</p>
-                <ul class="sortable_right"><!--
-                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
+                <ul class="sortable_right"><!--<li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
                   <li onclick="location.href='dashboard_lauth.html'"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
@@ -334,10 +333,10 @@
                     <colgroup>
                       <col style='*'>
                     </colgroup>
-                    <tbody>
-                    <tr>
-                      <td>555.115.68.46.187.xip.io </td>
-                    </tr>
+                    <tbody *ngFor="let item of appRoutesEntitiesRe">
+                      <tr>
+                        <td>{{item.uri}}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -364,23 +363,17 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                      <th>사용자 정의 URL
-                      </th>
-                      <td>aaa.aaaa
+                      <th>사용자 정의 URL</th>
+                      <td>
+                        <span *ngFor="let item of appEnvUserEntities">
+                          {{item.eventID}}:{{item.eventData}}
+                        </span>
                       </td>
                     </tr>
                     <tr class="H180">
                       <th>시스템 정의</th>
                       <td><!--data-clipboard-target="#bar"-->
-<textarea id="in_a">
-{
-     “staging_env_json": {},
-     "running_env_json": {},
-     "environment_json": {
-          "555": "555“
- },
-      "system_env_json": {
-     "VCAP_SERVICES": {} }, "application_env_json</textarea>
+                        <textarea id="in_a">{{appSystemProvidedEnv}}</textarea>
                       </td>
                     </tr>
                     </tbody>
@@ -422,23 +415,7 @@
                 </ul>
               </div>
               <div class="table_wrap table_wraps">
-                <div>
-                  <table class="nocondition">
-                    <colgroup>
-                      <col style='*'>
-                      <col style='*'>
-                      <col style='*'>
-                      <col style='*'>
-                    </colgroup>
-                    <tbody>
-                    <tr>
-                      <td>2016-05-11</td>
-                      <td>T06:25:49.000+00:00</td>
-                      <td>[CELL]</td>
-                      <td>OUT</td>
-                    </tr>
-                    </tbody>
-                  </table>
+                <div style="height:270px;text-align:left;" innerHTML="{{appRecentLogs}}">
                 </div>
               </div>
             </div>

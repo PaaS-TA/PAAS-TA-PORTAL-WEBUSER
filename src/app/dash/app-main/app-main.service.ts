@@ -31,4 +31,16 @@ export class AppMainService {
       return res;
     }).do(console.log);
   }
+
+  getAppEnv(guid: string) {
+    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/env', '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  getAppRecentLogs(guid: string) {
+    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/recentlogs', '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 }
