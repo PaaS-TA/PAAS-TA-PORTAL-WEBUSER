@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
-    this.doOrgEntities();
+    //this.doOrgEntities();
   }
 
   ngOnInit() {

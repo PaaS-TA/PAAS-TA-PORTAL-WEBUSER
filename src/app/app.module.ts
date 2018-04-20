@@ -33,11 +33,13 @@ import {LogoutComponent} from './logout/logout.component';
 import {DashboardService} from './dashboard/dashboard.service';
 import {JsonpModule} from '@angular/http';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
-import {CommonService} from "./common/common.service";
+import { CommonService } from './common/common.service';
 
-import {DashModule} from "./dash/dash.module";
-import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
-import {UsermamtService} from "./usermgmt/usermamt.service";
+import { DashModule } from './dash/dash.module';
+import { UsermgmtComponent } from "./usermgmt/usermgmt.component";
+import { UsermamtService } from "./usermgmt/usermamt.service";
+import { OrgService } from './org/org.service';
+
 
 
 @NgModule({
@@ -85,7 +87,7 @@ import {UsermamtService} from "./usermgmt/usermamt.service";
       serverLogLevel: NgxLoggerLevel.ERROR
     }), JsonpModule
   ],
-  providers: [CommonService, UaaSecurityService, DashboardService, UsermamtService],
+  providers: [CommonService, UaaSecurityService, DashboardService, UsermamtService, OrgService],
   bootstrap: [AppComponent],
   exports: []
 })

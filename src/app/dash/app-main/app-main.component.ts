@@ -16,7 +16,11 @@ export class AppMainComponent implements OnInit {
   public appStatsEntities: Observable<any[]>;
   public appEventsEntities: Observable<any[]>;
   public appEventsEntitiesRe: any = [];
+  public appEnvEntities: Observable<any[]>;
+  public appEnvUserEntities: any = [];
   public appStatusEntities: any = [];
+  public appRoutesEntities: Observable<any[]>;
+  public appRoutesEntitiesRe: any = [];
   private isLoading: boolean = false;
 
   private appSummaryName: string;
@@ -34,6 +38,10 @@ export class AppMainComponent implements OnInit {
   private appStatsCpuPer: number;
   private appStatsMemoryPer: number;
   private appStatsDiskPer: number;
+
+  private appSystemProvidedEnv: string;
+
+  private appRecentLogs: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService) { }
 
@@ -54,6 +62,8 @@ export class AppMainComponent implements OnInit {
         this.getAppSummary(params['guid']);
         this.getAppStats(params['guid']);
         this.getAppEvents(params['guid']);
+        this.getAppEnv(params['guid']);
+        this.getAppRecentLogs(params['guid']);
       } else {
         this.router.navigate(['dashMain']);
       }
@@ -64,6 +74,7 @@ export class AppMainComponent implements OnInit {
     this.isLoading = true;
     this.appMainService.getAppSummary(guid).subscribe(data => {
       this.appSummaryEntities = data;
+      this.appRoutesEntities = data.routes;
       this.isLoading = false;
 
       this.appSummaryName = data.name;
@@ -95,34 +106,51 @@ export class AppMainComponent implements OnInit {
         $(this).closest('dl').find("span.rights").html(BG_wrap);
       });
 
+      this.initRouteTab();
     });
+  }
+
+  initRouteTab() {
+    var appRoutes = [];
+    $.each(this.appRoutesEntities, function (key, dataobj) {
+      var uri = dataobj.host + "." + dataobj.domain.name;
+
+      var obj = {
+        uri : uri
+      };
+      appRoutes.push(obj);
+    });
+    console.log(appRoutes);
+    this.appRoutesEntitiesRe = appRoutes;
   }
 
   getAppStats(guid: string) {
     this.appMainService.getAppStats(guid).subscribe(data => {
-      this.appStatsEntities = data.instances;
+      if(data) {
+        this.appStatsEntities = data.instances;
 
-      var cpu = 0;
-      var mem = 0;
-      var disk = 0;
-      var cnt = 0;
+        var cpu = 0;
+        var mem = 0;
+        var disk = 0;
+        var cnt = 0;
 
-      $.each(data.instances, function (key, dataobj) {
-        if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
-        if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + dataobj.stats.usage.mem / dataobj.stats.mem_quota * 100;
-        if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + dataobj.stats.usage.disk / dataobj.stats.disk_quota * 100;
-        cnt++;
-      });
+        $.each(data.instances, function (key, dataobj) {
+          if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
+          if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + dataobj.stats.usage.mem / dataobj.stats.mem_quota * 100;
+          if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + dataobj.stats.usage.disk / dataobj.stats.disk_quota * 100;
+          cnt++;
+        });
 
-      this.appStatsCpuPer = Math.round(cpu / cnt);
-      this.appStatsMemoryPer = Math.round(mem / cnt);
-      this.appStatsDiskPer = Math.round(disk / cnt);
+        this.appStatsCpuPer = Math.round(cpu / cnt);
+        this.appStatsMemoryPer = Math.round(mem / cnt);
+        this.appStatsDiskPer = Math.round(disk / cnt);
 
-      $("#cpuPer").val(this.appStatsCpuPer);
-      $("#memoryPer").val(this.appStatsMemoryPer);
-      $("#diskPer").val(this.appStatsDiskPer);
+        $("#cpuPer").val(this.appStatsCpuPer);
+        $("#memoryPer").val(this.appStatsMemoryPer);
+        $("#diskPer").val(this.appStatsDiskPer);
 
-      this.procSetAppStatusTab();
+        this.procSetAppStatusTab();
+      }
     });
   }
 
@@ -196,11 +224,27 @@ export class AppMainComponent implements OnInit {
     this.updateApp();
   }
 
+  renameAppClick() {
+    $("body > div").addClass('account_modify');
+    $(this).toggleClass("on");
+    $(this).parents("tr").next("tr").toggleClass("on");
+    $(this).parents("tr").addClass("off");
+  }
+
+  renameAppSaveClick() {
+    // var asdasdasd = $(".tempTitle").val();
+    // $(".headTH2 span").html(asdasdasd);
+    // $(".headT").css("display","none");
+
+    this.updateApp();
+  }
+
   // 앱 수정사항 저장
   updateApp() {
     var instancesChange = 0;
     var memoryChange = 0;
     var diskChange = 0;
+    var name = "";
 
     if($(".instanceS").text() != '') {
       instancesChange = $(".instanceS").text();
@@ -217,12 +261,18 @@ export class AppMainComponent implements OnInit {
     } else {
       diskChange = $("#disk_in").val();
     }
+    if($(".tempTitle").val() != '') {
+      name = $(".tempTitle").val();
+    } else {
+      name = "";
+    }
 
     let params = {
       guid: this.appSummaryGuid,
       instances: instancesChange,
       memory: memoryChange,
-      diskQuota: diskChange
+      diskQuota: diskChange,
+      name: name
     };
     this.appMainService.updateApp(params).subscribe(data => {
       window.location.reload();
@@ -268,6 +318,38 @@ export class AppMainComponent implements OnInit {
         appEvents.push(obj);
       });
       this.appEventsEntitiesRe = appEvents;
+    });
+  }
+
+  getAppEnv(guid: string) {
+    this.appMainService.getAppEnv(guid).subscribe(data => {
+      this.appEnvEntities = data;
+
+      this.appSystemProvidedEnv = JSON.stringify(data, undefined, 2);
+
+      if (JSON.stringify(data.environment_json) == "{}") {
+        //document.getElementById("noEnvMsg").style = ""
+      } else {
+        var appUserEnv = [];
+        $.each(data.environment_json, function (eventID, eventData) {
+          var obj = {
+            eventID : eventID,
+            eventData : eventData
+          };
+          appUserEnv.push(obj);
+        });
+        this.appEnvUserEntities = appUserEnv;
+      }
+    });
+  }
+
+  getAppRecentLogs(guid: string) {
+    this.appMainService.getAppRecentLogs(guid).subscribe(data => {
+      var str = "";
+      $.each(data.log, function (key, dataobj) {
+        str += dataobj.logMessage.message + '<br>';
+      });
+      this.appRecentLogs = str;
     });
   }
 
