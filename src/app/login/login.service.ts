@@ -1,17 +1,21 @@
-import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {CommonService} from "../common/common.service";
-
+import {Injectable} from '@angular/core';
+import {NGXLogger} from 'ngx-logger';
+import {CommonService} from '../common/common.service';
+import {UaaSecurityService} from '../auth/uaa-security.service';
 
 @Injectable()
-export class UsermamtService {
-  constructor(private http: HttpClient, private common: CommonService) {}
+export class LoginService {
 
-  userinfo(username: string) {
+  constructor(private common: CommonService, private log: NGXLogger) {
+  }
+
+
+  test(username: string) {
     return this.common.doGET('/commonapi/user/getUser/' + username, '').map((res: Response) => {
       return res['User'];
-    });
+    }).do(console.log);
   }
+
 }
 
 export class User {

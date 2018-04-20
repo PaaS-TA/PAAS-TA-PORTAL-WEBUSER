@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <body>
+
 <div class="wrap account">
   <header class="header account">
+
     <div class="logo">
       <a href="#"><h1><img src="../../assets/resources/images/main/logo.png" alt=""/></h1></a>
     </div>
@@ -161,7 +163,7 @@
               <tbody>
               <tr>
                 <td>이메일</td>
-                <th>test@test.com</th>
+                <th>{{user.userId}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i><td>
               </tr>
               <tr class="on">
@@ -170,7 +172,7 @@
                     <div class="account_table_in">
                                                 <span>새 이메일
                                                 </span>
-                      <input type="text" />
+                      <input type="text" name= "usermgmtUserId" [(ngModel)]="user.userId" ng-model-options="{ getterSetter: true }" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw">인증하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
@@ -241,7 +243,7 @@
               <tbody>
               <tr>
                 <td>이름</td>
-                <th>홍길동</th>
+                <th>{{user.userName}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i><td>
               </tr>
               <tr class="on">
@@ -250,7 +252,7 @@
                     <div class="account_table_in">
                                                 <span>변경할 이름
                                                 </span>
-                      <input type="text" />
+                      <input type="text" name= "usermgmtName" [(ngModel)]="user.userName" ng-model-options="{ getterSetter: true }" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
@@ -261,7 +263,7 @@
               </tr>
               <tr>
                 <td>전화번호</td>
-                <th>01012341234</th>
+                <th>{{user.tellPhone}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i><td>
               </tr>
               <tr class="on">
@@ -270,7 +272,7 @@
                     <div class="account_table_in">
                                                 <span>새 전화번호
                                                 </span>
-                      <input type="text" />
+                      <input type="text" name= "usermgmtTellphone" [(ngModel)]="user.tellPhone" ng-model-options="{ getterSetter: true }" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
