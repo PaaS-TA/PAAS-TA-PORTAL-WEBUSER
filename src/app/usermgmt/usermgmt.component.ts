@@ -20,13 +20,31 @@ export class UsermgmtComponent implements OnInit {
 
   // 이 부분은 Angular가 아닌 자바스크립트에서 실행 :: VO
   constructor(private httpClient: HttpClient, private userMgmtService: UsermamtService) {
+    this.user = new Observable<User>();
+    // this.user['userName'] = "sjchoi"
+    // this.user['tellPhone'] = "1004"
     this.userInfo();
+    //this.usersave();
   }
 
 
   userInfo() {
     this.userMgmtService.userinfo('sjchoi').subscribe(data => {
       this.user = data;
+      return data;
+    });
+  }
+
+  usersave(){
+    let params = {userName: this.user['userName'],
+                  tellPhone: this.user['tellPhone']};
+    this.userMgmtService.usersave('sjchoi',params).subscribe(data => {
+      if(data == 1){
+        console.log('success');
+      }else{
+        console.log('User does not exist');
+      }
+      console.log(data);
       return data;
     });
   }

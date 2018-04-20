@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {CommonService} from "../common/common.service";
+
+import {Observable} from "rxjs/Observable";
 
 
 @Injectable()
@@ -10,6 +12,12 @@ export class UsermamtService {
   userinfo(username: string) {
     return this.common.doGET('/commonapi/user/getUser/' + username, '').map((res: Response) => {
       return res['User'];
+    });
+  }
+
+  usersave(userId: string, param) {
+    return this.common.doPut('/commonapi/user/updateUser/' + userId, param ,'').map((res: Response) => {
+      return res['result'];
     });
   }
 }
