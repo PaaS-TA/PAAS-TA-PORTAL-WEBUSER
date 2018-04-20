@@ -1,6 +1,6 @@
 {
   "/portalapi/*": {
-    "target": "http://localhost:2225/portalapi",
+    "target": "http://localhost:2222/",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",

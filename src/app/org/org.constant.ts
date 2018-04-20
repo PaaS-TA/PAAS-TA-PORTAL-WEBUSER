@@ -1,9 +1,13 @@
-export enum OrganizationConstant {
+/**
+ * Module file for Org.
+ */
+export enum OrgURLConstant {
   // URLs
   URLOrgListUsingToken = '/portalapi/v2/orgs',
   URLOrgListAdminOnly = '/portalapi/v2/orgs-admin',
+}
 
-
+export enum OrgMappingKeyConstant {
   // metadata
   Metadata = 'metadata',
   // in metadata

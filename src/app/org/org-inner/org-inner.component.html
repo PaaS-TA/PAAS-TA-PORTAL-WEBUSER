@@ -1,0 +1,282 @@
+<div class="col-md-12 organization_wrap on maT30">
+  <div class="organization_title_wrap on">
+    <div class="organization_btn">
+      <div class="organization_btnin">
+        <input class="tempTitle" type="text">
+        <button class="btns6 colors4 yess2">변경하기</button>
+        <button class="btns6 colors5 nos2">취소</button>
+        <!--button class="btns6 colors4 colors5 organization_sw" style="margin-left:1.1%;">
+            <i class="fas fa-chevron-up"></i> 세부사항보기
+        </button-->
+      </div>
+    </div>
+    <div class="pull-right on">
+      <div class="ri_up on">
+        <button class="btns6 colors4 organization_sw"><i class="fas fa-chevron-down"></i> 세부사항 보기</button>
+      </div>
+      <div class="organization_dot">
+        <i class="fas fa-ellipsis-v"></i>
+        <ul class="">
+          <li class="name_inputTitle2">
+            <p><i class="fas fa-edit"></i>&nbsp;&nbsp;이름변경</p>
+          </li>
+          <li data-target="#layerpop" data-toggle="modal">
+            <p>
+              <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;삭제
+            </p>
+          </li>
+          <li data-target="#layerpop8" data-toggle="modal"><p><img src="../../assets/resources/images/web.png" alt="">&nbsp;&nbsp;WEB IDE 신청</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p class="tit">Paas-TA / {{org.getName()}}</p>
+  </div><!-- organization_title_wrap -->
+  <div class="organization_table_wrap">
+    <div class="organization_table">
+      <table>
+        <caption>
+          공간<span>3</span>
+          <div class="pull-right">
+            <button class="btns6 colors4" data-target="#layerpop5" data-toggle="modal">
+              <i class="fas fa-plus"></i> 공간 생성
+            </button>
+          </div>
+        </caption>
+        <colgroup>
+          <col style="*">
+          <col style="width: 30px;">
+          <col style="width: 30px;">
+        </colgroup>
+        <tbody>
+        <tr>
+          <td><p>Dev_00(공간명)</p></td>
+          <th>
+            <i class="fas fa-edit"></i>
+          </th>
+          <th data-target="#layerpop3" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
+        </tr>
+        <tr class="on">
+          <td colspan="3">
+            <div class="">
+              <div class="account_table_in">
+                                            <span>변경할 이름
+                                            </span>
+                <input type="text">
+                <div class="">
+                  <button class="btns6 colors4 btns_sw">변경하기</button>
+                  <button class="btns6 colors5 btns_sw">취소</button>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><p>Dev_00(공간명)</p></td>
+          <th>
+            <i class="fas fa-edit"></i>
+          </th>
+          <th data-target="#layerpop3" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
+        </tr>
+        <tr class="on">
+          <td colspan="3">
+            <div class="">
+              <div class="account_table_in">
+                                            <span>변경할 이름
+                                            </span>
+                <input type="text">
+                <div class="">
+                  <button class="btns6 colors4 btns_sw">변경하기</button>
+                  <button class="btns6 colors5 btns_sw">취소</button>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div><!-- organization_table -->
+    <div class="organization_table">
+      <table>
+        <caption>
+          도메인<span>2</span>
+          <div class="pull-right">
+            <button class="btns6 colors4" data-target="#layerpop6" data-toggle="modal">
+              <i class="fas fa-plus"></i> 도메인 추가
+            </button>
+          </div>
+        </caption>
+        <colgroup>
+          <col style="*">
+          <col style="width: 30px;">
+        </colgroup>
+        <tbody>
+        <tr>
+          <td><p>115.68.46.187.xip.io</p></td>
+          <th><i class="fas fa-link"></i></th>
+        </tr>
+        <tr>
+          <td><p>115.68.46.187.xip.io</p></td>
+          <th>
+            <i class="fas fa-trash-alt" data-target="#layerpop9" data-toggle="modal"></i>
+          </th>
+        </tr>
+        </tbody>
+      </table>
+    </div><!-- organization_table -->
+    <div class="organization_table2 paT30">
+      <table>
+        <caption>
+          사용자<span>1</span>
+          <div class="pull-right">
+            <button class="btns6 colors4" data-target="#layerpop4" data-toggle="modal">
+              <i class="fas fa-plus"></i> 사용자 초대
+            </button>
+          </div>
+        </caption>
+        <colgroup>
+          <col style="width: 150px;">
+          <col style="*">
+          <col style="*">
+          <col style="*">
+          <col style="*">
+        </colgroup>
+        <thead>
+        <tr>
+          <td>사용자</td>
+          <td colspan="4">역할설정</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>test</td>
+          <td>
+            <input id="check1" type="checkbox" checked="checked">
+            <label for="check1">OrgManager(조직 관리자)</label>
+          </td>
+          <td>
+            <input id="check2" type="checkbox" checked="checked">
+            <label for="check2">BillingManager(조직 결제 관리자)</label>
+          </td>
+          <td>
+            <input id="check3" type="checkbox" checked="checked">
+            <label for="check3">OrgAuditor(조직 참관인)</label>
+          </td>
+          <th><button class="btns4 colors8" data-target="#layerpop10" data-toggle="modal">초대 재전송</button></th>
+        </tr>
+        <tr>
+          <td>test</td>
+          <td>
+            <input id="check1" type="checkbox" checked="checked">
+            <label for="check1">OrgManager(조직 관리자)</label>
+          </td>
+          <td>
+            <input id="check2" type="checkbox" checked="checked">
+            <label for="check2">BillingManager(조직 결제 관리자)</label>
+          </td>
+          <td>
+            <input id="check3" type="checkbox" checked="checked">
+            <label for="check3">OrgAuditor(조직 참관인)</label>
+          </td>
+          <th><button class="btns4 colors8" data-target="#layerpop11" data-toggle="modal">초대 취소</button></th>
+        </tr>
+        <tr>
+          <td>test</td>
+          <td>
+            <input id="check1" type="checkbox" checked="checked">
+            <label for="check1">OrgManager(조직 관리자)</label>
+          </td>
+          <td>
+            <input id="check2" type="checkbox" checked="checked">
+            <label for="check2">BillingManager(조직 결제 관리자)</label>
+          </td>
+          <td>
+            <input id="check3" type="checkbox" checked="checked">
+            <label for="check3">OrgAuditor(조직 참관인)</label>
+          </td>
+          <th><button class="btns4 colors8" data-target="#layerpop12" data-toggle="modal">맴버 취소</button></th>
+        </tr>
+        </tbody>
+      </table>
+    </div><!-- organization_table2 -->
+    <div class="organization_table2 maT30 paB40">
+      <table class="line_tables">
+        <caption>
+          할당량
+        </caption>
+        <colgroup>
+          <col style="*">
+          <col style="*">
+          <col style="*">
+          <col style="*">
+          <col style="*">
+          <col style="*">
+          <col style="*">
+          <col style="*">
+          <col style="*">
+        </colgroup>
+        <thead>
+        <tr>
+          <td>선택</td>
+          <td>서비스명</td>
+          <td>메모리</td>
+          <td>인스턴트 메모리</td>
+          <td>라우트</td>
+          <td>서비스 인스턴트</td>
+          <td>가격</td>
+          <td>인스턴트</td>
+          <td>인스턴트</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="cur" style="border-bottom: 1px solid rgb(0, 170, 204); border-top-color: rgb(0, 170, 204); border-right-color: rgb(0, 170, 204); border-left-color: rgb(0, 170, 204);">
+          <td>
+            <input id="radio1" type="radio" name="radio1" data-target="#layerpop7" data-toggle="modal" class="">
+            <label for="radio1"></label>
+          </td>
+          <td>
+            기본
+          </td>
+          <td>10G
+          </td>
+          <td>무제한
+          </td>
+          <td>100
+          </td>
+          <td>100
+          </td>
+          <td>무료
+          </td>
+          <td>무제한
+          </td>
+          <td>0
+          </td>
+        </tr>
+        <tr class="" style="border-bottom: 1px solid rgb(231, 234, 236);">
+          <td>
+            <input id="radio2" type="radio" name="radio1" checked="" data-target="#layerpop7" data-toggle="modal">
+            <label for="radio2"></label>
+          </td>
+          <td>
+            기본
+          </td>
+          <td>10G
+          </td>
+          <td>무제한
+          </td>
+          <td>100
+          </td>
+          <td>100
+          </td>
+          <td>무료
+          </td>
+          <td>무제한
+          </td>
+          <td>0
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div><!-- organization_table2 -->
+  </div>
+</div>
