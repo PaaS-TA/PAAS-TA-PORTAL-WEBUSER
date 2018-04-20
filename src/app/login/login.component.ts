@@ -19,9 +19,12 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   token: string;
-  user: Observable<User>;
+  //user: Observable<User>;
+  user: object;
 
-  constructor(private router: Router, private common: CommonService, private uaa: UaaSecurityService, private log: NGXLogger, private loginService: LoginService) {
+  constructor(private router: Router, private common: CommonService,
+    private uaa: UaaSecurityService, private log: NGXLogger,
+    private loginService: LoginService) {
     this.loading = false;
     this.username = '';
     this.password = '';
@@ -29,6 +32,7 @@ export class LoginComponent implements OnInit {
     this.log.debug('DEBUG LOGIN');
     // uaa.doAuthorization();
 
+    // rest 사용법 추가 (swmoon)
     this.test();
   }
 
@@ -59,7 +63,6 @@ export class LoginComponent implements OnInit {
       return data;
     });
   }
-
 }
 
 
