@@ -1,18 +1,23 @@
-import { CommonService } from '../../common/common.service';
-import { Organization } from '../organization';
-import { Component, OnInit } from '@angular/core';
+import {CommonService} from '../../common/common.service';
+import {Organization} from '../../model/organization';
+import { OrgService } from '../org.service';
+import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
   selector: 'app-org-inner',
   templateUrl: './org-inner.component.html',
   styleUrls: [
     // Is this needed really?
-    // '/src/assets/resources/css/common.css',
-    // '/src/assets/resources/css/normalize.css',
-   './org-inner.component.css']
+    // '../../../assets/resources/css/common.css',
+    // '../../../assets/resources/css/normalize.css',
+    '../org.component.css',
+    './org-inner.component.css']
 })
 export class OrgInnerComponent implements OnInit {
-  constructor(private common: CommonService, private orgData: Organization) { }
+  @Input('org') org: Organization;
+  constructor(private common: CommonService, private orgService: OrgService) {
 
-  ngOnInit(): void { }
+  }
+
+  ngOnInit(): void {}
 }

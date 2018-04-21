@@ -37,11 +37,10 @@ import { CommonService } from './common/common.service';
 
 import { DashModule } from './dash/dash.module';
 import { LoginService } from './login/login.service';
+import { OrgInnerComponent } from './org/org-inner/org-inner.component';
 import { UsermgmtComponent } from "./usermgmt/usermgmt.component";
 import { UsermamtService } from "./usermgmt/usermamt.service";
 import { OrgService } from './org/org.service';
-
-
 
 @NgModule({
   declarations: [
@@ -54,6 +53,7 @@ import { OrgService } from './org/org.service';
     LoginComponent,
     MenuComponent,
     OrgComponent,
+    OrgInnerComponent,
     ServiceComponent,
     SpaceComponent,
     UsageComponent,
@@ -90,7 +90,7 @@ import { OrgService } from './org/org.service';
   ],
   providers: [CommonService, UaaSecurityService, DashboardService, LoginService, UsermamtService, OrgService],
   bootstrap: [AppComponent],
-  exports: []
+  exports: [],
 })
 export class AppModule {
 }

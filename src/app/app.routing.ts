@@ -43,7 +43,6 @@ const routes: Routes = [
   {path: 'logout', component: LogoutComponent},
   {path: 'dashMain', component: DashMainComponent},
   {path: 'appMain', component: AppMainComponent}
-
 ];
 
 export const RoutingModule: ModuleWithProviders = RouterModule.forRoot(routes);
