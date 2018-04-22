@@ -3,23 +3,25 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {NGXLogger} from 'ngx-logger';
 import {CommonService} from '../common/common.service';
-import { OrgService } from './org.service';
-import { Organization } from './organization';
+import {OrgService} from './org.service';
+import {Organization} from '../model/organization';
+import {OrgInnerComponent} from './org-inner/org-inner.component';
 declare var $: any; declare var jQuery: any;
 
 @Component({
   selector: 'app-org',
   templateUrl: './org.component.html',
-  styleUrls: ['./org.component.css']
+  styleUrls: ['./org.component.css'],
 })
-
 export class OrgComponent implements OnInit, DoCheck, AfterViewChecked {
   orgs: Array<Organization>;
 
   private boolAttachEvent: boolean = false;
 
-  constructor(private common: CommonService, private orgService: OrgService, private logger: NGXLogger) {
-  //constructor(private common: CommonService, private logger: NGXLogger) {
+  constructor(private common: CommonService,
+    private orgService: OrgService,
+    private logger: NGXLogger) {
+    //constructor(private common: CommonService, private logger: NGXLogger) {
     /*
     const url = '/portalapi/v2/orgs-admin';
     this.common.doGET(url, this.common.getToken()).subscribe(data => {
@@ -36,7 +38,10 @@ export class OrgComponent implements OnInit, DoCheck, AfterViewChecked {
     
     logger.debug('OrgList :', this.orgs);
     */
-    this.orgs = orgService.getOrgListAdminOnly();
+    // test only
+    //this.orgs = orgService.getOrgListAdminOnly();
+    this.orgs = orgService.getOrgList();
+    //this.orgInnerList.setOrgs(this.orgs);
   }
 
   ngOnInit(): void {}
@@ -77,17 +82,35 @@ export class OrgComponent implements OnInit, DoCheck, AfterViewChecked {
         .fail(function(jqxhr, settings, exception) {
           logger.error(exception);
         }
-      );
+        );
     }
 
-    if (this.orgs.length > 0 && false === this.boolAttachEvent ) {
+    if (this.orgs.length > 0 && false === this.boolAttachEvent) {
       this.boolAttachEvent = true;
       logger.trace('It attaches detail event : ' + this.boolAttachEvent);
+
+      if (this.orgs.length > 0) {
+        const orgId = this.orgs[0].getId();
+        const orgSpaces = orgService.getOrgSpaceList(orgId);
+        const orgQuota = orgService.getOrgQuota(orgId);
+        const orgAvailableQuota = orgService.getOrgAvailableQuota();
+
+        /*
+        this.logger.debug('orgs[0] :', this.orgs[0]);
+        this.logger.debug('Org id of orgs[0] :', orgId);
+        this.logger.debug('- org spaces :', orgSpaces);
+        this.logger.debug('- org quota :', orgQuota);
+        this.logger.debug('- org available quota :', orgAvailableQuota);
+        */
+      }
     } else {
       logger.trace('It doesn\'t attach detail event : ' + this.boolAttachEvent);
     }
   }
 
-  isAttachEvent(): Boolean { return this.boolAttachEvent; }
+  isAttachEvent(): Boolean {return this.boolAttachEvent;}
 }
 
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
