@@ -16,6 +16,7 @@ import {Component, OnInit, Input} from '@angular/core';
 })
 export class OrgInnerComponent implements OnInit {
   @Input('org') org: Organization;
+  @Input('wantedName') wantedName: String;
 
   constructor(private common: CommonService, private orgService: OrgService) {
 
@@ -23,13 +24,13 @@ export class OrgInnerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  orgReName() {
-    this.orgService.orgReName(this.org);
+  renameOrg() {
+    this.orgService.renameOrg(this.org, this.wantedName);
   }
 
-  orgDelete() {
-    this.orgService.orgDelete(this.org);
-    this.org = null
+  deleteOrg() {
+    this.orgService.deleteOrg(this.org);
+    this.org = null;
   }
 
 }

@@ -3,8 +3,8 @@
   <div class="organization_title_wrap on">
     <div class="organization_btn">
       <div class="organization_btnin">
-        <input class="tempTitle" type="text" [(ngModel)]="org.orgRename">
-        <button class="btns6 colors4 yess2" (click)="orgReName()">변경하기</button>
+        <input class="tempTitle" type="text" [(ngModel)]="wantedName">
+        <button class="btns6 colors4 yess2" (click)="renameOrg()">변경하기</button>
         <button class="btns6 colors5 nos2">취소</button>+
 
         <!--button class="btns6 colors4 colors5 organization_sw" style="margin-left:1.1%;">
@@ -32,7 +32,7 @@
         </ul>
       </div>
     </div>
-    <p class="tit">Paas-TA / {{org.getName()}}</p>
+    <p class="tit">Paas-TA / {{org.name}}</p>
   </div><!-- organization_title_wrap -->
   <div class="organization_table_wrap">
     <div class="organization_table">
@@ -768,5 +768,5 @@
     </div>
   </div>
 </div>
-<button (click)="orgDelete()"> 선택 </button>
+<button (click)="deleteOrg()"> 선택 </button>
 </div>
