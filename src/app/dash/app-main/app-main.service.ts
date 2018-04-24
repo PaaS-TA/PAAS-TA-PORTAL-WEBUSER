@@ -43,4 +43,10 @@ export class AppMainService {
       return res;
     }).do(console.log);
   }
+
+  terminateInstance(guid: string, index: string, params: any) {
+    return this.commonService.doDelete('/portalapi/v2/apps/'+guid+'/instances/'+index, params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 }

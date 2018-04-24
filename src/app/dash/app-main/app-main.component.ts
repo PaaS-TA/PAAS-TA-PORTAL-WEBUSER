@@ -12,6 +12,7 @@ declare var $: any; declare var jQuery: any;
 })
 export class AppMainComponent implements OnInit {
 
+  public appGuid: string;
   public appSummaryEntities: Observable<any[]>;
   public appStatsEntities: Observable<any[]>;
   public appEventsEntities: Observable<any[]>;
@@ -43,6 +44,9 @@ export class AppMainComponent implements OnInit {
 
   private appRecentLogs: string;
 
+  private tabContentEventListLimit: number;
+  private tabContentStatsListLimit: number;
+
   constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService) { }
 
   ngOnInit() {
@@ -57,8 +61,12 @@ export class AppMainComponent implements OnInit {
         });
     });
 
+    this.tabContentEventListLimit = 5;
+    this.tabContentStatsListLimit = 5;
+
     this.route.queryParams.subscribe(params => {
       if (params != null) {
+        this.appGuid = params['guid'];
         this.getAppSummary(params['guid']);
         this.getAppStats(params['guid']);
         this.getAppEvents(params['guid']);
@@ -159,9 +167,11 @@ export class AppMainComponent implements OnInit {
     $.each(this.appStatsEntities, function (key, dataobj) {
       var statusClass;
       var statusText;
+      // var key;
       var cpu;
       var memory;
       var disk;
+      var uptime;
 
       if ('' != dataobj.state && ('RUNNING' == dataobj.state || 'running' == dataobj.state)) {
         statusClass = "";
@@ -178,13 +188,16 @@ export class AppMainComponent implements OnInit {
       cpu = (Math.round((dataobj.stats.usage.cpu * 100) * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
       memory = dataobj.stats.usage.mem.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       disk = dataobj.stats.usage.disk.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      uptime = (Math.round((dataobj.stats.uptime / 60) * Math.pow(10, 0)) / Math.pow(10, 0)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
       var obj = {
         statusClass : statusClass,
         statusText : statusText,
+        key : key,
         cpu : cpu,
         memory : memory,
-        disk : disk
+        disk : disk,
+        uptime : uptime
       };
       appStatus.push(obj);
     });
@@ -275,7 +288,49 @@ export class AppMainComponent implements OnInit {
       name: name
     };
     this.appMainService.updateApp(params).subscribe(data => {
-      window.location.reload();
+      // window.location.reload();
+      this.ngOnInit();
+    });
+  }
+
+  updateAppEnv(type, index) {
+    var updateEnvironment = {};
+    var appEnvName = "";
+    var appEnvValue = "";
+
+    // switch (type) {
+    //   case 'add':
+    //     // updateEnvironment[appEnvName] = appEnvValue;
+    //     // updateApplicationEnv();
+    //     break;
+    //   case 'modify':
+    //     // var appEnvValue = $("#" + appEnvName + "UpdateTextField").val()
+    //     appEnvName = $("#envEditId"+index).val();
+    //     appEnvValue = $("#envEditData"+index).val();
+    //     updateEnvironment[appEnvName] = appEnvValue;
+    //     // updateApplicationEnv();
+    //     break;
+    //   case 'delete':
+    //     // $('#modal').modal('hide');
+    //     // delete updateEnvironment[appEnvName]
+    //     // updateApplicationEnv(true, appEnvName);
+    //     break;
+    // }
+    if(type == "modify") {
+      for(var i=0; i < $("[id^='envEditId']").size(); i++) {
+        appEnvName = $("#envEditId"+i).val();
+        appEnvValue = $("#envEditData"+i).val();
+        updateEnvironment[appEnvName] = appEnvValue;
+      }
+    }
+    let params = {
+      guid: this.appSummaryGuid,
+      environment: updateEnvironment
+
+    };
+    this.appMainService.updateApp(params).subscribe(data => {
+      // window.location.reload();
+      this.ngOnInit();
     });
   }
 
@@ -351,6 +406,39 @@ export class AppMainComponent implements OnInit {
       });
       this.appRecentLogs = str;
     });
+  }
+
+  eventListMoreClick() {
+    this.tabContentEventListLimit = this.tabContentEventListLimit + 5;
+  }
+
+  statsListMoreClick() {
+    this.tabContentStatsListLimit = this.tabContentStatsListLimit + 5;
+  }
+
+  statsResrtartClick(index) {
+    let params = {
+    };
+    this.appMainService.terminateInstance(this.appGuid, index, params).subscribe(data => {
+      // window.location.reload();
+      this.ngOnInit();
+    });
+  }
+
+  showEditEnvClick(index) {
+    $("#DLid"+index).show();
+    // $("body > div").addClass('account_modify');
+    // $("#DLid"+index).toggleClass("on");
+    // $("#DLid"+index).parents("tr").next("tr").toggleClass("on");
+    // $("#DLid"+index).parents("tr").addClass("off");
+  }
+
+  hideEditEnvClick(index) {
+    $("#DLid"+index).hide();
+  }
+
+  saveEnvClick(index) {
+    this.updateAppEnv('modify', index);
   }
 
 }

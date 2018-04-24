@@ -12,4 +12,9 @@ export class AppNavComponent implements OnInit {
   ngOnInit() {
   }
 
+  tabShowClick(id) {
+    $("[id^='tabContent_']").hide();
+    $("#"+id).show();
+  }
+
 }
