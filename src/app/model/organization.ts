@@ -3,6 +3,7 @@ import {OrgMappingKeyConstant, OrgSpaceMappingKeyConstant, OrgQuotaMappingKeyCon
 export class Organization {
   private orgSpace = null;
   private orgQuota = null;
+  orgRename: String;
 
   constructor(private orgData?: Object) {
     // initialize dummy data when constructor parameter is null or undefined.
@@ -33,6 +34,8 @@ export class Organization {
           users_url: '(users_url_dummy)',
         }
       };
+
+      this.orgRename = this.getName();
     }
   }
 
@@ -128,6 +131,10 @@ export class Organization {
 
   getUsersUrl(): string {
     return this.getEntity()[OrgMappingKeyConstant.UsersUrl];
+  }
+
+  setName(willBeName: string): void {
+    this.getEntity()[OrgMappingKeyConstant.Name] = willBeName;
   }
 }
 

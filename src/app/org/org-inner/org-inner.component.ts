@@ -1,6 +1,6 @@
 import {CommonService} from '../../common/common.service';
 import {Organization} from '../../model/organization';
-import { OrgService } from '../org.service';
+import {OrgService} from '../org.service';
 import {Component, OnInit, Input} from '@angular/core';
 
 
@@ -16,6 +16,7 @@ import {Component, OnInit, Input} from '@angular/core';
 })
 export class OrgInnerComponent implements OnInit {
   @Input('org') org: Organization;
+
   constructor(private common: CommonService, private orgService: OrgService) {
 
   }
@@ -23,11 +24,10 @@ export class OrgInnerComponent implements OnInit {
   ngOnInit(): void {}
 
   orgReName() {
-   this.orgService.orgReName(this.org);
+    this.orgService.orgReName(this.org);
   }
 
-  orgDelete()
-  {
+  orgDelete() {
     this.orgService.orgDelete(this.org);
     this.org = null
   }
