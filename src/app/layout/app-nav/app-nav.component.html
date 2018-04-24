@@ -1,11 +1,11 @@
 <nav>
   <div class="scroll_style">
     <ul class="nav_1d">
-      <li class="cur" onclick="location.href='dashboard.html'">
+      <li class="cur" (click)="tabShowClick('tabContent_all')">
         <dl>
           <dt>
-          <div id="lnbimg1" class="lefticos">
-          </div>
+            <div id="lnbimg1" class="lefticos">
+            </div>
           </dt>
           <dd>
             <p>
@@ -14,12 +14,12 @@
           </dd>
         </dl>
       </li>
-      <li onclick="location.href='dashboard_event.html'">
+      <!--<li onclick="location.href='dashboard_event.html'">-->
+      <li (click)="tabShowClick('tabContent_event')">
         <dl>
           <dt>
-          <div id="lnbimg2" class="">
-
-          </div>
+            <div id="lnbimg2" class="">
+            </div>
           </dt>
           <dd>
             <p>
@@ -28,12 +28,11 @@
           </dd>
         </dl>
       </li>
-      <li onclick="location.href='dashboard_state.html'">
+      <li (click)="tabShowClick('tabContent_stats')">
         <dl>
           <dt>
-          <div id="lnbimg3" class="">
-
-          </div>
+            <div id="lnbimg3" class="">
+            </div>
           </dt>
           <dd>
             <p>
@@ -45,9 +44,8 @@
       <li onclick="location.href='dashboard_service.html'">
         <dl>
           <dt>
-          <div id="lnbimg4" class="">
-
-          </div>
+            <div id="lnbimg4" class="">
+            </div>
           </dt>
           <dd>
             <p>
@@ -56,12 +54,11 @@
           </dd>
         </dl>
       </li>
-      <li onclick="location.href='dashboard_variable.html'">
+      <li (click)="tabShowClick('tabContent_env')">
         <dl>
           <dt>
-          <div id="lnbimg5" class="">
-
-          </div>
+            <div id="lnbimg5" class="">
+            </div>
           </dt>
           <dd>
             <p>
@@ -73,9 +70,8 @@
       <li onclick="location.href='dashboard_lauth.html'">
         <dl>
           <dt>
-          <div id="lnbimg6" class="">
-
-          </div>
+            <div id="lnbimg6" class="">
+            </div>
           </dt>
           <dd>
             <p>
@@ -87,9 +83,8 @@
       <li onclick="location.href='dashboard_log.html'">
         <dl>
           <dt>
-          <div id="lnbimg7" class="">
-
-          </div>
+            <div id="lnbimg7" class="">
+            </div>
           </dt>
           <dd>
             <p>
@@ -101,9 +96,8 @@
       <li onclick="location.href='dashboard_ssh.html'">
         <dl>
           <dt>
-          <div id="lnbimg14" class="">
-
-          </div>
+            <div id="lnbimg14" class="">
+            </div>
           </dt>
           <dd>
             <p>
@@ -115,9 +109,8 @@
       <li onclick="location.href='dashboard_monitor.html'">
         <dl>
           <dt>
-          <div id="lnbimg15" class="">
-
-          </div>
+            <div id="lnbimg15" class="">
+            </div>
           </dt>
           <dd>
             <p>

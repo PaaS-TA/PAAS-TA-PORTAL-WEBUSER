@@ -221,7 +221,7 @@
           </div>
         </div>
       </div><!-- row one_line -->
-      <div class="row two_line cataloglast">
+      <div class="row two_line cataloglast" id="tabContent_all">
         <ul id="sortable">
           <li>
             <div class="sortable_wrap">
@@ -422,8 +422,214 @@
           </li>
         </ul>
       </div>
+      <div class="row two_line two_view" id="tabContent_event" style="display:none;">
+        <ul class="maT30">
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>이벤트</p>
+                <ul class="sortable_right">
+                  <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
+                  <li onclick="location.href='dashboard.html'"><i class="fas fa-compress"></i></li>
+                </ul>
+              </div>
+              <div class="view_table_wrap">
+                <table class="table_event line_tables maT20">
+                  <colgroup>
+                    <col style='width: 8%;'>
+                    <col style='width: 12%;'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                  </colgroup>
+                  <thead>
+                  <tr>
+                    <td>#
+                    </td>
+                    <td>Status
+                    </td>
+                    <td>Date
+                    </td>
+                    <td>Project
+                    </td>
+                    <td>Account
+                    </td>
+                    <td>Report
+                    </td>
+                  </tr>
+                  </thead>
+                  <tbody *ngFor="let item of appEventsEntitiesRe.slice().reverse(); let i = index">
+                    <tr *ngIf="i < tabContentEventListLimit">
+                      <td>{{i+1}}</td>
+                      <th><i class="fas fa-{{item.iconClass}}"></i></th>
+                      <td>{{item.date}}</td>
+                      <td>{{item.type}}</td>
+                      <td>{{item.actor_name}}</td>
+                      <td>{{item.requestText}}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <td colspan="6">
+                      <button class="btns2 btns2_1 colors4 event_btns" (click)="eventListMoreClick()">더보기</button>
+                    </td>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="row two_line two_view" id="tabContent_stats" style="display:none;">
+        <ul class="maT30">
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>상태정보</p>
+                <ul class="sortable_right">
+                  <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
+                  <li onclick="location.href='dashboard.html'"><i class="fas fa-compress"></i></li>
+                </ul>
+              </div>
+              <div class="view_table_wrap">
+                <table class="table_event condition line_tables">
+                  <colgroup>
+                    <col style='width: 8%;'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                  </colgroup>
+                  <thead>
+                  <tr>
+                    <td>#
+                    </td>
+                    <td>Status
+                    </td>
+                    <td>CPU
+                    </td>
+                    <td>Memory
+                    </td>
+                    <td>Disk
+                    </td>
+                    <td>UPTIME
+                    </td>
+                    <td>RESTART
+                    </td>
+                  </tr>
+                  </thead>
+                  <tbody *ngFor="let item of appStatusEntities; let i = index">
+                    <tr *ngIf="i < tabContentStatsListLimit">
+                      <td>{{i+1}}</td>
+                      <th><span class="BGcolors{{item.statusClass}}">{{item.statusText}}</span></th>
+                      <td>{{item.cpu}} %</td>
+                      <td>{{item.memory}} Byets</td>
+                      <td>{{item.disk}} Byets</td>
+                      <td>{{item.uptime}} (min)</td>
+                      <th><a (click)="statsResrtartClick(item.key)"><span class="BGcolors5 btn_bg_change2">RESTART</span></a></th>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                      <tr>
+                          <td colspan="8">
+                              <button class="btns2 btns2_1 colors4" (click)="statsListMoreClick()">더보기</button>
+                          </td>
+                      </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="row two_line two_view" id="tabContent_env" style="display:none;">
+        <ul class="maT30">
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>환경변수</p>
+                <ul class="sortable_right">
+                  <li onclick="location.href='dashboard.html'"><i class="fas fa-compress"></i></li>
+                </ul>
+              </div>
+              <div class="view_table_wrap service_wrap">
+                <div class="service_title maT30">
+                  <div class="pull-right">
+                    <button class="btns btns_1 colors4 variableSW"><i class="fas fa-plus"></i> 추가
+                    </button>
+                  </div>
+                  <h5>사용자 정의</h5>
+                </div>
+                <div *ngFor="let item of appEnvUserEntities; let i = index">
+                  <div class="maT20 service_in">
+                    <dl id="DLid{{i}}" class="variable_dl" style="display:none;">
+                      <dt><input type="text" placeholder="환경변수 이름을 입력하여 주십시오" id="envEditId{{i}}" value="{{item.eventID}}" />
+                      </dt>
+                      <dd>
+                        <input type="text" placeholder="값을 입력하여 주십시오" id="envEditData{{i}}" value="{{item.eventData}}" />
+                      </dd>
+                      <dt>
+                        <button class="btns6 colors4" (click)="saveEnvClick(i)">저장</button>
+                        <button class="btns6 colors5 variableSW" (click)="hideEditEnvClick(i)">취소</button>
+                      </dt>
+                    </dl>
+                  </div>
+                  <div class="service_title maT30">
+                    <div class="pull-right">
+                      <ul>
+                        <li class="variableSW2" (click)="showEditEnvClick(i)"><i class="fas fa-edit"></i>
+                        </li>
+                        <li data-target="#layerpop2" data-toggle="modal"><i class="fas fa-trash-alt"></i>
+                        </li>
+                      </ul>
+                    </div>
+                    <h5>{{item.eventID}}</h5>
+                  </div>
+                </div>
+                <div class="service_title maT30">
+                  <h5>시스템 제공</h5>
+                </div>
+                <div class="maT20 service_in">
+                  <textarea class="variable_text">{{appSystemProvidedEnv}}</textarea>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
+  </div>
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="layerpop2">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">환경변수 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>환경변수 <span>Test</span> 를 삭제하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
