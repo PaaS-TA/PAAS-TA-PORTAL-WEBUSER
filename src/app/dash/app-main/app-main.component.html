@@ -560,35 +560,46 @@
               <div class="view_table_wrap service_wrap">
                 <div class="service_title maT30">
                   <div class="pull-right">
-                    <button class="btns btns_1 colors4 variableSW"><i class="fas fa-plus"></i> 추가
+                    <button class="btns btns_1 colors4 variableSW" (click)="showAddEnvClick()"><i class="fas fa-plus"></i> 추가
                     </button>
                   </div>
                   <h5>사용자 정의</h5>
                 </div>
+                <div id="add_env" class="maT20 service_in" style="display:none;">
+                  <dl class="variable_dl">
+                    <dt><input type="text" placeholder="환경변수 이름을 입력하여 주십시오" id="envAddId" />
+                    </dt>
+                    <dd>
+                      <input type="text" placeholder="값을 입력하여 주십시오"id="envAddData" />
+                    </dd>
+                    <dt>
+                      <button class="btns6 colors4" (click)="showPopAddEnvAddClick()">저장</button>
+                      <button class="btns6 colors5 variableSW" (click)="hideAddEnvClick()">취소</button>
+                    </dt>
+                  </dl>
+                </div>
                 <div *ngFor="let item of appEnvUserEntities; let i = index">
-                  <div class="maT20 service_in">
-                    <dl id="DLid{{i}}" class="variable_dl" style="display:none;">
-                      <dt><input type="text" placeholder="환경변수 이름을 입력하여 주십시오" id="envEditId{{i}}" value="{{item.eventID}}" />
-                      </dt>
-                      <dd>
-                        <input type="text" placeholder="값을 입력하여 주십시오" id="envEditData{{i}}" value="{{item.eventData}}" />
-                      </dd>
-                      <dt>
-                        <button class="btns6 colors4" (click)="saveEnvClick(i)">저장</button>
-                        <button class="btns6 colors5 variableSW" (click)="hideEditEnvClick(i)">취소</button>
-                      </dt>
-                    </dl>
-                  </div>
                   <div class="service_title maT30">
                     <div class="pull-right">
                       <ul>
-                        <li class="variableSW2" (click)="showEditEnvClick(i)"><i class="fas fa-edit"></i>
-                        </li>
-                        <li data-target="#layerpop2" data-toggle="modal"><i class="fas fa-trash-alt"></i>
-                        </li>
+                        <li class="variableSW2" (click)="showEditEnvClick(i)"><i class="fas fa-edit"></i></li>
+                        <li><i class="fas fa-trash-alt" (click)="showPopEnvDelClick(item.eventID)"></i></li>
+                        <!--<li data-target="#layerpop2" data-toggle="modal"><i class="fas fa-trash-alt"></i></li>-->
                       </ul>
                     </div>
                     <h5>{{item.eventID}}</h5>
+                  </div>
+                  <div id="DLid{{i}}" class="maT20 service_in" style="display:none;">
+                    <dl class="variable_dl">
+                      <dd>
+                        <input type="hidden" placeholder="환경변수 이름을 입력하여 주십시오" id="envEditId{{i}}" value="{{item.eventID}}" />
+                        <input type="text" placeholder="값을 입력하여 주십시오" id="envEditData{{i}}" value="{{item.eventData}}" />
+                      </dd>
+                      <dt>
+                        <button class="btns6 colors4" (click)="showPopEnvEditClick(i)">저장</button>
+                        <button class="btns6 colors5 variableSW2" (click)="hideEditEnvClick(i)">취소</button>
+                      </dt>
+                    </dl>
                   </div>
                 </div>
                 <div class="service_title maT30">
@@ -608,7 +619,57 @@
 </div>
 
 <!-- modal -->
-<div class="modal fade" id="layerpop2">
+<div class="modal fade" id="layerpop_env_add">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">환경변수 추가</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>환경변수 <span>{{sltEnvAddName}}</span> 를 추가하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="addEnvClick()">저장</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_env_edit">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">환경변수 수정</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>환경변수 <span>{{sltEnvEditName}}</span> 를 수정하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="editEnvClick()">저장</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_env_del">
   <div class="vertical-alignment-helper">
     <div class="modal-dialog vertical-align-center">
       <div class="modal-content">
@@ -621,11 +682,11 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>환경변수 <span>Test</span> 를 삭제하시겠습니까?</p>
+          <p>환경변수 <span>{{sltEnvDelName}}</span> 를 삭제하시겠습니까?</p>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors4" (click)="delEnvClick()">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
