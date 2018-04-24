@@ -3,6 +3,7 @@ import {Organization} from '../../model/organization';
 import { OrgService } from '../org.service';
 import {Component, OnInit, Input} from '@angular/core';
 
+
 @Component({
   selector: 'app-org-inner',
   templateUrl: './org-inner.component.html',
@@ -20,4 +21,15 @@ export class OrgInnerComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  orgReName() {
+   this.orgService.orgReName(this.org);
+  }
+
+  orgDelete()
+  {
+    this.orgService.orgDelete(this.org);
+    this.org = null
+  }
+
 }

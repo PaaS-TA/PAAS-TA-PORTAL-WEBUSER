@@ -1,14 +1,15 @@
 import {CommonService} from '../common/common.service';
 import {OrgURLConstant} from './org.constant';
 import {Organization, OrgSpace, OrgQuota} from '../model/organization';
-import {Injectable} from '@angular/core';
+import {Injectable, Input} from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
 import { Observable, Subscription } from 'rxjs';
+import {Observer} from "rxjs/Observer";
+
 
 @Injectable()
 export class OrgService {
   private orgsAdminURL = '/portalapi/v2/orgs-admin';
-
   constructor(private common: CommonService, private logger: NGXLogger) {}
 
   private getToken() {
@@ -41,7 +42,7 @@ export class OrgService {
   public getOrgList(): Array<Organization> {
     let isLoading: Boolean = true;
     const orgs: Array<Organization> = [];
-    const url: string = OrgURLConstant.URLOrgListUsingToken;
+    const url: string = OrgURLConstant.URLOrgListUsingToken+'';
     const observable = this.common.doGET(url, this.getToken()).subscribe(data => {
       if (data.hasOwnProperty('resources')) {
         (data['resources'] as Array<Object>).forEach(orgData => {
@@ -54,8 +55,10 @@ export class OrgService {
     });
 
     if (!isLoading) {
+      console.log("로딩안함");
       observable.unsubscribe();
     }
+
     return orgs;
   }
 
@@ -102,7 +105,7 @@ export class OrgService {
   public getOrgAvailableQuota(): Array<OrgQuota> {
     let isLoading: Boolean = true;
     const quotas: Array<OrgQuota> = [];
-    const url: string = OrgURLConstant.URLOrgAvailableQuotas;
+    const url: string = OrgURLConstant.URLOrgAvailableQuotas+'';
     const observable = this.common.doGET(url, this.getToken()).subscribe(data => {
       if (data.hasOwnProperty('resources')) {
         (data['resources'] as Array<Object>).forEach(quotaData => {
@@ -341,5 +344,24 @@ export class OrgService {
         'url': '/v2/quota_definitions/31e846ad-8d8b-4d70-bd1a-5f7ae3aff3b1'
       }
     };
+  }
+
+  public orgReName(org: Organization)
+  {
+    const url = OrgURLConstant.URLOrgSummaryInformationHead;
+    let isLoading: Boolean = true;
+    const observable = this.common.doPut(url+org.getId(),org.orgRename ,this.getToken()).subscribe(data => {
+      org.setName(data['entity']['name']);
+      console.log(data);
+      org.orgRename = '';
+    });
+  }
+
+  public orgDelete(org : Organization)
+  {
+     const url = OrgURLConstant.URLOrgSummaryInformationHead;
+     this.common.doDelete(url+org.getId(), org.getName() ,this.getToken()).subscribe(data => {
+     console.log(data);
+     });
   }
 }
