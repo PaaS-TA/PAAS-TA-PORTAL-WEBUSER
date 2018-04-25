@@ -41,6 +41,7 @@ import {OrgInnerComponent} from './org/org-inner/org-inner.component';
 import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
 import {UsermgmtService} from "./usermgmt/usermgmt.service";
 import {OrgService} from './org/org.service';
+import {CatalogService} from "./catalog/catalog.service";
 
 @NgModule({
   declarations: [
@@ -88,7 +89,7 @@ import {OrgService} from './org/org.service';
       serverLogLevel: NgxLoggerLevel.ERROR
     }), JsonpModule
   ],
-  providers: [CommonService, UaaSecurityService, DashboardService, LoginService, UsermgmtService, OrgService],
+  providers: [CommonService, UaaSecurityService, DashboardService, LoginService, UsermgmtService, OrgService, CatalogService],
   bootstrap: [AppComponent],
   exports: [],
 })

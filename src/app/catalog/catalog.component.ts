@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-
+import {Component, OnInit, AfterViewChecked} from '@angular/core';
+import {CatalogService, Development, Template} from "./catalog.service";
+import {NGXLogger} from 'ngx-logger';
+declare var $: any; declare var jQuery: any;
 @Component({
   selector: 'app-catalog',
   templateUrl: './catalog.component.html',
@@ -7,10 +9,23 @@ import {Component, OnInit} from '@angular/core';
 })
 export class CatalogComponent implements OnInit {
 
-  constructor() {
+  searchKeyword : string='';
+
+  constructor(private catalogService: CatalogService, private logger: NGXLogger) {
+
   }
 
   ngOnInit() {
+    this.catalogService.developInit();
   }
 
+  Search()  {
+    this.catalogService.Search(this.searchKeyword);
+  }
+
+  KeywordClear()  {
+    this.searchKeyword = '';
+  }
 }
+
+
