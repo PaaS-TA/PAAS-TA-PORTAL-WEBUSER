@@ -1,16 +1,16 @@
 <div class="wrap account">
   <header class="header account">
     <div class="logo">
-      <a href="#"><h1><img src="../../assets/resources/images/main/logo.png" alt=""/></h1></a>
+      <a [routerLink]="['../dashMain']"><h1><img src="../../assets/resources/images/main/logo.png" alt=""/></h1></a>
     </div>
     <span class="nav_toggle">
             <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
             <label for="checkbox-1"></label>
         </span>
     <ul class="gnb clearfix">
-      <li class="cur"><a href="dashboard.html">대시보드</a></li>
-      <li><a href="catalog_list.html">카달로그</a></li>
-      <li><a href="dashboard1.html">문서</a></li>
+      <li ><a [routerLink]="['../dashMain']">대시보드</a></li>
+      <li ><a [routerLink]="['../catalog']">카달로그</a></li>
+      <li><a href="https://github.com/PaaS-TA/Guide-3.0-Penne-">문서</a></li>
     </ul>
     <ul class="right_nav">
       <li><!-- <a href="#" class="fas fa-user"></a> -->
@@ -32,8 +32,8 @@
               </dl>
             </div>
             <ul class="">
-              <li class="cur"><a href="#">내계정</a></li>
-              <li><a href="#">조직관리</a></li>
+              <li ><a [routerLink]="['../usermgmt']">내계정</a></li>
+              <li class="cur"><a [routerLink]="['../org']">조직관리</a></li>
               <li><a href="#">사용량조회</a></li>
             </ul>
             <p class="log_out">로그아웃</p>
@@ -72,7 +72,7 @@
   <nav>
     <div class="scroll_style">
       <ul class="nav_1d">
-        <li (click)="location.href='account.html'">
+        <li [routerLink]="['../usermgmt']">
           <dl>
             <dt>
             <div id="lnbimg10">
@@ -85,7 +85,7 @@
             </dd>
           </dl>
         </li>
-        <li class="cur" (click)="location.href='organization.html'">
+        <li class="cur" [routerLink]="['../org']">
           <dl>
             <dt>
             <div id="lnbimg11">
@@ -99,7 +99,7 @@
             </dd>
           </dl>
         </li>
-        <li (click)="location.href='quantity.html'">
+        <li [routerLink]="['../org']">
           <dl>
             <dt>
             <div id="lnbimg12" class="">
@@ -113,7 +113,7 @@
             </dd>
           </dl>
         </li>
-        <li>
+        <li [routerLink]="['../']">
           <dl>
             <dt>
             <div id="lnbimg13" class="">

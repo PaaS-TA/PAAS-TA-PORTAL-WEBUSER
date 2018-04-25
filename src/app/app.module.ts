@@ -88,7 +88,7 @@ import { LoginComponent } from './login/login.component';
       serverLogLevel: NgxLoggerLevel.ERROR
     }), JsonpModule
   ],
-  providers: [CommonService, UaaSecurityService, DashboardService,  UsermgmtService, OrgService],
+  providers: [CommonService, UaaSecurityService, DashboardService,  UsermgmtService, OrgService, CatalogService],
   bootstrap: [AppComponent],
   exports: [],
 })
