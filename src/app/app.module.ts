@@ -33,14 +33,14 @@ import {LogoutComponent} from './logout/logout.component';
 import {DashboardService} from './dashboard/dashboard.service';
 import {JsonpModule} from '@angular/http';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
-import { CommonService } from './common/common.service';
+import {CommonService} from './common/common.service';
 
-import { DashModule } from './dash/dash.module';
-import { LoginService } from './login/login.service';
-import { OrgInnerComponent } from './org/org-inner/org-inner.component';
-import { UsermgmtComponent } from "./usermgmt/usermgmt.component";
-import { UsermamtService } from "./usermgmt/usermamt.service";
-import { OrgService } from './org/org.service';
+import {DashModule} from './dash/dash.module';
+import {LoginService} from './login/login.service';
+import {OrgInnerComponent} from './org/org-inner/org-inner.component';
+import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
+import {UsermgmtService} from "./usermgmt/usermgmt.service";
+import {OrgService} from './org/org.service';
 
 @NgModule({
   declarations: [
@@ -88,7 +88,7 @@ import { OrgService } from './org/org.service';
       serverLogLevel: NgxLoggerLevel.ERROR
     }), JsonpModule
   ],
-  providers: [CommonService, UaaSecurityService, DashboardService, LoginService, UsermamtService, OrgService],
+  providers: [CommonService, UaaSecurityService, DashboardService, LoginService, UsermgmtService, OrgService],
   bootstrap: [AppComponent],
   exports: [],
 })

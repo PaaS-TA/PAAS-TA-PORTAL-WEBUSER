@@ -16,9 +16,9 @@ import {LogComponent} from './log/log.component';
 import {ModuleWithProviders} from '@angular/core';
 import {CallbackComponent} from './callback/callback.component';
 import {LogoutComponent} from './logout/logout.component';
-
 import { DashMainComponent } from "./dash/dash-main/dash-main.component";
 import { AppMainComponent } from "./dash/app-main/app-main.component";
+import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
 
 /*
 * Route 모듈 설정
@@ -38,6 +38,7 @@ const routes: Routes = [
   {path: 'space', component: SpaceComponent},
   {path: 'usage', component: UsageComponent},
   {path: 'user', component: UserComponent},
+  {path: 'usermgmt', component: UsermgmtComponent},
   {path: 'webideuser', component: WebIdeUserComponent},
   {path: 'callback', component: CallbackComponent},
   {path: 'logout', component: LogoutComponent},

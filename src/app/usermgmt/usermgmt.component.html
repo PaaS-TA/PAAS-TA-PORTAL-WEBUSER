@@ -254,7 +254,7 @@
                                                 </span>
                       <input type="text" name= "userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }" />
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="usersave()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                     </div>
@@ -274,7 +274,7 @@
                                                 </span>
                       <input type="text" name= "tellPhone" [(ngModel)]="user['tellPhone']" ng-model-options="{ getterSetter: true }" />
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="usersave()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                     </div>
@@ -294,23 +294,8 @@
               </colgroup>
               <tbody>
               <tr>
-                <td>조직명이 들어갑니다.</td>
-                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
-              </tr>
-              <tr>
-                <td>조직명이 들어갑니다.</td>
-                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
-              </tr>
-              <tr>
-                <td>조직명이 들어갑니다.</td>
-                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
-              </tr>
-              <tr>
-                <td>조직명이 들어갑니다.</td>
-                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
-              </tr>
-              <tr>
-                <td>조직명이 들어갑니다.</td>
+                <!--{{org['name']}}-->
+                <td>{{org.name}}</td>
                 <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
               </tr>
               </tbody>
