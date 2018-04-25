@@ -1,19 +1,47 @@
 <div class="contents">
   <div *ngIf="!isLogin">
-    <div class="col-md-6 col-md-offset-3">
-      <h1>API Login</h1>
-      <div class="form-group">
-        <input type="text" class="form-control" name="username" [(ngModel)]="username"/>
-      </div>
-      <div class="form-group">
-        <input type="password" class="form-control" name="password" [(ngModel)]="password"/>
-      </div>
-      <div class="form-group">
-        <button class="btn btn-outline-primary" (click)="Login(username,password)">API 로그인</button>&nbsp;&nbsp;
-        {{username}}
-      </div>
-    </div>
 
+    <body class="login_b">
+    <br><br><br><br><br><br><br>
+    <div class="loginWrap">
+      <div class="text_center">
+        <a href="#"><img class="logo_login" src="../assets/resources/images/login/login_logo.png" alt="logo"/></a>
+        <p>사용자포탈에 오신 것을 환영합니다!</p>
+      </div>
+
+      <form class="form-horizontal maT30" action="">
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" required="" placeholder="E-mail" name="username" [(ngModel)]="username">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <input class="form-control" type="password" required="" placeholder="Password" name="password" [(ngModel)]="password">
+            <!--<p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> 아이디 또는-->
+              <!--비밀번호가 일치하지 않습니다.-->
+            <!--</p>-->
+          </div>
+        </div>
+        <div class="form-group maT30">
+          <div class="col-xs-12">
+            <button class="btns colors4" (click)="Login()">
+              로그인
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group maT30">
+          <div class="col-xs-6">
+            <a href="#" class="text-muted">Creat account</a>
+          </div>
+          <div class="col-xs-6">
+            <a href="#" class="text-muted">Reset password</a>
+          </div>
+        </div>
+      </form>
+    </div>
+    </body>
     <!--<div class="col-md-6 col-md-offset-3">-->
     <!--<h1>Oauth Login</h1>-->
     <!--<div class="form-group">-->
@@ -26,4 +54,5 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+
 

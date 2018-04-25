@@ -18,8 +18,10 @@ export class AppComponent {
   password: string;
   token: string;
   user: object;
+  error: boolean;
 
   constructor(private common: CommonService, private router: Router, private log: NGXLogger, private uaa: UaaSecurityService) {
+    this.error = false;
     if (common.getToken() == null) {
       common.isLogin = false;
       this.isLogin = false;
@@ -30,17 +32,21 @@ export class AppComponent {
   }
 
 
-  Login(username: string, password: string) {
+  Login() {
     this.loading = true;
+    console.log(this.username + " " + this.password);
+
     let params = {id: this.username, password: this.password};
     this.common.doPost('/portalapi/login', params, '').subscribe(data => {
       this.loading = false;
       this.common.isLogin = true;
-      this.common.saveUserInfo('',data['name'],'','');
+      this.common.saveUserInfo('', data['name'], '', '');
       this.common.saveToken('', data['token'], '', '', '');
       this.isLogin = true;
       this.router.navigate(['appMain']);
       this.log.debug(data);
+    }, error => {
+      this.error = true;
     });
   }
 
