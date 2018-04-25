@@ -5,22 +5,24 @@ export enum OrgURLConstant {
   // URLs
   URLOrgListUsingToken = '/portalapi/v2/orgs',
   URLOrgListAdminOnly = '/portalapi/v2/orgs-admin',
-  
+
   // /portalapi/v2/orgs/{org-id}
   URLOrgFullyInformation = '/portalapi/v2/orgs',
-  
+
+  URLOrgRequestBase = '/portalapi/v2/orgs/',
+
   // /portalapi/v2/orgs/{org-id}/summary
-  URLOrgSummaryInformationHead = '/portalapi/v2/orgs/',
+  URLOrgSummaryInformationHead = URLOrgRequestBase,
   URLOrgSummaryInformationTail = '/summary',
-  
+
   // /portalapi/v2/orgs/{org-id}/space
-  URLOrgSpaceInformationHead = '/portalapi/v2/orgs/',
+  URLOrgSpaceInformationHead = URLOrgRequestBase,
   URLOrgSpaceInformationTail = '/space',
-  
+
   // /portalapi/v2/orgs/{org-id}/quota
-  URLOrgQuotaInformationHead = '/portalapi/v2/orgs/',
+  URLOrgQuotaInformationHead = URLOrgRequestBase,
   URLOrgQuotaInformationTail = '/quota',
-  
+
   URLOrgAvailableQuotas = '/portalapi/v2/orgs/quota-definitions'
 }
 
@@ -118,5 +120,5 @@ export enum OrgQuotaMappingKeyConstant {
   TotalServices = 'total_services',
   TrialDatabaseAllowed = 'trial_database_allowed',
   TrialDatabaseAllowedShort = 'trial_db_allowed',
-  
+
 }

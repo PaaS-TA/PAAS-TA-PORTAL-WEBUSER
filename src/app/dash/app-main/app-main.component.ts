@@ -47,9 +47,14 @@ export class AppMainComponent implements OnInit {
   private tabContentEventListLimit: number;
   private tabContentStatsListLimit: number;
 
+  public sltEnvDelName: string;
+  public sltEnvAddName: string;
+  public sltEnvEditName: string;
+
   constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService) { }
 
   ngOnInit() {
+    console.log("ngOnInit in~");
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript( "../../assets/resources/js/common2.js" )
@@ -245,10 +250,6 @@ export class AppMainComponent implements OnInit {
   }
 
   renameAppSaveClick() {
-    // var asdasdasd = $(".tempTitle").val();
-    // $(".headTH2 span").html(asdasdasd);
-    // $(".headT").css("display","none");
-
     this.updateApp();
   }
 
@@ -298,39 +299,40 @@ export class AppMainComponent implements OnInit {
     var appEnvName = "";
     var appEnvValue = "";
 
-    // switch (type) {
-    //   case 'add':
-    //     // updateEnvironment[appEnvName] = appEnvValue;
-    //     // updateApplicationEnv();
-    //     break;
-    //   case 'modify':
-    //     // var appEnvValue = $("#" + appEnvName + "UpdateTextField").val()
-    //     appEnvName = $("#envEditId"+index).val();
-    //     appEnvValue = $("#envEditData"+index).val();
-    //     updateEnvironment[appEnvName] = appEnvValue;
-    //     // updateApplicationEnv();
-    //     break;
-    //   case 'delete':
-    //     // $('#modal').modal('hide');
-    //     // delete updateEnvironment[appEnvName]
-    //     // updateApplicationEnv(true, appEnvName);
-    //     break;
-    // }
-    if(type == "modify") {
+    if(type == "add") {
       for(var i=0; i < $("[id^='envEditId']").size(); i++) {
         appEnvName = $("#envEditId"+i).val();
         appEnvValue = $("#envEditData"+i).val();
         updateEnvironment[appEnvName] = appEnvValue;
       }
+      appEnvName = $("#envAddId").val();
+      appEnvValue = $("#envAddData").val();
+      updateEnvironment[appEnvName] = appEnvValue;
+    } else if(type == "modify") {
+      for(var i=0; i < $("[id^='envEditId']").size(); i++) {
+        appEnvName = $("#envEditId"+i).val();
+        appEnvValue = $("#envEditData"+i).val();
+        updateEnvironment[appEnvName] = appEnvValue;
+      }
+    } else if(type == "delete") {
+      for(var i=0; i < $("[id^='envEditId']").size(); i++) {
+        appEnvName = $("#envEditId"+i).val();
+        appEnvValue = $("#envEditData"+i).val();
+        updateEnvironment[appEnvName] = appEnvValue;
+      }
+
+      appEnvName = this.sltEnvDelName;
+      delete updateEnvironment[appEnvName];
     }
+
     let params = {
       guid: this.appSummaryGuid,
       environment: updateEnvironment
 
     };
     this.appMainService.updateApp(params).subscribe(data => {
-      // window.location.reload();
       this.ngOnInit();
+      $("[id^='layerpop']").modal("hide");
     });
   }
 
@@ -427,18 +429,45 @@ export class AppMainComponent implements OnInit {
 
   showEditEnvClick(index) {
     $("#DLid"+index).show();
-    // $("body > div").addClass('account_modify');
-    // $("#DLid"+index).toggleClass("on");
-    // $("#DLid"+index).parents("tr").next("tr").toggleClass("on");
-    // $("#DLid"+index).parents("tr").addClass("off");
   }
 
   hideEditEnvClick(index) {
     $("#DLid"+index).hide();
   }
 
-  saveEnvClick(index) {
-    this.updateAppEnv('modify', index);
+  showPopEnvEditClick(index) {
+    this.sltEnvEditName = $("#envEditId"+index).val();
+    $("#layerpop_env_edit").modal("show");
+  }
+
+  editEnvClick() {
+    this.updateAppEnv('modify', '');
+  }
+
+  showAddEnvClick() {
+    $("#add_env").show();
+  }
+
+  hideAddEnvClick() {
+    $("#add_env").hide();
+  }
+
+  showPopAddEnvAddClick() {
+    this.sltEnvAddName = $("#envAddId").val();
+    $("#layerpop_env_add").modal("show");
+  }
+
+  addEnvClick() {
+    this.updateAppEnv('add', '');
+  }
+
+  showPopEnvDelClick(eventID) {
+    this.sltEnvDelName = eventID;
+    $("#layerpop_env_del").modal("show");
+  }
+
+  delEnvClick() {
+    this.updateAppEnv('delete', '');
   }
 
 }

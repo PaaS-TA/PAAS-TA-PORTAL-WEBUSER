@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     let params = {id: this.username, password: this.password};
     this.common.doPost('/portalapi/login', params, '').subscribe(data => {
-      this.router.navigate(['dashboard']);
+      this.router.navigate(['dashMain']);
       this.loading = false;
       this.common.isLogin = true;
       this.common.saveToken('',data['token'],'','','');

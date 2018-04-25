@@ -1,390 +1,474 @@
 import {OrgMappingKeyConstant, OrgSpaceMappingKeyConstant, OrgQuotaMappingKeyConstant} from '../org/org.constant';
+import {Input} from '@angular/core';
 
 export class Organization {
-  private orgSpace = null;
-  private orgQuota = null;
+  /*
+  // DATA MODEL IS...
+  private metadata = {
+    created_at: null,
+    guid: null,
+    updated_at: null,
+    url: null,
+  };
 
-  constructor(private orgData?: Object) {
+  private entity = {
+    application_events_url: null,
+    auditors_url: null,
+    billing_enabled: null,
+    billing_managers_url: null,
+    default_isolation_segment_id: null,
+    domains_url: null,
+    isolation_segment_url: null,
+    managers_url: null,
+    name: null,
+    private_domains_url: null,
+    quota_definition_id: null,
+    quota_definition_url: null,
+    space_quota_definitions_url: null,
+    spaces_url: null,
+    status: null,
+    users_url: null,
+  };
+  */
+
+  private _metadata;
+  private _entity;
+
+  constructor(metadataParam, entityParam) {
     // initialize dummy data when constructor parameter is null or undefined.
-    if (orgData === null) {
-      orgData = {
-        metadata: {
-          created_at: '(created_at_dummy)',
-          id: '(id_dummy)',
-          updated_at: '(updatedAt_dummy)',
-          url: '/v2/organizations/(id_dummy)'
-        },
-        entity: {
-          application_events_url: '(applicationEvent_url_dummy)',
-          auditors_url: '(auditors_url_dummy)',
-          billing_enabled: '(billing_enabled_dummy)',
-          billing_managers_url: '(billing_managers_url_dummy)',
-          default_isolation_segment_id: '(default_isolation_segment_id_dummy)',
-          domains_url: '(domains_url_dummy)',
-          isolation_segment_url: '(isolation_segment_url_dummy)',
-          managers_url: '(managers_url_dummy)',
-          name: '(name_dummy)',
-          private_domains_url: '(private_domains_url_dummy)',
-          quota_definition_id: '(quota_definition_id_dummy)',
-          quota_definition_url: '(quota_definition_url_dummy)',
-          space_quota_definitions_url: '(space_quota_definitions_url_dummy)',
-          spaces_url: '(space_url_dummy)',
-          status: '(status_dummy)',
-          users_url: '(users_url_dummy)',
-        }
+
+    // initialize metadata as dummy
+    this.metadata = metadataParam;
+
+    // initialize entity as dummy
+    this.entity = entityParam;
+  }
+
+  private get metadata() {
+    return this._metadata;
+  }
+
+  // using constructor or refreshing
+  private set metadata(extMetadata) {
+    if (extMetadata === null || extMetadata === undefined) {
+      this._metadata = {
+        created_at: '(created_at_dummy)',
+        guid: '(id_dummy)',
+        updated_at: '(updatedAt_dummy)',
+        url: '(org_url_dummy)'
       };
+    } else {
+      this._metadata = extMetadata;
     }
   }
 
-  private getEntity(): Object {
-    return this.orgData[OrgMappingKeyConstant.Entity];
+  private get entity() {
+    return this._entity;
   }
 
-  private getMetadata(): Object {
-    return this.orgData[OrgMappingKeyConstant.Metadata];
-  }
-
-  // in metadata
-  getId(): string {
-    if (this.getMetadata().hasOwnProperty(OrgMappingKeyConstant.Id)) {
-      return this.getMetadata()[OrgMappingKeyConstant.Id];
-    } else if (this.getMetadata().hasOwnProperty(OrgMappingKeyConstant.Guid)) {
-      return this.getMetadata()[OrgMappingKeyConstant.Guid];
+  private set entity(extEntity) {
+    if (extEntity === null || extEntity === undefined) {
+      this._entity = {
+        application_events_url: '(application_event_url_dummy)',
+        auditors_url: '(auditors_url_dummy)',
+        billing_enabled: '(billing_enabled_dummy)',
+        billing_managers_url: '(billing_managers_url_dummy)',
+        default_isolation_segment_id: '(default_isolation_segment_id_dummy)',
+        domains_url: '(domains_url_dummy)',
+        isolation_segment_url: '(isolation_segment_url_dummy)',
+        managers_url: '(managers_url_dummy)',
+        name: '(name_dummy)',
+        private_domains_url: '(private_domains_url_dummy)',
+        quota_definition_id: '(quota_definition_id_dummy)',
+        quota_definition_url: '(quota_definition_url_dummy)',
+        space_quota_definitions_url: '(space_quota_definitions_url_dummy)',
+        spaces_url: '(space_url_dummy)',
+        status: '(status_dummy)',
+        users_url: '(users_url_dummy)',
+      };
+    } else {
+      this._entity = extEntity;
     }
   }
 
-  getCreatedAt(): string {
-    return this.getMetadata()[OrgMappingKeyConstant.CreatedAt];
+  get guid() {
+    return this.metadata.guid;
   }
 
-  getUpdatedAt(): string {
-    return this.getMetadata()[OrgMappingKeyConstant.UpdatedAt];
+  get createdAt() {
+    return this.metadata.created_at;
   }
 
-  getURL(): string {
-    return this.getMetadata()[OrgMappingKeyConstant.Url];
+  get updatedAt() {
+    return this.metadata.updated_at;
   }
 
-  // in entity
-  getApplicationEventsUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.ApplicationEventsUrl];
+  get url() {
+    return this.metadata.url;
   }
 
-  getAuditorsUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.AuditorsUrl];
+  get applicationEventsUrl() {
+    return this.entity.application_events_url;
   }
 
-  getBillingEnabled(): string {
-    return this.getEntity()[OrgMappingKeyConstant.BillingEnabled];
+  get auditorsUrl() {
+    return this.entity.auditors_url;
   }
 
-  getBillingManagersUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.BillingManagersUrl];
+
+  get billingEnabled() {
+    return this.entity.billing_enabled;
   }
 
-  getDefaultIsolationSegmentId(): string {
-    return this.getEntity()[OrgMappingKeyConstant.DefaultIsolationSegmentId];
+
+  get billingManagersUrl() {
+    return this.entity.billing_managers_url;
   }
 
-  getDomainsUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.DomainsUrl];
+
+  get defaultIsolationSegmentId() {
+    return this.entity.default_isolation_segment_id;
   }
 
-  getIsolationSegmentUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.IsolationSegmentUrl];
+
+  get domainsUrl() {
+    return this.entity.domains_url;
   }
 
-  getManagersUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.ManagersUrl];
+
+  get isolationSegmentUrl() {
+    return this.entity.isolation_segment_url;
   }
 
-  getName(): string {
-    return this.getEntity()[OrgMappingKeyConstant.Name];
+
+  get managersUrl() {
+    return this.entity.managers_url;
   }
 
-  getPrivateDomainsUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.PrivateDomainsUrl];
+
+  get name() {
+    return this.entity.name;
   }
 
-  getQuotaDefinitionId(): string {
-    return this.getEntity()[OrgMappingKeyConstant.QuotaDefinitionId];
+  // set org name (related renaming organization)
+  set name(nameParam: String) {
+    this.entity.name = nameParam;
   }
 
-  getQuotaDefinitionUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.QuotaDefinitionUrl];
+
+  get privateDomainsUrl() {
+    return this.entity.private_domains_url;
   }
 
-  getSpaceQuotaDefinitionsUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.SpaceQuotaDefinitionsUrl];
+
+  get quotaDefinitionId() {
+    return this.entity.quota_definition_id;
   }
 
-  getSpacesUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.SpacesUrl];
+
+  get quotaDefinitionUrl() {
+    return this.entity.quota_definition_url;
   }
 
-  getStatus(): string {
-    return this.getEntity()[OrgMappingKeyConstant.Status];
+
+  get spaceQuotaDefinitionsUrl() {
+    return this.entity.space_quota_definitions_url;
   }
 
-  getUsersUrl(): string {
-    return this.getEntity()[OrgMappingKeyConstant.UsersUrl];
+
+  get spacesUrl() {
+    return this.entity.spaces_url;
+  }
+
+
+  get status() {
+    return this.entity.status;
+  }
+
+  get usersUrl() {
+    return this.entity.users_url;
   }
 }
 
 export class OrgSpace {
-  constructor(private orgSpaceData: Object) {
-    if (orgSpaceData === null) {
-      orgSpaceData = {
-        'metadata': {
-          'created_at': '(dummy)',
-          'id': '(dummy)',
-          'updated_at': '(dummy)',
-          'url': '(dummy)',
-        },
-        'entity': {
-          'allow_ssh': true,
-          'application_events_url': '(dummy)',
-          'applications_url': '(dummy)',
-          'auditors_url': '(dummy)',
-          'developers_url': '(dummy)',
-          'domains_url': '(dummy)',
-          'events_url': '(dummy)',
-          'isolation_segment_id': null,
-          'isolation_segment_url': null,
-          'managers_url': '(dummy)',
-          'name': 'dummy-name',
-          'organization_id': '(dummy)',
-          'organization_url': '(dummy)',
-          'routes_url': '(dummy)',
-          'security_groups_url': '(dummy)',
-          'service_instances_url': '(dummy)',
-          'space_quota_definition_id': null,
-          'space_quota_definition_url': null,
-          'staging_security_groups_url': '(dummy)',
-        }
+  private _metadata;
+  private _entity;
+
+  constructor(metadataParam, entityParam) {
+    // initialize dummy data when constructor parameter is null or undefined.
+    // initialize metadata as dummy
+    this.metadata = metadataParam;
+
+    // initialize entity as dummy
+    this.entity = entityParam;
+  }
+
+  private get metadata() {
+    return this._metadata;
+  }
+
+  private set metadata(extMetadata) {
+    if (extMetadata === null || extMetadata === undefined) {
+      this._metadata = {
+        created_at: '(created_at_dummy)',
+        guid: '(id_dummy)',
+        updated_at: '(updatedAt_dummy)',
+        url: '(space_url_dummy)'
       };
+    } else {
+      this._metadata = extMetadata;
     }
   }
 
-  private getEntity(): Object {
-    return this.orgSpaceData[OrgSpaceMappingKeyConstant.Entity];
+  private get entity() {
+    return this._entity;
   }
 
-  private getMetadata(): Object {
-    return this.orgSpaceData[OrgSpaceMappingKeyConstant.Metadata];
-  }
-
-  private getAllowSsh(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.AllowSsh];
-  }
-
-  private getApplicationEventsUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.ApplicationEventsUrl];
-  }
-
-  private getApplicationsUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.ApplicationsUrl];
-  }
-
-  private getAuditorsUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.AuditorsUrl];
-  }
-
-  private getDevelopersUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.DevelopersUrl];
-  }
-
-  private getDomainsUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.DomainsUrl];
-  }
-
-  private getEventsUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.EventsUrl];
-  }
-
-  private getIsolationSegmentId(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.IsolationSegmentId];
-  }
-
-  private getIsolationSegmentUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.IsolationSegmentUrl];
-  }
-
-  private getManagersUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.ManagersUrl];
-  }
-
-  private getName(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.Name];
-  }
-
-  private getOrganizationId(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.OrganizationId];
-  }
-
-  private getOrganizationUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.OrganizationUrl];
-  }
-
-  private getRoutesUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.RoutesUrl];
-  }
-
-  private getSecurityGroupsUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.SecurityGroupsUrl];
-  }
-
-  private getServiceInstancesUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.ServiceInstancesUrl];
-  }
-
-  private getSpaceQuotaDefinitionId(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.SpaceQuotaDefinitionId];
-  }
-
-  private getSpaceQuotaDefinitionUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.SpaceQuotaDefinitionUrl];
-  }
-
-  private getStagingSecurityGroupsUrl(): Object {
-    return this.getEntity()[OrgSpaceMappingKeyConstant.StagingSecurityGroupsUrl];
-  }
-
-  private getCreatedAt(): Object {
-    return this.getMetadata()[OrgSpaceMappingKeyConstant.CreatedAt];
-  }
-
-  private getId(): Object {
-    if (this.getMetadata().hasOwnProperty(OrgSpaceMappingKeyConstant.Id)) {
-      return this.getMetadata()[OrgSpaceMappingKeyConstant.Id];
-    } else if (this.getMetadata().hasOwnProperty(OrgSpaceMappingKeyConstant.Guid)) {
-      return this.getMetadata()[OrgSpaceMappingKeyConstant.Guid];
+  private set entity(extEntity) {
+    if (extEntity === null || extEntity === undefined) {
+      this._entity = {
+        allow_ssh: true,
+        application_events_url: '(dummy)',
+        applications_url: '(dummy)',
+        auditors_url: '(dummy)',
+        developers_url: '(dummy)',
+        domains_url: '(dummy)',
+        events_url: '(dummy)',
+        isolation_segment_id: '(dummy)',
+        isolation_segment_url: '(dummy)',
+        managers_url: '(dummy)',
+        name: '(dummy-name)',
+        organization_id: '(dummy)',
+        organization_url: '(dummy)',
+        routes_url: '(dummy)',
+        security_groups_url: '(dummy)',
+        service_instances_url: '(dummy)',
+        space_quota_definition_id: '(dummy)',
+        space_quota_definition_url: '(dummy)',
+        staging_security_groups_url: '(dummy)',
+      };
+    } else {
+      this._entity = extEntity;
     }
   }
 
-  private getUpdatedAt(): Object {
-    return this.getMetadata()[OrgSpaceMappingKeyConstant.UpdatedAt];
+  get guid() {
+    return this.metadata.guid;
   }
 
-  private getUrl(): Object {
-    return this.getMetadata()[OrgSpaceMappingKeyConstant.Url];
+  get createdAt() {
+    return this.metadata.created_at;
+  }
+
+  get updatedAt() {
+    return this.metadata.updated_at;
+  }
+
+  get url() {
+    return this.metadata.url;
+  }
+
+  get allowSsh() {
+    return this.entity.allow_ssh;
+  }
+
+  get applicationEventsUrl() {
+    return this.entity.application_events_url;
+  }
+
+  get applicationsUrl() {
+    return this.entity.applications_url;
+  }
+
+  get auditorsUrl() {
+    return this.entity.auditors_url;
+  }
+
+  get developersUrl() {
+    return this.entity.developers_url;
+  }
+
+  get domainsUrl() {
+    return this.entity.domains_url;
+  }
+
+  get eventsUrl() {
+    return this.entity.events_url;
+  }
+
+  get isolationSegmentId() {
+    return this.entity.isolation_segment_id;
+  }
+
+  get isolationSegmentUrl() {
+    return this.entity.isolation_segment_url;
+  }
+
+  get managersUrl() {
+    return this.entity.managers_url;
+  }
+
+  get name() {
+    return this.entity.name;
+  }
+
+  set name(nameParam: String) {
+    this.entity.name = nameParam;
+  }
+
+  get organizationId() {
+    return this.entity.organization_id;
+  }
+
+  get organizationUrl() {
+    return this.entity.organization_url;
+  }
+
+  get routesUrl() {
+    return this.entity.routes_url;
+  }
+
+  get securityGroupsUrl() {
+    return this.entity.security_groups_url;
+  }
+
+  get serviceInstancesUrl() {
+    return this.entity.service_instances_url;
+  }
+
+  get spaceQuotaDefinitionId() {
+    return this.entity.space_quota_definition_id;
+  }
+
+  get spaceQuotaDefinitionUrl() {
+    return this.entity.space_quota_definition_url;
+  }
+
+  get stagingSecurityGroupsUrl() {
+    return this.entity.staging_security_groups_url;
   }
 }
 
 export class OrgQuota {
-  // TODO
-  constructor(private orgQuotaData?: Object) {
-    if (orgQuotaData === null) {
-      orgQuotaData = {
-        'entity': {
-          'application_instance_limit': '(dummy)',
-          'application_task_limit': '(dummy)',
-          'instance_memory_limit': '(dummy)',
-          'memory_limit': '(dummy)',
-          'name': '(dummy)',
-          'non_basic_services_allowed': true,
-          'total_private_domains': '(dummy)',
-          'total_reserved_route_ports': '(dummy)',
-          'total_routes': '(dummy)',
-          'total_service_keys': '(dummy)',
-          'total_services': '(dummy)',
-          'trial_database_allowed': false
-        },
-        'metadata': {
-          'created_at': '(dummy)',
-          'id': '(dummy)',
-          'updated_at': '(dummy)',
-          'url': '(dummy)'
-        }
+  private _metadata;
+  private _entity;
+
+  constructor(metadataParam, entityParam) {
+    // initialize dummy data when constructor parameter is null or undefined.
+    // initialize metadata as dummy
+    this.metadata = metadataParam;
+
+    // initialize entity as dummy
+    this.entity = entityParam;
+  }
+
+  private get metadata() {
+    return this._metadata;
+  }
+
+  private set metadata(extMetadata) {
+    if (extMetadata === null || extMetadata === undefined) {
+      this._metadata = {
+        created_at: '(created_at_dummy)',
+        guid: '(id_dummy)',
+        updated_at: '(updatedAt_dummy)',
+        url: '(quota_url_dummy)'
       };
+    } else {
+      this._metadata = extMetadata;
     }
   }
 
-  private getEntity() {
-    return this.orgQuotaData[OrgQuotaMappingKeyConstant.Entity];
+  private get entity() {
+    return this._entity;
   }
 
-  private getApplicationInstanceLimit() {
-    if (this.getEntity().hasOwnProperty(OrgQuotaMappingKeyConstant.ApplicationInstanceLimit)) {
-      return this.getEntity()[OrgQuotaMappingKeyConstant.ApplicationInstanceLimit];
-    } else if (this.getEntity().hasOwnProperty(OrgQuotaMappingKeyConstant.ApplicationInstanceLimitShort)) {
-      return this.getEntity()[OrgQuotaMappingKeyConstant.ApplicationInstanceLimitShort];
+  private set entity(extEntity) {
+    if (extEntity === null || extEntity === undefined) {
+      this._entity = {
+        application_instance_limit: '(dummy)',
+        application_task_limit: '(dummy)',
+        instance_memory_limit: '(dummy)',
+        memory_limit: '(dummy)',
+        name: '(dummy)',
+        non_basic_services_allowed: '(dummy)',
+        total_private_domains: '(dummy)',
+        total_reserved_route_ports: '(dummy)',
+        total_routes: '(dummy)',
+        total_service_keys: '(dummy)',
+        total_services: '(dummy)',
+        trial_database_allowed: '(dummy)'
+      };
+    } else {
+      this._entity = extEntity;
     }
   }
 
-  private getApplicationTaskLimit() {
-    if (this.getEntity().hasOwnProperty(OrgQuotaMappingKeyConstant.ApplicationTaskLimit)) {
-      return this.getEntity()[OrgQuotaMappingKeyConstant.ApplicationTaskLimit];
-    } else if (this.getEntity().hasOwnProperty(OrgQuotaMappingKeyConstant.ApplicationTaskLimitShort)) {
-      return this.getEntity()[OrgQuotaMappingKeyConstant.ApplicationTaskLimitShort];
-    }
+  get guid() {
+    return this.metadata.guid;
   }
 
-  private getInstanceMemoryLimit() {
-    return this.getEntity()[OrgQuotaMappingKeyConstant.InstanceMemoryLimit];
+  get createdAt() {
+    return this.metadata.created_at;
   }
 
-  private getMemoryLimit() {
-    return this.getEntity()[OrgQuotaMappingKeyConstant.MemoryLimit];
+  get updatedAt() {
+    return this.metadata.updated_at;
   }
 
-  private getName() {
-    return this.getEntity()[OrgQuotaMappingKeyConstant.Name];
+  get url() {
+    return this.metadata.url;
   }
 
-  private getNonBasicServicesAllowed() {
-    return this.getEntity()[OrgQuotaMappingKeyConstant.NonBasicServicesAllowed];
+  get applicationInstanceLimit() {
+    return this.entity.application_instance_limit;
   }
 
-  private getTotalPrivateDomains() {
-    return this.getEntity()[OrgQuotaMappingKeyConstant.TotalPrivateDomains];
+  get applicationTaskLimit() {
+    return this.entity.application_task_limit;
   }
 
-  private getTotalReservedRoutePorts() {
-    return this.getEntity()[OrgQuotaMappingKeyConstant.TotalReservedRoutePorts];
+  get instanceMemoryLimit() {
+    return this.entity.instance_memory_limit;
   }
 
-  private getTotalRoutes() {
-    return this.getEntity()[OrgQuotaMappingKeyConstant.TotalRoutes];
+  get memoryLimit() {
+    return this.entity.memory_limit;
   }
 
-  private getTotalServiceKeys() {
-    return this.getEntity()[OrgQuotaMappingKeyConstant.TotalServiceKeys];
+  get name() {
+    return this.entity.name;
   }
 
-  private getTotalServices() {
-    return this.getEntity()[OrgQuotaMappingKeyConstant.TotalServices];
+  set name(nameParam: String) {
+    this.entity.name = nameParam;
   }
 
-  private getTrialDatabaseAllowed() {
-    if (this.getEntity().hasOwnProperty(OrgQuotaMappingKeyConstant.TrialDatabaseAllowed)) {
-      return this.getEntity()[OrgQuotaMappingKeyConstant.TrialDatabaseAllowed];
-    } else if (this.getEntity().hasOwnProperty(OrgQuotaMappingKeyConstant.TrialDatabaseAllowedShort)) {
-      return this.getEntity()[OrgQuotaMappingKeyConstant.TrialDatabaseAllowedShort];
-    }
+  get nonBasicServicesAllowed() {
+    return this.entity.non_basic_services_allowed;
   }
 
-  private getMetadata() {
-    return this.orgQuotaData[OrgQuotaMappingKeyConstant.Metadata];
+  get totalPrivateDomains() {
+    return this.entity.non_basic_services_allowed;
   }
 
-  private getCreatedAt() {
-    return this.getMetadata()[OrgQuotaMappingKeyConstant.CreatedAt];
+  get totalReservedRoutePorts() {
+    return this.entity.total_reserved_route_ports;
   }
 
-  private getId() {
-    if (this.getMetadata().hasOwnProperty(OrgQuotaMappingKeyConstant.Id)) {
-      return this.getMetadata()[OrgQuotaMappingKeyConstant.Id];
-    } else if (this.getMetadata().hasOwnProperty(OrgQuotaMappingKeyConstant.Guid)) {
-      return this.getMetadata()[OrgQuotaMappingKeyConstant.Guid];
-    }
+  get totalRoutes() {
+    return this.entity.total_routes;
   }
 
-  private getUpdatedAt() {
-    return this.getMetadata()[OrgQuotaMappingKeyConstant.UpdatedAt];
+  get totalServiceKeys() {
+    return this.entity.total_service_keys;
   }
 
-  private getUrl() {
-    return this.getMetadata()[OrgQuotaMappingKeyConstant.Url];
+  get totalServices() {
+    return this.entity.total_services;
+  }
+
+  get trialDatabaseAllowed() {
+    return this.entity.trial_database_allowed;
   }
 }

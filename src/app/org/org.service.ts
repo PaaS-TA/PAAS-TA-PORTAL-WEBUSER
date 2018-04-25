@@ -3,7 +3,7 @@ import {OrgURLConstant} from './org.constant';
 import {Organization, OrgSpace, OrgQuota} from '../model/organization';
 import {Injectable, Input} from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
-import { Observable, Subscription } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Observer} from "rxjs/Observer";
 
 
@@ -21,105 +21,86 @@ export class OrgService {
     const orgs: Array<Organization> = new Array<Organization>();
     const url = OrgURLConstant.URLOrgListAdminOnly;
 
-    const observable = this.common.doGET(url, this.getToken()).subscribe(data => {
-      const resources = data['resources'] as Array<Object>;
-      const length = resources.length;
-      this.logger.trace('orgs\' length is', length);
-      for (let i = 0; i < length; i++) {
-        orgs[i] = new Organization(resources[i]);
-        this.logger.trace(orgs[i]);
+    const observable = this.common.doGET(url, this.getToken());
+    observable.subscribe(data => {
+      if (data.hasOwnProperty('resources')) {
+        (data['resources'] as Array<Object>).forEach(orgData => {
+          const index =
+            orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
+          this.logger.trace('Org(', index, ') :', orgs[index]);
+        });
       }
-      isLoading = false;
       this.logger.debug('OrgList :', orgs);
     });
 
-    if (!isLoading) {
-      observable.unsubscribe();
-    }
     return orgs;
   }
 
   public getOrgList(): Array<Organization> {
-    let isLoading: Boolean = true;
-    const orgs: Array<Organization> = [];
-    const url: string = OrgURLConstant.URLOrgListUsingToken+'';
-    const observable = this.common.doGET(url, this.getToken()).subscribe(data => {
+    let orgs: Array<Organization> = [];
+    const url: string = OrgURLConstant.URLOrgListUsingToken + '';
+    const observable = this.common.doGET(url, this.getToken());
+    observable.subscribe(data => {
       if (data.hasOwnProperty('resources')) {
         (data['resources'] as Array<Object>).forEach(orgData => {
-          const index = orgs.push(new Organization(orgData)) - 1;
+          const index =
+            orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
           this.logger.trace('Org(', index, ') :', orgs[index]);
         });
-        isLoading = false;
-        this.logger.debug('OrgList :', orgs);
       }
+      this.logger.debug('OrgList :', orgs);
     });
-
-    if (!isLoading) {
-      console.log("로딩안함");
-      observable.unsubscribe();
-    }
 
     return orgs;
   }
 
   public getOrgSpaceList(orgId: string): Array<OrgSpace> {
-    let isLoading: Boolean = true;
     const spaces: Array<OrgSpace> = [];
     const url: string = OrgURLConstant.URLOrgSpaceInformationHead + orgId + OrgURLConstant.URLOrgSpaceInformationTail;
-    const observable = this.common.doGET(url, this.getToken()).subscribe(data => {
+    const observable = this.common.doGET(url, this.getToken());
+    observable.subscribe(data => {
       if (data.hasOwnProperty('spaceList')) {
         const spaceList = data['spaceList'];
         if (spaceList.hasOwnProperty('resources')) {
           (spaceList['resources'] as Array<Object>).forEach(spaceData => {
-            const index = spaces.push(new OrgSpace(spaceData)) - 1;
+            const index =
+              spaces.push(new OrgSpace(spaceData['metadata'], spaceData['entity'])) - 1;
             this.logger.trace('Org(', index, ') :', spaces[index]);
           });
         }
-        isLoading = false;
         this.logger.debug('OrgList :', spaces);
       }
     });
 
-    if (!isLoading) {
-      observable.unsubscribe();
-    }
     return spaces;
   }
 
   public getOrgQuota(orgId: string): OrgQuota {
-    let isLoading: Boolean = true;
     let quota: OrgQuota;
     const url: string = OrgURLConstant.URLOrgQuotaInformationHead + orgId + OrgURLConstant.URLOrgQuotaInformationTail;
-    const observable = this.common.doGET(url, this.getToken()).subscribe(quotaData => {
-      quota = new OrgQuota(quotaData);
-      isLoading = false;
+    const observable = this.common.doGET(url, this.getToken());
+    observable.subscribe(quotaData => {
+      quota = new OrgQuota(quotaData['metadata'], quotaData['entity']);
       this.logger.debug('OrgList :', quota);
     });
 
-    if (!isLoading) {
-      observable.unsubscribe();
-    }
     return quota;
   }
 
   public getOrgAvailableQuota(): Array<OrgQuota> {
-    let isLoading: Boolean = true;
     const quotas: Array<OrgQuota> = [];
-    const url: string = OrgURLConstant.URLOrgAvailableQuotas+'';
-    const observable = this.common.doGET(url, this.getToken()).subscribe(data => {
+    const url: string = OrgURLConstant.URLOrgAvailableQuotas + '';
+    const observable = this.common.doGET(url, this.getToken());
+    observable.subscribe(data => {
       if (data.hasOwnProperty('resources')) {
         (data['resources'] as Array<Object>).forEach(quotaData => {
-          const index = quotas.push(new OrgQuota(quotaData)) - 1;
+          const index = quotas.push(new OrgQuota(quotaData['metadata'], quotaData['entity'])) - 1;
           this.logger.trace('Org available quota(', index, ') :', quotas[index]);
         });
-        isLoading = false;
-        this.logger.debug('OrgAvailableQuotas :', quotas);
       }
+      this.logger.debug('OrgAvailableQuotas :', quotas);
     });
 
-    if (!isLoading) {
-      observable.unsubscribe();
-    }
     return quotas;
   }
 
@@ -128,8 +109,9 @@ export class OrgService {
     const orgs: Array<Organization> = [];
     const resources: Array<Object> = data.resources;
     this.logger.trace('orgs\' length is', resources.length);
+
     resources.forEach(orgData => {
-      const index = orgs.push(new Organization(orgData)) - 1;
+      const index = orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
       this.logger.trace(orgs[index]);
     });
 
@@ -140,7 +122,7 @@ export class OrgService {
     const data = this.getSampleOrgSpaceList();
     const spaces: Array<OrgSpace> = [];
     data.spaceList.resources.forEach(spaceData => {
-      const index = spaces.push(new OrgSpace(spaceData)) - 1;
+      const index = spaces.push(new OrgSpace(spaceData['metadata'], spaceData['entity'])) - 1;
       this.logger.trace(spaces[index]);
     });
 
@@ -149,7 +131,7 @@ export class OrgService {
 
   public getOrgQuotaSample(): OrgQuota {
     const data = this.getOrgQuotaSample();
-    const quota: OrgQuota = new OrgQuota(data);
+    const quota: OrgQuota = new OrgQuota(data['metadata'], data['entity']);
 
     return quota;
   }
@@ -346,22 +328,24 @@ export class OrgService {
     };
   }
 
-  public orgReName(org: Organization)
-  {
-    const url = OrgURLConstant.URLOrgSummaryInformationHead;
-    let isLoading: Boolean = true;
-    const observable = this.common.doPut(url+org.getId(),org.orgRename ,this.getToken()).subscribe(data => {
-      org.setName(data['entity']['name']);
-      console.log(data);
-      org.orgRename = '';
-    });
+  public renameOrg(org: Organization, wantedRename: String) {
+    const url = OrgURLConstant.URLOrgRequestBase;
+    const observable = this.common.doPut(url + org.guid,
+      wantedRename, this.getToken()).subscribe(data => {
+        //org.setName(data['entity']['name']);
+        const changedName = data['entity']['name'];
+        if (changedName === wantedRename) {
+          org.name = changedName;
+        }
+        console.log(data);
+      });
   }
 
-  public orgDelete(org : Organization)
-  {
-     const url = OrgURLConstant.URLOrgSummaryInformationHead;
-     this.common.doDelete(url+org.getId(), org.getName() ,this.getToken()).subscribe(data => {
-     console.log(data);
-     });
+  public deleteOrg(org: Organization) {
+    const url = OrgURLConstant.URLOrgRequestBase;
+    this.common.doDelete(url + org.guid,
+      org.name, this.getToken()).subscribe(data => {
+        console.log(data);
+      });
   }
 }

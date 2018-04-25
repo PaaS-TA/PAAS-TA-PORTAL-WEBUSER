@@ -9,7 +9,7 @@
       <a href="#"><h1><img src="../../assets/resources/images/main/logo.png" alt=""/></h1></a>
     </div>
     <span class="nav_toggle">
-            <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+            <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1">
             <label for="checkbox-1"></label>
         </span>
     <ul class="gnb clearfix">
@@ -20,7 +20,8 @@
     <ul class="right_nav">
       <li><!-- <a href="#" class="fas fa-user"></a> -->
         <div class="btn-group">
-          <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
           </button>
           <div id="r_user" class="dropdown-menu">
             <div class="">
@@ -28,7 +29,7 @@
               <dl>
                 <dt>
                   <i href="#" class="fas fa-user"></i>
-                  <img src="http://blog.jinbo.net/attach/615/200937431.jpg" alt="temp" />
+                  <img src="http://blog.jinbo.net/attach/615/200937431.jpg" alt="temp"/>
                 </dt>
                 <dd>
                   <p>홍길동</p>
@@ -47,7 +48,8 @@
       </li>
       <li>
         <div class="btn-group">
-          <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>3</span></button>
+          <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false"><span>3</span></button>
           <div id="bell" class="dropdown-menu">
             <div class="">
               <span class="dot"></span>
@@ -65,7 +67,8 @@
       </li>
       <li>
         <div id="globes" class="btn-group">
-          <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>
+          <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false"><i class="fas fa-caret-down"></i></button>
           <ul class="dropdown-menu">
             <li class="cur"><a href="#">Korean</a></li>
             <li><a href="#">English</a></li>
@@ -142,7 +145,8 @@
         <div class="col-md-2">
           <div class="account_left">
             <dl>
-              <dt><img src="https://post-phinf.pstatic.net/MjAxODAzMDVfMTgw/MDAxNTIwMjE2NDY0OTk4.cN9D63H7CpldxOjK4TEUs_knaak89GFsupYLzdW7Khgg.K8RPI6Ej247n0NX7DB47lZaosASz_iAJ2j9I023r33sg.JPEG/ALP_6823.jpg" />
+              <dt><img
+                src="https://post-phinf.pstatic.net/MjAxODAzMDVfMTgw/MDAxNTIwMjE2NDY0OTk4.cN9D63H7CpldxOjK4TEUs_knaak89GFsupYLzdW7Khgg.K8RPI6Ej247n0NX7DB47lZaosASz_iAJ2j9I023r33sg.JPEG/ALP_6823.jpg"/>
               </dt>
               <dd>
                 <button class="btns colors4">사진등록</button>
@@ -164,7 +168,8 @@
               <tr>
                 <td>이메일</td>
                 <th>{{user['userId']}}</th>
-                <td class="table_edit"><i class="fas fa-edit"></i><td>
+                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td>
               </tr>
               <tr class="on">
                 <td colspan="3">
@@ -172,7 +177,8 @@
                     <div class="account_table_in">
                                                 <span>새 이메일
                                                 </span>
-                      <input type="text" name= "usermgmtUserId" [(ngModel)]="user['userId']" ng-model-options="{ getterSetter: true }" />
+                      <input type="text" name="usermgmtUserId" [(ngModel)]="user['userId']"
+                             ng-model-options="{ getterSetter: true }"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw">인증하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
@@ -190,8 +196,9 @@
               </tr>
               <tr>
                 <td>비밀번호 변경</td>
-                <th> </th>
-                <td class="table_edit"><i class="fas fa-edit"></i><td>
+                <th></th>
+                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td>
               </tr>
               <tr class="on">
                 <td colspan="3">
@@ -200,7 +207,7 @@
                       <p>
                                                     <span>현재비밀번호
                                                     </span>
-                        <input type="text" />
+                        <input type="text"/>
                         <span class="red passred">
                                                         <span></span>
                                                         <i class="fas fa-exclamation-circle"></i>
@@ -210,13 +217,13 @@
                       <p>
                                                     <span>새 비밀번호
                                                     </span>
-                        <input type="text" />
+                        <input type="text"/>
                       </p>
                       <span>새 비밀번호 확인
                                                 </span>
-                      <input type="text" />
+                      <input type="text"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" >변경하기</button>
+                        <button class="btns6 colors4 btns_sw">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
@@ -244,7 +251,8 @@
               <tr>
                 <td>이름</td>
                 <th> {{user['userName']}}</th>
-                <td class="table_edit"><i class="fas fa-edit"></i><td>
+                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td>
               </tr>
               <tr class="on">
                 <td colspan="3">
@@ -252,9 +260,10 @@
                     <div class="account_table_in">
                                                 <span>변경할 이름
                                                 </span>
-                      <input type="text" name= "userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }" />
+                      <input type="text" name="userName" [(ngModel)]="user['userName']"
+                             ng-model-options="{ getterSetter: true }"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="usersave()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                     </div>
@@ -264,7 +273,8 @@
               <tr>
                 <td>전화번호</td>
                 <th>{{user['tellPhone']}}</th>
-                <td class="table_edit"><i class="fas fa-edit"></i><td>
+                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td>
               </tr>
               <tr class="on">
                 <td colspan="3">
@@ -272,9 +282,10 @@
                     <div class="account_table_in">
                                                 <span>새 전화번호
                                                 </span>
-                      <input type="text" name= "tellPhone" [(ngModel)]="user['tellPhone']" ng-model-options="{ getterSetter: true }" />
+                      <input type="text" name="tellPhone" [(ngModel)]="user['tellPhone']"
+                             ng-model-options="{ getterSetter: true }"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="usersave()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                     </div>
@@ -293,24 +304,8 @@
                 <col style='width: 30px;'>
               </colgroup>
               <tbody>
-              <tr>
-                <td>조직명이 들어갑니다.</td>
-                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
-              </tr>
-              <tr>
-                <td>조직명이 들어갑니다.</td>
-                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
-              </tr>
-              <tr>
-                <td>조직명이 들어갑니다.</td>
-                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
-              </tr>
-              <tr>
-                <td>조직명이 들어갑니다.</td>
-                <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
-              </tr>
-              <tr>
-                <td>조직명이 들어갑니다.</td>
+              <tr *ngFor="let org of orgs">
+                <td>{{org.name}}</td>
                 <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
               </tr>
               </tbody>
@@ -350,7 +345,7 @@
         <!-- body -->
         <div class="modal-body">
           <p class="account_modal_p">조직을 탈퇴하면 되돌릴 수 없습니다.<br/>
-            <span>testorg</span> 를  탈퇴하시겠습니까?
+            <span>testorg</span> 를 탈퇴하시겠습니까?
           </p>
         </div>
         <!-- Footer -->
@@ -380,7 +375,7 @@
             <p class="account_modal_p">계정 삭제를 선택 하면 모든 조직과 공간이 삭제 되며 되돌릴 수 없습니다.<br/>
               <span>test@test.com</span>을 삭제하시겠습니까?
             </p>
-            <input type="text" placeholder="이메일 입력" /><input type="text" placeholder="비밀번호 입력" />
+            <input type="text" placeholder="이메일 입력"/><input type="text" placeholder="비밀번호 입력"/>
             <p class="red"><i class="fas fa-exclamation-circle"></i> 비밀 번호가 일치하지 않습니다</p>
           </div>
         </div>
