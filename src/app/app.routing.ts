@@ -18,6 +18,7 @@ import {LogoutComponent} from './logout/logout.component';
 import { DashMainComponent } from "./dash/dash-main/dash-main.component";
 import { AppMainComponent } from "./dash/app-main/app-main.component";
 import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
+import {LoginComponent} from "./login/login.component";
 
 /*
 * Route 모듈 설정
@@ -25,6 +26,7 @@ import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
 
 const routes: Routes = [
   {path: '', component: IndexComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'app', component: CfAppComponent},
   {path: 'catalog', component: CatalogComponent},
   {path: 'dashboard', component: DashboardComponent},

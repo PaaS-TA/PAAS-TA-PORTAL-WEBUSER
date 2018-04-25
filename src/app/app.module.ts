@@ -40,6 +40,7 @@ import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
 import {UsermgmtService} from "./usermgmt/usermgmt.service";
 import {OrgService} from './org/org.service';
 import {CatalogService} from "./catalog/catalog.service";
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import {CatalogService} from "./catalog/catalog.service";
     LeftComponent,
     CallbackComponent,
     LogoutComponent,
-    UsermgmtComponent
+    UsermgmtComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),

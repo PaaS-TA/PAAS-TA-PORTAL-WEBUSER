@@ -24,6 +24,7 @@ const COOKIE_NAMES = {
 
 @Injectable()
 export class CommonService {
+  isLoginBtn = false;
   isLogin = false;
   headers: HttpHeaders;
   private gateway = '';
