@@ -9,7 +9,7 @@ import {appendChild} from '@angular/core/src/render3/node_manipulation';
 import {toBase64String} from '@angular/compiler/src/output/source_map';
 
 export const authConfig = {
-  clientId: 'portalclient',
+  clientId: 'localportalclient',
   clientSecret: 'clientsecret',
   redirectUri: window.location.origin + '/callback',
   scope: 'openid cloud_controller_service_permissions.read cloud_controller.read cloud_controller.write',

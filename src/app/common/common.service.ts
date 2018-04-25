@@ -10,7 +10,6 @@ import {NGXLogger} from 'ngx-logger';
 import {UaaSecurityService} from '../auth/uaa-security.service';
 
 
-
 const COOKIE_NAMES = {
   'cf_user_guid': 'cf_user_guid',
   'cf_user_id': 'cf_user_id',
@@ -27,7 +26,7 @@ const COOKIE_NAMES = {
 export class CommonService {
   isLogin = false;
   headers: HttpHeaders;
-
+  private gateway = '';
 
   constructor(private http: HttpClient, private log: NGXLogger) {
     this.headers = new HttpHeaders()
@@ -36,32 +35,41 @@ export class CommonService {
       .set('X-Broker-Api-Version', '2.4')
       .set('X-Requested-With', 'XMLHttpRequest');
 
+
+
+  }
+
+  doGetConfig(){
+    this.http.get('http://localhost/proxy.config.json').map(this.extractData).subscribe();
+  }
+
+  extractData(res: Response) {
+    let body = res.json();
+    console.log(body);
+    return body || {};
   }
 
   doGET(url, token: string) {
-    if(token) {
-    return this.http.get(url, {
+    return this.http.get(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token)
-    });
-    }return this.http.get(url, {
-      headers: this.headers
     });
   }
 
+
   doPost(url: string, body: any, token: string) {
-    return this.http.post(url, body, {
+    return this.http.post(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
 
   doPut(url: string, body: any, token: string) {
-    return this.http.put(url, body, {
+    return this.http.put(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
 
   doDelete(url: string, body: any, token: string) {
-    return this.http.delete(url, {
+    return this.http.delete(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
@@ -70,8 +78,6 @@ export class CommonService {
   signOut() {
     this.removeItems();
     window.sessionStorage.clear();
-    window.localStorage.clear();
-
   }
 
   private removeItems() {
@@ -86,20 +92,18 @@ export class CommonService {
   }
 
   public saveToken(token_type: string, token: string, refresh_token: string, expires_in: string, scope: string) {
-    // window.sessionStorage.setItem(COOKIE_NAMES['cf_token_type'], token_type);
-    // window.sessionStorage.setItem(COOKIE_NAMES['cf_token'], token);
-    // window.sessionStorage.setItem(COOKIE_NAMES['cf_refresh_token'], refresh_token);
-    // window.sessionStorage.setItem(COOKIE_NAMES['cf_scope'], scope);
-    window.localStorage.setItem(COOKIE_NAMES['cf_token'], token);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_token_type'], token_type);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_token'], token);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_refresh_token'], refresh_token);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_scope'], scope);
   }
 
 
   public saveUserInfo(cf_user_guid: string, cf_user_id: string, cf_user_email: string, cf_expires: string) {
-    // window.sessionStorage.setItem(COOKIE_NAMES['cf_user_guid'], cf_user_guid);
-    // window.sessionStorage.setItem(COOKIE_NAMES['cf_user_id'], cf_user_id);
-    // window.sessionStorage.setItem(COOKIE_NAMES['cf_user_email'], cf_user_email);
-    // window.sessionStorage.setItem(COOKIE_NAMES['cf_expires'], cf_expires);
-    window.localStorage.setItem(COOKIE_NAMES['cf_expires'], cf_expires);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_user_guid'], cf_user_guid);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_user_id'], cf_user_id);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_user_email'], cf_user_email);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_expires'], cf_expires);
   }
 
 
@@ -120,13 +124,12 @@ export class CommonService {
   }
 
   public getToken(): string {
-    //let cf_expires = sessionStorage.getItem(COOKIE_NAMES['cf_expires']);
-    let cf_expires = localStorage.getItem(COOKIE_NAMES['cf_expires']);
+    let cf_expires = sessionStorage.getItem(COOKIE_NAMES['cf_expires']);
     let now = new Date();
     // if (cf_expires < now.getTime()) {
     // this.uaa.doTokenRefresh();
     // }
-    return localStorage.getItem(COOKIE_NAMES['cf_token']);
+    return sessionStorage.getItem(COOKIE_NAMES['cf_token']);
   }
 
   public getRefreshToken(): string {

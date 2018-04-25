@@ -5,7 +5,7 @@ import {UaaSecurityService} from '../auth/uaa-security.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {DashboardService, OrgEntity} from './dashboard.service';
+import {DashboardService} from './dashboard.service';
 
 
 @Component({
@@ -17,30 +17,22 @@ import {DashboardService, OrgEntity} from './dashboard.service';
 
 export class DashboardComponent implements OnInit {
 
-  public orgEntities: Observable<any[]>;
-  private isLoading: boolean = false;
+
+  public userid: string;
+  public token: string;
 
   constructor(private commonService: CommonService, private dashboardService: DashboardService, private log: NGXLogger, private uaa: UaaSecurityService, router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
-    //this.doOrgEntities();
+    this.userid = this.commonService.getUserid();
+    this.token = this.commonService.getToken();
   }
 
   ngOnInit() {
 
   }
 
-
-  doOrgEntities() {
-
-    this.isLoading = true;
-    this.dashboardService.OrgEntities().subscribe(data => {
-      this.orgEntities = data;
-      this.isLoading = false;
-    });
-
-  }
 
 }
 

@@ -1,5 +1,4 @@
 import {IndexComponent} from './index/index.component';
-import {LoginComponent} from './login/login.component';
 import {RouterModule, Routes} from '@angular/router';
 import {CfAppComponent} from './cf-app/cf-app.component';
 import {CatalogComponent} from './catalog/catalog.component';
@@ -26,7 +25,6 @@ import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
 
 const routes: Routes = [
   {path: '', component: IndexComponent},
-  {path: 'login', component: LoginComponent},
   {path: 'app', component: CfAppComponent},
   {path: 'catalog', component: CatalogComponent},
   {path: 'dashboard', component: DashboardComponent},

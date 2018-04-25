@@ -1,23 +1,9 @@
 <div>
   <h1>Dashboard</h1>
-  <button (click)="doCheckToken()">doCheckToken</button>
 
 
-  <button (click)="observableTest()">observableTest()</button>
+  <span>{{userid}}</span>
+  <span>{{token}}</span>
 
-
-  <span *ngIf="isLoading"><h1>Loading.........</h1></span>
-
-  <!--<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>-->
-
-  <div *ngIf="!isLoading">
-
-
-    <div *ngFor="let item of orgEntities" style="border: 1px solid black;">
-      <span>{{item.name}}</span>
-    </div>
-
-
-  </div>
 
 </div>

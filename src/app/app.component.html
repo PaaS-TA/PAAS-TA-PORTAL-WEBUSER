@@ -1,26 +1,29 @@
-The content below is only a placeholder and can be replaced.
 <div class="contents">
   <div *ngIf="!isLogin">
-    <button routerLink="login">Login2</button>&nbsp;
-    <button routerLink="usermgmt">usermgmt</button>
-  </div>
-  <div *ngIf="isLogin">
-    <div>
-      <button routerLink="dashboard" id="space">Dashboard</button>
-      <button routerLink="log" >log</button>
-      <button routerLink="logout">Logout</button>&nbsp;
-      <button routerLink="org">org</button>
-      <button routerLink="usermgmt">usermgmt</button>
+    <div class="col-md-6 col-md-offset-3">
+      <h1>API Login</h1>
+      <div class="form-group">
+        <input type="text" class="form-control" name="username" [(ngModel)]="username"/>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" name="password" [(ngModel)]="password"/>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-outline-primary" (click)="Login(username,password)">API 로그인</button>&nbsp;&nbsp;
+        {{username}}
+      </div>
     </div>
 
-  <!--<div *ngIf="isLogin">-->
-    <!--<div>-->
-      <!--<button routerLink="dashboard" id="space">Dashboard</button>-->
-      <!--<button routerLink="log" >log</button>-->
-      <!--<button routerLink="logout">Logout</button>&nbsp;-->
+    <!--<div class="col-md-6 col-md-offset-3">-->
+    <!--<h1>Oauth Login</h1>-->
+    <!--<div class="form-group">-->
+    <!--<button class="btn btn-outline-primary" (click)="oAuthLogin()">oAuth 로그인</button>-->
+    <!--<br/><br/><br/>-->
     <!--</div>-->
-
+    <!--</div>-->
+  </div>
+  <div *ngIf="isLogin">
+    <router-outlet></router-outlet>
   </div>
 </div>
-<!-- <app-usermgmt></app-usermgmt>  -->
-<router-outlet></router-outlet>
+

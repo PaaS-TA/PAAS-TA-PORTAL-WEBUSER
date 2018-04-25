@@ -7,7 +7,6 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {CatalogComponent} from './catalog/catalog.component';
 import {DomainComponent} from './domain/domain.component';
 import {LogComponent} from './log/log.component';
-import {LoginComponent} from './login/login.component';
 import {MenuComponent} from './menu/menu.component';
 import {OrgComponent} from './org/org.component';
 import {ServiceComponent} from './service/service.component';
@@ -36,7 +35,6 @@ import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CommonService} from './common/common.service';
 
 import {DashModule} from './dash/dash.module';
-import {LoginService} from './login/login.service';
 import {OrgInnerComponent} from './org/org-inner/org-inner.component';
 import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
 import {UsermgmtService} from "./usermgmt/usermgmt.service";
@@ -51,7 +49,6 @@ import {CatalogService} from "./catalog/catalog.service";
     CatalogComponent,
     DomainComponent,
     LogComponent,
-    LoginComponent,
     MenuComponent,
     OrgComponent,
     OrgInnerComponent,
@@ -89,7 +86,7 @@ import {CatalogService} from "./catalog/catalog.service";
       serverLogLevel: NgxLoggerLevel.ERROR
     }), JsonpModule
   ],
-  providers: [CommonService, UaaSecurityService, DashboardService, LoginService, UsermgmtService, OrgService, CatalogService],
+  providers: [CommonService, UaaSecurityService, DashboardService, LoginService, UsermgmtService, OrgService],
   bootstrap: [AppComponent],
   exports: [],
 })

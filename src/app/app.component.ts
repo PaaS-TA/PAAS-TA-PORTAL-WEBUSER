@@ -13,19 +13,40 @@ import {NGXLogger} from 'ngx-logger';
 
 export class AppComponent {
   isLogin: boolean;
+  loading: boolean;
+  username: string;
+  password: string;
+  token: string;
+  user: object;
 
-
-  constructor(private common: CommonService, private router: Router, private log: NGXLogger) {
+  constructor(private common: CommonService, private router: Router, private log: NGXLogger, private uaa: UaaSecurityService) {
     if (common.getToken() == null) {
       common.isLogin = false;
-      this.isLogin  = false;
-
+      this.isLogin = false;
     } else {
       common.isLogin = true;
-      this.isLogin  = true;
+      this.isLogin = true;
+      router.navigate(['/dashMain']);
     }
   }
 
+
+  Login(username: string, password: string) {
+    this.loading = true;
+    let params = {id: this.username, password: this.password};
+    this.common.doPost('/portalapi/login', params, '').subscribe(data => {
+      this.loading = false;
+      this.common.isLogin = true;
+      this.common.saveToken(data['name'], data['token'], '', '', '');
+      this.isLogin = true;
+      this.router.navigate(['appMain']);
+      this.log.debug(data);
+    });
+  }
+
+  oAuthLogin() {
+    this.uaa.doAuthorization();
+  }
 
 }
 

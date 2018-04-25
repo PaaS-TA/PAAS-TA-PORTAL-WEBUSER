@@ -5,65 +5,13 @@ import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
 import 'rxjs/add/operator/map';
 import {Jsonp} from '@angular/http';
-import {forEach} from '@angular/router/src/utils/collection';
-import {getToken} from 'codelyzer/angular/styles/cssLexer';
 
 
-export class Orgs {
-  constructor(nextUrl: string,
-              previousUrl: string,
-              resources: {
-                entity: OrgEntity,
-                metadata: OrgMetadata
-              }) {
-  };
-}
-
-export class OrgEntity {
-  constructor(public applicationEventsUrl: string,
-              public auditorsUrl: string,
-              public billingEnabled: boolean,
-              public billingManagersUrl: string,
-              public defaultIsolationSegmentId: string,
-              public domainsUrl: string,
-              public isolationSegmentUrl: string,
-              public managersUrl: string,
-              public name: string,
-              public privateDomainsUrl: string,
-              public quotaDefinitionId: string,
-              public quotaDefinitionUrl: string,
-              public spaceQuotaDefinitionsUrl: string,
-              public spacesUrl: string,
-              public status: string,
-              public usersUrl: string) {
-  }
-}
-
-export class OrgMetadata {
-  constructor(createdAt: string,
-              id: string,
-              updatedAt: string,
-              url: string) {
-  }
-}
 
 @Injectable()
 export class DashboardService {
 
   constructor(private commonService: CommonService, private http: HttpClient, private log: NGXLogger, private jsonp: Jsonp) {
   }
-
-  headers: HttpHeaders;
-
-
-  OrgEntities() {
-    return this.commonService.doGET('/portalapi/v2/orgs', this.commonService.getToken()).map((res: Response) => {
-      let resources = res['resources'];
-      return resources.map(value => {
-        return value.entity;
-      });
-    }).do(console.log);
-  }
-
 }
 
