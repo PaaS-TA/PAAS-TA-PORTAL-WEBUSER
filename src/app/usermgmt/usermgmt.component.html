@@ -205,10 +205,9 @@
                   <div class="">
                     <div class="account_table_in">
                       <p>
-                                                    <span>현재비밀번호
-                                                    </span>
-                        <input type="text"/>
-                        <span class="red passred">
+                        <span>현재비밀번호</span>
+                        <input type="text" name="password" [(ngModel)]="password" ng-required="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
+                        <span class="red passred" use-form-error="isNotSame" *ngIf="password!=password">
                                                         <span></span>
                                                         <i class="fas fa-exclamation-circle"></i>
                                                         비밀 번호가 맞지 않습니다.
@@ -217,17 +216,17 @@
                       <p>
                                                     <span>새 비밀번호
                                                     </span>
-                        <input type="text"/>
+                        <input type="password" name="password_new" [(ngModel)]="password_new" ng-required ="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
                       </p>
                       <span>새 비밀번호 확인
                                                 </span>
-                      <input type="text"/>
+                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/" />
                       <div class="">
-                        <button class="btns6 colors4 btns_sw">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="userPassword()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
-                      <span class="red">
+                      <span class="red"  use-form-error="isNotSame" *ngIf=" password_new && password_confirm &&password_new!=password_confirm">
                                                     <i class="fas fa-exclamation-circle"></i>
                                                     입력한 비밀 번호와 다릅니다.
                                                 </span>
@@ -260,8 +259,7 @@
                     <div class="account_table_in">
                                                 <span>변경할 이름
                                                 </span>
-                      <input type="text" name="userName" [(ngModel)]="user['userName']"
-                             ng-model-options="{ getterSetter: true }"/>
+                      <input type="text" name="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
