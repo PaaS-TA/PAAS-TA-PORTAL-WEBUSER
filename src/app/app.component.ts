@@ -36,7 +36,8 @@ export class AppComponent {
     this.common.doPost('/portalapi/login', params, '').subscribe(data => {
       this.loading = false;
       this.common.isLogin = true;
-      this.common.saveToken(data['name'], data['token'], '', '', '');
+      this.common.saveUserInfo('',data['name'],'','');
+      this.common.saveToken('', data['token'], '', '', '');
       this.isLogin = true;
       this.router.navigate(['appMain']);
       this.log.debug(data);
