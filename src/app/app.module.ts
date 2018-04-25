@@ -75,12 +75,12 @@ import { LoginComponent } from './login/login.component';
     HttpClientModule,
     DashModule,
     LoadingModule.forRoot({
-      animationType: ANIMATION_TYPES.rectangleBounce,
-      backdropBackgroundColour: '#787878',
+      animationType: ANIMATION_TYPES.doubleBounce,
+      backdropBackgroundColour: 'rgba(0,0,0,0.1)',
       backdropBorderRadius: '4px',
-      primaryColour: '#EB0000',
-      secondaryColour: '#B2FA5C',
-      tertiaryColour: '#3296FF'
+      primaryColour: '#408c93',
+      secondaryColour: '#408c93',
+      tertiaryColour: '#408c93'
     }),
     LoggerModule.forRoot({
       serverLoggingUrl: '/ps/logs',

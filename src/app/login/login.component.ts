@@ -29,11 +29,12 @@ export class LoginComponent implements OnInit {
 
 
   Login() {
-
+    this.common.isLoading = true;
     console.log(this.username + " " + this.password);
     let params = {id: this.username, password: this.password};
     this.common.doPost('/portalapi/login', params, '').subscribe(data => {
       this.common.isLogin = true;
+      this.common.isLoading = false;
       this.common.saveUserInfo('', data['name'], '', '');
       this.common.saveToken('', data['token'], '', '', '');
       /*
@@ -41,8 +42,10 @@ export class LoginComponent implements OnInit {
        */
       this.go();
       this.log.debug(data);
+
     }, error => {
       this.error = true;
+      this.common.isLoading = false;
     });
   }
 

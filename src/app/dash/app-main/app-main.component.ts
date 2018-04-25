@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppMainService} from './app-main.service';
 import {Observable} from 'rxjs/Observable';
+import {CommonService} from "../../common/common.service";
 
-declare var $: any; declare var jQuery: any;
+declare var $: any;
+declare var jQuery: any;
 
 @Component({
   selector: 'app-app-main',
@@ -51,18 +53,20 @@ export class AppMainComponent implements OnInit {
   public sltEnvAddName: string;
   public sltEnvEditName: string;
 
-  constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService, private common: CommonService) {
+  }
 
   ngOnInit() {
     console.log("ngOnInit in~");
+    this.common.isLoading = true;
     $(document).ready(() => {
       //TODO 임시로...
-      $.getScript( "../../assets/resources/js/common2.js" )
-        .done(function( script, textStatus ) {
+      $.getScript("../../assets/resources/js/common2.js")
+        .done(function (script, textStatus) {
           //console.log( textStatus );
         })
-        .fail(function( jqxhr, settings, exception ) {
-          console.log( exception );
+        .fail(function (jqxhr, settings, exception) {
+          console.log(exception);
         });
     });
 
@@ -88,7 +92,7 @@ export class AppMainComponent implements OnInit {
     this.appMainService.getAppSummary(guid).subscribe(data => {
       this.appSummaryEntities = data;
       this.appRoutesEntities = data.routes;
-      this.isLoading = false;
+
 
       this.appSummaryName = data.name;
       this.appSummaryGuid = data.guid;
@@ -113,9 +117,9 @@ export class AppMainComponent implements OnInit {
       this.appSummaryDisk = data.disk_quota;
 
       //TODO instance, cpu, memory, disk 다구하고 밑에
-      $('.BG_wrap input').each( function(){
+      $('.BG_wrap input').each(function () {
         var BG_wrap = $(this).val();
-        $(this).parent().delay(500).animate({'top':- BG_wrap + '%'},800);
+        $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
         $(this).closest('dl').find("span.rights").html(BG_wrap);
       });
 
@@ -129,7 +133,7 @@ export class AppMainComponent implements OnInit {
       var uri = dataobj.host + "." + dataobj.domain.name;
 
       var obj = {
-        uri : uri
+        uri: uri
       };
       appRoutes.push(obj);
     });
@@ -139,7 +143,7 @@ export class AppMainComponent implements OnInit {
 
   getAppStats(guid: string) {
     this.appMainService.getAppStats(guid).subscribe(data => {
-      if(data) {
+      if (data) {
         this.appStatsEntities = data.instances;
 
         var cpu = 0;
@@ -196,23 +200,24 @@ export class AppMainComponent implements OnInit {
       uptime = (Math.round((dataobj.stats.uptime / 60) * Math.pow(10, 0)) / Math.pow(10, 0)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
       var obj = {
-        statusClass : statusClass,
-        statusText : statusText,
-        key : key,
-        cpu : cpu,
-        memory : memory,
-        disk : disk,
-        uptime : uptime
+        statusClass: statusClass,
+        statusText: statusText,
+        key: key,
+        cpu: cpu,
+        memory: memory,
+        disk: disk,
+        uptime: uptime
       };
       appStatus.push(obj);
     });
     this.appStatusEntities = appStatus;
+    this.common.isLoading = false;
   }
 
   instanceDirectInputClick() {
-    $(".a0001").attr("disabled","disabled");
+    $(".a0001").attr("disabled", "disabled");
     var instanceS = $(".instanceS").text();
-    $(".a0001").closest('dl').find("span.instanceS").html('<input class="instance_in" id="instance_in" type="text" value='+ instanceS +' />');
+    $(".a0001").closest('dl').find("span.instanceS").html('<input class="instance_in" id="instance_in" type="text" value=' + instanceS + ' />');
   }
 
   instanceDirectSaveClick() {
@@ -221,9 +226,9 @@ export class AppMainComponent implements OnInit {
   }
 
   memDirectInputClick() {
-    $(".a0002").attr("disabled","disabled");
+    $(".a0002").attr("disabled", "disabled");
     var memS = $(".memS").text();
-    $(".a0002").closest('dl').find("span.memS").html('<input class="instance_in" id="mem_in" type="text" value='+ memS +' />');
+    $(".a0002").closest('dl').find("span.memS").html('<input class="instance_in" id="mem_in" type="text" value=' + memS + ' />');
   }
 
   memDirectSaveClick() {
@@ -232,9 +237,9 @@ export class AppMainComponent implements OnInit {
   }
 
   diskDirectInputClick() {
-    $(".a0003").attr("disabled","disabled");
+    $(".a0003").attr("disabled", "disabled");
     var diskS = $(".diskS").text();
-    $(".a0003").closest('dl').find("span.diskS").html('<input class="instance_in" id="disk_in" type="text" value='+ diskS +' />');
+    $(".a0003").closest('dl').find("span.diskS").html('<input class="instance_in" id="disk_in" type="text" value=' + diskS + ' />');
   }
 
   diskDirectSaveClick() {
@@ -260,22 +265,22 @@ export class AppMainComponent implements OnInit {
     var diskChange = 0;
     var name = "";
 
-    if($(".instanceS").text() != '') {
+    if ($(".instanceS").text() != '') {
       instancesChange = $(".instanceS").text();
     } else {
       instancesChange = $("#instance_in").val();
     }
-    if($(".memS").text() != '') {
+    if ($(".memS").text() != '') {
       memoryChange = $(".memS").text();
     } else {
       memoryChange = $("#mem_in").val();
     }
-    if($(".diskS").text() != '') {
+    if ($(".diskS").text() != '') {
       diskChange = $(".diskS").text();
     } else {
       diskChange = $("#disk_in").val();
     }
-    if($(".tempTitle").val() != '') {
+    if ($(".tempTitle").val() != '') {
       name = $(".tempTitle").val();
     } else {
       name = "";
@@ -299,25 +304,25 @@ export class AppMainComponent implements OnInit {
     var appEnvName = "";
     var appEnvValue = "";
 
-    if(type == "add") {
-      for(var i=0; i < $("[id^='envEditId']").size(); i++) {
-        appEnvName = $("#envEditId"+i).val();
-        appEnvValue = $("#envEditData"+i).val();
+    if (type == "add") {
+      for (var i = 0; i < $("[id^='envEditId']").size(); i++) {
+        appEnvName = $("#envEditId" + i).val();
+        appEnvValue = $("#envEditData" + i).val();
         updateEnvironment[appEnvName] = appEnvValue;
       }
       appEnvName = $("#envAddId").val();
       appEnvValue = $("#envAddData").val();
       updateEnvironment[appEnvName] = appEnvValue;
-    } else if(type == "modify") {
-      for(var i=0; i < $("[id^='envEditId']").size(); i++) {
-        appEnvName = $("#envEditId"+i).val();
-        appEnvValue = $("#envEditData"+i).val();
+    } else if (type == "modify") {
+      for (var i = 0; i < $("[id^='envEditId']").size(); i++) {
+        appEnvName = $("#envEditId" + i).val();
+        appEnvValue = $("#envEditData" + i).val();
         updateEnvironment[appEnvName] = appEnvValue;
       }
-    } else if(type == "delete") {
-      for(var i=0; i < $("[id^='envEditId']").size(); i++) {
-        appEnvName = $("#envEditId"+i).val();
-        appEnvValue = $("#envEditData"+i).val();
+    } else if (type == "delete") {
+      for (var i = 0; i < $("[id^='envEditId']").size(); i++) {
+        appEnvName = $("#envEditId" + i).val();
+        appEnvValue = $("#envEditData" + i).val();
         updateEnvironment[appEnvName] = appEnvValue;
       }
 
@@ -342,7 +347,7 @@ export class AppMainComponent implements OnInit {
 
       var appEvents = [];
       $.each(data.resources, function (key, dataobj) {
-        if(dataobj.entity.type == "app.cras") {
+        if (dataobj.entity.type == "app.cras") {
           dataobj.entity.metadata.request = "app:CRASHED";
         } else if (dataobj.entity.type == "audit.app.restage") {
           dataobj.entity.metadata.request = "app:RESTAGE";
@@ -366,11 +371,11 @@ export class AppMainComponent implements OnInit {
         }
 
         var obj = {
-          iconClass : iconClass,
-          date : dataobj.metadata.created_at.replace('T', '  ').replace('Z', ''),
-          type : dataobj.entity.type,
-          actor_name : dataobj.entity.actor_name,
-          requestText : requestText
+          iconClass: iconClass,
+          date: dataobj.metadata.created_at.replace('T', '  ').replace('Z', ''),
+          type: dataobj.entity.type,
+          actor_name: dataobj.entity.actor_name,
+          requestText: requestText
         };
         appEvents.push(obj);
       });
@@ -390,8 +395,8 @@ export class AppMainComponent implements OnInit {
         var appUserEnv = [];
         $.each(data.environment_json, function (eventID, eventData) {
           var obj = {
-            eventID : eventID,
-            eventData : eventData
+            eventID: eventID,
+            eventData: eventData
           };
           appUserEnv.push(obj);
         });
@@ -419,8 +424,7 @@ export class AppMainComponent implements OnInit {
   }
 
   statsResrtartClick(index) {
-    let params = {
-    };
+    let params = {};
     this.appMainService.terminateInstance(this.appGuid, index, params).subscribe(data => {
       // window.location.reload();
       this.ngOnInit();
@@ -428,15 +432,15 @@ export class AppMainComponent implements OnInit {
   }
 
   showEditEnvClick(index) {
-    $("#DLid"+index).show();
+    $("#DLid" + index).show();
   }
 
   hideEditEnvClick(index) {
-    $("#DLid"+index).hide();
+    $("#DLid" + index).hide();
   }
 
   showPopEnvEditClick(index) {
-    this.sltEnvEditName = $("#envEditId"+index).val();
+    this.sltEnvEditName = $("#envEditId" + index).val();
     $("#layerpop_env_edit").modal("show");
   }
 

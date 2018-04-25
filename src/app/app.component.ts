@@ -13,22 +13,13 @@ import {NGXLogger} from 'ngx-logger';
 
 export class AppComponent {
 
-  loading: boolean;
-  username: string;
-  password: string;
-  token: string;
-  user: object;
-  error: boolean;
 
   constructor(public common: CommonService, private router: Router, private log: NGXLogger, private uaa: UaaSecurityService) {
 
   }
 
   ngOnInit() {
-    //this.router.navigate(['index']);
   }
-
-
 
 }
 
