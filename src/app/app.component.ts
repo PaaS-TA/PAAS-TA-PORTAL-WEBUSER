@@ -26,7 +26,6 @@ export class AppComponent {
     } else {
       common.isLogin = true;
       this.isLogin = true;
-      router.navigate(['/dashMain']);
     }
   }
 

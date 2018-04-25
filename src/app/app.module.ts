@@ -86,7 +86,7 @@ import {CatalogService} from "./catalog/catalog.service";
       serverLogLevel: NgxLoggerLevel.ERROR
     }), JsonpModule
   ],
-  providers: [CommonService, UaaSecurityService, DashboardService, LoginService, UsermgmtService, OrgService],
+  providers: [CommonService, UaaSecurityService, DashboardService,  UsermgmtService, OrgService],
   bootstrap: [AppComponent],
   exports: [],
 })
