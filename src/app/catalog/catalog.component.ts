@@ -1,5 +1,5 @@
-import {Component, OnInit, AfterViewChecked} from '@angular/core';
-import {CatalogService, Development, Template} from "./catalog.service";
+import {Component, OnInit} from '@angular/core';
+import {CatalogService,} from "./catalog.service";
 import {NGXLogger} from 'ngx-logger';
 declare var $: any; declare var jQuery: any;
 @Component({
