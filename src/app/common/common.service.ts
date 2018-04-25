@@ -10,6 +10,7 @@ import {NGXLogger} from 'ngx-logger';
 import {UaaSecurityService} from '../auth/uaa-security.service';
 
 
+
 const COOKIE_NAMES = {
   'cf_user_guid': 'cf_user_guid',
   'cf_user_id': 'cf_user_id',
@@ -34,14 +35,18 @@ export class CommonService {
       .set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==')
       .set('X-Broker-Api-Version', '2.4')
       .set('X-Requested-With', 'XMLHttpRequest');
+
   }
 
   doGET(url, token: string) {
+    if(token) {
     return this.http.get(url, {
       headers: this.headers.set('cf-Authorization', token)
     });
+    }return this.http.get(url, {
+      headers: this.headers
+    });
   }
-
 
   doPost(url: string, body: any, token: string) {
     return this.http.post(url, body, {
@@ -65,6 +70,8 @@ export class CommonService {
   signOut() {
     this.removeItems();
     window.sessionStorage.clear();
+    window.localStorage.clear();
+
   }
 
   private removeItems() {
@@ -79,18 +86,20 @@ export class CommonService {
   }
 
   public saveToken(token_type: string, token: string, refresh_token: string, expires_in: string, scope: string) {
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_token_type'], token_type);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_token'], token);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_refresh_token'], refresh_token);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_scope'], scope);
+    // window.sessionStorage.setItem(COOKIE_NAMES['cf_token_type'], token_type);
+    // window.sessionStorage.setItem(COOKIE_NAMES['cf_token'], token);
+    // window.sessionStorage.setItem(COOKIE_NAMES['cf_refresh_token'], refresh_token);
+    // window.sessionStorage.setItem(COOKIE_NAMES['cf_scope'], scope);
+    window.localStorage.setItem(COOKIE_NAMES['cf_token'], token);
   }
 
 
   public saveUserInfo(cf_user_guid: string, cf_user_id: string, cf_user_email: string, cf_expires: string) {
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_user_guid'], cf_user_guid);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_user_id'], cf_user_id);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_user_email'], cf_user_email);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_expires'], cf_expires);
+    // window.sessionStorage.setItem(COOKIE_NAMES['cf_user_guid'], cf_user_guid);
+    // window.sessionStorage.setItem(COOKIE_NAMES['cf_user_id'], cf_user_id);
+    // window.sessionStorage.setItem(COOKIE_NAMES['cf_user_email'], cf_user_email);
+    // window.sessionStorage.setItem(COOKIE_NAMES['cf_expires'], cf_expires);
+    window.localStorage.setItem(COOKIE_NAMES['cf_expires'], cf_expires);
   }
 
 
@@ -111,12 +120,13 @@ export class CommonService {
   }
 
   public getToken(): string {
-    let cf_expires = sessionStorage.getItem(COOKIE_NAMES['cf_expires']);
+    //let cf_expires = sessionStorage.getItem(COOKIE_NAMES['cf_expires']);
+    let cf_expires = localStorage.getItem(COOKIE_NAMES['cf_expires']);
     let now = new Date();
     // if (cf_expires < now.getTime()) {
     // this.uaa.doTokenRefresh();
     // }
-    return sessionStorage.getItem(COOKIE_NAMES['cf_token']);
+    return localStorage.getItem(COOKIE_NAMES['cf_token']);
   }
 
   public getRefreshToken(): string {
