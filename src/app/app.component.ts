@@ -43,7 +43,12 @@ export class AppComponent {
       this.common.saveUserInfo('', data['name'], '', '');
       this.common.saveToken('', data['token'], '', '', '');
       this.isLogin = true;
-      this.router.navigate(['appMain']);
+
+      /*
+      * 임시 나중에 지워야함
+       */
+      let params = {name:  'github-test-app', guid: '80dd102d-8068-4997-b518-c3f04bcdd00f'};
+      this.router.navigate(['appMain'], {queryParams : params});
       this.log.debug(data);
     }, error => {
       this.error = true;

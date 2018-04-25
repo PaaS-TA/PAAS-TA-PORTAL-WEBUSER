@@ -16,7 +16,7 @@ export class DashMainComponent implements OnInit {
   }
 
   gotoAppMain(name: string, guid: string) {
-    let params = {name:  'github-test-app', guid: '80dd102d-8068-4997-b518-c3f04bcdd00f'};
+    let params = {name: name, guid: guid};
     this.router.navigate(['appMain'], {queryParams : params});
   }
 
