@@ -83,28 +83,28 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-  userPassword() {
-    let params = {userId: this.user['userId'],
-                  password: this.password,
-                  password_new : this.password_new ,
-                  paasword_confrim : this.paasword_confrim};
-    this.userMgmtService.userPassword(this.common.getUserid(), params,'').subscribe(data => {
-      this.password=null;
-      this.password_new= null;
-
-      if(this.password!=null) {
-        this.password = data.getParameter('password');
-      };
-      if (this.password_new!=null){
-        this.password_new = data.getParameter('password_new');
-      };
-
-      if(this.password_new && this.password_confirm !== this.password) return{
-        validateEqual : false
-      }
-      return null
-    });
-  }
+  // userPassword() {
+  //   let params = {userId: this.user['userId'],
+  //                 password: this.password,
+  //                 password_new : this.password_new ,
+  //                 paasword_confrim : this.paasword_confrim};
+  //   this.userMgmtService.userPassword(this.common.getUserid(), params,'').subscribe(data => {
+  //     this.password=null;
+  //     this.password_new= null;
+  //
+  //     if(this.password!=null) {
+  //       this.password = data.getParameter('password');
+  //     };
+  //     if (this.password_new!=null){
+  //       this.password_new = data.getParameter('password_new');
+  //     };
+  //
+  //     if(this.password_new && this.password_confirm !== this.password) return{
+  //       validateEqual : false
+  //     }
+  //     return null
+  //   });
+  // }
 
   // authResetPassword(usesrname){
   //   let params = {userName: this.user['userName'], password: this.password};
