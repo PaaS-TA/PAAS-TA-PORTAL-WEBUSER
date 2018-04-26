@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.error = false;
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    console.log(this.common.getToken());
     if (this.common.getToken() != null) {
       this.doGo();
     }
@@ -32,11 +31,12 @@ export class LoginComponent implements OnInit {
 
 
   apiLogin() {
+    this.common.isLoading = true;
     let isLogin = this.loginService.apiLogin(this.username, this.password).subscribe(data => {
       this.common.isLoading = false;
+      this.log.debug(data);
       this.doGo();
     }, error => {
-      console.log(error);
       this.error = true;
       this.common.isLoading = false;
     });
