@@ -26,6 +26,7 @@ export enum OrgURLConstant {
   URLOrgAvailableQuotas = '/portalapi/v2/orgs/quota-definitions'
 }
 
+/*
 export enum OrgMappingKeyConstant {
   // metadata
   Metadata = 'metadata',
@@ -122,3 +123,4 @@ export enum OrgQuotaMappingKeyConstant {
   TrialDatabaseAllowedShort = 'trial_db_allowed',
 
 }
+*/

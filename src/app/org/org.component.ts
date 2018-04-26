@@ -15,8 +15,12 @@ declare var $: any; declare var jQuery: any;
 })
 export class OrgComponent implements OnInit, DoCheck, AfterContentChecked, AfterViewChecked {
   orgs: Array<Organization>;
+  
+  //currentOrg: Organization = null;
+  private currentOrgIndex: number;
 
   private doAttachEvent: Boolean = false;
+  private elapsedAttachTime: Number;
   private doSortOrgs: Boolean = false;
 
   constructor(private common: CommonService,
@@ -42,19 +46,6 @@ export class OrgComponent implements OnInit, DoCheck, AfterContentChecked, After
       this.doSortOrgs = true;
 
       this.orgs = this.orgs.sort((orgA, orgB) => this.sortCompareTo<Organization>(orgA, orgB));
-
-      const orgId = this.orgs[0].guid;
-      const orgSpaces = orgService.getOrgSpaceList(orgId);
-      const orgQuota = orgService.getOrgQuota(orgId);
-      const orgAvailableQuota = orgService.getOrgAvailableQuota();
-
-      /*
-      this.logger.debug('orgs[0] :', this.orgs[0]);
-      this.logger.debug('Org id of orgs[0] :', orgId);
-      this.logger.debug('- org spaces :', orgSpaces);
-      this.logger.debug('- org quota :', orgQuota);
-      this.logger.debug('- org available quota :', orgAvailableQuota);
-      */
     }
   }
 
@@ -69,6 +60,9 @@ export class OrgComponent implements OnInit, DoCheck, AfterContentChecked, After
     logger.trace('do check attach click event');
   }
 
+  public test(logger = this.logger) {
+    logger.info('super test');
+  }
 
   private sortCompareTo<T>(objA: T, objB: T): number {
     const nameA = objA['name'];
@@ -83,27 +77,42 @@ export class OrgComponent implements OnInit, DoCheck, AfterContentChecked, After
   }
 
   attachDetailEvent() {
+    const scriptURL = '../../assets/resources/js/common2.js';
+    const selfCom = this;
     const logger = this.logger;
-    const orgService = this.orgService;
+
     if (this.doAttachEvent === false && this.orgs.length > 0) {
       // TODO : control directly using Angular, instead of common2.js and jQuery
       // ex) [AS-IS] $('.organization_sw').on('click', function() { ...... })  --->  [TO-BE] Angular
+      const startTime = Date.now();
 
-      $.getScript('../../assets/resources/js/common2.js')
+      $.ajaxSetup({async: false});
+      $.getScript(scriptURL)
         .done(function(script, textStatus) {
-          logger.trace(textStatus);
-        })
-        .fail(function(jqxhr, settings, exception) {
+          selfCom.doAttachEvent = true;
+          selfCom.elapsedAttachTime = (Date.now() - startTime);
+          logger.debug('Success to attach common2.js...', textStatus, ' / elapsed time :', this.elapsedAttachTime);
+        }).fail(function(jqxhr, settings, exception) {
           logger.error(exception);
-        }
-        );
-    }
+          selfCom.elapsedAttachTime = (Date.now() - startTime);
+          logger.error(
+            'It doesn\'t attach detail event :', this.doAttachEvent, ' / elapsed time :', this.elapsedAttachTime);
+        });
 
-    if (this.doAttachEvent === true) {
-
-      logger.trace('It attaches detail event : ' + this.doAttachEvent);
-    } else {
-      logger.trace('It doesn\'t attach detail event : ' + this.doAttachEvent);
+      if (this.doAttachEvent === true) {
+        logger.debug('It attaches detail event : ' + this.doAttachEvent);
+      }
+      $.ajaxSetup({async: true});  // rollback
     }
+  }
+
+  selectOrg(org: Organization, logger = this.logger) {
+    this.currentOrgIndex = this.orgs.indexOf(org);
+    this.orgs[this.currentOrgIndex].indexOfOrgs = this.currentOrgIndex;
+    logger.debug('orgs[' + this.currentOrgIndex + '] : ' + this.orgs[this.currentOrgIndex]);
+  }
+
+  get currentOrg() {
+    return this.orgs[this.currentOrgIndex];
   }
 }

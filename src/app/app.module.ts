@@ -36,11 +36,13 @@ import {CommonService} from './common/common.service';
 
 import {DashModule} from './dash/dash.module';
 import {OrgInnerComponent} from './org/org-inner/org-inner.component';
-import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
-import {UsermgmtService} from "./usermgmt/usermgmt.service";
+import {UsermgmtComponent} from './usermgmt/usermgmt.component';
+import {UsermgmtService} from './usermgmt/usermgmt.service';
 import {OrgService} from './org/org.service';
-import {CatalogService} from "./catalog/catalog.service";
-import { LoginComponent } from './login/login.component';
+import {CatalogService} from './catalog/catalog.service';
+import {LoginComponent} from './login/login.component';
+import {OrgQuotaService} from './org/org-quota.service';
+import {SpaceService} from './space/space.service';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,16 @@ import { LoginComponent } from './login/login.component';
       serverLogLevel: NgxLoggerLevel.ERROR
     }), JsonpModule
   ],
-  providers: [CommonService, UaaSecurityService, DashboardService,  UsermgmtService, OrgService, CatalogService],
+  providers: [
+    CommonService,
+    UaaSecurityService,
+    DashboardService,
+    UsermgmtService,
+    OrgService,
+    SpaceService,
+    OrgQuotaService,
+    CatalogService,
+  ],
   bootstrap: [AppComponent],
   exports: [],
 })
