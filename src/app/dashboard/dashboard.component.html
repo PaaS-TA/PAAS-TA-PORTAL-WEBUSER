@@ -35,8 +35,8 @@
               </dl>
             </div>
             <ul class="">
-              <li class="cur"><a href="#">내계정</a></li>
-              <li><a href="#">조직관리</a></li>
+              <li class="cur"><a [routerLink]="['../usermgmt']">내계정</a></li>
+              <li><a [routerLink]="['../org']">조직관리</a></li>
               <li><a href="#">사용량조회</a></li>
             </ul>
             <p class="log_out">로그아웃</p>
@@ -108,7 +108,7 @@
   <div class="space_wrap">
     <div class="space_alert_img"><img src="../resources/images/space/alert.gif" alt=""/></div>
     <div class="space_title2">대시보드가 비어 있습니다.</div>
-    <div class="space_txt">조직 및 공간이 생성되지 않았습니다. <br><span><em><a href="#">조직관리</a></em></span>로 이동하여 조직 및 공간을 생성하십시오.</div>
+    <div class="space_txt">조직 및 공간이 생성되지 않았습니다. <br><span><em><a [routerLink]="['../org']">조직관리</a></em></span>로 이동하여 조직 및 공간을 생성하십시오.</div>
   </div>
   <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
 </div>
