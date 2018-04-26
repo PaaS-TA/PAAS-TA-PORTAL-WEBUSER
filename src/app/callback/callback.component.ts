@@ -8,31 +8,33 @@ import {CommonService} from '../common/common.service';
 @Component({
   selector: 'app-callback',
   template: `
-    <div class="col-md-6 col-md-offset-3">
-      <div>loading....</div>      
-    </div>
   `,
   styles: []
 })
 export class CallbackComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private commonService: CommonService, private uaa: UaaSecurityService, private log: NGXLogger) {
-    route.queryParams.subscribe(params => {
-      if (params != null) {
-        if (params['error'] != null) {
-          this.log.debug('Error');
-          this.router.navigate(['/login']);
-        } else {
-          if (this.commonService.getToken() == null) {
+    this.log.debug('callback');
+    this.commonService.isLoading = true;
+
+    if (this.commonService.getToken() != null) {
+      this.uaa.doUserInfo();
+    } else {
+      route.queryParams.subscribe(params => {
+        this.commonService.isLoading = false;
+        if (params != null) {
+          if (params['error'] != null) {
+            this.router.navigate(['/login']);
+          } else {
             this.log.debug('Non Error');
             authConfig.code = params.code;
             this.uaa.doToken();
           }
+        } else {
+          this.uaa.doAuthorization();
         }
-      } else {
-        this.uaa.doAuthorization();
-      }
-    });
+      });
+    }
   }
 
   ngOnInit() {

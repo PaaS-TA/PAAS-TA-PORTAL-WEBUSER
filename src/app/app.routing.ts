@@ -15,10 +15,11 @@ import {LogComponent} from './log/log.component';
 import {ModuleWithProviders} from '@angular/core';
 import {CallbackComponent} from './callback/callback.component';
 import {LogoutComponent} from './logout/logout.component';
-import { DashMainComponent } from "./dash/dash-main/dash-main.component";
-import { AppMainComponent } from "./dash/app-main/app-main.component";
+import {DashMainComponent} from "./dash/dash-main/dash-main.component";
+import {AppMainComponent} from "./dash/app-main/app-main.component";
 import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
 import {LoginComponent} from "./login/login.component";
+import {AuthGuard} from "./auth/auth.guard";
 
 /*
 * Route 모듈 설정
@@ -27,23 +28,24 @@ import {LoginComponent} from "./login/login.component";
 const routes: Routes = [
   {path: '', component: IndexComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'app', component: CfAppComponent},
-  {path: 'catalog', component: CatalogComponent},
-  {path: 'dashboard', component: DashboardComponent},
-  {path: 'domain', component: DomainComponent},
-  {path: 'log', component: LogComponent},
-  {path: 'menu', component: MenuComponent},
-  {path: 'org', component: OrgComponent},
-  {path: 'service', component: ServiceComponent},
-  {path: 'space', component: SpaceComponent},
-  {path: 'usage', component: UsageComponent},
-  {path: 'user', component: UserComponent},
-  {path: 'usermgmt', component: UsermgmtComponent},
-  {path: 'webideuser', component: WebIdeUserComponent},
   {path: 'callback', component: CallbackComponent},
-  {path: 'logout', component: LogoutComponent},
-  {path: 'dashMain', component: DashMainComponent},
-  {path: 'appMain', component: AppMainComponent}
+  {path: 'app', component: CfAppComponent, canActivate: [AuthGuard]},
+  {path: 'catalog', component: CatalogComponent, canActivate: [AuthGuard]},
+  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: 'domain', component: DomainComponent, canActivate: [AuthGuard]},
+  {path: 'log', component: LogComponent, canActivate: [AuthGuard]},
+  {path: 'menu', component: MenuComponent, canActivate: [AuthGuard]},
+  {path: 'org', component: OrgComponent, canActivate: [AuthGuard]},
+  {path: 'service', component: ServiceComponent, canActivate: [AuthGuard]},
+  {path: 'space', component: SpaceComponent, canActivate: [AuthGuard]},
+  {path: 'usage', component: UsageComponent, canActivate: [AuthGuard]},
+  {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
+  {path: 'usermgmt', component: UsermgmtComponent, canActivate: [AuthGuard]},
+  {path: 'webideuser', component: WebIdeUserComponent, canActivate: [AuthGuard]},
+
+  {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
+  {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},
+  {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]}
 ];
 
 export const RoutingModule: ModuleWithProviders = RouterModule.forRoot(routes);

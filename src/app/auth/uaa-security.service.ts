@@ -30,6 +30,7 @@ export class UaaSecurityService {
   }
 
   doAuthorization() {
+    this.log.debug('doAuthorization()');
     const params = {
       'response_type': 'code',
       'client_id': authConfig.clientId,
@@ -50,6 +51,7 @@ export class UaaSecurityService {
 
 
   doToken() {
+    this.log.debug('doToken()');
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -76,6 +78,7 @@ export class UaaSecurityService {
 
 
   doCheckToken() {
+    this.log.debug('doCheckToken()');
     const headers = new HttpHeaders()
       .append('Authorization', 'Basic ' + btoa(authConfig.clientId + ':' + authConfig.clientSecret))
       .append('Content-Type', 'application/x-www-form-urlencoded');
@@ -90,11 +93,36 @@ export class UaaSecurityService {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
     }).subscribe(data => {
-
-      this.commonService.saveUserInfo(data['user_id'], data['user_name'], data['email'], data['exp']);
-      this.router.navigate(['dashboard']);
+      this.commonService.saveUserInfo(data['user_id'], data['user_name'], data['name'], data['given_name'], data['family_name'],
+        data['email'], data['phone_number'], data['exp'], data['previous_logon_time']);
+      this.doUserInfo();
     });
   }
+
+  doUserInfo() {
+    this.log.debug('doUserInfo()');
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Bearer ' + this.commonService.getToken())
+      .append('Content-Type', 'application/x-www-form-urlencoded');
+
+    let checkUrl = authConfig.infoUrl;
+
+    this.http.get(checkUrl, {
+      headers: headers
+    }).retryWhen(error => {
+      return error.flatMap((error: any) => {
+        this.log.debug('Error :: ' + error.status);
+        return Observable.of(error.status).delay(1000);
+      }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
+    }).subscribe(data => {
+      this.log.debug(data);
+      this.commonService.saveUserInfo(data['user_id'], data['user_name'], data['name'], data['given_name'], data['family_name'],
+        data['email'], data['phone_number'], data['exp'], data['previous_logon_time']);
+      let params = {name: 'github-test-app', guid: '80dd102d-8068-4997-b518-c3f04bcdd00f'};
+      this.router.navigate(['appMain'], {queryParams: params});
+    });
+  }
+
 
   doTokenRefresh() {
     const headers = new HttpHeaders()

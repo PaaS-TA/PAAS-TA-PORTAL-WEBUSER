@@ -43,6 +43,8 @@ import {CatalogService} from './catalog/catalog.service';
 import {LoginComponent} from './login/login.component';
 import {OrgQuotaService} from './org/org-quota.service';
 import {SpaceService} from './space/space.service';
+import {LoginService} from "./login/login.service";
+import {AuthGuard} from "./auth/auth.guard";
 
 @NgModule({
   declarations: [
@@ -77,12 +79,13 @@ import {SpaceService} from './space/space.service';
     HttpClientModule,
     DashModule,
     LoadingModule.forRoot({
-      animationType: ANIMATION_TYPES.doubleBounce,
-      backdropBackgroundColour: 'rgba(0,0,0,0.1)',
-      backdropBorderRadius: '4px',
-      primaryColour: '#408c93',
-      secondaryColour: '#408c93',
-      tertiaryColour: '#408c93'
+      animationType: ANIMATION_TYPES.chasingDots,
+      backdropBackgroundColour: 'rgba(0,0,0,0.3)',
+      backdropBorderRadius: '14px',
+      fullScreenBackdrop: true,
+      primaryColour: '#bf8cff',
+      secondaryColour: '#46adbc',
+      tertiaryColour: '#6ce6ff'
     }),
     LoggerModule.forRoot({
       serverLoggingUrl: '/ps/logs',
@@ -91,7 +94,9 @@ import {SpaceService} from './space/space.service';
     }), JsonpModule
   ],
   providers: [
+    AuthGuard,
     CommonService,
+    LoginService,
     UaaSecurityService,
     DashboardService,
     UsermgmtService,

@@ -8,6 +8,7 @@ import {reject} from 'q';
 import {logger} from 'codelyzer/util/logger';
 import {NGXLogger} from 'ngx-logger';
 import {UaaSecurityService} from '../auth/uaa-security.service';
+import {Param} from "../login/login.component";
 
 
 const COOKIE_NAMES = {
@@ -38,10 +39,9 @@ export class CommonService {
       .set('X-Requested-With', 'XMLHttpRequest');
 
 
-
   }
 
-  doGetConfig(){
+  doGetConfig() {
     this.http.get('http://localhost/proxy.config.json').map(this.extractData).subscribe();
   }
 
@@ -52,10 +52,12 @@ export class CommonService {
   }
 
   doGET(url, token: string) {
-    if(token == null) {
+    if (token == null) {
       return this.http.get(this.gateway + url, {
-        headers: this.headers});
-    }return this.http.get(this.gateway + url, {
+        headers: this.headers
+      });
+    }
+    return this.http.get(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
@@ -104,11 +106,18 @@ export class CommonService {
   }
 
 
-  public saveUserInfo(cf_user_guid: string, cf_user_id: string, cf_user_email: string, cf_expires: string) {
+  public saveUserInfo(cf_user_guid: string, cf_user_id: string, cf_user_name: string, cf_given_name: string, cf_family_name: string,
+                      cf_user_email: string, cf_phone_number: string, cf_expires: string, cf_previous_logon_time: string) {
     window.sessionStorage.setItem(COOKIE_NAMES['cf_user_guid'], cf_user_guid);
     window.sessionStorage.setItem(COOKIE_NAMES['cf_user_id'], cf_user_id);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_username'], cf_user_name);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_given_name'], cf_given_name);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_family_name'], cf_family_name);
     window.sessionStorage.setItem(COOKIE_NAMES['cf_user_email'], cf_user_email);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_phone_number'], cf_phone_number);
     window.sessionStorage.setItem(COOKIE_NAMES['cf_expires'], cf_expires);
+    window.sessionStorage.setItem(COOKIE_NAMES['cf_previous_logon_time'], cf_previous_logon_time);
+
   }
 
 
@@ -147,6 +156,36 @@ export class CommonService {
 
   public getScope(): string {
     return sessionStorage.getItem(COOKIE_NAMES['cf_scope']);
+  }
+
+  private map: Param;
+
+
+  setUrl(url: string) {
+
+    if (url.indexOf('?') < 0) {
+      return url;
+    }
+    let paramStr = url.split('?');
+    return paramStr[0];
+  }
+
+  setParams(url: string) {
+    this.map = {};
+    if (url.indexOf('?') < 0) {
+      return this.map;
+    }
+    let paramStr = url.split('?')
+    if (paramStr.length > 0) {
+      paramStr = paramStr[1].split('&');
+      paramStr.forEach(value => {
+        let data = value.split('=');
+        if (data.length > 0) {
+          this.map[data[0].toString()] = data[1];
+        }
+      });
+    }
+    return this.map;
   }
 
 }

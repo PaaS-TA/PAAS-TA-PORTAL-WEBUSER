@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {UaaSecurityService} from "../auth/uaa-security.service";
 import {CommonService} from "../common/common.service";
 import {NGXLogger} from "ngx-logger";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {LoginService} from "./login.service";
 
 @Component({
   selector: 'app-login',
@@ -10,53 +11,62 @@ import {Router} from "@angular/router";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username: string;
-  password: string;
   error: boolean;
+  returnUrl: string;
+  public username: string;
+  public password: string;
 
-  constructor(public common: CommonService, private router: Router, private log: NGXLogger, private uaa: UaaSecurityService) {
+
+  constructor(public common: CommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger, private uaa: UaaSecurityService, private loginService: LoginService) {
+
   }
 
   ngOnInit() {
     this.error = false;
-    if (this.common.getToken() == null) {
-      this.common.isLogin = false;
-    } else {
-      this.common.isLogin = true;
-      this.go();
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    console.log(this.common.getToken());
+    if (this.common.getToken() != null) {
+      this.doGo();
     }
   }
 
 
-  Login() {
-    this.common.isLoading = true;
-    console.log(this.username + " " + this.password);
-    let params = {id: this.username, password: this.password};
-    this.common.doPost('/portalapi/login', params, '').subscribe(data => {
-      this.common.isLogin = true;
+  apiLogin() {
+    let isLogin = this.loginService.apiLogin(this.username, this.password).subscribe(data => {
       this.common.isLoading = false;
-      this.common.saveUserInfo('', data['name'], '', '');
-      this.common.saveToken('', data['token'], '', '', '');
-      /*
-      * 임시 나중에 지워야함
-       */
-      this.go();
-      this.log.debug(data);
-
+      this.doGo();
     }, error => {
+      console.log(error);
       this.error = true;
       this.common.isLoading = false;
     });
+
   }
+
 
   oAuthLogin() {
-    this.uaa.doAuthorization();
+    this.loginService.oAuthLogin();
   }
 
 
-  go() {
-    let params = {name: 'github-test-app', guid: '80dd102d-8068-4997-b518-c3f04bcdd00f'};
-    this.router.navigate(['appMain'], {queryParams: params});
+  reEnter(type: string) {
+    this.error = false;
   }
 
+
+  doGo() {
+    if (this.returnUrl == null || this.returnUrl == '/') {
+      let params = {name: 'github-test-app', guid: '80dd102d-8068-4997-b518-c3f04bcdd00f'};
+      this.router.navigate(['appMain'], {queryParams: params});
+    } else {
+      let params = this.common.setParams(this.returnUrl);
+      this.router.navigate([this.common.setUrl(this.returnUrl)], {queryParams: params});
+    }
+  }
+
+
+}
+
+export interface Param {
+  [name: string]: any;
 }
