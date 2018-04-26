@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CatalogService,} from "./catalog.service";
 import {NGXLogger} from 'ngx-logger';
-declare var $: any; declare var jQuery: any;
+
 @Component({
   selector: 'app-catalog',
   templateUrl: './catalog.component.html',
@@ -21,14 +21,6 @@ export class CatalogComponent implements OnInit {
 
   Search()  {
     this.catalogService.Search(this.searchKeyword);
-  }
-
-  KeywordClear(event)  {
-    if(event['relatedTarget'] !=null && event['relatedTarget']['name'] ==='button')
-    {
-      this.Search();
-    }
-    this.searchKeyword = '';
   }
 }
 
