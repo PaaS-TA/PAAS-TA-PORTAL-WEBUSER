@@ -71,7 +71,9 @@ export class UsermgmtComponent implements OnInit {
 
   userSave(){
     let params = {userName: this.user['userName'],
-                  tellPhone: this.user['tellPhone']};
+                  tellPhone: this.user['tellPhone'],
+                  zipCode: this.user['zipCode'],
+                  address: this.user['address']};
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
       if(data == 1){
         console.log('success');

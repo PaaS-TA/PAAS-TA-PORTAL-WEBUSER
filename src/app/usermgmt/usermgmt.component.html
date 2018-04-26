@@ -286,6 +286,50 @@
                   </div>
                 </td>
               </tr>
+              <tr>
+                <td>우편번호</td>
+                <th>{{user['zipCode']}}</th>
+                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td>
+              </tr>
+              <tr class="on">
+                <td colspan="3">
+                  <div class="">
+                    <div class="account_table_in">
+                                                <span>새 우편번호
+                                                </span>
+                      <input type="text" name="zipCode" [(ngModel)]="user['zipCode']"
+                             ng-model-options="{ getterSetter: true }"/>
+                      <div class="">
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
+                        <button class="btns6 colors5 btns_sw">취소</button>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>주소</td>
+                <th>{{user['address']}}</th>
+                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td>
+              </tr>
+              <tr class="on">
+                <td colspan="3">
+                  <div class="">
+                    <div class="account_table_in">
+                                                <span>새 주소
+                                                </span>
+                      <input type="text" name="address" [(ngModel)]="user['address']"
+                             ng-model-options="{ getterSetter: true }"/>
+                      <div class="">
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
+                        <button class="btns6 colors5 btns_sw">취소</button>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div>
