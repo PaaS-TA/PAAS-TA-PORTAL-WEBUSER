@@ -165,9 +165,9 @@
         <div class="col-md-12">
           <div class="input-group">
             <div class="input-group-btn">
-              <button name="button" class="btn" type="button" (click)="Search()"><i class="fas fa-search"></i></button>
+              <button name="button" class="btn" type="button"><i class="fas fa-search"></i></button>
             </div>
-            <input class="form-control" type="text" placeholder="Catalog Search" [(ngModel)]="searchKeyword" (keyup.enter)="Search()" (blur)="KeywordClear()"/>
+            <input class="form-control" type="text" placeholder="Catalog Search" [(ngModel)]="searchKeyword" (keyup.enter)="Search()" (blur)="KeywordClear($event)"/>
           </div>
         </div>
         <div class="">

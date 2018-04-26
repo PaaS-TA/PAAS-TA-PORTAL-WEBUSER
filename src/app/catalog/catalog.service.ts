@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from "ngx-logger";
+import strip_bom = require("strip-bom");
 
 @Injectable()
 export class CatalogService {
@@ -9,13 +10,14 @@ export class CatalogService {
   DEVELOPGET : string = this.COMMONAPI + this.V2_URL +'/developpacks';
   TEMPLATEGET : string = this.COMMONAPI + this.V2_URL + '/starterpacks';
   SEARCHGET : string = this.COMMONAPI + this.V2_URL + '/packs';
-  HISTORYGET : string = this.COMMONAPI + this.V2_URL + '/history';
+  HISTORYGET : string = this.COMMONAPI + this.V2_URL + '/history/';
 
-
+  userid : string;
   developments : Array<Development> = Array<Development>();
   templates : Array<Template> = Array<Template>();
   recentpacks : Array<Development|Template> = Array<Development|Template>();
   constructor(private common: CommonService, private log: NGXLogger) {
+    this.userid = "pch1234";
   }
 
   developInit()
@@ -26,8 +28,8 @@ export class CatalogService {
     this.common.doGET(this.TEMPLATEGET, null).subscribe(data =>{
         this.TemplateInit(data['list']);
     })
-    this.common.doGET(this.HISTORYGET, null).subscribe(data =>{
-     let lenght = data['list'].length < 4 ? data['list'].length : 4;
+    this.common.doGET(this.HISTORYGET+this.userid+'?searchKeyword=', null).subscribe(data =>{
+     let lenght = data['list'].length;
       for(let i =0; i < lenght; i++) {
         let dev = data['list'][i];
         this.recentpacks[i] = dev;
@@ -39,7 +41,15 @@ export class CatalogService {
 
   Search(searchKeyword : string)
   {
-      this.common.doGET(this.SEARCHGET+'?searchKeyword='+searchKeyword, null).subscribe(data => {this.DevelopmentInit(data['BuildPackList']); this.TemplateInit(data['TemplateList']);});
+    this.common.doGET(this.SEARCHGET+'?searchKeyword='+searchKeyword, null).subscribe(data => {this.DevelopmentInit(data['BuildPackList']); this.TemplateInit(data['TemplateList']);});
+    this.recentpacks = new Array<Development|Template>();
+    this.common.doGET(this.HISTORYGET+this.userid+'?searchKeyword='+searchKeyword, null).subscribe(data =>{
+      let lenght = data['list'].length;
+      for(let i =0; i < lenght; i++) {
+        let dev = data['list'][i];
+        this.recentpacks[i] = dev;
+        console.log(this.recentpacks[i]);
+      }})
   }
 
   DevelopmentInit(data : any)

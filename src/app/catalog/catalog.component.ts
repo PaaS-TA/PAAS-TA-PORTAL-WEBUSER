@@ -23,7 +23,11 @@ export class CatalogComponent implements OnInit {
     this.catalogService.Search(this.searchKeyword);
   }
 
-  KeywordClear()  {
+  KeywordClear(event)  {
+    if(event['relatedTarget'] !=null && event['relatedTarget']['name'] ==='button')
+    {
+      this.Search();
+    }
     this.searchKeyword = '';
   }
 }
