@@ -10,18 +10,20 @@ import {OrgURLConstant} from "../org/org.constant";
 @Injectable()
 export class UsermgmtService {
 
-  constructor(private http: HttpClient, private common: CommonService, private logger: NGXLogger, private orgService: OrgService,) {
+   constructor(private http: HttpClient, private common: CommonService,  private logger: NGXLogger, private orgService: OrgService,) {
+    console.log(this.common.getToken());
+    console.log(this.common.getUserid());
   }
 
-  userinfo(usernmae: string) {
-    return this.common.doGET('/commonapi/v2/user/' + usernmae, this.common.getToken()).map((res: Response) => {
+  userinfo(userId:string) {
+    return this.common.doGET('/commonapi/v2/user/' + userId, this.common.getToken()).map((res: Response) => {
       return res['User'];
     });
   }
 
   userSave(userId: string, param) {
-    return this.common.doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {
-      return res['result'];
+    return this.common.doPut('/commonapi/v2/user/' + userId, param ,this.common.getToken()).map((res: Response) => {
+        return res['result'];
     });
   }
 
