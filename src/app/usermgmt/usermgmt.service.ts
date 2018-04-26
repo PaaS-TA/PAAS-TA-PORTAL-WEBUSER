@@ -16,13 +16,13 @@ export class UsermgmtService {
   }
 
   userinfo(usernmae:string) {
-    return this.common.doGET('/commonapi/user/getUser/' + usernmae, this.common.getToken()).map((res: Response) => {
+    return this.common.doGET('/commonapi/v2/user/' + usernmae, this.common.getToken()).map((res: Response) => {
       return res['User'];
     });
   }
 
   userSave(userId: string, param) {
-    return this.common.doPut('/commonapi/user/updateUser/' + userId, param ,this.common.getToken()).map((res: Response) => {
+    return this.common.doPut('/commonapi/v2/user/' + userId, param ,this.common.getToken()).map((res: Response) => {
         return res['result'];
     });
   }
