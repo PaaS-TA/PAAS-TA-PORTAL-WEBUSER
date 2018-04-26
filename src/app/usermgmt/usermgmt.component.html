@@ -30,8 +30,8 @@
                   <img src="http://blog.jinbo.net/attach/615/200937431.jpg" alt="temp" />
                 </dt>
                 <dd>
-                  <p>홍길동</p>
-                  <p>test@test.com</p>
+                  <p>{{user['userName']}}</p>
+                  <p>{{user['userId']}}</p>
                 </dd>
               </dl>
             </div>
@@ -277,6 +277,50 @@
                                                 <span>새 전화번호
                                                 </span>
                       <input type="text" name="tellPhone" [(ngModel)]="user['tellPhone']"
+                             ng-model-options="{ getterSetter: true }"/>
+                      <div class="">
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
+                        <button class="btns6 colors5 btns_sw">취소</button>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>우편번호</td>
+                <th>{{user['zipCode']}}</th>
+                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td>
+              </tr>
+              <tr class="on">
+                <td colspan="3">
+                  <div class="">
+                    <div class="account_table_in">
+                                                <span>새 우편번호
+                                                </span>
+                      <input type="text" name="zipCode" [(ngModel)]="user['zipCode']"
+                             ng-model-options="{ getterSetter: true }"/>
+                      <div class="">
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
+                        <button class="btns6 colors5 btns_sw">취소</button>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>주소</td>
+                <th>{{user['address']}}</th>
+                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td>
+              </tr>
+              <tr class="on">
+                <td colspan="3">
+                  <div class="">
+                    <div class="account_table_in">
+                                                <span>새 주소
+                                                </span>
+                      <input type="text" name="address" [(ngModel)]="user['address']"
                              ng-model-options="{ getterSetter: true }"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
