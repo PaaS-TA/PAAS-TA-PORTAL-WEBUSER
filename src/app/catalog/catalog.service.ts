@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from "ngx-logger";
-import strip_bom = require("strip-bom");
 
 @Injectable()
 export class CatalogService {
