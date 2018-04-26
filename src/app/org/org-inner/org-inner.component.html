@@ -233,28 +233,33 @@
               <td>라우트</td>
               <td>서비스 인스턴트</td>
               <td>가격</td>
-              <td>인스턴트</td>
-              <td>인스턴트</td>
+              <td>앱 인스턴트</td>
+              <td>라우트 포트</td>
             </tr>
           </thead>
           <tbody>
             <!-- TODO -->
-            <tr class="cur"
-              style="border-bottom: 1px solid rgb(0, 170, 204); border-top-color: rgb(0, 170, 204); border-right-color: rgb(0, 170, 204); border-left-color: rgb(0, 170, 204);">
-              <td><input id="radio1" type="radio" name="radio1"
-                data-target="#layerpop7" data-toggle="modal" class="">
+            <tr *ngFor="let aquota of availableQuotas" 
+              [ngClass]="{'cur': isSelected(aquota)}"
+              class="org_quota" >
+              <td>
+              <input id="radio1" type="radio" name="radio1"
+                data-target="#layerpop7" data-toggle="modal"
+                checked=''
+                (click)="selectQuota($event, aquota)">
                 <label for="radio1"></label></td>
-              <td>기본</td>
-              <td>10G</td>
-              <td>무제한</td>
-              <td>100</td>
-              <td>100</td>
-              <td>무료</td>
-              <td>무제한</td>
-              <td>0</td>
+              <td quota-key="name">{{aquota.name}}</td>
+              <td quota-key="memory-limit">{{aquota.memoryLimit === -1 ? '무제한' : aquota.memoryLimit}}</td>
+              <td quota-key="instance-memory-limit">{{aquota.instanceMemoryLimit === -1 ? '무제한' : aquota.instanceMemoryLimit}}</td>
+              <td quota-key="routes">{{aquota.totalRoutes}}</td>
+              <td quota-key="service-instance">{{aquota.totalServices}}</td>
+              <td quota-key="price">{{aquota.isFree()? '무료' : '유료'}}</td>
+              <td quota-key="app-instances">{{aquota.applicationInstanceLimit}}</td>
+              <td quota-key="route-ports">{{aquota.totalReservedRoutePorts}}</td>
             </tr>
+            <!-- 
             <tr class=""
-              style="border-bottom: 1px solid rgb(231, 234, 236);">
+              style="">
               <td><input id="radio2" type="radio" name="radio1"
                 checked="" data-target="#layerpop7" data-toggle="modal">
                 <label for="radio2"></label></td>
@@ -267,6 +272,7 @@
               <td>무제한</td>
               <td>0</td>
             </tr>
+            -->
           </tbody>
         </table>
       </div>
@@ -785,5 +791,6 @@
       </div>
     </div>
   </div>
-  <button (click)="deleteOrg()">선택</button>
+  <!--  TODO : delete org -->
+  <!-- button (click)="deleteOrg()">선택</button -->
 </div>

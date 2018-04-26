@@ -6,7 +6,9 @@ import {CommonService} from '../common/common.service';
 import {OrgService} from './org.service';
 import {Organization} from '../model/organization';
 import {OrgInnerComponent} from './org-inner/org-inner.component';
-declare var $: any; declare var jQuery: any;
+
+declare var $: any;
+declare var jQuery: any;
 
 @Component({
   selector: 'app-org',
@@ -15,7 +17,7 @@ declare var $: any; declare var jQuery: any;
 })
 export class OrgComponent implements OnInit, DoCheck, AfterContentChecked, AfterViewChecked {
   orgs: Array<Organization>;
-  
+
   //currentOrg: Organization = null;
   private currentOrgIndex: number;
 
