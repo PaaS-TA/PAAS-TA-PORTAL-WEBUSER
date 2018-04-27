@@ -229,7 +229,7 @@
                 <p>이벤트</p>
                 <ul class="sortable_right"><!--
                                     <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
-                  <li onclick="location.href='dashboard_event.html'"><i class="fas fa-expand"></i></li>
+                  <li (click)="tabShowClick('tabContent_event')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
               <div class="table_wrap table_wraps">
@@ -279,7 +279,7 @@
                 <p>상태</p>
                 <ul class="sortable_right"><!--
                                     <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
-                  <li onclick="location.href='dashboard_state.html'"><i class="fas fa-expand"></i></li>
+                  <li (click)="tabShowClick('tabContent_stats')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
               <div class="table_wrap table_wraps">
@@ -324,7 +324,7 @@
               <div class="sortable_top">
                 <p>라우트</p>
                 <ul class="sortable_right"><!--<li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
-                  <li onclick="location.href='dashboard_lauth.html'"><i class="fas fa-expand"></i></li>
+                  <li (click)="tabShowClick('tabContent_route')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
               <div class="table_wrap table_wraps">
@@ -351,7 +351,7 @@
                                     <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
                                     <li><i class="fas fa-cog"></i></li> -->
                   <li class="bar" data-clipboard-action="cut" data-clipboard-target="#out_a"><i class="fas fa-clipboard"></i></li>
-                  <li onclick="location.href='dashboard_variable.html'"><i class="fas fa-expand"></i></li>
+                  <li (click)="tabShowClick('tabContent_env')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
               <div class="table_wrap table_wraps">
@@ -430,7 +430,7 @@
                 <p>이벤트</p>
                 <ul class="sortable_right">
                   <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
-                  <li onclick="location.href='dashboard.html'"><i class="fas fa-compress"></i></li>
+                  <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
                 </ul>
               </div>
               <div class="view_table_wrap">
@@ -490,7 +490,7 @@
                 <p>상태정보</p>
                 <ul class="sortable_right">
                   <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
-                  <li onclick="location.href='dashboard.html'"><i class="fas fa-compress"></i></li>
+                  <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
                 </ul>
               </div>
               <div class="view_table_wrap">
@@ -546,7 +546,8 @@
           </li>
         </ul>
       </div>
-
+      <div class="row two_line two_view" id="tabContent_service" style="display:none;">
+      </div>
       <div class="row two_line two_view" id="tabContent_env" style="display:none;">
         <ul class="maT30">
           <li>
@@ -554,7 +555,7 @@
               <div class="sortable_top">
                 <p>환경변수</p>
                 <ul class="sortable_right">
-                  <li onclick="location.href='dashboard.html'"><i class="fas fa-compress"></i></li>
+                  <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
                 </ul>
               </div>
               <div class="view_table_wrap service_wrap">
@@ -613,6 +614,55 @@
           </li>
         </ul>
       </div>
+      <div class="row two_line two_view" id="tabContent_route" style="display:none;">
+        <ul class="maT30">
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>라우트</p>
+                <ul class="sortable_right">
+                  <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
+                </ul>
+              </div>
+              <div class="view_table_wrap service_wrap">
+                <div class="service_title maT30">
+                  <div class="pull-right">
+                    <button class="btns btns_1 colors4 lauthOn"><i class="fas fa-plus"></i> 연결
+                    </button>
+                  </div>
+                  <h5>라우트</h5>
+                </div>
+                <div class="maT20 service_in">
+                  <dl class="lauth_dl">
+                    <dt><input type="text" id="routeAddHostName" placeholder="호스트 이름을 입력하여 주십시오" />
+                    </dt>
+                    <dd>
+                      <select id="selectBoxDomain" *ngFor="let item of appDomainsEntities">
+                        <option value="{{item.guid}}">
+                          {{item.name}}
+                        </option>
+                      </select>
+                    </dd>
+                    <dt>
+                      <button class="btns6 colors4" (click)="showPopAddRouteAddClick()">저장</button>
+                      <button class="btns6 colors5 lauthOn">취소</button>
+                    </dt>
+                  </dl>
+                </div>
+                <div class="">
+                  <ul class="lauth_ul" *ngFor="let item of appRoutesEntitiesRe">
+                    <li>
+                      {{item.uri}}
+                      <button class="btns2 colors5" data-target="#layerpop2" data-toggle="modal">연결해제</button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
     </div>
     <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
   </div>
@@ -687,6 +737,31 @@
         <!-- Footer -->
         <div class="modal-footer">
           <button type="button" class="btns2 colors4" (click)="delEnvClick()">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_route_add">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">라우트 추가</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>라우트 <span>{{sltRouteAddName}}</span> 를 추가하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="addRouteClick()">저장</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
