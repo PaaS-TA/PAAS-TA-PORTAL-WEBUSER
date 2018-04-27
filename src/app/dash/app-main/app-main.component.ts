@@ -426,6 +426,7 @@ export class AppMainComponent implements OnInit {
 
   addAppRoute() {
     let params = {
+      applicationId: this.appGuid,
       host: $("#routeAddHostName").val(),
       domainId: $("#selectBoxDomain").val(),
       spaceId: this.appSummarySpaceGuid
@@ -433,6 +434,7 @@ export class AppMainComponent implements OnInit {
     this.appMainService.addAppRoute(params).subscribe(data => {
       this.ngOnInit();
       $("[id^='layerpop']").modal("hide");
+      $(".service_dl,.lauth_dl").toggleClass("on");
     });
   }
 
