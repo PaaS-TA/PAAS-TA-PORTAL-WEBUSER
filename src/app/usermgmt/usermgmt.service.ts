@@ -27,15 +27,9 @@ export class UsermgmtService {
     });
   }
 
-  // userPassword(userId:string,param){
-  //   return this.common.doPut('/commonapi/v2/usermgnts/' + userId, param,this.common.getToken()).map((res: Response) => {
-  //     return res['result'];
-  //   });
-  // }
-
-  // authResetPassword(userId:string,param) {
-  //    return this.common.doPut(''+userId, param, this.common.getToken()).map((res:Response)=>{
-  //      return res['resultMap'];
+  // deleteOrg(org) {
+  //    return this.common.doDelete('/portalapi/v2/orgs/' + org.guid + org.name, this.common.getToken()).map((res: Response) => {
+  //      return res['result'];
   //    });
   // }
 

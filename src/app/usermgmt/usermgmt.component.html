@@ -164,29 +164,29 @@
               <tr>
                 <td>이메일</td>
                 <th>{{user['userId']}}</th>
-                <td class="table_edit"><i class="fas fa-edit"></i>
-                <td>
+                <!--<td class="table_edit"><i class="fas fa-edit"></i>-->
+                <!--<td>-->
               </tr>
               <tr class="on">
                 <td colspan="3">
                   <div class="">
-                    <div class="account_table_in">
-                                                <span>새 이메일
-                                                </span>
-                      <input type="text" name="usermgmtUserId" [(ngModel)]="user['userId']"
-                             ng-model-options="{ getterSetter: true }"/>
-                      <div class="">
-                        <button class="btns6 colors4 btns_sw">인증하기</button>
-                        <button class="btns6 colors5 btns_sw">취소</button>
-                      </div>
-                    </div>
-                    <div class="account_table_in maT10">
-                      <div class="">
-                        <button class="btns6 colors4">로그인</button>
-                      </div>
-                      <p>인증 이메일 발송 완료되었습니다. 이메일을 확인하시기 바랍니다.</p>
-                      <p class="red">5초 후 로그인 페이지로 이동합니다.</p>
-                    </div>
+                    <!--<div class="account_table_in">-->
+                                                <!--<span>새 이메일-->
+                                                <!--</span>-->
+                      <!--<input type="text" name="usermgmtUserId" [(ngModel)]="user['userId']"-->
+                             <!--ng-model-options="{ getterSetter: true }"/>-->
+                      <!--<div class="">-->
+                        <!--<button class="btns6 colors4 btns_sw">인증하기</button>-->
+                        <!--<button class="btns6 colors5 btns_sw">취소</button>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="account_table_in maT10">-->
+                      <!--<div class="">-->
+                        <!--<button class="btns6 colors4"[routerLink]="['../logout']">로그인</button>-->
+                      <!--</div>-->
+                      <!--<p>인증 이메일 발송 완료되었습니다. 이메일을 확인하시기 바랍니다.</p>-->
+                      <!--<p class="red">5초 후 로그인 페이지로 이동합니다.</p>-->
+                    <!--</div>-->
                   </div>
                 </td>
               </tr>
@@ -355,9 +355,9 @@
               </tr>
               </tfoot>
             </table>
-            <div class="text-right">
-              <button class="btns colors4"><i class="fas fa-angle-down"></i> 더 보기</button>
-            </div>
+            <!--<div class="text-right">-->
+              <!--<button class="btns colors4"><i class="fas fa-angle-down"></i> 더 보기</button>-->
+            <!--</div>-->
           </div>
           <div class="account_btn">
             <button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>
@@ -383,12 +383,12 @@
         <!-- body -->
         <div class="modal-body">
           <p class="account_modal_p">조직을 탈퇴하면 되돌릴 수 없습니다.<br/>
-            <span *ngFor="let org of orgs">{{org.name}}</span> 를 탈퇴하시겠습니까?
+            <span>{{org.name}}</span> 를 탈퇴하시겠습니까?
           </p>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="deleteOrg()">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>

@@ -21,12 +21,13 @@ declare var jQuery: any;
 export class UsermgmtComponent implements OnInit {
 
   public user: Observable<User>;
-  orgs: Array<Organization>;
+  public orgs: Array<Organization>;
   token: string;
   username: string;
   password: string;
   password_new : string;
   password_confirm : string;
+  name : string; //orgname
 
   // Angular에서 필요에 맞게 호출
   ngOnInit() {
@@ -42,6 +43,7 @@ export class UsermgmtComponent implements OnInit {
           console.log(exception);
         });
     });
+
   }
 
   // 이 부분은 Angular가 아닌 자바스크립트에서 실행
@@ -56,7 +58,6 @@ export class UsermgmtComponent implements OnInit {
     // this.userPassword();
 
     console.log("###Oauth Login Value### " + this.common.getUserid());
-
     this.token = '';
     this.orgs= orgService.getOrgList();
 
@@ -64,6 +65,7 @@ export class UsermgmtComponent implements OnInit {
 
   userInfo() {
       this.userMgmtService.userinfo(this.common.getUserid()).subscribe(data => {
+        console.log(data);
          this.user = data;
         return data;
     });
@@ -85,34 +87,13 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-  // userPassword() {
-  //   let params = {userId: this.user['userId'],
-  //                 password: this.password,
-  //                 password_new : this.password_new ,
-  //                 paasword_confrim : this.paasword_confrim};
-  //   this.userMgmtService.userPassword(this.common.getUserid(), params,'').subscribe(data => {
-  //     this.password=null;
-  //     this.password_new= null;
-  //
-  //     if(this.password!=null) {
-  //       this.password = data.getParameter('password');
-  //     };
-  //     if (this.password_new!=null){
-  //       this.password_new = data.getParameter('password_new');
-  //     };
-  //
-  //     if(this.password_new && this.password_confirm !== this.password) return{
-  //       validateEqual : false
-  //     }
-  //     return null
+  //  deleteOrg() {
+  //   let params = { name : this.orgs['name']};
+  //   this.userMgmtService.deleteOrg(this.common.getUserGuid(),params).subscribe(data => {
+  //     this.orgs= data;
+  //     console.log(data);
   //   });
   // }
 
-  // authResetPassword(usesrname){
-  //   let params = {userName: this.user['userName'], password: this.password};
-  //   this.userMgmtService.authResetPassword(this.common.getUserid(), params,'').subscribe(data => {
-  //
-  //   });
-  // }
 
 }
