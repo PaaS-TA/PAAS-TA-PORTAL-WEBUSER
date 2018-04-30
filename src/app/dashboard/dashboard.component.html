@@ -80,33 +80,33 @@
           <li>
             <div>
               <select id="">
-                <option value="" selected="selected">지역</option>
+                <option value="" selected="selected" name="area">지역</option>
               </select>
             </div>
           </li>
           <li>
             <div>
-              <select id="">
-                <option value="" selected="selected">생성된 조직명</option>
-                <option value=""></option>
+              <select id="org_space">
+                <option value="" selected="selected" name="org_space">생성된 조직명</option>
+                <option value="" *ngFor="let org of orgs">{{org.name}}</option>
               </select>
             </div>
           </li>
           <li>
             <div>
-              <select id="">
-                <option value="" selected="selected">해당 공간명</option>
-                <option value=""></option>
+              <select id="org_dev">
+                <option value="" selected="selected" name="org_dev">해당 공간명</option>
+                <option value="" *ngFor="let org of orgs">{{org.spaces}}</option>
               </select>
             </div>
           </li>
         </ul>
       </div>
-      <div class="space_btn1"><button class="btnspace colors4 "><img src="../resources/images/main/btn_icon.png" alt=""/>WEB IDE 사용</button></div>
+      <div class="space_btn1"><button class="btnspace colors4 "><img src="../../assets/resources/images/main/btn_icon.png" alt=""/>WEB IDE 사용</button></div>
     </div>
   </div>
   <div class="space_wrap">
-    <div class="space_alert_img"><img src="../resources/images/space/alert.gif" alt=""/></div>
+    <div class="space_alert_img"><img src="../../assets/resources/images/space/alert.gif" alt=""/></div>
     <div class="space_title2">대시보드가 비어 있습니다.</div>
     <div class="space_txt">조직 및 공간이 생성되지 않았습니다. <br><span><em><a [routerLink]="['../org']">조직관리</a></em></span>로 이동하여 조직 및 공간을 생성하십시오.</div>
   </div>
