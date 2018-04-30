@@ -3,8 +3,8 @@ import {OrgQuota} from '../../model/org-quota';
 import {Organization} from '../../model/organization';
 import {Space} from '../../model/space';
 import {SpaceService} from '../../space/space.service';
-import {OrgQuotaService} from '../org-quota.service';
-import {OrgService} from '../org.service';
+import {OrgQuotaService} from '../common/org-quota.service';
+import {OrgService} from '../common/org.service';
 import {Component, OnInit, Input, Output, EventEmitter, AfterContentChecked} from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
 
@@ -18,8 +18,9 @@ declare var jQuery: any;
     // Is this needed really?
     // '../../../assets/resources/css/common.css',
     // '../../../assets/resources/css/normalize.css',
-    '../org.component.css',
-    './org-inner.component.css']
+    '../common/org.component.css',
+    './org-inner.component.css',
+  ],
 })
 export class OrgInnerComponent implements OnInit, AfterContentChecked {
   @Input('org') org: Organization;

@@ -1,8 +1,8 @@
-import {CommonService} from '../common/common.service';
+import {CommonService} from '../../common/common.service';
 import {OrgURLConstant} from './org.constant';
-import {Organization} from '../model/organization';
-import {OrgQuota} from '../model/org-quota';
-import {Space} from '../model/space';
+import {Organization} from '../../model/organization';
+import {OrgQuota} from '../../model/org-quota';
+import {Space} from '../../model/space';
 import {Injectable, Input} from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
 

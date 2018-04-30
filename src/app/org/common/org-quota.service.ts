@@ -1,9 +1,8 @@
-import {CommonService} from '../common/common.service';
-import {OrgQuota} from '../model/org-quota';
+import {CommonService} from '../../common/common.service';
+import {OrgQuota} from '../../model/org-quota';
 import {OrgURLConstant} from './org.constant';
 import {Injectable} from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
-import {Observable} from 'rxjs';
 
 @Injectable()
 export class OrgQuotaService {
