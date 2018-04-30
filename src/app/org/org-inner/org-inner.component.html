@@ -23,12 +23,12 @@
         <div class="organization_dot">
           <i class="fas fa-ellipsis-v"></i>
           <ul class="">
-            <li class="name_inputTitle2">
+            <li class="name_inputTitle2" (click)="renameOrg()">
               <p>
                 <i class="fas fa-edit"></i>&nbsp;&nbsp;이름변경
               </p>
             </li>
-            <li data-target="#layerpop" data-toggle="modal">
+            <li data-target="#layerpop" data-toggle="modal" (click)="deleteOrg()">
               <p>
                 <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;삭제
               </p>
@@ -63,9 +63,9 @@
           <tbody *ngFor='let space of spaces'>
             <tr>
               <td><p>{{space.name}}</p></td>
-              <th><i class="fas fa-edit"></i></th>
-              <th data-target="#layerpop3" data-toggle="modal"><i
-                class="fas fa-trash-alt"></i></th>
+              <th><i class="fas fa-edit" (click)="renameSpace()"></i></th>
+              <th data-target="#layerpop3" data-toggle="modal">
+                <i class="fas fa-trash-alt" (click)="deleteSpace()"></i> /></th>
             </tr>
             <tr class="on">
               <td colspan="3">

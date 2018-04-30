@@ -92,6 +92,14 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
     }
   }
 
+  renameSpace() {
+    this.logger.error('TODO renameSpace');
+  }
+
+  deleteSpace() {
+    this.logger.error('TODO deleteSpace');
+  }
+
   get quota() {
     return this.org.quota;
   }
@@ -144,9 +152,9 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
       const inputElement = $event.srcElement;
       const inputs = inputElement.parentElement.parentElement.parentElement.getElementsByTagName('input');
       logger.info(inputs);
-      
+
       $(inputElement).attr('checked', '');
-    } 
+    }
     logger.info(event);
   }
 
