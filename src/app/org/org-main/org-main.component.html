@@ -140,8 +140,8 @@
             </button>
           </div>
         </h1>
-        <app-org-inner 
-            *ngFor="let org of orgs" 
+        <app-org-inner
+            *ngFor="let org of orgs"
             [org]="org"
             (selectEvent)="selectOrg($event)"
             >

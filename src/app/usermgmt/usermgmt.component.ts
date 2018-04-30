@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {CommonService} from "../common/common.service";
-import {User, UsermgmtService} from "./usermgmt.service";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
-import {NGXLogger} from "ngx-logger";
-import {Organization} from "../model/organization";
-import {OrgService} from "../org/org.service";
-import {FormControl} from "@angular/forms";
-import {viewWrappedDebugError} from "@angular/core/src/view/errors";
-import {validate} from "codelyzer/walkerFactory/walkerFn";
+import { Component, OnInit } from '@angular/core';
+import { CommonService } from '../common/common.service';
+import { User, UsermgmtService } from './usermgmt.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { NGXLogger } from 'ngx-logger';
+import { Organization } from '../model/organization';
+import { OrgService } from '../org/common/org.service';
+import { FormControl } from '@angular/forms';
+import { viewWrappedDebugError } from '@angular/core/src/view/errors';
+import { validate } from 'codelyzer/walkerFactory/walkerFn';
 
 declare var $: any;
 declare var jQuery: any;
@@ -19,15 +19,13 @@ declare var jQuery: any;
   styleUrls: ['./usermgmt.component.css']
 })
 export class UsermgmtComponent implements OnInit {
-
   public user: Observable<User>;
   public orgs: Array<Organization>;
   token: string;
   username: string;
   password: string;
-  password_new : string;
-  password_confirm : string;
-  name : string; //orgname
+  password_new: string;
+  password_confirm: string;
 
   // Angular에서 필요에 맞게 호출
   ngOnInit() {
@@ -43,7 +41,6 @@ export class UsermgmtComponent implements OnInit {
           console.log(exception);
         });
     });
-
   }
 
   // 이 부분은 Angular가 아닌 자바스크립트에서 실행
@@ -58,6 +55,7 @@ export class UsermgmtComponent implements OnInit {
     // this.userPassword();
 
     console.log("###Oauth Login Value### " + this.common.getUserid());
+
     this.token = '';
     this.orgs= orgService.getOrgList();
 
@@ -65,7 +63,6 @@ export class UsermgmtComponent implements OnInit {
 
   userInfo() {
       this.userMgmtService.userinfo(this.common.getUserid()).subscribe(data => {
-        console.log(data);
          this.user = data;
         return data;
     });
@@ -94,6 +91,4 @@ export class UsermgmtComponent implements OnInit {
   //     console.log(data);
   //   });
   // }
-
-
 }
