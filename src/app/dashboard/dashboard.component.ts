@@ -6,7 +6,11 @@ import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DashboardService} from './dashboard.service';
+import {OrgService} from "../org/common/org.service";
+import {Organization} from "../model/organization";
 
+declare var $: any;
+declare var jQuery: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -17,19 +21,41 @@ import {DashboardService} from './dashboard.service';
 
 export class DashboardComponent implements OnInit {
 
-
   public userid: string;
   public token: string;
 
-  constructor(private commonService: CommonService, private dashboardService: DashboardService, private log: NGXLogger, private uaa: UaaSecurityService, router: Router, private http: HttpClient) {
+  orgs: Array<Organization>;
+
+  constructor(private commonService: CommonService,
+              private dashboardService: DashboardService,
+              private orgService: OrgService,
+              private log: NGXLogger,
+              private uaa: UaaSecurityService,
+
+              router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
     this.userid = this.commonService.getUserid();
     this.token = this.commonService.getToken();
+
+    this.orgs = orgService.getOrgList();
   }
 
+
   ngOnInit() {
+    console.log('ngOnInit fired');
+
+    $(document).ready(() => {
+      // TODO 임시로...
+      $.getScript('../../assets/resources/js/common.js')
+        .done(function(script, textStatus) {
+          // console.log( textStatus );
+        })
+        .fail(function(jqxhr, settings, exception) {
+          console.log(exception);
+        });
+    });
 
   }
 
