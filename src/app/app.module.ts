@@ -6,7 +6,6 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {DomainComponent} from './domain/domain.component';
 import {LogComponent} from './log/log.component';
 import {MenuComponent} from './menu/menu.component';
-import {OrgComponent} from './org/org.component';
 import {ServiceComponent} from './service/service.component';
 import {SpaceComponent} from './space/space.component';
 import {UsageComponent} from './usage/usage.component';
@@ -33,13 +32,14 @@ import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CommonService} from './common/common.service';
 
 import {DashModule} from './dash/dash.module';
-import {OrgInnerComponent} from './org/org-inner/org-inner.component';
 import {UsermgmtComponent} from './usermgmt/usermgmt.component';
 import {UsermgmtService} from './usermgmt/usermgmt.service';
-import {OrgService} from './org/org.service';
+import {CatalogService} from './catalog/catalog.service';
 import {LoginComponent} from './login/login.component';
-import {OrgQuotaService} from './org/org-quota.service';
 import {SpaceService} from './space/space.service';
+import {LoginService} from './login/login.service';
+import {AuthGuard} from './auth/auth.guard';
+import { OrgModule } from './org/org.module';
 import {CatalogModule} from "./catalog/catalog.module";
 
 
@@ -51,8 +51,6 @@ import {CatalogModule} from "./catalog/catalog.module";
     DomainComponent,
     LogComponent,
     MenuComponent,
-    OrgComponent,
-    OrgInnerComponent,
     ServiceComponent,
     SpaceComponent,
     UsageComponent,
@@ -66,7 +64,7 @@ import {CatalogModule} from "./catalog/catalog.module";
     CallbackComponent,
     LogoutComponent,
     UsermgmtComponent,
-    LoginComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -75,13 +73,15 @@ import {CatalogModule} from "./catalog/catalog.module";
     RoutingModule,
     HttpClientModule,
     DashModule,
+    OrgModule,
     LoadingModule.forRoot({
-      animationType: ANIMATION_TYPES.doubleBounce,
-      backdropBackgroundColour: 'rgba(0,0,0,0.1)',
-      backdropBorderRadius: '4px',
-      primaryColour: '#408c93',
-      secondaryColour: '#408c93',
-      tertiaryColour: '#408c93'
+      animationType: ANIMATION_TYPES.chasingDots,
+      backdropBackgroundColour: 'rgba(0,0,0,0.3)',
+      backdropBorderRadius: '14px',
+      fullScreenBackdrop: true,
+      primaryColour: '#bf8cff',
+      secondaryColour: '#46adbc',
+      tertiaryColour: '#6ce6ff'
     }),
     LoggerModule.forRoot({
       serverLoggingUrl: '/ps/logs',
@@ -90,13 +90,14 @@ import {CatalogModule} from "./catalog/catalog.module";
     }), JsonpModule
   ],
   providers: [
+    AuthGuard,
     CommonService,
+    LoginService,
     UaaSecurityService,
     DashboardService,
     UsermgmtService,
-    OrgService,
     SpaceService,
-    OrgQuotaService,
+    CatalogService,
   ],
   bootstrap: [AppComponent],
   exports: [],

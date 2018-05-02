@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {CommonService} from "../common/common.service";
-import {User, UsermgmtService} from "./usermgmt.service";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
-import {NGXLogger} from "ngx-logger";
-import {Organization} from "../model/organization";
-import {OrgService} from "../org/org.service";
-import {FormControl} from "@angular/forms";
-import {viewWrappedDebugError} from "@angular/core/src/view/errors";
-import {validate} from "codelyzer/walkerFactory/walkerFn";
+import { Component, OnInit } from '@angular/core';
+import { CommonService } from '../common/common.service';
+import { User, UsermgmtService } from './usermgmt.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { NGXLogger } from 'ngx-logger';
+import { Organization } from '../model/organization';
+import { OrgService } from '../org/common/org.service';
+import { FormControl } from '@angular/forms';
+import { viewWrappedDebugError } from '@angular/core/src/view/errors';
+import { validate } from 'codelyzer/walkerFactory/walkerFn';
 
 declare var $: any;
 declare var jQuery: any;
@@ -19,14 +19,13 @@ declare var jQuery: any;
   styleUrls: ['./usermgmt.component.css']
 })
 export class UsermgmtComponent implements OnInit {
-
   public user: Observable<User>;
-  orgs: Array<Organization>;
+  public orgs: Array<Organization>;
   token: string;
   username: string;
   password: string;
-  password_new : string;
-  password_confirm : string;
+  password_new: string;
+  password_confirm: string;
 
   // Angular에서 필요에 맞게 호출
   ngOnInit() {
@@ -85,34 +84,11 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-  // userPassword() {
-  //   let params = {userId: this.user['userId'],
-  //                 password: this.password,
-  //                 password_new : this.password_new ,
-  //                 paasword_confrim : this.paasword_confrim};
-  //   this.userMgmtService.userPassword(this.common.getUserid(), params,'').subscribe(data => {
-  //     this.password=null;
-  //     this.password_new= null;
-  //
-  //     if(this.password!=null) {
-  //       this.password = data.getParameter('password');
-  //     };
-  //     if (this.password_new!=null){
-  //       this.password_new = data.getParameter('password_new');
-  //     };
-  //
-  //     if(this.password_new && this.password_confirm !== this.password) return{
-  //       validateEqual : false
-  //     }
-  //     return null
+  //  deleteOrg() {
+  //   let params = { name : this.orgs['name']};
+  //   this.userMgmtService.deleteOrg(this.common.getUserGuid(),params).subscribe(data => {
+  //     this.orgs= data;
+  //     console.log(data);
   //   });
   // }
-
-  // authResetPassword(usesrname){
-  //   let params = {userName: this.user['userName'], password: this.password};
-  //   this.userMgmtService.authResetPassword(this.common.getUserid(), params,'').subscribe(data => {
-  //
-  //   });
-  // }
-
 }

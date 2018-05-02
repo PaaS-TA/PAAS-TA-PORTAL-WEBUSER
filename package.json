@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0",
-    "build": "ng build --prod --base-href . --aot=false",
+    "build": "ng build --prod --base-href / --aot=false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

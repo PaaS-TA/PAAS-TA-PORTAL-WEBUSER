@@ -2,23 +2,26 @@ import {Component, OnInit, DoCheck, AfterViewChecked, AfterContentChecked} from 
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {NGXLogger} from 'ngx-logger';
-import {CommonService} from '../common/common.service';
-import {OrgService} from './org.service';
-import {Organization} from '../model/organization';
-import {OrgInnerComponent} from './org-inner/org-inner.component';
+import {CommonService} from '../../common/common.service';
+import {OrgService} from '../common/org.service';
+import {Organization} from '../../model/organization';
+import {OrgInnerComponent} from '../org-inner/org-inner.component';
 
 declare var $: any;
 declare var jQuery: any;
 
 @Component({
   selector: 'app-org',
-  templateUrl: './org.component.html',
-  styleUrls: ['./org.component.css'],
+  templateUrl: './org-main.component.html',
+  styleUrls: [
+    '../common/org.component.css',
+    './org-main.component.css'
+  ]
 })
-export class OrgComponent implements OnInit, DoCheck, AfterContentChecked, AfterViewChecked {
+export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, AfterViewChecked {
   orgs: Array<Organization>;
 
-  //currentOrg: Organization = null;
+  // currentOrg: Organization = null;
   private currentOrgIndex: number;
 
   private doAttachEvent: Boolean = false;

@@ -49,4 +49,10 @@ export class AppMainService {
       return res;
     }).do(console.log);
   }
+
+  addAppRoute(params: any) {
+    return this.commonService.doPost('/portalapi/v2/routes', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 }

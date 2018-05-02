@@ -24,8 +24,10 @@ export class AppMainComponent implements OnInit {
   public appStatusEntities: any = [];
   public appRoutesEntities: Observable<any[]>;
   public appRoutesEntitiesRe: any = [];
+  public appDomainsEntities: Observable<any[]>;
   private isLoading: boolean = false;
 
+  private appSummarySpaceGuid: string;
   private appSummaryName: string;
   private appSummaryGuid: string;
   private appSummaryState: string;
@@ -52,6 +54,8 @@ export class AppMainComponent implements OnInit {
   public sltEnvDelName: string;
   public sltEnvAddName: string;
   public sltEnvEditName: string;
+
+  public sltRouteAddName: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService, private common: CommonService) {
   }
@@ -92,7 +96,9 @@ export class AppMainComponent implements OnInit {
     this.appMainService.getAppSummary(guid).subscribe(data => {
       this.appSummaryEntities = data;
       this.appRoutesEntities = data.routes;
+      this.appDomainsEntities = data.available_domains;
 
+      this.appSummarySpaceGuid = data.space_guid;
 
       this.appSummaryName = data.name;
       this.appSummaryGuid = data.guid;
@@ -128,6 +134,10 @@ export class AppMainComponent implements OnInit {
   }
 
   initRouteTab() {
+
+    // $.each(this.appDomainsEntities, function (key, dataobj) {
+    // });
+
     var appRoutes = [];
     $.each(this.appRoutesEntities, function (key, dataobj) {
       var uri = dataobj.host + "." + dataobj.domain.name;
@@ -137,7 +147,6 @@ export class AppMainComponent implements OnInit {
       };
       appRoutes.push(obj);
     });
-    console.log(appRoutes);
     this.appRoutesEntitiesRe = appRoutes;
   }
 
@@ -415,6 +424,25 @@ export class AppMainComponent implements OnInit {
     });
   }
 
+  addAppRoute() {
+    let params = {
+      applicationId: this.appGuid,
+      host: $("#routeAddHostName").val(),
+      domainId: $("#selectBoxDomain").val(),
+      spaceId: this.appSummarySpaceGuid
+    };
+    this.appMainService.addAppRoute(params).subscribe(data => {
+      this.ngOnInit();
+      $("[id^='layerpop']").modal("hide");
+      $(".service_dl,.lauth_dl").toggleClass("on");
+    });
+  }
+
+  tabShowClick(id) {
+    $("[id^='tabContent_']").hide();
+    $("#"+id).show();
+  }
+
   eventListMoreClick() {
     this.tabContentEventListLimit = this.tabContentEventListLimit + 5;
   }
@@ -472,6 +500,15 @@ export class AppMainComponent implements OnInit {
 
   delEnvClick() {
     this.updateAppEnv('delete', '');
+  }
+
+  showPopAddRouteAddClick() {
+    this.sltRouteAddName = $("#routeAddHostName").val();
+    $("#layerpop_route_add").modal("show");
+  }
+
+  addRouteClick() {
+    this.addAppRoute();
   }
 
 }
