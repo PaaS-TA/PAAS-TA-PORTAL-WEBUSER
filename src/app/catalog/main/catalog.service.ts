@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {CommonService} from '../common/common.service';
 import {NGXLogger} from "ngx-logger";
+import {CommonService} from "../../common/common.service";
 
 @Injectable()
 export class CatalogService {
@@ -10,6 +10,8 @@ export class CatalogService {
   TEMPLATEGET : string = this.COMMONAPI + this.V2_URL + '/starterpacks';
   SEARCHGET : string = this.COMMONAPI + this.V2_URL + '/packs';
   HISTORYGET : string = this.COMMONAPI + this.V2_URL + '/history/';
+  STARTERGET : string = this.COMMONAPI + this.V2_URL + '/packrelation/';
+
 
   userid : string;
   developments : Array<Development> = Array<Development>();
@@ -53,7 +55,6 @@ export class CatalogService {
 
   DevelopmentInit(data : any)
   {
-    console.log(data);
     this.developments = new Array<Development>();
     for(let i = 0 ; i < data.length ; i++) {
       this.developments[i] = data[i];
@@ -62,12 +63,18 @@ export class CatalogService {
 
   TemplateInit(data : any)
   {
-    console.log(data);
     this.templates = new Array<Template>();
     for(let i = 0 ; i < data.length ; i++) {
       this.templates[i] = data[i];
     }
   }
+
+  CatalogDetailInit(no : number){
+    return this.common.doGET(this.STARTERGET+no ,null).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
 }
 
 export class Development
@@ -109,4 +116,28 @@ export class Template
   thumbImgPath : string;
   useYn : string;
   userId : string;
+}
+
+export class Service
+{
+  appBindParameter : string;
+  appBindYn : string;
+  app_bind_parameter : string;
+  classification : string;
+  classificationSummary : string;
+  classificationValue : string;
+  created : string;
+  dashboardUseYn : string;
+  description : string;
+  lastmodified : string;
+  name : string;
+  no : string;
+  parameter : string;
+  servicePackName : string;
+  summary : string;
+  thumbIimgName : string;
+  thumbImgPath : string;
+  useYn : string;
+  userId : string;
+
 }

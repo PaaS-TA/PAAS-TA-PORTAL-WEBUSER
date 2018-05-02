@@ -1,10 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-
 import {AppComponent} from './app.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {CatalogComponent} from './catalog/catalog.component';
 import {DomainComponent} from './domain/domain.component';
 import {LogComponent} from './log/log.component';
 import {MenuComponent} from './menu/menu.component';
@@ -39,17 +37,17 @@ import {OrgInnerComponent} from './org/org-inner/org-inner.component';
 import {UsermgmtComponent} from './usermgmt/usermgmt.component';
 import {UsermgmtService} from './usermgmt/usermgmt.service';
 import {OrgService} from './org/org.service';
-import {CatalogService} from './catalog/catalog.service';
 import {LoginComponent} from './login/login.component';
 import {OrgQuotaService} from './org/org-quota.service';
 import {SpaceService} from './space/space.service';
+import {CatalogModule} from "./catalog/catalog.module";
+
 
 @NgModule({
   declarations: [
     AppComponent,
     CfAppComponent,
     DashboardComponent,
-    CatalogComponent,
     DomainComponent,
     LogComponent,
     MenuComponent,
@@ -68,11 +66,12 @@ import {SpaceService} from './space/space.service';
     CallbackComponent,
     LogoutComponent,
     UsermgmtComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
     FormsModule,
+    CatalogModule,
     RoutingModule,
     HttpClientModule,
     DashModule,
@@ -98,7 +97,6 @@ import {SpaceService} from './space/space.service';
     OrgService,
     SpaceService,
     OrgQuotaService,
-    CatalogService,
   ],
   bootstrap: [AppComponent],
   exports: [],

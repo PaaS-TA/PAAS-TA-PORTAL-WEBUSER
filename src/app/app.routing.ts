@@ -1,7 +1,7 @@
 import {IndexComponent} from './index/index.component';
 import {RouterModule, Routes} from '@angular/router';
 import {CfAppComponent} from './cf-app/cf-app.component';
-import {CatalogComponent} from './catalog/catalog.component';
+import {CatalogComponent} from './catalog/main/catalog.component';
 import {DomainComponent} from './domain/domain.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {WebIdeUserComponent} from './web-ide-user/web-ide-user.component';
@@ -19,6 +19,7 @@ import { DashMainComponent } from "./dash/dash-main/dash-main.component";
 import { AppMainComponent } from "./dash/app-main/app-main.component";
 import {UsermgmtComponent} from "./usermgmt/usermgmt.component";
 import {LoginComponent} from "./login/login.component";
+import {CatalogDetailComponent} from "./catalog/catalog-detail/catalog-detail.component";
 
 /*
 * Route 모듈 설정
@@ -29,6 +30,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'app', component: CfAppComponent},
   {path: 'catalog', component: CatalogComponent},
+  {path: 'catalogdetail/:id', component: CatalogDetailComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'domain', component: DomainComponent},
   {path: 'log', component: LogComponent},

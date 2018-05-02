@@ -1,0 +1,96 @@
+<div class="wrap dashboard">
+  <app-catalog-header></app-catalog-header>
+  <app-catalog-nav></app-catalog-nav>
+<div class="contain">
+    <div class="content">
+      <div class="row one_line catalog maT30">
+        <div class="col-md-12">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button name="button" class="btn" type="button"><i class="fas fa-search"></i></button>
+            </div>
+            <input class="form-control" type="text" placeholder="Catalog Search" [(ngModel)]="searchKeyword" (keyup.enter)="Search()"/>
+          </div>
+        </div>
+        <div class="">
+          <p class="tit">최근작업</p>
+          <ul>
+            <li (click)="location.href='catalogdetail.html'" *ngFor="let recent of catalogService.recentpacks">
+              <dl>
+                <dt>
+                <div>
+                  <img src="http://portal-web-user.115.68.46.187.xip.io/download/getImage?imgPath={{recent.thumbImgPath}}" alt="" />
+                </div>
+                </dt>
+                <dd>
+                  <ul>
+                    <li>{{recent.name}}
+                    </li>
+                    <li><p>{{recent.description}}</p>
+                    </li>
+                    <li>
+                      <button class="btns3 colors6">파스타</button>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p class="tit">앱 템플릿</p>
+          <ul>
+            <li *ngFor="let tem of catalogService.templates" (click)="goAppTemplate(tem)">
+              <dl>
+                <dt>
+                <div>
+                  <img src="../../../assets/resources/images/catalog/{{tem.thumbImgName}}" alt="" />
+                </div>
+                </dt>
+                <dd>
+                  <ul>
+                    <li>{{tem.name}}
+                    </li>
+                    <li><p>{{tem.description}}</p>
+                    </li>
+                    <li>
+                      <button class="btns3 colors7">커뮤니티</button>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </li>
+          </ul>
+        </div>
+        <div class="cataloglast">
+          <p class="tit">앱 개발환경</p>
+          <ul >
+            <li *ngFor="let dev of catalogService.developments">
+              <dl>
+                <dt>
+                <div>
+                  <img src="../../../assets/resources/images/catalog/{{dev.thumbImgName}}" alt="" />
+                </div>
+                </dt>
+                <dd>
+                  <ul>
+                    <li>{{dev.name}}
+                    </li>
+                    <li><p> {{dev.description}}
+                    </p>
+                    </li>
+                    <li>
+                      <button class="btns3 colors6">파스타</button>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </li>
+          </ul>
+        </div>
+      </div><!-- row one_line -->
+    </div>
+    <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
+  </div>
+</div>
+
