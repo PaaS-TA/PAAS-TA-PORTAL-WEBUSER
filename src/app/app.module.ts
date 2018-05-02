@@ -40,11 +40,9 @@ import {LoginService} from './login/login.service';
 import {AuthGuard} from './auth/auth.guard';
 import { OrgModule } from './org/org.module';
 
+
 import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
 import {DashboardSapaceService} from './dashboard/dashboard-space/dashboard-sapace.service';
-
-import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
-import {DashboardProduceService} from './dashboard/dashboard-produce/dashboard-produce.service';
 
 @NgModule({
   declarations: [
@@ -67,13 +65,12 @@ import {DashboardProduceService} from './dashboard/dashboard-produce/dashboard-p
     CallbackComponent,
     LogoutComponent,
     UsermgmtComponent,
-    LoginComponent,
-    DashboardSpaceComponent,
-    DashboardProduceComponent
+    LoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
     FormsModule,
+    CatalogModule,
     RoutingModule,
     HttpClientModule,
     DashModule,
