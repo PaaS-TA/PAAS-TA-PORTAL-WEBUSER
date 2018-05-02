@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {CatalogComponent} from './catalog/catalog.component';
 import {DomainComponent} from './domain/domain.component';
 import {LogComponent} from './log/log.component';
 import {MenuComponent} from './menu/menu.component';
@@ -35,19 +34,23 @@ import {CommonService} from './common/common.service';
 import {DashModule} from './dash/dash.module';
 import {UsermgmtComponent} from './usermgmt/usermgmt.component';
 import {UsermgmtService} from './usermgmt/usermgmt.service';
-import {CatalogService} from './catalog/catalog.service';
 import {LoginComponent} from './login/login.component';
 import {SpaceService} from './space/space.service';
 import {LoginService} from './login/login.service';
 import {AuthGuard} from './auth/auth.guard';
 import { OrgModule } from './org/org.module';
 
+import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
+import {DashboardSapaceService} from './dashboard/dashboard-space/dashboard-sapace.service';
+
+import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
+import {DashboardProduceService} from './dashboard/dashboard-produce/dashboard-produce.service';
+
 @NgModule({
   declarations: [
     AppComponent,
     CfAppComponent,
     DashboardComponent,
-    CatalogComponent,
     DomainComponent,
     LogComponent,
     MenuComponent,
@@ -64,7 +67,9 @@ import { OrgModule } from './org/org.module';
     CallbackComponent,
     LogoutComponent,
     UsermgmtComponent,
-    LoginComponent
+    LoginComponent,
+    DashboardSpaceComponent,
+    DashboardProduceComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -96,7 +101,8 @@ import { OrgModule } from './org/org.module';
     DashboardService,
     UsermgmtService,
     SpaceService,
-    CatalogService,
+    DashboardProduceService,
+    DashboardSapaceService
   ],
   bootstrap: [AppComponent],
   exports: [],

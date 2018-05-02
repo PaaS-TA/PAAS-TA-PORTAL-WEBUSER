@@ -1,7 +1,6 @@
 import {IndexComponent} from './index/index.component';
 import {RouterModule, Routes} from '@angular/router';
 import {CfAppComponent} from './cf-app/cf-app.component';
-import {CatalogComponent} from './catalog/catalog.component';
 import {DomainComponent} from './domain/domain.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {WebIdeUserComponent} from './web-ide-user/web-ide-user.component';
@@ -20,6 +19,8 @@ import {AppMainComponent} from './dash/app-main/app-main.component';
 import {UsermgmtComponent} from './usermgmt/usermgmt.component';
 import {LoginComponent} from './login/login.component';
 import {AuthGuard} from './auth/auth.guard';
+import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
+import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
 
 /*
 * Route 모듈 설정
@@ -30,7 +31,6 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'callback', component: CallbackComponent},
   {path: 'app', component: CfAppComponent, canActivate: [AuthGuard]},
-  {path: 'catalog', component: CatalogComponent, canActivate: [AuthGuard]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'domain', component: DomainComponent, canActivate: [AuthGuard]},
   {path: 'log', component: LogComponent, canActivate: [AuthGuard]},
@@ -45,7 +45,12 @@ const routes: Routes = [
 
   {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
   {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},
-  {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]}
+  {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]},
+
+  {path: 'dashboardSpace', component: DashboardSpaceComponent, canActivate: [AuthGuard]},
+  {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]}
+
+
 ];
 
 export const RoutingModule: ModuleWithProviders = RouterModule.forRoot(routes);

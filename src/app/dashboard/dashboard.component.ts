@@ -8,6 +8,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DashboardService} from './dashboard.service';
 import {OrgService} from "../org/common/org.service";
 import {Organization} from "../model/organization";
+import {SpaceService} from "../space/space.service";
+import {Space} from '../model/space';
 
 declare var $: any;
 declare var jQuery: any;
@@ -24,11 +26,14 @@ export class DashboardComponent implements OnInit {
   public userid: string;
   public token: string;
 
+
   orgs: Array<Organization>;
+  spaces: Array<Space>;
 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
               private orgService: OrgService,
+              private spaceService : SpaceService,
               private log: NGXLogger,
               private uaa: UaaSecurityService,
 
@@ -40,6 +45,7 @@ export class DashboardComponent implements OnInit {
     this.token = this.commonService.getToken();
 
     this.orgs = orgService.getOrgList();
+    this.spaces =spaceService.getOrgSpaceList();
   }
 
 
