@@ -34,7 +34,6 @@ import {CommonService} from './common/common.service';
 import {DashModule} from './dash/dash.module';
 import {UsermgmtComponent} from './usermgmt/usermgmt.component';
 import {UsermgmtService} from './usermgmt/usermgmt.service';
-import {CatalogService} from './catalog/catalog.service';
 import {LoginComponent} from './login/login.component';
 import {SpaceService} from './space/space.service';
 import {LoginService} from './login/login.service';
@@ -97,7 +96,6 @@ import {CatalogModule} from "./catalog/catalog.module";
     DashboardService,
     UsermgmtService,
     SpaceService,
-    CatalogService,
   ],
   bootstrap: [AppComponent],
   exports: [],
