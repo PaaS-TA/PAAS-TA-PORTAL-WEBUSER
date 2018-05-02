@@ -39,10 +39,14 @@ import {SpaceService} from './space/space.service';
 import {LoginService} from './login/login.service';
 import {AuthGuard} from './auth/auth.guard';
 import { OrgModule } from './org/org.module';
-
+import {CatalogModule} from "./catalog/catalog.module";
 
 import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
 import {DashboardSapaceService} from './dashboard/dashboard-space/dashboard-sapace.service';
+
+import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
+import {DashboardProduceService} from './dashboard/dashboard-produce/dashboard-produce.service';
+import {CatalogService} from "./catalog/main/catalog.service";
 
 @NgModule({
   declarations: [
@@ -65,16 +69,19 @@ import {DashboardSapaceService} from './dashboard/dashboard-space/dashboard-sapa
     CallbackComponent,
     LogoutComponent,
     UsermgmtComponent,
-    LoginComponent
+
+    LoginComponent,
+    DashboardSpaceComponent,
+    DashboardProduceComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
     FormsModule,
-    CatalogModule,
     RoutingModule,
     HttpClientModule,
     DashModule,
     OrgModule,
+    CatalogModule,
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.chasingDots,
       backdropBackgroundColour: 'rgba(0,0,0,0.3)',
@@ -98,8 +105,9 @@ import {DashboardSapaceService} from './dashboard/dashboard-space/dashboard-sapa
     DashboardService,
     UsermgmtService,
     SpaceService,
+    CatalogService,
     DashboardProduceService,
-    DashboardSapaceService
+    DashboardSapaceService,
   ],
   bootstrap: [AppComponent],
   exports: [],

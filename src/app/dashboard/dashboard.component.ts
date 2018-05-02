@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
     this.token = this.commonService.getToken();
 
     this.orgs = orgService.getOrgList();
-    this.spaces =spaceService.getOrgSpaceList();
+    // this.spaces =spaceService.getOrgSpaceList();
   }
 
 

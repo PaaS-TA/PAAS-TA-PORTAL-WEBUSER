@@ -48,7 +48,10 @@ const routes: Routes = [
   {path: 'catalogdetail/:id', component: CatalogDetailComponent, canActivate: [AuthGuard]},
   {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
   {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},
-  {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]}
+  {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]},
+  {path: 'dashboardSpace', component: DashboardSpaceComponent, canActivate: [AuthGuard]},
+  {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]}
+
 ];
 
 export const RoutingModule: ModuleWithProviders = RouterModule.forRoot(routes);
