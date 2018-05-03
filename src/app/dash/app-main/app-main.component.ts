@@ -58,27 +58,15 @@ export class AppMainComponent implements OnInit {
   public sltRouteAddName: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService, private common: CommonService) {
-  }
+    this.common.isLoading = false;
 
-  ngOnInit() {
-    console.log("ngOnInit in~");
-    this.common.isLoading = true;
-    $(document).ready(() => {
-      //TODO 임시로...
-      $.getScript("../../assets/resources/js/common2.js")
-        .done(function (script, textStatus) {
-          //console.log( textStatus );
-        })
-        .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
-        });
-    });
 
     this.tabContentEventListLimit = 5;
     this.tabContentStatsListLimit = 5;
 
     this.route.queryParams.subscribe(params => {
       if (params != null) {
+        this.common.isLoading = true;
         this.appGuid = params['guid'];
         this.getAppSummary(params['guid']);
         this.getAppStats(params['guid']);
@@ -88,6 +76,20 @@ export class AppMainComponent implements OnInit {
       } else {
         this.router.navigate(['dashMain']);
       }
+    });
+  }
+
+  ngOnInit() {
+    console.log("ngOnInit in~");
+    $(document).ready(() => {
+      //TODO 임시로...
+      $.getScript("../../assets/resources/js/common2.js")
+        .done(function (script, textStatus) {
+          //console.log( textStatus );
+        })
+        .fail(function (jqxhr, settings, exception) {
+          console.log(exception);
+        });
     });
   }
 
