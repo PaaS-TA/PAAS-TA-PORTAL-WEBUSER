@@ -86,9 +86,9 @@
           </li>
           <li>
             <div>
-              <select id="org_space">
+              <select id="org_space" name="org_space">
                 <option value="" selected="selected" name="org_space">생성된 조직명</option>
-                <option value="" *ngFor="let org of orgs">{{org.name}}</option>
+                <option value="" *ngFor="let org of orgs" (click)="onChange(org)" (keyup)="reEnter(org.name)">{{org.name}}</option>
               </select>
             </div>
           </li>
