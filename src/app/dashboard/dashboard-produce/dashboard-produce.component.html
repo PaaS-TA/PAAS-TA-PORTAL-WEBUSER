@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<body class="org">
+<div>
+  <header class="header account">
+    <div class="logo">
+      <a href="#"><h1><img src="../../../assets/resources/images/main/logo.png" alt=""/></h1></a>
+    </div>
+    <span class="nav_toggle">
+            <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+            <label for="checkbox-1"></label>
+        </span>
+    <ul class="gnb clearfix">
+      <li ><a [routerLink]="['../appMain']">대시보드</a></li>
+      <li ><a [routerLink]="['../catalog']">카달로그</a></li>
+      <li><a href="https://github.com/PaaS-TA/Guide-3.0-Penne-">문서</a></li>
+    </ul>
+    <ul class="right_nav">
+      <li><!-- <a href="#" class="fas fa-user"></a> -->
+        <div class="btn-group">
+          <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          </button>
+          <div id="r_user" class="dropdown-menu">
+            <div class="">
+              <span class="dot"></span>
+              <dl>
+                <dt>
+                  <i href="#" class="fas fa-user"></i>
+                  <img src="http://blog.jinbo.net/attach/615/200937431.jpg" alt="temp" />
+                </dt>
+                <dd>
+                  <p>홍길동</p>
+                  <p>test@test.com</p>
+                </dd>
+              </dl>
+            </div>
+            <ul class="">
+              <li class="cur"><a [routerLink]="['../usermgmt']">내계정</a></li>
+              <li><a [routerLink]="['../org']">조직관리</a></li>
+              <li><a href="#">사용량조회</a></li>
+            </ul>
+            <p class="log_out">로그아웃</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="btn-group">
+          <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>3</span></button>
+          <div id="bell" class="dropdown-menu">
+            <div class="">
+              <span class="dot"></span>
+              <p class="">Notifications</p>
+            </div>
+            <div>
+              <ul class="">
+                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div id="globes" class="btn-group">
+          <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>
+          <ul class="dropdown-menu">
+            <li class="cur"><a href="#">Korean</a></li>
+            <li><a href="#">English</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </header>
+  <div class="org_wrap">
+    <div class="contain_n">
+      <div class="content">
+        <div><h2>개방형 플랫폼에서  애플리케이션 개발과 배포, 관리를 시작하세요!</h2></div>
+        <div class="org_txt">조직을 생성하세요</div>
+        <!-- 조직명 시작-->
+        <div class="row two_line two_view ns">
+          <ul class="maT30">
+            <li>
+              <div class="sortable_wrap">
+                <div class="sortable_top">
+                  <p>조직명</p>
+                </div>
+                <div class="org_box clearfix">
+                  <div>
+                    <input class="form-control" type="text" required="" placeholder="">
+                    <p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>
+                      오류안내
+                    </p>
+                  </div>
+                  <div></div>
+                  <div>
+                    조직은 컴퓨팅 리소스, 애플리케이션 및 서비스를 포괄하는 개발 계정입니다. <br/>
+                    개인이나 다수의 공동 작업자가 소유 하거나 사용 할 수 있습니다. <br/>
+                    프로젝트의 이름이나 팀의 이름으로 조직의 조직의 이름을 설정하세요.<br/>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- 조직명 끝 -->
+        <!-- 할당량 시작-->
+        <div class="row two_line two_view ns">
+          <ul class="maT30">
+            <li>
+              <div class="sortable_wrap">
+                <div class="sortable_top">
+                  <p>할당량</p>
+                </div>
+                <div class="organization_table2 maT30 paB40 org_tbl_wrap">
+                  <table class="org_tables_noline">
+                    <colgroup>
+                      <col style='*'>
+                      <col style='*'>
+                      <col style='*'>
+                      <col style='*'>
+                      <col style='*'>
+                      <col style='*'>
+                      <col style='*'>
+                      <col style='*'>
+                      <col style='*'>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                      <td>선택</td>
+                      <td>서비스명</td>
+                      <td>메모리</td>
+                      <td>인스턴트 메모리</td>
+                      <td>라우트</td>
+                      <td>서비스 인스턴트</td>
+                      <td>가격</td>
+                      <td>인스턴트</td>
+                      <td>인스턴트</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>
+                        <input id="radio1" type="radio" name="radio1" data-target="#layerpop7" data-toggle="modal">
+                        <label for="radio1"></label>
+                      </td>
+                      <td>
+                        기본
+                      </td>
+                      <td>10G
+                      </td>
+                      <td>무제한
+                      </td>
+                      <td>100
+                      </td>
+                      <td>100
+                      </td>
+                      <td>무료
+                      </td>
+                      <td>무제한
+                      </td>
+                      <td>0
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input id="radio2" type="radio" name="radio1" checked data-target="#layerpop7" data-toggle="modal">
+                        <label for="radio2"></label>
+                      </td>
+                      <td>
+                        기본
+                      </td>
+                      <td>10G
+                      </td>
+                      <td>무제한
+                      </td>
+                      <td>100
+                      </td>
+                      <td>100
+                      </td>
+                      <td>무료
+                      </td>
+                      <td>무제한
+                      </td>
+                      <td>0
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- 할당량 끝 -->
+        <div class="cWrap_btn">
+          <button class="btns2 btns2_1 colors4">조직생성</button>
+          <button class="btns2 btns2_1 colors5">취소</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
