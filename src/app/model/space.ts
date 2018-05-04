@@ -5,6 +5,7 @@ export class Space {
 
   constructor(metadataParam, entityParam, orgGuidParam) {
     // initialize dummy data when constructor parameter is null or undefined.
+
     // initialize metadata as dummy
     this.metadata = metadataParam;
 
@@ -165,5 +166,23 @@ export class Space {
 
   get stagingSecurityGroupsUrl() {
     return this.entity.staging_security_groups_url;
+  }
+
+  static compareTo(spaceAndy: Space, spaceBeak: Space): number {
+    if (spaceAndy === null && spaceBeak === null)
+      return 0;
+    else if (spaceAndy === null)
+      return -1;
+    else if (spaceBeak === null)
+      return 1;
+
+    const createdAtAndy = spaceAndy.createdAt;
+    const createdAtBeak = spaceBeak.createdAt;
+    if (createdAtAndy === createdAtBeak)
+      return 0;
+    else if (createdAtAndy < createdAtBeak)
+      return -1;
+    else
+      return 0;
   }
 }

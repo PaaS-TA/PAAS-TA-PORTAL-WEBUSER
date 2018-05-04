@@ -79,17 +79,7 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
     if (spacesParam === null || spacesParam === undefined) {
       this.org.spaces = [];
     } else {
-      this.org.spaces = spacesParam.sort((spaceAndy, spaceBeak) => {
-        const createdAtAndy = spaceAndy.createdAt;
-        const createdAtBeak = spaceBeak.createdAt;
-        if (createdAtAndy === createdAtBeak) {
-          return 0;
-        } else if (createdAtAndy < createdAtBeak) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
+      this.org.spaces = spacesParam.sort(Space.compareTo);
     }
   }
 

@@ -50,7 +50,7 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
     if (this.doSortOrgs === false && this.orgs.length > 0) {
       this.doSortOrgs = true;
 
-      this.orgs = this.orgs.sort((orgA, orgB) => this.sortCompareTo<Organization>(orgA, orgB));
+      this.orgs = this.orgs.sort(Organization.compareTo);
     }
   }
 
@@ -67,18 +67,6 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
 
   public test(logger = this.logger) {
     logger.info('super test');
-  }
-
-  private sortCompareTo<T>(objA: T, objB: T): number {
-    const nameA = objA['name'];
-    const nameB = objB['name'];
-    if (nameA === nameB) {
-      return 0;
-    } else if (nameA < nameB) {
-      return -1;
-    } else {
-      return 1;
-    }
   }
 
   attachDetailEvent() {
