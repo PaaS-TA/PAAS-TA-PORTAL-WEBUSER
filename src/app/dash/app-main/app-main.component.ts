@@ -15,6 +15,8 @@ declare var jQuery: any;
 export class AppMainComponent implements OnInit {
 
   public appGuid: string;
+  private isLoading: boolean = false;
+
   public appSummaryEntities: Observable<any[]>;
   public appStatsEntities: Observable<any[]>;
   public appEventsEntities: Observable<any[]>;
@@ -25,7 +27,10 @@ export class AppMainComponent implements OnInit {
   public appRoutesEntities: Observable<any[]>;
   public appRoutesEntitiesRe: any = [];
   public appDomainsEntities: Observable<any[]>;
-  private isLoading: boolean = false;
+  public appServicesEntities: Observable<any[]>;
+
+  public servicepacksEntities: Observable<any[]>;
+  public servicepacksEntitiesRe: any = [];
 
   private appSummarySpaceGuid: string;
   private appSummaryName: string;
@@ -56,13 +61,19 @@ export class AppMainComponent implements OnInit {
   public sltEnvEditName: string;
 
   public sltRouteAddName: string;
+  public sltRouteDelUri: string;
+  public sltRouteDelGuid: string;
+
+  public sltServiceParam: any = [];
+  public sltServiceBindName: string;
+
 
   constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService, private common: CommonService) {
+    this.common.isLoading = false;
   }
 
   ngOnInit() {
     console.log("ngOnInit in~");
-    this.common.isLoading = true;
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
@@ -79,6 +90,8 @@ export class AppMainComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       if (params != null) {
+        setTimeout(() => this.showLoading(), 0);
+
         this.appGuid = params['guid'];
         this.getAppSummary(params['guid']);
         this.getAppStats(params['guid']);
@@ -91,12 +104,17 @@ export class AppMainComponent implements OnInit {
     });
   }
 
+  showLoading() {
+    this.common.isLoading = true;
+  }
+
   getAppSummary(guid: string) {
     this.isLoading = true;
     this.appMainService.getAppSummary(guid).subscribe(data => {
       this.appSummaryEntities = data;
       this.appRoutesEntities = data.routes;
       this.appDomainsEntities = data.available_domains;
+      this.appServicesEntities = data.services;
 
       this.appSummarySpaceGuid = data.space_guid;
 
@@ -123,13 +141,16 @@ export class AppMainComponent implements OnInit {
       this.appSummaryDisk = data.disk_quota;
 
       //TODO instance, cpu, memory, disk 다구하고 밑에
-      $('.BG_wrap input').each(function () {
-        var BG_wrap = $(this).val();
-        $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
-        $(this).closest('dl').find("span.rights").html(BG_wrap);
-      });
+      // $('.BG_wrap input').each(function () {
+      //   var BG_wrap = $(this).val();
+      //   $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
+      //   $(this).closest('dl').find("span.rights").html(BG_wrap);
+      // });
 
       this.initRouteTab();
+      // this.getSpaceSummary();
+      this.getServicepacks();
+      // this.getServicesInstances();
     });
   }
 
@@ -143,12 +164,59 @@ export class AppMainComponent implements OnInit {
       var uri = dataobj.host + "." + dataobj.domain.name;
 
       var obj = {
-        uri: uri
+        uri: uri,
+        guid: dataobj.guid
       };
       appRoutes.push(obj);
     });
     this.appRoutesEntitiesRe = appRoutes;
   }
+
+  getSpaceSummary() {
+    this.appMainService.getSpaceSummary(this.appSummarySpaceGuid).subscribe(data => {
+      console.log("getSpaceSummary========");
+
+      var servicepacks = this.servicepacksEntities;
+      var servicepacksRe = [];
+
+      $.each(data.services, function (key, dataobj) {
+        $.each(servicepacks, function (key2, dataobj2) {
+          if((dataobj.service_plan.service.label == dataobj2.servicePackName) && (dataobj2.appBindYn == "Y")) {
+            var obj = {
+              name: dataobj.name,
+              guid: dataobj.guid,
+              appBindParameter: dataobj2.appBindParameter
+            };
+            servicepacksRe.push(obj);
+          }
+        });
+      });
+      
+      //TODO app 바인딩 된것은 삭제
+      
+      this.servicepacksEntitiesRe = servicepacksRe;
+      console.log(this.servicepacksEntitiesRe);
+
+      // console.log(this.appServicesEntities);
+      // if(this.appServicesEntities != null) {
+      //   console.log("in!!");
+      // }
+    });
+  }
+
+  getServicepacks() {
+    this.appMainService.getServicepacks().subscribe(data => {
+      this.servicepacksEntities = data.list;
+
+      this.getSpaceSummary();
+    });
+  }
+
+  // getServicesInstances() {
+  //   this.appMainService.getServicesInstances(this.appSummarySpaceGuid).subscribe(data => {
+  //
+  //   });
+  // }
 
   getAppStats(guid: string) {
     this.appMainService.getAppStats(guid).subscribe(data => {
@@ -167,7 +235,7 @@ export class AppMainComponent implements OnInit {
           cnt++;
         });
 
-        this.appStatsCpuPer = Math.round(cpu / cnt);
+        this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
         this.appStatsMemoryPer = Math.round(mem / cnt);
         this.appStatsDiskPer = Math.round(disk / cnt);
 
@@ -221,6 +289,12 @@ export class AppMainComponent implements OnInit {
     });
     this.appStatusEntities = appStatus;
     this.common.isLoading = false;
+
+    $('.BG_wrap input').each(function () {
+      var BG_wrap = $(this).val();
+      $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
+      $(this).closest('dl').find("span.rights").html(BG_wrap);
+    });
   }
 
   instanceDirectInputClick() {
@@ -347,6 +421,7 @@ export class AppMainComponent implements OnInit {
     this.appMainService.updateApp(params).subscribe(data => {
       this.ngOnInit();
       $("[id^='layerpop']").modal("hide");
+      $("#add_env").hide();
     });
   }
 
@@ -434,8 +509,53 @@ export class AppMainComponent implements OnInit {
     this.appMainService.addAppRoute(params).subscribe(data => {
       this.ngOnInit();
       $("[id^='layerpop']").modal("hide");
-      $(".service_dl,.lauth_dl").toggleClass("on");
+      $(".lauth_dl").toggleClass("on");
     });
+  }
+
+  delAppRoute() {
+    let params = {};
+    this.appMainService.delAppRoute(this.appGuid, this.sltRouteDelGuid, params).subscribe(data => {
+      this.ngOnInit();
+      $("[id^='layerpop']").modal("hide");
+    });
+  }
+
+  selectBoxServiceChange(val) {
+     var appBindParam = [];
+
+    $.each(this.servicepacksEntitiesRe, function (key, dataobj) {
+      if(dataobj.guid == val) {
+        var str = dataobj.appBindParameter.replace("}", "").replace("{", "");
+
+        // 2. parameter 를 (,)기준으로 자른 다음 쌍따옴표 제거.
+        var split = str.split(",");
+
+        for (var i = 0; i < split.length; i++) {
+          var deleteSign = split[i].replace(/"/g, "");
+
+          // 3. : 을 기준으로 value 부분을 넣어주기로 한다.
+          var splitSign = deleteSign.split(":");
+          // 4. 들어오는 parameter 의 변수 타입에 따라 동적인 input box 생성.
+          if (splitSign != null && splitSign != "undefined" && splitSign != "") {
+            var type = splitSign[1];
+            var value = "";
+            if(type == "default") {
+              type = "hidden";
+              value = "default";
+            }
+
+            var obj = {
+              key: splitSign[0],
+              type: type,
+              value: value
+            };
+            appBindParam.push(obj);
+          }
+        }
+      }
+    });
+    this.sltServiceParam = appBindParam;
   }
 
   tabShowClick(id) {
@@ -484,7 +604,7 @@ export class AppMainComponent implements OnInit {
     $("#add_env").hide();
   }
 
-  showPopAddEnvAddClick() {
+  showPopEnvAddClick() {
     this.sltEnvAddName = $("#envAddId").val();
     $("#layerpop_env_add").modal("show");
   }
@@ -502,13 +622,78 @@ export class AppMainComponent implements OnInit {
     this.updateAppEnv('delete', '');
   }
 
-  showPopAddRouteAddClick() {
+  showPopRouteAddClick() {
     this.sltRouteAddName = $("#routeAddHostName").val();
     $("#layerpop_route_add").modal("show");
   }
 
   addRouteClick() {
     this.addAppRoute();
+  }
+
+  showPopRouteDelClick(guid: string, uri: string) {
+    this.sltRouteDelGuid = guid;
+    this.sltRouteDelUri = uri;
+    $("#layerpop_route_del").modal("show");
+  }
+
+  delRouteClick() {
+    this.delAppRoute();
+  }
+
+  showServiceBindClick() {
+    $(".service_dl").toggleClass("on");
+  }
+
+  showPopServiceBindClick() {
+    if($("#selectBoxService").val() == "") {
+      alert("서비스를 선택 하세요.");
+      return false;
+    }
+
+    this.sltServiceBindName = $("#selectBoxService option:checked").text().trim();
+    $("#layerpop_service_bind").modal("show");
+  }
+
+  bindServiceClick() {
+    var bindParam = "";
+
+    if($("input[id^='serviceParamKey_']").length > 0) {
+      for (var i = 0; i < $("input[id^='serviceParamKey_']").length; i++) {
+        var key = $("input[id^='serviceParamKey_']:eq("+i+")").val();
+        var value = $("input[id^='serviceParamVal_']:eq("+i+")").val();
+
+        if (value == undefined || value == null || value == 'null' || value == 'defalut') {
+          value = "default";
+        }
+
+        if (bindParam.length > 0) {
+          bindParam = bindParam + ',"' + key + '":"' + value + '"';
+        } else {
+          bindParam = bindParam + '"' + key + '":"' + value + '"';
+        }
+      }
+    }
+
+    bindParam = "{" + bindParam + "}";
+
+    let params = {
+      applicationId: this.appSummaryGuid,
+      serviceInstanceId: $("#selectBoxService").val(),
+      parameter: bindParam
+    };
+    this.appMainService.bindService(params).subscribe(data => {
+      this.ngOnInit();
+      $("[id^='layerpop']").modal("hide");
+      $(".service_dl").toggleClass("on");
+      this.sltServiceParam = [];
+    });
+  }
+
+
+  copyClick(id) {
+    var inContent = $("#"+id).val();
+    $("#out_a").val(inContent);
   }
 
 }

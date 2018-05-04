@@ -350,14 +350,14 @@
                 <ul class="sortable_right"><!--
                                     <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
                                     <li><i class="fas fa-cog"></i></li> -->
-                  <li class="bar" data-clipboard-action="cut" data-clipboard-target="#out_a"><i class="fas fa-clipboard"></i></li>
-                  <li (click)="tabShowClick('tabContent_env')"><i class="fas fa-expand"></i></li>
-                </ul>
-              </div>
-              <div class="table_wrap table_wraps">
-                <div>
-                  <table class="variable">
-                    <colgroup>
+                  <li class="bar" data-clipboard-action="cut" data-clipboard-target="#out_a" (click)="copyClick('in_a')"><i class="fas fa-clipboard"></i></li>
+          <li (click)="tabShowClick('tabContent_env')"><i class="fas fa-expand"></i></li>
+        </ul>
+      </div>
+      <div class="table_wrap table_wraps">
+        <div>
+          <table class="variable">
+            <colgroup>
                       <col style='width:130px;'>
                       <col style='*'>
                     </colgroup>
@@ -389,7 +389,7 @@
                 <ul class="sortable_right"><!--
                                     <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
                                     <li><i class="fas fa-cog"></i></li> -->
-                  <li onclick="location.href='dashboard_service.html'"><i class="fas fa-expand"></i></li>
+                  <li (click)="tabShowClick('tabContent_service')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
               <div class="table_wrap">
@@ -411,7 +411,7 @@
                 <p>로그</p>
                 <ul class="sortable_right"><!--
                                     <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
-                  <li onclick="location.href='dashboard_log.html'"><i class="fas fa-expand"></i></li>
+                  <li (click)="tabShowClick('tabContent_logs')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
               <div class="table_wrap table_wraps">
@@ -547,6 +547,94 @@
         </ul>
       </div>
       <div class="row two_line two_view" id="tabContent_service" style="display:none;">
+        <ul class="maT30">
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>서비스</p>
+                <ul class="sortable_right">
+                  <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
+                  <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
+                </ul>
+              </div>
+              <div class="view_table_wrap service_wrap">
+                <div class="service_title maT30">
+                  <div class="pull-right">
+                    <button class="btns btns_1 colors4 serviceOn" (click)="showServiceBindClick()"><i class="fas fa-plus"></i> 서비스 연결</button>
+                  </div>
+                  <h5>연결된 서비스</h5>
+                </div>
+                <div class="maT20 service_in">
+                  <ul class="service_dl">
+                    <li><p>연결 할 서비스</p>
+                      <select id="selectBoxService" (change)="selectBoxServiceChange($event.target.value)" style="width:50%;">
+                        <option value="">
+                          서비스 선택
+                        </option>
+                        <option *ngFor="let service of servicepacksEntitiesRe" value="{{service.guid}}">
+                          {{service.name}}
+                        </option>
+                      </select>
+                      <button class="btns6 colors4" (click)="showPopServiceBindClick()"><i class="fas fa-plus"></i> 연결</button>
+                      <button class="btns6 colors5 serviceOn">취소</button>
+                    </li>
+                    <li *ngFor="let serviceParam of sltServiceParam">
+                      <div style="padding-top: 5px;">
+                        <input id="serviceParamKey_{{serviceParam.key}}" value="{{serviceParam.key}}" type="text" disabled />
+                        <input id="serviceParamVal_{{serviceParam.key}}" type="{{serviceParam.type}}" value="{{serviceParam.value}}" />
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="view_table_wrap">
+                <table class="table_event condition">
+                  <colgroup>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                  </colgroup>
+                  <thead>
+                  <tr>
+                    <td>이름
+                    </td>
+                    <td>제공서비스
+                    </td>
+                    <td>서비스명
+                    </td>
+                    <td>대시보드
+                    </td>
+                    <td>연결해제
+                    </td>
+                    <td>Credentials
+                    </td>
+                  </tr>
+                  </thead>
+                  <tbody *ngFor="let item of appServicesEntities; let i = index">
+                    <tr>
+                      <td>{{item.name}}</td>
+                      <td>{{item.service_plan.name}}</td>
+                      <td>{{item.service_plan.service.label}}</td>
+                      <td><i class="far fa-lightbulb on"></i></td>
+                      <th><span class="BGcolors6 btn_bg_change1">연결해제</span></th>
+                      <td data-target="#layerpop2" data-toggle="modal"><i class="fas fa-edit"></i></td>
+                    </tr>
+                  </tbody>
+                  <!--tfoot>
+                      <tr>
+                          <td colspan="8">
+                              <button class="btns2 btns2_1 colors4">더보기</button>
+                          </td>
+                      </tr>
+                  </tfoot-->
+                </table>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
       <div class="row two_line two_view" id="tabContent_env" style="display:none;">
         <ul class="maT30">
@@ -574,7 +662,7 @@
                       <input type="text" placeholder="값을 입력하여 주십시오"id="envAddData" />
                     </dd>
                     <dt>
-                      <button class="btns6 colors4" (click)="showPopAddEnvAddClick()">저장</button>
+                      <button class="btns6 colors4" (click)="showPopEnvAddClick()">저장</button>
                       <button class="btns6 colors5 variableSW" (click)="hideAddEnvClick()">취소</button>
                     </dt>
                   </dl>
@@ -637,14 +725,14 @@
                     <dt><input type="text" id="routeAddHostName" placeholder="호스트 이름을 입력하여 주십시오" />
                     </dt>
                     <dd>
-                      <select id="selectBoxDomain" *ngFor="let item of appDomainsEntities">
-                        <option value="{{item.guid}}">
+                      <select id="selectBoxDomain">
+                        <option *ngFor="let item of appDomainsEntities" value="{{item.guid}}">
                           {{item.name}}
                         </option>
                       </select>
                     </dd>
                     <dt>
-                      <button class="btns6 colors4" (click)="showPopAddRouteAddClick()">저장</button>
+                      <button class="btns6 colors4" (click)="showPopRouteAddClick()">저장</button>
                       <button class="btns6 colors5 lauthOn">취소</button>
                     </dt>
                   </dl>
@@ -653,10 +741,57 @@
                   <ul class="lauth_ul" *ngFor="let item of appRoutesEntitiesRe">
                     <li>
                       {{item.uri}}
-                      <button class="btns2 colors5" data-target="#layerpop2" data-toggle="modal">연결해제</button>
+                      <button class="btns2 colors5" (click)="showPopRouteDelClick(item.guid, item.uri)">연결해제</button>
                     </li>
                   </ul>
                 </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="row two_line two_view" id="tabContent_logs" style="display:none;">
+        <ul class="maT30">
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>로그</p>
+                <ul class="sortable_right">
+                  <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
+                </ul>
+              </div>
+              <div class="view_table_wrap service_wrap">
+                <div class="service_title maT30">
+                  <div class="pull-right">
+                                        <span class="fcolor"><i class="fas fa-code"></i> Tail Logs
+                                        </span>
+                  </div>
+                  <h5>최근 로그 <i class="rot fas fa-sync-alt"></i></h5>
+                </div>
+                <dl class="log_dl">
+                  <dt>
+                  <ul>
+                    <li>
+                      <span>2016-05-11T06:25:49.000+00:00 [CELL]</span>
+                      OUT Creating container
+                    </li>
+                    <li>
+                      <span>2016-05-11T06:25:50.000+00:00 [CELL]</span>
+                      OUT Successfully created container
+                    </li>
+                    <li>
+                      <span>2016-05-11T06:25:49.000+00:00 [API]</span>
+                    </li>
+                    <li>
+                      <span>2016-05-11T06:25:53.000+00:00 [CELL]</span>
+                      OUT Starting health monitoring of container
+                    </li>
+                  </ul>
+                  </dt>
+                  <dd>
+                    로그 끝 <i class="fas fa-code"></i>Tail Logs
+                  </dd>
+                </dl>
               </div>
             </div>
           </li>
@@ -769,4 +904,69 @@
   </div>
 </div>
 
-<script src="/assets/resources/js/clipboard.min.js"></script>
+<div class="modal fade" id="layerpop_route_del">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">라우트 해제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p><span>{{appSummaryName}}</span> 과 <span>{{sltRouteDelUri}}</span> 의 <br/>연결을 해제하시겠습니까?
+          </p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="delRouteClick()">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_service_bind">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">서비스 연결</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>서비스 <span>{{sltServiceBindName}}</span> 를 연결하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="bindServiceClick()">저장</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<textarea id="out_a">
+</textarea>
+
+<!--<script src="/assets/resources/js/clipboard.min.js"></script>-->
+
+<script>
+  var clipboard = new ClipboardJS('.bar');
+  clipboard.on('success', function(e) {
+    alert("복사되었습니다.");
+    console.log(e);
+  });
+  clipboard.on('error', function(e) {
+    console.log(e);
+  });
+</script>

@@ -55,4 +55,34 @@ export class AppMainService {
       return res;
     }).do(console.log);
   }
+
+  delAppRoute(guid: string, route_guid: string, params: any) {
+    return this.commonService.doDelete('/portalapi/v2/apps/'+guid+'/routes/'+route_guid, params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  getSpaceSummary(guid: string) {
+    return this.commonService.doGET('/portalapi/v2/spaces/'+guid+'/summary', '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  getServicesInstances(guid: string) {
+    return this.commonService.doGET('/portalapi/v2/service-instances/space/'+guid+'', '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  getServicepacks() {
+    return this.commonService.doGET('/commonapi/v2/servicepacks', '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  bindService(params: any) {
+    return this.commonService.doPost('/portalapi/v2/service-bindings', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 }
