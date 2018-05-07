@@ -3,7 +3,7 @@
     <div class="organization_title_wrap on">
       <div class="organization_btn">
         <div class="organization_btnin">
-          <input class="tempTitle" type="text" [(ngModel)]="wantedName">
+          <input class="tempTitle" type="text" [(ngModel)]="wantedOrgName">
           <button class="btns6 colors4 yess2" (click)="renameOrg()">변경하기</button>
           <button class="btns6 colors5 nos2">취소</button>
           +
@@ -63,25 +63,25 @@
           <tbody *ngFor='let space of spaces'>
             <tr>
               <td><p>{{space.name}}</p></td>
-              <th><i class="fas fa-edit" (click)="renameSpace()"></i></th>
-              <th data-target="#layerpop3" data-toggle="modal">
-                <i class="fas fa-trash-alt" (click)="deleteSpace()"></i></th>
+              <th><i class="fas fa-edit" (click)="displayRenameSpace($event)"></i></th>
+              <th [attr.data-target]="'#layerpop3-' + org.name" data-toggle="modal" (click)="displayDeleteSpace($event, space)">
+                <i class="fas fa-trash-alt"></i></th>
             </tr>
             <tr class="on">
               <td colspan="3">
                 <div class="">
                   <div class="account_table_in">
-                    <span>변경할 이름 </span> <input type="text">
+                    <span>변경할 이름 </span> <input type="text" [(ngModel)]="this.wantedSpaceName">
                     <div class="">
-                      <button class="btns6 colors4 btns_sw">변경하기</button>
-                      <button class="btns6 colors5 btns_sw">취소</button>
+                      <button class="btns6 colors4 btns_sw" (click)="renameSpace($event, space)">변경하기</button>
+                      <button class="btns6 colors5 btns_sw" (click)="fadeOutButtonSwitch($event)">취소</button>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
           </tbody>
-          <!-- 
+          <!--
 					<tbody>
 						<tr>
 							<td><p>Dev_00(공간명)</p></td>
@@ -239,7 +239,7 @@
           </thead>
           <tbody>
             <!-- TODO -->
-            <tr *ngFor="let aquota of availableQuotas" 
+            <tr *ngFor="let aquota of availableQuotas"
               [ngClass]="{'cur': isSelected(aquota)}"
               class="org_quota" >
               <td>
@@ -257,7 +257,7 @@
               <td quota-key="app-instances">{{aquota.applicationInstanceLimit}}</td>
               <td quota-key="route-ports">{{aquota.totalReservedRoutePorts}}</td>
             </tr>
-            <!-- 
+            <!--
             <tr class=""
               style="">
               <td><input id="radio2" type="radio" name="radio1"
@@ -409,7 +409,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop3">
+  <div class="modal fade" id="{{'layerpop3-' + org.name}}">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -424,7 +424,7 @@
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                공간 삭제를 하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br /> <span>devtest123</span>을
+                공간 삭제를 하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br /> <span>{{this.selectSpace.name}}</span>을
                 삭제하시겠습니까?
               </p>
             </div>
@@ -432,9 +432,9 @@
           <!-- Footer -->
           <div class="modal-footer">
             <button type="button" class="btns2 colors4"
-              data-dismiss="modal">삭제</button>
+              data-dismiss="modal" (click)="deleteSpace(true)">삭제</button>
             <button type="button" class="btns2 colors5"
-              data-dismiss="modal">취소</button>
+              data-dismiss="modal" (click)="deleteSpace(false)">취소</button>
           </div>
         </div>
       </div>

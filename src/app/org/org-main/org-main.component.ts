@@ -32,6 +32,8 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
     private orgService: OrgService,
     private logger: NGXLogger) {
 
+    this.common.isLoading = true;
+
     // Real work
     this.orgs = orgService.getOrgList();
 
@@ -51,6 +53,8 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
       this.doSortOrgs = true;
 
       this.orgs = this.orgs.sort(Organization.compareTo);
+
+      this.common.isLoading = false;
     }
   }
 

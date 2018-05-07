@@ -15,6 +15,10 @@ export class Space {
     this.orgGuid = orgGuidParam;
   }
 
+  static empty(): Space {
+    return new Space(null, null, null);
+  }
+
   private get metadata() {
     return this._metadata;
   }

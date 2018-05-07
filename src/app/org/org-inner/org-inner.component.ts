@@ -24,17 +24,20 @@ declare var jQuery: any;
 })
 export class OrgInnerComponent implements OnInit, AfterContentChecked {
   @Input('org') org: Organization;
-  @Input('wantedName') wantedName: String;
+  @Input('wantedOrgName') wantedOrgName: String;
 
   private _availableQuotas: Array<OrgQuota>;
   private exactlyQuotaIndex = -1;
+
+  private wantedSpaceName: String;
+  private selectSpace: Space = Space.empty();
 
   @Output() selectEvent = new EventEmitter<Organization>();
 
   private defaultValue = '(dummy)';
 
   constructor(private orgService: OrgService, private spaceService: SpaceService,
-    private quotaService: OrgQuotaService, private logger: NGXLogger) {
+              private quotaService: OrgQuotaService, private logger: NGXLogger) {
   }
 
   ngOnInit(): void {
@@ -63,7 +66,7 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
   }
 
   renameOrg() {
-    this.orgService.renameOrg(this.org, this.wantedName);
+    this.orgService.renameOrg(this.org, this.wantedOrgName);
   }
 
   deleteOrg() {
@@ -83,12 +86,23 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  renameSpace() {
-    this.logger.error('TODO renameSpace');
+  renameSpace($event, space: Space) {
+    this.logger.warn('TODO renameSpace');
+    this.logger.warn('This space is', space.name, ' : ', space);
+    this.logger.warn('This space\'s name will change ', this.wantedSpaceName);
+    this.fadeOutButtonSwitch($event);
   }
 
-  deleteSpace() {
-    this.logger.error('TODO deleteSpace');
+  deleteSpace(doDelete: boolean) {
+    if (doDelete) {
+      this.logger.warn('Delete space : ', this.selectSpace.name);
+      this.setSpaces(this.spaces.filter(space => space !== this.selectSpace));
+      this.logger.warn('Remain space : ', this.spaces);
+      //this.selectSpaceRow.parentElement.parentElement.remove()
+      //this.selectSpaceRow = null;
+    } else {
+      this.logger.warn('Cancel to delete space : ', this.selectSpace.name);
+    }
   }
 
   get quota() {
@@ -155,5 +169,47 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
     } else {
       return true;
     }
+  }
+
+  displayRenameSpace($event) {
+    /*
+    // origin
+    $("th .fa-edit,.table_edit .fa-edit").on("click", function () {
+      $("body > div").addClass('account_modify');
+      $(this).toggleClass("on");
+      $(this).parents("tr").next("tr").toggleClass("on");
+      $(this).parents("tr").addClass("off");
+    });
+    */
+    if ($event != null) {
+      const element = $event.srcElement;
+      $("body > div").addClass('account_modify');
+      $(element).toggleClass("on");
+      $(element).parents("tr").next("tr").toggleClass("on");
+      $(element).parents("tr").addClass("off");
+    }
+  }
+
+  fadeOutButtonSwitch($event) {
+    /*
+    // origin
+    $(".btns_sw").on("click", function () {
+      $(this).parents("tr").prev("tr").removeClass("off");
+      $(this).parents("tr").prev("tr").find("i").toggleClass("on");
+      $(this).parents("tr").toggleClass("on");
+    });
+    */
+    if ($event !== null) {
+      const element = $event.srcElement;
+      $(element).parents("tr").prev("tr").removeClass("off");
+      $(element).parents("tr").prev("tr").find("i").toggleClass("on");
+      $(element).parents("tr").toggleClass("on");
+    }
+  }
+
+  displayDeleteSpace($event, space: Space) {
+    // event
+    this.selectSpace = space;
+    this.logger.warn('Selected space to delete is', this.selectSpace.name, ' : ', this.selectSpace);
   }
 }
