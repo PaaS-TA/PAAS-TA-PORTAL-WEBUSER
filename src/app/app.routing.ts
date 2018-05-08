@@ -23,6 +23,7 @@ import {AuthGuard} from './auth/auth.guard';
 import {CatalogDetailComponent} from "./catalog/catalog-detail/catalog-detail.component";
 import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
 import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
+import {ErrorComponent} from "./error/error.component";
 
 /*
 * Route 모듈 설정
@@ -50,7 +51,8 @@ const routes: Routes = [
   {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},
   {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]},
   {path: 'dashboardSpace', component: DashboardSpaceComponent, canActivate: [AuthGuard]},
-  {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]}
+  {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]},
+  {path: 'error', component: ErrorComponent}
 
 ];
 

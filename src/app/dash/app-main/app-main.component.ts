@@ -23,6 +23,7 @@ export class AppMainComponent implements OnInit {
   public appEventsEntitiesRe: any = [];
   public appEnvEntities: Observable<any[]>;
   public appEnvUserEntities: any = [];
+  public appEnvSystemEntities: Observable<any[]>;
   public appStatusEntities: any = [];
   public appRoutesEntities: Observable<any[]>;
   public appRoutesEntitiesRe: any = [];
@@ -66,6 +67,17 @@ export class AppMainComponent implements OnInit {
 
   public sltServiceParam: any = [];
   public sltServiceBindName: string;
+  public sltServiceUnbindName: string;
+  public sltServiceUnbindGuid: string;
+
+  public appSltEnvSystemName: string;
+  public appSltEnvSystemLabel: string;
+  public appSltEnvSystemCredentialsHostname: string;
+  public appSltEnvSystemCredentialsName: string;
+  public appSltEnvSystemCredentialsPassword: string;
+  public appSltEnvSystemCredentialsPort: string;
+  public appSltEnvSystemCredentialsUri: string;
+  public appSltEnvSystemCredentialsUsername: string;
 
 
   constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService, private common: CommonService) {
@@ -140,13 +152,6 @@ export class AppMainComponent implements OnInit {
 
       this.appSummaryDisk = data.disk_quota;
 
-      //TODO instance, cpu, memory, disk 다구하고 밑에
-      // $('.BG_wrap input').each(function () {
-      //   var BG_wrap = $(this).val();
-      //   $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
-      //   $(this).closest('dl').find("span.rights").html(BG_wrap);
-      // });
-
       this.initRouteTab();
       // this.getSpaceSummary();
       this.getServicepacks();
@@ -174,33 +179,29 @@ export class AppMainComponent implements OnInit {
 
   getSpaceSummary() {
     this.appMainService.getSpaceSummary(this.appSummarySpaceGuid).subscribe(data => {
-      console.log("getSpaceSummary========");
-
       var servicepacks = this.servicepacksEntities;
       var servicepacksRe = [];
+      var useServices = this.appServicesEntities;
 
       $.each(data.services, function (key, dataobj) {
         $.each(servicepacks, function (key2, dataobj2) {
           if((dataobj.service_plan.service.label == dataobj2.servicePackName) && (dataobj2.appBindYn == "Y")) {
-            var obj = {
-              name: dataobj.name,
-              guid: dataobj.guid,
-              appBindParameter: dataobj2.appBindParameter
-            };
-            servicepacksRe.push(obj);
+
+            if(JSON.stringify(useServices).indexOf("\"name\":\""+dataobj.name+"\"") < 0) {
+              var obj = {
+                name: dataobj.name,
+                guid: dataobj.guid,
+                label: dataobj.service_plan.service.label,
+                appBindParameter: dataobj2.appBindParameter
+              };
+              servicepacksRe.push(obj);
+            } else {
+            }
+
           }
         });
       });
-      
-      //TODO app 바인딩 된것은 삭제
-      
       this.servicepacksEntitiesRe = servicepacksRe;
-      console.log(this.servicepacksEntitiesRe);
-
-      // console.log(this.appServicesEntities);
-      // if(this.appServicesEntities != null) {
-      //   console.log("in!!");
-      // }
     });
   }
 
@@ -486,6 +487,10 @@ export class AppMainComponent implements OnInit {
         });
         this.appEnvUserEntities = appUserEnv;
       }
+
+      if (JSON.stringify(data.system_env_json) != "{}") {
+        this.appEnvSystemEntities = data.system_env_json.VCAP_SERVICES;
+      }
     });
   }
 
@@ -559,6 +564,9 @@ export class AppMainComponent implements OnInit {
   }
 
   tabShowClick(id) {
+    $('.nav_1d li').removeClass('cur');
+    $("#nav_"+id).addClass('cur');
+
     $("[id^='tabContent_']").hide();
     $("#"+id).show();
   }
@@ -687,6 +695,70 @@ export class AppMainComponent implements OnInit {
       $("[id^='layerpop']").modal("hide");
       $(".service_dl").toggleClass("on");
       this.sltServiceParam = [];
+    });
+  }
+
+  showPopServiceCredentialsClick(name:string, label:string) {
+    var hostname = "";
+    var name2 = "";
+    var password = "";
+    var port = "";
+    var uri = "";
+    var username = "";
+
+    var useSysEnvs = this.appEnvSystemEntities;
+    $.each(useSysEnvs, function (key, dataobj) {
+      if(key == label) {
+        $.each(dataobj, function (key2, dataobj2) {
+          if(dataobj2.name == name) {
+            console.log(dataobj2.credentials);
+            if(dataobj2.credentials.hostname != null) {
+              hostname = dataobj2.credentials.hostname;
+            }
+            if(dataobj2.credentials.name != null) {
+              name2 = dataobj2.credentials.name;
+            }
+            if(dataobj2.credentials.password != null) {
+              password = dataobj2.credentials.password;
+            }
+            if(dataobj2.credentials.port != null) {
+              port = dataobj2.credentials.port;
+            }
+            if(dataobj2.credentials.uri != null) {
+              uri = dataobj2.credentials.uri;
+            }
+            if(dataobj2.credentials.username != null) {
+              username = dataobj2.credentials.username;
+            }
+          }
+        })
+      }
+    });
+
+    this.appSltEnvSystemName = name;
+    this.appSltEnvSystemLabel = label;
+
+    this.appSltEnvSystemCredentialsHostname = hostname;
+    this.appSltEnvSystemCredentialsName = name2;
+    this.appSltEnvSystemCredentialsPassword = password;
+    this.appSltEnvSystemCredentialsPort = port;
+    this.appSltEnvSystemCredentialsUri = uri;
+    this.appSltEnvSystemCredentialsUsername = username;
+
+    $("#layerpop_service_credentials").modal("show");
+  }
+
+  showPopServiceUnbindClick(name: string, guid: string) {
+    this.sltServiceUnbindName = name;
+    this.sltServiceUnbindGuid = guid;
+    $("#layerpop_service_unbind").modal("show");
+  }
+
+  unbindServiceClick() {
+    let params = {};
+    this.appMainService.unbindService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
+      this.ngOnInit();
+      $("[id^='layerpop']").modal("hide");
     });
   }
 

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {Router} from '@angular/router';
 import {NGXLogger} from 'ngx-logger';
-import {UaaSecurityService} from '../auth/uaa-security.service';
+import {SecurityService} from '../auth/security.service';
 
 @Component({
   selector: 'app-logout',
@@ -11,7 +11,7 @@ import {UaaSecurityService} from '../auth/uaa-security.service';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private router: Router, private common: CommonService, private uaa: UaaSecurityService, private log: NGXLogger) {
+  constructor(private router: Router, private common: CommonService,private log: NGXLogger) {
     this.LogOut();
     router.navigate(['/']);
   }

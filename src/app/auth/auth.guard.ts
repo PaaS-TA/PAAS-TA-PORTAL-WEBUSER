@@ -11,9 +11,16 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    if (this.common.getSessionTime() == null || JSON.parse(this.common.getSessionTime()) < new Date().getTime()) {
+      this.common.signOut();
+    } else {
+      this.common.refreshSession();
+    }
+
     if (this.common.getToken() != null) {
       return true;
     }
+
     this.router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
     return false;
   }

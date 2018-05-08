@@ -160,8 +160,8 @@
               <dt class="tit">MEMORY
                 <span class="pull-right rights"></span>
               </dt>
-              <!--<dd><span class="memS">{{ (appSummaryMemory < 1024) ? (appSummaryMemory) : (appSummaryMemory/1024) }}</span><i>{{ (appSummaryMemory < 1024) ? 'M' : 'G' }}</i><small> / 최대 100G</small>-->
-              <dd><span class="memS">{{appSummaryMemory}}</span><i>MB</i><small> / 최대 100G</small>
+              <dd><span class="memS">{{ (appSummaryMemory >= 1024) ? (appSummaryMemory/1024) : (appSummaryMemory) }}</span><i>{{ (appSummaryMemory >= 1024) ? 'G' : 'M' }}</i><small> / 최대 100G</small>
+              <!--<dd><span class="memS">{{appSummaryMemory}}</span><i>MB</i><small> / 최대 100G</small>-->
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/memory_ico.png" alt="" />
@@ -193,8 +193,8 @@
               <dt class="tit">DISK
                 <span class="pull-right rights"></span>
               </dt>
-              <!--<dd><span class="diskS">{{ (appSummaryDisk < 1024) ? (appSummaryDisk) : (appSummaryDisk/1024) }}</span><i>{{ (appSummaryDisk < 1024) ? 'M' : 'G' }}</i><small> / 최대 300G</small>-->
-              <dd><span class="diskS">{{appSummaryDisk}}</span><i>MB</i><small> / 최대 300G</small>
+              <dd><span class="diskS">{{ (appSummaryDisk >= 1024) ? (appSummaryDisk/1024) : (appSummaryDisk) }}</span><i>{{ (appSummaryDisk >= 1024) ? 'G' : 'M' }}</i><small> / 최대 300G</small>
+              <!--<dd><span class="diskS">{{appSummaryDisk}}</span><i>MB</i><small> / 최대 300G</small>-->
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/disk_ico.png" alt="" />
@@ -351,13 +351,13 @@
                                     <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
                                     <li><i class="fas fa-cog"></i></li> -->
                   <li class="bar" data-clipboard-action="cut" data-clipboard-target="#out_a" (click)="copyClick('in_a')"><i class="fas fa-clipboard"></i></li>
-          <li (click)="tabShowClick('tabContent_env')"><i class="fas fa-expand"></i></li>
-        </ul>
-      </div>
-      <div class="table_wrap table_wraps">
-        <div>
-          <table class="variable">
-            <colgroup>
+                  <li (click)="tabShowClick('tabContent_env')"><i class="fas fa-expand"></i></li>
+                </ul>
+              </div>
+              <div class="table_wrap table_wraps">
+                <div>
+                  <table class="variable">
+                    <colgroup>
                       <col style='width:130px;'>
                       <col style='*'>
                     </colgroup>
@@ -392,15 +392,47 @@
                   <li (click)="tabShowClick('tabContent_service')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
-              <div class="table_wrap">
+              <div class="table_wrap" *ngIf="appServicesEntities == ''">
                 <div>
                   <p class="service_p">이 앱에 대해 서비스가 사용되지 않았습니다.<br>
                     Delivery Pipeline, GitHub 등을 통해 빌드, 테스트 및 배치를<br>
                     자동화하는 서비스를 사용하십시오.
                   </p>
-                  <button class="btns2 colors4">
+                  <button class="btns2 colors4" (click)="tabShowClick('tabContent_service')">
                     <i class="fas fa-plus"></i>서비스 등록
                   </button>
+                </div>
+              </div>
+              <div class="table_wrap table_wraps" *ngIf="appServicesEntities != ''">
+                <div>
+                  <table class="table_event">
+                    <colgroup>
+                      <col style='width: 30px;'>
+                      <col style='width: 200px;'>
+                      <col style='*'>
+                      <col style='*'>
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <td>#
+                        </td>
+                        <td>이름
+                        </td>
+                        <td>제공서비스
+                        </td>
+                        <td>서비스명
+                        </td>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let item of appServicesEntities; let i = index">
+                      <tr>
+                        <td>{{i+1}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.service_plan.name}}</td>
+                        <td>{{item.service_plan.service.label}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -576,7 +608,7 @@
                         </option>
                       </select>
                       <button class="btns6 colors4" (click)="showPopServiceBindClick()"><i class="fas fa-plus"></i> 연결</button>
-                      <button class="btns6 colors5 serviceOn">취소</button>
+                      <button class="btns6 colors5 serviceOn" (click)="showServiceBindClick()">취소</button>
                     </li>
                     <li *ngFor="let serviceParam of sltServiceParam">
                       <div style="padding-top: 5px;">
@@ -618,9 +650,9 @@
                       <td>{{item.name}}</td>
                       <td>{{item.service_plan.name}}</td>
                       <td>{{item.service_plan.service.label}}</td>
-                      <td><i class="far fa-lightbulb on"></i></td>
-                      <th><span class="BGcolors6 btn_bg_change1">연결해제</span></th>
-                      <td data-target="#layerpop2" data-toggle="modal"><i class="fas fa-edit"></i></td>
+                      <td><a href="{{item.dashboard_url}}" target="_blank"><i class="far fa-lightbulb on"></i></a></td>
+                      <th (click)="showPopServiceUnbindClick(item.name, item.guid)"><span class="BGcolors6 btn_bg_change1">연결해제</span></th>
+                      <td (click)="showPopServiceCredentialsClick(item.name, item.service_plan.service.label)"><i class="fas fa-edit"></i></td>
                     </tr>
                   </tbody>
                   <!--tfoot>
@@ -949,6 +981,117 @@
         <div class="modal-footer">
           <button type="button" class="btns2 colors4" (click)="bindServiceClick()">저장</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_service_unbind">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">서비스 연결해제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>서비스 <span>{{sltServiceUnbindName}}</span> 를 연결해제 하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="unbindServiceClick()">확인</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_service_credentials">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">Credentials</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p><span>{{appSltEnvSystemLabel}}</span><br/>
+              {{appSltEnvSystemName}}
+            </p>
+          </div>
+          <div class="">
+            <table class="modal_t2">
+              <colgroup>
+                <col>
+                <col>
+              </colgroup>
+              <tbody>
+                <tr *ngIf="appSltEnvSystemCredentialsHostname != ''">
+                  <td>
+                    Hostname
+                  </td>
+                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
+                    {{appSltEnvSystemCredentialsHostname}}
+                  </td>
+                </tr>
+                <tr *ngIf="appSltEnvSystemCredentialsUri != ''">
+                  <td>
+                    jdbcUrl
+                  </td>
+                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
+                    {{appSltEnvSystemCredentialsUri}}
+                  </td>
+                </tr>
+                <tr *ngIf="appSltEnvSystemCredentialsName != ''">
+                  <td>
+                    Name
+                  </td>
+                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
+                    {{appSltEnvSystemCredentialsName}}
+                  </td>
+                </tr>
+                <tr *ngIf="appSltEnvSystemCredentialsPort != ''">
+                  <td>
+                    Port
+                  </td>
+                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
+                    {{appSltEnvSystemCredentialsPort}}
+                  </td>
+                </tr>
+                <!--<tr *ngIf="appSltEnvSystemCredentialsUri != ''">-->
+                  <!--<td>-->
+                    <!--Url-->
+                  <!--</td>-->
+                  <!--<td>-->
+                    <!--<input type="text" />-->
+                  <!--</td>-->
+                <!--</tr>-->
+                <tr *ngIf="appSltEnvSystemCredentialsUsername != ''">
+                  <td>
+                    Username
+                  </td>
+                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
+                    {{appSltEnvSystemCredentialsUsername}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">확인</button>
         </div>
       </div>
     </div>

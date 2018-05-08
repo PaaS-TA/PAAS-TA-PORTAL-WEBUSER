@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
 import {UaaSecurityService} from '../auth/uaa-security.service';
@@ -22,11 +22,11 @@ declare var jQuery: any;
 })
 
 
-export class DashboardComponent implements OnInit, AfterViewChecked {
-  @Input('org') org: Organization;
+export class DashboardComponent implements OnInit {
+
   public userid: string;
   public token: string;
-  orgId: string;
+
 
   orgs: Array<Organization>;
   spaces: Array<Space>;
@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
               private spaceService : SpaceService,
               private log: NGXLogger,
               private uaa: UaaSecurityService,
+
               router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
@@ -58,14 +59,6 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     this.log.info(this.spaces);
   }
 
-  reEnter(type: string) {
-    this.error = false;
-  }
-
-  onChange(org: Organization) {
-    this.org = org;
-  }
-  
   ngOnInit() {
 
     console.log('ngOnInit fired');

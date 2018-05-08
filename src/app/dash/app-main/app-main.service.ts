@@ -85,4 +85,10 @@ export class AppMainService {
       return res;
     }).do(console.log);
   }
+
+  unbindService(applicationId: string, serviceInstanceId: string, params: any) {
+    return this.commonService.doDelete('/portalapi/v2/service-bindings/'+serviceInstanceId+'/apps/'+applicationId, params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 }
