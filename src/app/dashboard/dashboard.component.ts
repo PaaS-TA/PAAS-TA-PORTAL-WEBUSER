@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
-import {UaaSecurityService} from '../auth/uaa-security.service';
+import {SecurityService} from '../auth/security.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -35,17 +35,8 @@ export class DashboardComponent implements OnInit {
               private orgService: OrgService,
               private spaceService : SpaceService,
               private log: NGXLogger,
-              private uaa: UaaSecurityService,
-
               router: Router, private http: HttpClient) {
-    if (commonService.getToken() == null) {
-      router.navigate(['/']);
-    }
-    this.userid = this.commonService.getUserid();
-    this.token = this.commonService.getToken();
 
-    this.orgs = orgService.getOrgList();
-    // this.spaces =spaceService.getOrgSpaceList();
   }
 
 

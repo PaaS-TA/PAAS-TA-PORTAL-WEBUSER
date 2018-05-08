@@ -1,32 +1,42 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CommonService} from "../common/common.service";
-import {UaaSecurityService} from "../auth/uaa-security.service";
+import {SecurityService} from "../auth/security.service";
 import {NGXLogger} from "ngx-logger";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class LoginService {
 
 
-  constructor(public common: CommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger, private uaa: UaaSecurityService) {
+  constructor(public common: CommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger, private sec: SecurityService) {
   }
 
+  observable: Observable<boolean>;
 
   apiLogin(username: string, password: string) {
     this.common.isLoading = true;
     this.log.debug('api Login');
     let params = {id: username, password: password};
     return this.common.doPost('/portalapi/login', params, '').map(data => {
-      this.log.debug(data);
-      this.common.saveUserInfo('', data['id'], '', '', '', '', '', '', '');
-      this.common.saveToken('', data['token'], '', '', '');
+      this.common.saveToken(data['token_type'], data['token'], data['refresh_token'], data['expire_in'], data['scope'], 'API');
+      this.sec.doUserInfoProvider(data['id']);
       return data;
     });
   }
 
-
   oAuthLogin() {
     this.log.debug('oAuth Login');
-    this.uaa.doAuthorization();
+    this.sec.doAuthorization();
+  }
+
+
+  doGo(returnUrl: string) {
+    if (returnUrl == null || returnUrl == '/') {
+      this.router.navigate(['dashboard']);
+    } else {
+      let params = this.common.setParams(returnUrl);
+      this.router.navigate([this.common.setUrl(returnUrl)], {queryParams: params});
+    }
   }
 }

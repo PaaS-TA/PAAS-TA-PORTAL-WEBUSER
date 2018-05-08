@@ -21,7 +21,7 @@ import {BottonComponent} from './layout/botton/botton.component';
 import {LeftComponent} from './layout/left/left.component';
 import {FormsModule} from '@angular/forms';
 
-import {UaaSecurityService} from './auth/uaa-security.service';
+import {SecurityService} from './auth/security.service';
 import {CallbackComponent} from './callback/callback.component';
 import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
 import {LogoutComponent} from './logout/logout.component';
@@ -38,7 +38,7 @@ import {LoginComponent} from './login/login.component';
 import {SpaceService} from './space/space.service';
 import {LoginService} from './login/login.service';
 import {AuthGuard} from './auth/auth.guard';
-import { OrgModule } from './org/org.module';
+import {OrgModule} from './org/org.module';
 import {CatalogModule} from "./catalog/catalog.module";
 
 import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
@@ -47,6 +47,7 @@ import {DashboardSapaceService} from './dashboard/dashboard-space/dashboard-sapa
 import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
 import {DashboardProduceService} from './dashboard/dashboard-produce/dashboard-produce.service';
 import {CatalogService} from "./catalog/main/catalog.service";
+import {ErrorComponent} from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -69,10 +70,10 @@ import {CatalogService} from "./catalog/main/catalog.service";
     CallbackComponent,
     LogoutComponent,
     UsermgmtComponent,
-
     LoginComponent,
     DashboardSpaceComponent,
-    DashboardProduceComponent
+    DashboardProduceComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -101,7 +102,7 @@ import {CatalogService} from "./catalog/main/catalog.service";
     AuthGuard,
     CommonService,
     LoginService,
-    UaaSecurityService,
+    SecurityService,
     DashboardService,
     UsermgmtService,
     SpaceService,

@@ -10,15 +10,14 @@
     <div class="form-group">
       <div class="col-xs-12">
         <input class="form-control" type="text" required="" placeholder="E-mail" name="username" [(ngModel)]="username"
-               (keyup)="reEnter('username')">
+               (keyup)="hideMsg()">
       </div>
     </div>
     <div class="form-group">
       <div class="col-xs-12">
-        <input class="form-control" type="password" required="" placeholder="Password" name="password"
-               [(ngModel)]="password" (keyup)="reEnter('password')">
-        <div *ngIf="error"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> 아이디 또는
-          비밀번호가 일치하지 않습니다.
+        <input class="form-control" type="password" required="" placeholder="password" name="password"
+               [(ngModel)]="password" (keyup)="hideMsg()">
+        <div *ngIf="error"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{errorMsg}}
         </p></div>
       </div>
     </div>

@@ -7,20 +7,9 @@ import {Observable} from 'rxjs/Observable';
 import {reject} from 'q';
 import {logger} from 'codelyzer/util/logger';
 import {NGXLogger} from 'ngx-logger';
-import {UaaSecurityService} from '../auth/uaa-security.service';
 import {Param} from "../login/login.component";
-
-
-const COOKIE_NAMES = {
-  'cf_user_guid': 'cf_user_guid',
-  'cf_user_id': 'cf_user_id',
-  'cf_user_email': 'cf_user_email',
-  'cf_token_type': 'cf_token_type',
-  'cf_token': 'cf_token',
-  'cf_refresh_token': 'cf_refresh_token',
-  'cf_expires': 'cf_expires',
-  'cf_scope': 'cf_scope'
-};
+import {Router} from "@angular/router";
+import {AuthConfig} from "../auth/authconfig"
 
 
 @Injectable()
@@ -31,14 +20,12 @@ export class CommonService {
   headers: HttpHeaders;
   private gateway = '';
 
-  constructor(private http: HttpClient, private log: NGXLogger) {
+  constructor(public http: HttpClient, public router: Router, public log: NGXLogger) {
     this.headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==')
       .set('X-Broker-Api-Version', '2.4')
       .set('X-Requested-With', 'XMLHttpRequest');
-
-
   }
 
   doGetConfig() {
@@ -88,75 +75,149 @@ export class CommonService {
   }
 
   private removeItems() {
-    window.sessionStorage.removeItem(COOKIE_NAMES['cf_token_type']);
-    window.sessionStorage.removeItem(COOKIE_NAMES['cf_token']);
-    window.sessionStorage.removeItem(COOKIE_NAMES['cf_refresh_token']);
-    window.sessionStorage.removeItem(COOKIE_NAMES['cf_expires_in']);
-    window.sessionStorage.removeItem(COOKIE_NAMES['cf_scope']);
-    window.sessionStorage.removeItem(COOKIE_NAMES['cf_user_guid']);
-    window.sessionStorage.removeItem(COOKIE_NAMES['cf_user_id']);
-    window.sessionStorage.removeItem(COOKIE_NAMES['cf_user_email']);
-  }
+    window.sessionStorage.removeItem('cf_token_type');
+    window.sessionStorage.removeItem('cf_token');
+    window.sessionStorage.removeItem('cf_refresh_token');
+    window.sessionStorage.removeItem('cf_scope');
+    window.sessionStorage.removeItem('cf_user_guid');
+    window.sessionStorage.removeItem('cf_user_id');
+    window.sessionStorage.removeItem('cf_user_email');
+    window.sessionStorage.removeItem('login_type');
+    window.sessionStorage.removeItem('user_id');
+    window.sessionStorage.removeItem('user_name');
+    window.sessionStorage.removeItem('status');
+    window.sessionStorage.removeItem('tell_phone');
+    window.sessionStorage.removeItem('zip_code');
+    window.sessionStorage.removeItem('address');
+    window.sessionStorage.removeItem('admin_yn');
+    window.sessionStorage.removeItem('img_path');
+    window.sessionStorage.removeItem('expires_in');
 
-  public saveToken(token_type: string, token: string, refresh_token: string, expires_in: string, scope: string) {
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_token_type'], token_type);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_token'], token);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_refresh_token'], refresh_token);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_scope'], scope);
-  }
-
-
-  public saveUserInfo(cf_user_guid: string, cf_user_id: string, cf_user_name: string, cf_given_name: string, cf_family_name: string,
-                      cf_user_email: string, cf_phone_number: string, cf_expires: string, cf_previous_logon_time: string) {
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_user_guid'], cf_user_guid);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_user_id'], cf_user_id);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_username'], cf_user_name);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_given_name'], cf_given_name);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_family_name'], cf_family_name);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_user_email'], cf_user_email);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_phone_number'], cf_phone_number);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_expires'], cf_expires);
-    window.sessionStorage.setItem(COOKIE_NAMES['cf_previous_logon_time'], cf_previous_logon_time);
 
   }
 
+  public saveToken(token_type: any, token: any, refresh_token: any, expires_in: any, scope: any, login_type: any) {
+
+    window.sessionStorage.setItem('cf_token_type', token_type);
+    window.sessionStorage.setItem('cf_token', token);
+    window.sessionStorage.setItem('cf_refresh_token', refresh_token);
+    window.sessionStorage.setItem('cf_scope', scope);
+    window.sessionStorage.setItem('login_type', login_type);
+    window.sessionStorage.setItem('expires_in', expires_in);
+
+    let token_time = new Date();
+    /*
+     * expires_in은 몇 초 후 만료를 뜻함
+     * 그래서 분으로 바꾸고 분에서 2분 전에 토큰 리플레쉬 하게, -2 을 해줌
+     */
+    token_time.setMinutes(token_time.getMinutes() + (expires_in / 60 - 2));
+    this.log.debug('Token Expire Time :' + token_time.getHours() + ":" + token_time.getMinutes() + ":" + token_time.getSeconds());
+    window.sessionStorage.setItem('expire_date', token_time.getTime().toString());
+
+
+    /*
+     * Session Time
+     */
+    let sessionTime = new Date();
+    sessionTime.setMinutes(sessionTime.getMinutes() + AuthConfig.sessionTimeout);
+    this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
+    window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
+  }
+
+  public refreshSession(){
+    /*
+     * Session Time
+     */
+    let sessionTime = new Date();
+    sessionTime.setMinutes(sessionTime.getMinutes() + AuthConfig.sessionTimeout);
+    this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
+    window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
+  }
+
+
+  public saveCfUserInfo(cf_user_guid: string, cf_user_id: string, cf_user_name: string, cf_given_name: string, cf_family_name: string,
+                        cf_user_email: string, cf_phone_number: string, cf_expires: string, cf_previous_logon_time: string) {
+    let now = new Date();
+    window.sessionStorage.setItem('cf_user_guid', cf_user_guid);
+    window.sessionStorage.setItem('cf_user_id', cf_user_id);
+    window.sessionStorage.setItem('cf_username', cf_user_name);
+    window.sessionStorage.setItem('cf_given_name', cf_given_name);
+    window.sessionStorage.setItem('cf_family_name', cf_family_name);
+    window.sessionStorage.setItem('cf_user_email', cf_user_email);
+    window.sessionStorage.setItem('cf_phone_number', cf_phone_number);
+    window.sessionStorage.setItem('cf_previous_logon_time', cf_previous_logon_time);
+
+  }
+
+  public saveUserInfo(user_id: string, user_name: string, status: string, tell_phone: string, zip_code: string,
+                      address: string, admin_yn: string, img_path: string) {
+
+    window.sessionStorage.setItem('user_id', user_id);
+    window.sessionStorage.setItem('user_name', user_name);
+    window.sessionStorage.setItem('status', status);
+    window.sessionStorage.setItem('tell_phone', tell_phone);
+    window.sessionStorage.setItem('zip_code', zip_code);
+    window.sessionStorage.setItem('address', address);
+    window.sessionStorage.setItem('admin_yn', admin_yn);
+    window.sessionStorage.setItem('img_path', img_path);
+
+  }
+
+  public getSessionTime(): string {
+    return sessionStorage.getItem('sessionTimeout');
+  }
 
   public getUserGuid(): string {
-    return sessionStorage.getItem(COOKIE_NAMES['cf_user_guid']);
+    return sessionStorage.getItem('cf_user_guid');
   }
 
   public getUserid(): string {
-    return sessionStorage.getItem(COOKIE_NAMES['cf_user_id']);
+    return sessionStorage.getItem('cf_user_id');
+  }
+
+  public getUserName(): string {
+    return sessionStorage.getItem('user_name');
   }
 
   public getUserEmail(): string {
-    return sessionStorage.getItem(COOKIE_NAMES['cf_user_email']);
+    return sessionStorage.getItem('cf_user_email');
   }
 
   public getTokenType(): string {
-    return sessionStorage.getItem(COOKIE_NAMES['cf_token_type']);
+    return sessionStorage.getItem('cf_token_type');
   }
 
   public getToken(): string {
-    let cf_expires = sessionStorage.getItem(COOKIE_NAMES['cf_expires']);
+    let cf_expires = sessionStorage.getItem('expire_date');
+
     let now = new Date();
-    // if (cf_expires < now.getTime()) {
-    // this.uaa.doTokenRefresh();
-    // }
-    return sessionStorage.getItem(COOKIE_NAMES['cf_token']);
+    if (sessionStorage.getItem('cf_token') != null && cf_expires <= now.getTime().toString()) {
+      if (this.getLoginType() === 'API') {
+        this.doTokenRefreshAPI();
+      } else {
+        this.doTokenRefreshOauth();
+      }
+    }
+
+    return sessionStorage.getItem('cf_token');
   }
 
   public getRefreshToken(): string {
-    return sessionStorage.getItem(COOKIE_NAMES['cf_refresh_token']);
+    return sessionStorage.getItem('cf_refresh_token');
   }
 
   public getExpiresin(): string {
-    return sessionStorage.getItem(COOKIE_NAMES['cf_expires_in']);
+    return sessionStorage.getItem('expires_in');
   }
 
   public getScope(): string {
-    return sessionStorage.getItem(COOKIE_NAMES['cf_scope']);
+    return sessionStorage.getItem('cf_scope');
   }
+
+  public getLoginType(): string {
+    return sessionStorage.getItem('login_type');
+  }
+
 
   private map: Param;
 
@@ -186,6 +247,60 @@ export class CommonService {
       });
     }
     return this.map;
+  }
+
+
+  /*
+   * 토큰은 재생성 하는 과정 - > OAUTH 로그인용
+   */
+  doTokenRefreshOauth() {
+    const headers = new HttpHeaders()
+      .append('Content-Type', 'application/x-www-form-urlencoded');
+
+    let refreshUrl = AuthConfig.accessUrl +
+      '?response_type=refresh_token' +
+      '&client_id=' + AuthConfig.clientId +
+      '&client_secret=' + AuthConfig.clientSecret +
+      '&redirect_uri=' + AuthConfig.redirectUri +
+      '&grant_type=refresh_token' +
+      '&code=' + AuthConfig.code +
+      '&refresh_token=' + this.getRefreshToken();
+
+    return this.http.post(refreshUrl, null, {
+      headers: headers
+    }).retryWhen(error => {
+      return error.flatMap((error: any) => {
+        return Observable.of(error.status).delay(1000);
+      }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
+    }).subscribe(data => {
+      this.saveToken(data['token_type'], data['access_token'], data['refresh_token'], data['expires_in'], data['scope'], 'OAUTH');
+      return true;
+    }, error => {
+      this.removeItems();
+      return false;
+    });
+  }
+
+
+  /*
+   * 토큰은 재생성 하는 과정 - > OAUTH 로그인용
+   */
+  doTokenRefreshAPI() {
+    const headers = new HttpHeaders()
+      .append('Content-Type', 'application/x-www-form-urlencoded');
+
+    let param = {'token': this.getToken(), 'refresh_token': this.getRefreshToken()};
+    return this.doPost('/portalapi/token/refresh', param, this.getToken()).retryWhen(error => {
+      return error.flatMap((error: any) => {
+        return Observable.of(error.status).delay(1000);
+      }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
+    }).subscribe(data => {
+      this.saveToken(data['token_type'], data['access_token'], data['refresh_token'], data['expires_in'], data['scope'], 'API');
+      return true;
+    }, error => {
+      this.removeItems();
+      return false;
+    });
   }
 
 }
