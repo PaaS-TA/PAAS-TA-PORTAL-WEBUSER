@@ -42,6 +42,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
 
   private createSpaceName: String = "";  // Space name it's wanted to create
   private selectSpace: Space = Space.empty();
+  private selectQuota: OrgQuota = OrgQuota.empty();
 
   @Output() selectEvent = new EventEmitter<Organization>();
 
@@ -65,10 +66,13 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
       this.exactlyQuotaIndex =
         this.availableQuotas.findIndex(
           orgQuota => (orgQuota === this.quota) || (orgQuota.guid === this.quota.guid))
+
       if (this.exactlyQuotaIndex !== -1) {
-        const element = $('#' + this.org.name + '-' + this.quota.name)[0];
-        if (element.tagName === 'INPUT')
-          element.checked = 'checked';
+        const elements = $('#radio-' + this.org.name + '-' + this.quota.name);
+        if (elements.length > 0 && elements[0] !== undefined && elements[0].tagName === 'INPUT') {
+          elements[0].checked = 'checked';
+          this.logger.debug("Select input : ", elements[0]);
+        }
       }
     }
 
@@ -183,16 +187,16 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
       return false;
   }
 
-  selectQuota($event, quota: OrgQuota, logger = this.logger) {
-    // TODO
-    if (!this.isSelected(quota)) {
-      const inputElement = $event.srcElement;
-      const inputs = inputElement.parentElement.parentElement.parentElement.getElementsByTagName('input');
-      logger.info(inputs);
-
-      $(inputElement).attr('checked', '');
+  changeQuota(doChange: boolean) {
+    if (doChange) {
+      this.logger.warn('Change quota of org : ', this.selectQuota.name);
+      //this.spaceService.deleteSpace(this.spaces, this.selectSpace, true);
+      // EventEmitter 쓸지 말지 고민 중
+      //let quota =  this.quotaService.changeQuota(this.org.guid, this.selectQuota);
+    } else {
+      this.logger.warn('Cancel to change quota of org : ', this.selectQuota.name);
     }
-    logger.info(event);
+    this.selectQuota = OrgQuota.empty();
   }
 
   private isValid(param): boolean {
@@ -242,8 +246,14 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   displayDeleteSpace($event, space: Space) {
     // event
     this.selectSpace = space;
-    this.logger.warn('Selected space to delete is', this.selectSpace.name, ' : ', this.selectSpace);
+    this.logger.debug('Selected space to delete is ', this.selectSpace.name, ' : ', this.selectSpace);
   }
+
+  displayChangeQuota($event, quota: OrgQuota) {
+    this.selectQuota = quota;
+    this.logger.debug('Selected quota to change is ', this.selectQuota.name, ' : ', this.selectQuota);
+  }
+
 
   reloadSpaces() {
     this.common.isLoading = true;

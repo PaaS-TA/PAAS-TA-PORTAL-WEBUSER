@@ -3,6 +3,8 @@ export class Space {
   private _entity;
   private _orgGuid;
 
+  private static emptyInstance: Space = null;
+
   constructor(metadataParam, entityParam, orgGuidParam) {
     // initialize dummy data when constructor parameter is null or undefined.
 
@@ -16,7 +18,10 @@ export class Space {
   }
 
   static empty(): Space {
-    return new Space(null, null, null);
+    if (this.emptyInstance === null)
+      this.emptyInstance = new Space(null, null, null);
+
+    return this.emptyInstance;
   }
 
   private get metadata() {

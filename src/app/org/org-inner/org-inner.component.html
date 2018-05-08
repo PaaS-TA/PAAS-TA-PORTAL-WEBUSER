@@ -258,7 +258,7 @@
               <input type="radio" [name]="'radio-' + org.name"
                      [id]="'radio-' + org.name + '-' + aquota.name"
                      [attr.data-target]="'#layerpop7-' + org.name"
-                     data-toggle="modal" (click)="selectQuota($event, aquota)" >
+                     data-toggle="modal" (click)="changeQuota($event, aquota)" >
               <label [for]="org.name + '-' + aquota.name"></label></td>
             <td quota-key="name">{{aquota.name}}</td>
             <td quota-key="memory-limit">{{aquota.memoryLimit === -1 ? '무제한' : aquota.memoryLimit}}</td>
@@ -271,22 +271,6 @@
             <td quota-key="app-instances">{{aquota.applicationInstanceLimit}}</td>
             <td quota-key="route-ports">{{aquota.totalReservedRoutePorts}}</td>
           </tr>
-          <!--
-          <tr class=""
-            style="">
-            <td><input id="radio2" type="radio" name="radio1"
-              checked="" data-target="#layerpop7" data-toggle="modal">
-              <label for="radio2"></label></td>
-            <td>기본</td>
-            <td>10G</td>
-            <td>무제한</td>
-            <td>100</td>
-            <td>100</td>
-            <td>무료</td>
-            <td>무제한</td>
-            <td>0</td>
-          </tr>
-          -->
           </tbody>
         </table>
       </div>
@@ -631,7 +615,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop7">
+  <div class="modal fade" [id]="'layerpop7-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">

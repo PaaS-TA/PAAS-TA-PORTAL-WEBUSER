@@ -23,7 +23,11 @@ export enum OrgURLConstant {
   URLOrgQuotaInformationHead = URLOrgRequestBase,
   URLOrgQuotaInformationTail = '/quota',
 
-  URLOrgAvailableQuotas = '/portalapi/v2/orgs/quota-definitions'
+  URLOrgAvailableQuotasHead = URLOrgRequestBase,
+  URLOrgAvailableQuotasTail = 'quota-definitions',
+
+  URLOrgChangeQuotaHead = URLOrgRequestBase,
+  URLOrgChangeQuotaTail = '/quota',
 }
 
 /*

@@ -3,6 +3,7 @@ import {OrgQuota} from '../../model/org-quota';
 import {OrgURLConstant} from './org.constant';
 import {Injectable} from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
+import {Organization} from "../../model/organization";
 
 @Injectable()
 export class OrgQuotaService {
@@ -35,9 +36,34 @@ export class OrgQuotaService {
     return quota;
   }
 
+  public changeQuota(orgId: string, quota: OrgQuota) {
+    const url: string = OrgURLConstant.URLOrgChangeQuotaHead + orgId + OrgURLConstant.URLOrgChangeQuotaTail;
+    const requestBody = {
+      guid: orgId,            // org guid
+      quotaGuid: quota.guid,  // quota guid to change
+    };
+    const observable = this.common.doPut(url, requestBody, this.getToken());
+    observable.subscribe(data => {
+      const isOrg: boolean =
+        data.hasOwnProperty('metadata') && data['metadata'].hasOwnProperty('guid')
+        && data.hasOwnProperty('entity') && data['entity'].hasOwnProperty('quota_definition_guid');
+      if (isOrg) {
+        const resOrgId = data['metadata']['guid'];
+        const resQuotaId = data['entity']['quota_definition_guid'];
+
+        if (resOrgId === orgId && resQuotaId === quota.guid)
+          return {quotaInstance: quota};
+      }
+
+      return {quotaInstance: null};
+    });
+
+    return {};
+  }
+
   public getOrgAvailableQuota(): Array<OrgQuota> {
     const quotas: Array<OrgQuota> = [];
-    const url: string = OrgURLConstant.URLOrgAvailableQuotas + '';
+    const url: string = OrgURLConstant.URLOrgAvailableQuotasHead + OrgURLConstant.URLOrgAvailableQuotasTail;
     const observable = this.common.doGET(url, this.getToken());
     observable.subscribe(data => {
       if (data.hasOwnProperty('resources')) {

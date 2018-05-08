@@ -12,6 +12,8 @@ export class OrgQuota {
   private pricePolicy = 'free';
   private pricelessPolicy = 'paid';
 
+  private static emptyInstance: OrgQuota = null;
+
   constructor(metadataParam?, entityParam?) {
     // initialize dummy data when constructor parameter is null or undefined.
     // initialize metadata as dummy
@@ -22,7 +24,10 @@ export class OrgQuota {
   }
 
   static empty() {
-    return new OrgQuota(null, null);
+    if (this.emptyInstance === null)
+      this.emptyInstance = new OrgQuota(null, null);
+
+    return this.emptyInstance;
   }
 
   get valid(): boolean {
