@@ -1,5 +1,6 @@
 import {OrgQuota} from './org-quota';
 import {Space} from './space';
+
 export class Organization {
   /*
   // DATA MODEL IS...
@@ -221,5 +222,29 @@ export class Organization {
 
   get usersUrl() {
     return this.entity.users_url;
+  }
+
+  /**
+   * Comparable.compareTo method implementation for Organization
+   * @param {Organization} objA
+   * @param {Organization} objB
+   * @returns {number}
+   */
+  static compareTo(objA: Organization, objB: Organization): number {
+    if (objA === null && objB === null)
+      return 0;
+    else if (objA === null)
+      return -1;
+    else if (objB === null)
+      return 1;
+
+    const nameA = objA.name;
+    const nameB = objB.name;
+    if (nameA === nameB)
+      return 0;
+    else if (nameA < nameB)
+      return -1;
+    else
+      return 1;
   }
 }

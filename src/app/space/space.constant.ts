@@ -3,5 +3,5 @@ export enum SpaceURLConstant {
   URLSpaceRequestBase = '/portalapi/v2/orgs/',
 
   URLSpaceInformationPrefix = URLSpaceRequestBase,
-  URLSpaceInformationPostfix = '/space',
+  URLSpaceInformationPostfix = '/spaces',
 }
