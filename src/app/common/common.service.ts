@@ -152,7 +152,7 @@ export class CommonService {
   public saveUserInfo(user_id: string, user_name: string, status: string, tell_phone: string, zip_code: string,
                       address: string, admin_yn: string, img_path: string) {
 
-    window.sessionStorage.setItem('user_id', user_id);
+    window.sessionStorage.setItem('cf_user_id', user_id);
     window.sessionStorage.setItem('user_name', user_name);
     window.sessionStorage.setItem('status', status);
     window.sessionStorage.setItem('tell_phone', tell_phone);
