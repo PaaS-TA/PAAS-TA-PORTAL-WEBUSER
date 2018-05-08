@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
-import {UaaSecurityService} from '../auth/uaa-security.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -11,6 +10,7 @@ import {Organization} from "../model/organization";
 import {SpaceService} from "../space/space.service";
 import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
+import {SecurityService} from "../auth/security.service";
 
 declare var $: any;
 declare var jQuery: any;
@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit {
 
 
   orgs: Array<Organization>;
+  org: Organization;
   spaces: Array<Space>;
 
   constructor(private commonService: CommonService,
@@ -36,8 +37,7 @@ export class DashboardComponent implements OnInit {
               private orgService: OrgService,
               private spaceService : SpaceService,
               private log: NGXLogger,
-              private uaa: UaaSecurityService,
-
+              private security: SecurityService,
               router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);

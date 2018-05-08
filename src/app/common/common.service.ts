@@ -61,12 +61,6 @@ export class CommonService {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
-  
-  doDelete(url: string, token: string) {
-    return this.http.delete(this.gateway + url, {
-      headers: this.headers.set('cf-Authorization', token)
-    });
-  }
 
   doDelete(url: string, params: any, token: string) {
     return this.http.delete(this.gateway + url, {
@@ -75,6 +69,11 @@ export class CommonService {
     });
   }
 
+  doDeleteNoParams(url: string, token: string) {
+    return this.http.delete(this.gateway + url, {
+      headers: this.headers.set('cf-Authorization', token)
+    });
+  }
 
   signOut() {
     this.removeItems();
