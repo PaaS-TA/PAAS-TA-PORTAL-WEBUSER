@@ -33,7 +33,7 @@ export class Organization {
 
   private _metadata;
   private _entity;
-  private _orgSpaces: Array<Space>;
+  private _orgSpaces: Array<Space> = [];
   private _orgQuota: OrgQuota;
   private orgIndex: number;
 

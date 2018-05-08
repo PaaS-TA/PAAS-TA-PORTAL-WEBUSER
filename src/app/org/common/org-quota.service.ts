@@ -21,12 +21,15 @@ export class OrgQuotaService {
   }
 
   public getOrgQuota(orgId: string): OrgQuota {
-    let quota: OrgQuota;
+    let quota: OrgQuota = OrgQuota.empty();
     const url: string = OrgURLConstant.URLOrgQuotaInformationHead + orgId + OrgURLConstant.URLOrgQuotaInformationTail;
     const observable = this.common.doGET(url, this.getToken());
     observable.subscribe(quotaData => {
-      quota = new OrgQuota(quotaData['metadata'], quotaData['entity']);
-      this.logger.debug('OrgQuota :', quota);
+      //quota = new OrgQuota(quotaData['metadata'], quotaData['entity']);
+      if (quotaData.hasOwnProperty('metadata') && quotaData.hasOwnProperty('entity') ) {
+        quota.fill(quotaData['metadata'], quotaData['entity']);
+        this.logger.debug('OrgQuota :', quota);
+      }
     });
 
     return quota;

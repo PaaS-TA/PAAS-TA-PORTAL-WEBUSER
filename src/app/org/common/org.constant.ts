@@ -17,7 +17,7 @@ export enum OrgURLConstant {
 
   // /portalapi/v2/orgs/{org-id}/space
   URLOrgSpaceInformationHead = URLOrgRequestBase,
-  URLOrgSpaceInformationTail = '/space',
+  URLOrgSpaceInformationTail = '/spaces',
 
   // /portalapi/v2/orgs/{org-id}/quota
   URLOrgQuotaInformationHead = URLOrgRequestBase,

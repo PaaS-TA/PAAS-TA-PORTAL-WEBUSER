@@ -21,6 +21,19 @@ export class OrgQuota {
     this.entity = entityParam;
   }
 
+  static empty() {
+    return new OrgQuota(null, null);
+  }
+
+  get valid(): boolean {
+    return this.metadata.guid !== '(id_dummy)' && this.entity.name !== '(dummy)';
+  }
+
+  fill(metadata, entity) {
+    this.metadata = metadata;
+    this.entity = entity;
+  }
+
   private get metadata() {
     return this._metadata;
   }
