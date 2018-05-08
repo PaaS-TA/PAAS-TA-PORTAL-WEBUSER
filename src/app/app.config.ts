@@ -1,4 +1,4 @@
-export const AuthConfig = {
+export const AppConfig = {
   clientId: 'localportalclient',
   clientSecret: 'clientsecret',
   redirectUri: window.location.origin + '/callback',
@@ -8,7 +8,7 @@ export const AuthConfig = {
   accessUrl: 'https://uaa.115.68.46.187.xip.io/oauth/token',
   infoUrl: 'https://uaa.115.68.46.187.xip.io/userinfo',
   logoutUrl: 'https://uaa.115.68.46.187.xip.io/logout',
-  userUrl: '/commonapi/v2/user',
+  userinfoUrl: '/commonapi/v2/user',
   code: '',
   sessionTimeout: 10
 };

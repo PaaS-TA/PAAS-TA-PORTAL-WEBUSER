@@ -9,7 +9,7 @@ import {logger} from 'codelyzer/util/logger';
 import {NGXLogger} from 'ngx-logger';
 import {Param} from "../login/login.component";
 import {Router} from "@angular/router";
-import {AuthConfig} from "../auth/authconfig"
+import {AppConfig} from "../app.config"
 
 
 @Injectable()
@@ -119,7 +119,7 @@ export class CommonService {
      * Session Time
      */
     let sessionTime = new Date();
-    sessionTime.setMinutes(sessionTime.getMinutes() + AuthConfig.sessionTimeout);
+    sessionTime.setMinutes(sessionTime.getMinutes() + AppConfig.sessionTimeout);
     this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
   }
@@ -129,7 +129,7 @@ export class CommonService {
      * Session Time
      */
     let sessionTime = new Date();
-    sessionTime.setMinutes(sessionTime.getMinutes() + AuthConfig.sessionTimeout);
+    sessionTime.setMinutes(sessionTime.getMinutes() + AppConfig.sessionTimeout);
     this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
   }
@@ -257,13 +257,13 @@ export class CommonService {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let refreshUrl = AuthConfig.accessUrl +
+    let refreshUrl = AppConfig.accessUrl +
       '?response_type=refresh_token' +
-      '&client_id=' + AuthConfig.clientId +
-      '&client_secret=' + AuthConfig.clientSecret +
-      '&redirect_uri=' + AuthConfig.redirectUri +
+      '&client_id=' + AppConfig.clientId +
+      '&client_secret=' + AppConfig.clientSecret +
+      '&redirect_uri=' + AppConfig.redirectUri +
       '&grant_type=refresh_token' +
-      '&code=' + AuthConfig.code +
+      '&code=' + AppConfig.code +
       '&refresh_token=' + this.getRefreshToken();
 
     return this.http.post(refreshUrl, null, {

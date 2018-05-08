@@ -48,6 +48,7 @@ import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard
 import {DashboardProduceService} from './dashboard/dashboard-produce/dashboard-produce.service';
 import {CatalogService} from "./catalog/main/catalog.service";
 import {ErrorComponent} from './error/error.component';
+import {AppConfig} from "./app.config";
 
 @NgModule({
   declarations: [

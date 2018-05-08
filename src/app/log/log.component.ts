@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, InjectionToken, OnInit} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {CommonService} from "../common/common.service";
+
 
 @Component({
   selector: 'app-log',
@@ -9,8 +10,10 @@ import {CommonService} from "../common/common.service";
 })
 export class LogComponent implements OnInit {
 
+
+
   constructor(private common: CommonService) {
-    console.log(this.common.getUserName());
+
   }
 
   ngOnInit() {

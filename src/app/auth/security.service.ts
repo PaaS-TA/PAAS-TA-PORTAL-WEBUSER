@@ -9,7 +9,7 @@ import {appendChild} from '@angular/core/src/render3/node_manipulation';
 import {toBase64String} from '@angular/compiler/src/output/source_map';
 import {UsermgmtService} from "../usermgmt/usermgmt.service";
 import {LoginComponent} from "../login/login.component";
-import {AuthConfig} from "../auth/authconfig"
+import {AppConfig} from "../app.config"
 
 
 @Injectable()
@@ -26,17 +26,17 @@ export class SecurityService {
     this.log.debug('doAuthorization()');
     const params = {
       'response_type': 'code',
-      'client_id': AuthConfig.clientId,
-      'scope': AuthConfig.scope,
-      'redirect_uri': AuthConfig.redirectUri
+      'client_id': AppConfig.clientId,
+      'scope': AppConfig.scope,
+      'redirect_uri': AppConfig.redirectUri
     };
 
     this.router.navigate(['/login']).then(result => {
-      window.location.href = AuthConfig.authUrl +
-        '?response_type=' + AuthConfig.code +
-        '&client_id=' + AuthConfig.clientId +
-        '&redirect_uri=' + AuthConfig.redirectUri +
-        '&scope=' + AuthConfig.scope +
+      window.location.href = AppConfig.authUrl +
+        '?response_type=' + AppConfig.code +
+        '&client_id=' + AppConfig.clientId +
+        '&redirect_uri=' + AppConfig.redirectUri +
+        '&scope=' + AppConfig.scope +
         '&state=';
     });
 
@@ -50,13 +50,13 @@ export class SecurityService {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let accessUrl = AuthConfig.accessUrl +
+    let accessUrl = AppConfig.accessUrl +
       '?response_type=token' +
-      '&client_id=' + AuthConfig.clientId +
-      '&client_secret=' + AuthConfig.clientSecret +
-      '&redirect_uri=' + AuthConfig.redirectUri + '' +
+      '&client_id=' + AppConfig.clientId +
+      '&client_secret=' + AppConfig.clientSecret +
+      '&redirect_uri=' + AppConfig.redirectUri + '' +
       '&grant_type=authorization_code' +
-      '&code=' + AuthConfig.code;
+      '&code=' + AppConfig.code;
 
     this.http.post(accessUrl, null, {
       headers: headers
@@ -78,10 +78,10 @@ export class SecurityService {
   doCheckToken() {
     this.log.debug('doCheckToken()');
     const headers = new HttpHeaders()
-      .append('Authorization', 'Basic ' + btoa(AuthConfig.clientId + ':' + AuthConfig.clientSecret))
+      .append('Authorization', 'Basic ' + btoa(AppConfig.clientId + ':' + AppConfig.clientSecret))
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let checkUrl = AuthConfig.checkUrl + '?token=' + this.common.getToken();
+    let checkUrl = AppConfig.checkUrl + '?token=' + this.common.getToken();
 
     this.http.post(checkUrl, null, {
       headers: headers
@@ -107,7 +107,7 @@ export class SecurityService {
       .append('Authorization', 'Bearer ' + this.common.getToken())
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let checkUrl = AuthConfig.infoUrl;
+    let checkUrl = AppConfig.infoUrl;
 
     this.http.get(checkUrl, {
       headers: headers
@@ -132,13 +132,13 @@ export class SecurityService {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let refreshUrl = AuthConfig.accessUrl +
+    let refreshUrl = AppConfig.accessUrl +
       '?response_type=refresh_token' +
-      '&client_id=' + AuthConfig.clientId +
-      '&client_secret=' + AuthConfig.clientSecret +
-      '&redirect_uri=' + AuthConfig.redirectUri +
+      '&client_id=' + AppConfig.clientId +
+      '&client_secret=' + AppConfig.clientSecret +
+      '&redirect_uri=' + AppConfig.redirectUri +
       '&grant_type=refresh_token' +
-      '&code=' + AuthConfig.code +
+      '&code=' + AppConfig.code +
       '&refresh_token=' + this.common.getRefreshToken();
 
     this.http.post(refreshUrl, null, {
@@ -161,7 +161,7 @@ export class SecurityService {
   doUserInfoProvider(userId: string) {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
-    return this.common.doGET(AuthConfig.userUrl + '/' + userId, this.common.getToken()).retryWhen(error => {
+    return this.common.doGET(AppConfig.userinfoUrl + '/' + userId, this.common.getToken()).retryWhen(error => {
       return error.flatMap((error: any) => {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
@@ -185,8 +185,8 @@ export class SecurityService {
    */
   saveUserDB(userId: string) {
     let params = {userId: userId, userName: '', status: '1', adminYn: 'N', imgPath: ''};
-    this.log.debug(AuthConfig.userUrl);
-    this.common.doPost(AuthConfig.userUrl, params, this.common.getToken()).retryWhen(error => {
+    this.log.debug(AppConfig.userinfoUrl);
+    this.common.doPost(AppConfig.userinfoUrl, params, this.common.getToken()).retryWhen(error => {
       return error.flatMap((error: any) => {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
