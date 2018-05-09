@@ -7,7 +7,7 @@ import {Observable} from 'rxjs/Observable';
 import {reject} from 'q';
 import {logger} from 'codelyzer/util/logger';
 import {NGXLogger} from 'ngx-logger';
-import {Param} from "../login/login.component";
+import {Param} from "../index/login/login.component";
 import {Router} from "@angular/router";
 import {AppConfig} from "../app.config"
 
@@ -152,7 +152,7 @@ export class CommonService {
   public saveUserInfo(user_id: string, user_name: string, status: string, tell_phone: string, zip_code: string,
                       address: string, admin_yn: string, img_path: string) {
 
-    window.sessionStorage.setItem('user_id', user_id);
+    window.sessionStorage.setItem('cf_user_id', user_id);
     window.sessionStorage.setItem('user_name', user_name);
     window.sessionStorage.setItem('status', status);
     window.sessionStorage.setItem('tell_phone', tell_phone);
@@ -289,8 +289,8 @@ export class CommonService {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let param = {'token': this.getToken(), 'refresh_token': this.getRefreshToken()};
-    return this.doPost('/portalapi/token/refresh', param, this.getToken()).retryWhen(error => {
+    let param = {'token': sessionStorage.getItem('cf_token'), 'refresh_token': this.getRefreshToken()};
+    return this.doPost('/portalapi/token/refresh', param, sessionStorage.getItem('cf_token')).retryWhen(error => {
       return error.flatMap((error: any) => {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
