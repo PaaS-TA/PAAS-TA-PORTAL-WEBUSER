@@ -87,16 +87,16 @@
           <li>
             <div>
               <select id="">
-                <option value="" selected="selected">생성된 조직명</option>
-                <option value=""></option>
+                <option value="" selected="selected" name="org_space">생성된 조직명</option>
+                <option value=""  *ngFor="let org of orgs">{{org.name}}</option>
               </select>
             </div>
           </li>
           <li>
             <div>
               <select id="">
-                <option value="" selected="selected">해당 공간명</option>
-                <option value=""></option>
+                <option value="" selected="selected" name="org_dev">해당 공간명</option>
+                <option value=""  *ngFor="let space of spaces">{{space.name}}</option>
               </select>
             </div>
           </li>
@@ -129,7 +129,7 @@
         <ul class="maT30">
           <li>
             <div class="sortable_wrap space_box2">
-              <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 앱이 없습니다. 앱 생성을 클릭하여 작성하거나 <em><a href="#">카탈로그</a></em>를 찾아보십시오.</span>
+              <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 앱이 없습니다. 앱 생성을 클릭하여 작성하거나 <em><a [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
             </div>
           </li>
         </ul>
@@ -198,7 +198,7 @@
         <ul class="maT30">
           <li>
             <div class="sortable_wrap space_box2">
-              <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나 <em><a href="">카탈로그</a></em>를 찾아보십시오.</span>
+              <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나 <em><a [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
             </div>
           </li>
         </ul>

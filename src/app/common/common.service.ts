@@ -38,7 +38,7 @@ export class CommonService {
     return body || {};
   }
 
-  doGET(url, token: string) {
+  doGET(url: string, token: string) {
     if (token == null) {
       return this.http.get(this.gateway + url, {
         headers: this.headers
@@ -62,12 +62,18 @@ export class CommonService {
     });
   }
 
-  doDelete(url: string, body: any, token: string) {
+  doDelete(url: string, params: any, token: string) {
     return this.http.delete(this.gateway + url, {
+      params: params,
       headers: this.headers.set('cf-Authorization', token)
     });
   }
 
+  doDeleteNoParams(url: string, token: string) {
+    return this.http.delete(this.gateway + url, {
+      headers: this.headers.set('cf-Authorization', token)
+    });
+  }
 
   signOut() {
     this.removeItems();

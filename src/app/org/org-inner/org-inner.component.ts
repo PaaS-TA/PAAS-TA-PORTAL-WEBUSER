@@ -5,8 +5,19 @@ import {Space} from '../../model/space';
 import {SpaceService} from '../../space/space.service';
 import {OrgQuotaService} from '../common/org-quota.service';
 import {OrgService} from '../common/org.service';
-import {Component, OnInit, Input, Output, EventEmitter, AfterContentChecked} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  AfterContentChecked,
+  AfterViewChecked,
+  DoCheck
+} from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
+import {assertArrayOfStrings} from "@angular/compiler/src/assertions";
+import {assertEqual} from "@angular/core/src/render3/assert";
 
 declare var $: any;
 declare var jQuery: any;
@@ -22,22 +33,25 @@ declare var jQuery: any;
     './org-inner.component.css',
   ],
 })
-export class OrgInnerComponent implements OnInit, AfterContentChecked {
+export class OrgInnerComponent implements OnInit, AfterViewChecked {
   @Input('org') org: Organization;
   @Input('wantedOrgName') wantedOrgName: String;
 
   private _availableQuotas: Array<OrgQuota>;
-  private exactlyQuotaIndex = -1;
+  private exactlyQuotaIndex = null;
 
-  private wantedSpaceName: String;
+  private createSpaceName: String = "";  // Space name it's wanted to create
   private selectSpace: Space = Space.empty();
+  private selectQuota: OrgQuota = OrgQuota.empty();
 
   @Output() selectEvent = new EventEmitter<Organization>();
 
   private defaultValue = '(dummy)';
 
   constructor(private orgService: OrgService, private spaceService: SpaceService,
-              private quotaService: OrgQuotaService, private logger: NGXLogger) {
+              private quotaService: OrgQuotaService, private common: CommonService,
+              private logger: NGXLogger) {
+    this.common.isLoading = true;
   }
 
   ngOnInit(): void {
@@ -47,23 +61,29 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
     this.setAvailableQuotas(this.quotaService.getOrgAvailableQuota());
   }
 
-  ngAfterContentChecked(): void {
-    if (this.quota !== null && this.quota !== undefined) {
-      if (this.availableQuotas.length > 0 && this.exactlyQuotaIndex === -1) {
-        const len = this.availableQuotas.length;
-        for (let i = 0; i < len; i++) {
-          const aquota = this.availableQuotas[i];
-          if ((this.quota === aquota) || (this.quota.guid === aquota.guid)) {
-            this.exactlyQuotaIndex = i;
-            this.logger.debug('OrgQuota : ', aquota.name, '(' + aquota.guid + ')');
-          }
-          if (this.exactlyQuotaIndex !== -1) {
-            break;
-          }
+  ngAfterViewChecked(): void {
+    if (this.quota.valid && this.availableQuotas.length > 0 && this.exactlyQuotaIndex === null) {
+      this.exactlyQuotaIndex =
+        this.availableQuotas.findIndex(
+          orgQuota => (orgQuota === this.quota) || (orgQuota.guid === this.quota.guid))
+
+      if (this.exactlyQuotaIndex !== -1) {
+        const elements = $('#radio-' + this.org.name + '-' + this.quota.name);
+        if (elements.length > 0 && elements[0] !== undefined && elements[0].tagName === 'INPUT') {
+          elements[0].checked = 'checked';
+          this.logger.debug("Select input : ", elements[0]);
         }
       }
     }
+
+    let complete: boolean =
+      this.quota.valid && this.availableQuotas.length > 0 && this.exactlyQuotaIndex !== -1;
+
+    if (complete) {
+      this.common.isLoading = false;
+    }
   }
+
 
   renameOrg() {
     this.orgService.renameOrg(this.org, this.wantedOrgName);
@@ -86,35 +106,48 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
     }
   }
 
+  resetNewSpaceName() {
+    this.createSpaceName = "";
+  }
+
+  createSpace($event?) {
+    if (this.createSpaceName !== null && this.createSpaceName !== "")
+      this.spaceService.createSpace(this.spaces, this.org.guid, this.createSpaceName);
+
+    if ($event !== null && $event !== undefined) {
+      $('#layerpop5-' + this.org.name).modal('hide');
+    }
+  }
+
   renameSpace($event, space: Space) {
-    this.logger.warn('TODO renameSpace');
-    this.logger.warn('This space is', space.name, ' : ', space);
-    this.logger.warn('This space\'s name will change ', this.wantedSpaceName);
+    // the value of input element (#wtc-{space.guid})
+    const inputElem = $('#wtc-' + space.guid)[0];
+    const wantedToChangeName = inputElem.value;
+    this.logger.debug('This space\'s current name is', space.name, '(', space, ')');
+    this.logger.debug('This space\'s name will change [', wantedToChangeName, ']');
+    this.spaceService.renameSpace(space, wantedToChangeName);
     this.fadeOutButtonSwitch($event);
+    inputElem.value = '';  // reset value to change name
   }
 
   deleteSpace(doDelete: boolean) {
     if (doDelete) {
       this.logger.warn('Delete space : ', this.selectSpace.name);
-      this.setSpaces(this.spaces.filter(space => space !== this.selectSpace));
       this.logger.warn('Remain space : ', this.spaces);
-      //this.selectSpaceRow.parentElement.parentElement.remove()
-      //this.selectSpaceRow = null;
+      this.spaceService.deleteSpace(this.spaces, this.selectSpace, true);
     } else {
       this.logger.warn('Cancel to delete space : ', this.selectSpace.name);
     }
+    //this.selectSpace = null;
+    this.selectSpace = Space.empty();
   }
 
   get quota() {
     return this.org.quota;
   }
 
-  private setQuota(quotaParam?: OrgQuota) {
-    if (quotaParam === null || quotaParam === undefined) {
-      this.org.quota = new OrgQuota();
-    } else {
-      this.org.quota = quotaParam;
-    }
+  private setQuota(quotaParam: OrgQuota) {
+    this.org.quota = quotaParam;
   }
 
   get availableQuotas() {
@@ -148,19 +181,22 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
   }
 
   isSelected(quota: OrgQuota) {
-    return this.quota.name === quota.name;
+    if (this.quota !== null)
+      return this.quota.name === quota.name;
+    else
+      return false;
   }
 
-  selectQuota($event, quota: OrgQuota, logger = this.logger) {
-    // TODO
-    if (!this.isSelected(quota)) {
-      const inputElement = $event.srcElement;
-      const inputs = inputElement.parentElement.parentElement.parentElement.getElementsByTagName('input');
-      logger.info(inputs);
-
-      $(inputElement).attr('checked', '');
+  changeQuota(doChange: boolean) {
+    if (doChange) {
+      this.logger.warn('Change quota of org : ', this.selectQuota.name);
+      //this.spaceService.deleteSpace(this.spaces, this.selectSpace, true);
+      // EventEmitter 쓸지 말지 고민 중
+      //let quota =  this.quotaService.changeQuota(this.org.guid, this.selectQuota);
+    } else {
+      this.logger.warn('Cancel to change quota of org : ', this.selectQuota.name);
     }
-    logger.info(event);
+    this.selectQuota = OrgQuota.empty();
   }
 
   private isValid(param): boolean {
@@ -210,6 +246,19 @@ export class OrgInnerComponent implements OnInit, AfterContentChecked {
   displayDeleteSpace($event, space: Space) {
     // event
     this.selectSpace = space;
-    this.logger.warn('Selected space to delete is', this.selectSpace.name, ' : ', this.selectSpace);
+    this.logger.debug('Selected space to delete is ', this.selectSpace.name, ' : ', this.selectSpace);
+  }
+
+  displayChangeQuota($event, quota: OrgQuota) {
+    this.selectQuota = quota;
+    this.logger.debug('Selected quota to change is ', this.selectQuota.name, ' : ', this.selectQuota);
+  }
+
+
+  reloadSpaces() {
+    this.common.isLoading = true;
+    this.setSpaces(this.spaceService.getOrgSpaceList(this.org.guid, () => {
+      this.common.isLoading = false;
+    }));
   }
 }

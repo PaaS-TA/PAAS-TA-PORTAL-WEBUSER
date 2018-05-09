@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
-import {SecurityService} from '../auth/security.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -10,6 +9,8 @@ import {OrgService} from "../org/common/org.service";
 import {Organization} from "../model/organization";
 import {SpaceService} from "../space/space.service";
 import {Space} from '../model/space';
+import {count} from "rxjs/operator/count";
+import {SecurityService} from "../auth/security.service";
 
 declare var $: any;
 declare var jQuery: any;
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnInit {
 
 
   orgs: Array<Organization>;
+  org: Organization;
   spaces: Array<Space>;
 
   constructor(private commonService: CommonService,
@@ -35,12 +37,30 @@ export class DashboardComponent implements OnInit {
               private orgService: OrgService,
               private spaceService : SpaceService,
               private log: NGXLogger,
+              private security: SecurityService,
               router: Router, private http: HttpClient) {
+    if (commonService.getToken() == null) {
+      router.navigate(['/']);
+    }
+    this.userid = this.commonService.getUserid();
+    this.token = this.commonService.getToken();
 
+    this.orgs = orgService.getOrgList();
+
+    this.org = null;
+    this.spaces = [];
   }
 
+  ngAfterViewChecked() {
+    if (this.org != null) {
+      this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
+    }
+    this.log.info(this.org);
+    this.log.info(this.spaces);
+  }
 
   ngOnInit() {
+
     console.log('ngOnInit fired');
 
     $(document).ready(() => {

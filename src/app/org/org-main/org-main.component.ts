@@ -31,17 +31,9 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
   constructor(private common: CommonService,
     private orgService: OrgService,
     private logger: NGXLogger) {
-
     this.common.isLoading = true;
-
     // Real work
     this.orgs = orgService.getOrgList();
-
-    // Real work (admin)
-    // this.orgs = orgService.getOrgListAdminOnly();
-
-    // Test sample (admin)
-    // this.orgs = orgService.getOrgListAdminOnlySample();
   }
 
   ngOnInit(): void {}
@@ -53,8 +45,6 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
       this.doSortOrgs = true;
 
       this.orgs = this.orgs.sort(Organization.compareTo);
-
-      this.common.isLoading = false;
     }
   }
 
@@ -106,7 +96,7 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
   selectOrg(org: Organization, logger = this.logger) {
     this.currentOrgIndex = this.orgs.indexOf(org);
     this.orgs[this.currentOrgIndex].indexOfOrgs = this.currentOrgIndex;
-    logger.debug('orgs[' + this.currentOrgIndex + '] : ' + this.orgs[this.currentOrgIndex]);
+    logger.debug('orgs[' + this.currentOrgIndex + '] : ', this.orgs[this.currentOrgIndex]);
   }
 
   get currentOrg() {

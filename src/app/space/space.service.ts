@@ -3,6 +3,8 @@ import {Space} from '../model/space';
 import { SpaceURLConstant } from './space.constant';
 import {Injectable} from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
+import {OrgURLConstant} from "../org/common/org.constant";
+import {Subscription} from "rxjs/Subscription";
 
 @Injectable()
 export class SpaceService {
@@ -12,9 +14,9 @@ export class SpaceService {
     return this.common.getToken();
   }
 
-  public getOrgSpaceList(orgId: string): Array<Space> {
+  public getOrgSpaceList(orgId: String, func?: Function): Array<Space> {
     const spaces: Array<Space> = [];
-    const url: string = SpaceURLConstant.URLSpaceInformationPrefix + orgId + SpaceURLConstant.URLSpaceInformationPostfix;
+    const url: string = OrgURLConstant.URLOrgSpaceInformationHead + orgId + OrgURLConstant.URLOrgSpaceInformationTail;
     const observable = this.common.doGET(url, this.getToken());
     observable.subscribe(data => {
       if (data.hasOwnProperty('spaceList')) {
@@ -23,14 +25,101 @@ export class SpaceService {
           (spaceList['resources'] as Array<Object>).forEach(spaceData => {
             const index =
               spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId)) - 1;
-            this.logger.trace('Org(', index, ') :', spaces[index]);
+            this.logger.trace('Org.spaces(', index, ') :', spaces[index]);
           });
         }
-        this.logger.debug('OrgList :', spaces);
+        this.logger.debug('Org(', orgId, ').SpaceList :', spaces);
       }
+      if (func !== null && func !== undefined)
+        func();
     });
 
     return spaces;
+  }
+
+  /**
+   * Create space (Post)
+   * @param {String} orgId
+   * @param {String} wantedName
+   */
+  public createSpace(spaces: Array<Space>, orgId: String, wantedName: String) {
+    const url: string = SpaceURLConstant.URLSpaceCreatePrefix;
+    const requestBody = {
+      orgGuid: orgId,  // organization's guid
+      spaceName: wantedName,  // wanted new space's name
+    };
+
+    this.common.isLoading = true;
+    const observable = this.common.doPost(url, requestBody, this.getToken());
+    observable.subscribe( data => {
+      if (data.hasOwnProperty('metadata') && data['metadata'].hasOwnProperty('guid')
+        && data.hasOwnProperty('entity') && data['entity'].hasOwnProperty('name')) {
+        let space: Space = new Space(data['metadata'], data['entity'], orgId);
+        spaces.push(space);
+        this.common.isLoading = false;
+      }
+    });
+  }
+
+  /**
+   * Rename space (Put)
+   * @param {Space} space
+   * @param {String} wantedNewName
+   */
+  public renameSpace(space: Space, wantedNewName: String) {
+    const url: string = SpaceURLConstant.URLSpaceRenamePrefix;
+    const requestBody = {
+      guid: space.guid,
+      newSpaceName: wantedNewName
+    };
+
+    this.common.isLoading = true;
+    const observable = this.common.doPut(url, requestBody, this.getToken());
+    observable.subscribe(data => {
+      if (data.hasOwnProperty('metadata') && data['metadata'].hasOwnProperty('guid')
+        && data.hasOwnProperty('entity') && data['entity'].hasOwnProperty('name')) {
+        const guid = data['metadata']['guid'];
+        const name = data['entity']['name'];
+        if (guid === space.guid) {
+          space.name = name;
+        } else {
+          this.logger.error("Request GUID and response GUID don't match!");
+          this.logger.error("Request GUID : ", space.guid);
+          this.logger.error("Response GUID : ", guid);
+        }
+        this.common.isLoading = false;
+      }
+    });
+  }
+
+  /**
+   * Delete space (Delete)
+   * @param {Space} space
+   * @param {boolean} isRecursive
+   */
+  public deleteSpace(spaces: Array<Space>, space: Space, isRecursive: boolean) {
+    const url: string = SpaceURLConstant.URLSpaceDeletePrefix;
+    const requestParam = {  // Delete Method cannot bind body (RFC7231#Section-4.3.5)
+      guid: space.guid,
+      recursive: isRecursive,
+    };
+
+    this.common.isLoading = true;
+    const observable = this.common.doDelete(url, requestParam, this.getToken());
+    observable.subscribe(data => {
+      if (data.hasOwnProperty('entity') && data['entity']['error'] === null) {
+        const index = spaces.findIndex(s => s.guid === requestParam.guid );
+        if (index !== -1) {
+          //this.setSpaces(this.spaces.filter(space => space !== this.selectSpace));
+          spaces.splice(index, 1);
+        } else {
+          this.logger.error("Cannot find to delete space in Space list...", space.name);
+        }
+      } else {
+        this.logger.error('Error : ', data);
+      }
+      this.common.isLoading = false;
+    })
   }
 
   public getOrgSpaceListSample(): Array<Space> {

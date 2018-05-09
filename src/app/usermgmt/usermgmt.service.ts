@@ -19,20 +19,14 @@ export class UsermgmtService {
     console.log(this.common.getUserid());
   }
 
-  userinfo(userId: string) {
+  userinfo(username: string) {
     return this.common
-      .doGET('/commonapi/v2/user/' + userId, this.common.getToken())
-      .map((res: Response) => {
-        return res['User'];
-      });
+      .doGET('/commonapi/v2/user/' + username, this.common.getToken()).map((res: Response) => {return res['User'];});
   }
 
   userSave(userId: string, param) {
     return this.common
-      .doPut('/commonapi/v2/user/' + userId, param, this.common.getToken())
-      .map((res: Response) => {
-        return res['result'];
-      });
+      .doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {return res['result'];});
   }
 
   // deleteOrg(org) {

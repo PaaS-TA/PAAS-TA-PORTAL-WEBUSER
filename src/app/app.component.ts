@@ -1,8 +1,5 @@
-import {Component} from '@angular/core';
-import {SecurityService} from './auth/security.service';
+import {Component, DoCheck} from '@angular/core';
 import {CommonService} from './common/common.service';
-import {Router} from '@angular/router';
-import {NGXLogger} from 'ngx-logger';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +8,16 @@ import {NGXLogger} from 'ngx-logger';
 })
 
 
-export class AppComponent {
+export class AppComponent implements DoCheck {
+  isLoading: boolean = false;
+
   constructor(public common: CommonService) {
+
   }
 
-  ngOnInit() {
+  ngDoCheck() {
+    if (this.isLoading != this.common.isLoading)
+      this.isLoading = this.common.isLoading;
   }
 }
 
