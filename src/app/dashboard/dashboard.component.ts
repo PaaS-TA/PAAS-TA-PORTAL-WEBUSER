@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, Input, OnInit} from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
+import {SecurityService} from '../auth/security.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -10,7 +11,6 @@ import {Organization} from "../model/organization";
 import {SpaceService} from "../space/space.service";
 import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
-import {SecurityService} from "../auth/security.service";
 
 declare var $: any;
 declare var jQuery: any;
@@ -29,7 +29,6 @@ export class DashboardComponent implements OnInit {
 
 
   orgs: Array<Organization>;
-  org: Organization;
   spaces: Array<Space>;
 
   constructor(private commonService: CommonService,
@@ -37,7 +36,7 @@ export class DashboardComponent implements OnInit {
               private orgService: OrgService,
               private spaceService : SpaceService,
               private log: NGXLogger,
-              private security: SecurityService,
+              private uaa: SecurityService,
               router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
@@ -59,17 +58,22 @@ export class DashboardComponent implements OnInit {
     this.log.info(this.spaces);
   }
 
+
+  onChange(org: Organization) {
+    this.org = org;
+  }
+
   ngOnInit() {
 
     console.log('ngOnInit fired');
 
     $(document).ready(() => {
-      // TODO 임시로...
-      $.getScript('../../assets/resources/js/common.js')
-        .done(function(script, textStatus) {
-          // console.log( textStatus );
+      //TODO 임시로...
+      $.getScript("../../assets/resources/js/common.js")
+        .done(function (script, textStatus) {
+          //console.log( textStatus );
         })
-        .fail(function(jqxhr, settings, exception) {
+        .fail(function (jqxhr, settings, exception) {
           console.log(exception);
         });
     });

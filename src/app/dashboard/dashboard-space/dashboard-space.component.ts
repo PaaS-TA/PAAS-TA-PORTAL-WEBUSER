@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CommonService} from '../../common/common.service';
 import {NGXLogger} from 'ngx-logger';
+import {SecurityService} from '../../auth/security.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -9,7 +10,7 @@ import {OrgService} from "../../org/common/org.service";
 import {Organization} from "../../model/organization";
 import {SpaceService} from "../../space/space.service";
 import {Space} from '../../model/space';
-import {SecurityService} from "../../auth/security.service";
+import {DashboardSapaceService} from '../dashboard-space/dashboard-sapace.service';
 
 
 declare var $: any;
@@ -31,10 +32,10 @@ export class DashboardSpaceComponent implements OnInit {
 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
+              private dashboardSapaceService : DashboardSapaceService,
               private orgService: OrgService,
               private spaceService : SpaceService,
               private log: NGXLogger,
-              private security: SecurityService,
               router: Router, private http: HttpClient) {
 
     if (commonService.getToken() == null) {
@@ -45,6 +46,8 @@ export class DashboardSpaceComponent implements OnInit {
 
     this.orgs = orgService.getOrgList();
 
+    this.org = null;
+    this.spaces = [];
   }
 
   ngOnInit() {
@@ -61,5 +64,4 @@ export class DashboardSpaceComponent implements OnInit {
         });
     });
   }
-
 }

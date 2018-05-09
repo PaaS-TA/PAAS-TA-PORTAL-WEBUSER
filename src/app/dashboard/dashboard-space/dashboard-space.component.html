@@ -79,8 +79,9 @@
         <ul>
           <li>
             <div>
-              <select id="">
-                <option value="" selected="selected">지역</option>
+              <select id="local">
+                <option value="" selected="selected" name="kOREA">대한민국(KOREA, 韓國)</option>
+                <option value="" selected="selected" name="USA">미국(USA, 美國)</option>
               </select>
             </div>
           </li>
@@ -94,15 +95,15 @@
           </li>
           <li>
             <div>
-              <select id="">
-                <option value="" selected="selected" name="org_dev">해당 공간명</option>
+              <select id="space">
+                <option value="" selected="selected" name="space">해당 공간명</option>
                 <option value=""  *ngFor="let space of spaces">{{space.name}}</option>
               </select>
             </div>
           </li>
         </ul>
       </div>
-      <div class="space_btn1"><button class="btnspace colors4 "><img src="../../../assets/resources/images/main/btn_icon.png" alt=""/>WEB IDE 사용</button></div>
+      <!--<div class="space_btn1"><button class="btnspace colors4 "><img src="../../../assets/resources/images/main/btn_icon.png" alt=""/>WEB IDE 사용</button></div>-->
     </div>
   </div>
   <div class="contain_s">
