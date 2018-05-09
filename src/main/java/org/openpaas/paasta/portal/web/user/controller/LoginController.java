@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -38,8 +40,13 @@ public class LoginController extends Common {
      * @return the model and view
      */
     @RequestMapping(value = {"/", "index"}, method = RequestMethod.GET)
-    public ModelAndView indevPage() {
+    public ModelAndView indevPage(HttpServletRequest request) {
         try{
+            String forward = request.getHeader("x-forwarded-proto");
+            LOGGER.info("Forward ::::::::: " + forward);
+            HttpSession session = request.getSession();
+            session.setAttribute("x-forwarded-proto",forward);
+
             return new ModelAndView("/index");
         }catch (Exception e){
             e.printStackTrace();
@@ -60,9 +67,9 @@ public class LoginController extends Common {
     public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error,
                                    @RequestParam(value = "logout", required = false) String logout,
                                    @RequestParam(value = "code", required = false) String code,
-                                   Locale locale, HttpServletRequest request) {
+                                   Locale locale, HttpServletRequest request,HttpServletResponse response) {
 
-        LOGGER.info("/Login "  + code);
+
 
         ModelAndView model = new ModelAndView();
 
@@ -84,7 +91,7 @@ public class LoginController extends Common {
             if (!(loginUserRole.equalsIgnoreCase("ROLE_USER") || loginUserRole.equalsIgnoreCase("ROLE_ADMIN"))) {
                 model.setViewName("/");
             } else {
-                model.setViewName("redirect:/org/orgMain");
+                model.setView(new RedirectView("/org/orgMain", true, false));
             }
         }catch (Exception e) {
             e.printStackTrace();

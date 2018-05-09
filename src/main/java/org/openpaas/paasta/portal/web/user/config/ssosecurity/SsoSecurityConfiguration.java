@@ -31,6 +31,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -43,8 +44,6 @@ import static java.util.Arrays.asList;
 @Configuration
 public class SsoSecurityConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(SsoAuthenticationDetailsSource.class);
-
-
 
 
     @Value("${cf.uaa.oauth.client.id}")
@@ -90,8 +89,7 @@ public class SsoSecurityConfiguration {
     @Autowired
     public SsoFilterWrapper ssoSocialClientFilter() {
         // If it was a Filter bean it would be automatically added out of the Spring security filter chain.
-        final SsoAuthenticationProcessingFilter filter
-                = new SsoAuthenticationProcessingFilter();
+        final SsoAuthenticationProcessingFilter filter = new SsoAuthenticationProcessingFilter();
 
         filter.setRestTemplate(ssoRestOperations());
         filter.setTokenServices(ssoResourceServerTokenServices());
@@ -117,9 +115,9 @@ public class SsoSecurityConfiguration {
         resourceDetails.setClientSecret(clientSecret);
         resourceDetails.setUserAuthorizationUri(authorizationUri);
         resourceDetails.setAccessTokenUri(accessUri);
-        resourceDetails.setUseCurrentUri(true);
         resourceDetails.setScope(asList("openid", "cloud_controller_service_permissions.read", "cloud_controller.read", "cloud_controller.write"));
-
+        resourceDetails.setUseCurrentUri(false);
+        resourceDetails.setPreEstablishedRedirectUri(serverDomain(httpServletRequest));
         return resourceDetails;
     }
 
@@ -192,8 +190,6 @@ public class SsoSecurityConfiguration {
     }
 
 
-
-
     @Bean(name = "ssoLogoutSuccessHandler")
     public LogoutSuccessHandler ssoLogoutSuccessHandler() {
         final SimpleUrlLogoutSuccessHandler logoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
@@ -205,6 +201,26 @@ public class SsoSecurityConfiguration {
     @Bean(name = "ssoLogoutUrlMatcher")
     public RequestMatcher ssoLogoutUrlMatcher() {
         return new AntPathRequestMatcher("/logout");
+    }
+
+
+    private String serverDomain(HttpServletRequest request) {
+
+
+        String serverDomain = request.getRequestURL().toString();
+        try {
+            HttpSession session =  request.getSession();
+            String forward = session.getAttribute("x-forwarded-proto").toString();
+            LOGGER.info("Forward ::::::::: " + forward);
+            if (forward != null) {
+                serverDomain = serverDomain.replace("http", "").replace("https", "");
+                serverDomain = forward + serverDomain;
+            }
+        }catch (Exception e){
+
+        }
+        LOGGER.info("Login ::::::::  " + serverDomain);
+        return serverDomain;
     }
 
 }
