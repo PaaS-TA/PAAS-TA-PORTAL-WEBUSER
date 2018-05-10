@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {CatalogService, Template,} from "./catalog.service";
 import {NGXLogger} from 'ngx-logger';
 import {Router} from "@angular/router";
+import {Organization} from "../../model/organization";
+import {FormGroup} from "@angular/forms";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -12,10 +14,26 @@ declare var jQuery: any;
 export class CatalogComponent implements OnInit {
 
   searchKeyword : string='';
-
+  file : File;
+  form: FormGroup;
   constructor(private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
 
   }
+  filechange(event){
+    // let fileList: FileList = event.target.files;
+    // this.file = fileList[0];
+    // let formData = new FormData();
+    //
+    // console.log(this.file);
+    //
+    // formData.append('file', this.file, this.file.name);
+    //
+    // console.log(formData);
+    // console.log(this.file);
+    console.log(this.file);
+
+  }
+
 
   ngOnInit() {
     this.catalogService.developInit();

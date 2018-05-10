@@ -14,17 +14,17 @@ export class CatalogService {
 
 
   userid : string;
-  developments : Array<Development> = Array<Development>();
+  buildpacks : Array<BuildPack> = Array<BuildPack>();
   templates : Array<Template> = Array<Template>();
-  recentpacks : Array<Development|Template> = Array<Development|Template>();
+  recentpacks : Array<BuildPack|Template> = Array<BuildPack|Template>();
   constructor(private common: CommonService, private log: NGXLogger) {
-    this.userid = "pch1234";
+    this.userid = common.getUserid();
   }
 
   developInit()
   {
     this.common.doGET(this.DEVELOPGET, null).subscribe(data => {
-      this.DevelopmentInit(data['list']);
+      this.BuildPackInit(data['list']);
     });
     this.common.doGET(this.TEMPLATEGET, null).subscribe(data =>{
         this.TemplateInit(data['list']);
@@ -42,8 +42,8 @@ export class CatalogService {
 
   Search(searchKeyword : string)
   {
-    this.common.doGET(this.SEARCHGET+'?searchKeyword='+searchKeyword, null).subscribe(data => {this.DevelopmentInit(data['BuildPackList']); this.TemplateInit(data['TemplateList']);});
-    this.recentpacks = new Array<Development|Template>();
+    this.common.doGET(this.SEARCHGET+'?searchKeyword='+searchKeyword, null).subscribe(data => {this.BuildPackInit(data['BuildPackList']); this.TemplateInit(data['TemplateList']);});
+    this.recentpacks = new Array<BuildPack|Template>();
     this.common.doGET(this.HISTORYGET+this.userid+'?searchKeyword='+searchKeyword, null).subscribe(data =>{
       let lenght = data['list'].length;
       for(let i =0; i < lenght; i++) {
@@ -53,16 +53,14 @@ export class CatalogService {
       }})
   }
 
-  DevelopmentInit(data : any)
-  {
-    this.developments = new Array<Development>();
+  BuildPackInit(data : any) {
+    this.buildpacks = new Array<BuildPack>();
     for(let i = 0 ; i < data.length ; i++) {
-      this.developments[i] = data[i];
+      this.buildpacks[i] = data[i];
     }
   }
 
-  TemplateInit(data : any)
-  {
+  TemplateInit(data : any) {
     this.templates = new Array<Template>();
     for(let i = 0 ; i < data.length ; i++) {
       this.templates[i] = data[i];
@@ -72,12 +70,45 @@ export class CatalogService {
   CatalogDetailInit(no : number){
     return this.common.doGET(this.STARTERGET+no ,null).map((res: Response) => {
       return res;
-    }).do(console.log);
+    });
   }
+
+  getOrglist() {
+    return this.common.doGET('/portalapi/v2/orgs', this.common.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+
+  getSpacelist(orgid : String) {
+    return this.common.doGET('/portalapi/v2/orgs/' + orgid + '/spaces', this.common.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+  getDomain() {
+      return this.common.doGET('/portalapi/v2/domains/shared', this.common.getToken()).map((res: Response) => {
+        return res;
+      });
+    }
+  postApp(url : string, param : any){
+    return this.common.doPost(url,param, this.common.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+  putAppStart(url : string, param : string){
+    return this.common.doPut(url,param, this.common.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+  upload(){
+    return this.common.doGET('/commonapi/v2/app/uploadsfile', null).map((res: Response) => {
+      return res;
+    });
+  }
+
 
 }
 
-export class Development
+export class BuildPack
 {
   appSampleFileName : string;
   appSampleFilePaht : string;
@@ -112,7 +143,7 @@ export class Template
   no : string;
   servicePackCategoryNoList : string;
   summary : string;
-  thumbIimgName : string;
+  thumbImgName : string;
   thumbImgPath : string;
   useYn : string;
   userId : string;
@@ -135,7 +166,7 @@ export class Service
   parameter : string;
   servicePackName : string;
   summary : string;
-  thumbIimgName : string;
+  thumbImgName : string;
   thumbImgPath : string;
   useYn : string;
   userId : string;

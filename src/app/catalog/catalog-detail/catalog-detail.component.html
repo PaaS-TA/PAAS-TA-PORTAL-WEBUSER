@@ -16,22 +16,20 @@
               </dt>
               <dd>
                 <h4 class="maT30">앱 템플릿 구성</h4>
-                <div class="cWrap_line maT30">
+                <div class="cWrap_line maT30" >
                   <ul class="icon">
-                    <li>
+                    <li *ngFor="let app of apptemplate">
                       <div>
-                        <img title="Java 웹 앱을 쉽게 개발하고 배치하며 스케일링합니다. 클라우드용으로 매우 빠르고, 쉽게 구성할 수 있는 초경량 프로파일입니다." src="../../../assets/resources/images/catalog/detail_1.png" alt="java"/>
+                        <img title="{{app.description}}" src="../../../assets/resources/images/catalog/{{app.thumbImgName}}" alt="{{app.name}}" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                       </div>
-                    </li>
-                    <li><div><img title="test" src="../../../assets/resources/images/catalog/detail_2.png" alt="MySQL"/></div>
                     </li>
                   </ul>
                   <i class="vline">
-                    <img src="../../../assets/resources/images/catalog/i_v.png">
+                    <img src="../../../assets/resources/images/catalog/i_v.png"/>
                   </i>
                   <div class="col-6 icon_T">
-                    <h5 class="icon_TT">java</h5>
-                    <span class="icon_TC">Java 웹 앱을 쉽게 개발하고 배치하며 스케일링합니다. 클라우드용으로 매우 빠르고, 쉽게 구성할 수 있는 초경량 프로파일입니다.
+                    <h5 class="icon_TT">{{apptemplate[0].name}}</h5>
+                    <span class="icon_TC">{{apptemplate[0].description}}
                                         </span>
                   </div>
                 </div>
@@ -44,7 +42,7 @@
               <h4>앱 생성</h4>
               <div class="btnWrap">
                 <span class="cWraprightspan">앱 시작여부</span>
-                <input id="switch3" type="checkbox" checked="checked" switch2="none">
+                <input id="switch3" type="checkbox" [(ngModel)]="appStart"  switch2="none">
                 <label for="switch3"></label>
               </div>
               </dt>
@@ -52,7 +50,7 @@
                 <div class="cWrap_table">
                   <table>
                     <colgroup>
-                      <col style='*'>
+                      <col style=''>
                     </colgroup>
                     <tbody>
                     <tr>
@@ -73,9 +71,9 @@
                     </tr>
                     <tr>
                       <td>
-                        <select>
-                          <option>Orgtest
-                          </option>
+                        <select [(ngModel)]="org" (change)="orgSelect()">
+                          <option *ngFor="let org of orgs"  [ngValue]="org">{{org.name}}
+                        </option>
                         </select>
                       </td>
                     </tr>
@@ -85,8 +83,8 @@
                     </tr>
                     <tr>
                       <td>
-                        <select>
-                          <option>dev
+                        <select [(ngModel)]="space">
+                          <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}
                           </option>
                         </select>
                       </td>
@@ -97,8 +95,8 @@
                 <div class="cWrap_table">
                   <table>
                     <colgroup>
-                      <col style='*'>
-                      <col style='*'>
+                      <col style=''>
+                      <col style=''>
                     </colgroup>
                     <tbody>
                     <tr>
@@ -108,7 +106,7 @@
                     </tr>
                     <tr>
                       <td  colspan="2">
-                        <input text="text" />
+                        <input text="text" [(ngModel)]="appname" (ngModelChange)="initAppUrl()"/>
                       </td>
                     </tr>
                     <tr>
@@ -118,7 +116,7 @@
                     </tr>
                     <tr>
                       <td colspan="2">
-                        <input text="text" />
+                        <input text="text" [(ngModel)]="appurl"/>
                       </td>
                     </tr>
                     <tr>
@@ -129,14 +127,26 @@
                     </tr>
                     <tr>
                       <th>
-                        <select>
+                        <select [(ngModel)]="memory">
                           <option>512
+                          </option>
+                          <option>1024
+                          </option>
+                          <option>1536
+                          </option>
+                          <option>2048
                           </option>
                         </select>
                       </th>
                       <td>
-                        <select>
+                        <select [(ngModel)]="disk">
                           <option>1024
+                          </option>
+                          <option>1280
+                          </option>
+                          <option>1536
+                          </option>
+                          <option>2048
                           </option>
                         </select>
                       </td>
@@ -148,7 +158,7 @@
                     </tr>
                     <tr>
                       <td colspan="2">
-                        <input text="text" disabled value="au-syd.mybluemix.net"/>
+                        <input text="text" disabled value="au-syd.mybluemix.net" [(ngModel)]="domain"/>
                       </td>
                     </tr>
                     </tbody>
@@ -173,7 +183,7 @@
                 <div class="cWrap_table">
                   <table>
                     <colgroup>
-                      <col style='*'>
+                      <col style=''>
                     </colgroup>
                     <tbody>
                     <tr>
@@ -204,7 +214,7 @@
                   <table>
                     <colgroup>
                       <col style='width:62px'>
-                      <col style='*'>
+                      <col style=''>
                     </colgroup>
                     <tbody>
                     <tr>
@@ -244,8 +254,8 @@
                     <colgroup>
                       <col style='width:10%;'>
                       <col style='width:10%;'>
-                      <col style='*'>
-                      <col style='*'>
+                      <col style=''>
+                      <col style=''>
                     </colgroup>
                     <thead>
                     <td><p>선택</p>
@@ -308,8 +318,8 @@
                     <colgroup>
                       <col style='width:10%;'>
                       <col style='width:10%;'>
-                      <col style='*'>
-                      <col style='*'>
+                      <col style=''>
+                      <col style=''>
                     </colgroup>
                     <thead>
                     <td><p>선택</p>
@@ -375,7 +385,7 @@
                 <div class="cWrap_table">
                   <table>
                     <colgroup>
-                      <col style='*'>
+                      <col style=''>
                     </colgroup>
                     <tbody>
                     <tr>
@@ -406,7 +416,7 @@
                   <table>
                     <colgroup>
                       <col style='width:62px'>
-                      <col style='*'>
+                      <col style=''>
                     </colgroup>
                     <tbody>
                     <tr>
@@ -446,8 +456,8 @@
                     <colgroup>
                       <col style='width:10%;'>
                       <col style='width:10%;'>
-                      <col style='*'>
-                      <col style='*'>
+                      <col style=''>
+                      <col style=''>
                     </colgroup>
                     <thead>
                     <td><p>선택</p>
@@ -510,8 +520,8 @@
                     <colgroup>
                       <col style='width:10%;'>
                       <col style='width:10%;'>
-                      <col style='*'>
-                      <col style='*'>
+                      <col style=''>
+                      <col style=''>
                     </colgroup>
                     <thead>
                     <td><p>선택</p>
@@ -571,7 +581,7 @@
             </dl>
           </div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4">생성</button>
+            <button class="btns2 btns2_1 colors4" (click)="createApp()">생성</button>
             <button class="btns2 btns2_1 colors5">취소</button>
           </div>
         </div>
