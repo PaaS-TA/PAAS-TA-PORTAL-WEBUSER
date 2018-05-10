@@ -108,7 +108,7 @@ export class DashboardComponent implements OnInit {
               private spaceService: SpaceService,
               private log: NGXLogger,
               private appMainService: AppMainService,
-              router: Router, private http: HttpClient) {
+              private router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
@@ -204,20 +204,20 @@ export class DashboardComponent implements OnInit {
         });
     });
 
-    this.router.queryParams.subscribe(params => {
-      if (params != null) {
-        setTimeout(() => this.showLoading(), 0);
-
-        this.orgGuid = params['orgId'];
-        this.spaceGuid = params['spaceId'];
-        this.orgName = params['orgName'];
-        this.spaceName = params['spaceName'];
-
-        this.getAppSummary(params['guid']);
-      } else {
-        this.router.navigate(['dashMain']);
-      }
-    });
+    // this.router.queryParams.subscribe(params => {
+    //   if (params != null) {
+    //     setTimeout(() => this.showLoading(), 0);
+    //
+    //     this.orgGuid = params['orgId'];
+    //     this.spaceGuid = params['spaceId'];
+    //     this.orgName = params['orgName'];
+    //     this.spaceName = params['spaceName'];
+    //
+    //     this.getAppSummary(params['guid']);
+    //   } else {
+    //     this.router.navigate(['dashMain']);
+    //   }
+    // });
 
   }//
 
