@@ -17,6 +17,7 @@ import {CallbackComponent} from './callback/callback.component';
 import {LogoutComponent} from './logout/logout.component';
 import {DashMainComponent} from './dash/dash-main/dash-main.component';
 import {AppMainComponent} from './dash/app-main/app-main.component';
+import {TailLogsComponent} from './dash/tail-logs/tail-logs.component';
 import {UsermgmtComponent} from './usermgmt/usermgmt.component';
 import {LoginComponent} from './login/login.component';
 import {AuthGuard} from './auth/auth.guard';
@@ -50,6 +51,7 @@ const routes: Routes = [
   {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
   {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},
   {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]},
+  {path: 'tailLogs', component: TailLogsComponent, canActivate: [AuthGuard]},
   {path: 'dashboardSpace', component: DashboardSpaceComponent, canActivate: [AuthGuard]},
   {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]},
   {path: 'error', component: ErrorComponent}

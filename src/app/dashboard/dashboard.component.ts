@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, Input, OnInit} from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
+import {SecurityService} from '../auth/security.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -10,7 +11,6 @@ import {Organization} from "../model/organization";
 import {SpaceService} from "../space/space.service";
 import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
-import {SecurityService} from "../auth/security.service";
 
 declare var $: any;
 declare var jQuery: any;
@@ -22,7 +22,7 @@ declare var jQuery: any;
 })
 
 
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewChecked {
 
   public userid: string;
   public token: string;
@@ -32,12 +32,14 @@ export class DashboardComponent implements OnInit {
   org: Organization;
   spaces: Array<Space>;
 
+  private isLoadingSpaces = false;
+
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
               private orgService: OrgService,
               private spaceService : SpaceService,
               private log: NGXLogger,
-              private security: SecurityService,
+              private uaa: SecurityService,
               router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
@@ -52,28 +54,32 @@ export class DashboardComponent implements OnInit {
   }
 
   ngAfterViewChecked() {
-    if (this.org != null) {
+    if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
+      this.isLoadingSpaces = false;
       this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
     }
-    this.log.info(this.org);
-    this.log.info(this.spaces);
+    console.log('::::::::::::::::: ', this.spaces, '::::::::::::::::: ');
+  }
+
+  onChange(value:string, org: Organization) {
+    console.log('::::::::::::::::: ' + value + '::::::::::::::::: ');
+    this.org = this.orgs.find(org => org.name === value);
+    this.isLoadingSpaces = true;
+    console.log('::::::::::::::::: find org is ', org, '::::::::::::::::: ');
   }
 
   ngOnInit() {
-
     console.log('ngOnInit fired');
-
     $(document).ready(() => {
-      // TODO 임시로...
-      $.getScript('../../assets/resources/js/common.js')
-        .done(function(script, textStatus) {
-          // console.log( textStatus );
+      //TODO 임시로...
+      $.getScript("../../assets/resources/js/common.js")
+        .done(function (script, textStatus) {
+          //console.log( textStatus );
         })
-        .fail(function(jqxhr, settings, exception) {
+        .fail(function (jqxhr, settings, exception) {
           console.log(exception);
         });
     });
-
   }
 
 

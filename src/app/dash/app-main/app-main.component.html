@@ -727,7 +727,7 @@
                   <h5>시스템 제공</h5>
                 </div>
                 <div class="maT20 service_in">
-                  <textarea class="variable_text">{{appSystemProvidedEnv}}</textarea>
+                  <textarea class="variable_text" style="height:320px;">{{appSystemProvidedEnv}}</textarea>
                 </div>
               </div>
             </div>
@@ -795,34 +795,23 @@
               <div class="view_table_wrap service_wrap">
                 <div class="service_title maT30">
                   <div class="pull-right">
-                                        <span class="fcolor"><i class="fas fa-code"></i> Tail Logs
-                                        </span>
+                    <span class="fcolor" (click)="showWindowTailLogs()">
+                      <i class="fas fa-code"></i> Tail Logs
+                    </span>
                   </div>
-                  <h5>최근 로그 <i class="rot fas fa-sync-alt"></i></h5>
+                  <h5>최근 로그 <i class="rot fas fa-sync-alt" (click)="refreshClick()"></i></h5>
                 </div>
                 <dl class="log_dl">
                   <dt>
                   <ul>
                     <li>
-                      <span>2016-05-11T06:25:49.000+00:00 [CELL]</span>
-                      OUT Creating container
-                    </li>
-                    <li>
-                      <span>2016-05-11T06:25:50.000+00:00 [CELL]</span>
-                      OUT Successfully created container
-                    </li>
-                    <li>
-                      <span>2016-05-11T06:25:49.000+00:00 [API]</span>
-                    </li>
-                    <li>
-                      <span>2016-05-11T06:25:53.000+00:00 [CELL]</span>
-                      OUT Starting health monitoring of container
+                      <div innerHTML="{{appRecentLogs}}"></div>
                     </li>
                   </ul>
                   </dt>
-                  <dd>
-                    로그 끝 <i class="fas fa-code"></i>Tail Logs
-                  </dd>
+                  <!--<dd>-->
+                    <!--로그 끝 <i class="fas fa-code"></i>Tail Logs-->
+                  <!--</dd>-->
                 </dl>
               </div>
             </div>

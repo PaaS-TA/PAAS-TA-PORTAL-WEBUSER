@@ -65,11 +65,12 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     if (this.quota.valid && this.availableQuotas.length > 0 && this.exactlyQuotaIndex === null) {
       this.exactlyQuotaIndex =
         this.availableQuotas.findIndex(
-          orgQuota => (orgQuota === this.quota) || (orgQuota.guid === this.quota.guid))
+          orgQuota => (orgQuota === this.quota) || (orgQuota.guid === this.quota.guid));
 
       if (this.exactlyQuotaIndex !== -1) {
         const elements = $('#radio-' + this.org.name + '-' + this.quota.name);
-        if (elements.length > 0 && elements[0] !== undefined && elements[0].tagName === 'INPUT') {
+        const valid = elements.length > 0 && elements[0] !== undefined && elements[0].tagName === 'INPUT';
+        if (valid) {
           elements[0].checked = 'checked';
           this.logger.debug("Select input : ", elements[0]);
         }
@@ -77,9 +78,9 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
 
     let complete: boolean =
-      this.quota.valid && this.availableQuotas.length > 0 && this.exactlyQuotaIndex !== -1;
+      this.quota.valid && this.availableQuotas.length > 0 && this.exactlyQuotaIndex !== null && this.exactlyQuotaIndex !== -1;
 
-    if (complete) {
+    if (complete && this.common.isLoading) {
       this.common.isLoading = false;
     }
   }

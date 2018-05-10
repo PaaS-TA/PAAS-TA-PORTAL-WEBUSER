@@ -80,29 +80,30 @@
           <li>
             <div>
               <select id="">
-                <option value="" selected="selected" name="area">지역</option>
+                <option value="" selected="selected" name="area">미국(USA, 美國)</option>
+                <option value="" selected="selected" name="area">대한민국(KOREA, 韓國)</option>
               </select>
             </div>
           </li>
           <li>
             <div>
-              <select id="org_space" name="org_space">
-                <option value="" selected="selected" name="org_space">생성된 조직명</option>
-                <option value="" *ngFor="let org of orgs" (click)="onChange(org)" (keyup)="reEnter(org.name)">{{org.name}}</option>
+              <select (change)="onChange($event.target.value)">
+                <option value="" selected="selected" name="org_name" >생성된 조직명</option>
+                <option *ngFor="let org of orgs" [value]="org.name">{{org.name}}</option>
               </select>
             </div>
           </li>
           <li>
             <div>
-              <select id="org_dev">
-                <option value="" selected="selected" name="org_dev">해당 공간명</option>
-                <option value="" *ngFor="let space of spaces">{{space.name}}</option>
+              <select (change)="onChange($event.target.value)">
+                <option value="" selected="selected" name="space">해당 공간명</option>
+                <option *ngFor="let space of spaces" [value]="space.name">{{space.name}}</option>
               </select>
             </div>
           </li>
         </ul>
       </div>
-      <div class="space_btn1"><button class="btnspace colors4 "><img src="../../assets/resources/images/main/btn_icon.png" alt=""/>WEB IDE 사용</button></div>
+      <!--<div class="space_btn1"><button class="btnspace colors4 "><img src="../../assets/resources/images/main/btn_icon.png" alt=""/>WEB IDE 사용</button></div>-->
     </div>
   </div>
   <div class="space_wrap">

@@ -9,8 +9,8 @@ export class OrgQuota {
   private _metadata;
   private _entity;
 
-  private pricePolicy = 'free';
   private pricelessPolicy = 'paid';
+  private pricePolicy = 'free';
 
   private static emptyInstance: OrgQuota = null;
 
@@ -24,10 +24,7 @@ export class OrgQuota {
   }
 
   static empty() {
-    if (this.emptyInstance === null)
-      this.emptyInstance = new OrgQuota(null, null);
-
-    return this.emptyInstance;
+    return new OrgQuota(null, null);
   }
 
   get valid(): boolean {
@@ -98,19 +95,35 @@ export class OrgQuota {
   }
 
   get applicationInstanceLimit() {
-    return this.entity.app_instance_limit;
+    const value = this.entity.app_instance_limit;
+    if (value === -1)
+      return '무제한';
+    else
+      return value;
   }
 
   get applicationTaskLimit() {
-    return this.entity.app_task_limit;
+    const value = this.entity.app_task_limit;
+    if (value === -1)
+      return '무제한';
+    else
+      return value;
   }
 
   get instanceMemoryLimit() {
-    return this.entity.instance_memory_limit;
+    const value = this.entity.instance_memory_limit;
+    if (value === -1)
+      return '무제한';
+    else
+      return value;
   }
 
   get memoryLimit() {
-    return this.entity.memory_limit;
+    const value = this.entity.memory_limit;
+    if (value === -1)
+      return '무제한';
+    else
+      return value;
   }
 
   get name() {
@@ -158,6 +171,15 @@ export class OrgQuota {
 
     if (this.name.search('default') >= 0) {
       return this.pricelessPolicy;
+    }
+  }
+
+  get priceKorean(): String {
+    switch(this.price) {
+      case this.pricePolicy:
+        return '유료';
+      case this.pricelessPolicy:
+        return '무료';
     }
   }
 

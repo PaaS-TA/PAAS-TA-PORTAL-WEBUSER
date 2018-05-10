@@ -6,6 +6,9 @@ import { AppTopComponent } from '../layout/app-top/app-top.component';
 import { AppNavComponent } from '../layout/app-nav/app-nav.component';
 import {RoutingModule} from '../app.routing';
 import {AppMainService} from './app-main/app-main.service';
+import { TailLogsComponent } from './tail-logs/tail-logs.component';
+import { TailLogsService } from './tail-logs/tail-logs.service';
+import { WebsocketService } from './tail-logs/websocket.service';
 
 @NgModule({
   imports: [
@@ -16,8 +19,9 @@ import {AppMainService} from './app-main/app-main.service';
     AppMainComponent,
     DashMainComponent,
     AppTopComponent,
-    AppNavComponent
+    AppNavComponent,
+    TailLogsComponent
   ],
-  providers: [AppMainService],
+  providers: [AppMainService, TailLogsService, WebsocketService],
 })
 export class DashModule { }
