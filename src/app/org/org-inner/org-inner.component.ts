@@ -181,7 +181,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  isSelected(quota: OrgQuota) {
+  isSelectedQuota(quota: OrgQuota) {
     if (this.quota !== null)
       return this.quota.name === quota.name;
     else
@@ -190,12 +190,16 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
 
   changeQuota(doChange: boolean) {
     if (doChange) {
-      this.logger.warn('Change quota of org : ', this.selectQuota.name);
-      //this.spaceService.deleteSpace(this.spaces, this.selectSpace, true);
-      // EventEmitter 쓸지 말지 고민 중
-      //let quota =  this.quotaService.changeQuota(this.org.guid, this.selectQuota);
+      this.quotaService.changeQuota(this.org.guid, this.selectQuota);
+      this.exactlyQuotaIndex = this.availableQuotas.findIndex(quota => quota.guid === this.selectQuota.guid);
+      this.setQuota(this.availableQuotas[this.exactlyQuotaIndex]);
+
+      this.logger.debug('Change quota of org : ', this.selectQuota.name);
+      this.logger.debug('Change currentQuotaIndex : ', this.exactlyQuotaIndex);
     } else {
-      this.logger.warn('Cancel to change quota of org : ', this.selectQuota.name);
+      this.cancelChangeQuota();
+
+      this.logger.debug('Cancel to change quota of org : ', this.selectQuota.name);
     }
     this.selectQuota = OrgQuota.empty();
   }
@@ -255,6 +259,9 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     this.logger.debug('Selected quota to change is ', this.selectQuota.name, ' : ', this.selectQuota);
   }
 
+  cancelChangeQuota() {
+    $('input[name=radio-' + this.org.name + ']').each((idx, element) => element.checked = '');
+  }
 
   reloadSpaces() {
     this.common.isLoading = true;

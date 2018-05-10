@@ -54,11 +54,10 @@ export class OrgQuotaService {
         if (resOrgId === orgId && resQuotaId === quota.guid)
           return {quotaInstance: quota};
       }
-
       return {quotaInstance: null};
     });
 
-    return {};
+    return {quotaInstance: null};
   }
 
   public getOrgAvailableQuota(): Array<OrgQuota> {

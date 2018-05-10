@@ -19,6 +19,11 @@ export class TailLogsComponent implements OnInit {
 
     this.tailLogsService.messages.subscribe(msg => {
       this.appLogs += msg + '<br>';
+
+      setTimeout(() =>
+        document.documentElement.scrollTop = document.body.scrollHeight
+      , 100);
+
     })
   }
 

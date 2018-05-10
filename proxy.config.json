@@ -6,6 +6,13 @@
     "changeOrigin": "true",
     "pathRewrite": {"^/portalapi": ""}
   },
+  "/ws/*": {
+    "target": "http://localhost:5555/",
+    "logLevel": "debug",
+    "secure": false,
+    "changeOrigin": "true",
+    "pathRewrite": {"^/ws": ""}
+  },
   "/commonapi/*": {
     "target": "http://localhost:2225/commonapi",
     "logLevel": "debug",

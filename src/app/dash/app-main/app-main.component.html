@@ -10,12 +10,12 @@
             <ul class="colright_btn">
               <li class="monitoring">
                 <ul>
-                  <li><i class="fas fa-play"></i></li>
-                  <li><i class="fas fa-stop"></i></li>
-                  <li><i class="fas fa-stop"></i><!--i class="colorsR fas fa-sync-alt"></i--></li>
+                  <li *ngIf="appSummaryState == 'STARTED'"><i class="fas fa-stop" (click)="stopAppClick()"></i></li>
+                  <li *ngIf="appSummaryState != 'STARTED'"><i class="fas fa-play" (click)="startAppClick()"></i></li>
+                  <!--<li><i class="fas fa-stop"></i>&lt;!&ndash;i class="colorsR fas fa-sync-alt"></i&ndash;&gt;</li>-->
                 </ul>
               </li>
-              <li class="rot_deg"><i class="rot fas fa-sync-alt"></i>
+              <li class="rot_deg"><i class="rot fas fa-sync-alt" (click)="restageAppClick()"></i>
               </li>
               <li>
                 <i class="fas fa-ellipsis-v"></i>
@@ -130,7 +130,7 @@
               <dt class="tit">CPU
                 <span class="pull-right rights"></span>
               </dt>
-              <dd><span>{{appStatsCpuPer}}</span><i>%</i><small> / 100</small>
+              <dd><span>{{appStatsCpuPer}}</span><i>%</i><small> / 100%</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/cpu_ico.png" alt="" />
@@ -461,7 +461,7 @@
               <div class="sortable_top">
                 <p>이벤트</p>
                 <ul class="sortable_right">
-                  <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
+                  <li class="rot_deg2" (click)="refreshClick()"><i class="fas fa-undo-alt"></i></li>
                   <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
                 </ul>
               </div>
@@ -521,7 +521,7 @@
               <div class="sortable_top">
                 <p>상태정보</p>
                 <ul class="sortable_right">
-                  <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
+                  <li class="rot_deg2" (click)="refreshClick()"><i class="fas fa-undo-alt"></i></li>
                   <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
                 </ul>
               </div>
@@ -585,7 +585,7 @@
               <div class="sortable_top">
                 <p>서비스</p>
                 <ul class="sortable_right">
-                  <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
+                  <li class="rot_deg2" (click)="refreshClick()"><i class="fas fa-undo-alt"></i></li>
                   <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
                 </ul>
               </div>
@@ -818,6 +818,394 @@
           </li>
         </ul>
       </div>
+      <div class="row two_line two_view" id="tabContent_ssh" style="display:none;">
+        <ul class="maT30">
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>SSH</p>
+                <ul class="sortable_right">
+                  <li>
+                    <select>
+                      <option>인스턴스 선택</option>
+                    </select>
+                  </li>
+                  <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>
+                </ul>
+              </div>
+              <div class="view_table_wrap service_wrap">
+                <div class="service_title maT30">
+                  <canvas>
+                  </canvas>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="monitor_tabs clearfix" id="tabContent_viewchart" style="display:none;">
+        <ul>
+          <li name="tab01" class="monitor_tabs_on" (click)="tabShowViewchartClick('tab_viewchart_1')">추이차트</li>
+          <li name="tab02" class="monitor_tabs_right" (click)="tabShowViewchartClick('tab_viewchart_2')">설정</li>
+          <li name="tab03" class="monitor_tabs_right" (click)="tabShowViewchartClick('tab_viewchart_3')">알림 발생 이력</li>
+        </ul>
+        <div class="monitor_tabs_line"></div>
+      </div>
+      <!-- 추이차트 시작-->
+      <div class="monitor_content01 row two_line two_view" id="tab_viewchart_1" style="display:none;">
+        <ul class="maT30">
+          <li>
+            <div class="sortable_wrap">
+              <div class="view_table_wrap">
+                <table class="condition wiew_c">
+                  <colgroup>
+                    <col style='width: 499px;'>
+                    <col style='*'>
+                  </colgroup>
+                  <thead>
+                  <tr>
+                    <th class="table_SW">
+                      <select>
+                        <option>ALL
+                        </option>
+                      </select>
+                    </th>
+                    <td class="table_SW">
+                      <ul class="weekday">
+                        <li class="cur">현재
+                        </li>
+                        <li>지난 15일
+                        </li>
+                        <li>30M
+                        </li>
+                        <li>1H
+                        </li>
+                        <li>3H
+                        </li>
+                        <li>6H
+                        </li>
+                        <li>12H
+                        </li>
+                        <li>1DAY
+                        </li>
+                        <li>2DAY
+                        </li>
+                        <li>1WEEK
+                        </li>
+                        <li>1MONTH
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  </thead>
+                </table>
+                <div class="chart_wrap">
+                  <div class="chart_title">CPU</div>
+                  <canvas id="speedChart"></canvas>
+                </div>
+                <div class="chart_wrap maT50">
+                  <div class="chart_title">Memory</div>
+                  <canvas id="speedChart2"></canvas>
+                </div>
+                <div class="chart_wrap maT50">
+                  <div class="chart_title">Disk I/O</div>
+                  <canvas id="speedChart3"></canvas>
+                </div>
+                <div class="maT50"></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- 추이차트 끝 -->
+      <!-- 설정 시작-->
+      <div class="monitor_content02 row two_line two_view harf_view" id="tab_viewchart_2" style="display:none;">
+        <ul class="maT30">
+          <li class="monitor_first_box">
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>Auto-Scaling 설정</p>
+              </div>
+              <div class="monitor_set clearfix">
+                <ul>
+                  <li>
+                    <div>인스턴스 수</div>
+                    <div>최소</div>
+                    <div>
+                      <input type="text" id="" value="1" class="num1"/>
+                      <div class="monitor_count_up" onClick="updown('1','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up1"/></div>
+                      <div class="monitor_count_down" onClick="updown('1','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down1" /></div>
+                    </div>
+                    <div>최대</div>
+                    <div>
+                      <input type="text" id="" value="5" class="num2"/>
+                      <div class="monitor_count_up" onClick="updown('2','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up2"/></div>
+                      <div class="monitor_count_down" onClick="updown('2','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down2" /></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>CPU 임계 값(%)</div>
+                    <div>최소</div>
+                    <div>
+                      <input type="text" id="" value="20" class="num3"/>
+                      <div class="monitor_count_up" onClick="updown('3','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up3"/></div>
+                      <div class="monitor_count_down" onClick="updown('3','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down3" /></div>
+                    </div>
+                    <div>최대</div>
+                    <div>
+                      <input type="text" id="" value="80" class="num4"/>
+                      <div class="monitor_count_up" onClick="updown('4','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up4"/></div>
+                      <div class="monitor_count_down" onClick="updown('4','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down4" /></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>메모리 인계 값</div>
+                    <div>최소</div>
+                    <div>
+                      <input type="text" id="" value="20" class="num5"/>
+                      <div class="monitor_count_up" onClick="updown('5','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up5"/></div>
+                      <div class="monitor_count_down" onClick="updown('5','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down5" /></div>
+                    </div>
+                    <div>최대</div>
+                    <div>
+                      <input type="text" id="" value="80" class="num6"/>
+                      <div class="monitor_count_up" onClick="updown('6','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up6"/></div>
+                      <div class="monitor_count_down" onClick="updown('6','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down6" /></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>측정시간(초)</div>
+                    <div>&nbsp;</div>
+                    <div>
+                      <input type="text" id="" value="180" class="num7"/>
+                      <div class="monitor_count_up" onClick="updown('7','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up7"/></div>
+                      <div class="monitor_count_down" onClick="updown('7','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down7" /></div>
+                    </div>
+                    <div></div>
+                    <div></div>
+                  </li>
+                  <li>
+                    <div class="monitor_switch_txt">가상머신 자동확장</div>
+                    <div>&nbsp;</div>
+                    <div class="monitor_switch">
+                      <input class="switch_large" id="switch10" type="checkbox" checked="checked" switch="none">
+                      <label for="switch10"></label>
+                    </div>
+                    <div></div>
+                    <div></div>
+                  </li>
+                  <li>
+                    <div>
+                      가상머신 자동축소 <i class="fas fa-exclamation-circle monitor_red">
+                      <div class="monitor_tultip">
+                        인스턴스 자동축소는 시스템에 영향을 줄 수 있습니다.
+                        <div class="tultip_top"><img src="/assets/resources/images/monitor/tultip_top.png"></div>
+                      </div>
+                    </i>
+                    </div>
+                    <div>&nbsp;</div>
+                    <div>
+                      <input class="switch_large" id="switch11" type="checkbox" switch="none">
+                      <label for="switch11"></label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="monitor_center"><button class="btns2 btns2_1 colors4 event_btns">변경</button></div>
+            </div>
+          </li>
+          <li class="monitor_second_box">
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>알람 설정</p>
+              </div>
+              <div class="monitor_set clearfix">
+                <ul>
+                  <li>
+                    <div>CPU 임계치(%)</div>
+                    <div>최소</div>
+                    <div>
+                      <input type="text" id="" value="1" class="num8"/>
+                      <div class="monitor_count_up" onClick="updown('8','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up1"/></div>
+                      <div class="monitor_count_down" onClick="updown('8','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down1" /></div>
+                    </div>
+                    <div>최대</div>
+                    <div>
+                      <input type="text" id="" value="5" class="num9"/>
+                      <div class="monitor_count_up" onClick="updown('9','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up2"/></div>
+                      <div class="monitor_count_down" onClick="updown('9','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down2" /></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>메모리 임계치(%)</div>
+                    <div>최소</div>
+                    <div>
+                      <input type="text" id="" value="20" class="num10"/>
+                      <div class="monitor_count_up" onClick="updown('10','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up3"/></div>
+                      <div class="monitor_count_down" onClick="updown('10','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down3" /></div>
+                    </div>
+                    <div>최대</div>
+                    <div>
+                      <input type="text" id="" value="80" class="num11"/>
+                      <div class="monitor_count_up" onClick="updown('11','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up4"/></div>
+                      <div class="monitor_count_down" onClick="updown('11','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down4" /></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>측정시간(초)</div>
+                    <div>&nbsp;</div>
+                    <div>
+                      <input type="text" id="" value="180" class="num12"/>
+                      <div class="monitor_count_up" onClick="updown('12','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up5"/></div>
+                      <div class="monitor_count_down" onClick="updown('12','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down5" /></div>
+                    </div>
+                    <div></div>
+                    <div></div>
+                  </li>
+                  <li>
+                    <div>E-mail</div>
+                    <div>&nbsp;</div>
+                    <div><input type="text" id="" value="" /></div>
+                    <div>전송</div>
+                    <div class="monitor_switch2">
+                      <input class="switch_large" id="switch12" type="checkbox" checked="checked" switch="none">
+                      <label for="switch12"></label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="monitor_switch_txt">알람 사용</div>
+                    <div>&nbsp;</div>
+                    <div class="monitor_switch">
+                      <input class="switch_large" id="switch13" type="checkbox" switch="none">
+                      <label for="switch13"></label>
+                    </div>
+                    <div></div>
+                    <div></div>
+                  </li>
+                </ul>
+              </div>
+              <div class="monitor_centers"><button class="btns2 btns2_1 colors4 event_btns">변경</button></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- 설정 끝 -->
+      <!-- 알림 발생 이력 시작-->
+      <div class="monitor_content03 row two_line two_view" id="tab_viewchart_3" style="display:none;">
+        <ul class="maT30">
+          <li>
+            <div class="sortable_wrap">
+              <div class="sortable_top">
+                <p>알람 발생 이력</p>
+              </div>
+              <div class="view_table_wrap service_wrap">
+                <div class="maT20 service_in">
+                  <dl class="service_dl">
+                    <dt><p>연결 할 서비스</p>
+                    <select>
+                      <option>
+                        서비스 선택
+                      </option>
+                    </select>
+                    </dt>
+                    <dd>
+                      <p>Label</p>
+                      <input type="text" />
+                    </dd>
+                    <dt>
+                    <p>파라미터 값</p>
+                    <input type="text" />
+                    <button class="btns6 colors4"><i class="fas fa-plus"></i> 연결</button>
+                    <button class="btns6 colors5 serviceOn">취소</button>
+                    </dt>
+                  </dl>
+
+                </div>
+              </div>
+              <div class="view_table_wrap">
+                <div class="monitor_sel_wrap clearfix">
+                  <div class="monitor_sel_container">
+                    <div>자원유형</div>
+                    <div>
+                      <select>
+                        <option>Type</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="monitor_sel_container">
+                    <div>Alram등급</div>
+                    <div>
+                      <select>
+                        <option>Status</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <table class="table_event condition">
+                  <colgroup>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                    <col style='*'>
+                  </colgroup>
+                  <thead>
+                  <tr>
+                    <td>Date
+                    </td>
+                    <td>자원유형
+                    </td>
+                    <td>Alram 등급
+                    </td>
+                    <td>Message
+                    </td>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>2017-11-13 09:39:33</td>
+                    <td>CPU</td>
+                    <td>Warning</td>
+                    <td>Cpu Status 95%</td>
+                  </tr>
+                  <tr>
+                    <td>2017-11-13 09:39:33</td>
+                    <td>CPU</td>
+                    <td>Warning</td>
+                    <td>Cpu Status 95%</td>
+                  </tr>
+                  <tr>
+                    <td>2017-11-13 09:39:33</td>
+                    <td>CPU</td>
+                    <td>Warning</td>
+                    <td>Cpu Status 95%</td>
+                  </tr>
+                  <tr>
+                    <td>2017-11-13 09:39:33</td>
+                    <td>CPU</td>
+                    <td>Warning</td>
+                    <td>Cpu Status 95%</td>
+                  </tr>
+                  <tr>
+                    <td>2017-11-13 09:39:33</td>
+                    <td>CPU</td>
+                    <td>Warning</td>
+                    <td>Cpu Status 95%</td>
+                  </tr>
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <td colspan="6">
+                      <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
+                    </td>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- 알림 발생 이력 끝 -->
 
     </div>
     <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
@@ -1100,5 +1488,181 @@
   });
   clipboard.on('error', function(e) {
     console.log(e);
+  });
+</script>
+
+<script type="text/javascript">
+  //TODO 나중에 실행 되야함.
+  var speedCanvas = document.getElementById("speedChart");
+
+  Chart.defaults.global.defaultFontFamily = "gulim";
+  Chart.defaults.global.defaultFontSize = 12;
+
+  var speedData = {
+    labels: ["08/Apr", "11/Apr", "14/Apr", "17/Apr", "20/Apr", "23/Apr", "26/Apr", "29/Apr", "02/May"],
+    datasets: [{
+      label: "PayPal",
+      data: [0, 59, 69, 20, 25, 55, 40, 50, 10],
+      lineTension: 0,
+      fill: false,
+      borderWidth: 0,
+      backgroundColor: '#d7dee6',
+      pointBorderColor: '#d7dee6',
+      pointBackgroundColor: '#d7dee6',
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      pointHitRadius: 10,
+      pointBorderWidth: 0,
+      pointStyle: 'rectRounded'
+    },
+      {
+        label: "Credit Card",
+        data: [0, 10, 40, 10, 20, 35, 20, 60,22],
+        lineTension: 0,
+        fill: false,
+        borderColor: '#64afab',
+        borderWidth: 0,
+        backgroundColor: '#64afab',
+        pointBorderColor: '#64afab',
+        pointBackgroundColor: '#64afab',
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHitRadius: 10,
+        pointBorderWidth: 0,
+        pointStyle: 'rectRounded'
+      }
+    ]
+  };
+  var chartOptions = {
+    legend: {
+      display: true,
+      position: 'top',
+      labels: {
+        boxWidth: 60,
+        boxHeight: 4,
+        fontColor: '#cfd2d7'
+      }
+    }
+  };
+  var lineChart = new Chart(speedCanvas, {
+    type: 'line',
+    data: speedData,
+    options: chartOptions
+  });
+
+
+  var speedCanvas2 = document.getElementById("speedChart2");
+
+  Chart.defaults.global.defaultFontFamily = "gulim";
+  Chart.defaults.global.defaultFontSize = 12;
+
+  var speedData = {
+    labels: ["08/Apr", "11/Apr", "14/Apr", "17/Apr", "20/Apr", "23/Apr", "26/Apr", "29/Apr", "02/May"],
+    datasets: [{
+      label: "PayPal",
+      data: [0, 10, 15, 20, 25, 15, 10, 5, 10],
+      lineTension: 0,
+      fill: false,
+      borderWidth: 0,
+      backgroundColor: '#d7dee6',
+      pointBorderColor: '#d7dee6',
+      pointBackgroundColor: '#d7dee6',
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      pointHitRadius: 10,
+      pointBorderWidth: 0,
+      pointStyle: 'rectRounded'
+    },
+      {
+        label: "Credit Card",
+        data: [0, 10, 20, 10, 20, 25, 40, 10,12],
+        lineTension: 0,
+        fill: false,
+        borderColor: '#64afab',
+        borderWidth: 0,
+        backgroundColor: '#64afab',
+        pointBorderColor: '#64afab',
+        pointBackgroundColor: '#64afab',
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHitRadius: 10,
+        pointBorderWidth: 0,
+        pointStyle: 'rectRounded'
+      }
+    ]
+  };
+  var chartOptions = {
+    legend: {
+      display: true,
+      position: 'top',
+      labels: {
+        boxWidth: 60,
+        boxHeight: 4,
+        fontColor: '#cfd2d7'
+      }
+    }
+  };
+  var lineChart = new Chart(speedCanvas2, {
+    type: 'line',
+    data: speedData,
+    options: chartOptions
+  });
+
+
+  var speedCanvas3 = document.getElementById("speedChart3");
+
+  Chart.defaults.global.defaultFontFamily = "gulim";
+  Chart.defaults.global.defaultFontSize = 12;
+
+  var speedData = {
+    labels: ["08/Apr", "11/Apr", "14/Apr", "17/Apr", "20/Apr", "23/Apr", "26/Apr", "29/Apr", "02/May"],
+    datasets: [{
+      label: "PayPal",
+      data: [0, 59, 69, 20, 25, 55, 40, 50, 10],
+      lineTension: 0,
+      fill: false,
+      borderWidth: 0,
+      backgroundColor: '#d7dee6',
+      pointBorderColor: '#d7dee6',
+      pointBackgroundColor: '#d7dee6',
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      pointHitRadius: 10,
+      pointBorderWidth: 0,
+      pointStyle: 'rectRounded'
+    },
+      {
+        label: "Credit Card",
+        data: [0, 10, 40, 10, 20, 35, 20, 60,22],
+        lineTension: 0,
+        fill: false,
+        borderColor: '#64afab',
+        borderWidth: 0,
+        backgroundColor: '#64afab',
+        pointBorderColor: '#64afab',
+        pointBackgroundColor: '#64afab',
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHitRadius: 10,
+        pointBorderWidth: 0,
+        pointStyle: 'rectRounded'
+      }
+    ]
+  };
+  var chartOptions = {
+    legend: {
+      display: true,
+      position: 'top',
+      labels: {
+        boxWidth: 60,
+        boxHeight: 4,
+        fontColor: '#cfd2d7'
+      }
+    }
+  };
+  var lineChart = new Chart(speedCanvas3, {
+    type: 'line',
+    data: speedData,
+    options: chartOptions
   });
 </script>
