@@ -66,7 +66,9 @@ export class App {
 
   private _metadata;
   private _entity;
+  private _orgIndex: number = -1;
   private _orgSpaces: Array<Space>;
+  private _orgQuota: OrgQuota;
 
   constructor(metadataParam, entityParam) {
     // initialize dummy data when constructor parameter is null or undefined.
@@ -112,11 +114,11 @@ export class App {
   }
 
   get indexOfOrgs() {
-    return this.orgIndex;
+    return this._orgIndex;
   }
 
   set indexOfOrgs(index: number) {
-    this.orgIndex = index;
+    this._orgIndex = index;
   }
 
   get spaces() {

@@ -9,8 +9,8 @@ export class OrgQuota {
   private _metadata;
   private _entity;
 
-  private pricelessPolicy = 'paid';
-  private pricePolicy = 'free';
+  private pricelessPolicy = 'free';
+  private pricePolicy = 'paid';
 
   private static emptyInstance: OrgQuota = null;
 
@@ -169,9 +169,12 @@ export class OrgQuota {
       return this.pricelessPolicy;
     }
 
+    /*
     if (this.name.search('default') >= 0) {
       return this.pricelessPolicy;
     }
+    */
+    return this.pricelessPolicy;
   }
 
   get priceKorean(): String {
@@ -179,6 +182,8 @@ export class OrgQuota {
       case this.pricePolicy:
         return '유료';
       case this.pricelessPolicy:
+        return '무료';
+      default:
         return '무료';
     }
   }
