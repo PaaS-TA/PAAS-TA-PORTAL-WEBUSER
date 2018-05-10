@@ -22,13 +22,14 @@ declare var jQuery: any;
 })
 
 
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewChecked {
 
   public userid: string;
   public token: string;
 
 
   orgs: Array<Organization>;
+  org: Organization;
   spaces: Array<Space>;
 
   constructor(private commonService: CommonService,
@@ -58,15 +59,12 @@ export class DashboardComponent implements OnInit {
     this.log.info(this.spaces);
   }
 
-
   onChange(org: Organization) {
     this.org = org;
   }
 
   ngOnInit() {
-
     console.log('ngOnInit fired');
-
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common.js")
@@ -77,7 +75,6 @@ export class DashboardComponent implements OnInit {
           console.log(exception);
         });
     });
-
   }
 
 
