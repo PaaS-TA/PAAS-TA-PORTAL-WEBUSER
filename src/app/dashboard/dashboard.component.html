@@ -134,12 +134,12 @@
         <!-- 할당량 끝 -->
         <div class="monitor_tabs clearfix">
           <ul>
-            <li name="tab01" class="monitor_tabs_on">애플리케이션</li>
-            <li name="tab02" class="monitor_tabs_right">서비스</li>
+            <li name="tab01" class="monitor_tabs_on" (click)="dashTabClick('dashTab_1')">애플리케이션</li>
+            <li name="tab02" class="monitor_tabs_right" (click)="dashTabClick('dashTab_2')">서비스</li>
           </ul>
           <div class="monitor_tabs_line"></div>
         </div>
-        <div class="monitor_content01 row two_line two_view new_view clearfix">
+        <div id="dashTab_1" class="monitor_content01 row two_line two_view new_view clearfix">
           <ul class="maT30">
             <li>
               <div class="sortable_wrap space_box2">
@@ -208,7 +208,7 @@
             </li>
           </ul>
         </div>
-        <div class="monitor_content02 row two_line two_view new_view clearfix">
+        <div id="dashTab_2" class="monitor_content02 row two_line two_view new_view clearfix">
           <ul class="maT30">
             <li>
               <div class="sortable_wrap space_box2">
