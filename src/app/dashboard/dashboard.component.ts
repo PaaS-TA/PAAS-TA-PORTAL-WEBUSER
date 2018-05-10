@@ -21,12 +21,13 @@ declare var jQuery: any;
   styleUrls: ['./dashboard.component.css']
 })
 
-
-export class DashboardComponent implements OnInit, AfterViewChecked {
+export class DashboardComponent implements OnInit {
 
   public userid: string;
   public token: string;
-
+  public isEmpty:boolean;
+  public isSpace :boolean;
+  public isMessage : boolean;
 
   orgs: Array<Organization>;
   org: Organization;
@@ -37,7 +38,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
               private orgService: OrgService,
-              private spaceService : SpaceService,
+              private spaceService: SpaceService,
               private log: NGXLogger,
               private uaa: SecurityService,
               router: Router, private http: HttpClient) {
@@ -51,22 +52,32 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
 
     this.org = null;
     this.spaces = [];
+
+    this.isEmpty = true;
+    this.isSpace = false;
+
   }
 
-  ngAfterViewChecked() {
+  getOrg(value: string, org: Organization) {
+
+    console.log('::::::::::::::::: ' + value + '::::::::::::::::: ');
+    this.org = this.orgs.find(org => org.name === value);
+    this.isLoadingSpaces = true;
+
+    this.isEmpty = true;
+    this.isSpace = false;
+
     if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
       this.isLoadingSpaces = false;
       this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
     }
-    console.log('::::::::::::::::: ', this.spaces, '::::::::::::::::: ');
-  }
-
-  onChange(value:string, org: Organization) {
-    console.log('::::::::::::::::: ' + value + '::::::::::::::::: ');
-    this.org = this.orgs.find(org => org.name === value);
-    this.isLoadingSpaces = true;
     console.log('::::::::::::::::: find org is ', org, '::::::::::::::::: ');
   }
+
+  getApps(value:string){
+    this.isEmpty = false;
+    this.isSpace = true;
+   }
 
   ngOnInit() {
     console.log('ngOnInit fired');
@@ -81,7 +92,6 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
         });
     });
   }
-
 
 }
 

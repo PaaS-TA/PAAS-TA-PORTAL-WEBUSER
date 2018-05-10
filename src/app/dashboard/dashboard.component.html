@@ -7,18 +7,19 @@
       <a [routerLink]="['../appMain']"><h1><img src="../../assets/resources/images/main/logo.png" alt=""/></h1></a>
     </div>
     <span class="nav_toggle">
-            <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+            <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1">
             <label for="checkbox-1"></label>
         </span>
     <ul class="gnb clearfix">
-      <li ><a [routerLink]="['../appMain']">대시보드</a></li>
-      <li ><a [routerLink]="['../catalog']">카달로그</a></li>
+      <li><a [routerLink]="['../appMain']">대시보드</a></li>
+      <li><a [routerLink]="['../catalog']">카달로그</a></li>
       <li><a href="https://github.com/PaaS-TA/Guide-3.0-Penne-">문서</a></li>
     </ul>
     <ul class="right_nav">
       <li><!-- <a href="#" class="fas fa-user"></a> -->
         <div class="btn-group">
-          <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
           </button>
           <div id="r_user" class="dropdown-menu">
             <div class="">
@@ -26,7 +27,7 @@
               <dl>
                 <dt>
                   <i href="#" class="fas fa-user"></i>
-                  <img src="http://blog.jinbo.net/attach/615/200937431.jpg" alt="temp" />
+                  <img src="http://blog.jinbo.net/attach/615/200937431.jpg" alt="temp"/>
                 </dt>
                 <dd>
                   <p>홍길동</p>
@@ -45,7 +46,8 @@
       </li>
       <li>
         <div class="btn-group">
-          <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>3</span></button>
+          <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false"><span>3</span></button>
           <div id="bell" class="dropdown-menu">
             <div class="">
               <span class="dot"></span>
@@ -63,7 +65,8 @@
       </li>
       <li>
         <div id="globes" class="btn-group">
-          <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>
+          <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false"><i class="fas fa-caret-down"></i></button>
           <ul class="dropdown-menu">
             <li class="cur"><a href="#">Korean</a></li>
             <li><a href="#">English</a></li>
@@ -87,15 +90,15 @@
           </li>
           <li>
             <div>
-              <select (change)="onChange($event.target.value)">
-                <option value="" selected="selected" name="org_name" >생성된 조직명</option>
+              <select (change)="getOrg($event.target.value)">
+                <option value="" selected="selected" name="org_name">생성된 조직명</option>
                 <option *ngFor="let org of orgs" [value]="org.name">{{org.name}}</option>
               </select>
             </div>
           </li>
           <li>
             <div>
-              <select (change)="onChange($event.target.value)">
+              <select (change)="getApps($event.target.value)">
                 <option value="" selected="selected" name="space">해당 공간명</option>
                 <option *ngFor="let space of spaces" [value]="space.name">{{space.name}}</option>
               </select>
@@ -106,12 +109,300 @@
       <!--<div class="space_btn1"><button class="btnspace colors4 "><img src="../../assets/resources/images/main/btn_icon.png" alt=""/>WEB IDE 사용</button></div>-->
     </div>
   </div>
-  <div class="space_wrap">
-    <div class="space_alert_img"><img src="../../assets/resources/images/space/alert.gif" alt=""/></div>
-    <div class="space_title2">대시보드가 비어 있습니다.</div>
-    <div class="space_txt">조직 및 공간이 생성되지 않았습니다. <br><span><em><a [routerLink]="['../org']">조직관리</a></em></span>로 이동하여 조직 및 공간을 생성하십시오.</div>
+  <div *ngIf='isEmpty'>
+    <div class="space_wrap">
+      <div class="space_alert_img"><img src="../../assets/resources/images/space/alert.gif" alt=""/></div>
+      <div class="space_title2">대시보드가 비어 있습니다.</div>
+      <div class="space_txt">조직 및 공간이 생성되지 않았습니다. <br><span><em><a [routerLink]="['../org']">조직관리</a></em></span>로 이동하여
+        조직 및 공간을 생성하십시오.
+      </div>
+    </div>
   </div>
-  <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
+  <div *ngIf="isSpace">
+    <div class="contain_s">
+      <div class="content">
+        <!-- 할당량 시작-->
+        <div class="row two_line two_view ns">
+          <div class="sortable_wrap space_box">
+            <div class="space_gb"><span>6</span><span>GB</span> / 할당량 10GB</div>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="1.5" aria-valuemin="0" aria-valuemax="10" style="width: 15%;">1.5GB</div>
+              <div class="progress-full">10GB</div>
+            </div>
+          </div>
+        </div>
+        <!-- 할당량 끝 -->
+        <div class="monitor_tabs clearfix">
+          <ul>
+            <li name="tab01" class="monitor_tabs_on">애플리케이션</li>
+            <li name="tab02" class="monitor_tabs_right">서비스</li>
+          </ul>
+          <div class="monitor_tabs_line"></div>
+        </div>
+        <div class="monitor_content01 row two_line two_view new_view clearfix">
+          <ul class="maT30">
+            <li>
+              <div class="sortable_wrap space_box2">
+                <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 앱이 없습니다. 앱 생성을 클릭하여 작성하거나 <em><a [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
+              </div>
+            </li>
+          </ul>
+          <ul class="maT30 space_list ">
+            <li>
+              <div class="sortable_wrap">
+                <!-- 애플리케이션 영역 시작 -->
+                <div class="space_pop_container">
+                  <div class="space_pop_menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                    <ol class="space_pop_submenu">
+                      <li><a class="fas fa-edit" data-target="#layerpop1" data-toggle="modal"> 앱 이름변경</a></li>
+                      <li><a class="fas fa-play"> 실행</a></li>
+                      <li><a class="fas fa-trash-alt" data-target="#layerpop2" data-toggle="modal"> 삭제</a></li>
+                    </ol>
+                  </div>
+                  <div class="app_title">POP_Dev</div>
+                  <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
+                  <div class="app_per clearfix">
+                    <ul>
+                      <li><div>인스턴스</div><div>:</div><div>{{appSummaryInstance}}</div></li>
+                      <li><div>CPU</div><div>:</div><div>{{appStatsCpuPer}}</div></li>
+                      <li><div>메모리</div><div>:</div><div>{{appStatsMemoryPer}}</div></li>
+                    </ul>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="app_btn"><button class="btns colors1"><img src="../../../assets/resources/images/main/RUNNING.svg" alt=""/>STAGED</button></div>
+                  <div class="app_graph clearfix">
+                    <div>CPU</div>
+                    <div>50%</div>
+                    <div class="space_bar1">
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                      </div>
+                    </div>
+                    <div>Memory</div>
+                    <div>60%</div>
+                    <div class="space_bar2">
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 애플리케이션 영역 끝 -->
+              </div>
+            </li>
+            <li>
+              <div class="sortable_wrap">
+                <div onClick="#" class="space_empty"></div>
+              </div>
+            </li>
+            <li>
+              <div class="sortable_wrap">
+                <div onClick="#" class="space_empty"></div>
+              </div>
+            </li>
+            <li>
+              <div class="sortable_wrap">
+                <div onClick="#" class="space_empty"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="monitor_content02 row two_line two_view new_view clearfix">
+          <ul class="maT30">
+            <li>
+              <div class="sortable_wrap space_box2">
+                <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나 <em><a [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
+              </div>
+            </li>
+          </ul>
+          <div class="space_btn_container clearfix">
+            <div class="space_btn2"><button class="btns colors4"  data-target="#layerpop4" data-toggle="modal">User Provided 생성</button></div>
+          </div>
+          <ul class="maT10 space_list space_list_small">
+            <li>
+              <div class="sortable_wrap">
+                <!-- 애플리케이션 영역 시작 -->
+                <div class="space_pop_container space_list_small">
+                  <div class="space_pop_menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                    <ol class="space_pop_submenu">
+                      <li><a class="fas fa-edit" data-target="#layerpop3" data-toggle="modal"> 서비스 이름변경</a></li>
+                      <li><a class="fas fa-wrench"> 서비스 수정</a></li>
+                      <li><a class="fas fa-trash-alt" data-target="#layerpop5" data-toggle="modal"> 삭제</a></li>
+                    </ol>
+                  </div>
+                  <div class="app_title">POP_Dev</div>
+                  <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
+                  <div class="app_per clearfix">
+                    <ul>
+                      <li><div>연결 앱</div><div>:</div><div>3</div></li>
+                      <li><div>서비스 명</div><div>:</div><div>redis-sb</div></li>
+                      <li><div>제공서비스</div><div>:</div><div>shared-vm</div></li>
+                    </ul>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <!-- 애플리케이션 영역 끝 -->
+              </div>
+            </li>
+            <li>
+              <div class="sortable_wrap">
+                <div onClick="#" class="space_empty2"></div>
+              </div>
+            </li>
+            <li>
+              <div class="sortable_wrap">
+                <div onClick="#" class="space_empty2"></div>
+              </div>
+            </li>
+            <li>
+              <div class="sortable_wrap">
+                <div onClick="#" class="space_empty2"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer_n">Copyright © 2018 PaaS-TA. All rights reserved</div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="layerpop1">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">앱 이름 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <input type="text" id="" placeholder="앱 이름을 입력하세요" class="space_input"/>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">변경</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="layerpop2">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">앱 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>앱을 삭제하면 되돌릴 수 없습니다.<br/><span>Testorg(앱 명)</span>를  삭제하시겠습니까?
+          </p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="layerpop3">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">서비스 이름 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <input type="text" id="" placeholder="앱 이름을 입력하세요" class="space_input"/>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">변경</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="layerpop4">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">User Provided 생성</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body space_pop_align clearfix">
+          <ul>
+            <li>
+              <div>서비스 이름</div>
+              <div><input type="text" id="" class="space_input"/></div>
+            </li>
+            <li>
+              <div>Credentials</div>
+              <div><input type="text" id="" class="space_input"/></div>
+            </li>
+            <li>
+              <div>Syslog Drain Url</div>
+              <div><input type="text" id="" class="space_input"/></div>
+            </li>
+          </ul>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">생성</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="layerpop5">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">서비스 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>서비스를 삭제하면 되돌릴 수 없습니다.<br/><span>Testorg(서비스 명)</span>를  삭제하시겠습니까?
+          </p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 </html>
