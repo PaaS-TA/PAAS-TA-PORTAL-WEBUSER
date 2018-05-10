@@ -11,11 +11,13 @@ import {Space} from '../../model/space';
 
 @Injectable()
 export class DashboardSapaceService {
-  constructor(private common: CommonService, private logger: NGXLogger) { }
+  constructor(private http: HttpClient, private commonService: CommonService, private logger: NGXLogger,) {}
 
-  public getAppList(): Array<Apps> {
-    return 0;
+// @RequestMapping(value = {Constants.V2_URL+"/spaces/{spaceid}/summary"}, method = RequestMethod.GET)
+  getAppSummary(guid: string) {
+    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/summary', '').map((res: Response) => {
+      return res;
+    }).do(console.log);
   }
-
 
 }
