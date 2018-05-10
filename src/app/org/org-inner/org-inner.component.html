@@ -251,9 +251,8 @@
           </thead>
           <tbody>
           <!-- TODO -->
-          <tr *ngFor="let aquota of availableQuotas"
-              [ngClass]="{'cur': isSelected(aquota)}"
-              class="org_quota">
+          <tr *ngFor="let aquota of availableQuotas" class="org_quota"
+              [ngClass]="{'cur': isSelected(aquota)}">
             <td>
               <input type="radio" [name]="'radio-' + org.name"
                      [id]="'radio-' + org.name + '-' + aquota.name"
@@ -261,13 +260,12 @@
                      data-toggle="modal" (click)="changeQuota($event, aquota)" >
               <label [for]="org.name + '-' + aquota.name"></label></td>
             <td quota-key="name">{{aquota.name}}</td>
-            <td quota-key="memory-limit">{{aquota.memoryLimit === -1 ? '무제한' : aquota.memoryLimit}}</td>
-            <td quota-key="instance-memory-limit">{{aquota.instanceMemoryLimit === -1 ? '무제한' :
-              aquota.instanceMemoryLimit}}
+            <td quota-key="memory-limit">{{aquota.memoryLimit}}</td>
+            <td quota-key="instance-memory-limit">{{aquota.instanceMemoryLimit}}
             </td>
             <td quota-key="routes">{{aquota.totalRoutes}}</td>
             <td quota-key="service-instance">{{aquota.totalServices}}</td>
-            <td quota-key="price">{{aquota.isFree()? '무료' : '유료'}}</td>
+            <td quota-key="price">{{aquota.priceKorean}}</td>
             <td quota-key="app-instances">{{aquota.applicationInstanceLimit}}</td>
             <td quota-key="route-ports">{{aquota.totalReservedRoutePorts}}</td>
           </tr>
