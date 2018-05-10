@@ -32,6 +32,8 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   org: Organization;
   spaces: Array<Space>;
 
+  private isLoadingSpaces = false;
+
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
               private orgService: OrgService,
@@ -52,15 +54,18 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    if (this.org != null) {
+    if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
+      this.isLoadingSpaces = false;
       this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
     }
-    this.log.info(this.org);
-    this.log.info(this.spaces);
+    console.log('::::::::::::::::: ', this.spaces, '::::::::::::::::: ');
   }
 
-  onChange(org: Organization) {
-    this.org = org;
+  onChange(value:string, org: Organization) {
+    console.log('::::::::::::::::: ' + value + '::::::::::::::::: ');
+    this.org = this.orgs.find(org => org.name === value);
+    this.isLoadingSpaces = true;
+    console.log('::::::::::::::::: find org is ', org, '::::::::::::::::: ');
   }
 
   ngOnInit() {
