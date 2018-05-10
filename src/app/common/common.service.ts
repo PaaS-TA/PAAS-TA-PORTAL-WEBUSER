@@ -7,7 +7,7 @@ import {Observable} from 'rxjs/Observable';
 import {reject} from 'q';
 import {logger} from 'codelyzer/util/logger';
 import {NGXLogger} from 'ngx-logger';
-import {Param} from "../index/login/login.component";
+import {Param} from "../login/login.component";
 import {Router} from "@angular/router";
 import {AppConfig} from "../app.config"
 
@@ -194,10 +194,11 @@ export class CommonService {
   }
 
   public getToken(): string {
-    let cf_expires = sessionStorage.getItem('expire_date');
+    const cf_expires = sessionStorage.getItem('expire_date');
+    const cf_token = this.getTokenWithoutRefresh();
 
     let now = new Date();
-    if (sessionStorage.getItem('cf_token') != null && cf_expires <= now.getTime().toString()) {
+    if (cf_token !== null && cf_expires <= now.getTime().toString()) {
       if (this.getLoginType() === 'API') {
         this.doTokenRefreshAPI();
       } else {
@@ -208,6 +209,9 @@ export class CommonService {
     return sessionStorage.getItem('cf_token');
   }
 
+  private getTokenWithoutRefresh(): string {
+    return sessionStorage.getItem('cf_token');
+  }
   public getRefreshToken(): string {
     return sessionStorage.getItem('cf_refresh_token');
   }
