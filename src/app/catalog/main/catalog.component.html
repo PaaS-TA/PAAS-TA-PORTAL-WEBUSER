@@ -29,7 +29,8 @@
                     <li><p>{{recent.description}}</p>
                     </li>
                     <li>
-                      <button class="btns3 colors6">파스타</button>
+                      <button *ngIf="recent.useYn==='Y'" class="btns3 colors6">파스타</button>
+                      <button *ngIf="recent.useYn==='N'" class="btns3 colors7">커뮤니티</button>
                     </li>
                   </ul>
                 </dd>
@@ -40,21 +41,22 @@
         <div>
           <p class="tit">앱 템플릿</p>
           <ul>
-            <li *ngFor="let tem of catalogService.templates" (click)="goAppTemplate(tem)">
+            <li *ngFor="let stater of catalogService.starterpacks" (click)="goAppTemplate(stater)">
               <dl>
                 <dt>
                 <div>
-                  <img src="../../../assets/resources/images/catalog/{{tem.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
+                  <img src="../../../assets/resources/images/catalog/{{stater.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                 </div>
                 </dt>
                 <dd>
                   <ul>
-                    <li>{{tem.name}}
+                    <li>{{stater.name}}
                     </li>
-                    <li><p>{{tem.description}}</p>
+                    <li><p>{{stater.description}}</p>
                     </li>
                     <li>
-                      <button class="btns3 colors7">커뮤니티</button>
+                      <button *ngIf="stater.useYn==='Y'" class="btns3 colors6">파스타</button>
+                      <button *ngIf="stater.useYn==='N'" class="btns3 colors7">커뮤니티</button>
                     </li>
                   </ul>
                 </dd>
@@ -65,7 +67,7 @@
         <div class="cataloglast">
           <p class="tit">앱 개발환경</p>
           <ul >
-            <li *ngFor="let build of catalogService.buildpacks">
+            <li *ngFor="let build of catalogService.buildpacks" (click)="goAppDevelopMent(build)">
               <dl>
                 <dt>
                 <div>
@@ -80,7 +82,35 @@
                     </p>
                     </li>
                     <li>
-                      <button class="btns3 colors6">파스타</button>
+                      <button *ngIf="build.useYn==='Y'" class="btns3 colors6">파스타</button>
+                      <button *ngIf="build.useYn==='N'" class="btns3 colors7">커뮤니티</button>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </li>
+          </ul>
+        </div>
+        <div class="cataloglast">
+          <p class="tit">서비스</p>
+          <ul >
+            <li *ngFor="let service of catalogService.servicepacks">
+              <dl>
+                <dt>
+                <div>
+                  <img src="../../../assets/resources/images/catalog/{{service.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
+                </div>
+                </dt>
+                <dd>
+                  <ul>
+                    <li>{{service.name}}
+                    </li>
+                    <li><p> {{service.description}}
+                    </p>
+                    </li>
+                    <li>
+                      <button *ngIf="service.useYn==='Y'" class="btns3 colors6">파스타</button>
+                      <button *ngIf="service.useYn==='N'" class="btns3 colors7">커뮤니티</button>
                     </li>
                   </ul>
                 </dd>

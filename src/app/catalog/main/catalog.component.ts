@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {CatalogService, Template,} from "./catalog.service";
+import {BuildPack, CatalogService, Service, StarterPack} from "./catalog.service";
 import {NGXLogger} from 'ngx-logger';
 import {Router} from "@angular/router";
 import {Organization} from "../../model/organization";
 import {FormGroup} from "@angular/forms";
+import {CATALOGURLConstant} from "../common/catalog.constant";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -14,29 +15,29 @@ declare var jQuery: any;
 export class CatalogComponent implements OnInit {
 
   searchKeyword : string='';
-  file : File;
-  form: FormGroup;
+
+  userid : string;
   constructor(private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
-
-  }
-  filechange(event){
-    // let fileList: FileList = event.target.files;
-    // this.file = fileList[0];
-    // let formData = new FormData();
-    //
-    // console.log(this.file);
-    //
-    // formData.append('file', this.file, this.file.name);
-    //
-    // console.log(formData);
-    // console.log(this.file);
-    console.log(this.file);
-
+    this.userid = catalogService.getUserid();
   }
 
 
   ngOnInit() {
-    this.catalogService.developInit();
+    //this.catalogService.developInit();
+
+    this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
+      this.StarterInit(data['list']);
+    });
+    this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS).subscribe(data => {
+      this.BuildInit(data['list']);
+    });
+    this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS).subscribe(data => {
+      this.ServiceInit(data['list']);
+    });
+    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid+'?searchKeyword=').subscribe(data => {
+      this.RecentInit(data);
+    });
+
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
@@ -50,11 +51,52 @@ export class CatalogComponent implements OnInit {
   }
 
   Search()  {
-    this.catalogService.Search(this.searchKeyword);
+    this.catalogService.getSearchPack(CATALOGURLConstant.GETSEARCH+'?searchKeyword='+this.searchKeyword).subscribe(data => {
+      this.StarterInit(data['TemplateList']);
+      this.BuildInit(data['BuildPackList']);
+    });
+    this.catalogService.getSearchPack(CATALOGURLConstant.GETRECENTPACKS+this.userid+'?searchKeyword='+this.searchKeyword).subscribe(data => {
+      this.RecentInit(data);
+    });
   }
 
-  goAppTemplate(tem : Template) {
-    this.router.navigate(['catalogdetail', tem.no]);
+  goAppTemplate(starter : StarterPack) {
+    this.router.navigate(['catalogdetail', starter.no]);
+  }
+
+  goAppDevelopMent(build : BuildPack) {
+    this.router.navigate(['catalogdevelopment', build.no]);
+  }
+
+  RecentInit(data : any) {
+    this.catalogService.recentpacks = new Array<any>();
+    let lenght = data['list'].length;
+    for (let i = 0; i < lenght; i++) {
+      let dev = data['list'][i];
+      this.catalogService.recentpacks[i] = dev;
+    }
+  }
+
+
+  StarterInit(data : any) {
+    this.catalogService.starterpacks = new Array<StarterPack>();
+    for(let i = 0 ; i < data.length ; i++) {
+      this.catalogService.starterpacks[i] = data[i];
+    }
+  }
+
+  BuildInit(data : any) {
+    this.catalogService.buildpacks = new Array<BuildPack>();
+    for(let i = 0 ; i < data.length ; i++) {
+      this.catalogService.buildpacks[i] = data[i];
+    }
+  }
+
+  ServiceInit(data : any) {
+    this.catalogService.servicepacks = new Array<Service>();
+    for(let i = 0 ; i < data.length ; i++) {
+      this.catalogService.servicepacks[i] = data[i];
+    }
   }
 }
 

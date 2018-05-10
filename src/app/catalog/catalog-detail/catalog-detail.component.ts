@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {CatalogService, BuildPack, Service, Template} from "../main/catalog.service";
+import {CatalogService, BuildPack, Service, StarterPack} from "../main/catalog.service";
 import {NGXLogger} from "ngx-logger";
 import {Organization} from "../../model/organization";
 import {Space} from "../../model/space";
@@ -15,7 +15,7 @@ declare var jQuery: any;
 })
 export class CatalogDetailComponent implements OnInit {
 
-  template: Template;
+  template: StarterPack;
   apptemplate: Array<BuildPack|Service> = new Array<BuildPack|Service>(); // 앱 구성에 나오는 목록
   region: string; // 지역
   appname: string; //앱 이름
@@ -83,7 +83,6 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   orgSelect() {
-    console.log(this.org);
     this.spaces = new Array<Space>();
     this.catalogSerive.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {
@@ -94,7 +93,6 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   initAppUrl() {
-    console.log(this.space);
     this.appurl = this.appname + '.' + this.domain;
     if (this.appname.length < 1 || this.appname.trim() === '')
       this.appurl = '';

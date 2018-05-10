@@ -71,7 +71,7 @@
                     </tr>
                     <tr>
                       <td>
-                        <select [(ngModel)]="org" (change)="orgSelect()">
+                        <select [(ngModel)]="org" (ngModelChange)="orgSelect()">
                           <option *ngFor="let org of orgs"  [ngValue]="org">{{org.name}}
                         </option>
                         </select>

@@ -6,65 +6,49 @@ import {CommonService} from "../../common/common.service";
 export class CatalogService {
   COMMONAPI : string = '/commonapi';
   V2_URL : string = '/v2';
-  DEVELOPGET : string = this.COMMONAPI + this.V2_URL +'/developpacks';
-  TEMPLATEGET : string = this.COMMONAPI + this.V2_URL + '/starterpacks';
-  SEARCHGET : string = this.COMMONAPI + this.V2_URL + '/packs';
-  HISTORYGET : string = this.COMMONAPI + this.V2_URL + '/history/';
   STARTERGET : string = this.COMMONAPI + this.V2_URL + '/packrelation/';
-
-
-  userid : string;
   buildpacks : Array<BuildPack> = Array<BuildPack>();
-  templates : Array<Template> = Array<Template>();
-  recentpacks : Array<BuildPack|Template> = Array<BuildPack|Template>();
+  starterpacks : Array<StarterPack> = Array<StarterPack>();
+  recentpacks : Array<any> = Array<any>();
+  servicepacks : Array<Service> = Array<Service>();
+
   constructor(private common: CommonService, private log: NGXLogger) {
-    this.userid = common.getUserid();
   }
 
-  developInit()
-  {
-    this.common.doGET(this.DEVELOPGET, null).subscribe(data => {
-      this.BuildPackInit(data['list']);
+
+  getUserid() : string{
+    return this.common.getUserid();
+  }
+
+  getRecentPacks(url : string) {
+    return this.common.doGET(url, null).map((res: Response) => {
+      return res;
     });
-    this.common.doGET(this.TEMPLATEGET, null).subscribe(data =>{
-        this.TemplateInit(data['list']);
-    })
-    this.common.doGET(this.HISTORYGET+this.userid+'?searchKeyword=', null).subscribe(data =>{
-     let lenght = data['list'].length;
-      for(let i =0; i < lenght; i++) {
-        let dev = data['list'][i];
-        this.recentpacks[i] = dev;
-        console.log(this.recentpacks[i]);
-      }
-
-    })
   }
 
-  Search(searchKeyword : string)
-  {
-    this.common.doGET(this.SEARCHGET+'?searchKeyword='+searchKeyword, null).subscribe(data => {this.BuildPackInit(data['BuildPackList']); this.TemplateInit(data['TemplateList']);});
-    this.recentpacks = new Array<BuildPack|Template>();
-    this.common.doGET(this.HISTORYGET+this.userid+'?searchKeyword='+searchKeyword, null).subscribe(data =>{
-      let lenght = data['list'].length;
-      for(let i =0; i < lenght; i++) {
-        let dev = data['list'][i];
-        this.recentpacks[i] = dev;
-        console.log(this.recentpacks[i]);
-      }})
+
+  getStarterPacks(url : string) {
+    return this.common.doGET(url, null).map((res: Response) => {
+      return res;
+    });
   }
 
-  BuildPackInit(data : any) {
-    this.buildpacks = new Array<BuildPack>();
-    for(let i = 0 ; i < data.length ; i++) {
-      this.buildpacks[i] = data[i];
-    }
+  getBuildPacks(url : string) {
+    return this.common.doGET(url, null).map((res: Response) => {
+      return res;
+    });
   }
 
-  TemplateInit(data : any) {
-    this.templates = new Array<Template>();
-    for(let i = 0 ; i < data.length ; i++) {
-      this.templates[i] = data[i];
-    }
+  getServicePacks(url : string) {
+    return this.common.doGET(url, null).map((res: Response) => {
+      return res;
+    });
+  }
+
+  getSearchPack(url : string) {
+    return this.common.doGET(url, null).map((res: Response) => {
+      return res;
+    });
   }
 
   CatalogDetailInit(no : number){
@@ -130,7 +114,7 @@ export class BuildPack
   userId : string;
 }
 
-export class Template
+export class StarterPack
 {
   buildPackCategoryNo : string;
   classification : string;

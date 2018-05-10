@@ -7,6 +7,7 @@ import {CatalogComponent} from "./main/catalog.component";
 import {FormsModule} from "@angular/forms";
 import {CatalogDetailComponent} from "./catalog-detail/catalog-detail.component";
 import {RoutingModule} from "../app.routing";
+import { CatalogDevelopmentComponent } from './catalog-development/catalog-development.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +19,7 @@ import {RoutingModule} from "../app.routing";
     CatalogNavComponent,
     CatalogComponent,
     CatalogDetailComponent,
+    CatalogDevelopmentComponent,
   ],
   providers: [CatalogService],
 })
