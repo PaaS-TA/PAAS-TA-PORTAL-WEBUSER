@@ -204,20 +204,20 @@ export class DashboardComponent implements OnInit {
         });
     });
 
-    this.router.queryParams.subscribe(params => {
-      if (params != null) {
-        setTimeout(() => this.showLoading(), 0);
-
-        this.orgGuid = params['orgId'];
-        this.spaceGuid = params['spaceId'];
-        this.orgName = params['orgName'];
-        this.spaceName = params['spaceName'];
-
-        this.getAppSummary(params['guid']);
-      } else {
-        this.router.navigate(['dashMain']);
-      }
-    });
+    // this.router.queryParams.subscribe(params => {
+    //   if (params != null) {
+    //     setTimeout(() => this.showLoading(), 0);
+    //
+    //     this.orgGuid = params['orgId'];
+    //     this.spaceGuid = params['spaceId'];
+    //     this.orgName = params['orgName'];
+    //     this.spaceName = params['spaceName'];
+    //
+    //     this.getAppSummary(params['guid']);
+    //   } else {
+    //     this.router.navigate(['dashMain']);
+    //   }
+    // });
 
   }//
 
@@ -233,6 +233,15 @@ export class DashboardComponent implements OnInit {
       $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
     }
   }
+
+  // popclick(id : string) {
+  //   $("[id^='dashTab_']").hide();
+  //   $("#"+id).show();
+  //
+  //   if (id == "popclick_1") {
+  //       $('.space_pop_submenu').toggle();
+  //   }
+  // }
 
 
 }
