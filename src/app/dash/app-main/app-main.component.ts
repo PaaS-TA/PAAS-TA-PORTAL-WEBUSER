@@ -768,4 +768,12 @@ export class AppMainComponent implements OnInit {
     $("#out_a").val(inContent);
   }
 
+  refreshClick() {
+    this.ngOnInit();
+  }
+
+  showWindowTailLogs() {
+    window.open('http://localhost:8080/tailLogs?name=github-test-app2&org=demo.org&space=dev&guid=80dd102d-8068-4997-b518-c3f04bcdd00f', '_blank', 'width=1000, height=700');
+  }
+
 }

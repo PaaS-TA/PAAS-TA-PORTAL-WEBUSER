@@ -194,10 +194,11 @@ export class CommonService {
   }
 
   public getToken(): string {
-    let cf_expires = sessionStorage.getItem('expire_date');
+    const cf_expires = sessionStorage.getItem('expire_date');
+    const cf_token = this.getTokenWithoutRefresh();
 
     let now = new Date();
-    if (sessionStorage.getItem('cf_token') != null && cf_expires <= now.getTime().toString()) {
+    if (cf_token !== null && cf_expires <= now.getTime().toString()) {
       if (this.getLoginType() === 'API') {
         this.doTokenRefreshAPI();
       } else {
@@ -208,6 +209,9 @@ export class CommonService {
     return sessionStorage.getItem('cf_token');
   }
 
+  private getTokenWithoutRefresh(): string {
+    return sessionStorage.getItem('cf_token');
+  }
   public getRefreshToken(): string {
     return sessionStorage.getItem('cf_refresh_token');
   }
@@ -295,8 +299,8 @@ export class CommonService {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let param = {'token': this.getToken(), 'refresh_token': this.getRefreshToken()};
-    return this.doPost('/portalapi/token/refresh', param, this.getToken()).retryWhen(error => {
+    let param = {'token': sessionStorage.getItem('cf_token'), 'refresh_token': this.getRefreshToken()};
+    return this.doPost('/portalapi/token/refresh', param, sessionStorage.getItem('cf_token')).retryWhen(error => {
       return error.flatMap((error: any) => {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
