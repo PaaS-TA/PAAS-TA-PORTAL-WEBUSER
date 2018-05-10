@@ -20,6 +20,24 @@ export class AppMainService {
     }).do(console.log);
   }
 
+  startApp(params: any) {
+    return this.commonService.doPost('/portalapi/v3/apps/startApp', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  stopApp(params: any) {
+    return this.commonService.doPost('/portalapi/v3/apps/stopApp', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  restageApp(params: any) {
+    return this.commonService.doPost('/portalapi/v2/apps/restageApp', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
   updateApp(params: any) {
     return this.commonService.doPost('/portalapi/v2/apps/updateApp', params, '').map((res: Response) => {
       return res;

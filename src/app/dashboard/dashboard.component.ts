@@ -108,7 +108,7 @@ export class DashboardComponent implements OnInit {
               private spaceService: SpaceService,
               private log: NGXLogger,
               private appMainService: AppMainService,
-              router: Router, private http: HttpClient) {
+              private router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }

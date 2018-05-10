@@ -555,40 +555,40 @@
     });
 
 	//180403 탭 추가
-	$('.monitor_tabs li').click(function(){
-		var tab_c = $(this).attr('name');
-		var content = tab_c.substr(4, 1);
-		if(tab_c == 'tab01'){
-			$('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');;
-			$('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
-			$('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
-			for (i=0; i<4; i++)
-			{
-				$('.monitor_content0'+i).hide();
-			}
-			$('.monitor_content0'+content).show();
-			$('.service_only').hide();
-		} else if(tab_c == 'tab02'){
-			$('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_left');;
-			$('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
-			$('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
-			for (i=0; i<4; i++)
-			{
-				$('.monitor_content0'+i).hide();
-			}
-			$('.monitor_content0'+content).show();
-			$('.service_only').show();
-		} else if(tab_c == 'tab03'){
-			$('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_left');;
-			$('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_left');
-			$('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
-			for (i=0; i<4; i++)
-			{
-				$('.monitor_content0'+i).hide();
-			}
-			$('.monitor_content0'+content).show();
-		}
-	});
+	// $('.monitor_tabs li').click(function(){
+	// 	var tab_c = $(this).attr('name');
+	// 	var content = tab_c.substr(4, 1);
+	// 	if(tab_c == 'tab01'){
+	// 		$('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');;
+	// 		$('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+	// 		$('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+	// 		for (i=0; i<4; i++)
+	// 		{
+	// 			$('.monitor_content0'+i).hide();
+	// 		}
+	// 		$('.monitor_content0'+content).show();
+	// 		$('.service_only').hide();
+	// 	} else if(tab_c == 'tab02'){
+	// 		$('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_left');;
+	// 		$('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+	// 		$('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+	// 		for (i=0; i<4; i++)
+	// 		{
+	// 			$('.monitor_content0'+i).hide();
+	// 		}
+	// 		$('.monitor_content0'+content).show();
+	// 		$('.service_only').show();
+	// 	} else if(tab_c == 'tab03'){
+	// 		$('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_left');;
+	// 		$('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_left');
+	// 		$('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+	// 		for (i=0; i<4; i++)
+	// 		{
+	// 			$('.monitor_content0'+i).hide();
+	// 		}
+	// 		$('.monitor_content0'+content).show();
+	// 	}
+	// });
 
 	//툴팁추가
 	$('.monitor_red').mouseenter(function(){

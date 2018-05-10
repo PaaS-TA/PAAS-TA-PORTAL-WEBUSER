@@ -17,6 +17,10 @@ export class AppNavComponent implements OnInit {
   tabShowClick(id) {
     $("[id^='tabContent_']").hide();
     $("#"+id).show();
+
+    if(id == "tabContent_viewchart") {
+      $("#tab_viewchart_1").show();
+    }
   }
 
 }

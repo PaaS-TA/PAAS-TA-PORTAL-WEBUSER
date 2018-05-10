@@ -106,7 +106,7 @@ export class AppMainComponent implements OnInit {
 
         this.appGuid = params['guid'];
         this.getAppSummary(params['guid']);
-        this.getAppStats(params['guid']);
+
         this.getAppEvents(params['guid']);
         this.getAppEnv(params['guid']);
         this.getAppRecentLogs(params['guid']);
@@ -148,9 +148,27 @@ export class AppMainComponent implements OnInit {
 
       $("#instancePer").val(this.appSummaryInstancePer);
 
+      setTimeout(() =>
+        $('.BG_wrap input').each(function () {
+          var BG_wrap = $(this).val();
+          $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
+          $(this).closest('dl').find("span.rights").html(BG_wrap);
+        }), 100);
+
       this.appSummaryMemory = data.memory;
 
       this.appSummaryDisk = data.disk_quota;
+
+      if(this.appSummaryState == "STARTED") {
+        this.getAppStats(guid);
+      } else {
+        $("#cpuPer").val("0");
+        $("#memoryPer").val("0");
+        $("#diskPer").val("0");
+
+        this.appStatusEntities = [];
+        // this.procSetAppStatusTab();
+      }
 
       this.initRouteTab();
       // this.getSpaceSummary();
@@ -291,10 +309,45 @@ export class AppMainComponent implements OnInit {
     this.appStatusEntities = appStatus;
     this.common.isLoading = false;
 
-    $('.BG_wrap input').each(function () {
-      var BG_wrap = $(this).val();
-      $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
-      $(this).closest('dl').find("span.rights").html(BG_wrap);
+    setTimeout(() =>
+      $('.BG_wrap input').each(function () {
+        var BG_wrap = $(this).val();
+        $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
+        $(this).closest('dl').find("span.rights").html(BG_wrap);
+      }), 100);
+
+    // $('.BG_wrap input').each(function () {
+    //   var BG_wrap = $(this).val();
+    //   $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
+    //   $(this).closest('dl').find("span.rights").html(BG_wrap);
+    // });
+  }
+
+  startAppClick() {
+    let params = {
+      guid: this.appSummaryGuid
+    };
+    this.appMainService.startApp(params).subscribe(data => {
+      this.ngOnInit();
+    });
+  }
+
+  stopAppClick() {
+    let params = {
+      guid: this.appSummaryGuid
+    };
+    this.appMainService.stopApp(params).subscribe(data => {
+      this.ngOnInit();
+    });
+  }
+
+  restageAppClick() {
+    let params = {
+      guid: this.appSummaryGuid
+    };
+    this.appMainService.restageApp(params).subscribe(data => {
+      //TODO 재시작 후 시간 텀을주어 init 할 것인가??
+      this.ngOnInit();
     });
   }
 
@@ -501,6 +554,8 @@ export class AppMainComponent implements OnInit {
         str += dataobj.logMessage.message + '<br>';
       });
       this.appRecentLogs = str;
+
+      this.common.isLoading = false;
     });
   }
 
@@ -526,7 +581,7 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  selectBoxServiceChange(val) {
+  selectBoxServiceChange(val: string) {
      var appBindParam = [];
 
     $.each(this.servicepacksEntitiesRe, function (key, dataobj) {
@@ -563,12 +618,36 @@ export class AppMainComponent implements OnInit {
     this.sltServiceParam = appBindParam;
   }
 
-  tabShowClick(id) {
+  tabShowClick(id: string) {
     $('.nav_1d li').removeClass('cur');
     $("#nav_"+id).addClass('cur');
 
     $("[id^='tabContent_']").hide();
     $("#"+id).show();
+
+    if(id == "tabContent_viewchart") {
+      $("#"+id+"_1").show();
+    }
+  }
+
+  tabShowViewchartClick(id: string) {
+    $("[id^='tab_viewchart_']").hide();
+    $("#"+id).show();
+
+    if(id == "tab_viewchart_1") {
+      $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+      $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+      $('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+    } else if(id == "tab_viewchart_2") {
+      $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+      $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+      $('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+    } else if(id == "tab_viewchart_3") {
+      $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+      $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+      $('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+    }
+
   }
 
   eventListMoreClick() {
@@ -579,7 +658,7 @@ export class AppMainComponent implements OnInit {
     this.tabContentStatsListLimit = this.tabContentStatsListLimit + 5;
   }
 
-  statsResrtartClick(index) {
+  statsResrtartClick(index: string) {
     let params = {};
     this.appMainService.terminateInstance(this.appGuid, index, params).subscribe(data => {
       // window.location.reload();
@@ -587,15 +666,15 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  showEditEnvClick(index) {
+  showEditEnvClick(index: string) {
     $("#DLid" + index).show();
   }
 
-  hideEditEnvClick(index) {
+  hideEditEnvClick(index: string) {
     $("#DLid" + index).hide();
   }
 
-  showPopEnvEditClick(index) {
+  showPopEnvEditClick(index: string) {
     this.sltEnvEditName = $("#envEditId" + index).val();
     $("#layerpop_env_edit").modal("show");
   }
@@ -621,7 +700,7 @@ export class AppMainComponent implements OnInit {
     this.updateAppEnv('add', '');
   }
 
-  showPopEnvDelClick(eventID) {
+  showPopEnvDelClick(eventID: string) {
     this.sltEnvDelName = eventID;
     $("#layerpop_env_del").modal("show");
   }
@@ -698,7 +777,7 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  showPopServiceCredentialsClick(name:string, label:string) {
+  showPopServiceCredentialsClick(name: string, label: string) {
     var hostname = "";
     var name2 = "";
     var password = "";
@@ -763,7 +842,7 @@ export class AppMainComponent implements OnInit {
   }
 
 
-  copyClick(id) {
+  copyClick(id: string) {
     var inContent = $("#"+id).val();
     $("#out_a").val(inContent);
   }
@@ -773,7 +852,7 @@ export class AppMainComponent implements OnInit {
   }
 
   showWindowTailLogs() {
-    window.open('http://localhost:8080/tailLogs?name=github-test-app2&org=demo.org&space=dev&guid=80dd102d-8068-4997-b518-c3f04bcdd00f', '_blank', 'width=1000, height=700');
+    window.open('http://localhost:8080/tailLogs?name=github-test-app2&org=demo.org&space=dev&guid=80dd102d-8068-4997-b518-c3f04bcdd00f', '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
 }
