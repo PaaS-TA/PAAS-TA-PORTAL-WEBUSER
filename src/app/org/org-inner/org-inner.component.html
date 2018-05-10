@@ -252,13 +252,18 @@
           <tbody>
           <!-- TODO -->
           <tr *ngFor="let aquota of availableQuotas" class="org_quota"
-              [ngClass]="{'cur': isSelected(aquota)}">
+              [ngClass]="{'cur': isSelectedQuota(aquota)}">
             <td>
-              <input type="radio" [name]="'radio-' + org.name"
-                     [id]="'radio-' + org.name + '-' + aquota.name"
-                     [attr.data-target]="'#layerpop7-' + org.name"
-                     data-toggle="modal" (click)="changeQuota($event, aquota)" >
-              <label [for]="org.name + '-' + aquota.name"></label></td>
+              <!-- TODO ngIf isSelectedQuota(aquota) then input radio template else none -->
+              <ng-container *ngIf="!isSelectedQuota(aquota); else selected">
+                <input type="radio" [name]="'radio-' + org.name"
+                  [id]="'radio-' + org.name + '-' + aquota.name"
+                  [attr.data-target]="'#layerpop7-' + org.name"
+                  data-toggle="modal" (click)="displayChangeQuota($event, aquota)">
+                <label [for]="org.name + '-' + aquota.name"></label>
+              </ng-container>
+              <ng-template #selected></ng-template>
+            </td>
             <td quota-key="name">{{aquota.name}}</td>
             <td quota-key="memory-limit">{{aquota.memoryLimit}}</td>
             <td quota-key="instance-memory-limit">{{aquota.instanceMemoryLimit}}
@@ -628,17 +633,17 @@
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                <span>할당량</span>을 변경하시겠습니까?
+                할당량을 <span>{{quota.name}}</span>에서 <span>{{selectQuota.name}}</span>으로 변경하시겠습니까?
               </p>
             </div>
           </div>
           <!-- Footer -->
           <div class="modal-footer">
             <button type="button" class="btns2 colors4"
-                    data-dismiss="modal">추가
+                    data-dismiss="modal" (click)="changeQuota(true)">추가
             </button>
             <button type="button" class="btns2 colors5"
-                    data-dismiss="modal">취소
+                    data-dismiss="modal" (click)="changeQuota(false)">취소
             </button>
           </div>
         </div>
