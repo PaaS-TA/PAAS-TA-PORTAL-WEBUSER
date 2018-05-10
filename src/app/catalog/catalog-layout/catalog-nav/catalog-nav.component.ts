@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 export class CatalogNavComponent implements OnInit {
 
   constructor(private catalogService: CatalogService, private router: Router) {
-    if(catalogService.developments.length === 0){
+    if(catalogService.templates.length === 0){
       this.router.navigate(['catalog']);
     }
   }
@@ -23,7 +23,7 @@ export class CatalogNavComponent implements OnInit {
   }
 
   goAppTemplate() {
-    this.router.navigate(['catalogdetail', this.catalogService.developments[0].no]);
+    this.router.navigate(['catalogdetail', this.catalogService.templates[0].no]);
   }
 
 }

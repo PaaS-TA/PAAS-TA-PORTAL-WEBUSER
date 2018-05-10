@@ -19,7 +19,7 @@
               <dl>
                 <dt>
                 <div>
-                  <img src="http://portal-web-user.115.68.46.187.xip.io/download/getImage?imgPath={{recent.thumbImgPath}}" alt="" />
+                  <img src="../../../assets/resources/images/catalog/{{recent.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                 </div>
                 </dt>
                 <dd>
@@ -44,7 +44,7 @@
               <dl>
                 <dt>
                 <div>
-                  <img src="../../../assets/resources/images/catalog/{{tem.thumbImgName}}" alt="" />
+                  <img src="../../../assets/resources/images/catalog/{{tem.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                 </div>
                 </dt>
                 <dd>
@@ -65,18 +65,18 @@
         <div class="cataloglast">
           <p class="tit">앱 개발환경</p>
           <ul >
-            <li *ngFor="let dev of catalogService.developments">
+            <li *ngFor="let build of catalogService.buildpacks">
               <dl>
                 <dt>
                 <div>
-                  <img src="../../../assets/resources/images/catalog/{{dev.thumbImgName}}" alt="" />
+                  <img src="../../../assets/resources/images/catalog/{{build.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                 </div>
                 </dt>
                 <dd>
                   <ul>
-                    <li>{{dev.name}}
+                    <li>{{build.name}}
                     </li>
-                    <li><p> {{dev.description}}
+                    <li><p> {{build.description}}
                     </p>
                     </li>
                     <li>
