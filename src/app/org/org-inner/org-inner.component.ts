@@ -190,15 +190,17 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
 
   changeQuota(doChange: boolean) {
     if (doChange) {
-      this.quotaService.changeQuota(this.org.guid, this.selectQuota);
-      this.exactlyQuotaIndex = this.availableQuotas.findIndex(quota => quota.guid === this.selectQuota.guid);
-      this.setQuota(this.availableQuotas[this.exactlyQuotaIndex]);
+      this.common.isLoading = true;
+      let response = this.quotaService.changeQuota(this.org.guid, this.selectQuota);
+      response.then(quotaResult => {
+        this.exactlyQuotaIndex = this.availableQuotas.findIndex(quota => quota.guid === quotaResult.guid);
+        this.setQuota(quotaResult);
 
-      this.logger.debug('Change quota of org : ', this.selectQuota.name);
-      this.logger.debug('Change currentQuotaIndex : ', this.exactlyQuotaIndex);
+        this.logger.debug('Change quota of org : ', quotaResult.name);
+        this.logger.debug('Change currentQuotaIndex(quotaResult) : ', this.exactlyQuotaIndex);
+      });
     } else {
       this.cancelChangeQuota();
-
       this.logger.debug('Cancel to change quota of org : ', this.selectQuota.name);
     }
     this.selectQuota = OrgQuota.empty();
