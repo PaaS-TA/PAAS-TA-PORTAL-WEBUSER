@@ -17,7 +17,7 @@ export class SpaceService {
   public getOrgSpaceList(orgId: String, func?: Function): Array<Space> {
     const spaces: Array<Space> = [];
     const url: string = OrgURLConstant.URLOrgSpaceInformationHead + orgId + OrgURLConstant.URLOrgSpaceInformationTail;
-    const observable = this.common.doGET(url, this.getToken());
+    const observable = this.common.doGet(url, this.getToken());
     observable.subscribe(data => {
       if (data.hasOwnProperty('spaceList')) {
         const spaceList = data['spaceList'];

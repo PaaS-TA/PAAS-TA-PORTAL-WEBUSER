@@ -15,7 +15,7 @@ export class DashboardSapaceService {
 
 // @RequestMapping(value = {Constants.V2_URL+"/spaces/{spaceid}/summary"}, method = RequestMethod.GET)
   getAppSummary(guid: string) {
-    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/summary', '').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/apps/'+guid+'/summary', '').map((res: Response) => {
       return res;
     }).do(console.log);
   }

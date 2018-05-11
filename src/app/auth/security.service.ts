@@ -161,7 +161,7 @@ export class SecurityService {
   doUserInfoProvider(userId: string) {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
-    return this.common.doGET(AppConfig.userinfoUrl + '/' + userId, this.common.getToken()).retryWhen(error => {
+    return this.common.doGet(AppConfig.userinfoUrl + '/' + userId, this.common.getToken()).retryWhen(error => {
       return error.flatMap((error: any) => {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
