@@ -20,7 +20,7 @@ export class OrgService {
     const orgs: Array<Organization> = new Array<Organization>();
     const url = OrgURLConstant.URLOrgListAdminOnly;
 
-    const observable = this.common.doGET(url, this.getToken());
+    const observable = this.common.doGet(url, this.getToken());
     observable.subscribe(data => {
       if (data.hasOwnProperty('resources')) {
         (data['resources'] as Array<Object>).forEach(orgData => {
@@ -38,7 +38,7 @@ export class OrgService {
   public getOrgList(): Array<Organization> {
     const orgs: Array<Organization> = [];
     const url: string = OrgURLConstant.URLOrgListUsingToken + '';
-    const observable = this.common.doGET(url, this.getToken());
+    const observable = this.common.doGet(url, this.getToken());
     observable.subscribe(data => {
       if (data.hasOwnProperty('resources')) {
         (data['resources'] as Array<Object>).forEach(orgData => {

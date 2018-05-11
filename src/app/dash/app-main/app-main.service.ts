@@ -9,13 +9,13 @@ export class AppMainService {
   constructor(private commonService: CommonService) { }
 
   getAppSummary(guid: string) {
-    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/summary', '').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/apps/'+guid+'/summary', '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   getAppStats(guid: string) {
-    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/stats', '').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/apps/'+guid+'/stats', '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
@@ -45,19 +45,19 @@ export class AppMainService {
   }
 
   getAppEvents(guid: string) {
-    return this.commonService.doGET('/portalapi/v2/apps/app-usage-events/'+guid, '').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/apps/app-usage-events/'+guid, '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   getAppEnv(guid: string) {
-    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/env', '').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/apps/'+guid+'/env', '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   getAppRecentLogs(guid: string) {
-    return this.commonService.doGET('/portalapi/v2/apps/'+guid+'/recentlogs', '').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/apps/'+guid+'/recentlogs', '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
@@ -81,19 +81,19 @@ export class AppMainService {
   }
 
   getSpaceSummary(guid: string) {
-    return this.commonService.doGET('/portalapi/v2/spaces/'+guid+'/summary', '').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/spaces/'+guid+'/summary', '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   getServicesInstances(guid: string) {
-    return this.commonService.doGET('/portalapi/v2/service-instances/space/'+guid+'', '').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/service-instances/space/'+guid+'', '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   getServicepacks() {
-    return this.commonService.doGET('/commonapi/v2/servicepacks', '').map((res: Response) => {
+    return this.commonService.doGet('/commonapi/v2/servicepacks', '').map((res: Response) => {
       return res;
     }).do(console.log);
   }

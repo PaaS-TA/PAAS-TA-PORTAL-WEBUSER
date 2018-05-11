@@ -21,7 +21,7 @@ export class UsermgmtService {
 
   userinfo(username: string) {
     return this.common
-      .doGET('/commonapi/v2/user/' + username, this.common.getToken()).map((res: Response) => {return res['User'];});
+      .doGet('/commonapi/v2/user/' + username, this.common.getToken()).map((res: Response) => {return res['User'];});
   }
 
   userSave(userId: string, param) {

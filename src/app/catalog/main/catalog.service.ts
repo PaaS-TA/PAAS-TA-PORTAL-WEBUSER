@@ -21,55 +21,55 @@ export class CatalogService {
   }
 
   getRecentPacks(url : string) {
-    return this.common.doGET(url, null).map((res: Response) => {
+    return this.common.doGet(url, null).map((res: Response) => {
       return res;
     });
   }
 
 
   getStarterPacks(url : string) {
-    return this.common.doGET(url, null).map((res: Response) => {
+    return this.common.doGet(url, null).map((res: Response) => {
       return res;
     });
   }
 
   getBuildPacks(url : string) {
-    return this.common.doGET(url, null).map((res: Response) => {
+    return this.common.doGet(url, null).map((res: Response) => {
       return res;
     });
   }
 
   getServicePacks(url : string) {
-    return this.common.doGET(url, null).map((res: Response) => {
+    return this.common.doGet(url, null).map((res: Response) => {
       return res;
     });
   }
 
   getSearchPack(url : string) {
-    return this.common.doGET(url, null).map((res: Response) => {
+    return this.common.doGet(url, null).map((res: Response) => {
       return res;
     });
   }
 
   CatalogDetailInit(no : number){
-    return this.common.doGET(this.STARTERGET+no ,null).map((res: Response) => {
+    return this.common.doGet(this.STARTERGET+no ,null).map((res: Response) => {
       return res;
     });
   }
 
   getOrglist() {
-    return this.common.doGET('/portalapi/v2/orgs', this.common.getToken()).map((res: Response) => {
+    return this.common.doGet('/portalapi/v2/orgs', this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
 
   getSpacelist(orgid : String) {
-    return this.common.doGET('/portalapi/v2/orgs/' + orgid + '/spaces', this.common.getToken()).map((res: Response) => {
+    return this.common.doGet('/portalapi/v2/orgs/' + orgid + '/spaces', this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
   getDomain() {
-      return this.common.doGET('/portalapi/v2/domains/shared', this.common.getToken()).map((res: Response) => {
+      return this.common.doGet('/portalapi/v2/domains/shared', this.common.getToken()).map((res: Response) => {
         return res;
       });
     }
@@ -84,7 +84,7 @@ export class CatalogService {
     });
   }
   upload(){
-    return this.common.doGET('/commonapi/v2/app/uploadsfile', null).map((res: Response) => {
+    return this.common.doGet('/commonapi/v2/app/uploadsfile', null).map((res: Response) => {
       return res;
     });
   }
