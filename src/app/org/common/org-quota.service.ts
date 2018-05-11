@@ -24,7 +24,7 @@ export class OrgQuotaService {
   public getOrgQuota(orgId: string): OrgQuota {
     let quota: OrgQuota = OrgQuota.empty();
     const url: string = OrgURLConstant.URLOrgQuotaInformationHead + orgId + OrgURLConstant.URLOrgQuotaInformationTail;
-    const observable = this.common.doGET(url, this.getToken());
+    const observable = this.common.doGet(url, this.getToken());
     observable.subscribe(quotaData => {
       //quota = new OrgQuota(quotaData['metadata'], quotaData['entity']);
       if (quotaData.hasOwnProperty('metadata') && quotaData.hasOwnProperty('entity') ) {
@@ -42,8 +42,9 @@ export class OrgQuotaService {
       guid: orgId,            // org guid
       quotaGuid: quota.guid,  // quota guid to change
     };
-    const observable = this.common.doPut(url, requestBody, this.getToken());
-    observable.subscribe(data => {
+
+    return (async() => {
+      const data = await this.common.doPut(url, requestBody, this.getToken()).toPromise();
       const isOrg: boolean =
         data.hasOwnProperty('metadata') && data['metadata'].hasOwnProperty('guid')
         && data.hasOwnProperty('entity') && data['entity'].hasOwnProperty('quota_definition_guid');
@@ -52,18 +53,16 @@ export class OrgQuotaService {
         const resQuotaId = data['entity']['quota_definition_guid'];
 
         if (resOrgId === orgId && resQuotaId === quota.guid)
-          return {quotaInstance: quota};
+          return quota;
       }
-      return {quotaInstance: null};
-    });
-
-    return {quotaInstance: null};
+      return null;
+    })();
   }
 
   public getOrgAvailableQuota(): Array<OrgQuota> {
     const quotas: Array<OrgQuota> = [];
     const url: string = OrgURLConstant.URLOrgAvailableQuotasHead + OrgURLConstant.URLOrgAvailableQuotasTail;
-    const observable = this.common.doGET(url, this.getToken());
+    const observable = this.common.doGet(url, this.getToken());
     observable.subscribe(data => {
       if (data.hasOwnProperty('resources')) {
         (data['resources'] as Array<Object>).forEach(quotaData => {

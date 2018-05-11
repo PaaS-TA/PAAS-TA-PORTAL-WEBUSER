@@ -637,3 +637,12 @@ function updown(objNum,plusMinus) {
 		}
 	}
 }
+
+    var clipboard = new ClipboardJS('.bar');
+    clipboard.on('success', function(e) {
+      alert("복사되었습니다.");
+      console.log(e);
+    });
+    clipboard.on('error', function(e) {
+      console.log(e);
+    });
