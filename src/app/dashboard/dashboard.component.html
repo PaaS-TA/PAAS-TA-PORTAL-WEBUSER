@@ -100,7 +100,7 @@
             <div>
               <select (change)="getApps($event.target.value)">
                 <option value="" selected="selected" name="space">해당 공간명</option>
-                <option *ngFor="let space of spaces" [value]="space.name">{{space.name}}</option>
+                <option *ngFor="let space of spaces" [value]="space._metadata.guid">{{space.name}}</option>
               </select>
             </div>
           </li>
@@ -153,7 +153,7 @@
                 <!-- 애플리케이션 영역 시작 -->
                 <div class="space_pop_container">
                   <div class="space_pop_menu" >
-                    <i class="fas fa-ellipsis-v"></i>
+                    <i class="fas fa-ellipsis-v" name="popclick01" (click)="popclick('popclick_1')"></i>
                     <ol class="space_pop_submenu">
                       <li><a class="fas fa-edit" data-target="#layerpop1" data-toggle="modal"> 앱 이름변경</a></li>
                       <li><a class="fas fa-play"> 실행</a></li>
@@ -162,11 +162,11 @@
                   </div>
                   <div class="app_title">POP_Dev</div>
                   <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
-                  <div class="app_per clearfix">
+                  <div class="app_per clearfix" *ngFor="let space of spaces">
                     <ul>
-                      <li><div>인스턴스</div><div>:</div><div>{{appSummaryInstance}}</div></li>
-                      <li><div>CPU</div><div>:</div><div>{{appStatsCpuPer}}</div></li>
-                      <li><div>메모리</div><div>:</div><div>{{appStatsMemoryPer}}</div></li>
+                      <li><div>인스턴스</div><div>:</div><div>[]</div></li>
+                      <li><div>CPU</div><div>:</div><div>[]</div></li>
+                      <li><div>메모리</div><div>:</div><div>[]</div></li>
                     </ul>
                   </div>
                   <div class="clear"></div>
@@ -225,7 +225,7 @@
                 <!-- 애플리케이션 영역 시작 -->
                 <div class="space_pop_container space_list_small">
                   <div class="space_pop_menu">
-                    <i class="fas fa-ellipsis-v"></i>
+                    <i class="fas fa-ellipsis-v" name="popclick02" (click)="popclick('popclick_2')"></i>
                     <ol class="space_pop_submenu">
                       <li><a class="fas fa-edit" data-target="#layerpop3" data-toggle="modal"> 서비스 이름변경</a></li>
                       <li><a class="fas fa-wrench"> 서비스 수정</a></li>

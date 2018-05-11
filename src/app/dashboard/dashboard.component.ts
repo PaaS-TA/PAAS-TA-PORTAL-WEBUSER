@@ -13,6 +13,7 @@ import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 
 
+
 declare var $: any;
 declare var jQuery: any;
 
@@ -114,6 +115,7 @@ export class DashboardComponent implements OnInit {
     }
     this.userid = this.commonService.getUserid();
     this.token = this.commonService.getToken();
+    this.spaceGuid = this.commonService.getUserGuid();
 
     this.orgs = orgService.getOrgList();
 
@@ -123,7 +125,8 @@ export class DashboardComponent implements OnInit {
     this.isEmpty = true;
     this.isSpace = false;
     //this.isMessage = false;
-  }
+
+    }
 
   getOrg(value: string, org: Organization) {
 
@@ -142,50 +145,57 @@ export class DashboardComponent implements OnInit {
   }
 
   getApps(value:string){
+    this.log.debug(value);
+
     this.isEmpty = false;
     this.isSpace = true;
+
+    this.getAppSummary(value);
    }
 
-
-  getAppSummary(guid: string) {
-    this.commonService.isLoading = true;
-    this.appMainService.getAppSummary(guid).subscribe(data => {
-      this.appSummaryEntities = data;
-      this.appRoutesEntities = data.routes;
-      this.appDomainsEntities = data.available_domains;
-      this.appServicesEntities = data.services;
-
-      this.appSummarySpaceGuid = data.space_guid;
-
-      this.appSummaryName = data.name;
-      this.appSummaryGuid = data.guid;
-      this.appSummaryState = data.state;
-      this.appSummaryRouteUri = data.routes[0].host + "." + data.routes[0].domain.name;
-      this.appSummaryPackageUpdatedAt = data.package_updated_at.replace('T', '  ').replace('Z', ' ');
-
-      if (data.detected_buildpack != null && data.detected_buildpack != "") {
-        this.appSummaryBuildpack = data.detected_buildpack.substring(0, 40) + "..";
-      } else if (data.buildpack != null) {
-        this.appSummaryBuildpack = data.buildpack.substring(0, 40) + "..";
-      }
-
-      this.appSummaryInstance = data.instances;
-      this.appSummaryInstanceMax = 7;
-      this.appSummaryInstancePer = Math.round((this.appSummaryInstance * 100) / this.appSummaryInstanceMax);
-
-      $("#instancePer").val(this.appSummaryInstancePer);
-
-      this.appSummaryMemory = data.memory;
-
-      this.appSummaryDisk = data.disk_quota;
-
-      // this.initRouteTab();
-      // this.getSpaceSummary();
-      // this.getServicepacks();
-      // this.getServicesInstances();
+  getAppSummary(value:string) {
+    this.dashboardService.getAppSummary(value).subscribe(data => {
+      console.log(data);
+      return data;
     });
   }
 
+  // getAppSummary(guid: string) {
+  //   this.commonService.isLoading = true;
+  //   this.appMainService.getAppSummary(guid).subscribe(data => {
+  //     this.appSummaryEntities = data;
+  //     this.appRoutesEntities = data.routes;
+  //     this.appDomainsEntities = data.available_domains;
+  //     this.appServicesEntities = data.services;
+  //     this.appSummarySpaceGuid = data.space_guid;
+  //     this.appSummaryName = data.name;
+  //     this.appSummaryGuid = data.guid;
+  //     this.appSummaryState = data.state;
+  //     this.appSummaryRouteUri = data.routes[0].host + "." + data.routes[0].domain.name;
+  //     this.appSummaryPackageUpdatedAt = data.package_updated_at.replace('T', '  ').replace('Z', ' ');
+  //
+  //     if (data.detected_buildpack != null && data.detected_buildpack != "") {
+  //       this.appSummaryBuildpack = data.detected_buildpack.substring(0, 40) + "..";
+  //     } else if (data.buildpack != null) {
+  //       this.appSummaryBuildpack = data.buildpack.substring(0, 40) + "..";
+  //     }
+  //
+  //     this.appSummaryInstance = data.instances;
+  //     this.appSummaryInstanceMax = 7;
+  //     this.appSummaryInstancePer = Math.round((this.appSummaryInstance * 100) / this.appSummaryInstanceMax);
+  //
+  //     $("#instancePer").val(this.appSummaryInstancePer);
+  //
+  //     this.appSummaryMemory = data.memory;
+  //
+  //     this.appSummaryDisk = data.disk_quota;
+  //
+  //     // this.initRouteTab();
+  //     // this.getSpaceSummary();
+  //     // this.getServicepacks();
+  //     // this.getServicesInstances();
+  //   });
+  // }
 
   showLoading() {
     this.commonService.isLoading = true;
@@ -231,17 +241,22 @@ export class DashboardComponent implements OnInit {
     } else if(id == "dashTab_2") {
       $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
       $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+      $("[id^='popclick_01']").hide();
     }
   }
 
-  // popclick(id : string) {
-  //   $("[id^='dashTab_']").hide();
-  //   $("#"+id).show();
-  //
-  //   if (id == "popclick_1") {
-  //       $('.space_pop_submenu').toggle();
-  //   }
-  // }
+  popclick(id : string) {
+    $("[id^='popclick_']").hide();
+    $("#"+id).show();
+
+    if (id == "popclick_1") {
+      $("[id^='popclick_2']").hide();
+      $('.space_pop_submenu').toggle();
+    } else if (id == "popclick_2") {
+      $("[id^='popclick_1']").hide();
+      $('.space_pop_submenu').toggle();
+    }
+  }
 
 
 }
