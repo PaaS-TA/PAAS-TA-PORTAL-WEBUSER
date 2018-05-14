@@ -45,8 +45,8 @@ export class DashboardComponent implements OnInit {
   public appSummaryEntities: Observable<any[]>;
   public appEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
+  current_popmenu_id:string;
 
- 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
               private orgService: OrgService,
@@ -68,8 +68,9 @@ export class DashboardComponent implements OnInit {
 
     this.isEmpty = true;
     this.isSpace = false;
-    //this.isMessage = false;
+    this.isMessage = true;
 
+    this.current_popmenu_id = '';
     }
 
   getOrg(value: string, org: Organization) {
@@ -94,10 +95,11 @@ export class DashboardComponent implements OnInit {
     this.log.debug(value);
     this.isEmpty = false;
     this.isSpace = true;
+    this.isMessage = false;
 
     this.getAppSummary(value);
    }
-   
+
 
   getAppSummary(value:string) {
     this.dashboardService.getAppSummary(value).subscribe(data => {
@@ -107,8 +109,8 @@ export class DashboardComponent implements OnInit {
       return data;
     });
   }
-  
-  
+
+
   showLoading() {
     this.commonService.isLoading = true;
   }
@@ -125,7 +127,7 @@ export class DashboardComponent implements OnInit {
           console.log(exception);
         });
     });
-    
+
   }//
 
   dashTabClick(id: string) {
@@ -143,17 +145,12 @@ export class DashboardComponent implements OnInit {
   }
 
   popclick(id : string) {
-    $("[id^='popclick_']").hide();
-    $("#"+id).show();
-
-    if (id == "popclick_1") {
-      $("[id^='popclick_2']").hide();
-      $('.space_pop_submenu').toggle();
-    } else if (id == "popclick_2") {
-      $("[id^='popclick_1']").hide();
-      $('.space_pop_submenu').toggle();
+    $('.space_pop_submenu').hide();
+    if(this.current_popmenu_id != id){
+      $("#"+id).show();
     }
+    this.current_popmenu_id = id;
   }
-  
+
 }//
 

@@ -142,22 +142,22 @@
           <div class="monitor_tabs_line"></div>
         </div>
         <div id="dashTab_1" class="monitor_content01 row two_line two_view new_view clearfix">
-          <ul class="maT30">
+          <ul class="maT30" *ngIf='isMessage'>
             <li>
               <div class="sortable_wrap space_box2">
-                <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 앱이 없습니다. 앱 생성을 클릭하여 작성하거나 <em><a
-                  [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
+                <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 앱이 없습니다. 앱 생성을 클릭하여 작성하거나 <em><a [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
               </div>
             </li>
           </ul>
           <ul class="maT30 space_list ">
             <li  *ngFor="let item of appEntities;  let i = index">
               <div class="sortable_wrap">
+
                 <!-- 애플리케이션 영역 시작 -->
                 <div class="space_pop_container">
-                  <div class="space_pop_menu">
-                    <i class="fas fa-ellipsis-v" name="popclick01" (click)="popclick('popclick_1')"></i>
-                    <ol class="space_pop_submenu">
+                  <div class="space_pop_menu" >
+                    <i class="fas fa-ellipsis-v" (click)="popclick('apopmenu_'+i)" ></i>
+                    <ol class="space_pop_submenu" id="apopmenu_{{i}}">
                       <li><a class="fas fa-edit" data-target="#layerpop1" data-toggle="modal"> 앱 이름변경</a></li>
                       <li><a class="fas fa-play"> 실행</a></li>
                       <li><a class="fas fa-trash-alt" data-target="#layerpop2" data-toggle="modal"> 삭제</a></li>
@@ -213,29 +213,20 @@
                 <!-- 애플리케이션 영역 끝 -->
               </div>
             </li>
-            <!--<li>-->
-              <!--<div class="sortable_wrap">-->
-                <!--<div onClick="#" class="space_empty"></div>-->
-              <!--</div>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<div class="sortable_wrap">-->
-                <!--<div onClick="#" class="space_empty"></div>-->
-              <!--</div>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<div class="sortable_wrap">-->
-                <!--<div onClick="#" class="space_empty"></div>-->
-              <!--</div>-->
-            <!--</li>-->
+            <!-- 애플리케이션 영역 이동 -->
+            <li >
+              <div class="sortable_wrap" ><a [routerLink]="['../catalog']">
+                <div class="space_empty"></div>
+              </a></div>
+            </li>
+            <!-- 애플리케이션 영역 이동 끝-->
           </ul>
         </div>
         <div id="dashTab_2" class="monitor_content02 row two_line two_view new_view clearfix">
           <ul class="maT30">
-            <li>
-              <div class="sortable_wrap space_box2">
-                <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나 <em><a
-                  [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
+            <li *ngIf='isMessage'>
+              <div class="sortable_wrap space_box2" *ngIf='isMessage'>
+                <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나 <em><a [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
               </div>
             </li>
           </ul>
@@ -246,12 +237,13 @@
           </div>
           <ul class="maT10 space_list space_list_small" >
             <li *ngFor="let item of servicesEntities;  let i = index">
+
               <div class="sortable_wrap">
                 <!-- 애플리케이션 영역 시작 -->
-                <div class="space_pop_container space_list_small">
-                  <div class="space_pop_menu">
-                    <i class="fas fa-ellipsis-v" name="popclick02" (click)="popclick('popclick_2')"></i>
-                    <ol class="space_pop_submenu">
+                <div class="space_pop_container space_list_small" >
+                  <div class="space_pop_menu"  >
+                    <i class="fas fa-ellipsis-v" (click)="popclick('spopmenu_'+i)"></i>
+                    <ol class="space_pop_submenu" id ="spopmenu_{{i}}">
                       <li><a class="fas fa-edit" data-target="#layerpop3" data-toggle="modal"> 서비스 이름변경</a></li>
                       <li><a class="fas fa-wrench"> 서비스 수정</a></li>
                       <li><a class="fas fa-trash-alt" data-target="#layerpop5" data-toggle="modal"> 삭제</a></li>
@@ -283,6 +275,13 @@
                 <!-- 애플리케이션 영역 끝 -->
               </div>
             </li>
+            <!-- 애플리케이션 영역 이동 -->
+            <li>
+              <div class="sortable_wrap"><a [routerLink]="['../catalog']">
+                <div class="space_empty2"></div>
+              </a></div>
+            </li>
+            <!-- 애플리케이션 영역 이동 끝 -->
           </ul>
         </div>
       </div>
