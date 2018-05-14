@@ -7,17 +7,16 @@ import 'rxjs/add/operator/map';
 import {Jsonp} from '@angular/http';
 
 
-
 @Injectable()
 export class DashboardService {
 
-  constructor(private common: CommonService, private http: HttpClient, private log: NGXLogger, private jsonp: Jsonp) {
-    console.log(this.common.getToken());
+  constructor(private commonService: CommonService, private http: HttpClient, private log: NGXLogger, private jsonp: Jsonp) {
+    console.log(this.commonService.getToken());
   }
 
   // @RequestMapping(value = {Constants.V2_URL+"/spaces/{spaceid}/summary"}, method = RequestMethod.GET)
   getAppSummary(spaceid: string) {
-    return this.common.doGET('/portalapi/v2/spaces/'+spaceid+'/summary','').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/spaces/'+spaceid+'/summary','').map((res: Response) => {
       console.log(res);
       return res;
     }).do(console.log);
