@@ -40,69 +40,13 @@ export class DashboardComponent implements OnInit {
   public spaceGuid: string;
   public orgName: string;
   public spaceName: string;
+  private service : string;
 
   public appSummaryEntities: Observable<any[]>;
-  public appStatsEntities: Observable<any[]>;
-  public appEventsEntities: Observable<any[]>;
-  public appEventsEntitiesRe: any = [];
-  public appEnvEntities: Observable<any[]>;
-  public appEnvUserEntities: any = [];
-  public appEnvSystemEntities: Observable<any[]>;
-  public appStatusEntities: any = [];
-  public appRoutesEntities: Observable<any[]>;
-  public appRoutesEntitiesRe: any = [];
-  public appDomainsEntities: Observable<any[]>;
-  public appServicesEntities: Observable<any[]>;
+  public appEntities: Observable<any[]>;
+  public servicesEntities: Observable<any[]>;
 
-  public servicepacksEntities: Observable<any[]>;
-  public servicepacksEntitiesRe: any = [];
-
-  private appSummarySpaceGuid: string;
-  private appSummaryName: string;
-  private appSummaryGuid: string;
-  private appSummaryState: string;
-  private appSummaryRouteUri: string;
-  private appSummaryPackageUpdatedAt: string;
-  private appSummaryBuildpack: string;
-  private appSummaryInstance: number;
-  private appSummaryInstanceMax: number;
-  private appSummaryInstancePer: number;
-  private appSummaryMemory: number;
-  private appSummaryDisk: number;
-
-  private appStatsCpuPer: number;
-  private appStatsMemoryPer: number;
-  private appStatsDiskPer: number;
-
-  private appSystemProvidedEnv: string;
-
-  private appRecentLogs: string;
-
-  private tabContentEventListLimit: number;
-  private tabContentStatsListLimit: number;
-
-  public sltEnvDelName: string;
-  public sltEnvAddName: string;
-  public sltEnvEditName: string;
-
-  public sltRouteAddName: string;
-  public sltRouteDelUri: string;
-  public sltRouteDelGuid: string;
-
-  public sltServiceParam: any = [];
-  public sltServiceBindName: string;
-  public sltServiceUnbindName: string;
-  public sltServiceUnbindGuid: string;
-
-  public appSltEnvSystemName: string;
-  public appSltEnvSystemLabel: string;
-  public appSltEnvSystemCredentialsHostname: string;
-  public appSltEnvSystemCredentialsName: string;
-  public appSltEnvSystemCredentialsPassword: string;
-  public appSltEnvSystemCredentialsPort: string;
-  public appSltEnvSystemCredentialsUri: string;
-  public appSltEnvSystemCredentialsUsername: string;
-
+ 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
               private orgService: OrgService,
@@ -137,6 +81,8 @@ export class DashboardComponent implements OnInit {
     this.isEmpty = true;
     this.isSpace = false;
 
+    this.appSummaryEntities = null;
+
     if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
       this.isLoadingSpaces = false;
       this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
@@ -146,57 +92,23 @@ export class DashboardComponent implements OnInit {
 
   getApps(value:string){
     this.log.debug(value);
-
     this.isEmpty = false;
     this.isSpace = true;
 
     this.getAppSummary(value);
    }
+   
 
   getAppSummary(value:string) {
     this.dashboardService.getAppSummary(value).subscribe(data => {
       console.log(data);
+      this.appEntities = data.apps;
+      this.servicesEntities = data.services;
       return data;
     });
   }
-
-  // getAppSummary(guid: string) {
-  //   this.commonService.isLoading = true;
-  //   this.appMainService.getAppSummary(guid).subscribe(data => {
-  //     this.appSummaryEntities = data;
-  //     this.appRoutesEntities = data.routes;
-  //     this.appDomainsEntities = data.available_domains;
-  //     this.appServicesEntities = data.services;
-  //     this.appSummarySpaceGuid = data.space_guid;
-  //     this.appSummaryName = data.name;
-  //     this.appSummaryGuid = data.guid;
-  //     this.appSummaryState = data.state;
-  //     this.appSummaryRouteUri = data.routes[0].host + "." + data.routes[0].domain.name;
-  //     this.appSummaryPackageUpdatedAt = data.package_updated_at.replace('T', '  ').replace('Z', ' ');
-  //
-  //     if (data.detected_buildpack != null && data.detected_buildpack != "") {
-  //       this.appSummaryBuildpack = data.detected_buildpack.substring(0, 40) + "..";
-  //     } else if (data.buildpack != null) {
-  //       this.appSummaryBuildpack = data.buildpack.substring(0, 40) + "..";
-  //     }
-  //
-  //     this.appSummaryInstance = data.instances;
-  //     this.appSummaryInstanceMax = 7;
-  //     this.appSummaryInstancePer = Math.round((this.appSummaryInstance * 100) / this.appSummaryInstanceMax);
-  //
-  //     $("#instancePer").val(this.appSummaryInstancePer);
-  //
-  //     this.appSummaryMemory = data.memory;
-  //
-  //     this.appSummaryDisk = data.disk_quota;
-  //
-  //     // this.initRouteTab();
-  //     // this.getSpaceSummary();
-  //     // this.getServicepacks();
-  //     // this.getServicesInstances();
-  //   });
-  // }
-
+  
+  
   showLoading() {
     this.commonService.isLoading = true;
   }
@@ -213,22 +125,7 @@ export class DashboardComponent implements OnInit {
           console.log(exception);
         });
     });
-
-    // this.router.queryParams.subscribe(params => {
-    //   if (params != null) {
-    //     setTimeout(() => this.showLoading(), 0);
-    //
-    //     this.orgGuid = params['orgId'];
-    //     this.spaceGuid = params['spaceId'];
-    //     this.orgName = params['orgName'];
-    //     this.spaceName = params['spaceName'];
-    //
-    //     this.getAppSummary(params['guid']);
-    //   } else {
-    //     this.router.navigate(['dashMain']);
-    //   }
-    // });
-
+    
   }//
 
   dashTabClick(id: string) {
@@ -257,7 +154,6 @@ export class DashboardComponent implements OnInit {
       $('.space_pop_submenu').toggle();
     }
   }
-
-
-}
+  
+}//
 
