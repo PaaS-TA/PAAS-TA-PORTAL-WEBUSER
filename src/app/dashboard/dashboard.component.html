@@ -303,11 +303,11 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" id="" placeholder="앱 이름을 입력하세요" class="space_input"/>
+          <input type="text" placeholder="앱 이름을 입력하세요" class="space_input" [(ngModel)]="appName"/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal">변경</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="renameApp()">변경</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>

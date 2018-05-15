@@ -12,8 +12,6 @@ import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 
-
-
 declare var $: any;
 declare var jQuery: any;
 
@@ -41,11 +39,13 @@ export class DashboardComponent implements OnInit {
   public orgName: string;
   public spaceName: string;
   private service : string;
+  public current_popmenu_id:string;
+  public appName:string;
+  public appNewName : string;
 
   public appSummaryEntities: Observable<any[]>;
   public appEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
-  current_popmenu_id:string;
 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
@@ -71,6 +71,8 @@ export class DashboardComponent implements OnInit {
     this.isMessage = true;
 
     this.current_popmenu_id = '';
+    this.appName = '';
+    this.appNewName = null;
     }
 
   getOrg(value: string, org: Organization) {
@@ -91,16 +93,7 @@ export class DashboardComponent implements OnInit {
     console.log('::::::::::::::::: find org is ', org, '::::::::::::::::: ');
   }
 
-  getApps(value:string){
-    this.log.debug(value);
-    this.isEmpty = false;
-    this.isSpace = true;
-    this.isMessage = false;
-
-    this.getAppSummary(value);
-   }
-
-
+  //애플리케이션 및 서비스 목록 확인
   getAppSummary(value:string) {
     this.dashboardService.getAppSummary(value).subscribe(data => {
       console.log(data);
@@ -110,10 +103,35 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  getApps(value:string){
+    this.log.debug(value);
+    this.isEmpty = false;
+    this.isSpace = true;
+    this.isMessage = false;
 
-  showLoading() {
-    this.commonService.isLoading = true;
+    this.getAppSummary(value);
   }
+
+  //앱 이름변경
+  renameApp(http: HttpClient) {
+    console.log(this.appName);
+    let params = {
+      guid: this.org.guid,
+      name: this.appName,
+      newName : this.appName,
+    };
+    this.dashboardService.renameApp(params).subscribe(data => {
+      console.log(data);
+      if(data == 1){
+        console.log('success');
+      }else{
+        console.log('Name modification failed.');
+      }
+      console.log(data);
+      return data;
+    });
+  }
+
 
   ngOnInit() {
     console.log('ngOnInit fired');
@@ -127,8 +145,12 @@ export class DashboardComponent implements OnInit {
           console.log(exception);
         });
     });
+    // setTimeout(() => this.showLoading(), 0);
+  }
 
-  }//
+  showLoading() {
+    this.commonService.isLoading = true;
+  }
 
   dashTabClick(id: string) {
     $("[id^='dashTab_']").hide();

@@ -16,10 +16,20 @@ export class DashboardService {
 
   // @RequestMapping(value = {Constants.V2_URL+"/spaces/{spaceid}/summary"}, method = RequestMethod.GET)
   getAppSummary(spaceid: string) {
-    return this.commonService.doGet('/portalapi/v2/spaces/'+spaceid+'/summary','').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/spaces/' + spaceid + '/summary', '').map((res: Response) => {
       console.log(res);
       return res;
     }).do(console.log);
   }
-}
+
+  //  @RequestMapping(value = {Constants.V2_URL + "/apps/{guid}/rename"}, method = RequestMethod.PUT)
+  renameApp(params: any) {
+    return this.commonService.doPut('/portalapi/v2/apps/' + params.guid + '/rename', params,'').map((res: Response) => {
+      console.log(res);
+      return res;
+    }).do(console.log);
+  }
+  
+}//
+
 
