@@ -368,9 +368,10 @@
         $(this).find(".organization_dot").addClass('on');
     });
 
-    // $(".serviceOn,.lauthOn").on("click" ,function(){
-    //     $(".service_dl,.lauth_dl").toggleClass("on");
-    // });
+    //$(".serviceOn,.lauthOn").on("click" ,function(){
+    $(".lauthOn").on("click" ,function(){
+        $(".service_dl,.lauth_dl").toggleClass("on");
+    });
 
     $(".variableSW").on("click" , function(){
         $("#DLid1").toggleClass("on");

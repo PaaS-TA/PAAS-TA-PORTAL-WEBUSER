@@ -109,4 +109,34 @@ export class AppMainService {
       return res;
     }).do(console.log);
   }
+
+  getAlarms(appGuid: string, pageItems: number, pageIndex: number, resourceType: string, alarmLevel: string) {
+    return this.commonService.doGet('/portalapi/app/alarm/list?appGuid='+appGuid+'&pageItems='+pageItems+'&pageIndex='+pageIndex+'&resourceType='+resourceType+'&alarmLevel='+alarmLevel, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  getAlarm(appGuid: string) {
+    return this.commonService.doGet('/portalapi/app/alarm/policy?appGuid='+appGuid, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  updateAlarm(params: any) {
+    return this.commonService.doPost('/portalapi/app/alarm/policy', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  getAutoscaling(appGuid: string) {
+    return this.commonService.doGet('/portalapi/app/autoscaling/policy?appGuid='+appGuid, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  updateAutoscaling(params: any) {
+    return this.commonService.doPost('/portalapi/app/autoscaling/policy', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 }
