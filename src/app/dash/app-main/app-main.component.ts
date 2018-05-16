@@ -4,6 +4,7 @@ import {AppMainService} from './app-main.service';
 import {Observable} from 'rxjs/Observable';
 import {CommonService} from "../../common/common.service";
 
+
 declare var $: any;
 declare var jQuery: any;
 
@@ -29,6 +30,9 @@ export class AppMainComponent implements OnInit {
   public appRoutesEntitiesRe: any = [];
   public appDomainsEntities: Observable<any[]>;
   public appServicesEntities: Observable<any[]>;
+  public appAlarmsEntities: Observable<any[]>;
+  public appAlaramEntities: Observable<any[]>;
+  public appAutoscalingEntities: Observable<any[]>;
 
   public servicepacksEntities: Observable<any[]>;
   public servicepacksEntitiesRe: any = [];
@@ -79,6 +83,31 @@ export class AppMainComponent implements OnInit {
   public appSltEnvSystemCredentialsUri: string;
   public appSltEnvSystemCredentialsUsername: string;
 
+  public sltAlaramPageItems: number;
+  public sltAlaramPageIndex: number;
+  public sltAlaramResourceType: string;
+  public sltAlaramAlarmLevel: string;
+
+  public appAutoscalingInYn: string;
+  public appAutoscalingOutYn: string;
+  public appAutoscalingCpuMaxThreshold: number;
+  public appAutoscalingCpuMinThreshold: number;
+  public appAutoscalingInstanceMaxCnt: number;
+  public appAutoscalingInstanceMinCnt: number;
+  public appAutoscalingInstanceVariationUnit: number;
+  public appAutoscalingMeasureTimeSec: number;
+  public appAutoscalingMemoryMaxThreshold: number;
+  public appAutoscalingMemoryMinThreshold: number;
+
+  public appAlarmCpuWarningThreshold: number;
+  public appAlarmCpuCriticalThreshold: number;
+  public appAlarmMemoryWarningThreshold: number;
+  public appAlarmMemoryCriticalThreshold: number;
+  public appAlarmMeasureTimeSec: number;
+  public appAlarmEmail: string;
+  public appAlarmEmailSendYn: string;
+  public appAlarmAlarmUseYn: string;
+
 
   constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
@@ -99,6 +128,11 @@ export class AppMainComponent implements OnInit {
 
     this.tabContentEventListLimit = 5;
     this.tabContentStatsListLimit = 5;
+    this.sltAlaramPageItems = 10;
+    this.sltAlaramPageIndex = 1;
+    this.sltAlaramResourceType = "";
+    this.sltAlaramAlarmLevel = "";
+
 
     this.route.queryParams.subscribe(params => {
       if (params != null) {
@@ -110,6 +144,9 @@ export class AppMainComponent implements OnInit {
         this.getAppEvents(params['guid']);
         this.getAppEnv(params['guid']);
         this.getAppRecentLogs(params['guid']);
+        this.getAlarms(params['guid']);
+        this.getAlarm(params['guid']);
+        this.getAutoscaling(params['guid']);
       } else {
         this.router.navigate(['dashMain']);
       }
@@ -148,13 +185,6 @@ export class AppMainComponent implements OnInit {
 
       $("#instancePer").val(this.appSummaryInstancePer);
 
-      setTimeout(() =>
-        $('.BG_wrap input').each(function () {
-          var BG_wrap = $(this).val();
-          $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
-          $(this).closest('dl').find("span.rights").html(BG_wrap);
-        }), 100);
-
       this.appSummaryMemory = data.memory;
 
       this.appSummaryDisk = data.disk_quota;
@@ -169,6 +199,13 @@ export class AppMainComponent implements OnInit {
         this.appStatusEntities = [];
         // this.procSetAppStatusTab();
       }
+
+      setTimeout(() =>
+        $('.BG_wrap input').each(function () {
+          var BG_wrap = $(this).val();
+          $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
+          $(this).closest('dl').find("span.rights").html(BG_wrap);
+        }), 100);
 
       this.initRouteTab();
       // this.getSpaceSummary();
@@ -351,36 +388,85 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  instanceDirectInputClick() {
-    $(".a0001").attr("disabled", "disabled");
-    var instanceS = $(".instanceS").text();
-    $(".a0001").closest('dl').find("span.instanceS").html('<input class="instance_in" id="instance_in" type="text" value=' + instanceS + ' />');
+  instanceUpClick() {
+    this.appSummaryInstance = Number(this.appSummaryInstance) + 1;
+    $("#instance_in").val(this.appSummaryInstance);
   }
 
-  instanceDirectSaveClick() {
-    $(".a0001").removeAttr("disabled");
-    this.updateApp();
+  instanceDownClick() {
+    this.appSummaryInstance = Number(this.appSummaryInstance) - 1;
+    $("#instance_in").val(this.appSummaryInstance);
+  }
+
+  instanceDirectInputClick() {
+    if($("#instanceS2").css("display") == "none") {
+      this.appSummaryInstance = $("#instance_in").val();
+      $("#instanceS1").hide();
+      $("#instanceS2").show();
+    } else {
+      $("#instance_in").val(this.appSummaryInstance);
+      $("#instanceS2").hide();
+      $("#instanceS1").show();
+    }
+  }
+
+  showPopInstanceSaveClick() {
+    $("#layerpop_app_save").modal("show");
+  }
+
+  memUpClick() {
+    this.appSummaryMemory = Number(this.appSummaryMemory) + 1024;
+    $("#mem_in").val(this.appSummaryMemory);
+  }
+
+  memDownClick() {
+    this.appSummaryMemory = Number(this.appSummaryMemory) - 1024;
+    $("#mem_in").val(this.appSummaryMemory);
   }
 
   memDirectInputClick() {
-    $(".a0002").attr("disabled", "disabled");
-    var memS = $(".memS").text();
-    $(".a0002").closest('dl').find("span.memS").html('<input class="instance_in" id="mem_in" type="text" value=' + memS + ' />');
+    if($("#memS2").css("display") == "none") {
+      this.appSummaryMemory = $("#mem_in").val();
+      $("#memS1").hide();
+      $("#memS2").show();
+    } else {
+      $("#mem_in").val(this.appSummaryMemory);
+      $("#memS2").hide();
+      $("#memS1").show();
+    }
   }
 
-  memDirectSaveClick() {
-    $(".a0002").removeAttr("disabled");
-    this.updateApp();
+  showPopMemSaveClick() {
+    $("#layerpop_app_save").modal("show");
+  }
+
+  diskUpClick() {
+    this.appSummaryDisk = Number(this.appSummaryDisk) + 1024;
+    $("#disk_in").val(this.appSummaryDisk);
+  }
+
+  diskDownClick() {
+    this.appSummaryDisk = Number(this.appSummaryDisk) - 1024;
+    $("#disk_in").val(this.appSummaryDisk);
   }
 
   diskDirectInputClick() {
-    $(".a0003").attr("disabled", "disabled");
-    var diskS = $(".diskS").text();
-    $(".a0003").closest('dl').find("span.diskS").html('<input class="instance_in" id="disk_in" type="text" value=' + diskS + ' />');
+    if($("#diskS2").css("display") == "none") {
+      this.appSummaryDisk = $("#disk_in").val();
+      $("#diskS1").hide();
+      $("#diskS2").show();
+    } else {
+      $("#disk_in").val(this.appSummaryDisk);
+      $("#diskS2").hide();
+      $("#diskS1").show();
+    }
   }
 
-  diskDirectSaveClick() {
-    $(".a0003").removeAttr("disabled");
+  showPopDiskSaveClick() {
+    $("#layerpop_app_save").modal("show");
+  }
+
+  appSaveClick() {
     this.updateApp();
   }
 
@@ -402,21 +488,26 @@ export class AppMainComponent implements OnInit {
     var diskChange = 0;
     var name = "";
 
-    if ($(".instanceS").text() != '') {
-      instancesChange = $(".instanceS").text();
-    } else {
-      instancesChange = $("#instance_in").val();
-    }
-    if ($(".memS").text() != '') {
-      memoryChange = $(".memS").text();
-    } else {
-      memoryChange = $("#mem_in").val();
-    }
-    if ($(".diskS").text() != '') {
-      diskChange = $(".diskS").text();
-    } else {
-      diskChange = $("#disk_in").val();
-    }
+    // if ($(".instanceS").text() != '') {
+    //   instancesChange = $(".instanceS").text();
+    // } else {
+    //   instancesChange = $("#instance_in").val();
+    // }
+    // if ($(".memS").text() != '') {
+    //   memoryChange = $(".memS").text();
+    // } else {
+    //   memoryChange = $("#mem_in").val();
+    // }
+    // if ($(".diskS").text() != '') {
+    //   diskChange = $(".diskS").text();
+    // } else {
+    //   diskChange = $("#disk_in").val();
+    // }
+
+    instancesChange = this.appSummaryInstance;
+    memoryChange = this.appSummaryMemory;
+    diskChange = this.appSummaryDisk;
+
     if ($(".tempTitle").val() != '') {
       name = $(".tempTitle").val();
     } else {
@@ -433,6 +524,16 @@ export class AppMainComponent implements OnInit {
     this.appMainService.updateApp(params).subscribe(data => {
       // window.location.reload();
       this.ngOnInit();
+      $("[id^='layerpop']").modal("hide");
+
+      $("#instanceS2").hide();
+      $("#instanceS1").show();
+
+      $("#memS2").hide();
+      $("#memS1").show();
+
+      $("#diskS2").hide();
+      $("#diskS1").show();
     });
   }
 
@@ -555,7 +656,192 @@ export class AppMainComponent implements OnInit {
       });
       this.appRecentLogs = str;
 
+      // this.common.isLoading = false;
+    });
+  }
+
+  getAlarms(guid: string) {
+    //TODO 임시
+    guid = "9dac6e76-37cf-484f-8ebe-bdbaf99943e6";
+
+    this.appMainService.getAlarms(guid, this.sltAlaramPageItems, this.sltAlaramPageIndex, this.sltAlaramResourceType, this.sltAlaramAlarmLevel).subscribe(data => {
+      this.appAlarmsEntities = data.data;
       this.common.isLoading = false;
+    });
+  }
+
+  selectBoxAlarmTypeChange(resourceType: string) {
+    this.sltAlaramResourceType = resourceType;
+    this.getAlarms(this.appSummaryGuid);
+  }
+
+  selectBoxAlarmStatusChange(alarmLevel: string) {
+    this.sltAlaramAlarmLevel = alarmLevel;
+    this.getAlarms(this.appSummaryGuid);
+  }
+
+  alarmsMoreClick() {
+    this.sltAlaramPageItems = this.sltAlaramPageItems + 10;
+    this.getAlarms(this.appSummaryGuid);
+  }
+
+  getAlarm(guid: string) {
+    //TODO 임시
+    guid = "9dac6e76-37cf-484f-8ebe-bdbaf99943e6";
+
+    this.appMainService.getAlarm(guid).subscribe(data => {
+      this.appAlaramEntities = data;
+
+      this.appAlarmCpuWarningThreshold = data.cpuWarningThreshold;
+      this.appAlarmCpuCriticalThreshold = data.cpuCriticalThreshold;
+      this.appAlarmMemoryWarningThreshold = data.memoryWarningThreshold;
+      this.appAlarmMemoryCriticalThreshold = data.memoryCriticalThreshold;
+      this.appAlarmMeasureTimeSec = data.measureTimeSec;
+      this.appAlarmEmail = data.email;
+      this.appAlarmEmailSendYn = data.emailSendYn;
+      this.appAlarmAlarmUseYn = data.alarmUseYn;
+
+      if(this.appAlarmEmailSendYn == "Y") {
+        $("#switch12").attr("checked", true);
+      } else {
+        $("#switch12").attr("checked", false);
+      }
+
+      if(this.appAlarmAlarmUseYn == "Y") {
+        $("#switch13").attr("checked", true);
+      } else {
+        $("#switch13").attr("checked", false);
+      }
+
+      this.common.isLoading = false;
+    });
+  }
+
+  showPopAlarmEditClick() {
+    $("#layerpop_alarm_edit").modal("show");
+  }
+
+  editAlarmClick() {
+    if($("#switch12").is(":checked") == true) {
+      this.appAlarmEmailSendYn = "Y";
+    } else {
+      this.appAlarmEmailSendYn = "N";
+    }
+
+    if($("#switch13").is(":checked") == true) {
+      this.appAlarmAlarmUseYn = "Y";
+    } else {
+      this.appAlarmAlarmUseYn = "N";
+    }
+
+    let params = {
+      // appGuid: this.appSummaryGuid,
+      appGuid: "9dac6e76-37cf-484f-8ebe-bdbaf99943e6",
+      cpuWarningThreshold: Number($("#appAlarmCpuWarningThreshold").val()),
+      cpuCriticalThreshold: Number($("#appAlarmCpuCriticalThreshold").val()),
+      memoryWarningThreshold: Number($("#appAlarmMemoryWarningThreshold").val()),
+      memoryCriticalThreshold: Number($("#appAlarmMemoryCriticalThreshold").val()),
+      measureTimeSec: Number($("#appAlarmMeasureTimeSec").val()),
+      email: $("#appAlarmEmail").val(),
+      emailSendYn: this.appAlarmEmailSendYn,
+      alarmUseYn: this.appAlarmAlarmUseYn
+    };
+
+    this.appMainService.updateAlarm(params).subscribe(data => {
+      if(data) {
+        if(data.status == "success") {
+          this.ngOnInit();
+          $("[id^='layerpop']").modal("hide");
+        } else {
+          $("[id^='layerpop']").modal("hide");
+          alert("error");
+        }
+      } else {
+        $("[id^='layerpop']").modal("hide");
+        alert("error");
+      }
+    });
+  }
+
+  getAutoscaling(guid: string) {
+    //TODO 임시
+    guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
+
+    this.appMainService.getAutoscaling(guid).subscribe(data => {
+      this.appAutoscalingEntities = data;
+
+      this.appAutoscalingInYn = data.autoScalingInYn;
+      this.appAutoscalingOutYn = data.autoScalingOutYn;
+      this.appAutoscalingCpuMaxThreshold = data.cpuMaxThreshold;
+      this.appAutoscalingCpuMinThreshold = data.cpuMinThreshold;
+      this.appAutoscalingInstanceMaxCnt = data.instanceMaxCnt;
+      this.appAutoscalingInstanceMinCnt = data.instanceMinCnt;
+      this.appAutoscalingInstanceVariationUnit = data.instanceVariationUnit;
+      this.appAutoscalingMeasureTimeSec = data.measureTimeSec;
+      this.appAutoscalingMemoryMaxThreshold = data.memoryMaxThreshold;
+      this.appAutoscalingMemoryMinThreshold = data.memoryMinThreshold;
+
+      if(this.appAutoscalingOutYn == "Y") {
+        $("#switch10").attr("checked", true);
+      } else {
+        $("#switch10").attr("checked", false);
+      }
+
+      if(this.appAutoscalingInYn == "Y") {
+        $("#switch11").attr("checked", true);
+      } else {
+        $("#switch11").attr("checked", false);
+      }
+
+      this.common.isLoading = false;
+    });
+  }
+
+  showPopAutoscalingEditClick() {
+    $("#layerpop_autoscaling_edit").modal("show");
+  }
+
+  editAutoscalingClick() {
+    if($("#switch10").is(":checked") == true) {
+      this.appAutoscalingOutYn = "Y";
+    } else {
+      this.appAutoscalingOutYn = "N";
+    }
+
+    if($("#switch11").is(":checked") == true) {
+      this.appAutoscalingInYn = "Y";
+    } else {
+      this.appAutoscalingInYn = "N";
+    }
+
+    let params = {
+      // appGuid: this.appSummaryGuid,
+      appGuid: "2d35e19c-f223-49a3-b4b5-da2c55969f07",
+      autoScalingInYn: this.appAutoscalingInYn,
+      autoScalingOutYn: this.appAutoscalingOutYn,
+      cpuMaxThreshold: Number($("#appAutoscalingCpuMaxThreshold").val()),
+      cpuMinThreshold: Number($("#appAutoscalingCpuMinThreshold").val()),
+      instanceMaxCnt: Number($("#appAutoscalingInstanceMaxCnt").val()),
+      instanceMinCnt: Number($("#appAutoscalingInstanceMinCnt").val()),
+      instanceVariationUnit: this.appAutoscalingInstanceVariationUnit,
+      measureTimeSec: Number($("#appAutoscalingMeasureTimeSec").val()),
+      memoryMaxThreshold: Number($("#appAutoscalingMemoryMaxThreshold").val()),
+      memoryMinThreshold: Number($("#appAutoscalingMemoryMinThreshold").val())
+    };
+
+    this.appMainService.updateAutoscaling(params).subscribe(data => {
+      if(data) {
+        if(data.status == "success") {
+          this.ngOnInit();
+          $("[id^='layerpop']").modal("hide");
+        } else {
+          $("[id^='layerpop']").modal("hide");
+          alert("error");
+        }
+      } else {
+        $("[id^='layerpop']").modal("hide");
+        alert("error");
+      }
     });
   }
 
