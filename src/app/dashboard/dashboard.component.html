@@ -318,7 +318,7 @@
   </div>
 </div>
 <div class="modal fade" id="layerpop2">
-  <div class="vertical-alignment-helper">
+  <div class="vertical-alignment-helper" *ngFor="let item of appEntities;" >
     <div class="modal-dialog vertical-align-center" >
       <div class="modal-content">
         <!-- header -->
@@ -334,7 +334,7 @@
           </p>
         </div>
         <!-- Footer -->
-        <div class="modal-footer" *ngFor="let item of appEntities;">
+        <div class="modal-footer" >
           <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="delApp(item.guid)">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
