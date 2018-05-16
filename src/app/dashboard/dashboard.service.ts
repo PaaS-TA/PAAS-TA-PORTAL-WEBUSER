@@ -29,7 +29,31 @@ export class DashboardService {
       return res;
     }).do(console.log);
   }
-  
+
+  // @RequestMapping(value = {Constants.V2_URL +"/apps"}, method = RequestMethod.DELETE)
+  delApp(params: any) {
+    return this.commonService.doDelete('/portalapi/v2/apps/'+ params.guid , null,'').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  //  @RequestMapping(value = {Constants.V3_URL + "/apps/startApp"}, method = RequestMethod.POST)
+  startApp(params: any) {
+    return this.commonService.doPost('/portalapi/v3/apps/startApp', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  //MovePage :: dashboard
+  // moveAppMain(spaceid: string) {
+  //   return this.commonService.doGet('/portalapi/v2/spaces/' + spaceid + '/summary', '').map((res: Response) => {
+  //     console.log(res);
+  //     return res;
+  //   }).do(console.log);
+  // }
+
+
+
 }//
 
 

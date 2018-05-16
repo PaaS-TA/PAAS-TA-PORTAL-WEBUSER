@@ -152,17 +152,18 @@
           <ul class="maT30 space_list ">
             <li  *ngFor="let item of appEntities;  let i = index">
               <div class="sortable_wrap">
-
                 <!-- 애플리케이션 영역 시작 -->
                 <div class="space_pop_container">
                   <div class="space_pop_menu" >
                     <i class="fas fa-ellipsis-v" (click)="popclick('apopmenu_'+i)" ></i>
                     <ol class="space_pop_submenu" id="apopmenu_{{i}}">
                       <li><a class="fas fa-edit" data-target="#layerpop1" data-toggle="modal"> 앱 이름변경</a></li>
-                      <li><a class="fas fa-play"> 실행</a></li>
-                      <li><a class="fas fa-trash-alt" data-target="#layerpop2" data-toggle="modal"> 삭제</a></li>
+                      <li><a class="fas fa-play" (click)="startApp()"> 실행</a></li>
+                      <li><a class="fas fa-trash-alt" data-target="#layerpop2" data-toggle="modal" > 삭제</a></li>
                     </ol>
                   </div>
+                  <!--<a [routerLink]="['../appMain']">-->
+                  <!--<div (click)="moveAppMain()">-->
                   <div class="app_title">{{item.name}}</div>
                   <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
                   <div class="app_per clearfix">
@@ -209,6 +210,8 @@
                       </div>
                     </div>
                   </div>
+                  <!--</a>-->
+                  <!--</div>-->
                 </div>
                 <!-- 애플리케이션 영역 끝 -->
               </div>
@@ -303,7 +306,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" placeholder="앱 이름을 입력하세요" class="space_input" [(ngModel)]="appName"/>
+          <input type="text" placeholder="앱 이름을 입력하세요" class="space_input" name ="appNmae"[(ngModel)]="appName"/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
@@ -316,7 +319,7 @@
 </div>
 <div class="modal fade" id="layerpop2">
   <div class="vertical-alignment-helper">
-    <div class="modal-dialog vertical-align-center">
+    <div class="modal-dialog vertical-align-center" >
       <div class="modal-content">
         <!-- header -->
         <div class="modal-header">
@@ -327,12 +330,12 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>앱을 삭제하면 되돌릴 수 없습니다.<br/><span>Testorg(앱 명)</span>를 삭제하시겠습니까?
+          <p>앱을 삭제하면 되돌릴 수 없습니다.<br/><span>앱 생성</span>를 삭제하시겠습니까?
           </p>
         </div>
         <!-- Footer -->
-        <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+        <div class="modal-footer" *ngFor="let item of appEntities;">
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="delApp(item.guid)">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
