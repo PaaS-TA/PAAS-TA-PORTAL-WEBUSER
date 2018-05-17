@@ -21,5 +21,16 @@ export enum CATALOGURLConstant {
 
 //카탈로그 개발환경
 //----------------------------
-  GETBUILDPACK = '/commonapi/v2/developpacks',
+  NAMECHECK = '/portalapi/v2/catalogs/app/',
+  ROUTECHECK = '/commonapi/v2/routes/',
+  INSERTHISTROY = '/commonapi/v2/history',
+
+
+
+
+  SERVICEPACK = 'servicePack',
+  CREATESUCCESSAPP = '현재 이름으로 앱을 생성할수 있습니다.',
+  CREATEFALSEAPP ='현재 이름으로 앱을 생성하실수 없습니다.',
+  CREATESUCCESSROUTE='현재 호스트로 라우트를 생성할수 있습니다.',
+  CREATEFASLEROUTE='현재 호스트로 라우트를 생성하실수 없습니다.'
 }

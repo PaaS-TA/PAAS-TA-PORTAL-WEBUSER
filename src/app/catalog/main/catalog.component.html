@@ -9,16 +9,16 @@
             <div class="input-group-btn">
               <button name="button" class="btn" type="button"><i class="fas fa-search"></i></button>
             </div>
-            <input class="form-control" type="text" placeholder="Catalog Search" [(ngModel)]="searchKeyword" (keyup.enter)="Search()"/>
+            <input class="form-control" type="text" placeholder="Catalog Search" [(ngModel)]="searchKeyword" (ngModelChange)="Search()"/>
           </div>
         </div>
         <div class="">
           <p class="tit">최근작업</p>
           <ul>
-            <li (click)="location.href='catalogdetail.html'" *ngFor="let recent of catalogService.recentpacks">
+            <li (click)="goHistory(recent)" *ngFor="let recent of recentpacks">
               <dl>
                 <dt>
-                <div>
+                <div id="1">
                   <img src="../../../assets/resources/images/catalog/{{recent.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                 </div>
                 </dt>
@@ -41,7 +41,7 @@
         <div>
           <p class="tit">앱 템플릿</p>
           <ul>
-            <li *ngFor="let stater of catalogService.starterpacks" (click)="goAppTemplate(stater)">
+            <li *ngFor="let stater of starterpacks" (click)="goStarter(stater)">
               <dl>
                 <dt>
                 <div>
@@ -67,7 +67,7 @@
         <div class="cataloglast">
           <p class="tit">앱 개발환경</p>
           <ul >
-            <li *ngFor="let build of catalogService.buildpacks" (click)="goAppDevelopMent(build)">
+            <li *ngFor="let build of buildpacks" (click)="goDevelopMent(build)">
               <dl>
                 <dt>
                 <div>
@@ -94,7 +94,7 @@
         <div class="cataloglast">
           <p class="tit">서비스</p>
           <ul >
-            <li *ngFor="let service of catalogService.servicepacks">
+            <li *ngFor="let service of servicepacks" (click)="goService(service)">
               <dl>
                 <dt>
                 <div>

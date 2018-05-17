@@ -55,6 +55,12 @@ export class CommonService {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
+  
+  doCommonPost(url: string, body: any) {
+    return this.http.post(this.gateway + url, body, {
+      headers: this.headers
+    });
+  }
 
   doPut(url: string, body: any, token: string) {
     return this.http.put(this.gateway + url, body, {
