@@ -136,10 +136,10 @@ export class CatalogDevelopmentComponent implements OnInit {
 
   async nameCheck(){
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      if(data === CATALOGURLConstant.CREATESUCCESSAPP){
+      if(data.toString() === CATALOGURLConstant.CREATESUCCESSAPP){
         this.namecheck = 1;
       }
-      else if(data === CATALOGURLConstant.CREATEFALSEAPP){
+      else if(data.toString() === CATALOGURLConstant.CREATEFALSEAPP){
         this.namecheck = -1;
       }
     }, error => {
