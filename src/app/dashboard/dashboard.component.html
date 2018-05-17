@@ -82,8 +82,8 @@
         <ul>
           <li>
             <div>
-              <select id="">
-                <option value="" selected="selected" name="area">미국(USA, 美國)</option>
+              <select readonly="readonly">
+                <option value="" name="area">미국(USA, 美國)</option>
                 <option value="" selected="selected" name="area">대한민국(KOREA, 韓國)</option>
               </select>
             </div>
@@ -118,7 +118,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="isSpace">
+  <div *ngIf='isSpace'>
     <div class="contain_s">
       <div class="content">
         <!-- 할당량 시작-->
@@ -155,11 +155,11 @@
                 <!-- 애플리케이션 영역 시작 -->
                 <div class="space_pop_container">
                   <div class="space_pop_menu" >
-                    <i class="fas fa-ellipsis-v" (click)="popclick('apopmenu_'+i)" ></i>
+                    <i class="fas fa-ellipsis-v" (click)="popclick('apopmenu_'+i,'app',item.guid)" ></i>
                     <ol class="space_pop_submenu" id="apopmenu_{{i}}">
                       <li><a class="fas fa-edit" data-target="#layerpop1" data-toggle="modal"> 앱 이름변경</a></li>
                       <li><a class="fas fa-play" (click)="startApp()"> 실행</a></li>
-                      <li><a class="fas fa-trash-alt" data-target="#layerpop2" data-toggle="modal" > 삭제</a></li>
+                      <li><a class="fas fa-trash-alt" data-target="#layerpop2" data-toggle="modal"> 삭제</a></li>
                     </ol>
                   </div>
                   <!--<a [routerLink]="['../appMain']">-->
@@ -242,10 +242,10 @@
             <li *ngFor="let item of servicesEntities;  let i = index">
 
               <div class="sortable_wrap">
-                <!-- 애플리케이션 영역 시작 -->
+                <!-- 서비스 영역 시작 -->
                 <div class="space_pop_container space_list_small" >
                   <div class="space_pop_menu"  >
-                    <i class="fas fa-ellipsis-v" (click)="popclick('spopmenu_'+i)"></i>
+                    <i class="fas fa-ellipsis-v" (click)="popclick('spopmenu_'+i,'service',item.guid)"></i>
                     <ol class="space_pop_submenu" id ="spopmenu_{{i}}">
                       <li><a class="fas fa-edit" data-target="#layerpop3" data-toggle="modal"> 서비스 이름변경</a></li>
                       <li><a class="fas fa-wrench"> 서비스 수정</a></li>
@@ -306,7 +306,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" placeholder="앱 이름을 입력하세요" class="space_input" name ="appNmae"[(ngModel)]="appName"/>
+          <input type="text" placeholder="앱 이름을 입력하세요" class="space_input"/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
@@ -318,8 +318,8 @@
   </div>
 </div>
 <div class="modal fade" id="layerpop2">
-  <div class="vertical-alignment-helper" *ngFor="let item of appEntities;" >
-    <div class="modal-dialog vertical-align-center" >
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
       <div class="modal-content">
         <!-- header -->
         <div class="modal-header">
@@ -330,12 +330,12 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>앱을 삭제하면 되돌릴 수 없습니다.<br/><span>앱 생성</span>를 삭제하시겠습니까?
+          <p>앱을 삭제하면 되돌릴 수 없습니다.<br/><span>test.org</span>를 삭제하시겠습니까?
           </p>
         </div>
         <!-- Footer -->
         <div class="modal-footer" >
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="delApp(item.guid)">삭제</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" [(ngModel)]="selectedGuid" (click)="delApp(selectedGuid)">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>

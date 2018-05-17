@@ -24,7 +24,7 @@ declare var jQuery: any;
 export class DashboardComponent implements OnInit {
 
   public isEmpty: boolean;
-  public isSpace: boolean;
+  public isSpace: boolean = false;
   public isMessage: boolean;
   private isLoadingSpaces = false;
 
@@ -45,6 +45,8 @@ export class DashboardComponent implements OnInit {
   public appNewName: string;
   public appDelName: string;
   public appSummaryGuid: string; // app guid value
+  public selectedGuid:string;
+  public selectedType:string;
 
   public appSummaryEntities: Observable<any[]>;
   public appEntities: Observable<any[]>;
@@ -101,7 +103,11 @@ export class DashboardComponent implements OnInit {
 
   //애플리케이션 및 서비스 목록 확인
   getAppSummary(value: string) {
+    console.log("::::::::::::::::: getAppSummary:::::::::::::::::");
+    this.showLoading();
     this.dashboardService.getAppSummary(value).subscribe(data => {
+      this.commonService.isLoading = false;
+
       console.log(data);
       this.appEntities = data.apps;
       this.servicesEntities = data.services;
@@ -194,11 +200,6 @@ export class DashboardComponent implements OnInit {
     // });
   }
 
-  showPopEnvDelClick(eventID: string) {
-    this.appDelName = eventID;
-    $("#layerpop_env_del").modal("show");
-  }
-
   showLoading() {
     this.commonService.isLoading = true;
   }
@@ -217,14 +218,19 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  popclick(id: string) {
+  popclick(id: string, type :string,guid: string) {
     $('.space_pop_submenu').hide();
     if (this.current_popmenu_id != id) {
       $("#" + id).show();
       this.current_popmenu_id = id;
+      this.selectedType = type;
+      this.selectedGuid = guid;
     } else {
       this.current_popmenu_id = '';
+      this.selectedType = '';
+      this.selectedGuid = '';
     }
+    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid);
   }
 
 }//
