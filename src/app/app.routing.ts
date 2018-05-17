@@ -26,6 +26,7 @@ import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-spa
 import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
 import {ErrorComponent} from "./error/error.component";
 import {CatalogDevelopmentComponent} from "./catalog/catalog-development/catalog-development.component";
+import {CatalogServiceComponent} from "./catalog/catalog-service/catalog-service.component";
 
 /*
 * Route 모듈 설정
@@ -50,6 +51,7 @@ const routes: Routes = [
   {path: 'webideuser', component: WebIdeUserComponent, canActivate: [AuthGuard]},
   {path: 'catalogdetail/:id', component: CatalogDetailComponent, canActivate: [AuthGuard]},
   {path: 'catalogdevelopment/:id', component: CatalogDevelopmentComponent, canActivate: [AuthGuard]},
+  {path: 'catalogservice/:id', component: CatalogServiceComponent, canActivate: [AuthGuard]},
   {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
   {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},
   {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]},

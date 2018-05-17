@@ -63,7 +63,7 @@ export class CatalogService {
     });
   }
 
-  getSpacelist(orgid : String) {
+  getSpacelist(orgid : string) {
     return this.common.doGet('/portalapi/v2/orgs/' + orgid + '/spaces', this.common.getToken()).map((res: Response) => {
       return res;
     });
@@ -73,11 +73,37 @@ export class CatalogService {
         return res;
       });
     }
+
+  getRouteCheck(url : string){
+    return this.common.doGet(url, null).map((res: Response) => {
+      return res;
+    });
+  }
+
+  getNameCheck(url : string){
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+
+  getAppList(url : string){
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+
   postApp(url : string, param : any){
     return this.common.doPost(url,param, this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
+
+  postHistroy(url : string, param : any){
+    return this.common.doCommonPost(url,param).map((res: Response) => {
+      return res;
+    });
+  }
+
   putAppStart(url : string, param : string){
     return this.common.doPut(url,param, this.common.getToken()).map((res: Response) => {
       return res;
@@ -135,6 +161,7 @@ export class StarterPack
 
 export class Service
 {
+  num : number;
   appBindParameter : string;
   appBindYn : string;
   app_bind_parameter : string;

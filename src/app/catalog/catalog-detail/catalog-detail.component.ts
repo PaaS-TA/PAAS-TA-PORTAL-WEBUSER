@@ -29,15 +29,15 @@ export class CatalogDetailComponent implements OnInit {
   orgs: Array<Organization> = new Array<Organization>(); // 조직 정보
   spaces: Array<Space> = new Array<Space>(); // 공간 정보
   appStart : boolean = false; // 앱 시작 여부
-  constructor(private route: ActivatedRoute, private catalogSerive: CatalogService, private log: NGXLogger) {
+  constructor(private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
   }
 
   ngOnInit() {
-    this.catalogSerive.getDomain().subscribe(data => {
+    this.catalogService.getDomain().subscribe(data => {
       this.domain = data['resources'][0]['entity']['name'];
       this.domainid = data['resources'][0]['metadata']['id'];
     });
-    this.catalogSerive.CatalogDetailInit(this.route.snapshot.params['id']).subscribe(data => {
+    this.catalogService.CatalogDetailInit(this.route.snapshot.params['id']).subscribe(data => {
       this.template = data['Starter'];
       this.apptemplate.push(data['Buildpack']);
       for (let i = 0; i < data['Servicepack'].length; i++) {
@@ -51,12 +51,12 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   doOrg() {
-    this.catalogSerive.getOrglist().subscribe(data => {
+    this.catalogService.getOrglist().subscribe(data => {
       data['resources'].forEach(res => {
         this.orgs.push(new Organization(res['metadata'], res['entity']));
       });
       this.org =  this.orgs[0];
-      this.catalogSerive.getSpacelist(this.orgs[0].guid).subscribe(data => {
+      this.catalogService.getSpacelist(this.orgs[0].guid).subscribe(data => {
         data['spaceList']['resources'].forEach(res => {
           this.spaces.push(new Space(res['metadata'], res['entity'], null));
         });
@@ -84,7 +84,7 @@ export class CatalogDetailComponent implements OnInit {
 
   orgSelect() {
     this.spaces = new Array<Space>();
-    this.catalogSerive.getSpacelist(this.org.guid).subscribe(data => {
+    this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {
         this.spaces.push(new Space(res['metadata'], res['entity'], null));
       });
@@ -118,7 +118,7 @@ export class CatalogDetailComponent implements OnInit {
       buildPackName: this.apptemplate[0]['buildPackName'],
       appSampleFilePath : appSampleFilePath
     };
-    this.catalogSerive.postApp(url, params).subscribe(data => {
+    this.catalogService.postApp(url, params).subscribe(data => {
       console.log(data);
     });
 

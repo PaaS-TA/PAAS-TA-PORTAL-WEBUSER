@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {Organization} from "../../model/organization";
 import {FormGroup} from "@angular/forms";
 import {CATALOGURLConstant} from "../common/catalog.constant";
+import {forEach} from "@angular/router/src/utils/collection";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -15,16 +16,17 @@ declare var jQuery: any;
 export class CatalogComponent implements OnInit {
 
   searchKeyword : string='';
-
   userid : string;
+  buildpacks : Array<BuildPack>;
+  starterpacks : Array<StarterPack> = Array<StarterPack>();
+  recentpacks : Array<any> = Array<any>();
+  servicepacks : Array<Service> = Array<Service>();
   constructor(private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
     this.userid = catalogService.getUserid();
   }
 
 
   ngOnInit() {
-    //this.catalogService.developInit();
-
     this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
       this.StarterInit(data['list']);
     });
@@ -34,8 +36,9 @@ export class CatalogComponent implements OnInit {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS).subscribe(data => {
       this.ServiceInit(data['list']);
     });
-    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid+'?searchKeyword=').subscribe(data => {
+    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid).subscribe(data => {
       this.RecentInit(data);
+
     });
 
     $(document).ready(() => {
@@ -51,52 +54,89 @@ export class CatalogComponent implements OnInit {
   }
 
   Search()  {
-    this.catalogService.getSearchPack(CATALOGURLConstant.GETSEARCH+'?searchKeyword='+this.searchKeyword).subscribe(data => {
-      this.StarterInit(data['TemplateList']);
-      this.BuildInit(data['BuildPackList']);
-    });
-    this.catalogService.getSearchPack(CATALOGURLConstant.GETRECENTPACKS+this.userid+'?searchKeyword='+this.searchKeyword).subscribe(data => {
-      this.RecentInit(data);
-    });
+    this.SearchStarterPack();
+    this.SearchBuildPack();
+    this.SearchServicePack();
   }
 
-  goAppTemplate(starter : StarterPack) {
+  goStarter(starter : StarterPack) {
     this.router.navigate(['catalogdetail', starter.no]);
   }
 
-  goAppDevelopMent(build : BuildPack) {
+  goDevelopMent(build : BuildPack) {
     this.router.navigate(['catalogdevelopment', build.no]);
   }
 
-  RecentInit(data : any) {
-    this.catalogService.recentpacks = new Array<any>();
-    let lenght = data['list'].length;
-    for (let i = 0; i < lenght; i++) {
-      let dev = data['list'][i];
-      this.catalogService.recentpacks[i] = dev;
+  goService(service : Service) {
+    this.router.navigate(['catalogservice', service.no]);
+  }
+
+  goHistory(any : any){
+    const classification = any['classification'];
+    if(classification.includes("starter_")){
+      this.router.navigate(['catalogdetail', any['no']]);
     }
+    else if(classification.includes("buildpack_")){
+      this.router.navigate(['catalogdevelopment', any['no']]);
+    }
+    else if(classification.includes("service_")){
+      this.router.navigate(['catalogservice', any['no']]);
+    }
+  }
+
+  RecentInit(data : any) {
+    this.recentpacks = [];
+    this.recentpacks = data['list'];
   }
 
 
   StarterInit(data : any) {
     this.catalogService.starterpacks = new Array<StarterPack>();
-    for(let i = 0 ; i < data.length ; i++) {
-      this.catalogService.starterpacks[i] = data[i];
-    }
+    this.catalogService.starterpacks = data;
+    this.starterpacks = this.catalogService.starterpacks;
   }
 
   BuildInit(data : any) {
     this.catalogService.buildpacks = new Array<BuildPack>();
-    for(let i = 0 ; i < data.length ; i++) {
-      this.catalogService.buildpacks[i] = data[i];
-    }
+    this.catalogService.buildpacks = data;
+    this.buildpacks = this.catalogService.buildpacks;
   }
 
   ServiceInit(data : any) {
     this.catalogService.servicepacks = new Array<Service>();
-    for(let i = 0 ; i < data.length ; i++) {
-      this.catalogService.servicepacks[i] = data[i];
-    }
+    this.catalogService.servicepacks = data;
+    this.servicepacks = this.catalogService.servicepacks;
+  }
+
+  SearchStarterPack() {
+    this.starterpacks = new Array<StarterPack>();
+    let starterpacks = this.starterpacks;
+    const keyword = this.searchKeyword.toLocaleLowerCase();
+    this.catalogService.starterpacks.forEach(function (starterpack) {
+      if ((starterpack.description.toLocaleLowerCase().indexOf(keyword) != -1) || (starterpack.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (starterpack.name.toLocaleLowerCase().indexOf(keyword) != -1)) {
+        starterpacks.push(starterpack);
+      }
+    });
+  }
+
+    SearchBuildPack() {
+    this.buildpacks = new Array<BuildPack>();
+    let buildpacks = this.buildpacks;
+    const keyword = this.searchKeyword.toLocaleLowerCase();
+    this.catalogService.buildpacks.forEach(function (buildpack) {
+      if((buildpack.description.toLocaleLowerCase().indexOf(keyword) != -1) || (buildpack.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (buildpack.name.toLocaleLowerCase().indexOf(keyword) != -1)) {
+        buildpacks.push(buildpack);
+      }});
+  }
+
+  SearchServicePack() {
+    this.servicepacks = new Array<Service>();
+    let servicepacks = this.servicepacks;
+    const keyword = this.searchKeyword.toLocaleLowerCase();
+    this.catalogService.servicepacks.forEach(function (servicepack) {
+      if((servicepack.description.toLocaleLowerCase().indexOf(keyword) != -1) || (servicepack.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (servicepack.name.toLocaleLowerCase().indexOf(keyword) != -1)) {
+        servicepacks.push(servicepack);
+      }});
   }
 }
 

@@ -12,6 +12,18 @@ import {Organization} from "../../model/organization";
   styleUrls: ['./catalog-development.component.css']
 })
 export class CatalogDevelopmentComponent implements OnInit {
+
+  namemsg : string = '';
+  routemsg : string ='';
+
+  namecheck : number = 0;
+  routecheck : number = 0;
+
+  successapp : string;
+  falseapp : string;
+  successroute : string;
+  falseroute : string;
+
   domain: string; // 도메인
   domainid : string; // 도메인id
   buildpack : BuildPack;
@@ -24,12 +36,15 @@ export class CatalogDevelopmentComponent implements OnInit {
   orgs: Array<Organization> = new Array<Organization>(); // 조직 정보
   spaces: Array<Space> = new Array<Space>(); // 공간 정보
   appStart : boolean = false; // 앱 시작 여부
-  constructor(private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) { }
+  constructor(private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+
+  }
 
   ngOnInit() {
     this.DomainInit();
     this.BuildInit();
     this.OrgsInit();
+    this.messageInit();
     this.memory = 512;
     this.disk = 1024;
   }
@@ -64,7 +79,15 @@ export class CatalogDevelopmentComponent implements OnInit {
     });
   }
 
+  messageInit(){
+    this.successapp = CATALOGURLConstant.CREATESUCCESSAPP;
+    this.falseapp = CATALOGURLConstant.CREATEFALSEAPP;
+    this.successroute = CATALOGURLConstant.CREATESUCCESSROUTE;
+    this.falseroute = CATALOGURLConstant.CREATEFASLEROUTE;
+  }
+
   orgSelect() {
+    this.space = null;
     this.spaces = new Array<Space>();
     this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {
@@ -75,9 +98,15 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   initAppUrl() {
+    if(!this.space){
+      //스페이스 조직이 없거나 선택안했을시 처리
+      return;
+    }
     this.appurl = this.appname + '.' + this.domain;
     if (this.appname.length < 1 || this.appname.trim() === '')
-      this.appurl = '';
+    {this.appurl = ''; return;}
+    this.nameCheck();
+    this.routeCheck();
   }
 
   createApp() {
@@ -104,5 +133,27 @@ export class CatalogDevelopmentComponent implements OnInit {
       console.log(data);
     });
   }
+
+  async nameCheck(){
+    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
+      if(data === CATALOGURLConstant.CREATESUCCESSAPP){
+        this.namecheck = 1;
+      }
+      else if(data === CATALOGURLConstant.CREATEFALSEAPP){
+        this.namecheck = -1;
+      }
+    }, error => {
+      this.namecheck = -1;
+    });
+  }
+
+  async routeCheck(){
+    this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appname).subscribe(data => {
+      this.routecheck = 1;
+    }, error => {
+      this.routecheck = -1;
+    });
+  }
+
 
 }

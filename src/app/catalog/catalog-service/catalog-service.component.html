@@ -1,14 +1,14 @@
 <div class="wrap dashboard">
   <app-catalog-header></app-catalog-header>
   <app-catalog-nav></app-catalog-nav>
-  <div class="contain" *ngIf="buildpack">
+  <div class="contain" *ngIf="servicepack">
     <div class="content development_wrap">
       <div class="row one_line maT30">
         <div class="col-md-6">
           <div class="cWrap">
             <dl>
               <dt class="noborder">
-              <h1>{{buildpack.name}}</h1>
+              <h1>{{servicepack.name}}</h1>
               <button class="btn" onclick="history.back()">
                 <img src="../../../assets/resources/images/catalog/back.svg" alt=""/>Back
               </button>
@@ -29,11 +29,11 @@
                     <dl class="development_dl">
                       <dt>요약
                       </dt>
-                      <dd>{{buildpack.summary}}
+                      <dd>{{servicepack.summary}}
                       </dd>
                       <dt>설명
                       </dt>
-                      <dd>{{buildpack.description}}
+                      <dd>{{servicepack.summary}}
                       </dd>
                       <dt>
                         <button class="btns2 btns2_1 colors4">문서보기
@@ -66,13 +66,7 @@
         <div class="col-md-6">
           <div class="services_wrap">
             <table class="services_t">
-              <caption>앱 생성
-                <div class="btnWrap">
-                  <span class="cWraprightspan">앱 시작여부</span>
-                  <input id="switch3" type="checkbox" checked="checked" [(ngModel)]="appStart" switch2="none">
-                  <label for="switch3"></label>
-                </div>
-              </caption>
+              <caption>서비스 생성</caption>
               <colgroup>
                 <col style="width:33%;">
                 <col style="width:36%;">
@@ -103,7 +97,7 @@
                   </select>
                 </td>
                 <th>
-                  <select [(ngModel)]="space">
+                  <select [(ngModel)]="space" (ngModelChange)="appList()">
                     <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}
                     </option>
                   </select>
@@ -112,44 +106,95 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <p>앱 이름</p>
+                  <p>서비스 이름</p>
                 </th>
               </tr>
               <tr>
                 <th colspan="3">
-                  <input type="text" placeholder="앱 이름을 입력하여 주십시오"  [(ngModel)]="appname" (ngModelChange)="initAppUrl()"/>
-                  <div *ngIf="namecheck === 1 && appname.length > 0"><p class=""><i class=""></i> {{successapp }}</p></div>
-                  <div *ngIf="namecheck === -1 && appname.length > 0"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{falseapp}}</p></div>
+                  <input type="text" placeholder="서비스 이름을 입력하여 주십시오" />
                 </th>
               </tr>
               <tr>
                 <th colspan="3">
-                  <p>앱 URL</p>
+                  <p>앱</p>
                 </th>
               </tr>
               <tr>
                 <th colspan="3">
-                  <input type="text" placeholder="호스트를 입력하여 주십시오" [(ngModel)]="appurl"/>
-                  <div *ngIf="routecheck === 1 && appname.length > 0"><p class=""><i class=""></i> {{successroute}}</p></div>
-                  <div *ngIf="routecheck === -1 && appname.length > 0"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{falseroute}}</p></div>
+                  <select>
+                    <option>연결없이 시작</option>
+                  </select>
                 </th>
               </tr>
               <tr>
                 <th colspan="3">
-                  <p>도메인</p>
+                  <p>서비스 이용사양 선택</p>
                 </th>
               </tr>
               <tr>
                 <th colspan="3">
-                  <input type="text" value="au-syd.mybluemix.net" [(ngModel)]="domain" disabled />
+                  <select class="disabled" >
+                    <option *ngFor="let plan of serviceplan">{{plan.description}}</option>
+                  </select>
+                                        <span class="services_tablespan">
+                                        </span>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="3">
+                  <p>서비스 생성 파라미터</p>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="3">
+                  <div class="in">
+                                            <span><i class="cWrapDot"></i>
+                                                URL :
+                                            </span>
+                    <input type="text" />
+                  </div>
                 </th>
               </tr>
               </tbody>
             </table>
+            <div class="services_bottom maT20">
+              <h4>서비스 이용 가격 안내 </h4>
+              <table class="line_tables">
+                <colgroup>
+                  <col style="width:70px">
+                  <col style="width:70px">
+                  <col>
+                  <col>
+                </colgroup>
+                <thead>
+                <tr>
+                  <td>선택</td>
+                  <td>상품</td>
+                  <td>기능</td>
+                  <td>가격</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let plan of serviceplan">
+                  <td>
+                    <input id="ra{{plan.classnumber}}" type="radio" name="ra1">
+                    <label for="ra{{plan.classnumber}}"></label>
+                  </td>
+                  <td>
+                    기본
+                  </td>
+                  <td><p>{{plan.extra}}</p>
+                    Provisioned throughput capacity:<br/>20 Lookups/sec
+                  </td>
+                  <td>무료
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="clear"></div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="createApp()">생성</button>
+            <button class="btns2 btns2_1 colors4" (click)="insertHistroy()">생성</button>
             <button class="btns2 btns2_1 colors5">취소</button>
           </div>
         </div>
@@ -158,4 +203,3 @@
     <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
   </div>
 </div>
-
