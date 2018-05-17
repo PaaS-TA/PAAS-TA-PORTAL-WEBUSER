@@ -20,6 +20,12 @@ export class AppNavComponent implements OnInit {
 
     if(id == "tabContent_viewchart") {
       $("#tab_viewchart_1").show();
+
+      $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+      $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+      $('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+    } else {
+      $("[id^='tab_viewchart_']").hide();
     }
   }
 

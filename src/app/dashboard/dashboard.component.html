@@ -100,7 +100,7 @@
             <div>
               <select (change)="getApps($event.target.value)">
                 <option value="" selected="selected" name="space">해당 공간명</option>
-                <option *ngFor="let space of spaces" [value]="space.name">{{space.name}}</option>
+                <option *ngFor="let space of spaces" [value]="space._metadata.guid">{{space.name}}</option>
               </select>
             </div>
           </li>
@@ -126,7 +126,9 @@
           <div class="sortable_wrap space_box">
             <div class="space_gb"><span>6</span><span>GB</span> / 할당량 10GB</div>
             <div class="progress">
-              <div class="progress-bar" role="progressbar" aria-valuenow="1.5" aria-valuemin="0" aria-valuemax="10" style="width: 15%;">1.5GB</div>
+              <div class="progress-bar" role="progressbar" aria-valuenow="1.5" aria-valuemin="0" aria-valuemax="10"
+                   style="width: 15%;">1.5GB
+              </div>
               <div class="progress-full">10GB</div>
             </div>
           </div>
@@ -140,7 +142,7 @@
           <div class="monitor_tabs_line"></div>
         </div>
         <div id="dashTab_1" class="monitor_content01 row two_line two_view new_view clearfix">
-          <ul class="maT30">
+          <ul class="maT30" *ngIf='isMessage'>
             <li>
               <div class="sortable_wrap space_box2">
                 <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 앱이 없습니다. 앱 생성을 클릭하여 작성하거나 <em><a [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
@@ -148,97 +150,127 @@
             </li>
           </ul>
           <ul class="maT30 space_list ">
-            <li>
+            <li  *ngFor="let item of appEntities;  let i = index">
               <div class="sortable_wrap">
                 <!-- 애플리케이션 영역 시작 -->
                 <div class="space_pop_container">
                   <div class="space_pop_menu" >
-                    <i class="fas fa-ellipsis-v"></i>
-                    <ol class="space_pop_submenu">
+                    <i class="fas fa-ellipsis-v" (click)="popclick('apopmenu_'+i)" ></i>
+                    <ol class="space_pop_submenu" id="apopmenu_{{i}}">
                       <li><a class="fas fa-edit" data-target="#layerpop1" data-toggle="modal"> 앱 이름변경</a></li>
-                      <li><a class="fas fa-play"> 실행</a></li>
-                      <li><a class="fas fa-trash-alt" data-target="#layerpop2" data-toggle="modal"> 삭제</a></li>
+                      <li><a class="fas fa-play" (click)="startApp()"> 실행</a></li>
+                      <li><a class="fas fa-trash-alt" data-target="#layerpop2" data-toggle="modal" > 삭제</a></li>
                     </ol>
                   </div>
-                  <div class="app_title">POP_Dev</div>
+                  <!--<a [routerLink]="['../appMain']">-->
+                  <!--<div (click)="moveAppMain()">-->
+                  <div class="app_title">{{item.name}}</div>
                   <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
                   <div class="app_per clearfix">
                     <ul>
-                      <li><div>인스턴스</div><div>:</div><div>{{appSummaryInstance}}</div></li>
-                      <li><div>CPU</div><div>:</div><div>{{appStatsCpuPer}}</div></li>
-                      <li><div>메모리</div><div>:</div><div>{{appStatsMemoryPer}}</div></li>
+                      <li>
+                        <div>인스턴스</div>
+                        <div>:</div>
+                        <div>{{item.instances}}</div>
+                      </li>
+                      <li>
+                        <div>CPU</div>
+                        <div>:</div>
+                        <div>{{item.disk_quota}}</div>
+                      </li>
+                      <!--{{item.cpu}}-->
+                      <li>
+                        <div>메모리</div>
+                        <div>:</div>
+                        <div>{{item.memory}}</div>
+                      </li>
+                      <!--{{item.memory}}-->
                     </ul>
                   </div>
                   <div class="clear"></div>
-                  <div class="app_btn"><button class="btns colors1"><img src="../../../assets/resources/images/main/RUNNING.svg" alt=""/>STAGED</button></div>
+                  <div class="app_btn">
+                    <button class="btns colors1"><img src="../../../assets/resources/images/main/RUNNING.svg" alt=""/>STAGED
+                    </button>
+                  </div>
                   <div class="app_graph clearfix">
                     <div>CPU</div>
-                    <div>50%</div>
+                    <div>{{item.disk_quota}}</div>
                     <div class="space_bar1">
                       <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                             aria-valuemax="100" style="width: 50%;"></div>
                       </div>
                     </div>
                     <div>Memory</div>
-                    <div>60%</div>
+                    <div>{{item.memory}}</div>
                     <div class="space_bar2">
                       <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                             aria-valuemax="100" style="width: 60%;"></div>
                       </div>
                     </div>
                   </div>
+                  <!--</a>-->
+                  <!--</div>-->
                 </div>
                 <!-- 애플리케이션 영역 끝 -->
               </div>
             </li>
-            <li>
-              <div class="sortable_wrap">
-                <div onClick="#" class="space_empty"></div>
-              </div>
+            <!-- 애플리케이션 영역 이동 -->
+            <li >
+              <div class="sortable_wrap" ><a [routerLink]="['../catalog']">
+                <div class="space_empty"></div>
+              </a></div>
             </li>
-            <li>
-              <div class="sortable_wrap">
-                <div onClick="#" class="space_empty"></div>
-              </div>
-            </li>
-            <li>
-              <div class="sortable_wrap">
-                <div onClick="#" class="space_empty"></div>
-              </div>
-            </li>
+            <!-- 애플리케이션 영역 이동 끝-->
           </ul>
         </div>
-        <div id="dashTab_2"class="monitor_content02 row two_line two_view new_view clearfix">
+        <div id="dashTab_2" class="monitor_content02 row two_line two_view new_view clearfix">
           <ul class="maT30">
-            <li>
-              <div class="sortable_wrap space_box2">
+            <li *ngIf='isMessage'>
+              <div class="sortable_wrap space_box2" *ngIf='isMessage'>
                 <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나 <em><a [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
               </div>
             </li>
           </ul>
           <div class="space_btn_container clearfix">
-            <div class="space_btn2"><button class="btns colors4"  data-target="#layerpop4" data-toggle="modal">User Provided 생성</button></div>
+            <div class="space_btn2">
+              <button class="btns colors4" data-target="#layerpop4" data-toggle="modal">User Provided 생성</button>
+            </div>
           </div>
-          <ul class="maT10 space_list space_list_small">
-            <li>
+          <ul class="maT10 space_list space_list_small" >
+            <li *ngFor="let item of servicesEntities;  let i = index">
+
               <div class="sortable_wrap">
                 <!-- 애플리케이션 영역 시작 -->
-                <div class="space_pop_container space_list_small">
-                  <div class="space_pop_menu">
-                    <i class="fas fa-ellipsis-v"></i>
-                    <ol class="space_pop_submenu">
+                <div class="space_pop_container space_list_small" >
+                  <div class="space_pop_menu"  >
+                    <i class="fas fa-ellipsis-v" (click)="popclick('spopmenu_'+i)"></i>
+                    <ol class="space_pop_submenu" id ="spopmenu_{{i}}">
                       <li><a class="fas fa-edit" data-target="#layerpop3" data-toggle="modal"> 서비스 이름변경</a></li>
                       <li><a class="fas fa-wrench"> 서비스 수정</a></li>
                       <li><a class="fas fa-trash-alt" data-target="#layerpop5" data-toggle="modal"> 삭제</a></li>
                     </ol>
                   </div>
-                  <div class="app_title">POP_Dev</div>
+                  <div class="app_title">{{item.name}}</div>
                   <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
                   <div class="app_per clearfix">
                     <ul>
-                      <li><div>연결 앱</div><div>:</div><div>3</div></li>
-                      <li><div>서비스 명</div><div>:</div><div>redis-sb</div></li>
-                      <li><div>제공서비스</div><div>:</div><div>shared-vm</div></li>
+                      <li>
+                        <div>연결 앱</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{item.service_plan.appname}}</div>
+                      </li>
+                      <li>
+                        <div>서비스 명</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{item.service_plan.service.label}}</div>
+                      </li>
+                      <li>
+                        <div>제공서비스</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{item.service_plan.name}}</div>
+                      </li>
                     </ul>
                   </div>
                   <div class="clear"></div>
@@ -246,21 +278,13 @@
                 <!-- 애플리케이션 영역 끝 -->
               </div>
             </li>
+            <!-- 애플리케이션 영역 이동 -->
             <li>
-              <div class="sortable_wrap">
-                <div onClick="#" class="space_empty2"></div>
-              </div>
+              <div class="sortable_wrap"><a [routerLink]="['../catalog']">
+                <div class="space_empty2"></div>
+              </a></div>
             </li>
-            <li>
-              <div class="sortable_wrap">
-                <div onClick="#" class="space_empty2"></div>
-              </div>
-            </li>
-            <li>
-              <div class="sortable_wrap">
-                <div onClick="#" class="space_empty2"></div>
-              </div>
-            </li>
+            <!-- 애플리케이션 영역 이동 끝 -->
           </ul>
         </div>
       </div>
@@ -282,11 +306,11 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" id="" placeholder="앱 이름을 입력하세요" class="space_input"/>
+          <input type="text" placeholder="앱 이름을 입력하세요" class="space_input" name ="appNmae"[(ngModel)]="appName"/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal">변경</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="renameApp()">변경</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
@@ -294,8 +318,8 @@
   </div>
 </div>
 <div class="modal fade" id="layerpop2">
-  <div class="vertical-alignment-helper">
-    <div class="modal-dialog vertical-align-center">
+  <div class="vertical-alignment-helper" *ngFor="let item of appEntities;" >
+    <div class="modal-dialog vertical-align-center" >
       <div class="modal-content">
         <!-- header -->
         <div class="modal-header">
@@ -306,12 +330,12 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>앱을 삭제하면 되돌릴 수 없습니다.<br/><span>Testorg(앱 명)</span>를  삭제하시겠습니까?
+          <p>앱을 삭제하면 되돌릴 수 없습니다.<br/><span>앱 생성</span>를 삭제하시겠습니까?
           </p>
         </div>
         <!-- Footer -->
-        <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+        <div class="modal-footer" >
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="delApp(item.guid)">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
@@ -392,7 +416,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>서비스를 삭제하면 되돌릴 수 없습니다.<br/><span>Testorg(서비스 명)</span>를  삭제하시겠습니까?
+          <p>서비스를 삭제하면 되돌릴 수 없습니다.<br/><span>Testorg(서비스 명)</span>를 삭제하시겠습니까?
           </p>
         </div>
         <!-- Footer -->

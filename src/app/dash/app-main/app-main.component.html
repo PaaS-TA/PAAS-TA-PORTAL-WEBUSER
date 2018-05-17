@@ -95,7 +95,10 @@
               <dt class="tit">INSTANCE
                 <span class="pull-right rights"></span>
               </dt>
-              <dd><span class="instanceS">{{appSummaryInstance}}</span><small> / 최대 <span>{{appSummaryInstanceMax}}</span>개</small>
+              <dd>
+                <span class="instanceS" id="instanceS1">{{appSummaryInstance}}</span>
+                <span class="instanceS" id="instanceS2" style="display:none;"><input class="instance_in" id="instance_in" type="text" style="font-size: 40px;" value="{{appSummaryInstance}}" /></span>
+                <small> / 최대 <span>{{appSummaryInstanceMax}}</span>개</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/instance_ico.png" alt="" />
@@ -108,16 +111,13 @@
               </dd>
               <dt>
               <ul class="instance_ul">
-                <li>
-                  <button class="btns0 colors0">
-                    <i class="fas fa-angle-up"></i>
-                  </button>
+                <li><button class="btns0 colors0" (click)="instanceUpClick()"><i class="fas fa-angle-up"></i></button>
                 </li>
-                <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
+                <li><button class="btns0 colors0" (click)="instanceDownClick()"><i class="fas fa-angle-down"></i></button>
                 </li>
                 <li><button class="btns0 colors0 a0001" (click)="instanceDirectInputClick()">직접입력</button>
                 </li>
-                <li><button class="btns0 colors0 b0001" (click)="instanceDirectSaveClick()">저장</button>
+                <li><button class="btns0 colors0 b0001" (click)="showPopInstanceSaveClick()">저장</button>
                 </li>
               </ul>
               </dt>
@@ -160,8 +160,10 @@
               <dt class="tit">MEMORY
                 <span class="pull-right rights"></span>
               </dt>
-              <dd><span class="memS">{{ (appSummaryMemory >= 1024) ? (appSummaryMemory/1024) : (appSummaryMemory) }}</span><i>{{ (appSummaryMemory >= 1024) ? 'G' : 'M' }}</i><small> / 최대 100G</small>
-              <!--<dd><span class="memS">{{appSummaryMemory}}</span><i>MB</i><small> / 최대 100G</small>-->
+              <dd>
+                <span class="memS" id="memS1">{{ (appSummaryMemory >= 1024) ? (appSummaryMemory/1024) : (appSummaryMemory) }}</span>
+                <span class="memS" id="memS2" style="display:none;"><input class="instance_in" id="mem_in" type="text" style="font-size: 40px;" value="{{appSummaryMemory}}" /></span>
+                <i>{{ (appSummaryMemory >= 1024) ? 'G' : 'M' }}</i><small> / 최대 100G</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/memory_ico.png" alt="" />
@@ -174,13 +176,13 @@
               </dd>
               <dt>
               <ul class="instance_ul">
-                <li><button class="btns0 colors0"><i class="fas fa-angle-up"></i></button>
+                <li><button class="btns0 colors0" (click)="memUpClick()"><i class="fas fa-angle-up"></i></button>
                 </li>
-                <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
+                <li><button class="btns0 colors0" (click)="memDownClick()"><i class="fas fa-angle-down"></i></button>
                 </li>
                 <li><button class="btns0 colors0 a0002" (click)="memDirectInputClick()">직접입력</button>
                 </li>
-                <li><button class="btns0 colors0 b0002" (click)="memDirectSaveClick()">저장</button>
+                <li><button class="btns0 colors0 b0002" (click)="showPopMemSaveClick()">저장</button>
                 </li>
               </ul>
               </dt>
@@ -193,8 +195,10 @@
               <dt class="tit">DISK
                 <span class="pull-right rights"></span>
               </dt>
-              <dd><span class="diskS">{{ (appSummaryDisk >= 1024) ? (appSummaryDisk/1024) : (appSummaryDisk) }}</span><i>{{ (appSummaryDisk >= 1024) ? 'G' : 'M' }}</i><small> / 최대 300G</small>
-              <!--<dd><span class="diskS">{{appSummaryDisk}}</span><i>MB</i><small> / 최대 300G</small>-->
+              <dd>
+                <span class="diskS" id="diskS1">{{ (appSummaryDisk >= 1024) ? (appSummaryDisk/1024) : (appSummaryDisk) }}</span>
+                <span class="diskS" id="diskS2" style="display:none;"><input class="instance_in" id="disk_in" type="text" style="font-size: 40px;" value="{{appSummaryDisk}}" /></span>
+                <i>{{ (appSummaryDisk >= 1024) ? 'G' : 'M' }}</i><small> / 최대 300G</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/disk_ico.png" alt="" />
@@ -207,13 +211,13 @@
               </dd>
               <dt>
               <ul class="instance_ul">
-                <li><button class="btns0 colors0"><i class="fas fa-angle-up"></i></button>
+                <li><button class="btns0 colors0" (click)="diskUpClick()"><i class="fas fa-angle-up"></i></button>
                 </li>
-                <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
+                <li><button class="btns0 colors0" (click)="diskDownClick()"><i class="fas fa-angle-down"></i></button>
                 </li>
                 <li><button class="btns0 colors0 a0003" (click)="diskDirectInputClick()">직접입력</button>
                 </li>
-                <li><button class="btns0 colors0 b0003" (click)="diskDirectSaveClick()">저장</button>
+                <li><button class="btns0 colors0 b0003" (click)="showPopDiskSaveClick()">저장</button>
                 </li>
               </ul>
               </dt>
@@ -537,22 +541,15 @@
                     <col style='*'>
                   </colgroup>
                   <thead>
-                  <tr>
-                    <td>#
-                    </td>
-                    <td>Status
-                    </td>
-                    <td>CPU
-                    </td>
-                    <td>Memory
-                    </td>
-                    <td>Disk
-                    </td>
-                    <td>UPTIME
-                    </td>
-                    <td>RESTART
-                    </td>
-                  </tr>
+                    <tr>
+                      <td>#</td>
+                      <td>Status</td>
+                      <td>CPU</td>
+                      <td>Memory</td>
+                      <td>Disk</td>
+                      <td>UPTIME</td>
+                      <td>RESTART</td>
+                    </tr>
                   </thead>
                   <tbody *ngFor="let item of appStatusEntities; let i = index">
                     <tr *ngIf="i < tabContentStatsListLimit">
@@ -932,13 +929,13 @@
                     <div>인스턴스 수</div>
                     <div>최소</div>
                     <div>
-                      <input type="text" id="" value="1" class="num1"/>
+                      <input type="text" id="appAutoscalingInstanceMinCnt" name="appAutoscalingInstanceMinCnt" [(ngModel)]="appAutoscalingInstanceMinCnt" class="num1"/>
                       <div class="monitor_count_up" onClick="updown('1','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up1"/></div>
                       <div class="monitor_count_down" onClick="updown('1','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down1" /></div>
                     </div>
                     <div>최대</div>
                     <div>
-                      <input type="text" id="" value="5" class="num2"/>
+                      <input type="text" id="appAutoscalingInstanceMaxCnt" name="appAutoscalingInstanceMaxCnt" [(ngModel)]="appAutoscalingInstanceMaxCnt" class="num2"/>
                       <div class="monitor_count_up" onClick="updown('2','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up2"/></div>
                       <div class="monitor_count_down" onClick="updown('2','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down2" /></div>
                     </div>
@@ -947,13 +944,13 @@
                     <div>CPU 임계 값(%)</div>
                     <div>최소</div>
                     <div>
-                      <input type="text" id="" value="20" class="num3"/>
+                      <input type="text" id="appAutoscalingCpuMinThreshold" name="appAutoscalingCpuMinThreshold" [(ngModel)]="appAutoscalingCpuMinThreshold" class="num3"/>
                       <div class="monitor_count_up" onClick="updown('3','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up3"/></div>
                       <div class="monitor_count_down" onClick="updown('3','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down3" /></div>
                     </div>
                     <div>최대</div>
                     <div>
-                      <input type="text" id="" value="80" class="num4"/>
+                      <input type="text" id="appAutoscalingCpuMaxThreshold" name="appAutoscalingCpuMaxThreshold" [(ngModel)]="appAutoscalingCpuMaxThreshold" class="num4"/>
                       <div class="monitor_count_up" onClick="updown('4','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up4"/></div>
                       <div class="monitor_count_down" onClick="updown('4','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down4" /></div>
                     </div>
@@ -962,13 +959,13 @@
                     <div>메모리 인계 값</div>
                     <div>최소</div>
                     <div>
-                      <input type="text" id="" value="20" class="num5"/>
+                      <input type="text" id="appAutoscalingMemoryMinThreshold" name="appAutoscalingMemoryMinThreshold" [(ngModel)]="appAutoscalingMemoryMinThreshold" class="num5"/>
                       <div class="monitor_count_up" onClick="updown('5','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up5"/></div>
                       <div class="monitor_count_down" onClick="updown('5','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down5" /></div>
                     </div>
                     <div>최대</div>
                     <div>
-                      <input type="text" id="" value="80" class="num6"/>
+                      <input type="text" id="appAutoscalingMemoryMaxThreshold" name="appAutoscalingMemoryMaxThreshold" [(ngModel)]="appAutoscalingMemoryMaxThreshold" class="num6"/>
                       <div class="monitor_count_up" onClick="updown('6','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up6"/></div>
                       <div class="monitor_count_down" onClick="updown('6','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down6" /></div>
                     </div>
@@ -977,7 +974,7 @@
                     <div>측정시간(초)</div>
                     <div>&nbsp;</div>
                     <div>
-                      <input type="text" id="" value="180" class="num7"/>
+                      <input type="text" id="appAutoscalingMeasureTimeSec" name="appAutoscalingMeasureTimeSec" [(ngModel)]="appAutoscalingMeasureTimeSec" class="num7"/>
                       <div class="monitor_count_up" onClick="updown('7','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up7"/></div>
                       <div class="monitor_count_down" onClick="updown('7','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down7" /></div>
                     </div>
@@ -988,7 +985,7 @@
                     <div class="monitor_switch_txt">가상머신 자동확장</div>
                     <div>&nbsp;</div>
                     <div class="monitor_switch">
-                      <input class="switch_large" id="switch10" type="checkbox" checked="checked" switch="none">
+                      <input class="switch_large" id="switch10" type="checkbox" switch="none">
                       <label for="switch10"></label>
                     </div>
                     <div></div>
@@ -1011,7 +1008,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="monitor_center"><button class="btns2 btns2_1 colors4 event_btns">변경</button></div>
+              <div class="monitor_center"><button class="btns2 btns2_1 colors4 event_btns" (click)="showPopAutoscalingEditClick()">변경</button></div>
             </div>
           </li>
           <li class="monitor_second_box">
@@ -1025,13 +1022,13 @@
                     <div>CPU 임계치(%)</div>
                     <div>최소</div>
                     <div>
-                      <input type="text" id="" value="1" class="num8"/>
+                      <input type="text" id="appAlarmCpuWarningThreshold" name="appAlarmCpuWarningThreshold" [(ngModel)]="appAlarmCpuWarningThreshold" class="num8"/>
                       <div class="monitor_count_up" onClick="updown('8','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up1"/></div>
                       <div class="monitor_count_down" onClick="updown('8','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down1" /></div>
                     </div>
                     <div>최대</div>
                     <div>
-                      <input type="text" id="" value="5" class="num9"/>
+                      <input type="text" id="appAlarmCpuCriticalThreshold" name="appAlarmCpuCriticalThreshold" [(ngModel)]="appAlarmCpuCriticalThreshold" class="num9"/>
                       <div class="monitor_count_up" onClick="updown('9','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up2"/></div>
                       <div class="monitor_count_down" onClick="updown('9','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down2" /></div>
                     </div>
@@ -1040,13 +1037,13 @@
                     <div>메모리 임계치(%)</div>
                     <div>최소</div>
                     <div>
-                      <input type="text" id="" value="20" class="num10"/>
+                      <input type="text" id="appAlarmMemoryWarningThreshold" name="appAlarmMemoryWarningThreshold" [(ngModel)]="appAlarmMemoryWarningThreshold" class="num10"/>
                       <div class="monitor_count_up" onClick="updown('10','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up3"/></div>
                       <div class="monitor_count_down" onClick="updown('10','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down3" /></div>
                     </div>
                     <div>최대</div>
                     <div>
-                      <input type="text" id="" value="80" class="num11"/>
+                      <input type="text" id="appAlarmMemoryCriticalThreshold" name="appAlarmMemoryCriticalThreshold" [(ngModel)]="appAlarmMemoryCriticalThreshold" class="num11"/>
                       <div class="monitor_count_up" onClick="updown('11','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up4"/></div>
                       <div class="monitor_count_down" onClick="updown('11','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down4" /></div>
                     </div>
@@ -1055,7 +1052,7 @@
                     <div>측정시간(초)</div>
                     <div>&nbsp;</div>
                     <div>
-                      <input type="text" id="" value="180" class="num12"/>
+                      <input type="text" id="appAlarmMeasureTimeSec" name="appAlarmMeasureTimeSec" [(ngModel)]="appAlarmMeasureTimeSec" class="num12"/>
                       <div class="monitor_count_up" onClick="updown('12','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up5"/></div>
                       <div class="monitor_count_down" onClick="updown('12','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down5" /></div>
                     </div>
@@ -1065,7 +1062,7 @@
                   <li>
                     <div>E-mail</div>
                     <div>&nbsp;</div>
-                    <div><input type="text" id="" value="" /></div>
+                    <div><input type="text" id="appAlarmEmail" name="appAlarmEmail" [(ngModel)]="appAlarmEmail" /></div>
                     <div>전송</div>
                     <div class="monitor_switch2">
                       <input class="switch_large" id="switch12" type="checkbox" checked="checked" switch="none">
@@ -1084,7 +1081,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="monitor_centers"><button class="btns2 btns2_1 colors4 event_btns">변경</button></div>
+              <div class="monitor_centers"><button class="btns2 btns2_1 colors4 event_btns" (click)="showPopAlarmEditClick()">변경</button></div>
             </div>
           </li>
         </ul>
@@ -1127,75 +1124,51 @@
                   <div class="monitor_sel_container">
                     <div>자원유형</div>
                     <div>
-                      <select>
-                        <option>Type</option>
+                      <select id="selectBoxAlarmType" (change)="selectBoxAlarmTypeChange($event.target.value)">
+                        <option value="">Type</option>
+                        <option value="cpu">cpu</option>
+                        <option value="memory">memory</option>
                       </select>
                     </div>
                   </div>
                   <div class="monitor_sel_container">
                     <div>Alram등급</div>
                     <div>
-                      <select>
-                        <option>Status</option>
+                      <select id="selectBoxAlarmStatus" (change)="selectBoxAlarmStatusChange($event.target.value)">
+                        <option value="">Status</option>
+                        <option value="warning">warning</option>
+                        <option value="critical">critical</option>
                       </select>
                     </div>
                   </div>
                 </div>
                 <table class="table_event condition">
                   <colgroup>
-                    <col style='*'>
-                    <col style='*'>
-                    <col style='*'>
+                    <col style='width: 170px;'>
+                    <col style='width: 100px;'>
+                    <col style='width: 100px;'>
                     <col style='*'>
                   </colgroup>
                   <thead>
                   <tr>
-                    <td>Date
-                    </td>
-                    <td>자원유형
-                    </td>
-                    <td>Alram 등급
-                    </td>
-                    <td>Message
-                    </td>
+                    <td>Date</td>
+                    <td>자원유형</td>
+                    <td>Alram 등급</td>
+                    <td>Message</td>
                   </tr>
                   </thead>
-                  <tbody>
-                  <tr>
-                    <td>2017-11-13 09:39:33</td>
-                    <td>CPU</td>
-                    <td>Warning</td>
-                    <td>Cpu Status 95%</td>
-                  </tr>
-                  <tr>
-                    <td>2017-11-13 09:39:33</td>
-                    <td>CPU</td>
-                    <td>Warning</td>
-                    <td>Cpu Status 95%</td>
-                  </tr>
-                  <tr>
-                    <td>2017-11-13 09:39:33</td>
-                    <td>CPU</td>
-                    <td>Warning</td>
-                    <td>Cpu Status 95%</td>
-                  </tr>
-                  <tr>
-                    <td>2017-11-13 09:39:33</td>
-                    <td>CPU</td>
-                    <td>Warning</td>
-                    <td>Cpu Status 95%</td>
-                  </tr>
-                  <tr>
-                    <td>2017-11-13 09:39:33</td>
-                    <td>CPU</td>
-                    <td>Warning</td>
-                    <td>Cpu Status 95%</td>
-                  </tr>
+                  <tbody *ngFor="let item of appAlarmsEntities; let i = index">
+                    <tr>
+                      <td>{{item.regDate}}</td>
+                      <td>{{item.resourceType}}</td>
+                      <td>{{item.alarmLevel}}</td>
+                      <td>{{item.alarmMessage}}</td>
+                    </tr>
                   </tbody>
                   <tfoot>
                   <tr>
                     <td colspan="6">
-                      <button class="btns2 btns2_1 colors4 event_btns">더보기</button>
+                      <button class="btns2 btns2_1 colors4 event_btns" (click)="alarmsMoreClick()">더보기</button>
                     </td>
                   </tr>
                   </tfoot>
@@ -1474,6 +1447,83 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="layerpop_autoscaling_edit">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">Auto-scaling 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>Auto-scaling 을 변경하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="editAutoscalingClick()">변경</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_alarm_edit">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">Alarm 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>Alarm 을 변경하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="editAlarmClick()">변경</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_app_save">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">App 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>App 을 변경하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="appSaveClick()">변경</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <textarea id="out_a">
 </textarea>

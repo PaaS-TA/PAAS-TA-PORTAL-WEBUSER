@@ -42,9 +42,9 @@ export class OrgQuotaService {
       guid: orgId,            // org guid
       quotaGuid: quota.guid,  // quota guid to change
     };
-    /*
-    const observable = this.common.doPut(url, requestBody, this.getToken());
-    observable.subscribe(data => {
+
+    return (async() => {
+      const data = await this.common.doPut(url, requestBody, this.getToken()).toPromise();
       const isOrg: boolean =
         data.hasOwnProperty('metadata') && data['metadata'].hasOwnProperty('guid')
         && data.hasOwnProperty('entity') && data['entity'].hasOwnProperty('quota_definition_guid');
@@ -53,31 +53,10 @@ export class OrgQuotaService {
         const resQuotaId = data['entity']['quota_definition_guid'];
 
         if (resOrgId === orgId && resQuotaId === quota.guid)
-          return {quotaInstance: quota};
+          return quota;
       }
-      return {quotaInstance: null};
-    });
-
-    return {quotaInstance: null};
-    */
-
-    const result = async() => {
-      return await this.common.doPut(url, requestBody, this.getToken()).toPromise();
-    };
-
-    return result().then(data => {
-      const isOrg: boolean =
-        data.hasOwnProperty('metadata') && data['metadata'].hasOwnProperty('guid')
-        && data.hasOwnProperty('entity') && data['entity'].hasOwnProperty('quota_definition_guid');
-      if (isOrg) {
-        const resOrgId = data['metadata']['guid'];
-        const resQuotaId = data['entity']['quota_definition_guid'];
-
-        if (resOrgId === orgId && resQuotaId === quota.guid)
-          return {quotaInstance: quota};
-      }
-      return {quotaInstance: null}
-    });
+      return null;
+    })();
   }
 
   public getOrgAvailableQuota(): Array<OrgQuota> {

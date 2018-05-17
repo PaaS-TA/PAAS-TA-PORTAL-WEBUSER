@@ -68,7 +68,7 @@
                 (click)="displayDeleteSpace($event, space)">
               <i class="fas fa-trash-alt"></i></th>
           </tr>
-          <tr class="on">
+          <tr class="on" (focusout)="logger.debug('rename focus out')">
             <td colspan="3">
               <div class="">
                 <div class="account_table_in">
@@ -618,7 +618,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" [id]="'layerpop7-' + org.name">
+  <div class="modal fade" [id]="'layerpop7-' + org.name" (focusout)="changeQuota(false)">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -640,10 +640,10 @@
           <!-- Footer -->
           <div class="modal-footer">
             <button type="button" class="btns2 colors4"
-                    data-dismiss="modal" (click)="changeQuota(true)">추가
+                    data-dismiss="modal" (click)="changeQuota(true)">변경
             </button>
             <button type="button" class="btns2 colors5"
-                    data-dismiss="modal" (click)="changeQuota(false)">취소
+                    data-dismiss="modal">취소
             </button>
           </div>
         </div>
