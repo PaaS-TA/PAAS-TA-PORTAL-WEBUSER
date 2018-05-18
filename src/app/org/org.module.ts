@@ -9,6 +9,8 @@ import { OrgInnerComponent } from './org-inner/org-inner.component';
 import { OrgService } from './common/org.service';
 import { OrgQuotaService } from './common/org-quota.service';
 import { SpaceService } from '../space/space.service';
+import { OrgMainNavComponent } from './org-main-nav/org-main-nav.component';
+import { OrgMainHeaderComponent } from './org-main-header/org-main-header.component';
 
 @NgModule({
   imports: [
@@ -19,6 +21,8 @@ import { SpaceService } from '../space/space.service';
   declarations: [
     OrgMainComponent,
     OrgInnerComponent,
+    OrgMainNavComponent,
+    OrgMainHeaderComponent,
   ],
   providers: [
     OrgService,
