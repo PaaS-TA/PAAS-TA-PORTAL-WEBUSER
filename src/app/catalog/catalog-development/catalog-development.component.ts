@@ -216,11 +216,11 @@ export class CatalogDevelopmentComponent implements OnInit {
 
   nameCheck() {
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      let map = new Map<>();
+      let map = new Map<number, string>();
       map = data;
       if(map.get(this.catalogService.lasttime)){
         this.namecheck = CATALOGURLConstant.OK;
-        this.catalogService.namecheckmap = new Map<>();
+        this.catalogService.namecheckmap = new Map<number, string>();
       }
         }, error => {
       this.namecheck = CATALOGURLConstant.NO;

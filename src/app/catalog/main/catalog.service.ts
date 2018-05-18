@@ -12,7 +12,7 @@ export class CatalogService {
   recentpacks : Array<any> = Array<any>();
   servicepacks : Array<Service> = Array<Service>();
   lasttime : number;
-  namecheckmap : Map<number, string> = new Map<number, Response>();
+  namecheckmap : Map<number, string> = new Map<number, string>();
   constructor(private common: CommonService, private log: NGXLogger) {
   }
 
