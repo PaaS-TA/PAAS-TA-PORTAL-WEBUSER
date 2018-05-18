@@ -10,9 +10,6 @@ import {Router} from "@angular/router";
 export class CatalogNavComponent implements OnInit {
 
   constructor(private catalogService: CatalogService, private router: Router) {
-    if(catalogService.starterpacks.length === 0){
-      this.router.navigate(['catalog']);
-    }
   }
 
   ngOnInit() {

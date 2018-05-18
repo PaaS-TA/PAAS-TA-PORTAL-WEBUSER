@@ -32,5 +32,16 @@ export enum CATALOGURLConstant {
   CREATESUCCESSAPP = '현재 이름으로 앱을 생성할수 있습니다.',
   CREATEFALSEAPP ='현재 이름으로 앱을 생성하실수 없습니다.',
   CREATESUCCESSROUTE='현재 호스트로 라우트를 생성할수 있습니다.',
-  CREATEFASLEROUTE='현재 호스트로 라우트를 생성하실수 없습니다.'
+  CREATEFASLEROUTE='현재 호스트로 라우트를 생성하실수 없습니다.',
+  OPTIONORG='생성된 조직명',
+  OPTIONSPACE='해당 공간명',
+  NOTSELECTSPACE = '공간을 선택해 주시기 바랍니다.',
+  NOTSPACE = '공간이 없습니다.',
+  SELECTORGANDSPACE='조직과 공간을 선택해 주십시오',
+  INPUTAPPNAME ='앱 이름을 입력하여 주십시오',
+  INPUTHOSTNAME='호스트를 입력하여 주십시오',
+  FAIL = 'FAIL',
+  SUCCESS ='SUCCESS',
+  OK=1,
+  NO=-1
 }

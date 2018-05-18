@@ -370,7 +370,7 @@
 
     //$(".serviceOn,.lauthOn").on("click" ,function(){
     $(".lauthOn").on("click" ,function(){
-        $(".service_dl,.lauth_dl").toggleClass("on");
+        $(".lauth_dl").toggleClass("on");
     });
 
     $(".variableSW").on("click" , function(){
@@ -646,4 +646,32 @@ function updown(objNum,plusMinus) {
     });
     clipboard.on('error', function(e) {
       console.log(e);
+    });
+
+    $('#instance_in, #mem_in, #disk_in').keyup(function () {
+      this.value = this.value.replace(/[^0-9]/g,'');
+    });
+
+    $('#appAutoscalingInstanceMinCnt, #appAutoscalingInstanceMaxCnt, #appAutoscalingCpuMinThreshold, #appAutoscalingCpuMaxThreshold, #appAutoscalingMemoryMinThreshold, #appAutoscalingMemoryMaxThreshold, #appAutoscalingMeasureTimeSec').keyup(function () {
+      this.value = this.value.replace(/[^0-9]/g,'');
+    });
+
+    $('#appAlarmCpuWarningThreshold, #appAlarmCpuCriticalThreshold, #appAlarmMemoryWarningThreshold, #appAlarmMemoryCriticalThreshold, #appAlarmMeasureTimeSec').keyup(function () {
+      this.value = this.value.replace(/[^0-9]/g,'');
+    });
+
+    var validateEmail = function(elementValue) {
+      var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      return emailPattern.test(elementValue);
+    }
+
+    $('#appAlarmEmail').keyup(function() {
+      var value = $(this).val();
+      var valid = validateEmail(value);
+
+      if (!valid) {
+        $(this).css('color', 'red');
+      } else {
+        $(this).css('color', '#000');
+      }
     });

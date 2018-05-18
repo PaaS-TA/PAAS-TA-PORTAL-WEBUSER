@@ -11,7 +11,8 @@ export class CatalogService {
   starterpacks : Array<StarterPack> = Array<StarterPack>();
   recentpacks : Array<any> = Array<any>();
   servicepacks : Array<Service> = Array<Service>();
-
+  lasttime : number;
+  namecheckmap : Map<number, string> = new Map<number, string>();
   constructor(private common: CommonService, private log: NGXLogger) {
   }
 
@@ -80,9 +81,18 @@ export class CatalogService {
     });
   }
 
-  getNameCheck(url : string){
+  getServicePlan(url : string){
     return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
       return res;
+    });
+  }
+
+  getNameCheck(url : string){
+    this.lasttime = Date.now();
+    const time = this.lasttime;
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
+      this.namecheckmap.set(time, "성공");
+      return this.namecheckmap;
     });
   }
 

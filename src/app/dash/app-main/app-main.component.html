@@ -97,7 +97,9 @@
               </dt>
               <dd>
                 <span class="instanceS" id="instanceS1">{{appSummaryInstance}}</span>
-                <span class="instanceS" id="instanceS2" style="display:none;"><input class="instance_in" id="instance_in" type="text" style="font-size: 40px;" value="{{appSummaryInstance}}" /></span>
+                <span class="instanceS" id="instanceS2" style="display:none;">
+                  <input class="instance_in" id="instance_in" type="text" style="font-size: 40px;" value="{{appSummaryInstance}}" />
+                </span>
                 <small> / 최대 <span>{{appSummaryInstanceMax}}</span>개</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
@@ -792,7 +794,7 @@
               <div class="view_table_wrap service_wrap">
                 <div class="service_title maT30">
                   <div class="pull-right">
-                    <span class="fcolor" (click)="showWindowTailLogs()">
+                    <span class="fcolor" style="cursor: pointer;" (click)="showWindowTailLogs()">
                       <i class="fas fa-code"></i> Tail Logs
                     </span>
                   </div>
@@ -862,35 +864,26 @@
                   <thead>
                   <tr>
                     <th class="table_SW">
-                      <select>
-                        <option>ALL
+                      <select id="selectBoxChartInstance" (change)="selectBoxChartInstanceChange($event.target.value)">
+                        <option value="All">ALL</option>
+                        <option *ngFor="let instance of appStatusEntities; let i = index" value="{{i}}">
+                          {{i}}
                         </option>
                       </select>
                     </th>
                     <td class="table_SW">
                       <ul class="weekday">
-                        <li class="cur">현재
-                        </li>
-                        <li>지난 15일
-                        </li>
-                        <li>30M
-                        </li>
-                        <li>1H
-                        </li>
-                        <li>3H
-                        </li>
-                        <li>6H
-                        </li>
-                        <li>12H
-                        </li>
-                        <li>1DAY
-                        </li>
-                        <li>2DAY
-                        </li>
-                        <li>1WEEK
-                        </li>
-                        <li>1MONTH
-                        </li>
+                        <li class="cur" (click)="chartTimeClick(3, 1)">현재</li>
+                        <li (click)="chartTimeClick(15, 30)">지난 15일</li>
+                        <li (click)="chartTimeClick(30, 60)">30M</li>
+                        <li (click)="chartTimeClick(60, 60*2)">1H</li>
+                        <li (click)="chartTimeClick(60*3, 60*5)">3H</li>
+                        <li (click)="chartTimeClick(60*6, 60*10)">6H</li>
+                        <li (click)="chartTimeClick(60*12, 60*25)">12H</li>
+                        <li (click)="chartTimeClick(0*24, 60*50)">1DAY</li>
+                        <li (click)="chartTimeClick(60*48, 60*100)">2DAY</li>
+                        <li (click)="chartTimeClick(60*168, 60*350)">1WEEK</li>
+                        <li (click)="chartTimeClick(60*720, 60*1350)">1MONTH</li>
                       </ul>
                     </td>
                   </tr>
@@ -1539,180 +1532,4 @@
 //  clipboard.on('error', function(e) {
 //    console.log(e);
 //  });
-</script>
-
-<script type="text/javascript">
-  //TODO 나중에 실행 되야함.
-  var speedCanvas = document.getElementById("speedChart");
-
-  Chart.defaults.global.defaultFontFamily = "gulim";
-  Chart.defaults.global.defaultFontSize = 12;
-
-  var speedData = {
-    labels: ["08/Apr", "11/Apr", "14/Apr", "17/Apr", "20/Apr", "23/Apr", "26/Apr", "29/Apr", "02/May"],
-    datasets: [{
-      label: "PayPal",
-      data: [0, 59, 69, 20, 25, 55, 40, 50, 10],
-      lineTension: 0,
-      fill: false,
-      borderWidth: 0,
-      backgroundColor: '#d7dee6',
-      pointBorderColor: '#d7dee6',
-      pointBackgroundColor: '#d7dee6',
-      pointRadius: 0,
-      pointHoverRadius: 5,
-      pointHitRadius: 10,
-      pointBorderWidth: 0,
-      pointStyle: 'rectRounded'
-    },
-      {
-        label: "Credit Card",
-        data: [0, 10, 40, 10, 20, 35, 20, 60,22],
-        lineTension: 0,
-        fill: false,
-        borderColor: '#64afab',
-        borderWidth: 0,
-        backgroundColor: '#64afab',
-        pointBorderColor: '#64afab',
-        pointBackgroundColor: '#64afab',
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        pointHitRadius: 10,
-        pointBorderWidth: 0,
-        pointStyle: 'rectRounded'
-      }
-    ]
-  };
-  var chartOptions = {
-    legend: {
-      display: true,
-      position: 'top',
-      labels: {
-        boxWidth: 60,
-        boxHeight: 4,
-        fontColor: '#cfd2d7'
-      }
-    }
-  };
-  var lineChart = new Chart(speedCanvas, {
-    type: 'line',
-    data: speedData,
-    options: chartOptions
-  });
-
-
-  var speedCanvas2 = document.getElementById("speedChart2");
-
-  Chart.defaults.global.defaultFontFamily = "gulim";
-  Chart.defaults.global.defaultFontSize = 12;
-
-  var speedData = {
-    labels: ["08/Apr", "11/Apr", "14/Apr", "17/Apr", "20/Apr", "23/Apr", "26/Apr", "29/Apr", "02/May"],
-    datasets: [{
-      label: "PayPal",
-      data: [0, 10, 15, 20, 25, 15, 10, 5, 10],
-      lineTension: 0,
-      fill: false,
-      borderWidth: 0,
-      backgroundColor: '#d7dee6',
-      pointBorderColor: '#d7dee6',
-      pointBackgroundColor: '#d7dee6',
-      pointRadius: 0,
-      pointHoverRadius: 5,
-      pointHitRadius: 10,
-      pointBorderWidth: 0,
-      pointStyle: 'rectRounded'
-    },
-      {
-        label: "Credit Card",
-        data: [0, 10, 20, 10, 20, 25, 40, 10,12],
-        lineTension: 0,
-        fill: false,
-        borderColor: '#64afab',
-        borderWidth: 0,
-        backgroundColor: '#64afab',
-        pointBorderColor: '#64afab',
-        pointBackgroundColor: '#64afab',
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        pointHitRadius: 10,
-        pointBorderWidth: 0,
-        pointStyle: 'rectRounded'
-      }
-    ]
-  };
-  var chartOptions = {
-    legend: {
-      display: true,
-      position: 'top',
-      labels: {
-        boxWidth: 60,
-        boxHeight: 4,
-        fontColor: '#cfd2d7'
-      }
-    }
-  };
-  var lineChart = new Chart(speedCanvas2, {
-    type: 'line',
-    data: speedData,
-    options: chartOptions
-  });
-
-
-  var speedCanvas3 = document.getElementById("speedChart3");
-
-  Chart.defaults.global.defaultFontFamily = "gulim";
-  Chart.defaults.global.defaultFontSize = 12;
-
-  var speedData = {
-    labels: ["08/Apr", "11/Apr", "14/Apr", "17/Apr", "20/Apr", "23/Apr", "26/Apr", "29/Apr", "02/May"],
-    datasets: [{
-      label: "PayPal",
-      data: [0, 59, 69, 20, 25, 55, 40, 50, 10],
-      lineTension: 0,
-      fill: false,
-      borderWidth: 0,
-      backgroundColor: '#d7dee6',
-      pointBorderColor: '#d7dee6',
-      pointBackgroundColor: '#d7dee6',
-      pointRadius: 0,
-      pointHoverRadius: 5,
-      pointHitRadius: 10,
-      pointBorderWidth: 0,
-      pointStyle: 'rectRounded'
-    },
-      {
-        label: "Credit Card",
-        data: [0, 10, 40, 10, 20, 35, 20, 60,22],
-        lineTension: 0,
-        fill: false,
-        borderColor: '#64afab',
-        borderWidth: 0,
-        backgroundColor: '#64afab',
-        pointBorderColor: '#64afab',
-        pointBackgroundColor: '#64afab',
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        pointHitRadius: 10,
-        pointBorderWidth: 0,
-        pointStyle: 'rectRounded'
-      }
-    ]
-  };
-  var chartOptions = {
-    legend: {
-      display: true,
-      position: 'top',
-      labels: {
-        boxWidth: 60,
-        boxHeight: 4,
-        fontColor: '#cfd2d7'
-      }
-    }
-  };
-  var lineChart = new Chart(speedCanvas3, {
-    type: 'line',
-    data: speedData,
-    options: chartOptions
-  });
 </script>
