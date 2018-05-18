@@ -68,6 +68,7 @@
                 (click)="displayDeleteSpace($event, space)">
               <i class="fas fa-trash-alt"></i></th>
           </tr>
+		  <!-- TODO popup focusout 처리 -->
           <tr class="on" (focusout)="logger.debug('rename focus out')">
             <td colspan="3">
               <div class="">
