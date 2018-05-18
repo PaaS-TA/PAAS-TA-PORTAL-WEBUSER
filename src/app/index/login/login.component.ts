@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {SecurityService} from "../auth/security.service";
-import {CommonService} from "../common/common.service";
+import {SecurityService} from "../../auth/security.service";
+import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "./login.service";

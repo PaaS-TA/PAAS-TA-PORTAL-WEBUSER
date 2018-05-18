@@ -7,7 +7,7 @@ import {Observable} from 'rxjs/Observable';
 import {reject} from 'q';
 import {logger} from 'codelyzer/util/logger';
 import {NGXLogger} from 'ngx-logger';
-import {Param} from "../login/login.component";
+import {Param} from "../index/login/login.component";
 import {Router} from "@angular/router";
 import {AppConfig} from "../app.config"
 

@@ -12,7 +12,6 @@ import {UsageComponent} from './usage/usage.component';
 import {UserComponent} from './user/user.component';
 import {WebIdeUserComponent} from './web-ide-user/web-ide-user.component';
 import {CfAppComponent} from './cf-app/cf-app.component';
-import {IndexComponent} from './index/index.component';
 import {RoutingModule} from './app.routing';
 import {HttpClientModule} from '@angular/common/http';
 import {TopComponent} from './layout/top/top.component';
@@ -34,9 +33,7 @@ import {CommonService} from './common/common.service';
 import {DashModule} from './dash/dash.module';
 import {UsermgmtComponent} from './usermgmt/usermgmt.component';
 import {UsermgmtService} from './usermgmt/usermgmt.service';
-import {LoginComponent} from './login/login.component';
 import {SpaceService} from './space/space.service';
-import {LoginService} from './login/login.service';
 import {AuthGuard} from './auth/auth.guard';
 import {OrgModule} from './org/org.module';
 import {CatalogModule} from "./catalog/catalog.module";
@@ -48,7 +45,8 @@ import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard
 import {DashboardProduceService} from './dashboard/dashboard-produce/dashboard-produce.service';
 import {CatalogService} from "./catalog/main/catalog.service";
 import {ErrorComponent} from './error/error.component';
-import {AppConfig} from "./app.config";
+import {IndexModule} from "./index/index.module";
+import {ExternalModule} from "./external/external.module";
 
 @NgModule({
   declarations: [
@@ -63,7 +61,6 @@ import {AppConfig} from "./app.config";
     UsageComponent,
     UserComponent,
     WebIdeUserComponent,
-    IndexComponent,
     TopComponent,
     NavComponent,
     BottonComponent,
@@ -71,19 +68,20 @@ import {AppConfig} from "./app.config";
     CallbackComponent,
     LogoutComponent,
     UsermgmtComponent,
-    LoginComponent,
     DashboardSpaceComponent,
     DashboardProduceComponent,
     ErrorComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({appId: 'serverApp'}),
-    FormsModule,
-    RoutingModule,
-    HttpClientModule,
+    IndexModule,
     DashModule,
     OrgModule,
     CatalogModule,
+    FormsModule,
+    RoutingModule,
+    HttpClientModule,
+    ExternalModule,
+    BrowserModule.withServerTransition({appId: 'serverApp'}),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.chasingDots,
       backdropBackgroundColour: 'rgba(0,0,0,0.3)',
@@ -102,7 +100,6 @@ import {AppConfig} from "./app.config";
   providers: [
     AuthGuard,
     CommonService,
-    LoginService,
     SecurityService,
     DashboardService,
     UsermgmtService,

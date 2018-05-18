@@ -8,7 +8,7 @@ import {CommonService} from '../common/common.service';
 import {appendChild} from '@angular/core/src/render3/node_manipulation';
 import {toBase64String} from '@angular/compiler/src/output/source_map';
 import {UsermgmtService} from "../usermgmt/usermgmt.service";
-import {LoginComponent} from "../login/login.component";
+import {LoginComponent} from "../index/login/login.component";
 import {AppConfig} from "../app.config"
 
 
@@ -119,7 +119,7 @@ export class SecurityService {
       this.log.debug(data);
       this.common.saveCfUserInfo(data['user_id'], data['user_name'], data['name'], data['given_name'], data['family_name'],
         data['email'], data['phone_number'], data['exp'], data['previous_logon_time']);
-      this.doUserInfoProvider(data['user_id']);
+      this.doUserInfoProvider(data['user_name']);
     }, error => {
       this.moveErrLogin();
     });
@@ -168,7 +168,8 @@ export class SecurityService {
     }).subscribe(data => {
       if (data['User'] != null) {
         this.common.isLoading = false;
-        this.common.saveUserInfo(data['User']['userId'], data['User']['userName'], data['User']['status'], data['User']['tellPhone'], data['User']['zipCode'], data['User']['address'], data['User']['addressDetail'], data['User']['imgPath']);
+        this.common.saveUserInfo(data['User']['userId'], data['User']['userName'], data['User']['status'], data['User']['tellPhone'],
+          data['User']['zipCode'], data['User']['address'], data['User']['addressDetail'], data['User']['imgPath']);
         this.router.navigate(['dashboard']);
       } else {
         this.saveUserDB(userId);
