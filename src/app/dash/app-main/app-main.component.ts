@@ -144,7 +144,7 @@ export class AppMainComponent implements OnInit {
 
 
     this.route.queryParams.subscribe(params => {
-      if (params != null) {
+      if (Object.keys(params).length > 0) {
         setTimeout(() => this.showLoading(), 0);
 
         this.appGuid = params['guid'];
@@ -157,7 +157,19 @@ export class AppMainComponent implements OnInit {
         this.getAlarm(params['guid']);
         this.getAutoscaling(params['guid']);
       } else {
-        this.router.navigate(['dashMain']);
+        // TODO test
+        //this.router.navigate(['dashMain']);
+        setTimeout(() => this.showLoading(), 0);
+
+        this.appGuid = "80dd102d-8068-4997-b518-c3f04bcdd00f";
+        this.getAppSummary("80dd102d-8068-4997-b518-c3f04bcdd00f");
+
+        this.getAppEvents("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        this.getAppEnv("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        this.getAppRecentLogs("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        this.getAlarms("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        this.getAlarm("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        this.getAutoscaling("80dd102d-8068-4997-b518-c3f04bcdd00f");
       }
     });
   }
@@ -364,12 +376,6 @@ export class AppMainComponent implements OnInit {
         $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
         $(this).closest('dl').find("span.rights").html(BG_wrap);
       }), 100);
-
-    // $('.BG_wrap input').each(function () {
-    //   var BG_wrap = $(this).val();
-    //   $(this).parent().delay(500).animate({'top': -BG_wrap + '%'}, 800);
-    //   $(this).closest('dl').find("span.rights").html(BG_wrap);
-    // });
   }
 
   startAppClick() {
@@ -534,7 +540,6 @@ export class AppMainComponent implements OnInit {
       name: name
     };
     this.appMainService.updateApp(params).subscribe(data => {
-      // window.location.reload();
       this.ngOnInit();
       $("[id^='layerpop']").modal("hide");
 
@@ -747,6 +752,7 @@ export class AppMainComponent implements OnInit {
     }
 
     let params = {
+      // TODO 하드코딩
       // appGuid: this.appSummaryGuid,
       appGuid: "9dac6e76-37cf-484f-8ebe-bdbaf99943e6",
       cpuWarningThreshold: Number($("#appAlarmCpuWarningThreshold").val()),
@@ -776,7 +782,7 @@ export class AppMainComponent implements OnInit {
   }
 
   getAutoscaling(guid: string) {
-    //TODO 임시
+    // TODO 임시
     guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
 
     this.appMainService.getAutoscaling(guid).subscribe(data => {
@@ -825,6 +831,7 @@ export class AppMainComponent implements OnInit {
     }
 
     let params = {
+      // TODO 하드코딩
       // appGuid: this.appSummaryGuid,
       appGuid: "2d35e19c-f223-49a3-b4b5-da2c55969f07",
       autoScalingInYn: this.appAutoscalingInYn,
@@ -1143,7 +1150,7 @@ export class AppMainComponent implements OnInit {
     Chart.defaults.global.defaultFontFamily = "gulim";
     Chart.defaults.global.defaultFontSize = 12;
 
-    //TODO 하드코딩
+    // TODO 하드코딩
     var guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
     var idx = String(this.appSummaryInstance);
     var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
@@ -1310,7 +1317,7 @@ export class AppMainComponent implements OnInit {
     Chart.defaults.global.defaultFontFamily = "gulim";
     Chart.defaults.global.defaultFontSize = 12;
 
-    //TODO 하드코딩
+    // TODO 하드코딩
     var guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
     var idx = String(this.appSummaryInstance);
     var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
@@ -1345,12 +1352,6 @@ export class AppMainComponent implements OnInit {
               + (day < 10 ? "0" + day : day) + " "
               + (hour < 10 ? "0" + hour : hour) + ":"
               + (min < 10 ? "0" + min : min);
-
-            // var retVal =   year + "-" + (month < 10 ? "0" + month : month) + "-"
-            //   + (day < 10 ? "0" + day : day) + " "
-            //   + (hour < 10 ? "0" + hour : hour) + ":"
-            //   + (min < 10 ? "0" + min : min) + ":"
-            //   + (sec < 10 ? "0" + sec : sec);
 
             timeArray[j] = dataobj[i].data.data[0].data[j].time;
           }
@@ -1477,7 +1478,7 @@ export class AppMainComponent implements OnInit {
     Chart.defaults.global.defaultFontFamily = "gulim";
     Chart.defaults.global.defaultFontSize = 12;
 
-    //TODO 하드코딩
+    // TODO 하드코딩
     var guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
     var idx = String(this.appSummaryInstance);
     var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
@@ -1512,12 +1513,6 @@ export class AppMainComponent implements OnInit {
               + (day < 10 ? "0" + day : day) + " "
               + (hour < 10 ? "0" + hour : hour) + ":"
               + (min < 10 ? "0" + min : min);
-
-            // var retVal =   year + "-" + (month < 10 ? "0" + month : month) + "-"
-            //   + (day < 10 ? "0" + day : day) + " "
-            //   + (hour < 10 ? "0" + hour : hour) + ":"
-            //   + (min < 10 ? "0" + min : min) + ":"
-            //   + (sec < 10 ? "0" + sec : sec);
 
             timeArray[j] = dataobj[i].data.data[0].data[j].time;
           }
@@ -1635,7 +1630,7 @@ export class AppMainComponent implements OnInit {
       });
 
     });
-    //TODO 마지막??
+    // TODO 마지막??
     this.common.isLoading = false;
   }
 
@@ -1664,6 +1659,7 @@ export class AppMainComponent implements OnInit {
   }
 
   showWindowTailLogs() {
+    // TODO 하드코딩
     window.open('http://localhost:8080/tailLogs?name=github-test-app2&org=demo.org&space=dev&guid=80dd102d-8068-4997-b518-c3f04bcdd00f', '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
