@@ -51,6 +51,7 @@ const routes: Routes = [
   {path: 'webideuser', component: WebIdeUserComponent, canActivate: [AuthGuard]},
   {path: 'catalogdetail/:id', component: CatalogDetailComponent, canActivate: [AuthGuard]},
   {path: 'catalogdevelopment/:id', component: CatalogDevelopmentComponent, canActivate: [AuthGuard]},
+  {path: 'catalogdevelopment/:id/:orgname/:spacename', component: CatalogDevelopmentComponent, canActivate: [AuthGuard]},
   {path: 'catalogservice/:id', component: CatalogServiceComponent, canActivate: [AuthGuard]},
   {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
   {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},

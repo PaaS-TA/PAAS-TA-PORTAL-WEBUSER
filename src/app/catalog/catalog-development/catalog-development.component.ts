@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
+import {FormGroup} from "@angular/forms/forms";
 
 @Component({
   selector: 'app-catalog-development',
@@ -12,41 +13,61 @@ import {Organization} from "../../model/organization";
   styleUrls: ['./catalog-development.component.css']
 })
 export class CatalogDevelopmentComponent implements OnInit {
-
-  namemsg : string = '';
-  routemsg : string ='';
-
+  catalogcontans = CATALOGURLConstant;
   namecheck : number = 0;
+  namepatterncheck : boolean = true;
   routecheck : number = 0;
+  routepatterncheck : boolean = true;
 
-  successapp : string;
-  falseapp : string;
-  successroute : string;
-  falseroute : string;
+  appplaceholder : string;
+  routeplaceholder : string;
 
-  domain: string; // 도메인
+  orgname : string;
+  spacename : string;
+  dd : boolean;
+  disableappinput : boolean;
+  disablerouteinput : boolean;
+  disablebutton : boolean;
+
+  space : Space;
+  org : Organization;
+  orgs: Array<Organization> = new Array<Organization>(); // 조직 정보
+  spaces: Array<Space> = new Array<Space>(); // 공간 정보
+
+  inputtime : any;
+  outputtime : any;
+
+  domain: string = ''; // 도메인
   domainid : string; // 도메인id
   buildpack : BuildPack;
   appname: string; //앱 이름
   appurl: string; // 앱URL
   memory: number; // 메모리
   disk: number; // 디스크
-  space : Space;
-  org : Organization;
-  orgs: Array<Organization> = new Array<Organization>(); // 조직 정보
-  spaces: Array<Space> = new Array<Space>(); // 공간 정보
   appStart : boolean = false; // 앱 시작 여부
+
   constructor(private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
 
   }
 
   ngOnInit() {
+    this.RouterInit();
+    this.OrgsFrist();
+    this.SpacesFrist();
     this.DomainInit();
     this.BuildInit();
     this.OrgsInit();
     this.messageInit();
+
     this.memory = 512;
     this.disk = 1024;
+  }
+
+  RouterInit(){
+    const orgname = this.route.snapshot.params['orgname'];
+    const spacename = this.route.snapshot.params['spacename'];
+    orgname == null ? (this.orgname = CATALOGURLConstant.OPTIONORG, this.placeholderSetting(true)) : (this.orgname = orgname, this.placeholderSetting(false));
+    spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE, this.placeholderSetting(true)) : (this.spacename = spacename, this.placeholderSetting(false));
   }
 
   DomainInit(){
@@ -56,7 +77,6 @@ export class CatalogDevelopmentComponent implements OnInit {
     });
   }
 
-
   BuildInit() {
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.route.snapshot.params['id']).subscribe(data => {
       console.log(data);
@@ -64,37 +84,57 @@ export class CatalogDevelopmentComponent implements OnInit {
     });
   }
 
+  OrgsFrist(){
+    this.org = new Organization(null, null);
+    this.org.name = CATALOGURLConstant.OPTIONORG;
+    this.orgs.push(this.org);
+  }
+
+  SpacesFrist(){
+    this.space = new Space(null, null, null);
+    this.space.name = CATALOGURLConstant.OPTIONSPACE;
+    this.spaces.push(this.space);
+  }
+
+
   OrgsInit(){
     this.catalogService.getOrglist().subscribe(data => {
       data['resources'].forEach(res => {
-        this.orgs.push(new Organization(res['metadata'], res['entity']));
+        const _org = new Organization(res['metadata'], res['entity']);
+        this.orgs.push(_org);
+        if(_org.name === this.orgname){
+          this.org = _org;
+        }
       });
-      this.org =  this.orgs[0];
-      this.catalogService.getSpacelist(this.orgs[0].guid).subscribe(data => {
-        data['spaceList']['resources'].forEach(res => {
-          this.spaces.push(new Space(res['metadata'], res['entity'], null));
-        });
-        if(this.spaces[0])this.space = this.spaces[0];
-      });
+      if(this.space.name !=='' && this.org.name !== ''){
+        this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
+          data['spaceList']['resources'].forEach(res => {
+            const _space = new Space(res['metadata'], res['entity'], null);
+            this.spaces.push(_space);
+            if(_space.name === this.spacename){
+              this.space = _space;
+            } });
+        }); }
     });
   }
 
   messageInit(){
-    this.successapp = CATALOGURLConstant.CREATESUCCESSAPP;
-    this.falseapp = CATALOGURLConstant.CREATEFALSEAPP;
-    this.successroute = CATALOGURLConstant.CREATESUCCESSROUTE;
-    this.falseroute = CATALOGURLConstant.CREATEFASLEROUTE;
+
   }
 
   orgSelect() {
-    this.space = null;
     this.spaces = new Array<Space>();
+    this.placeholderSetting(true);
+    this.SpacesFrist();
     this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {
         this.spaces.push(new Space(res['metadata'], res['entity'], null));
       });
-      if(this.spaces[0])this.space = this.spaces[0];
     });
+  }
+
+  spaceSelect(){
+    this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE)
   }
 
   initAppUrl() {
@@ -102,11 +142,51 @@ export class CatalogDevelopmentComponent implements OnInit {
       //스페이스 조직이 없거나 선택안했을시 처리
       return;
     }
+    if(!this.pattenTest()){
+      return;
+    }
+
+    if (this.appname.length < 1 || this.appname.trim() === ''){
+      this.appurl = '';
+      this.disableButton(true);
+      return;
+    }
     this.appurl = this.appname + '.' + this.domain;
-    if (this.appname.length < 1 || this.appname.trim() === '')
-    {this.appurl = ''; return;}
-    this.nameCheck();
+    this.disableButton(false);
+     this.nameCheck();
     this.routeCheck();
+  }
+
+  placeholderSetting(value : boolean){
+    this.disableInput(value);
+    this.disableButton(true);
+    if(value){
+      this.appplaceholder = CATALOGURLConstant.SELECTORGANDSPACE;
+      this.routeplaceholder = CATALOGURLConstant.SELECTORGANDSPACE;
+    }
+    else{
+      this.appplaceholder = CATALOGURLConstant.INPUTAPPNAME;
+      this.routeplaceholder = CATALOGURLConstant.INPUTHOSTNAME;
+    }
+  }
+
+  disableInput(value : boolean){
+    this.disableappinput = value;
+    this.disablerouteinput = value;
+  }
+
+  disableButton(value : boolean){
+    this.disablebutton = value;
+  }
+
+  pattenTest(){
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpBlankPattern = /[\s]/g;
+    this.namepatterncheck = !(regExpPattern.test(this.appname) || regExpBlankPattern.test(this.appname));
+    if(!this.namepatterncheck){
+      this.namecheck = CATALOGURLConstant.NO;
+    }
+    return this.namepatterncheck;
   }
 
   createApp() {
@@ -134,26 +214,35 @@ export class CatalogDevelopmentComponent implements OnInit {
     });
   }
 
-  async nameCheck(){
+  nameCheck() {
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      if(data.toString() === CATALOGURLConstant.CREATESUCCESSAPP){
-        this.namecheck = 1;
+      let map = new Map<>();
+      map = data;
+      if(map.get(this.catalogService.lasttime)){
+        this.namecheck = CATALOGURLConstant.OK;
+        this.catalogService.namecheckmap = new Map<>();
       }
-      else if(data.toString() === CATALOGURLConstant.CREATEFALSEAPP){
-        this.namecheck = -1;
-      }
-    }, error => {
-      this.namecheck = -1;
-    });
+        }, error => {
+      this.namecheck = CATALOGURLConstant.NO;
+      this.disableButton(true);
+    });;
   }
 
-  async routeCheck(){
-    this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appname).subscribe(data => {
-      this.routecheck = 1;
+  routeCheck(){
+    return this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appname).subscribe(data => {
+      if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
+        this.routecheck = CATALOGURLConstant.OK;
+        return true;
+      }
+      else if (data['RESULT']===CATALOGURLConstant.FAIL){
+        this.routecheck = CATALOGURLConstant.NO;
+        this.disableButton(true);
+        return false;
+      }
     }, error => {
-      this.routecheck = -1;
+      this.routecheck = CATALOGURLConstant.NO;
+      this.disableButton(true);
+      return false;
     });
   }
-
-
 }

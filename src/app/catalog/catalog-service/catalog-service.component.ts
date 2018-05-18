@@ -13,7 +13,7 @@ import {cataloghistroy} from "../model/cataloghistory";
   styleUrls: ['./catalog-service.component.css']
 })
 export class CatalogServiceComponent implements OnInit {
-  
+
   servicepack : Service;
   space : Space;
   org : Organization;
@@ -45,9 +45,9 @@ export class CatalogServiceComponent implements OnInit {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS+'/'+this.route.snapshot.params['id']).subscribe(data => {
       this.servicepack =  data['list'][0];
       this.serviceplan = new Array<plan>();
-      this.catalogService.getRouteCheck('/portalapi/v2/serviceplan/'+this.servicepack.servicePackName).subscribe(data =>{
+      this.catalogService.getServicePlan('/portalapi/v2/serviceplan/'+this.servicepack.servicePackName).subscribe(data =>{
         let num = 1;
-        data['list']['resources'].forEach(a => {
+        data['resources'].forEach(a => {
           this.serviceplan.push(new plan(a['entity']['description'], a['entity']['extra'], a['metadata']['guid'], num++))
         })
         console.log(this.serviceplan);
@@ -81,11 +81,11 @@ export class CatalogServiceComponent implements OnInit {
       if(this.spaces[0])this.space = this.spaces[0];
     });
   }
-  
+
   appList(){
     this.catalogService.getAppList('/portalapi/v2/catalogs/apps/' + this.org.guid +'/'+this.space.guid).subscribe(data => console.log(data));
   }
-  
+
   insertHistroy(){
     this.catalogService.postHistroy(CATALOGURLConstant.INSERTHISTROY, new cataloghistroy(this.servicepack.no, CATALOGURLConstant.SERVICEPACK, this.catalogService.getUserid())).subscribe(data => console.log(data));
   }
