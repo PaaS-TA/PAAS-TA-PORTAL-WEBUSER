@@ -1,8 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AppMainService} from './app-main.service';
-import {Observable} from 'rxjs/Observable';
-import {CommonService} from "../../common/common.service";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppMainService } from './app-main.service';
+import { Observable } from 'rxjs/Observable';
+import { CommonService } from "../../common/common.service";
+
+declare var Chart: any;
 
 
 declare var $: any;
@@ -108,6 +110,10 @@ export class AppMainComponent implements OnInit {
   public appAlarmEmailSendYn: string;
   public appAlarmAlarmUseYn: string;
 
+  public sltChartInstances: string;
+  public sltChartDefaultTimeRange: number;
+  public sltChartGroupBy: number;
+
 
   constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
@@ -132,6 +138,9 @@ export class AppMainComponent implements OnInit {
     this.sltAlaramPageIndex = 1;
     this.sltAlaramResourceType = "";
     this.sltAlaramAlarmLevel = "";
+    this.sltChartInstances = "All";
+    this.sltChartDefaultTimeRange = 3;
+    this.sltChartGroupBy = 1;
 
 
     this.route.queryParams.subscribe(params => {
@@ -191,6 +200,10 @@ export class AppMainComponent implements OnInit {
 
       if(this.appSummaryState == "STARTED") {
         this.getAppStats(guid);
+        this.sltChartInstances = "All";
+        this.getCpuChart();
+        this.getMemoryChart();
+        this.getNetworkByte();
       } else {
         $("#cpuPer").val("0");
         $("#memoryPer").val("0");
@@ -344,7 +357,6 @@ export class AppMainComponent implements OnInit {
       appStatus.push(obj);
     });
     this.appStatusEntities = appStatus;
-    this.common.isLoading = false;
 
     setTimeout(() =>
       $('.BG_wrap input').each(function () {
@@ -655,8 +667,6 @@ export class AppMainComponent implements OnInit {
         str += dataobj.logMessage.message + '<br>';
       });
       this.appRecentLogs = str;
-
-      // this.common.isLoading = false;
     });
   }
 
@@ -666,7 +676,6 @@ export class AppMainComponent implements OnInit {
 
     this.appMainService.getAlarms(guid, this.sltAlaramPageItems, this.sltAlaramPageIndex, this.sltAlaramResourceType, this.sltAlaramAlarmLevel).subscribe(data => {
       this.appAlarmsEntities = data.data;
-      this.common.isLoading = false;
     });
   }
 
@@ -712,12 +721,15 @@ export class AppMainComponent implements OnInit {
       } else {
         $("#switch13").attr("checked", false);
       }
-
-      this.common.isLoading = false;
     });
   }
 
   showPopAlarmEditClick() {
+    if($('#appAlarmEmail').css("color") == "rgb(255, 0, 0)") {
+      alert("Email 형식이 잘못 되었습니다.");
+      return false;
+    }
+
     $("#layerpop_alarm_edit").modal("show");
   }
 
@@ -792,8 +804,6 @@ export class AppMainComponent implements OnInit {
       } else {
         $("#switch11").attr("checked", false);
       }
-
-      this.common.isLoading = false;
     });
   }
 
@@ -1127,6 +1137,522 @@ export class AppMainComponent implements OnInit {
     });
   }
 
+  getCpuChart() {
+    var speedCanvas = document.getElementById("speedChart");
+
+    Chart.defaults.global.defaultFontFamily = "gulim";
+    Chart.defaults.global.defaultFontSize = 12;
+
+    //TODO 하드코딩
+    var guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
+    var idx = String(this.appSummaryInstance);
+    var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
+    var groupBy = String(this.sltChartGroupBy) + "s";
+    var type = "All";
+    var sltChartInstancesValue = this.sltChartInstances;
+
+
+    this.appMainService.getCpuUsage(guid, idx, defaultTimeRange, groupBy, type).subscribe(data => {
+      var levelsArray = new Array();
+      var levelsArray2 = new Array();
+      var levelsObj = new Object();
+      var datasetsArray = new Array();
+
+      $.each(data, function (key, dataobj) {
+        for(var i=0; i< dataobj.length; i++) {
+          if(dataobj[i].data.data[0].data == null) {
+            continue;
+          }
+
+          var timeArray = new Array();
+
+          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+            var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
+            var year = date.getFullYear();
+            var month = date.getMonth()+1;
+            var day = date.getDay();
+            var hour = date.getHours();
+            var min = date.getMinutes();
+            var sec = date.getSeconds();
+            var retVal =   (month < 10 ? "0" + month : month) + "/"
+              + (day < 10 ? "0" + day : day) + " "
+              + (hour < 10 ? "0" + hour : hour) + ":"
+              + (min < 10 ? "0" + min : min);
+
+            // var retVal =   year + "-" + (month < 10 ? "0" + month : month) + "-"
+            //   + (day < 10 ? "0" + day : day) + " "
+            //   + (hour < 10 ? "0" + hour : hour) + ":"
+            //   + (min < 10 ? "0" + min : min) + ":"
+            //   + (sec < 10 ? "0" + sec : sec);
+
+            timeArray[j] = dataobj[i].data.data[0].data[j].time;
+          }
+
+          if(levelsArray.length == 0) {
+            levelsArray = timeArray;
+          } else {
+            if(levelsArray.length > timeArray.length) {
+
+            } else if(levelsArray.length < timeArray.length) {
+              levelsArray = new Array();
+              levelsArray = timeArray;
+            }
+          }
+        }
+
+      });
+
+      for(var k=0; k< levelsArray.length; k++) {
+        levelsObj[levelsArray[k]] = "";
+
+        var date = new Date(levelsArray[k] * 1000);
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDay();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        var sec = date.getSeconds();
+        var retVal =   (month < 10 ? "0" + month : month) + "/"
+          + (day < 10 ? "0" + day : day) + " "
+          + (hour < 10 ? "0" + hour : hour) + ":"
+          + (min < 10 ? "0" + min : min);
+
+        levelsArray2[k] = retVal;
+      }
+
+      $.each(data, function (key, dataobj) {
+        for (var i = 0; i < dataobj.length; i++) {
+          if (dataobj[i].data.data[0].data == null) {
+            continue;
+          }
+
+          var keyValueObject = new Object;
+          keyValueObject = levelsObj;
+          var valueArray = new Array();
+          var valueObject = new Object();
+
+          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+            keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
+          }
+          // console.log(keyValueObject);
+
+          var k = 0;
+          $.each(keyValueObject, function (key2, dataobj2) {
+            valueArray[k] = keyValueObject[key2];
+            k++;
+          });
+
+          var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
+
+          valueObject["label"] = "Cpu_"+i;
+          valueObject["data"] = valueArray;
+          valueObject["lineTension"] = 0;
+          valueObject["fill"] = false;
+          valueObject["borderWidth"] = 0;
+          valueObject["borderColor"] = color[i];
+          valueObject["backgroundColor"] = color[i];
+          valueObject["pointBorderColor"] = color[i];
+          valueObject["pointBackgroundColor"] = color[i];
+          valueObject["pointRadius"] = 0;
+          valueObject["pointHoverRadius"] = 5;
+          valueObject["pointHitRadius"] = 10;
+          valueObject["pointBorderWidth"] = 0;
+          valueObject["pointStyle"] = "rectRounded";
+
+          if(sltChartInstancesValue == "All") {
+            valueObject["hidden"] = false;
+          } else {
+            if(i == Number(sltChartInstancesValue)) {
+              valueObject["hidden"] = false;
+            } else {
+              valueObject["hidden"] = true;
+            }
+          }
+
+          datasetsArray[i] = valueObject;
+
+          // console.log(datasetsArray);
+        }
+      });
+
+      // console.log(levelsObj);
+
+      var speedData = null;
+      speedData = {
+        labels: levelsArray2,
+        datasets : datasetsArray
+      };
+      var chartOptions = {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            boxWidth: 60,
+            boxHeight: 4,
+            fontColor: '#cfd2d7'
+          }
+        }
+      };
+      var lineChart = null;
+      lineChart = new Chart(speedCanvas, {
+        type: 'line',
+        data: speedData,
+        options: chartOptions
+      });
+
+    });
+
+  }
+
+  getMemoryChart() {
+    var speedCanvas2 = document.getElementById("speedChart2");
+
+    Chart.defaults.global.defaultFontFamily = "gulim";
+    Chart.defaults.global.defaultFontSize = 12;
+
+    //TODO 하드코딩
+    var guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
+    var idx = String(this.appSummaryInstance);
+    var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
+    var groupBy = String(this.sltChartGroupBy) + "s";
+    var type = "All";
+    var sltChartInstancesValue = this.sltChartInstances;
+
+
+    this.appMainService.getMemoryUsage(guid, idx, defaultTimeRange, groupBy, type).subscribe(data => {
+      var levelsArray = new Array();
+      var levelsArray2 = new Array();
+      var levelsObj = new Object();
+      var datasetsArray = new Array();
+
+      $.each(data, function (key, dataobj) {
+        for(var i=0; i< dataobj.length; i++) {
+          if(dataobj[i].data.data[0].data == null) {
+            continue;
+          }
+
+          var timeArray = new Array();
+
+          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+            var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
+            var year = date.getFullYear();
+            var month = date.getMonth()+1;
+            var day = date.getDay();
+            var hour = date.getHours();
+            var min = date.getMinutes();
+            var sec = date.getSeconds();
+            var retVal =   (month < 10 ? "0" + month : month) + "/"
+              + (day < 10 ? "0" + day : day) + " "
+              + (hour < 10 ? "0" + hour : hour) + ":"
+              + (min < 10 ? "0" + min : min);
+
+            // var retVal =   year + "-" + (month < 10 ? "0" + month : month) + "-"
+            //   + (day < 10 ? "0" + day : day) + " "
+            //   + (hour < 10 ? "0" + hour : hour) + ":"
+            //   + (min < 10 ? "0" + min : min) + ":"
+            //   + (sec < 10 ? "0" + sec : sec);
+
+            timeArray[j] = dataobj[i].data.data[0].data[j].time;
+          }
+
+          if(levelsArray.length == 0) {
+            levelsArray = timeArray;
+          } else {
+            if(levelsArray.length > timeArray.length) {
+
+            } else if(levelsArray.length < timeArray.length) {
+              levelsArray = new Array();
+              levelsArray = timeArray;
+            }
+          }
+        }
+
+      });
+
+      for(var k=0; k< levelsArray.length; k++) {
+        levelsObj[levelsArray[k]] = "";
+
+        var date = new Date(levelsArray[k] * 1000);
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDay();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        var sec = date.getSeconds();
+        var retVal =   (month < 10 ? "0" + month : month) + "/"
+          + (day < 10 ? "0" + day : day) + " "
+          + (hour < 10 ? "0" + hour : hour) + ":"
+          + (min < 10 ? "0" + min : min);
+
+        levelsArray2[k] = retVal;
+      }
+
+      $.each(data, function (key, dataobj) {
+        for (var i = 0; i < dataobj.length; i++) {
+          if (dataobj[i].data.data[0].data == null) {
+            continue;
+          }
+
+          var keyValueObject = new Object;
+          keyValueObject = levelsObj;
+          var valueArray = new Array();
+          var valueObject = new Object();
+
+          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+            keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
+          }
+          // console.log(keyValueObject);
+
+          var k = 0;
+          $.each(keyValueObject, function (key2, dataobj2) {
+            valueArray[k] = keyValueObject[key2];
+            k++;
+          });
+
+          var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
+
+          valueObject["label"] = "Memory_"+i;
+          valueObject["data"] = valueArray;
+          valueObject["lineTension"] = 0;
+          valueObject["fill"] = false;
+          valueObject["borderWidth"] = 0;
+          valueObject["borderColor"] = color[i];
+          valueObject["backgroundColor"] = color[i];
+          valueObject["pointBorderColor"] = color[i];
+          valueObject["pointBackgroundColor"] = color[i];
+          valueObject["pointRadius"] = 0;
+          valueObject["pointHoverRadius"] = 5;
+          valueObject["pointHitRadius"] = 10;
+          valueObject["pointBorderWidth"] = 0;
+          valueObject["pointStyle"] = "rectRounded";
+
+          if(sltChartInstancesValue == "All") {
+            valueObject["hidden"] = false;
+          } else {
+            if(i == Number(sltChartInstancesValue)) {
+              valueObject["hidden"] = false;
+            } else {
+              valueObject["hidden"] = true;
+            }
+          }
+
+          datasetsArray[i] = valueObject;
+
+          // console.log(datasetsArray);
+        }
+      });
+
+      // console.log(levelsObj);
+
+      var speedData = null;
+      speedData = {
+        labels: levelsArray2,
+        datasets : datasetsArray
+      };
+      var chartOptions = {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            boxWidth: 60,
+            boxHeight: 4,
+            fontColor: '#cfd2d7'
+          }
+        }
+      };
+      var lineChart = null;
+      lineChart = new Chart(speedCanvas2, {
+        type: 'line',
+        data: speedData,
+        options: chartOptions
+      });
+
+    });
+
+  }
+
+  getNetworkByte() {
+    var speedCanvas3 = document.getElementById("speedChart3");
+
+    Chart.defaults.global.defaultFontFamily = "gulim";
+    Chart.defaults.global.defaultFontSize = 12;
+
+    //TODO 하드코딩
+    var guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
+    var idx = String(this.appSummaryInstance);
+    var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
+    var groupBy = String(this.sltChartGroupBy) + "s";
+    var type = "All";
+    var sltChartInstancesValue = this.sltChartInstances;
+
+
+    this.appMainService.getNetworkByte(guid, idx, defaultTimeRange, groupBy, type).subscribe(data => {
+      var levelsArray = new Array();
+      var levelsArray2 = new Array();
+      var levelsObj = new Object();
+      var datasetsArray = new Array();
+
+      $.each(data, function (key, dataobj) {
+        for(var i=0; i< dataobj.length; i++) {
+          if(dataobj[i].data.data[0].data == null) {
+            continue;
+          }
+
+          var timeArray = new Array();
+
+          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+            var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
+            var year = date.getFullYear();
+            var month = date.getMonth()+1;
+            var day = date.getDay();
+            var hour = date.getHours();
+            var min = date.getMinutes();
+            var sec = date.getSeconds();
+            var retVal =   (month < 10 ? "0" + month : month) + "/"
+              + (day < 10 ? "0" + day : day) + " "
+              + (hour < 10 ? "0" + hour : hour) + ":"
+              + (min < 10 ? "0" + min : min);
+
+            // var retVal =   year + "-" + (month < 10 ? "0" + month : month) + "-"
+            //   + (day < 10 ? "0" + day : day) + " "
+            //   + (hour < 10 ? "0" + hour : hour) + ":"
+            //   + (min < 10 ? "0" + min : min) + ":"
+            //   + (sec < 10 ? "0" + sec : sec);
+
+            timeArray[j] = dataobj[i].data.data[0].data[j].time;
+          }
+
+          if(levelsArray.length == 0) {
+            levelsArray = timeArray;
+          } else {
+            if(levelsArray.length > timeArray.length) {
+
+            } else if(levelsArray.length < timeArray.length) {
+              levelsArray = new Array();
+              levelsArray = timeArray;
+            }
+          }
+        }
+
+      });
+
+      for(var k=0; k< levelsArray.length; k++) {
+        levelsObj[levelsArray[k]] = "";
+
+        var date = new Date(levelsArray[k] * 1000);
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDay();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        var sec = date.getSeconds();
+        var retVal =   (month < 10 ? "0" + month : month) + "/"
+          + (day < 10 ? "0" + day : day) + " "
+          + (hour < 10 ? "0" + hour : hour) + ":"
+          + (min < 10 ? "0" + min : min);
+
+        levelsArray2[k] = retVal;
+      }
+
+      $.each(data, function (key, dataobj) {
+        for (var i = 0; i < dataobj.length; i++) {
+          if (dataobj[i].data.data[0].data == null) {
+            continue;
+          }
+
+          var keyValueObject = new Object;
+          keyValueObject = levelsObj;
+          var valueArray = new Array();
+          var valueObject = new Object();
+
+          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+            keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
+          }
+          // console.log(keyValueObject);
+
+          var k = 0;
+          $.each(keyValueObject, function (key2, dataobj2) {
+            valueArray[k] = keyValueObject[key2];
+            k++;
+          });
+
+          var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
+
+          valueObject["label"] = "Network_"+i;
+          valueObject["data"] = valueArray;
+          valueObject["lineTension"] = 0;
+          valueObject["fill"] = false;
+          valueObject["borderWidth"] = 0;
+          valueObject["borderColor"] = color[i];
+          valueObject["backgroundColor"] = color[i];
+          valueObject["pointBorderColor"] = color[i];
+          valueObject["pointBackgroundColor"] = color[i];
+          valueObject["pointRadius"] = 0;
+          valueObject["pointHoverRadius"] = 5;
+          valueObject["pointHitRadius"] = 10;
+          valueObject["pointBorderWidth"] = 0;
+          valueObject["pointStyle"] = "rectRounded";
+
+          if(sltChartInstancesValue == "All") {
+            valueObject["hidden"] = false;
+          } else {
+            if(i == Number(sltChartInstancesValue)) {
+              valueObject["hidden"] = false;
+            } else {
+              valueObject["hidden"] = true;
+            }
+          }
+
+          datasetsArray[i] = valueObject;
+
+          // console.log(datasetsArray);
+        }
+      });
+
+      // console.log(levelsObj);
+
+      var speedData = null;
+      speedData = {
+        labels: levelsArray2,
+        datasets : datasetsArray
+      };
+      var chartOptions = {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            boxWidth: 60,
+            boxHeight: 4,
+            fontColor: '#cfd2d7'
+          }
+        }
+      };
+      var lineChart = null;
+      lineChart = new Chart(speedCanvas3, {
+        type: 'line',
+        data: speedData,
+        options: chartOptions
+      });
+
+    });
+    //TODO 마지막??
+    this.common.isLoading = false;
+  }
+
+  selectBoxChartInstanceChange(instance: string) {
+    this.sltChartInstances = instance;
+    this.getCpuChart();
+    this.getMemoryChart();
+    this.getNetworkByte();
+  }
+
+  chartTimeClick(defaultTimeRange: number, groupBy: number) {
+    this.sltChartDefaultTimeRange = defaultTimeRange;
+    this.sltChartGroupBy = groupBy;
+    this.getCpuChart();
+    this.getMemoryChart();
+    this.getNetworkByte();
+  }
 
   copyClick(id: string) {
     var inContent = $("#"+id).val();

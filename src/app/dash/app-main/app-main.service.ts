@@ -139,4 +139,22 @@ export class AppMainService {
       return res;
     }).do(console.log);
   }
+
+  getCpuUsage(guid: string, idx: string, defaultTimeRange: string, groupBy: string, type: string) {
+    return this.commonService.doGet('/portalapi/app/'+guid+'/'+idx+'/cpuUsage?defaultTimeRange='+defaultTimeRange+'&groupBy='+groupBy+'&type='+type, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  getMemoryUsage(guid: string, idx: string, defaultTimeRange: string, groupBy: string, type: string) {
+    return this.commonService.doGet('/portalapi/app/'+guid+'/'+idx+'/memoryUsage?defaultTimeRange='+defaultTimeRange+'&groupBy='+groupBy+'&type='+type, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  getNetworkByte(guid: string, idx: string, defaultTimeRange: string, groupBy: string, type: string) {
+    return this.commonService.doGet('/portalapi/app/'+guid+'/'+idx+'/getNetworkByte?defaultTimeRange='+defaultTimeRange+'&groupBy='+groupBy+'&type='+type, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 }
