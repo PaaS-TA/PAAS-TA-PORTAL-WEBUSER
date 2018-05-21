@@ -4,20 +4,13 @@
 <div class="loginWrap">
   <div class="text_center">
     <a href="#"><img class="logo_login" src="../assets/resources/images/login/login_logo.png" alt="logo"/></a>
-    <p>계정을 생성하세요</p>
-    <p class="copy">사용자 정보를 입력하세요</p>
+    <p>패스워드 변경</p>
+    <p class="copy">패스워드를 입력하세요</p>
   </div>
   <form class="form-horizontal maT30" action="">
     <div class="form-group">
       <div class="col-xs-12">
         <input class="form-control" type="text" readonly="readonly" disabled [(ngModel)]="userId" name="userId" >
-      </div>
-    </div>
-    <div class="form-group m-t-20">
-      <div class="col-xs-12">
-        <input class="form-control" type="text" required="" placeholder="이름" [(ngModel)]="username" name="username" (change)="checkUsername()">
-        <div *ngIf="!isUserName"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> 이름을 입력하세요.
-        </p></div>
       </div>
     </div>
     <div class="form-group m-t-20">
@@ -37,7 +30,7 @@
     <div class="form-group maT30">
       <div class="col-xs-12">
         <button class="btns colors4" (click)="save()">
-          계정생성
+          변경
         </button>
       </div>
     </div>

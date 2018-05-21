@@ -31,6 +31,7 @@ import {CatalogDevelopmentComponent} from "./catalog/catalog-development/catalog
 import {CatalogServiceComponent} from "./catalog/catalog-service/catalog-service.component";
 import {CreateComponent} from "./external/create/create.component";
 import {ExpiredComponent} from "./external/expired/expired.component";
+import {ResetComponent} from "./external/reset/reset.component";
 
 /*
 * Route 모듈 설정
@@ -66,7 +67,7 @@ const routes: Routes = [
   {path: 'createuser', component: CreateuserComponent},
   {path: 'resetpasswd', component: ResetpasswdComponent},
   {path: 'auth/create', component: CreateComponent},
-  {path: 'auth/expired', component: ExpiredComponent},
+  {path: 'auth/reset', component: ResetComponent},
 
   {path: 'error', component: ErrorComponent}
 

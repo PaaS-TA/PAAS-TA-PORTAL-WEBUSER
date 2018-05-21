@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
-import {ActivatedRoute, Router} from "@angular/router";
 import {ExternalcommonService} from "../common/externalcommon.service";
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+  selector: 'app-reset',
+  templateUrl: './reset.component.html',
+  styleUrls: ['./reset.component.css']
 })
-export class CreateComponent implements OnInit {
+export class ResetComponent implements OnInit {
 
   public token: string;
   public userId: string;
@@ -43,8 +43,7 @@ export class CreateComponent implements OnInit {
           let accessCount = data['authAccessCnt'];
           let now = new Date();
           if (accessTime <= now.getTime().toString()) {
-            let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-            this.externalService.updateToken(this.userId, userInfo);
+
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           }
           if (accessCount > 3) {
@@ -67,16 +66,6 @@ export class CreateComponent implements OnInit {
 
   ngOnInit() {
 
-  }
-
-
-  checkUsername() {
-    this.log.debug('username :: ' + this.username);
-    if (this.username.length == 0) {
-      this.isUserName = false;
-    } else {
-      this.isUserName = true;
-    }
   }
 
 
@@ -109,28 +98,26 @@ export class CreateComponent implements OnInit {
   }
 
   save() {
-    if (this.isUserName && this.isPassword && this.isRePassword) {
+    this.commonService.isLoading = true;
+    if (this.isPassword && this.isRePassword) {
       let param = {
         'userId': this.userId,
-        'userName': this.username,
-        'password': this.password,
-        'tellPhone': '',
-        'address': ''
+        'password': this.password
       }
-      this.externalService.createUser(param).subscribe(data => {
-        this.commonService.isLoading = true;
+      this.externalService.reset(param).subscribe(data => {
         if (data['result'] == true) {
           this.commonService.isLoading = false;
-          alert('성공적으로 생성');
+          alert('성공적으로 변경');
           let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
           this.externalService.updateToken(this.userId, userInfo);
           this.router.navigate(['login']);
         } else {
           alert(data['msg']);
         }
-      });
+      },error =>{
+        this.commonService.isLoading = false;
+      } );
     }
   }
-
 
 }

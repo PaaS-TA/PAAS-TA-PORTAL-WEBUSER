@@ -17,14 +17,14 @@
     </div>
     <div class="form-group maT30">
       <div class="col-xs-12">
-        <button class="btns colors4">
+        <button class="btns colors4" (click)="checkUser()">
           비밀번호 재설정
         </button>
       </div>
     </div>
     <div class="form-group maT30">
       <div class="col-xs-6 text-left">
-        <p class="red">등록된 이메일이 아닙니다.</p>
+        <a href="#" class="text-muted" *ngIf="isUsed">사용중인 이메일 계정이 없습니다.</a>
       </div>
       <div class="col-xs-6 text-right">
         <a href="/login" class="locolor">Login</a>

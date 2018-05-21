@@ -8,7 +8,8 @@ import {LoginService} from "./login/login.service";
 import {IndexComponent} from "./index.component";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
-import {CreateuserService} from "./createuser/createuser.service";
+import {IndexCommonService} from "./userAccountMgmt/index-common.service";
+import {CommonService} from "../common/common.service";
 
 @NgModule({
   imports: [
@@ -23,7 +24,7 @@ import {CreateuserService} from "./createuser/createuser.service";
     CreateuserComponent,
     ResetpasswdComponent
   ],
-  providers: [LoginService, CreateuserService]
+  providers: [LoginService, CommonService, IndexCommonService]
 })
 export class IndexModule {
 }

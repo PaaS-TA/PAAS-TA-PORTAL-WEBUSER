@@ -1,9 +1,7 @@
 import {Component, DoCheck, OnInit} from '@angular/core';
-import {CreateuserService} from "./createuser.service";
 import {NGXLogger} from "ngx-logger";
-import {Observable} from "rxjs/Observable";
-import {CommonService} from "../../common/common.service";
 import {Router} from "@angular/router";
+import {IndexCommonService} from "../userAccountMgmt/index-common.service";
 
 @Component({
   selector: 'app-createuser',
@@ -17,7 +15,7 @@ export class CreateuserComponent implements OnInit, DoCheck {
   public isUsed: boolean;
   public isSendEmail: boolean;
 
-  constructor(public createuserService: CreateuserService, private commonService: CommonService, private router: Router, private log: NGXLogger) {
+  constructor(public indexCommonService: IndexCommonService, private router: Router, private log: NGXLogger) {
     this.email = '';
     this.isValidation = true;
     this.isUsed = false;
@@ -28,11 +26,11 @@ export class CreateuserComponent implements OnInit, DoCheck {
 
   ngDoCheck() {
 
-    if (this.isSendEmail != this.createuserService.isSendEmail) {
-      this.isSendEmail = this.createuserService.isSendEmail;
+    if (this.isSendEmail != this.indexCommonService.isSendEmail) {
+      this.isSendEmail = this.indexCommonService.isSendEmail;
     }
-    if (this.isUsed != this.createuserService.isUsed) {
-      this.isUsed = this.createuserService.isUsed;
+    if (this.isUsed != this.indexCommonService.isUsed) {
+      this.isUsed = this.indexCommonService.isUsed;
     }
 
     if (this.isSendEmail) {
@@ -44,12 +42,12 @@ export class CreateuserComponent implements OnInit, DoCheck {
 
 
   checkValidation() {
-    this.isValidation = this.createuserService.checkValidation(this.email);
+    this.isValidation = this.indexCommonService.checkValidation(this.email);
   }
 
   checkUser() {
     if (!this.isValidation) {
-      this.createuserService.checkUsed(this.email);
+      this.indexCommonService.checkUsedCreate(this.email);
     }
   }
 }
