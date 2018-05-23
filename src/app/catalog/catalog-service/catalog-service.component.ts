@@ -83,7 +83,7 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   appList(){
-    this.catalogService.getAppList('/portalapi/v2/catalogs/apps/' + this.org.guid +'/'+this.space.guid).subscribe(data => console.log(data));
+    this.catalogService.getAppNames('/portalapi/v2/catalogs/apps/' + this.org.guid +'/'+this.space.guid).subscribe(data => console.log(data));
   }
 
   insertHistroy(){
