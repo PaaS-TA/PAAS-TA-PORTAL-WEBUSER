@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DashboardService} from './dashboard.service';
+// import {User, UsermgmtService } from '../usermgmt/usermgmt.service';
 import {OrgService} from "../org/common/org.service";
 import {Organization} from "../model/organization";
 import {SpaceService} from "../space/space.service";
@@ -31,7 +32,6 @@ export class DashboardComponent implements OnInit {
   orgs: Array<Organization>;
   org: Organization;
   spaces: Array<Space>;
-
 
   public token: string;
   public userid: string;
@@ -127,18 +127,17 @@ export class DashboardComponent implements OnInit {
   }
 
   //앱 이름변경
-  renameApp() {
+  renameApp(appName : string) {
     console.log(this.appName);
     let params = {
-      guid: this.org.guid,
-      name: this.appName,
-      newName: this.appName,
+      guid: this.selectedGuid,
+      newName: appName,
     };
     this.dashboardService.renameApp(params).subscribe(data => {
       if (data == 1) {
         console.log('success');
       } else {
-        console.log('Name modification failed.');
+        console.log('failed.');
       }
       console.log(data);
       return data;
@@ -172,6 +171,12 @@ export class DashboardComponent implements OnInit {
       return data;
     });
   }
+
+  // goDevelopMent() {
+  //   this.router.navigate(['catalogdevelopment', );
+  // }
+
+
 
 
   ngOnInit() {
@@ -234,6 +239,8 @@ export class DashboardComponent implements OnInit {
     }
     this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid);
   }
+
+
 
 }//
 
