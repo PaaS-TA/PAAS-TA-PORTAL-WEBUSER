@@ -64,6 +64,8 @@ export class DashboardComponent implements OnInit {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
+
+    this.log.debug(this.commonService.getToken());
     this.userid = this.commonService.getUserid();
     this.token = this.commonService.getToken();
     this.spaceGuid = this.commonService.getUserGuid();

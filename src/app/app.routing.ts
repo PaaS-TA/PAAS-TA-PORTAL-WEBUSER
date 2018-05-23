@@ -9,7 +9,7 @@ import {UserComponent} from './user/user.component';
 import {UsageComponent} from './usage/usage.component';
 import {SpaceComponent} from './space/space.component';
 import {ServiceComponent} from './service/service.component';
-import { OrgMainComponent } from './org/org-main/org-main.component';
+import {OrgMainComponent} from './org/org-main/org-main.component';
 import {MenuComponent} from './menu/menu.component';
 import {LogComponent} from './log/log.component';
 import {ModuleWithProviders} from '@angular/core';
@@ -19,14 +19,19 @@ import {DashMainComponent} from './dash/dash-main/dash-main.component';
 import {AppMainComponent} from './dash/app-main/app-main.component';
 import {TailLogsComponent} from './dash/tail-logs/tail-logs.component';
 import {UsermgmtComponent} from './usermgmt/usermgmt.component';
-import {LoginComponent} from './login/login.component';
+import {LoginComponent} from './index/login/login.component';
 import {AuthGuard} from './auth/auth.guard';
 import {CatalogDetailComponent} from "./catalog/catalog-detail/catalog-detail.component";
 import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
 import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
 import {ErrorComponent} from "./error/error.component";
+import {CreateuserComponent} from "./index/createuser/createuser.component";
+import {ResetpasswdComponent} from "./index/resetpasswd/resetpasswd.component";
 import {CatalogDevelopmentComponent} from "./catalog/catalog-development/catalog-development.component";
 import {CatalogServiceComponent} from "./catalog/catalog-service/catalog-service.component";
+import {CreateComponent} from "./external/create/create.component";
+import {ExpiredComponent} from "./external/expired/expired.component";
+import {ResetComponent} from "./external/reset/reset.component";
 
 /*
 * Route 모듈 설정
@@ -59,6 +64,11 @@ const routes: Routes = [
   {path: 'tailLogs', component: TailLogsComponent, canActivate: [AuthGuard]},
   {path: 'dashboardSpace', component: DashboardSpaceComponent, canActivate: [AuthGuard]},
   {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]},
+  {path: 'createuser', component: CreateuserComponent},
+  {path: 'resetpasswd', component: ResetpasswdComponent},
+  {path: 'auth/create', component: CreateComponent},
+  {path: 'auth/reset', component: ResetComponent},
+
   {path: 'error', component: ErrorComponent}
 
 ];
