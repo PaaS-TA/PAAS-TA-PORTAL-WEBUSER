@@ -30,7 +30,6 @@ import {ResetpasswdComponent} from "./index/resetpasswd/resetpasswd.component";
 import {CatalogDevelopmentComponent} from "./catalog/catalog-development/catalog-development.component";
 import {CatalogServiceComponent} from "./catalog/catalog-service/catalog-service.component";
 import {CreateComponent} from "./external/create/create.component";
-import {ExpiredComponent} from "./external/expired/expired.component";
 import {ResetComponent} from "./external/reset/reset.component";
 
 /*
