@@ -48,6 +48,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   private createSpaceName: String = "";  // Space name it's wanted to create
   private selectSpace: Space = Space.empty();
   private selectQuota: OrgQuota = OrgQuota.empty();
+  private selectDomain: Domain = Domain.empty();
 
   private selectUserRole: OrgUserRole = OrgUserRole.empty();
 
@@ -70,7 +71,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     this.setSpaces(this.spaceService.getOrgSpaceList(orgId));
     this.setQuota(this.quotaService.getOrgQuota(orgId));
     this.setAvailableQuotas(this.quotaService.getOrgAvailableQuota());
-    this.setOrgDomains(this.domainService.getDomainList(orgId));
+    this.setOrgDomains(this.domainService.getDomainList(orgId, "all"));
     this.setOrgUserRoles(this.orgUserRoleService.getUserRoles(orgId));
   }
 
@@ -214,6 +215,18 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  deleteDomain(doDelete: boolean) {
+    if (doDelete) {
+      this.logger.warn('Delete domain : ', this.selectDomain.name);
+      this.logger.warn('Remain domain : ', this.domains);
+      this.domainService.deleteDomain(this.domains, this.selectDomain);
+    } else {
+      this.logger.warn('Cancel to delete space : ', this.selectSpace.name);
+    }
+    //this.selectSpace = null;
+    this.selectSpace = Space.empty();
+  }
+
   get userRoles() {
     return this._orgUserRoles;
   }
@@ -261,7 +274,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
 
   isMember(userRole: OrgUserRole) {
     // TODO isMember
-    return true;
+    return false;
   }
 
   isInvited(userRole: OrgUserRole) {
@@ -359,9 +372,21 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     $('input[name=radio-' + this.org.name + ']').each((idx, element) => element.checked = '');
   }
 
+  displayDeleteDomain($event, domain: Domain) {
+    this.selectDomain = domain;
+    this.logger.debug('Selected domain to delete is ', this.selectDomain.name, ' : ', this.selectDomain);
+  }
+
   reloadSpaces() {
     this.common.isLoading = true;
     this.setSpaces(this.spaceService.getOrgSpaceList(this.org.guid, () => {
+      this.common.isLoading = false;
+    }));
+  }
+
+  reloadDomains() {
+    this.common.isLoading = true;
+    this.setOrgDomains(this.domainService.getDomainList(this.org.guid, "all", () => {
       this.common.isLoading = false;
     }));
   }

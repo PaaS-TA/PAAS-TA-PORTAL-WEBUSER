@@ -6,10 +6,13 @@ export enum CATALOGURLConstant {
   POTALAPI = '/portalapi',
   V2_URL = '/v2',
 
-  NAMECHECK = '/portalapi/v2/catalogs/app/',
+  NAMECHECK = '/portalapi/v2/catalogs/apps/',
   CREATEAPP = '/portalapi/v2/catalogs/app',
-  GETLISTAPP =  '/portalapi/v2/catalogs/app/',
+  GETLISTAPP =  '/portalapi/v2/catalogs/apps/',
   STARTAPP = '/portalapi/v2/apps/startapp',
+  GETSERVICEPLAN = '/portalapi/v2/catalogs/serviceplan/',
+  CREATESERVICE = '/portalapi/v2/catalogs/serviceinstances',
+  GETSERVICEINSTANCE = '/portalapi/v2/catalogs/servicepack/',
 
 
   GETPACKRELATION = '/commonapi/v2/packrelation/',
