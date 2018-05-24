@@ -12,7 +12,7 @@
             <label for="checkbox-1"></label>
         </span>
     <ul class="gnb clearfix">
-      <li ><a [routerLink]="['../appMain']">대시보드</a></li>
+      <li ><a [routerLink]="['../dashboard']">대시보드</a></li>
       <li ><a [routerLink]="['../catalog']">카달로그</a></li>
       <li><a href="https://github.com/PaaS-TA/Guide-3.0-Penne-">문서</a></li>
     </ul>
@@ -276,8 +276,7 @@
                     <div class="account_table_in">
                                                 <span>새 전화번호
                                                 </span>
-                      <input type="text" name="tellPhone" [(ngModel)]="user['tellPhone']"
-                             ng-model-options="{ getterSetter: true }"/>
+                      <input type="text" name="tellPhone" [(ngModel)]="user['tellPhone']" ng-model-options="{ getterSetter: true }" ng-required="true" ng-pattern="/^\d{3}-\d{3,4}-\d{4}$/" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
@@ -299,7 +298,7 @@
                                                 <span>새 우편번호
                                                 </span>
                       <input type="text" name="zipCode" [(ngModel)]="user['zipCode']"
-                             ng-model-options="{ getterSetter: true }"/>
+                             ng-model-options="{ getterSetter: true }" ng-reauired = "true" ng-pattern="'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$'"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
@@ -342,7 +341,7 @@
                 <col style='width: 30px;'>
               </colgroup>
               <tbody>
-              <tr *ngFor="let org of orgs">
+              <tr *ngFor="let org of orgs" [(ngModel)]="orgName">
                 <td>{{org.name}}</td>
                 <th data-target="#layerpop" data-toggle="modal"><i class="fas fa-trash-alt"></i></th>
               </tr>
@@ -382,8 +381,8 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p class="account_modal_p">조직을 탈퇴하면 되돌릴 수 없습니다.<br/>
-            <!--<span></span> 를 탈퇴하시겠습니까?-->
+          <p class="account_modal_p" >조직을 탈퇴하면 되돌릴 수 없습니다.<br/>
+            <span name="selectSort" [(ngModel)]="selectSort" *ngFor="let org of orgs">{{org.name}}</span> 를 탈퇴하시겠습니까?
           </p>
         </div>
         <!-- Footer -->
