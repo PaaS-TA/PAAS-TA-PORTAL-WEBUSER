@@ -89,7 +89,7 @@ export class OrgUserRoleService {
 
     return (async() => {
       this.logger.debug('remove org user role : before await');
-      const data = this.common.doDelete(url, params, this.getToken());
+      const data = this.common.doDelete(url, params, this.getToken()).toPromise();
       this.logger.debug('remove org user role : after await / response :', data);
       return data;
     })();
