@@ -315,7 +315,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
 
   cancelMember(isCanceled: boolean) {
     if (isCanceled) {
-      this.orgService.cancelMember(this.userRoles, this.selectUserRole);
+      // this.orgService.cancelMember(this.userRoles, this.selectUserRole);
     }
   }
 
