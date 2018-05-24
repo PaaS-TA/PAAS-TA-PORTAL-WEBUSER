@@ -28,7 +28,7 @@
                 <i class="fas fa-edit"></i>&nbsp;&nbsp;이름변경
               </p>
             </li>
-            <li data-target="#layerpop" data-toggle="modal" (click)="deleteOrg()">
+            <li data-target="'#layerpop-' + org.name" data-toggle="modal" (click)="deleteOrg()">
               <p>
                 <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;삭제
               </p>
@@ -60,53 +60,33 @@
             <col style="width: 30px;">
             <col style="width: 30px;">
           </colgroup>
-          <tbody *ngFor='let space of spaces'>
-          <tr>
-            <td><p>{{space.name}}</p></td>
-            <th><i class="fas fa-edit" (click)="displayRenameSpace($event)"></i></th>
-            <th [attr.data-target]="'#layerpop3-' + org.name" data-toggle="modal"
-                (click)="displayDeleteSpace($event, space)">
-              <i class="fas fa-trash-alt"></i></th>
-          </tr>
-          <tr class="on" (focusout)="logger.debug('rename focus out')">
-            <td colspan="3">
-              <div class="">
-                <div class="account_table_in">
-                  <span>변경할 이름 </span>
-                  <input type="text" [id]="'wtc-' + space.guid" (keyup.enter)="renameSpace($event, space)"
-                         placeholder="변경할 공간 이름을 입력하세요">
+          <tbody>
+            <ng-container *ngFor='let space of spaces'>
+              <tr>
+                <td><p>{{space.name}}</p></td>
+                <th><i class="fas fa-edit" (click)="displayRenameSpace($event)"></i></th>
+                <th [attr.data-target]="'#layerpop3-' + org.name" data-toggle="modal"
+                    (click)="displayDeleteSpace($event, space)">
+                  <i class="fas fa-trash-alt"></i></th>
+              </tr>
+              <!-- TODO popup focusout 처리 -->
+              <tr class="on" (focusout)="logger.debug('rename focus out')">
+                <td colspan="3">
                   <div class="">
-                    <button class="btns6 colors4 btns_sw" (click)="renameSpace($event, space)">변경하기</button>
-                    <button class="btns6 colors5 btns_sw" (click)="fadeOutButtonSwitch($event)">취소</button>
+                    <div class="account_table_in">
+                      <span>변경할 이름 </span>
+                      <input type="text" [id]="'wtc-' + space.guid" (keyup.enter)="renameSpace($event, space)"
+                             placeholder="변경할 공간 이름을 입력하세요">
+                      <div class="">
+                        <button class="btns6 colors4 btns_sw" (click)="renameSpace($event, space)">변경하기</button>
+                        <button class="btns6 colors5 btns_sw" (click)="fadeOutButtonSwitch($event)">취소</button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </td>
-          </tr>
+                </td>
+              </tr>
+            </ng-container>
           </tbody>
-          <!--
-					<tbody>
-						<tr>
-							<td><p>Dev_00(공간명)</p></td>
-							<th><i class="fas fa-edit"></i></th>
-							<th data-target="#layerpop3" data-toggle="modal"><i
-								class="fas fa-trash-alt"></i></th>
-						</tr>
-						<tr class="on">
-							<td colspan="3">
-								<div class="">
-									<div class="account_table_in">
-										<span>변경할 이름 </span> <input type="text">
-										<div class="">
-											<button class="btns6 colors4 btns_sw">변경하기</button>
-											<button class="btns6 colors5 btns_sw">취소</button>
-										</div>
-									</div>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-					 -->
         </table>
       </div>
       <!-- organization_table -->
@@ -126,6 +106,19 @@
             <col style="width: 30px;">
           </colgroup>
           <tbody>
+          <tr *ngFor="let domain of domains">
+            <td><p>{{domain.name}}</p></td>
+            <th>
+              <ng-template *ngIf="domain.shared; else privateDomain">
+                <i class="fas fa-link"></i>
+              </ng-template>
+              <ng-template #privateDomain>
+                <i class="fas fa-trash-alt" data-toggle="modal"
+                   [attr.data-target]="'#layerpop9-' + org.name"></i>
+              </ng-template>
+            </th>
+          </tr>
+          <!--
           <tr>
             <td><p>115.68.46.187.xip.io</p></td>
             <th><i class="fas fa-link"></i></th>
@@ -135,6 +128,7 @@
             <th><i class="fas fa-trash-alt"
                    data-target="#layerpop9" data-toggle="modal"></i></th>
           </tr>
+          -->
           </tbody>
         </table>
       </div>
@@ -164,24 +158,43 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>test</td>
-            <td><input id="check1" type="checkbox"
-                       checked="checked"> <label for="check1">OrgManager(조직
-              관리자)</label></td>
-            <td><input id="check2" type="checkbox"
-                       checked="checked"> <label for="check2">BillingManager(조직
-              결제 관리자)</label></td>
-            <td><input id="check3" type="checkbox"
-                       checked="checked"> <label for="check3">OrgAuditor(조직
-              참관인)</label></td>
-            <th>
-              <button class="btns4 colors8"
-                      data-target="#layerpop10" data-toggle="modal">초대
-                재전송
-              </button>
-            </th>
+          <tr *ngFor='let userRole of userRoles'>
+            <td>{{userRole.userEmail}}</td>
+            <td><input [attr.id]="'rc1-' + org.name + '-' + userRole.userEmail"
+                 type="checkbox" [checked]='userRole.isOrgManager'
+                 [disabled]="!isOrgManagerLoginnedInUser"
+                 (click)="changeUserRole($event, userRole, 'OrgManager')">
+              <label [attr.for]="'rc1-' + org.name + '-' + userRole.userEmail">OrgManager(조직 관리자)</label></td>
+            <td><input [attr.id]="'rc2-' + org.name + '-' + userRole.userEmail"
+                 type="checkbox" [checked]='userRole.isBillingManager'
+                 [disabled]="!isOrgManagerLoginnedInUser"
+                 (click)="changeUserRole($event, userRole, 'BillingManager')">
+              <label [attr.for]="'rc2-' + org.name + '-' + userRole.userEmail">BillingManager(조직 결제 관리자)</label></td>
+            <td><input [attr.id]="'rc3-' + org.name + '-' + userRole.userEmail"
+                 type="checkbox" [checked]='userRole.isOrgAuditor'
+                 [disabled]="!isOrgManagerLoginnedInUser"
+                 (click)="changeUserRole($event, userRole, 'OrgAuditor')">
+              <label [attr.for]="'rc3-' + org.name + '-' + userRole.userEmail">OrgAuditor(조직 참관인)</label></td>
+            <td>
+              <ng-template *ngIf="isMember(userRole); else notMember">
+                <button class="btns4 colors8" data-toggle="modal"
+                  [attr.data-target]="'#layerpop12-' + org.name"
+                  (click)="selectToCancelMemberUser(userRole)">멤버 취소</button>
+              </ng-template>
+              <ng-template #notMember>
+                <button class="btns4 colors8" data-toggle="modal"
+                  [attr.data-target]="'#layerpop10-' + org.name"
+                  (click)="selectToInviteUser(userRole)">초대
+                  <ng-container *ngIf="isInvited(userRole)">재</ng-container>전송</button>
+                <ng-container *ngIf="isInvited(userRole)">
+                  <button class="btns4 colors8" data-toggle="modal"
+                    [attr.data-target]="'#layerpop11-' + org.name"
+                    (click)="selectToCancelInvitionUser(userRole)">초대 취소</button>
+                </ng-container>
+              </ng-template>
+            </td>
           </tr>
+          <!--
           <tr>
             <td>test</td>
             <td><input id="check1" type="checkbox"
@@ -218,6 +231,7 @@
               </button>
             </th>
           </tr>
+          -->
           </tbody>
         </table>
       </div>
@@ -350,7 +364,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop">
+  <div class="modal fade" [id]="'layerpop-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -384,7 +398,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop2">
+  <div class="modal fade" [id]="'layerpop2-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -452,7 +466,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop4">
+  <div class="modal fade" [id]="'layerpop4-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -517,7 +531,7 @@
                            type="checkbox"/> <label for="modal4">OrgManager(조직
                   관리자)</label></td>
                 <td><input class="checkSel2" id="modal5"
-                           type="checkbox" checked="checked"/> <label
+                           type="checkbox"/> <label
                   for="modal5">BillingManager(조직 결제 관리자)</label></td>
                 <td><input class="checkSel2" id="modal6"
                            type="checkbox" checked="checked"/> <label
@@ -587,7 +601,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop6">
+  <div class="modal fade" [id]="'layerpop6-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -651,7 +665,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop8">
+  <div class="modal fade" [id]="'layerpop8-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -691,7 +705,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop9">
+  <div class="modal fade" [id]="'layerpop9-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -724,7 +738,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop10">
+  <div class="modal fade" [id]="'layerpop10-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -733,13 +747,15 @@
             <!-- 닫기(x) 버튼 -->
             <button type="button" class="close" data-dismiss="modal">×</button>
             <!-- header title -->
-            <h4 class="modal-title">초대 재전송</h4>
+            <h4 class="modal-title">초대
+              <ng-template *ngIf="isInvited(userRole)">재</ng-template>전송</h4>
           </div>
           <!-- body -->
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                <span>000@test.com</span>님을 초대 재전송 하시겠습니까?
+                <span>000@test.com</span>님을 초대하는 메일을
+                <ng-template *ngIf="isInvited(userRole)">재</ng-template>전송 하시겠습니까?
               </p>
             </div>
           </div>
@@ -757,7 +773,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop11">
+  <div class="modal fade" [id]="'layerpop11-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -790,7 +806,7 @@
     </div>
   </div>
   <!-- modal -->
-  <div class="modal fade" id="layerpop12">
+  <div class="modal fade" [id]="'layerpop12-' + org.name">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">

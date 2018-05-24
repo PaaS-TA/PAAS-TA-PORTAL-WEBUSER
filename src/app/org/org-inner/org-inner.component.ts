@@ -16,8 +16,10 @@ import {
   DoCheck
 } from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
-import {assertArrayOfStrings} from "@angular/compiler/src/assertions";
-import {assertEqual} from "@angular/core/src/render3/assert";
+import {OrgUserRoleService} from "../common/org-userrole.service";
+import {DomainService} from "../../domain/domain.service";
+import {Domain} from "../../model/domain";
+import {OrgUserRole} from "../../model/userrole";
 
 declare var $: any;
 declare var jQuery: any;
@@ -38,18 +40,27 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   @Input('wantedOrgName') wantedOrgName: String;
 
   private _availableQuotas: Array<OrgQuota>;
+  private _domains: Array<Domain>;
+  private _orgUserRoles: Array<OrgUserRole>;
+  private _isOrgManager: boolean = true;
   private exactlyQuotaIndex = null;
 
   private createSpaceName: String = "";  // Space name it's wanted to create
   private selectSpace: Space = Space.empty();
   private selectQuota: OrgQuota = OrgQuota.empty();
 
+  private selectUserRole: OrgUserRole = OrgUserRole.empty();
+
   @Output() selectEvent = new EventEmitter<Organization>();
 
   private defaultValue = '(dummy)';
 
-  constructor(private orgService: OrgService, private spaceService: SpaceService,
-              private quotaService: OrgQuotaService, private common: CommonService,
+  constructor(private orgService: OrgService,
+              private spaceService: SpaceService,
+              private domainService: DomainService,
+              private orgUserRoleService: OrgUserRoleService,
+              private quotaService: OrgQuotaService,
+              private common: CommonService,
               private logger: NGXLogger) {
     this.common.isLoading = true;
   }
@@ -59,6 +70,8 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     this.setSpaces(this.spaceService.getOrgSpaceList(orgId));
     this.setQuota(this.quotaService.getOrgQuota(orgId));
     this.setAvailableQuotas(this.quotaService.getOrgAvailableQuota());
+    this.setOrgDomains(this.domainService.getDomainList(orgId));
+    this.setOrgUserRoles(this.orgUserRoleService.getUserRoles(orgId));
   }
 
   ngAfterViewChecked(): void {
@@ -77,10 +90,18 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
       }
     }
 
-    let complete: boolean =
-      this.quota.valid && this.availableQuotas.length > 0 && this.exactlyQuotaIndex !== null && this.exactlyQuotaIndex !== -1;
+    let complete: boolean = this.quota.valid
+      && this.availableQuotas.length > 0
+      && this.exactlyQuotaIndex !== null && this.exactlyQuotaIndex !== -1
+      && this.userRoles.length > 0;
 
     if (complete && this.common.isLoading) {
+      const filterUserRoles = this.userRoles.filter(userRole => { return userRole.userEmail === this.common.getUserEmail()});
+      if (filterUserRoles.length <= 0) {
+        this.isOrgManagerLoginnedInUser = false;;
+      } else {
+        this.isOrgManagerLoginnedInUser = (filterUserRoles[0] as OrgUserRole).isOrgManager;
+      }
       this.common.isLoading = false;
     }
   }
@@ -181,6 +202,30 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  get domains() {
+    return this._domains;
+  }
+
+  private setOrgDomains(domainsParam: Array<Domain>) {
+    if (domainsParam === null || domainsParam === undefined) {
+      this._domains = [];
+    } else {
+      this._domains = domainsParam;
+    }
+  }
+
+  get userRoles() {
+    return this._orgUserRoles;
+  }
+
+  private setOrgUserRoles(userRolesParam: Array<OrgUserRole>) {
+    if (userRolesParam === null || userRolesParam === undefined) {
+      this._orgUserRoles = [];
+    } else {
+      this._orgUserRoles = userRolesParam;
+    }
+  }
+
   isSelectedQuota(quota: OrgQuota) {
     if (this.quota !== null)
       return this.quota.name === quota.name;
@@ -204,6 +249,55 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
       this.logger.debug('Cancel to change quota of org : ', this.selectQuota.name);
     }
     this.selectQuota = OrgQuota.empty();
+  }
+
+  get isOrgManagerLoginnedInUser() {
+    return this._isOrgManager;
+  }
+
+  set isOrgManagerLoginnedInUser(extIsOrgManager: boolean) {
+    this._isOrgManager = extIsOrgManager;
+  }
+
+  isMember(userRole: OrgUserRole) {
+    // TODO isMember
+    return true;
+  }
+
+  isInvited(userRole: OrgUserRole) {
+    // TODO isInvited
+    return true;
+  }
+
+  changeUserRole($event, userRole: OrgUserRole, role: string) {
+    this.logger.info('? -> ', $event.target.checked);
+    const isChecked = $event.target.checked;
+    if (isChecked) {
+      const result = this.orgUserRoleService.associateOrgUserRole(userRole, role);
+      this.logger.debug('Associate ' + userRole.userEmail + '|role#' + role + ' / result :', result);
+      if (!result)
+        $event.target.checked = !isChecked;
+    } else {
+      const result = this.orgUserRoleService.removeOrgUserRole(userRole, role);
+      this.logger.debug('Remove ' + userRole.userEmail + '|role#' + role + ' / result :', result);
+      if (!result)
+        $event.target.checked = !isChecked;
+    }
+  }
+
+  selectToCancelMemberUser(userRole: OrgUserRole) {
+    // TODO selectToCancelMemberUser
+    this.selectUserRole = userRole;
+  }
+
+  selectToInviteUser(userRole: OrgUserRole) {
+    // TODO selectToInviteUser
+    this.selectUserRole = userRole;
+  }
+
+  selectToCancelInvitionUser(userRole: OrgUserRole) {
+    // TODO selectToCancelInvitionUser
+    this.selectUserRole = userRole;
   }
 
   private isValid(param): boolean {

@@ -95,6 +95,7 @@ export class OrgQuota {
   }
 
   get applicationInstanceLimit() {
+    // TODO Globalization of returning value
     const value = this.entity.app_instance_limit;
     if (value === -1)
       return '무제한';
@@ -103,6 +104,7 @@ export class OrgQuota {
   }
 
   get applicationTaskLimit() {
+    // TODO Globalization of returning value
     const value = this.entity.app_task_limit;
     if (value === -1)
       return '무제한';
@@ -111,6 +113,7 @@ export class OrgQuota {
   }
 
   get instanceMemoryLimit() {
+    // TODO Globalization of returning value
     const value = this.entity.instance_memory_limit;
     if (value === -1)
       return '무제한';
@@ -119,6 +122,7 @@ export class OrgQuota {
   }
 
   get memoryLimit() {
+    // TODO Globalization of returning value
     const value = this.entity.memory_limit;
     if (value === -1)
       return '무제한';
@@ -163,6 +167,7 @@ export class OrgQuota {
   }
 
   get price(): String {
+    // TODO Globalization of returning value
     if (this.name.search(this.pricePolicy) >= 0) {
       return this.pricePolicy;
     } else if (this.name.search(this.pricelessPolicy) >= 0) {
@@ -178,6 +183,7 @@ export class OrgQuota {
   }
 
   get priceKorean(): String {
+    // TODO Globalization of returning value
     switch(this.price) {
       case this.pricePolicy:
         return '유료';

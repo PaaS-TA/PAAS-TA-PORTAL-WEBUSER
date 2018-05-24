@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {NGXLogger} from "ngx-logger";
 import {BuildPack, CatalogService} from "../main/catalog.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
-import {FormGroup} from "@angular/forms/forms";
+import {cataloghistroy} from "../model/cataloghistory";
 
 @Component({
   selector: 'app-catalog-development',
@@ -15,89 +15,107 @@ import {FormGroup} from "@angular/forms/forms";
 export class CatalogDevelopmentComponent implements OnInit {
   catalogcontans = CATALOGURLConstant;
   namecheck : number = 0;
-  namepatterncheck : boolean = true;
   routecheck : number = 0;
-  routepatterncheck : boolean = true;
 
   appplaceholder : string;
   routeplaceholder : string;
 
   orgname : string;
   spacename : string;
-  dd : boolean;
   disableappinput : boolean;
   disablerouteinput : boolean;
   disablebutton : boolean;
 
-  space : Space;
-  org : Organization;
-  orgs: Array<Organization> = new Array<Organization>(); // 조직 정보
-  spaces: Array<Space> = new Array<Space>(); // 공간 정보
+  appnames : Array<string>;
+  hostnames : Array<string>;
 
-  inputtime : any;
-  outputtime : any;
+  org : Organization; // 선택한 조직정보
+  space : Space; // 선택한 공간정보
+  orgs: Array<Organization> = new Array<Organization>(); // 조직 정보 리스트
+  spaces: Array<Space> = new Array<Space>(); // 공간 정보 리스트
 
   domain: string = ''; // 도메인
   domainid : string; // 도메인id
-  buildpack : BuildPack;
+  buildpack : BuildPack; //빌드팩 정보
   appname: string; //앱 이름
+  hostname : string;
   appurl: string; // 앱URL
   memory: number; // 메모리
   disk: number; // 디스크
   appStart : boolean = false; // 앱 시작 여부
 
-  constructor(private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
-
+  constructor(private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+    this.catalogService.isLoading(false);
   }
 
   ngOnInit() {
-    this.RouterInit();
-    this.OrgsFrist();
-    this.SpacesFrist();
-    this.DomainInit();
-    this.BuildInit();
-    this.OrgsInit();
-    this.messageInit();
-
+    this.activatedRouteInit();
+    this.domainInit();
+    this.buildInit();
+    this.getRoutes();
+    this.orgsFrist();
+    this.spacesFrist();
+    this.orgsInit();
     this.memory = 512;
     this.disk = 1024;
   }
 
-  RouterInit(){
+  activatedRouteInit(){
     const orgname = this.route.snapshot.params['orgname'];
     const spacename = this.route.snapshot.params['spacename'];
     orgname == null ? (this.orgname = CATALOGURLConstant.OPTIONORG, this.placeholderSetting(true)) : (this.orgname = orgname, this.placeholderSetting(false));
     spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE, this.placeholderSetting(true)) : (this.spacename = spacename, this.placeholderSetting(false));
   }
 
-  DomainInit(){
+  domainInit(){
     this.catalogService.getDomain().subscribe(data => {
       this.domain = data['resources'][0]['entity']['name'];
-      this.domainid = data['resources'][0]['metadata']['id'];
+      this.domainid = data['resources'][0]['metadata']['guid'];
+      console.log(this.domainid);
     });
   }
 
-  BuildInit() {
+  buildInit() {
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.route.snapshot.params['id']).subscribe(data => {
-      console.log(data);
       this.buildpack =  data['list'][0];
     });
   }
 
-  OrgsFrist(){
+  getRoutes(){
+    this.hostnames = new Array<string>();
+    this.catalogService.getRoutes(CATALOGURLConstant.GETLISTROUTE).subscribe(data => {
+      console.log(data);
+      data.forEach(route => {
+        this.hostnames.push(route['host']);
+      });
+      this.catalogService.isLoading(false);
+    });
+  }
+
+  getAppNames(){
+    this.catalogService.getAppNames(CATALOGURLConstant.GETLISTAPP+this.org.guid+'/'+this.space.guid).subscribe(data => {
+      this.appnames = new Array<string>();
+      data['resources'].forEach(res => {
+        this.appnames.push(res['entity']['name']);
+      });
+      this.catalogService.isLoading(false);
+    });
+  }
+
+  orgsFrist(){
     this.org = new Organization(null, null);
     this.org.name = CATALOGURLConstant.OPTIONORG;
     this.orgs.push(this.org);
   }
 
-  SpacesFrist(){
+  spacesFrist(){
     this.space = new Space(null, null, null);
     this.space.name = CATALOGURLConstant.OPTIONSPACE;
     this.spaces.push(this.space);
   }
 
 
-  OrgsInit(){
+  orgsInit(){
     this.catalogService.getOrglist().subscribe(data => {
       data['resources'].forEach(res => {
         const _org = new Organization(res['metadata'], res['entity']);
@@ -106,56 +124,39 @@ export class CatalogDevelopmentComponent implements OnInit {
           this.org = _org;
         }
       });
-      if(this.space.name !=='' && this.org.name !== ''){
         this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
           data['spaceList']['resources'].forEach(res => {
             const _space = new Space(res['metadata'], res['entity'], null);
             this.spaces.push(_space);
             if(_space.name === this.spacename){
               this.space = _space;
+              this.getAppNames();
             } });
-        }); }
+        });
     });
   }
 
-  messageInit(){
-
-  }
 
   orgSelect() {
+    this.catalogService.isLoading(true);
     this.spaces = new Array<Space>();
     this.placeholderSetting(true);
-    this.SpacesFrist();
+    this.spacesFrist();
     this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {
         this.spaces.push(new Space(res['metadata'], res['entity'], null));
       });
+      this.catalogService.isLoading(false);
     });
   }
 
   spaceSelect(){
-    this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE)
+    this.catalogService.isLoading(true);
+    this.getAppNames();
+    this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE);
   }
 
-  initAppUrl() {
-    if(!this.space){
-      //스페이스 조직이 없거나 선택안했을시 처리
-      return;
-    }
-    if(!this.pattenTest()){
-      return;
-    }
 
-    if (this.appname.length < 1 || this.appname.trim() === ''){
-      this.appurl = '';
-      this.disableButton(true);
-      return;
-    }
-    this.appurl = this.appname + '.' + this.domain;
-    this.disableButton(false);
-     this.nameCheck();
-    this.routeCheck();
-  }
 
   placeholderSetting(value : boolean){
     this.disableInput(value);
@@ -170,6 +171,37 @@ export class CatalogDevelopmentComponent implements OnInit {
     }
   }
 
+  checkAppName() {
+    if(this.pattenTest(this.appname)){
+      this.namecheck = CATALOGURLConstant.NO;
+      return;
+    }
+    if (this.appname.length < 1 || this.appname.trim() === ''){
+      this.appurl = '';
+      this.disableButton(true);
+      return;
+    }
+    if(this.appname.length < 64){
+      this.appurl = this.appname + '.' + this.domain;
+      this.hostname = this.appname;
+    }
+    this.disableButton(false);
+    this.nameCheck();
+    this.routeCheck();
+  }
+
+  checkHostName(){
+    if(this.appurl.indexOf('.'+this.domain) == -1){
+      this.routecheck = CATALOGURLConstant.NO;
+      this.disableButton(true);
+      return;
+    }
+    const _hostname = this.appurl.split('.'+this.domain);
+    this.hostname = _hostname[0];
+    this.routecheck = CATALOGURLConstant.OK;
+    this.disableButton(false);
+  }
+
   disableInput(value : boolean){
     this.disableappinput = value;
     this.disablerouteinput = value;
@@ -179,70 +211,90 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.disablebutton = value;
   }
 
-  pattenTest(){
+  pattenTest(value){
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
-    this.namepatterncheck = !(regExpPattern.test(this.appname) || regExpBlankPattern.test(this.appname));
-    if(!this.namepatterncheck){
-      this.namecheck = CATALOGURLConstant.NO;
-    }
-    return this.namepatterncheck;
+    return (regExpPattern.test(value) || regExpBlankPattern.test(value));
   }
 
   createApp() {
-    const url = CATALOGURLConstant.CREATEAPP+'';
-    let appSampleFilePath = this.buildpack['appSampleFilePath'];
-    if(appSampleFilePath ==='' || appSampleFilePath === null)
-      appSampleFilePath = 'N';
-    let params = {
-      appSampleStartYn : this.appStart ? 'Y' : 'N',
-      appSampleFileName: this.buildpack['appSampleFileName'],
-      spaceId: this.space.guid,
-      spaceName: this.space.name,
-      orgName: this.org.name,
-      appName: this.appname,
-      name : this.appname,
-      hostName: this.appurl,
-      domainName: this.domainid,
-      memorySize : this.memory,
-      diskSize : this.disk,
-      buildPackName: this.buildpack['buildPackName'],
-      appSampleFilePath : appSampleFilePath
-    };
-    this.catalogService.postApp(url, params).subscribe(data => {
-      console.log(data);
-    });
-  }
-
-  nameCheck() {
+    this.catalogService.isLoading(true);
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      let map = new Map<number, string>();
-      map = data;
-      if(map.get(this.catalogService.lasttime)){
-        this.namecheck = CATALOGURLConstant.OK;
-        this.catalogService.namecheckmap = new Map<number, string>();
-      }
-        }, error => {
-      this.namecheck = CATALOGURLConstant.NO;
-      this.disableButton(true);
-    });;
-  }
+      this.namecheck = CATALOGURLConstant.OK;
+      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
+        if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
+          this.routecheck = CATALOGURLConstant.OK;
 
-  routeCheck(){
-    return this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appname).subscribe(data => {
-      if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
-        this.routecheck = CATALOGURLConstant.OK;
-        return true;
-      }
-      else if (data['RESULT']===CATALOGURLConstant.FAIL){
+          let appSampleFilePath = this.buildpack['appSampleFilePath'];
+          if(appSampleFilePath ==='' || appSampleFilePath === null)
+            appSampleFilePath = 'N';
+          let params = {
+            appSampleStartYn : this.appStart ? 'Y' : 'N',
+            appSampleFileName: this.buildpack['appSampleFileName'],
+            spaceId: this.space.guid,
+            spaceName: this.space.name,
+            orgName: this.org.name,
+            appName: this.appname,
+            name : this.appname,
+            hostName: this.appurl,
+            domainName: this.domainid,
+            memorySize : this.memory,
+            diskSize : this.disk,
+            buildPackName: this.buildpack['buildPackName'],
+            appSampleFilePath : appSampleFilePath
+          };
+          this.catalogService.postApp(CATALOGURLConstant.CREATEAPP, params).subscribe(data => {
+            this.log.debug(data);
+            this.catalogService.postHistroy(CATALOGURLConstant.INSERTHISTROY, new cataloghistroy(this.buildpack.no, CATALOGURLConstant.BUILDPACK, this.catalogService.getUserid())).subscribe
+            (data => {
+              this.log.debug(data);
+              this.catalogService.isLoading(false);
+              this.router.navigate(['dashboard']);
+            });
+          });
+
+
+        }
+        else if (data['RESULT']===CATALOGURLConstant.FAIL){
+          this.getRoutes();
+          this.routecheck = CATALOGURLConstant.NO;
+          this.disableButton(true);
+          return false;
+        }
+      }, error => {
+        this.getRoutes();
         this.routecheck = CATALOGURLConstant.NO;
         this.disableButton(true);
         return false;
-      }
+      });
     }, error => {
-      this.routecheck = CATALOGURLConstant.NO;
+      this.getAppNames();
+      this.namecheck = CATALOGURLConstant.NO;
       this.disableButton(true);
-      return false;
+    });;
+
+  }
+
+  nameCheck() {
+    this.namecheck = CATALOGURLConstant.OK;
+    this.appnames.forEach(name => {
+      if(name === this.appname){
+        console.log(name);
+        this.namecheck = CATALOGURLConstant.NO;
+        this.disableButton(true);
+        return;
+      }
+    });
+  }
+
+  routeCheck(){
+    this.routecheck = CATALOGURLConstant.OK;
+    this.hostnames.forEach(host => {
+      if(host === this.appname){
+        this.routecheck = CATALOGURLConstant.NO;
+        this.disableButton(true);
+        return;
+      }
     });
   }
 }
