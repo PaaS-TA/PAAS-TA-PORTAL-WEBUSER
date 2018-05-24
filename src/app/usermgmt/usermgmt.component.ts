@@ -86,5 +86,8 @@ export class UsermgmtComponent implements OnInit {
       return data;
     });
   }
-  
+
+  public alertMsg(msg: string) {
+    alert(msg);
+  }
 }

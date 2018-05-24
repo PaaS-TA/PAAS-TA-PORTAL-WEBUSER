@@ -122,6 +122,22 @@ export class OrgUserRoleService {
   }
 
   public cancelOrgMember(userRoles: Array<OrgUserRole>, cancelingUser: OrgUserRole) {
+    const url = this.URLOrgUserCanceling(cancelingUser.orgId);
+    const params = {
+      userId: cancelingUser.userId
+    };
 
+    return (async() => {
+      this.logger.debug('cancel org member from org-inner : before await');
+      const data = await this.common.doDelete(url, params, this.getToken()).toPromise();
+      this.logger.debug('cancel org member from org-inner : after await');
+      const index = userRoles.findIndex(ur => ur.userId === cancelingUser.userId );
+      if (index !== -1) {
+        userRoles.splice(index, 1);
+      } else {
+        this.logger.error('Cannot find to cancel member in user list...', cancelingUser.userEmail);
+      }
+      return data;
+    })();
   }
 }

@@ -221,7 +221,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
       this.logger.warn('Remain domain : ', this.domains);
       this.domainService.deleteDomain(this.domains, this.selectDomain);
     } else {
-      this.logger.warn('Cancel to delete space : ', this.selectSpace.name);
+      this.logger.warn('Cancel to delete domain : ', this.selectDomain.name);
     }
     //this.selectSpace = null;
     this.selectSpace = Space.empty();
@@ -274,7 +274,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
 
   isMember(userRole: OrgUserRole) {
     // TODO isMember
-    return false;
+    return true;
   }
 
   isInvited(userRole: OrgUserRole) {
@@ -298,24 +298,27 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  selectToCancelMemberUser(userRole: OrgUserRole) {
+  displayCancelMemberUser(userRole: OrgUserRole) {
     // TODO selectToCancelMemberUser
     this.selectUserRole = userRole;
   }
 
-  selectToInviteUser(userRole: OrgUserRole) {
+  displayInviteUser(userRole: OrgUserRole) {
     // TODO selectToInviteUser
     this.selectUserRole = userRole;
   }
 
-  selectToCancelInvitionUser(userRole: OrgUserRole) {
+  displayCancelInvitionUser(userRole: OrgUserRole) {
     // TODO selectToCancelInvitionUser
     this.selectUserRole = userRole;
   }
 
   cancelMember(isCanceled: boolean) {
     if (isCanceled) {
-      // this.orgService.cancelMember(this.userRoles, this.selectUserRole);
+      this.logger.warn('Cancel org member : ', this.selectUserRole.userEmail);
+      this.orgUserRoleService.cancelOrgMember(this.userRoles, this.selectUserRole);
+    } else {
+      this.logger.warn( 'Cancel to canceling org member : ', this.selectUserRole.userEmail);
     }
   }
 
