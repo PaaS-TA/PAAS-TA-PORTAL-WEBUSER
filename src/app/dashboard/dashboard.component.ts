@@ -145,7 +145,9 @@ export class DashboardComponent implements OnInit {
       }
       console.log(data);
       return data;
-    }).then(this.getAppSummary(this.selectedSpaceId));
+    });
+    //.then(this.getAppSummary(this.selectedSpaceId))
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   delApp(guidParam: string) {
@@ -161,12 +163,15 @@ export class DashboardComponent implements OnInit {
       }
       console.log(data);
       return data;
-    }).then(this.getAppSummary(this.selectedSpaceId));
+    });
+    //.then(this.getAppSummary(this.selectedSpaceId))
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
-  startApp(appStateParam: string) {
+  startApp() {
+    console.log(this.appSummaryGuid);
     let params = {
-      guid: this.selectedGuid
+      guid: this.appSummaryGuid
     };
     this.dashboardService.startApp(params).subscribe(data => {
       return data;
@@ -187,7 +192,9 @@ export class DashboardComponent implements OnInit {
       }
       console.log(data);
       return data;
-    }).then(this.getAppSummary(this.selectedSpaceId));
+    });
+    //.then(this.getAppSummary(this.selectedSpaceId))
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   delInstance(guidParam: string) {
@@ -203,12 +210,14 @@ export class DashboardComponent implements OnInit {
       }
       console.log(data);
       return data;
-    }).then(this.getAppSummary(this.selectedSpaceId));
+    });
+    //.then(this.getAppSummary(this.selectedSpaceId))
+    return (this.getAppSummary(this.selectedSpaceId));
   }
 
-  goDevelopMent() {
-    this.router.navigate(['catalogdevelopment', this.org.name]);
-  }
+  // goDevelopMent() {
+  //   this.router.navigate(['catalogdevelopment', this.org.name]);
+  // }
 
   ngOnInit() {
     console.log('ngOnInit fired');
@@ -222,7 +231,6 @@ export class DashboardComponent implements OnInit {
           console.log(exception);
         });
     });
-
   }
 
   showLoading() {
