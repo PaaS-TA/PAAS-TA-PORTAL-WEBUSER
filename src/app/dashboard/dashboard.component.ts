@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
   public appSummaryGuid: string; // app guid value
   public selectedGuid:string;
   public selectedType:string;
+  public selectedName: string;
 
   public appSummaryEntities: Observable<any[]>;
   public appEntities: Observable<any[]>;
@@ -255,17 +256,19 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  popclick(id: string, type :string,guid: string) {
+  popclick(id: string, type :string, guid: string, name:string) {
     $('.space_pop_submenu').hide();
     if (this.current_popmenu_id != id) {
       $("#" + id).show();
       this.current_popmenu_id = id;
       this.selectedType = type;
       this.selectedGuid = guid;
+      this.selectedName = name;
     } else {
       this.current_popmenu_id = '';
       this.selectedType = '';
       this.selectedGuid = '';
+      this.selectedName = '';
     }
     this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid);
   }
