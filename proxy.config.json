@@ -4,27 +4,36 @@
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
-    "pathRewrite": {"^/portalapi": ""}
+    "pathRewrite": {
+      "^/portalapi": ""
+    }
   },
   "/ws/*": {
-    "target": "http://localhost:5555/",
+    "target": "ws://localhost:5555",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
-    "pathRewrite": {"^/ws": ""}
+    "ws": true,
+    "pathRewrite": {
+      "^/ws": ""
+    }
   },
   "/commonapi/*": {
     "target": "http://localhost:2223",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
-    "pathRewrite": {"^/commonapi": ""}
+    "pathRewrite": {
+      "^/commonapi": ""
+    }
   },
   "/storageapi/*": {
     "target": "http://localhost:2225/storageapi",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
-    "pathRewrite": {"^/storageapi": ""}
+    "pathRewrite": {
+      "^/storageapi": ""
+    }
   }
 }

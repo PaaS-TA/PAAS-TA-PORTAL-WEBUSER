@@ -16,15 +16,11 @@ export class WebsocketService {
     // you can hard code `environment.ws_url` as `http://localhost:5000`
     // this.socket = io.connect('http://localhost:5555');
 
-    this.socket = io("http://localhost:5555", {
+    this.socket = io("/ws/", {
       // path: "/ws",
       transportOptions: {
         polling: {
-          'Authorization': "Basic YWRtaW46b3BlbnBhYXN0YQ==",
-          'Host': "localhost:5555",
-          'Origin': "localhost:5555",
-          'Referer': "localhost:5555",
-          'x-clientid': 'abc'
+          'Authorization': "Basic YWRtaW46b3BlbnBhYXN0YQ=="
         }
       }
     });
