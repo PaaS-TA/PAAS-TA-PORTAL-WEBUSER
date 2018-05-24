@@ -28,12 +28,7 @@ export class UsermgmtService {
     return this.common
       .doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {return res['result'];});
   }
-
-  // deleteOrg(org) {
-  //    return this.common.doDelete('/portalapi/v2/orgs/' + org.guid + org.name, this.common.getToken()).map((res: Response) => {
-  //      return res['result'];
-  //    });
-  // }
+  
 }
 
 export class User {

@@ -21,11 +21,14 @@ declare var jQuery: any;
 export class UsermgmtComponent implements OnInit {
   public user: Observable<User>;
   public orgs: Array<Organization>;
+
   token: string;
   username: string;
   password: string;
   password_new: string;
   password_confirm: string;
+  selectSort : string;
+  orgName: string;
 
   // Angular에서 필요에 맞게 호출
   ngOnInit() {
@@ -83,12 +86,5 @@ export class UsermgmtComponent implements OnInit {
       return data;
     });
   }
-
-  //  deleteOrg() {
-  //   let params = { name : this.orgs['name']};
-  //   this.userMgmtService.deleteOrg(this.common.getUserGuid(),params).subscribe(data => {
-  //     this.orgs= data;
-  //     console.log(data);
-  //   });
-  // }
+  
 }
