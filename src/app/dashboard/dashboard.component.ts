@@ -32,14 +32,15 @@ export class DashboardComponent implements OnInit {
   orgs: Array<Organization>;
   org: Organization;
   spaces: Array<Space>;
+  space : Space;
 
   public token: string;
   public userid: string;
   public orgGuid: string;
   public spaceGuid: string;
-  public orgName: string;
-  public spaceName: string;
-  private service: string;
+  public selectedSpaceId : string;
+  public appStateParam : string;
+
   public current_popmenu_id: string;
   public appName: string;
   public instanceName : string;
@@ -75,6 +76,7 @@ export class DashboardComponent implements OnInit {
     this.orgs = orgService.getOrgList();
 
     this.org = null;
+    this.space = null;
     this.spaces = [];
 
     this.isEmpty = true;
@@ -125,11 +127,10 @@ export class DashboardComponent implements OnInit {
     this.isEmpty = false;
     this.isSpace = true;
     this.isMessage = false;
-
+    this.selectedSpaceId = value;
     this.getAppSummary(value);
   }
 
-  //앱 이름변경
   renameApp(appName : string) {
     console.log(this.appName);
     let params = {
@@ -144,7 +145,7 @@ export class DashboardComponent implements OnInit {
       }
       console.log(data);
       return data;
-    });
+    }).then(this.getAppSummary(this.selectedSpaceId));
   }
 
   delApp(guidParam: string) {
@@ -160,13 +161,12 @@ export class DashboardComponent implements OnInit {
       }
       console.log(data);
       return data;
-    });
+    }).then(this.getAppSummary(this.selectedSpaceId));
   }
 
-  startApp() {
-    console.log(this.appSummaryGuid);
+  startApp(appStateParam: string) {
     let params = {
-      guid: this.appSummaryGuid
+      guid: this.selectedGuid
     };
     this.dashboardService.startApp(params).subscribe(data => {
       return data;
@@ -187,7 +187,7 @@ export class DashboardComponent implements OnInit {
       }
       console.log(data);
       return data;
-    });
+    }).then(this.getAppSummary(this.selectedSpaceId));
   }
 
   delInstance(guidParam: string) {
@@ -203,12 +203,12 @@ export class DashboardComponent implements OnInit {
       }
       console.log(data);
       return data;
-    });
+    }).then(this.getAppSummary(this.selectedSpaceId));
   }
 
-  // goDevelopMent() {
-  //   this.router.navigate(['catalogdevelopment',this.se );
-  // }
+  goDevelopMent() {
+    this.router.navigate(['catalogdevelopment', this.org.name]);
+  }
 
   ngOnInit() {
     console.log('ngOnInit fired');
@@ -223,19 +223,6 @@ export class DashboardComponent implements OnInit {
         });
     });
 
-    // this.route.queryParams.subscribe(params => {
-    //   if (params != null) {
-    //     setTimeout(() => this.showLoading(), 0);
-    //
-    //     this.getAppSummary(params['guid']);
-    //
-    //     // this.getAppEvents(params['guid']);
-    //     // this.getAppEnv(params['guid']);
-    //     // this.getAppRecentLogs(params['guid']);
-    //   } else {
-    //     this.router.navigate(['dashMain']);
-    //   }
-    // });
   }
 
   showLoading() {
