@@ -110,10 +110,11 @@
             <td><p>{{domain.name}}</p></td>
             <th>
               <ng-container *ngIf="domain.shared; else privateDomain">
-                <i class="fas fa-link" alt="공유하는 도메인입니다."></i>
+                <i class="fas fa-link" title="공유하는 도메인은 삭제할 수 없습니다."></i>
               </ng-container>
               <ng-template #privateDomain>
                 <i class="fas fa-trash-alt" data-toggle="modal"
+                   [title]="domain.name + ' 삭제'"
                    [attr.data-target]="'#layerpop9-' + org.name"
                    (click)="displayDeleteDomain($event, domain)"></i>
               </ng-template>
@@ -710,7 +711,7 @@
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                <span>{{selectDomain.name}}</span> 도메인을 삭제하시겠습니까?
+                <span>조직 {{org.name}} 의 {{selectDomain.name}}</span> 도메인을 삭제하시겠습니까?
               </p>
             </div>
           </div>
