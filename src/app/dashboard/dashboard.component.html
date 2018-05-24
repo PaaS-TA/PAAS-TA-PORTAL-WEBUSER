@@ -11,7 +11,7 @@
             <label for="checkbox-1"></label>
         </span>
     <ul class="gnb clearfix">
-      <li><a [routerLink]="['../appMain']">대시보드</a></li>
+      <li><a [routerLink]="['../dashboard']">대시보드</a></li>
       <li><a [routerLink]="['../catalog']">카달로그</a></li>
       <li><a href="https://github.com/PaaS-TA/Guide-3.0-Penne-">문서</a></li>
     </ul>
@@ -157,14 +157,14 @@
                   <div class="space_pop_menu" >
                     <i class="fas fa-ellipsis-v" (click)="popclick('apopmenu_'+i,'app',item.guid,item.name)" ></i>
                     <ol class="space_pop_submenu" id="apopmenu_{{i}}">
-                      <li><a class="fas fa-edit" data-target="#layerpop1" data-toggle="modal"> 앱 이름변경</a></li>
+                      <li data-target="#layerpop1" data-toggle="modal"><a class="fas fa-edit"> 앱 이름변경</a></li>
                       <li><a class="fas fa-play" (click)="startApp()"> 실행</a></li>
-                      <li><a class="fas fa-trash-alt" data-target="#layerpop2" data-toggle="modal"> 삭제</a></li>
+                      <li data-target="#layerpop2" data-toggle="modal"><a class="fas fa-trash-alt"> 삭제</a></li>
                     </ol>
                   </div>
                   <!--<a [routerLink]="['../appMain']">-->
                   <!--<div (click)="moveAppMain()">-->
-                  <div class="app_title" (click)="goDevelopMent()">{{item.name}}</div>
+                  <div class="app_title" >{{item.name}}</div>
                   <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
                   <div class="app_per clearfix">
                     <ul>
@@ -218,9 +218,9 @@
             </li>
             <!-- 애플리케이션 영역 이동 -->
             <li >
-              <div class="sortable_wrap" ><a [routerLink]="['../catalog']">
+              <div class="sortable_wrap" (click)="goDevelopMent()">
                 <div class="space_empty"></div>
-              </a></div>
+              </div>
             </li>
             <!-- 애플리케이션 영역 이동 끝-->
           </ul>
@@ -247,9 +247,9 @@
                   <div class="space_pop_menu"  >
                     <i class="fas fa-ellipsis-v" (click)="popclick('spopmenu_'+i,'service',item.guid,item.name)"></i>
                     <ol class="space_pop_submenu" id ="spopmenu_{{i}}">
-                      <li><a class="fas fa-edit" data-target="#layerpop3" data-toggle="modal"> 서비스 이름변경</a></li>
+                      <li data-target="#layerpop3" data-toggle="modal"><a class="fas fa-edit"> 서비스 이름변경</a></li>
                       <!--<li><a class="fas fa-wrench"> 서비스 수정</a></li>-->
-                      <li><a class="fas fa-trash-alt" data-target="#layerpop5" data-toggle="modal"> 삭제</a></li>
+                      <li  data-target="#layerpop5" data-toggle="modal"><a class="fas fa-trash-alt"> 삭제</a></li>
                     </ol>
                   </div>
                   <div class="app_title">{{item.name}}</div>
@@ -330,7 +330,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>앱을 삭제하면 되돌릴 수 없습니다.<br/><span>test.org</span>를 삭제하시겠습니까?
+          <p>앱을 삭제하면 되돌릴 수 없습니다.<br/><span>{{selectedName}}</span>를 삭제하시겠습니까?
           </p>
         </div>
         <!-- Footer -->
@@ -416,7 +416,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>서비스를 삭제하면 되돌릴 수 없습니다.<br/><span>Testorg(서비스 명)</span>를 삭제하시겠습니까?
+          <p>서비스를 삭제하면 되돌릴 수 없습니다.<br/><span>{{selectedName}}</span>를 삭제하시겠습니까?
           </p>
         </div>
         <!-- Footer -->

@@ -32,23 +32,23 @@ export class DashboardComponent implements OnInit {
   orgs: Array<Organization>;
   org: Organization;
   spaces: Array<Space>;
-  space : Space;
+  space: Space;
 
   public token: string;
   public userid: string;
   public orgGuid: string;
   public spaceGuid: string;
-  public selectedSpaceId : string;
-  public appStateParam : string;
+  public selectedSpaceId: string;
+  public appStateParam: string;
 
   public current_popmenu_id: string;
   public appName: string;
-  public instanceName : string;
+  public instanceName: string;
   public appNewName: string;
   public appDelName: string;
   public appSummaryGuid: string; // app guid value
-  public selectedGuid:string;
-  public selectedType:string;
+  public selectedGuid: string;
+  public selectedType: string;
   public selectedName: string;
 
   public appSummaryEntities: Observable<any[]>;
@@ -93,6 +93,7 @@ export class DashboardComponent implements OnInit {
   getOrg(value: string, org: Organization) {
 
     console.log('::::::::::::::::: ' + value + '::::::::::::::::: ');
+
     this.org = this.orgs.find(org => org.name === value);
     this.isLoadingSpaces = true;
 
@@ -105,7 +106,7 @@ export class DashboardComponent implements OnInit {
       this.isLoadingSpaces = false;
       this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
     }
-    console.log('::::::::::::::::: find org is ', org, '::::::::::::::::: ');
+    console.log('::::::::::::::::: find org is ', this.org.guid, '::::::::::::::::: ');
   }
 
   //애플리케이션 및 서비스 목록 확인
@@ -118,7 +119,7 @@ export class DashboardComponent implements OnInit {
       console.log(data);
       this.appEntities = data.apps;
       this.servicesEntities = data.services;
-          return data;
+      return data;
     });
   }
 
@@ -128,10 +129,14 @@ export class DashboardComponent implements OnInit {
     this.isSpace = true;
     this.isMessage = false;
     this.selectedSpaceId = value;
+
+
+    // this.log.debug(space);
     this.getAppSummary(value);
+
   }
 
-  renameApp(appName : string) {
+  renameApp(appName: string) {
     console.log(this.appName);
     let params = {
       guid: this.selectedGuid,
@@ -152,7 +157,7 @@ export class DashboardComponent implements OnInit {
 
   delApp(guidParam: string) {
     let params = {
-      guid : guidParam
+      guid: guidParam
     };
 
     this.dashboardService.delApp(params).subscribe(data => {
@@ -178,7 +183,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  renameInstance(instanceName : string) {
+  renameInstance(instanceName: string) {
     console.log(this.instanceName);
     let params = {
       guid: this.selectedGuid,
@@ -199,7 +204,7 @@ export class DashboardComponent implements OnInit {
 
   delInstance(guidParam: string) {
     let params = {
-      guid : guidParam
+      guid: guidParam
     };
 
     this.dashboardService.delInstance(params).subscribe(data => {
@@ -215,9 +220,10 @@ export class DashboardComponent implements OnInit {
     return (this.getAppSummary(this.selectedSpaceId));
   }
 
-  // goDevelopMent() {
-  //   this.router.navigate(['catalogdevelopment', this.org.name]);
-  // }
+  goDevelopMent() {
+    console.log(this.space);
+    this.router.navigate(['catalogdevelopment',this.org.guid, this.org.name, this.space['name']]);
+  }
 
   ngOnInit() {
     console.log('ngOnInit fired');
@@ -251,7 +257,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  popclick(id: string, type :string, guid: string, name:string) {
+  popclick(id: string, type: string, guid: string, name: string) {
     $('.space_pop_submenu').hide();
     if (this.current_popmenu_id != id) {
       $("#" + id).show();
@@ -267,7 +273,6 @@ export class DashboardComponent implements OnInit {
     }
     this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid);
   }
-
 
 
 }//
