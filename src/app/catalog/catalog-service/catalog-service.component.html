@@ -111,7 +111,7 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <input type="text" placeholder="서비스 이름을 입력하여 주십시오" />
+                  <input type="text" [(ngModel)]="servicename" placeholder="서비스 이름을 입력하여 주십시오" />
                 </th>
               </tr>
               <tr>
@@ -121,8 +121,8 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <select>
-                    <option>연결없이 시작</option>
+                  <select [(ngModel)]="app">
+                    <option *ngFor="let app of apps" [ngValue]="app">{{app.name}}</option>
                   </select>
                 </th>
               </tr>
@@ -133,28 +133,47 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <select class="disabled" >
-                    <option *ngFor="let plan of serviceplan">{{plan.description}}</option>
+                  <select class="disabled" [(ngModel)]="plan">
+                    <option *ngFor="let plan of serviceplan" [ngValue]="plan">{{plan.description}}</option>
                   </select>
                                         <span class="services_tablespan">
                                         </span>
                 </th>
               </tr>
+              <ng-container *ngIf="parameter">
               <tr>
                 <th colspan="3">
                   <p>서비스 생성 파라미터</p>
                 </th>
               </tr>
-              <tr>
-                <th colspan="3">
+              <tr  *ngFor="let param of parameter">
+                <th colspan="3" >
                   <div class="in">
                                             <span><i class="cWrapDot"></i>
-                                                URL :
+                                               {{param.value}}
                                             </span>
-                    <input type="text" />
+                    <input type="{{param.key}}" />
                   </div>
                 </th>
               </tr>
+              </ng-container>
+              <ng-container *ngIf="appparameter">
+              <tr >
+                <th colspan="3" >
+                  <p>앱 생성 파라미터</p>
+                </th>
+              </tr>
+              <tr *ngFor="let param of appparameter">
+                <th colspan="3">
+                  <div class="in">
+                                            <span><i class="cWrapDot"></i>
+                                               {{param.value}}
+                                            </span>
+                    <input type="{{param.key}}" />
+                  </div>
+                </th>
+              </tr>
+              </ng-container>
               </tbody>
             </table>
             <div class="services_bottom maT20">
@@ -194,7 +213,7 @@
             </div>
           </div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="insertHistroy()">생성</button>
+            <button class="btns2 btns2_1 colors4" (click)="createService()">생성</button>
             <button class="btns2 btns2_1 colors5">취소</button>
           </div>
         </div>

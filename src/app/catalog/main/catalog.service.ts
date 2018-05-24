@@ -105,6 +105,11 @@ export class CatalogService {
       return res;
     });
   }
+  getServiceInstance(url : string){
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
 
   postApp(url : string, param : any){
     return this.common.doPost(url,param, this.common.getToken()).map((res: Response) => {
@@ -118,11 +123,18 @@ export class CatalogService {
     });
   }
 
+  postCreateService(url : string, param : any){
+    return this.common.doPost(url,param, this.common.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+  
   putAppStart(url : string, param : string){
     return this.common.doPut(url,param, this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
+
   upload(){
     return this.common.doGet('/commonapi/v2/app/uploadsfile', null).map((res: Response) => {
       return res;

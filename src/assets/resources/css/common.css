@@ -261,11 +261,14 @@ header.account{height:76px;}
 .services_wrap table.services_t thead{border-top:2px solid #ccc;}
 .services_tablespan{margin-top:16px; color:#808487;}
 .services_wrap table tr th input[type=text],
+.services_wrap table tr th input[type=password],
 .services_wrap table tr th select{width:100%;}
 .services_wrap table tr td input[type=text],
+.services_wrap table tr td input[type=password],
 .services_wrap table tr td select{width:90%;}
 .services_wrap table tr select.disabled {background-color:#f0f0f0; color:#333440;}
 .services_wrap table tr .in input[type=text],
+.services_wrap table tr .in input[type=password],
 .services_wrap table tr .in select{ width:calc(100% - 76px); display: inline-block;}
 .services_wrap table tr .in span{width:71px; display: inline-block; font-size: 14px;}
 .services_wrap .btnWrap{float:right;}
