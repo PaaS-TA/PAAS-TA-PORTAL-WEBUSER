@@ -28,6 +28,10 @@ export class OrgUserRoleService {
     return this.URLOrgRequest + '/' + orgName + '/user-roles/' + userName + '/is-manager';
   }
 
+  private URLOrgUserCanceling(orgId: string) {
+    return this.URLOrgRequest + '/' + orgId + '/member';
+  }
+
   public getUserRoles(orgId: string) {
     const userRoles: Array<OrgUserRole> = new Array<OrgUserRole>();
     const url = this.URLOrgUserRoles(orgId);
@@ -74,7 +78,7 @@ export class OrgUserRoleService {
 
     return (async() => {
       this.logger.debug('associate org user role : before await');
-      const data = this.common.doPut(url, requestBody, this.getToken()).toPromise();
+      const data = await this.common.doPut(url, requestBody, this.getToken()).toPromise();
       this.logger.debug('associate org user role : after await / response :', data);
       return data;
     })();
@@ -89,7 +93,7 @@ export class OrgUserRoleService {
 
     return (async() => {
       this.logger.debug('remove org user role : before await');
-      const data = this.common.doDelete(url, params, this.getToken()).toPromise();
+      const data = await this.common.doDelete(url, params, this.getToken()).toPromise();
       this.logger.debug('remove org user role : after await / response :', data);
       return data;
     })();
@@ -103,7 +107,37 @@ export class OrgUserRoleService {
     // TODO
   }
 
-  public cancelOrgMember() {
-    // TODO
+  public cancelOrgMemberUsingOrgIdAndUserId(orgId: string, userId: string) {
+    const url = this.URLOrgUserCanceling(orgId);
+    const params = {
+      userId: userId
+    };
+
+    return (async() => {
+      this.logger.debug('cancel org member : before await');
+      const data = await this.common.doDelete(url, params, this.getToken()).toPromise();
+      this.logger.debug('cancel org member : after await');
+      return data;
+    })();
+  }
+
+  public cancelOrgMember(userRoles: Array<OrgUserRole>, cancelingUser: OrgUserRole) {
+    const url = this.URLOrgUserCanceling(cancelingUser.orgId);
+    const params = {
+      userId: cancelingUser.userId
+    };
+
+    return (async() => {
+      this.logger.debug('cancel org member from org-inner : before await');
+      const data = await this.common.doDelete(url, params, this.getToken()).toPromise();
+      this.logger.debug('cancel org member from org-inner : after await');
+      const index = userRoles.findIndex(ur => ur.userId === cancelingUser.userId );
+      if (index !== -1) {
+        userRoles.splice(index, 1);
+      } else {
+        this.logger.error('Cannot find to cancel member in user list...', cancelingUser.userEmail);
+      }
+      return data;
+    })();
   }
 }

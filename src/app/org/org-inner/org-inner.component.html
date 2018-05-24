@@ -110,10 +110,11 @@
             <td><p>{{domain.name}}</p></td>
             <th>
               <ng-container *ngIf="domain.shared; else privateDomain">
-                <i class="fas fa-link" alt="공유하는 도메인입니다."></i>
+                <i class="fas fa-link" title="공유하는 도메인은 삭제할 수 없습니다."></i>
               </ng-container>
               <ng-template #privateDomain>
                 <i class="fas fa-trash-alt" data-toggle="modal"
+                   [title]="domain.name + ' 삭제'"
                    [attr.data-target]="'#layerpop9-' + org.name"
                    (click)="displayDeleteDomain($event, domain)"></i>
               </ng-template>
@@ -169,17 +170,17 @@
               <ng-container *ngIf="isMember(userRole); else notMember">
                 <button class="btns4 colors8" data-toggle="modal"
                   [attr.data-target]="'#layerpop12-' + org.name"
-                  (click)="selectToCancelMemberUser(userRole)">멤버 취소</button>
+                  (click)="displayCancelMemberUser(userRole)">멤버 취소</button>
               </ng-container>
               <ng-template #notMember>
                 <button class="btns4 colors8" data-toggle="modal"
                   [attr.data-target]="'#layerpop10-' + org.name"
-                  (click)="selectToInviteUser(userRole)">초대
+                  (click)="displayInviteUser(userRole)">초대
                   <ng-container *ngIf="isInvited(userRole)">재</ng-container>전송</button>
                 <ng-container *ngIf="isInvited(userRole)">
                   <button class="btns4 colors8" data-toggle="modal"
                     [attr.data-target]="'#layerpop11-' + org.name"
-                    (click)="selectToCancelInvitionUser(userRole)">초대 취소</button>
+                    (click)="displayCancelInvitionUser(userRole)">초대 취소</button>
                 </ng-container>
               </ng-template>
             </th>
@@ -710,7 +711,7 @@
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                <span>{{selectDomain.name}}</span> 도메인을 삭제하시겠습니까?
+                <span>조직 {{org.name}} 의 {{selectDomain.name}}</span> 도메인을 삭제하시겠습니까?
               </p>
             </div>
           </div>
@@ -803,7 +804,8 @@
           <!-- header -->
           <div class="modal-header">
             <!-- 닫기(x) 버튼 -->
-            <button type="button" class="close" data-dismiss="modal">×</button>
+            <button type="button" class="close" data-dismiss="modal"
+            (click)="cancelMember(false)">×</button>
             <!-- header title -->
             <h4 class="modal-title">멤버 취소</h4>
           </div>
@@ -811,17 +813,17 @@
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                <span>000@test.com</span>님을 멤버 취소 하시겠습니까?
+                <span>{{selectUserRole.userEmail}}</span>님을 멤버 취소 하시겠습니까?
               </p>
             </div>
           </div>
           <!-- Footer -->
           <div class="modal-footer">
             <button type="button" class="btns2 colors4"
-                    data-dismiss="modal">확인
+              data-dismiss="modal" (click)="cancelMember(true)">확인
             </button>
             <button type="button" class="btns2 colors5"
-                    data-dismiss="modal">취소
+              data-dismiss="modal" (click)="cancelMember(false)">취소
             </button>
           </div>
         </div>

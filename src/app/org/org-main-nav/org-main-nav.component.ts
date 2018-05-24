@@ -7,4 +7,8 @@ import { Component, OnInit } from '@angular/core';
 export class OrgMainNavComponent implements OnInit {
   constructor() { }
   ngOnInit() { }
+
+  public alertMsg(msg: string) {
+    alert(msg);
+  }
 }
