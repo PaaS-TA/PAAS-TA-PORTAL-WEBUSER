@@ -251,6 +251,10 @@ export class CatalogDevelopmentComponent implements OnInit {
               this.catalogService.isLoading(false);
               this.router.navigate(['dashboard']);
             });
+          }, error =>{
+            this.log.debug(error);
+            this.catalogService.isLoading(false);
+            this.router.navigate(['dashboard']);
           });
 
 
