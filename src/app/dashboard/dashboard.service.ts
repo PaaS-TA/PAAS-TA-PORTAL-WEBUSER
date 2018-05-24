@@ -22,7 +22,7 @@ export class DashboardService {
     }).do(console.log);
   }
 
-  //  @RequestMapping(value = {Constants.V2_URL + "/apps/{guid}/rename"}, method = RequestMethod.PUT)
+  // @RequestMapping(value = {Constants.V2_URL + "/apps/{guid}/rename"}, method = RequestMethod.PUT)
   renameApp(params: any) {
     return this.commonService.doPut('/portalapi/v2/apps/' + params.guid + '/rename', params,'').map((res: Response) => {
       console.log(res);
@@ -37,22 +37,28 @@ export class DashboardService {
     }).do(console.log);
   }
 
-  //  @RequestMapping(value = {Constants.V3_URL + "/apps/startApp"}, method = RequestMethod.POST)
+  // @RequestMapping(value = {Constants.V3_URL + "/apps/startApp"}, method = RequestMethod.POST)
   startApp(params: any) {
     return this.commonService.doPost('/portalapi/v3/apps/startApp', params, '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
-  //MovePage :: dashboard
-  // moveAppMain(spaceid: string) {
-  //   return this.commonService.doGet('/portalapi/v2/spaces/' + spaceid + '/summary', '').map((res: Response) => {
-  //     console.log(res);
-  //     return res;
-  //   }).do(console.log);
-  // }
 
+  // @RequestMapping(value = {Constants.V2_URL + "/service/{guid}/rename"}, method = RequestMethod.PUT)
+  renameInstance(params: any) {
+    return this.commonService.doPut('/portalapi/v2/service/' + params.guid + '/rename', params,'').map((res: Response) => {
+      console.log(res);
+      return res;
+    }).do(console.log);
+  }
 
+  // @RequestMapping(value = {Constants.V2_URL + "/service/{guid}"}, method = RequestMethod.DELETE)
+  delInstance(params: any) {
+    return this.commonService.doDelete('/portalapi/v2/service/'+ params.guid , null,'').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 
 }//
 

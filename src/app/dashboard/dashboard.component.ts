@@ -32,21 +32,24 @@ export class DashboardComponent implements OnInit {
   orgs: Array<Organization>;
   org: Organization;
   spaces: Array<Space>;
+  space : Space;
 
   public token: string;
   public userid: string;
   public orgGuid: string;
   public spaceGuid: string;
-  public orgName: string;
-  public spaceName: string;
-  private service: string;
+  public selectedSpaceId : string;
+  public appStateParam : string;
+
   public current_popmenu_id: string;
   public appName: string;
+  public instanceName : string;
   public appNewName: string;
   public appDelName: string;
   public appSummaryGuid: string; // app guid value
   public selectedGuid:string;
   public selectedType:string;
+  public selectedName: string;
 
   public appSummaryEntities: Observable<any[]>;
   public appEntities: Observable<any[]>;
@@ -73,6 +76,7 @@ export class DashboardComponent implements OnInit {
     this.orgs = orgService.getOrgList();
 
     this.org = null;
+    this.space = null;
     this.spaces = [];
 
     this.isEmpty = true;
@@ -81,6 +85,7 @@ export class DashboardComponent implements OnInit {
 
     this.current_popmenu_id = '';
     this.appName = '';
+    this.instanceName = '';
     this.appNewName = null;
     this.appDelName = '';
   }
@@ -122,11 +127,10 @@ export class DashboardComponent implements OnInit {
     this.isEmpty = false;
     this.isSpace = true;
     this.isMessage = false;
-
+    this.selectedSpaceId = value;
     this.getAppSummary(value);
   }
 
-  //앱 이름변경
   renameApp(appName : string) {
     console.log(this.appName);
     let params = {
@@ -142,10 +146,11 @@ export class DashboardComponent implements OnInit {
       console.log(data);
       return data;
     });
+    //.then(this.getAppSummary(this.selectedSpaceId))
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   delApp(guidParam: string) {
-
     let params = {
       guid : guidParam
     };
@@ -159,7 +164,8 @@ export class DashboardComponent implements OnInit {
       console.log(data);
       return data;
     });
-
+    //.then(this.getAppSummary(this.selectedSpaceId))
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   startApp() {
@@ -172,12 +178,46 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  renameInstance(instanceName : string) {
+    console.log(this.instanceName);
+    let params = {
+      guid: this.selectedGuid,
+      newName: instanceName,
+    };
+    this.dashboardService.renameInstance(params).subscribe(data => {
+      if (data == 1) {
+        console.log('success');
+      } else {
+        console.log('failed.');
+      }
+      console.log(data);
+      return data;
+    });
+    //.then(this.getAppSummary(this.selectedSpaceId))
+    return this.getAppSummary(this.selectedSpaceId);
+  }
+
+  delInstance(guidParam: string) {
+    let params = {
+      guid : guidParam
+    };
+
+    this.dashboardService.delInstance(params).subscribe(data => {
+      if (data == 1) {
+        console.log('success');
+      } else {
+        console.log('failed.');
+      }
+      console.log(data);
+      return data;
+    });
+    //.then(this.getAppSummary(this.selectedSpaceId))
+    return (this.getAppSummary(this.selectedSpaceId));
+  }
+
   // goDevelopMent() {
-  //   this.router.navigate(['catalogdevelopment', );
+  //   this.router.navigate(['catalogdevelopment', this.org.name]);
   // }
-
-
-
 
   ngOnInit() {
     console.log('ngOnInit fired');
@@ -191,20 +231,6 @@ export class DashboardComponent implements OnInit {
           console.log(exception);
         });
     });
-
-    // this.route.queryParams.subscribe(params => {
-    //   if (params != null) {
-    //     setTimeout(() => this.showLoading(), 0);
-    //
-    //     this.getAppSummary(params['guid']);
-    //
-    //     // this.getAppEvents(params['guid']);
-    //     // this.getAppEnv(params['guid']);
-    //     // this.getAppRecentLogs(params['guid']);
-    //   } else {
-    //     this.router.navigate(['dashMain']);
-    //   }
-    // });
   }
 
   showLoading() {
@@ -225,17 +251,19 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  popclick(id: string, type :string,guid: string) {
+  popclick(id: string, type :string, guid: string, name:string) {
     $('.space_pop_submenu').hide();
     if (this.current_popmenu_id != id) {
       $("#" + id).show();
       this.current_popmenu_id = id;
       this.selectedType = type;
       this.selectedGuid = guid;
+      this.selectedName = name;
     } else {
       this.current_popmenu_id = '';
       this.selectedType = '';
       this.selectedGuid = '';
+      this.selectedName = '';
     }
     this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid);
   }
