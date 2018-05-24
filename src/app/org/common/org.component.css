@@ -16,6 +16,7 @@
 .organization_table table:after{content:""; float:none; clear:both; display:block;}
 .organization_table tr{line-height:46px; border-bottom: 1px solid #e7eaec; padding-left:20px;}
 .organization_table tr:nth-child(4n+1){background:#f9f9f9;}
+.organization_table.domains tr:nth-child(2n+1){background:#f9f9f9;}
 .organization_table tr i{cursor: pointer;}
 .organization_table td{}
 .organization_table td p{padding-left:20px; }

@@ -76,7 +76,7 @@
                     <div class="account_table_in">
                       <span>변경할 이름 </span>
                       <input type="text" [id]="'wtc-' + space.guid" (keyup.enter)="renameSpace($event, space)"
-                             placeholder="변경할 공간 이름을 입력하세요">
+                             placeholder="변경할 공간 이름을 입력하세요" [value]="space.name">
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="renameSpace($event, space)">변경하기</button>
                         <button class="btns6 colors5 btns_sw" (click)="fadeOutButtonSwitch($event)">취소</button>
@@ -90,13 +90,13 @@
         </table>
       </div>
       <!-- organization_table -->
-      <div class="organization_table">
+      <div class="organization_table domains">
         <table>
           <caption>
-            도메인<span>2</span>
+            도메인<span (click)="reloadDomains()">{{domains.length}}</span>
             <div class="pull-right">
-              <button class="btns6 colors4" data-target="#layerpop6"
-                      data-toggle="modal">
+              <button class="btns6 colors4" data-toggle="modal"
+                [attr.data-target]="'#layerpop6-' + org.name">
                 <i class="fas fa-plus"></i> 도메인 추가
               </button>
             </div>
@@ -109,26 +109,16 @@
           <tr *ngFor="let domain of domains">
             <td><p>{{domain.name}}</p></td>
             <th>
-              <ng-template *ngIf="domain.shared; else privateDomain">
-                <i class="fas fa-link"></i>
-              </ng-template>
+              <ng-container *ngIf="domain.shared; else privateDomain">
+                <i class="fas fa-link" alt="공유하는 도메인입니다."></i>
+              </ng-container>
               <ng-template #privateDomain>
                 <i class="fas fa-trash-alt" data-toggle="modal"
-                   [attr.data-target]="'#layerpop9-' + org.name"></i>
+                   [attr.data-target]="'#layerpop9-' + org.name"
+                   (click)="displayDeleteDomain($event, domain)"></i>
               </ng-template>
             </th>
           </tr>
-          <!--
-          <tr>
-            <td><p>115.68.46.187.xip.io</p></td>
-            <th><i class="fas fa-link"></i></th>
-          </tr>
-          <tr>
-            <td><p>115.68.46.187.xip.io</p></td>
-            <th><i class="fas fa-trash-alt"
-                   data-target="#layerpop9" data-toggle="modal"></i></th>
-          </tr>
-          -->
           </tbody>
         </table>
       </div>
@@ -175,12 +165,12 @@
                  [disabled]="!isOrgManagerLoginnedInUser"
                  (click)="changeUserRole($event, userRole, 'OrgAuditor')">
               <label [attr.for]="'rc3-' + org.name + '-' + userRole.userEmail">OrgAuditor(조직 참관인)</label></td>
-            <td>
-              <ng-template *ngIf="isMember(userRole); else notMember">
+            <th class="org_userrole_btns">
+              <ng-container *ngIf="isMember(userRole); else notMember">
                 <button class="btns4 colors8" data-toggle="modal"
                   [attr.data-target]="'#layerpop12-' + org.name"
                   (click)="selectToCancelMemberUser(userRole)">멤버 취소</button>
-              </ng-template>
+              </ng-container>
               <ng-template #notMember>
                 <button class="btns4 colors8" data-toggle="modal"
                   [attr.data-target]="'#layerpop10-' + org.name"
@@ -192,7 +182,7 @@
                     (click)="selectToCancelInvitionUser(userRole)">초대 취소</button>
                 </ng-container>
               </ng-template>
-            </td>
+            </th>
           </tr>
           <!--
           <tr>
@@ -610,7 +600,7 @@
             <!-- 닫기(x) 버튼 -->
             <button type="button" class="close" data-dismiss="modal">×</button>
             <!-- header title -->
-            <h4 class="modal-title">도메인추가</h4>
+            <h4 class="modal-title">도메인 추가</h4>
           </div>
           <!-- body -->
           <div class="modal-body">
@@ -720,17 +710,17 @@
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                <span>000</span> 도메인을 삭제하시겠습니까?
+                <span>{{selectDomain.name}}</span> 도메인을 삭제하시겠습니까?
               </p>
             </div>
           </div>
           <!-- Footer -->
           <div class="modal-footer">
             <button type="button" class="btns2 colors4"
-                    data-dismiss="modal">삭제
+                    data-dismiss="modal" (click)="deleteDomain(true)">삭제
             </button>
             <button type="button" class="btns2 colors5"
-                    data-dismiss="modal">취소
+                    data-dismiss="modal" (click)="deleteDomain(false)">취소
             </button>
           </div>
         </div>
