@@ -38,6 +38,7 @@
             </li>
           </ul>
         </div>
+        <ng-container *ngIf="catalogService.viewstartpack">
         <div>
           <p class="tit">앱 템플릿</p>
           <ul>
@@ -64,6 +65,8 @@
             </li>
           </ul>
         </div>
+          </ng-container>
+        <ng-container *ngIf="catalogService.viewbuildpack">
         <div class="cataloglast">
           <p class="tit">앱 개발환경</p>
           <ul >
@@ -91,7 +94,9 @@
             </li>
           </ul>
         </div>
-        <div class="cataloglast">
+          </ng-container>
+        <ng-container *ngIf="catalogService.viewservicepack">
+        <div class="cataloglast" >
           <p class="tit">서비스</p>
           <ul >
             <li *ngFor="let service of servicepacks" (click)="goService(service)">
@@ -118,6 +123,7 @@
             </li>
           </ul>
         </div>
+          </ng-container>
       </div><!-- row one_line -->
     </div>
     <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
