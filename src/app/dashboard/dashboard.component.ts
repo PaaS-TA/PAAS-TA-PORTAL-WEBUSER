@@ -42,6 +42,7 @@ export class DashboardComponent implements OnInit {
   private service: string;
   public current_popmenu_id: string;
   public appName: string;
+  public instanceName : string;
   public appNewName: string;
   public appDelName: string;
   public appSummaryGuid: string; // app guid value
@@ -81,6 +82,7 @@ export class DashboardComponent implements OnInit {
 
     this.current_popmenu_id = '';
     this.appName = '';
+    this.instanceName = '';
     this.appNewName = null;
     this.appDelName = '';
   }
@@ -145,7 +147,6 @@ export class DashboardComponent implements OnInit {
   }
 
   delApp(guidParam: string) {
-
     let params = {
       guid : guidParam
     };
@@ -159,7 +160,6 @@ export class DashboardComponent implements OnInit {
       console.log(data);
       return data;
     });
-
   }
 
   startApp() {
@@ -172,12 +172,42 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  renameInstance(instanceName : string) {
+    console.log(this.instanceName);
+    let params = {
+      guid: this.selectedGuid,
+      newName: instanceName,
+    };
+    this.dashboardService.renameInstance(params).subscribe(data => {
+      if (data == 1) {
+        console.log('success');
+      } else {
+        console.log('failed.');
+      }
+      console.log(data);
+      return data;
+    });
+  }
+
+  delInstance(guidParam: string) {
+    let params = {
+      guid : guidParam
+    };
+
+    this.dashboardService.delInstance(params).subscribe(data => {
+      if (data == 1) {
+        console.log('success');
+      } else {
+        console.log('failed.');
+      }
+      console.log(data);
+      return data;
+    });
+  }
+
   // goDevelopMent() {
-  //   this.router.navigate(['catalogdevelopment', );
+  //   this.router.navigate(['catalogdevelopment',this.se );
   // }
-
-
-
 
   ngOnInit() {
     console.log('ngOnInit fired');
