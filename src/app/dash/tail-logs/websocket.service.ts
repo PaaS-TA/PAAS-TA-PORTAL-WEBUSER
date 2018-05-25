@@ -16,7 +16,7 @@ export class WebsocketService {
     // you can hard code `environment.ws_url` as `http://localhost:5000`
     // this.socket = io.connect('http://localhost:5555');
 
-    this.socket = io("/ws/", {
+    this.socket = io("http://localhost:5555", {
       // path: "/ws",
       transportOptions: {
         polling: {

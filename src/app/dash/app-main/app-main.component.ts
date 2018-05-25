@@ -495,6 +495,17 @@ export class AppMainComponent implements OnInit {
     $(this).parents("tr").addClass("off");
   }
 
+  showPopAppDelClick() {
+    $("#layerpop_app_del").modal("show");
+  }
+
+  appDelClick() {
+    this.appMainService.delApp(this.appGuid).subscribe(data => {
+      this.ngOnInit();
+      $("[id^='layerpop']").modal("hide");
+    });
+  }
+
   renameAppSaveClick() {
     this.updateApp();
   }
@@ -505,6 +516,24 @@ export class AppMainComponent implements OnInit {
     var memoryChange = 0;
     var diskChange = 0;
     var name = "";
+
+    if($("#instanceS2").css("display") == "inline") {
+      instancesChange = $("#instance_in").val();
+    } else {
+      instancesChange = this.appSummaryInstance;
+    }
+
+    if($("#memS2").css("display") == "inline") {
+      memoryChange = $("#mem_in").val();
+    } else {
+      memoryChange = this.appSummaryMemory;
+    }
+
+    if($("#diskS2").css("display") == "inline") {
+      diskChange = $("#disk_in").val();
+    } else {
+      diskChange = this.appSummaryDisk;
+    }
 
     // if ($(".instanceS").text() != '') {
     //   instancesChange = $(".instanceS").text();
@@ -521,10 +550,6 @@ export class AppMainComponent implements OnInit {
     // } else {
     //   diskChange = $("#disk_in").val();
     // }
-
-    instancesChange = this.appSummaryInstance;
-    memoryChange = this.appSummaryMemory;
-    diskChange = this.appSummaryDisk;
 
     if ($(".tempTitle").val() != '') {
       name = $(".tempTitle").val();
@@ -672,6 +697,9 @@ export class AppMainComponent implements OnInit {
         str += dataobj.logMessage.message + '<br>';
       });
       this.appRecentLogs = str;
+
+      // TODO 마지막??
+      this.common.isLoading = false;
     });
   }
 
@@ -1630,8 +1658,6 @@ export class AppMainComponent implements OnInit {
       });
 
     });
-    // TODO 마지막??
-    this.common.isLoading = false;
   }
 
   selectBoxChartInstanceChange(instance: string) {

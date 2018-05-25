@@ -14,6 +14,7 @@ declare var jQuery: any;
   styleUrls: ['./catalog.component.css']
 })
 export class CatalogComponent implements OnInit {
+  
 
   searchKeyword : string='';
   userid : string;

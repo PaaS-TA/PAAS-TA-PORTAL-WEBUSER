@@ -12,9 +12,18 @@ export class CatalogService {
   recentpacks : Array<any> = Array<any>();
   servicepacks : Array<Service> = Array<Service>();
   lasttime : number;
+  viewstartpack : boolean = true;
+  viewbuildpack : boolean = true;
+  viewservicepack : boolean = true;
   constructor(private common: CommonService, private log: NGXLogger) {
   }
 
+  viewPacks(value, value2, value3){
+    this.viewstartpack  = value;
+    this.viewbuildpack  = value2;
+    this.viewservicepack  = value3;
+  }
+  
   isLoading(value){
     this.common.isLoading = value;
   }

@@ -15,16 +15,26 @@ export class CatalogNavComponent implements OnInit {
   ngOnInit() {
   }
 
-  goMain() {
+  viewMain() {
     this.router.navigate(['catalog']);
+    this.catalogService.viewPacks(true, true, true);
   }
 
-  goAppTemplate() {
-    this.router.navigate(['catalogdetail', this.catalogService.starterpacks[0].no]);
+  viewStarterPack(){
+    this.router.navigate(['catalog']);
+    this.catalogService.viewPacks(true, false, false);
   }
 
-  goAppDevelopMent(){
-    this.router.navigate(['catalogdevelopment', this.catalogService.buildpacks[0].no]);
+  viewBuildPack(){
+    this.router.navigate(['catalog']);
+    this.catalogService.viewPacks(false, true, false);
   }
+
+  viewServicePack(){
+    this.router.navigate(['catalog']);
+    this.catalogService.viewPacks(false, false, true);
+  }
+
+
 
 }
