@@ -931,10 +931,10 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 .colright_btn li > ol > li:hover a{color:#2e6e80;}
 .colright_btn li > ol > li a{padding-left: 20px;}
 
-.headTH2{height: 40px; text-overflow: ellipsis; white-space:nowrap; overflow: hidden; text-transform:capitalize; z-index:0;}
+.headTH2{height: 40px; text-overflow: ellipsis; white-space:nowrap; overflow: hidden; z-index:0;}
 .headT{position: absolute; z-index:1; background: transparent;  width:calc(100% - 77px); top:-16px; display: none;}
 .headT > .tempTitle{width:calc(100% - 114px);margin:0;}
-.headT > input{font-size: 36px; color:#293133; background:#fcfcfc; text-transform:capitalize;} /* border: 1px solid #ced4d9; */
+.headT > input{font-size: 36px; color:#293133; background:#fcfcfc;} /* border: 1px solid #ced4d9; */
 .headT > button,.headT > input{float: left; height: 63px;}
 .headT > button{width: 50px; color:#fff; background:#008fa1; border: none;}
 .headT > button + button{background: #434a5f;}
