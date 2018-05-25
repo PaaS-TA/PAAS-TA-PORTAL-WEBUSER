@@ -6,11 +6,9 @@
           <input class="tempTitle" type="text" [(ngModel)]="wantedOrgName">
           <button class="btns6 colors4 yess2" (click)="renameOrg()">변경하기</button>
           <button class="btns6 colors5 nos2">취소</button>
-          +
-
           <!--button class="btns6 colors4 colors5 organization_sw" style="margin-left:1.1%;">
             <i class="fas fa-chevron-up"></i> 세부사항보기
-        </button-->
+          </button-->
         </div>
       </div>
       <div class="pull-right on">
@@ -23,17 +21,17 @@
         <div class="organization_dot">
           <i class="fas fa-ellipsis-v"></i>
           <ul class="">
-            <li class="name_inputTitle2" (click)="renameOrg()">
+            <li class="name_inputTitle2">
               <p>
-                <i class="fas fa-edit"></i>&nbsp;&nbsp;이름변경
+                <i class="fas fa-edit"></i>&nbsp;&nbsp;이름 변경
               </p>
             </li>
-            <li data-target="'#layerpop-' + org.name" data-toggle="modal" (click)="deleteOrg()">
+            <li [attr.data-target]="'#layerpop-' + org.name" data-toggle="modal" (click)="deleteOrg()">
               <p>
                 <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;삭제
               </p>
             </li>
-            <li data-target="#layerpop8" data-toggle="modal"><p>
+            <li [attr.data-target]="'#layerpop8-' + org.name" data-toggle="modal"><p>
               <img src="../../assets/resources/images/web.png" alt="">&nbsp;&nbsp;WEB
               IDE 신청
             </p></li>
@@ -129,7 +127,7 @@
           <caption>
             사용자<span>1</span>
             <div class="pull-right">
-              <button class="btns6 colors4" data-target="#layerpop4"
+              <button class="btns6 colors4" [attr.data-target]="'#layerpop4-' + org.name"
                       data-toggle="modal">
                 <i class="fas fa-plus"></i> 사용자 초대
               </button>
@@ -286,74 +284,6 @@
     </div>
   </div>
   <!-- org-inner event model -->
-  <!-- org-inner event model -->
-  <div class="modal fade" id="layerpop">
-    <div class="vertical-alignment-helper">
-      <div class="modal-dialog vertical-align-center">
-        <div class="modal-content">
-          <!-- header -->
-          <div class="modal-header">
-            <!-- 닫기(x) 버튼 -->
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            <!-- header title -->
-            <h4 class="modal-title">조직탈퇴</h4>
-          </div>
-          <!-- body -->
-          <div class="modal-body">
-            <p class="account_modal_p">
-              조직을 탈퇴하면 되돌릴 수 없습니다.<br/> <span>testorg</span> 를
-              탈퇴하시겠습니까?
-            </p>
-          </div>
-          <!-- Footer -->
-          <div class="modal-footer">
-            <button type="button" class="btns2 colors4"
-                    data-dismiss="modal">삭제
-            </button>
-            <button type="button" class="btns2 colors5"
-                    data-dismiss="modal">취소
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- modal -->
-  <div class="modal fade" id="layerpop2">
-    <div class="vertical-alignment-helper">
-      <div class="modal-dialog vertical-align-center">
-        <div class="modal-content">
-          <!-- header -->
-          <div class="modal-header">
-            <!-- 닫기(x) 버튼 -->
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            <!-- header title -->
-            <h4 class="modal-title">계정삭제</h4>
-          </div>
-          <!-- body -->
-          <div class="modal-body">
-            <div class="">
-              <p class="account_modal_p">
-                계정 삭제를 선택 하면 모든 조직과 공간이 삭제 되며 되돌릴 수 없습니다.<br/> <span>test@test.com</span>을
-                삭제하시겠습니까?
-              </p>
-              <input type="text" placeholder="이메일 입력"/><input
-              type="text" placeholder="비밀번호 입력"/>
-            </div>
-          </div>
-          <!-- Footer -->
-          <div class="modal-footer">
-            <button type="button" class="btns2 colors4"
-                    data-dismiss="modal">삭제
-            </button>
-            <button type="button" class="btns2 colors5"
-                    data-dismiss="modal">취소
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- modal -->
   <div class="modal fade" [id]="'layerpop-' + org.name">
     <div class="vertical-alignment-helper">
@@ -370,8 +300,8 @@
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                조직을 삭제하면 되돌릴 수 없습니다.<br/> <span>testorg</span>를
-                삭제하시겠습니까?
+                조직을 삭제하면 되돌릴 수 없습니다.<br/>
+                <span>{{org.name}}</span>를 삭제하시겠습니까?
               </p>
             </div>
           </div>
@@ -404,8 +334,8 @@
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                조직을 탈퇴하면 되돌릴 수 없습니다.<br/> <span>testorg</span>를
-                탈퇴하시겠습니까?
+                조직을 탈퇴하면 되돌릴 수 없습니다.<br/>
+                <span>{{org.name}}</span>를 탈퇴하시겠습니까?
               </p>
             </div>
           </div>
@@ -438,8 +368,8 @@
           <div class="modal-body">
             <div class="">
               <p class="account_modal_p">
-                공간 삭제를 하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br/> <span>{{this.selectSpace.name}}</span>을
-                삭제하시겠습니까?
+                공간 삭제를 하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br/>
+                <span>{{selectSpace.name}}</span>을 삭제하시겠습니까?
               </p>
             </div>
           </div>
@@ -470,8 +400,10 @@
           </div>
           <!-- body -->
           <div class="modal-body">
-            <input class="w100" placeholder="sample@test.com"/> <span
-            class="red">* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.</span>
+            <!-- inviting user top -->
+            <input class="w100" placeholder="invite.user.name@domain.com"/>
+            <span class="red">* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.</span>
+            <!-- inviting user middle : organization role -->
             <table class="maT30">
               <colgroup>
                 <col style=''>
@@ -482,26 +414,29 @@
               <thead>
               <tr>
                 <td>조직</td>
-                <td colspan="3">할당된 조직</td>
+                <td colspan="3">부여할 조직 내 역할</td>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>test</td>
-                <td><input class="checkSel" id="modal1"
-                           type="checkbox"/> <label for="modal1">OrgManager(조직
-                  관리자)</label></td>
-                <td><input class="checkSel" id="modal2"
-                           type="checkbox" checked="checked"/> <label
-                  for="modal2">BillingManager(조직 결제 관리자)</label></td>
-                <td><input class="checkSel" id="modal3"
-                           type="checkbox" checked="checked"/> <label
-                  for="modal3">OrgAuditor(조직 참관인)</label></td>
+                <td>{{org.name}}</td>
+                <td>
+                  <input [id]="'invite-modal-om-' + org.name" class="checkSel" type="checkbox" title="조직 관리자"/>
+                  <label [for]="'invite-modal-om-' + org.name">OrgManager</label></td>
+                <td>
+                  <input [id]="'invite-modal-bm-' + org.name" class="checkSel" type="checkbox" title="조직 결제 관리자"/>
+                  <label [for]="'invite-modal-bm-' + org.name">BillingManager</label></td>
+                <td>
+                  <input [id]="'invite-modal-oa-' + org.name" class="checkSel" type="checkbox" title="조직 참관인"/>
+                  <label [for]="'invite-modal-oa-' + org.name">OrgAuditor</label></td>
               </tr>
               </tbody>
             </table>
-            <input class="checkAll" id="checkAll" type="checkbox"/> <label
-            class="maT10" for="checkAll">전체선택</label>
+            <!-- checkAll event : common2.js:234 checkAll-->
+            <input [id]="'invite-checkAll-' + org.name" class="checkAll" type="checkbox"/>
+            <label [for]="'invite-checkAll-' + org.name" class="maT10">전체 선택</label>
+
+            <!-- inviting user middle : space role -->
             <table class="maT30">
               <colgroup>
                 <col style=''>
@@ -511,37 +446,38 @@
               </colgroup>
               <thead>
               <tr>
-                <td>조직</td>
-                <td colspan="3">할당된 조직</td>
+                <td>공간</td>
+                <td colspan="3">부여할 공간 내 역할</td>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>test</td>
-                <td><input class="checkSel2" id="modal4"
-                           type="checkbox"/> <label for="modal4">OrgManager(조직
-                  관리자)</label></td>
-                <td><input class="checkSel2" id="modal5"
-                           type="checkbox"/> <label
-                  for="modal5">BillingManager(조직 결제 관리자)</label></td>
-                <td><input class="checkSel2" id="modal6"
-                           type="checkbox" checked="checked"/> <label
-                  for="modal6">OrgAuditor(조직 참관인)</label></td>
+                <td>space1</td>
+                <td>
+                  <input id="modal4" class="checkSel2" type="checkbox"/>
+                  <label for="modal4">SpaceManager(공간 관리자)</label></td>
+                <td>
+                  <input id="modal5" class="checkSel2" type="checkbox"/>
+                  <label for="modal5">SpaceDeveloper(공간 개발자)</label></td>
+                <td>
+                  <input id="modal6" class="checkSel2" type="checkbox" checked="checked"/>
+                  <label for="modal6">SpaceAuditor(공간 참관인)</label></td>
               </tr>
               <tr>
-                <td>공간명</td>
-                <td><input class="checkSel2" id="modal7"
-                           type="checkbox"/> <label for="modal7">OrgManager(조직
-                  관리자)</label></td>
-                <td><input class="checkSel2" id="modal8"
-                           type="checkbox" checked="checked"/> <label
-                  for="modal8">BillingManager(조직 결제 관리자)</label></td>
-                <td><input class="checkSel2" id="modal9"
-                           type="checkbox" checked="checked"/> <label
-                  for="modal9">OrgAuditor(조직 참관인)</label></td>
+                <td>space2</td>
+                <td>
+                  <input id="modal4" class="checkSel2" type="checkbox"/>
+                  <label for="modal4">SpaceManager(공간 관리자)</label></td>
+                <td>
+                  <input id="modal5" class="checkSel2" type="checkbox"/>
+                  <label for="modal5">SpaceDeveloper(공간 개발자)</label></td>
+                <td>
+                  <input id="modal6" class="checkSel2" type="checkbox" checked="checked"/>
+                  <label for="modal6">SpaceAuditor(공간 참관인)</label></td>
               </tr>
               </tbody>
             </table>
+            <!-- checkAll event : common2.js:238 checkAll2 -->
             <input class="checkAll2" id="checkAll2" type="checkbox"/>
             <label class="maT10" for="checkAll2">전체선택</label>
           </div>

@@ -13,7 +13,8 @@ export class OrgService {
   constructor(private common: CommonService, private logger: NGXLogger) {}
 
   private getToken() {
-    return this.common.getToken();
+    //return this.common.getToken();
+    return this.common.getRefreshToken();
   }
 
   public getOrgListAdminOnly(): Array<Organization> {
@@ -69,13 +70,17 @@ export class OrgService {
     return orgs;
   }
 
-  public renameOrg(org: Organization, wantedRename: String) {
+  public renameOrg(org: Organization, wantedNewName: String) {
     const url = OrgURLConstant.URLOrgRequestBase;
-    const observable = this.common.doPut(url + org.guid,
-      wantedRename, this.getToken()).subscribe(data => {
+    const body = {
+      guid: org.guid,
+      newOrgName: wantedNewName
+    }
+
+    const observable = this.common.doPut(url, body, this.getToken()).subscribe(data => {
         // org.setName(data['entity']['name']);
         const changedName = data['entity']['name'];
-        if (changedName === wantedRename) {
+        if (changedName === wantedNewName) {
           org.name = changedName;
         }
         console.log(data);
@@ -84,10 +89,15 @@ export class OrgService {
 
   public deleteOrg(org: Organization) {
     const url = OrgURLConstant.URLOrgRequestBase;
-    this.common.doDelete(url + org.guid,
-      org.name, this.getToken()).subscribe(data => {
-        console.log(data);
-      });
+    const params = {
+      guid: org.guid,
+      recursive: true
+    };
+
+    const observable = this.common.doDelete(url, params, this.getToken());
+    observable.subscribe(data => {
+        this.logger.debug('Delete organization :', org.name, ' (' + org.guid + ')');
+    });
   }
 
   private getSampleOrgList() {

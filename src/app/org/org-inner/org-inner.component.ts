@@ -53,6 +53,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   private selectUserRole: OrgUserRole = OrgUserRole.empty();
 
   @Output() selectEvent = new EventEmitter<Organization>();
+  @Output() removeEvent = new EventEmitter<Organization>();
 
   private defaultValue = '(dummy)';
 
@@ -76,34 +77,39 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    if (this.quota.valid && this.availableQuotas.length > 0 && this.exactlyQuotaIndex === null) {
-      this.exactlyQuotaIndex =
-        this.availableQuotas.findIndex(
-          orgQuota => (orgQuota === this.quota) || (orgQuota.guid === this.quota.guid));
+    if (null !== this.org) {
+      if (this.quota.valid && this.availableQuotas.length > 0 && this.exactlyQuotaIndex === null) {
+        this.exactlyQuotaIndex =
+          this.availableQuotas.findIndex(
+            orgQuota => (orgQuota === this.quota) || (orgQuota.guid === this.quota.guid));
 
-      if (this.exactlyQuotaIndex !== -1) {
-        const elements = $('#radio-' + this.org.name + '-' + this.quota.name);
-        const valid = elements.length > 0 && elements[0] !== undefined && elements[0].tagName === 'INPUT';
-        if (valid) {
-          elements[0].checked = 'checked';
-          this.logger.debug("Select input : ", elements[0]);
+        if (this.exactlyQuotaIndex !== -1) {
+          const elements = $('#radio-' + this.org.name + '-' + this.quota.name);
+          const valid = elements.length > 0 && elements[0] !== undefined && elements[0].tagName === 'INPUT';
+          if (valid) {
+            elements[0].checked = 'checked';
+            this.logger.debug("Select input : ", elements[0]);
+          }
         }
       }
-    }
 
-    let complete: boolean = this.quota.valid
-      && this.availableQuotas.length > 0
-      && this.exactlyQuotaIndex !== null && this.exactlyQuotaIndex !== -1
-      && this.userRoles.length > 0;
+      let complete: boolean = this.quota.valid
+        && this.availableQuotas.length > 0
+        && this.exactlyQuotaIndex !== null && this.exactlyQuotaIndex !== -1
+        && this.userRoles.length > 0;
 
-    if (complete && this.common.isLoading) {
-      const filterUserRoles = this.userRoles.filter(userRole => { return userRole.userEmail === this.common.getUserEmail()});
-      if (filterUserRoles.length <= 0) {
-        this.isOrgManagerLoginnedInUser = false;;
-      } else {
-        this.isOrgManagerLoginnedInUser = (filterUserRoles[0] as OrgUserRole).isOrgManager;
+      if (complete && this.common.isLoading) {
+        const filterUserRoles = this.userRoles.filter(userRole => {
+          return userRole.userEmail === this.common.getUserEmail()
+        });
+        if (filterUserRoles.length <= 0) {
+          this.isOrgManagerLoginnedInUser = false;
+          ;
+        } else {
+          this.isOrgManagerLoginnedInUser = (filterUserRoles[0] as OrgUserRole).isOrgManager;
+        }
+        this.common.isLoading = false;
       }
-      this.common.isLoading = false;
     }
   }
 
@@ -113,8 +119,9 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   }
 
   deleteOrg() {
-    this.orgService.deleteOrg(this.org);
-    this.org = null;
+    const orgParam = this.org;
+    this.removeEvent.emit(orgParam);
+    this.orgService.deleteOrg(orgParam);
   }
 
   get spaces() {

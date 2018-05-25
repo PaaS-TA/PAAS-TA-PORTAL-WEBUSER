@@ -11,11 +11,8 @@
             </button>
           </div>
         </h1>
-        <app-org-inner
-            *ngFor="let org of orgs"
-            [org]="org"
-            (selectEvent)="selectOrg($event)"
-            >
+        <app-org-inner *ngFor="let org of orgs" [org]="org"
+            (selectEvent)="selectOrg($event)" (removeEvent)="removeOrg($event)">
         </app-org-inner>
       </div><!-- row one_line -->
     </div>

@@ -44,7 +44,9 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
     if (this.doSortOrgs === false && this.orgs.length > 0) {
       this.doSortOrgs = true;
 
-      this.orgs = this.orgs.sort(Organization.compareTo);
+      this.orgs =
+        this.orgs.filter(value => (value !== null && value !== undefined))
+          .sort(Organization.compareTo);
     }
   }
 
@@ -97,6 +99,20 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
     this.currentOrgIndex = this.orgs.indexOf(org);
     this.orgs[this.currentOrgIndex].indexOfOrgs = this.currentOrgIndex;
     logger.debug('orgs[' + this.currentOrgIndex + '] : ', this.orgs[this.currentOrgIndex]);
+  }
+
+  removeOrg(org: Organization, logger = this.logger) {
+    let index = this.orgs.indexOf(org);
+    if (index === -1) {
+      index = this.orgs.findIndex(value => value.guid === org.guid);
+    }
+    // finally...
+    if (index !== -1) {
+      this.orgs.splice(index, 1);
+      logger.debug('Remove organization : ', org.name, '(' + org.guid + ')');
+    } else {
+      logger.warn('Cannot find organization... ', org.name, '(' + org.guid + ')');
+    }
   }
 
   get currentOrg() {
