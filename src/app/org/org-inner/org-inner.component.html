@@ -451,30 +451,24 @@
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <td>space1</td>
-                <td>
-                  <input id="modal4" class="checkSel2" type="checkbox"/>
-                  <label for="modal4">SpaceManager(공간 관리자)</label></td>
-                <td>
-                  <input id="modal5" class="checkSel2" type="checkbox"/>
-                  <label for="modal5">SpaceDeveloper(공간 개발자)</label></td>
-                <td>
-                  <input id="modal6" class="checkSel2" type="checkbox" checked="checked"/>
-                  <label for="modal6">SpaceAuditor(공간 참관인)</label></td>
-              </tr>
-              <tr>
-                <td>space2</td>
-                <td>
-                  <input id="modal4" class="checkSel2" type="checkbox"/>
-                  <label for="modal4">SpaceManager(공간 관리자)</label></td>
-                <td>
-                  <input id="modal5" class="checkSel2" type="checkbox"/>
-                  <label for="modal5">SpaceDeveloper(공간 개발자)</label></td>
-                <td>
-                  <input id="modal6" class="checkSel2" type="checkbox" checked="checked"/>
-                  <label for="modal6">SpaceAuditor(공간 참관인)</label></td>
-              </tr>
+                <tr *ngFor="let space of spaces">
+                  <td>{{space.name}}</td>
+                  <td>
+                    <input [id]="'invite-modal-sm-' + org.name + '-' + space.name"
+                           class="checkSel2" type="checkbox"/>
+                    <label [for]="'invite-modal-sm-' + org.name + '-' + space.name"
+                           [title]="'공간 관리자'">SpaceManager</label></td>
+                  <td>
+                    <input [id]="'invite-modal-sd-' + org.name + '-' + space.name"
+                           class="checkSel2" type="checkbox"/>
+                    <label [for]="'invite-modal-sd-' + org.name + '-' + space.name"
+                           [title]="'공간 개발자'">SpaceDeveloper</label></td>
+                  <td>
+                    <input [id]="'invite-modal-sa-' + org.name + '-' + space.name"
+                           class="checkSel2" type="checkbox"/>
+                    <label [for]="'invite-modal-sa-' + org.name + '-' + space.name"
+                           [title]="'공간 참관인'">SpaceAuditor</label></td>
+                </tr>
               </tbody>
             </table>
             <!-- checkAll event : common2.js:238 checkAll2 -->
