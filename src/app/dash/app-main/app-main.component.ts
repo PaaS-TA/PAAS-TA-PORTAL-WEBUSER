@@ -17,6 +17,11 @@ declare var jQuery: any;
 })
 export class AppMainComponent implements OnInit {
 
+  public orgName: string;
+  public orgGuid: string;
+  public spaceName: string;
+  public spaceGuid: string;
+  public appName: string;
   public appGuid: string;
   private isLoading: boolean = false;
 
@@ -147,15 +152,21 @@ export class AppMainComponent implements OnInit {
       if (Object.keys(params).length > 0) {
         setTimeout(() => this.showLoading(), 0);
 
-        this.appGuid = params['guid'];
-        this.getAppSummary(params['guid']);
+        this.orgName = params['org_name'];
+        this.orgGuid = params['org_guid'];
+        this.spaceName = params['space_name'];
+        this.spaceGuid = params['space_guid'];
+        this.appName = params['app_name'];
+        this.appGuid = params['app_guid'];
 
-        this.getAppEvents(params['guid']);
-        this.getAppEnv(params['guid']);
-        this.getAppRecentLogs(params['guid']);
-        this.getAlarms(params['guid']);
-        this.getAlarm(params['guid']);
-        this.getAutoscaling(params['guid']);
+        this.getAppSummary(params['app_guid']);
+
+        this.getAppEvents(params['app_guid']);
+        this.getAppEnv(params['app_guid']);
+        this.getAppRecentLogs(params['app_guid']);
+        this.getAlarms(params['app_guid']);
+        this.getAlarm(params['app_guid']);
+        this.getAutoscaling(params['app_guid']);
       } else {
         // TODO test
         //this.router.navigate(['dashMain']);
@@ -1685,8 +1696,7 @@ export class AppMainComponent implements OnInit {
   }
 
   showWindowTailLogs() {
-    // TODO 하드코딩
-    window.open('http://localhost:8080/tailLogs?name=github-test-app2&org=demo.org&space=dev&guid=80dd102d-8068-4997-b518-c3f04bcdd00f', '_blank', 'location=no, directories=no width=1000, height=700');
+    window.open('http://localhost:8080/tailLogs?name='+this.appName+'&org='+this.orgName+'&space='+this.spaceName+'&guid='+this.appGuid+'', '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
 }
