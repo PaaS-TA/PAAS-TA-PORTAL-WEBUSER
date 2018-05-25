@@ -44,6 +44,12 @@ export class AppMainService {
     }).do(console.log);
   }
 
+  delApp(guid: string) {
+    return this.commonService.doDelete('/portalapi/v2/apps/'+guid , null,'').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
   getAppEvents(guid: string) {
     return this.commonService.doGet('/portalapi/v2/apps/app-usage-events/'+guid, '').map((res: Response) => {
       return res;

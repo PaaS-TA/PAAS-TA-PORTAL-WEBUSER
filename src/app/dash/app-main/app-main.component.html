@@ -22,7 +22,7 @@
                 <ol class="">
                   <li class="name_inputTitle"><a class="fas fa-edit" (click)="renameAppClick()"> 이름변경</a>
                   </li>
-                  <li><a class="fas fa-trash-alt"> 삭제</a></li>
+                  <li><a class="fas fa-trash-alt" (click)="showPopAppDelClick()"> 삭제</a></li>
                 </ol>
               </li>
             </ul>
@@ -1509,6 +1509,31 @@
         <!-- Footer -->
         <div class="modal-footer">
           <button type="button" class="btns2 colors4" (click)="appSaveClick()">변경</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_app_del">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">App 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>App 을 삭제하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="appDelClick()">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
