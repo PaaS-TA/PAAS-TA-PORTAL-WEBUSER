@@ -116,7 +116,6 @@ export class SecurityService {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
     }).subscribe(data => {
-      this.log.debug(data);
       this.common.saveCfUserInfo(data['user_id'], data['user_name'], data['name'], data['given_name'], data['family_name'],
         data['email'], data['phone_number'], data['exp'], data['previous_logon_time']);
       this.doUserInfoProvider(data['user_name']);
@@ -186,7 +185,6 @@ export class SecurityService {
    */
   saveUserDB(userId: string) {
     let params = {userId: userId, userName: '', status: '1', adminYn: 'N', imgPath: ''};
-    this.log.debug(AppConfig.userinfoUrl);
     this.common.doPost(AppConfig.userinfoUrl, params, this.common.getToken()).retryWhen(error => {
       return error.flatMap((error: any) => {
         return Observable.of(error.status).delay(1000);

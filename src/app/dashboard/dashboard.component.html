@@ -164,7 +164,7 @@
                   </div>
                   <!--<a [routerLink]="['../appMain']">-->
                   <!--<div (click)="moveAppMain()">-->
-                  <div class="app_title" >{{item.name}}</div>
+                  <div class="app_title" (click)="moveDashboard(item.name,item.guid)">{{item.name}}</div>
                   <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
                   <div class="app_per clearfix">
                     <ul>
@@ -306,7 +306,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" placeholder="{{this.selectedName}}" class="space_input" [(ngModel)]="appName"/>
+          <input type="text" placeholder="{{selectedName}}" class="space_input" [(ngModel)]="appName" name="appName" >
         </div>
         <!-- Footer -->
         <div class="modal-footer">
@@ -355,7 +355,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" id="" placeholder="{{this.selectedName}}" class="space_input" [(ngModel)]="instanceName"/>
+          <input type="text" placeholder="{{selectedName}}" class="space_input" [(ngModel)]="instanceName"/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">

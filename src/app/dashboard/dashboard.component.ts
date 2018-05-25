@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
       router.navigate(['/']);
     }
 
-    this.log.debug(this.commonService.getToken());
+
     this.userid = this.commonService.getUserid();
     this.token = this.commonService.getToken();
     this.spaceGuid = this.commonService.getUserGuid();
@@ -88,35 +88,29 @@ export class DashboardComponent implements OnInit {
     this.instanceName = '';
     this.appNewName = null;
     this.appDelName = '';
+    this.selectedName = '';
   }
 
   getOrg(value: string, org: Organization) {
-
-    console.log('::::::::::::::::: ' + value + '::::::::::::::::: ');
-
     this.org = this.orgs.find(org => org.name === value);
     this.isLoadingSpaces = true;
-
     this.isEmpty = true;
     this.isSpace = false;
-
     this.appSummaryEntities = null;
-
     if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
       this.isLoadingSpaces = false;
       this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
+      this.log.debug(this.spaces);
     }
-    console.log('::::::::::::::::: find org is ', this.org.guid, '::::::::::::::::: ');
+
   }
 
   //애플리케이션 및 서비스 목록 확인
   getAppSummary(value: string) {
-    console.log("::::::::::::::::: getAppSummary:::::::::::::::::");
+
     this.showLoading();
     this.dashboardService.getAppSummary(value).subscribe(data => {
       this.commonService.isLoading = false;
-
-      console.log(data);
       this.appEntities = data.apps;
       this.servicesEntities = data.services;
       return data;
@@ -129,15 +123,12 @@ export class DashboardComponent implements OnInit {
     this.isSpace = true;
     this.isMessage = false;
     this.selectedSpaceId = value;
-
-
-    // this.log.debug(space);
+    this.space = this.spaces.find(Space => Space['_metadata']['guid'] === value);
     this.getAppSummary(value);
 
   }
 
   renameApp(appName: string) {
-    console.log(this.appName);
     let params = {
       guid: this.selectedGuid,
       newName: appName,
@@ -174,7 +165,7 @@ export class DashboardComponent implements OnInit {
   }
 
   startApp() {
-    console.log(this.appSummaryGuid);
+
     let params = {
       guid: this.appSummaryGuid
     };
@@ -222,7 +213,7 @@ export class DashboardComponent implements OnInit {
 
   goDevelopMent() {
     console.log(this.space);
-    this.router.navigate(['catalogdevelopment',this.org.guid, this.org.name, this.space['name']]);
+    this.router.navigate(['catalogdevelopment', this.org.guid, this.org.name, this.space['name']]);
   }
 
   ngOnInit() {
@@ -272,6 +263,26 @@ export class DashboardComponent implements OnInit {
       this.selectedName = '';
     }
     this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid);
+  }
+
+
+  moveDashboard(app_name: string, app_guid: string) {
+    let org_name = this.org['name'];
+    let org_guid = this.org['guid'];
+    let space_name = this.space['name'];
+    let space_guid = this.space['guid'];
+
+    this.router.navigate(['appMain'], {
+      queryParams: {
+        org_name: org_name,
+        org_guid: org_guid,
+        space_name: space_name,
+        space_guid: space_guid,
+        app_name: app_name,
+        app_guid: app_guid
+      }
+    });
+
   }
 
 
