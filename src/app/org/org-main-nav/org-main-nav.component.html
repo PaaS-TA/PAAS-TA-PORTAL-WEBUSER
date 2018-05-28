@@ -14,7 +14,7 @@
           </dd>
         </dl>
       </li>
-      <li class="cur" [routerLink]="['../org']">
+      <li class="cur" [routerLink]="['../org']" (click)="reloadEvent.emit(true)">
         <dl>
           <dt>
             <div id="lnbimg11">

@@ -1,6 +1,6 @@
 <div class="wrap account">
-  <app-org-main-header></app-org-main-header>
-  <app-org-main-nav></app-org-main-nav>
+  <app-common-header></app-common-header>
+  <app-org-main-nav (reloadEvent)="reloadOrgs($event)"></app-org-main-nav>
   <div class="contain">
     <div class="content">
       <div class="row one_line">

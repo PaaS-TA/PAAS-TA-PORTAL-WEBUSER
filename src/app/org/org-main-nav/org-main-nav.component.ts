@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-org-main-nav',
@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 export class OrgMainNavComponent implements OnInit {
   constructor() { }
   ngOnInit() { }
+
+  @Output() reloadEvent = new EventEmitter<boolean>();
 
   public alertMsg(msg: string) {
     alert(msg);
