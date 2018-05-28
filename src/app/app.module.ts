@@ -47,6 +47,7 @@ import {CatalogService} from "./catalog/main/catalog.service";
 import {ErrorComponent} from './error/error.component';
 import {IndexModule} from "./index/index.module";
 import {ExternalModule} from "./external/external.module";
+import {HeaderModule} from "./header/header.module";
 
 @NgModule({
   declarations: [
@@ -70,10 +71,11 @@ import {ExternalModule} from "./external/external.module";
     UsermgmtComponent,
     DashboardSpaceComponent,
     DashboardProduceComponent,
-    ErrorComponent
+    ErrorComponent,
   ],
   imports: [
     IndexModule,
+    HeaderModule,
     DashModule,
     OrgModule,
     CatalogModule,
@@ -95,7 +97,8 @@ import {ExternalModule} from "./external/external.module";
       serverLoggingUrl: '/ps/logs',
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
-    }), JsonpModule
+    }),
+    JsonpModule,
   ],
   providers: [
     AuthGuard,
