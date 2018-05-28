@@ -3193,16 +3193,20 @@
 
 </style>
 
+<!-- 사용하지 않는 로그인 버튼 (checked at 18/05/28, by hgcho) -->
+<!--
 <div style="text-align: right;padding-right: 30px;">
   <h1>
-    <button routerLink="login">로그인</button>
+    <button [routerLink]="['/login']">로그인</button>
   </h1>
 </div>
+-->
+
 <!-- 로그인 바-->
 <div class="topbar">
   <div class="container-fluid">
     <ul class="indexlogin fr">
-      <li><a href="/login">로그인</a></li>
+      <li><a [routerLink]="['/login']">로그인</a></li>
     </ul>
   </div>
 </div>
