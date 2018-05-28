@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NGXLogger} from 'ngx-logger';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
@@ -16,7 +16,7 @@ import {AppConfig} from "../app.config"
 export class SecurityService {
   url: string;
 
-  constructor(private common: CommonService, private http: HttpClient, private router: Router, private log: NGXLogger) {
+  constructor(private common: CommonService, private http: HttpClient, private router: Router, private activeRoute: ActivatedRoute, private log: NGXLogger) {
   }
 
   /*
@@ -24,18 +24,20 @@ export class SecurityService {
    */
   doAuthorization() {
     this.log.debug('doAuthorization()');
+
+    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
     const params = {
       'response_type': 'code',
       'client_id': AppConfig.clientId,
       'scope': AppConfig.scope,
-      'redirect_uri': AppConfig.redirectUri
+      'redirect_uri': AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl)
     };
 
     this.router.navigate(['/login']).then(result => {
       window.location.href = AppConfig.authUrl +
         '?response_type=' + AppConfig.code +
         '&client_id=' + AppConfig.clientId +
-        '&redirect_uri=' + AppConfig.redirectUri +
+        '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
         '&scope=' + AppConfig.scope +
         '&state=';
     });
@@ -50,11 +52,13 @@ export class SecurityService {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
+    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
+
     let accessUrl = AppConfig.accessUrl +
       '?response_type=token' +
       '&client_id=' + AppConfig.clientId +
       '&client_secret=' + AppConfig.clientSecret +
-      '&redirect_uri=' + AppConfig.redirectUri + '' +
+      '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
       '&grant_type=authorization_code' +
       '&code=' + AppConfig.code;
 
@@ -131,11 +135,13 @@ export class SecurityService {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
+    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
+
     let refreshUrl = AppConfig.accessUrl +
       '?response_type=refresh_token' +
       '&client_id=' + AppConfig.clientId +
       '&client_secret=' + AppConfig.clientSecret +
-      '&redirect_uri=' + AppConfig.redirectUri +
+      '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
       '&grant_type=refresh_token' +
       '&code=' + AppConfig.code +
       '&refresh_token=' + this.common.getRefreshToken();
@@ -169,7 +175,9 @@ export class SecurityService {
         this.common.isLoading = false;
         this.common.saveUserInfo(data['User']['userId'], data['User']['userName'], data['User']['status'], data['User']['tellPhone'],
           data['User']['zipCode'], data['User']['address'], data['User']['addressDetail'], data['User']['imgPath']);
-        this.router.navigate(['dashboard']);
+
+        const nextUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
+        this.router.navigate([ nextUrl ] );
       } else {
         this.saveUserDB(userId);
       }

@@ -33,8 +33,9 @@ export class LoginService {
 
 
   doGo(returnUrl: string) {
-    if (returnUrl == null || returnUrl == '/') {
-      this.router.navigate(['dashboard']);
+    if (returnUrl == null || returnUrl == '/' ) {
+      returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'dashboard';
+      this.router.navigate([ returnUrl ]);
     } else {
       let params = this.common.setParams(returnUrl);
       this.router.navigate([this.common.setUrl(returnUrl)], {queryParams: params});
