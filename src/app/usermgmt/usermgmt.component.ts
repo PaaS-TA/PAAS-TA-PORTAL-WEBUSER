@@ -22,45 +22,27 @@ export class UsermgmtComponent implements OnInit {
   public user: Observable<User>;
   public orgs: Array<Organization>;
 
-  token: string;
-  username: string;
-  password: string;
-  password_new: string;
-  password_confirm: string;
-  selectSort : string;
-  orgName: string;
+  public token: string;
+  public orgName: string;
+  public username: string;
+  public password: string;
+  public password_new: string;
+  public password_confirm: string;
+  public selectedOrgGuid : string;
+  public selectedOrgName : string;
+  public current_popmenu_id: string;
 
-  // Angular에서 필요에 맞게 호출
-  ngOnInit() {
-    console.log('ngOnInit fired');
-
-    $(document).ready(() => {
-      //TODO 임시로...
-      $.getScript("../../assets/resources/js/common.js")
-        .done(function (script, textStatus) {
-          //console.log( textStatus );
-        })
-        .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
-        });
-    });
-  }
-
-  // 이 부분은 Angular가 아닌 자바스크립트에서 실행
   constructor(private httpClient: HttpClient, private common: CommonService,
               private userMgmtService: UsermgmtService,
               private orgService: OrgService,
               private logger: NGXLogger) {
 
-    this.user = new Observable<User>();
-
     this.userInfo();
-    // this.userPassword();
-
-    console.log("###Oauth Login Value### " + this.common.getUserid());
+    this.user = new Observable<User>();
+    this.orgs= orgService.getOrgList();
 
     this.token = '';
-    this.orgs= orgService.getOrgList();
+    this.current_popmenu_id ='';
 
   }
 
@@ -87,7 +69,55 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
+  updateUserPassword(){
+    let params = {
+      oldPassword :this.password,
+      password : this.password_new
+    };
+    
+    this.userMgmtService.updateUserPassword(this.common.getUserGuid(),params).subscribe(data => {
+      console.log(this.common.getUserGuid());
+      if (data == 1) {
+        console.log('success');
+      } else {
+        console.log('failed.');
+      }
+      console.log(data);
+      return data;
+    });
+  }
+
   public alertMsg(msg: string) {
     alert(msg);
   }
-}
+
+  popclickOrg(id: string, guid:string, name: string){
+    if (this.current_popmenu_id != id) {
+      this.selectedOrgGuid = guid;
+      this.selectedOrgName = name;
+
+    }else{
+      this.current_popmenu_id = '';
+      this.selectedOrgGuid = '';
+      this.selectedOrgName = '';
+    }
+    console.log("::GUID::" + guid + "::NAME" + name);
+  }
+
+  ngOnInit() {
+    console.log('ngOnInit fired');
+
+    $(document).ready(() => {
+      //TODO 임시로...
+      $.getScript("../../assets/resources/js/common.js")
+        .done(function (script, textStatus) {
+          //console.log( textStatus );
+        })
+        .fail(function (jqxhr, settings, exception) {
+          console.log(exception);
+        });
+    });
+  }
+
+
+}//

@@ -20,15 +20,19 @@ export class UsermgmtService {
   }
 
   userinfo(username: string) {
-    return this.common
-      .doGet('/commonapi/v2/user/' + username, this.common.getToken()).map((res: Response) => {return res['User'];});
+    return this.common.doGet('/commonapi/v2/user/' + username, this.common.getToken()).map((res: Response) => {return res['User'];});
   }
 
   userSave(userId: string, param) {
-    return this.common
-      .doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {return res['result'];});
+    return this.common.doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {return res['result'];});
   }
-  
+
+  //@PutMapping(value = {V2_URL + "/users/{guid}/password/update"})
+  updateUserPassword(guid:string ,param){
+    console.log('TOKEN ::: ' + this.common.getToken());
+    return this.common.doPut('/portalapi/v2/users/' +guid + '/password/update', param, this.common.getToken()).map((res: Response) => {return res['result'];});
+  }
+
 }
 
 export class User {
