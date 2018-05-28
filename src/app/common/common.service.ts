@@ -55,7 +55,7 @@ export class CommonService {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
-  
+
   doCommonPost(url: string, body: any) {
     return this.http.post(this.gateway + url, body, {
       headers: this.headers
@@ -234,6 +234,16 @@ export class CommonService {
     return sessionStorage.getItem('login_type');
   }
 
+  public getImagePath(): string {
+    let imgPath: string = sessionStorage.getItem('img_path');
+    if (imgPath === undefined || imgPath === null || imgPath === 'null' || imgPath.trim() === "") {
+      imgPath = '/assets/resources/images/account/profile-thumbnail-sample.png';
+      this.log.trace('Header img path is empty string. So, image url set default.');
+    }
+
+    return imgPath;
+  }
+
 
   private map: Param;
 
@@ -319,4 +329,10 @@ export class CommonService {
     });
   }
 
+  reloadPage() {
+    const currentLocation = window.location.pathname;
+
+    this.log.debug("Reload page :", currentLocation);
+    this.router.navigate(['/login'], {queryParams: {returnUrl: currentLocation}});
+  }
 }
