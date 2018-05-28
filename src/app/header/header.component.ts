@@ -10,7 +10,6 @@ import {NGXLogger} from "ngx-logger";
 export class CommonHeaderComponent implements OnInit {
   // NO ACTION, ONLY TEMPLATE COMPONENT CLASS
   constructor(private common: CommonService, private logger: NGXLogger) {
-
   }
 
   ngOnInit() { }
@@ -25,5 +24,9 @@ export class CommonHeaderComponent implements OnInit {
 
   get pictureUrl() {
     return this.common.getImagePath();
+  }
+
+  public alertMsg(msg: string) {
+    window.alert(msg);
   }
 }

@@ -33,7 +33,7 @@
           <ul class="">
             <li class="cur"><a [routerLink]="['../usermgmt']">내계정</a></li>
             <li><a [routerLink]="['../org']">조직관리</a></li>
-            <li><a>사용량조회</a></li>
+            <li><a style="cursor: pointer;" (click)="alertMsg('개발 중입니다.')">사용량조회</a></li>
           </ul>
           <p class="log_out" [routerLink]="['/logout']">로그아웃</p>
         </div>
