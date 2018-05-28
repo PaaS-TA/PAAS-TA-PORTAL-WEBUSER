@@ -27,10 +27,9 @@ export class UsermgmtService {
     return this.common.doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {return res['result'];});
   }
 
-  //@PutMapping(value = {V2_URL + "/users/{guid}/password/update"})
-  updateUserPassword(guid:string ,param){
+  updateUserPassword(userId:string ,param){
     console.log('TOKEN ::: ' + this.common.getToken());
-    return this.common.doPut('/portalapi/v2/users/' +guid + '/password/update', param, this.common.getToken()).map((res: Response) => {return res['result'];});
+    return this.common.doPut('/portalapi/v2/users/' +userId + '/password/update', param, this.common.getToken()).map((res: Response) => {return res['result'];});
   }
 
 }

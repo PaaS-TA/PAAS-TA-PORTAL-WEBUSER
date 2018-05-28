@@ -43,7 +43,6 @@ export class UsermgmtComponent implements OnInit {
 
     this.token = '';
     this.current_popmenu_id ='';
-
   }
 
   userInfo() {
@@ -57,7 +56,8 @@ export class UsermgmtComponent implements OnInit {
     let params = {userName: this.user['userName'],
                   tellPhone: this.user['tellPhone'],
                   zipCode: this.user['zipCode'],
-                  address: this.user['address']};
+                  address: this.user['address']
+    };
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
       if(data == 1){
         console.log('success');
@@ -74,16 +74,8 @@ export class UsermgmtComponent implements OnInit {
       oldPassword :this.password,
       password : this.password_new
     };
-    
-    this.userMgmtService.updateUserPassword(this.common.getUserGuid(),params).subscribe(data => {
+    this.userMgmtService.updateUserPassword(this.common.getUserid(),params).subscribe(data => {
       console.log(this.common.getUserGuid());
-      if (data == 1) {
-        console.log('success');
-      } else {
-        console.log('failed.');
-      }
-      console.log(data);
-      return data;
     });
   }
 
