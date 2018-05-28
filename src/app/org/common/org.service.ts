@@ -100,6 +100,13 @@ export class OrgService {
     });
   }
 
+  public cancelOrg(org: Organization, userId: string) {
+    // TODO 1순위로 구현해주세요!!!!!!!!!!!!!!!!!!!!!
+    // org : organization
+    // userId : this.common.getUserId()
+    this.logger.debug('call cancel org :', org, ' / ', userId);
+  }
+
   private getSampleOrgList() {
     return {
       'description': 'This is CF organization sample files, PORTAL-API:2222, /v2/orgs (using admin token)',
