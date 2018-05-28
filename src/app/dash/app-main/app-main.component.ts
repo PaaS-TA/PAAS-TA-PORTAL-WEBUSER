@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppMainService } from './app-main.service';
 import { Observable } from 'rxjs/Observable';
+import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from "../../common/common.service";
+
+// import { Pipe } from '@angular/core';
 
 declare var Chart: any;
 
@@ -10,10 +13,11 @@ declare var Chart: any;
 declare var $: any;
 declare var jQuery: any;
 
+// @Pipe({ name: 'translate' })
 @Component({
   selector: 'app-app-main',
   templateUrl: './app-main.component.html',
-  styleUrls: ['./app-main.component.css']
+  styleUrls: ['./app-main.component.css'],
 })
 export class AppMainComponent implements OnInit {
 
@@ -68,6 +72,8 @@ export class AppMainComponent implements OnInit {
   private tabContentEventListLimit: number;
   private tabContentStatsListLimit: number;
 
+  public sltStatsInstance: string;
+
   public sltEnvDelName: string;
   public sltEnvAddName: string;
   public sltEnvEditName: string;
@@ -120,8 +126,12 @@ export class AppMainComponent implements OnInit {
   public sltChartGroupBy: number;
 
 
-  constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService, private common: CommonService) {
+  constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
+
+    // translate.setDefaultLang('ko');
+    //
+    // translate.use('ko');
   }
 
   ngOnInit() {
@@ -147,6 +157,7 @@ export class AppMainComponent implements OnInit {
     this.sltChartDefaultTimeRange = 3;
     this.sltChartGroupBy = 1;
 
+    $("[id^='layerpop']").modal("hide");
 
     this.route.queryParams.subscribe(params => {
       if (Object.keys(params).length > 0) {
@@ -389,6 +400,10 @@ export class AppMainComponent implements OnInit {
       }), 100);
   }
 
+  showPopAppStartClick() {
+    $("#layerpop_app_start").modal("show");
+  }
+
   startAppClick() {
     let params = {
       guid: this.appSummaryGuid
@@ -398,6 +413,10 @@ export class AppMainComponent implements OnInit {
     });
   }
 
+  showPopAppStopClick() {
+    $("#layerpop_app_stop").modal("show");
+  }
+
   stopAppClick() {
     let params = {
       guid: this.appSummaryGuid
@@ -405,6 +424,10 @@ export class AppMainComponent implements OnInit {
     this.appMainService.stopApp(params).subscribe(data => {
       this.ngOnInit();
     });
+  }
+
+  showPopAppRestageClick() {
+    $("#layerpop_app_restart").modal("show");
   }
 
   restageAppClick() {
@@ -499,11 +522,19 @@ export class AppMainComponent implements OnInit {
     this.updateApp();
   }
 
+  showAppEditLayer() {
+    $(".colright_btn li > ol").toggleClass('on');
+  }
+
   renameAppClick() {
     $("body > div").addClass('account_modify');
     $(this).toggleClass("on");
     $(this).parents("tr").next("tr").toggleClass("on");
     $(this).parents("tr").addClass("off");
+  }
+
+  showPopRenameSaveClick() {
+    $("#layerpop_app_save").modal("show");
   }
 
   showPopAppDelClick() {
@@ -515,10 +546,6 @@ export class AppMainComponent implements OnInit {
       this.ngOnInit();
       $("[id^='layerpop']").modal("hide");
     });
-  }
-
-  renameAppSaveClick() {
-    this.updateApp();
   }
 
   // 앱 수정사항 저장
@@ -578,6 +605,7 @@ export class AppMainComponent implements OnInit {
     this.appMainService.updateApp(params).subscribe(data => {
       this.ngOnInit();
       $("[id^='layerpop']").modal("hide");
+      $(".headT,.headT2").css("display","none");
 
       $("#instanceS2").hide();
       $("#instanceS1").show();
@@ -630,6 +658,8 @@ export class AppMainComponent implements OnInit {
       this.ngOnInit();
       $("[id^='layerpop']").modal("hide");
       $("#add_env").hide();
+
+      this.showPopAppRestageClick();
     });
   }
 
@@ -639,7 +669,7 @@ export class AppMainComponent implements OnInit {
 
       var appEvents = [];
       $.each(data.resources, function (key, dataobj) {
-        if (dataobj.entity.type == "app.cras") {
+        if (dataobj.entity.type == "app.crash") {
           dataobj.entity.metadata.request = "app:CRASHED";
         } else if (dataobj.entity.type == "audit.app.restage") {
           dataobj.entity.metadata.request = "app:RESTAGE";
@@ -653,13 +683,13 @@ export class AppMainComponent implements OnInit {
         var iconClass;
 
         if (requestText == "state:STARTED") {
-          iconClass = "play";
+          iconClass = "fas fa-play";
         } else if (requestText == "state:STOPPED") {
-          iconClass = "stop";
+          iconClass = "fas fa-stop";
         } else if (requestText == "app:CRASHED") {
-          iconClass = "pause";
+          iconClass = "glyphicon glyphicon-exclamation-sign";
         } else {
-          iconClass = "pause";
+          iconClass = "glyphicon glyphicon-arrow-up";
         }
 
         var obj = {
@@ -1000,11 +1030,16 @@ export class AppMainComponent implements OnInit {
     this.tabContentStatsListLimit = this.tabContentStatsListLimit + 5;
   }
 
-  statsResrtartClick(index: string) {
+  showPopStatsResrtartClick(index: string) {
+    this.sltStatsInstance = index;
+    $("#layerpop_stats_restart").modal("show");
+  }
+
+  statsResrtartClick() {
     let params = {};
-    this.appMainService.terminateInstance(this.appGuid, index, params).subscribe(data => {
-      // window.location.reload();
+    this.appMainService.terminateInstance(this.appGuid, this.sltStatsInstance, params).subscribe(data => {
       this.ngOnInit();
+      $("[id^='layerpop']").modal("hide");
     });
   }
 
@@ -1686,10 +1721,10 @@ export class AppMainComponent implements OnInit {
     this.getNetworkByte();
   }
 
-  copyClick(id: string) {
-    var inContent = $("#"+id).val();
-    $("#out_a").val(inContent);
-  }
+  // copyClick(id: string) {
+  //   var inContent = $("#"+id).val();
+  //   $("#out_a").val(inContent);
+  // }
 
   refreshClick() {
     this.ngOnInit();
@@ -1697,6 +1732,10 @@ export class AppMainComponent implements OnInit {
 
   showWindowTailLogs() {
     window.open('http://localhost:8080/tailLogs?name='+this.appName+'&org='+this.orgName+'&space='+this.spaceName+'&guid='+this.appGuid+'', '_blank', 'location=no, directories=no width=1000, height=700');
+  }
+
+  showWindowAppLink(urlLink: string) {
+    window.open('http://'+urlLink+'', '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
 }

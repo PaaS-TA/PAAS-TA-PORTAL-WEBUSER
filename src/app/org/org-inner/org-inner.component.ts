@@ -74,6 +74,9 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     this.setAvailableQuotas(this.quotaService.getOrgAvailableQuota());
     this.setOrgDomains(this.domainService.getDomainList(orgId, "all"));
     this.setOrgUserRoles(this.orgUserRoleService.getUserRoles(orgId));
+
+    // placeholder && default value
+    this.wantedOrgName = this.org.name;
   }
 
   ngAfterViewChecked(): void {
@@ -104,7 +107,6 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
         });
         if (filterUserRoles.length <= 0) {
           this.isOrgManagerLoginnedInUser = false;
-          ;
         } else {
           this.isOrgManagerLoginnedInUser = (filterUserRoles[0] as OrgUserRole).isOrgManager;
         }
@@ -113,9 +115,22 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  renameOrg(isRenamed: boolean) {
+    if (isRenamed) {
+      const changingName = this.wantedOrgName;
+      if (changingName === null || changingName === 'null' || changingName.trim() === '') {
+        this.logger.debug('Empty name do not permit.');
+        this.wantedOrgName = this.org.name;
+      }
 
-  renameOrg() {
-    this.orgService.renameOrg(this.org, this.wantedOrgName);
+      if (this.org.name !== this.wantedOrgName) {
+        this.orgService.renameOrg(this.org, this.wantedOrgName);
+      } else {
+        this.logger.debug("Before name and After name of org is same.");
+      }
+    } else {
+      this.wantedOrgName = this.org.name;
+    }
   }
 
   deleteOrg() {
@@ -284,6 +299,10 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     return true;
   }
 
+  isMyself(userRole: OrgUserRole) {
+    return (this.common.getUserGuid() === userRole.userId);
+  }
+
   isInvited(userRole: OrgUserRole) {
     // TODO isInvited
     return true;
@@ -323,7 +342,10 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   cancelMember(isCanceled: boolean) {
     if (isCanceled) {
       this.logger.warn('Cancel org member : ', this.selectUserRole.userEmail);
-      this.orgUserRoleService.cancelOrgMember(this.userRoles, this.selectUserRole);
+      this.orgUserRoleService.cancelOrgMemberByUserRole(this.userRoles, this.selectUserRole);
+      if (this.isMyself(this.selectUserRole)) {
+        this.removeEvent.emit(this.org);
+      }
     } else {
       this.logger.warn( 'Cancel to canceling org member : ', this.selectUserRole.userEmail);
     }

@@ -61,10 +61,6 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
     logger.trace('do check attach click event');
   }
 
-  public test(logger = this.logger) {
-    logger.info('super test');
-  }
-
   attachDetailEvent() {
     const scriptURL = '../../assets/resources/js/common2.js';
     const selfCom = this;
@@ -112,6 +108,14 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
       logger.debug('Remove organization : ', org.name, '(' + org.guid + ')');
     } else {
       logger.warn('Cannot find organization... ', org.name, '(' + org.guid + ')');
+    }
+  }
+
+  reloadOrgs(isReloaded: boolean) {
+    if (isReloaded) {
+      this.common.reloadPage();
+    } else {
+      this.logger.debug("Cancel reload.");
     }
   }
 

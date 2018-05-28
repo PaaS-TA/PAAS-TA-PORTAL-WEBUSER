@@ -11,6 +11,7 @@ import {Organization} from "../../model/organization";
 import {SpaceService} from "../../space/space.service";
 import {Space} from '../../model/space';
 import {SecurityService} from "../../auth/security.service";
+import {CommonHeaderComponent} from "../../header/header.component";
 
 declare var $: any;
 declare var jQuery: any;
@@ -19,7 +20,7 @@ declare var jQuery: any;
 @Component({
   selector: 'app-dashboard-produce',
   templateUrl: './dashboard-produce.component.html',
-  styleUrls: ['./dashboard-produce.component.css']
+  styleUrls: ['./dashboard-produce.component.css'],
 })
 export class DashboardProduceComponent implements OnInit {
 
@@ -27,8 +28,8 @@ export class DashboardProduceComponent implements OnInit {
               private dashboardService: DashboardService,
               private orgService: OrgService,
               private spaceService : SpaceService,
-              private log: NGXLogger,
               private security: SecurityService,
+              private log: NGXLogger,
               router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);

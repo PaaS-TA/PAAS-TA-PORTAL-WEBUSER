@@ -1,5 +1,9 @@
 import {Component, DoCheck} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {CommonService} from './common/common.service';
+
+declare var $: any;
+declare var jQuery: any;
 
 @Component({
   selector: 'app-root',
@@ -11,8 +15,13 @@ import {CommonService} from './common/common.service';
 export class AppComponent implements DoCheck {
   isLoading: boolean = false;
 
-  constructor(public common: CommonService) {
+  constructor(public common: CommonService, private translate: TranslateService) {
+    translate.setDefaultLang(this.common.defaultLang);
 
+    translate.use(this.common.useLang);
+
+    $("li[id^='lang_']").removeClass("cur");
+    $("#lang_"+this.common.useLang+"").addClass("cur");
   }
 
   ngDoCheck() {

@@ -30,7 +30,6 @@ export class UsermgmtComponent implements OnInit {
   public password_confirm: string;
   public selectedOrgGuid : string;
   public selectedOrgName : string;
-  public current_popmenu_id: string;
 
   constructor(private httpClient: HttpClient, private common: CommonService,
               private userMgmtService: UsermgmtService,
@@ -42,8 +41,6 @@ export class UsermgmtComponent implements OnInit {
     this.orgs= orgService.getOrgList();
 
     this.token = '';
-    this.current_popmenu_id ='';
-
   }
 
   userInfo() {
@@ -57,7 +54,8 @@ export class UsermgmtComponent implements OnInit {
     let params = {userName: this.user['userName'],
                   tellPhone: this.user['tellPhone'],
                   zipCode: this.user['zipCode'],
-                  address: this.user['address']};
+                  address: this.user['address']
+    };
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
       if(data == 1){
         console.log('success');
@@ -74,16 +72,8 @@ export class UsermgmtComponent implements OnInit {
       oldPassword :this.password,
       password : this.password_new
     };
-    
-    this.userMgmtService.updateUserPassword(this.common.getUserGuid(),params).subscribe(data => {
+    this.userMgmtService.updateUserPassword(this.common.getUserid(),params).subscribe(data => {
       console.log(this.common.getUserGuid());
-      if (data == 1) {
-        console.log('success');
-      } else {
-        console.log('failed.');
-      }
-      console.log(data);
-      return data;
     });
   }
 
@@ -91,16 +81,9 @@ export class UsermgmtComponent implements OnInit {
     alert(msg);
   }
 
-  popclickOrg(id: string, guid:string, name: string){
-    if (this.current_popmenu_id != id) {
-      this.selectedOrgGuid = guid;
-      this.selectedOrgName = name;
-
-    }else{
-      this.current_popmenu_id = '';
-      this.selectedOrgGuid = '';
-      this.selectedOrgName = '';
-    }
+  popclickOrg(guid:string, name: string){
+    this.selectedOrgGuid = guid;
+    this.selectedOrgName = name;
     console.log("::GUID::" + guid + "::NAME" + name);
   }
 
@@ -119,5 +102,7 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-
+  cancelOrg(orgId: string) {
+    return this.orgService.cancelOrg(orgId, this.common.getUserGuid());
+  }
 }//
