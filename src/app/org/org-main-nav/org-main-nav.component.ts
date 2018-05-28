@@ -11,6 +11,6 @@ export class OrgMainNavComponent implements OnInit {
   @Output() reloadEvent = new EventEmitter<boolean>();
 
   public alertMsg(msg: string) {
-    alert(msg);
+    window.alert(msg);
   }
 }
