@@ -24,7 +24,7 @@
             <dt>
             <div id="lnbimg11">
 
-            </div>
+            </div>UserProvided
             </dt>
             <dd>
               <p>
@@ -132,7 +132,7 @@
                     <div class="account_table_in">
                       <p>
                         <span>현재비밀번호</span>
-                        <input type="text" name="password" [(ngModel)]="password" ng-required="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
+                        <input type="password" name="password" [(ngModel)]="password" ng-required="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
                         <span class="red passred" use-form-error="isNotSame" *ngIf="password!=password">
                                                         <span></span>
                                                         <i class="fas fa-exclamation-circle"></i>
