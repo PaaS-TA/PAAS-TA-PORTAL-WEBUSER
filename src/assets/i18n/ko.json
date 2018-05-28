@@ -1,0 +1,9 @@
+{
+  "appMain": {
+    "app": {
+      "rename": "이름변경",
+      "delete": "삭제",
+      "summary": "{{ appSummaryName }} 개요 페이지 입니다."
+    }
+  }
+}

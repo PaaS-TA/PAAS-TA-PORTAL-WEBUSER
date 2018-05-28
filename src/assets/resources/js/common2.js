@@ -146,23 +146,23 @@
     };
 
     //20180307 play
-    $(".monitoring > ul > li").on("click" , function(){
-        var Monitoring = $(".monitoring ul li").index(this);
-        var MonitoringLength = Monitoring;
-        $(".monitoring > ul > li").css('display','none');
-        if(MonitoringLength == 2){
-            MonitoringLength = 0;
-            $(".monitoring > ul > li").eq(MonitoringLength).css('display','block');
-            inMonitoring();
-        } else {
-            $(".monitoring > ul > li").eq(MonitoringLength+1).css('display','block');
-            inMonitoring();
-        }
-        function inMonitoring(){
-            $("#col_in1 button.btns").css('display','none');
-            $("#col_in1 button.btns").eq(Monitoring).css('display','block');
-        }
-    });
+    // $(".monitoring > ul > li").on("click" , function(){
+    //     var Monitoring = $(".monitoring ul li").index(this);
+    //     var MonitoringLength = Monitoring;
+    //     $(".monitoring > ul > li").css('display','none');
+    //     if(MonitoringLength == 2){
+    //         MonitoringLength = 0;
+    //         $(".monitoring > ul > li").eq(MonitoringLength).css('display','block');
+    //         inMonitoring();
+    //     } else {
+    //         $(".monitoring > ul > li").eq(MonitoringLength+1).css('display','block');
+    //         inMonitoring();
+    //     }
+    //     function inMonitoring(){
+    //         $("#col_in1 button.btns").css('display','none');
+    //         $("#col_in1 button.btns").eq(Monitoring).css('display','block');
+    //     }
+    // });
 
     function accountImg(){
         $(".account_left > dl > dt").each(function(){
@@ -193,9 +193,9 @@
         $(".headT,.headT2").css("display","none");
     });
 
-    $(".fa-ellipsis-v").on('click', function(){
-        $(".colright_btn li > ol").toggleClass('on')//.fadeIn(300);
-    });
+    // $(".fa-ellipsis-v").on('click', function(){
+    //     $(".colright_btn li > ol").toggleClass('on')//.fadeIn(300);
+    // });
 
     $(".sortable_wrap,.sortable_line > li").on("mouseenter", function(){
         $(this).addClass('on');

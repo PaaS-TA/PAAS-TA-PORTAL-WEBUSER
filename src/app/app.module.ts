@@ -1,3 +1,5 @@
+app.module.ts
+
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
@@ -13,7 +15,9 @@ import {UserComponent} from './user/user.component';
 import {WebIdeUserComponent} from './web-ide-user/web-ide-user.component';
 import {CfAppComponent} from './cf-app/cf-app.component';
 import {RoutingModule} from './app.routing';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HttpClient} from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {TopComponent} from './layout/top/top.component';
 import {NavComponent} from './layout/nav/nav.component';
 import {BottonComponent} from './layout/botton/botton.component';
@@ -47,7 +51,10 @@ import {CatalogService} from "./catalog/main/catalog.service";
 import {ErrorComponent} from './error/error.component';
 import {IndexModule} from "./index/index.module";
 import {ExternalModule} from "./external/external.module";
-import {HeaderModule} from "./header/header.module";
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -71,11 +78,10 @@ import {HeaderModule} from "./header/header.module";
     UsermgmtComponent,
     DashboardSpaceComponent,
     DashboardProduceComponent,
-    ErrorComponent,
+    ErrorComponent
   ],
   imports: [
     IndexModule,
-    HeaderModule,
     DashModule,
     OrgModule,
     CatalogModule,
@@ -93,12 +99,18 @@ import {HeaderModule} from "./header/header.module";
       secondaryColour: '#46adbc',
       tertiaryColour: '#6ce6ff'
     }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
     LoggerModule.forRoot({
       serverLoggingUrl: '/ps/logs',
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
-    }),
-    JsonpModule,
+    }), JsonpModule
   ],
   providers: [
     AuthGuard,
