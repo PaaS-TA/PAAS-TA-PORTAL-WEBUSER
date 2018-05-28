@@ -174,7 +174,7 @@
                         <div>{{item.instances}}</div>
                       </li>
                       <li>
-                        <div>CPU</div>
+                        <div>디스크</div>
                         <div>:</div>
                         <div>{{item.disk_quota}}</div>
                       </li>
@@ -193,7 +193,7 @@
                     </button>
                   </div>
                   <div class="app_graph clearfix">
-                    <div>CPU</div>
+                    <div>DISK</div>
                     <div>{{item.disk_quota}}</div>
                     <div class="space_bar1">
                       <div class="progress">
@@ -306,7 +306,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" placeholder="{{selectedName}}" class="space_input" [(ngModel)]="appName" name="appName" >
+          <input type="text" placeholder="{{selectedName}}" class="space_input" [(ngModel)]="appName" name="appName" ngDefaultControl/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">

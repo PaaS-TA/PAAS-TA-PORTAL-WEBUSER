@@ -36,10 +36,8 @@ export class DashboardComponent implements OnInit {
 
   public token: string;
   public userid: string;
-  public orgGuid: string;
   public spaceGuid: string;
   public selectedSpaceId: string;
-  public appStateParam: string;
 
   public current_popmenu_id: string;
   public appName: string;
@@ -102,7 +100,6 @@ export class DashboardComponent implements OnInit {
       this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
       this.log.debug(this.spaces);
     }
-
   }
 
   //애플리케이션 및 서비스 목록 확인
@@ -125,7 +122,6 @@ export class DashboardComponent implements OnInit {
     this.selectedSpaceId = value;
     this.space = this.spaces.find(Space => Space['_metadata']['guid'] === value);
     this.getAppSummary(value);
-
   }
 
   renameApp(appName: string) {
@@ -165,28 +161,21 @@ export class DashboardComponent implements OnInit {
   }
 
   startApp() {
-
     let params = {
       guid: this.appSummaryGuid
     };
+
     this.dashboardService.startApp(params).subscribe(data => {
       return data;
     });
   }
 
   renameInstance(instanceName: string) {
-    console.log(this.instanceName);
     let params = {
       guid: this.selectedGuid,
       newName: instanceName,
     };
     this.dashboardService.renameInstance(params).subscribe(data => {
-      if (data == 1) {
-        console.log('success');
-      } else {
-        console.log('failed.');
-      }
-      console.log(data);
       return data;
     });
     //.then(this.getAppSummary(this.selectedSpaceId))
@@ -199,12 +188,6 @@ export class DashboardComponent implements OnInit {
     };
 
     this.dashboardService.delInstance(params).subscribe(data => {
-      if (data == 1) {
-        console.log('success');
-      } else {
-        console.log('failed.');
-      }
-      console.log(data);
       return data;
     });
     //.then(this.getAppSummary(this.selectedSpaceId))
@@ -265,7 +248,6 @@ export class DashboardComponent implements OnInit {
     this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid);
   }
 
-
   moveDashboard(app_name: string, app_guid: string) {
     let org_name = this.org['name'];
     let org_guid = this.org['guid'];
@@ -282,9 +264,7 @@ export class DashboardComponent implements OnInit {
         app_guid: app_guid
       }
     });
-
   }
-
 
 }//
 
