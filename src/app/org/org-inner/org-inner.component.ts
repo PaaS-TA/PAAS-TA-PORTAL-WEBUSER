@@ -74,6 +74,9 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     this.setAvailableQuotas(this.quotaService.getOrgAvailableQuota());
     this.setOrgDomains(this.domainService.getDomainList(orgId, "all"));
     this.setOrgUserRoles(this.orgUserRoleService.getUserRoles(orgId));
+
+    // placeholder && default value
+    this.wantedOrgName = this.org.name;
   }
 
   ngAfterViewChecked(): void {
@@ -104,7 +107,6 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
         });
         if (filterUserRoles.length <= 0) {
           this.isOrgManagerLoginnedInUser = false;
-          ;
         } else {
           this.isOrgManagerLoginnedInUser = (filterUserRoles[0] as OrgUserRole).isOrgManager;
         }
@@ -114,8 +116,16 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   }
 
 
-  renameOrg() {
-    this.orgService.renameOrg(this.org, this.wantedOrgName);
+  renameOrg(isRenamed: boolean) {
+    if (isRenamed) {
+      if (this.org.name !== this.wantedOrgName) {
+        this.orgService.renameOrg(this.org, this.wantedOrgName);
+      } else {
+        this.logger.debug("Before name and After name of org is same.");
+      }
+    } else {
+      this.wantedOrgName = this.org.name;
+    }
   }
 
   deleteOrg() {
