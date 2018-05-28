@@ -10,7 +10,6 @@ import { OrgService } from './common/org.service';
 import { OrgQuotaService } from './common/org-quota.service';
 import { SpaceService } from '../space/space.service';
 import { OrgMainNavComponent } from './org-main-nav/org-main-nav.component';
-import { OrgMainHeaderComponent } from './org-main-header/org-main-header.component';
 import { DomainService } from "../domain/domain.service";
 import { OrgUserRoleService } from "./common/org-userrole.service";
 import {HeaderModule} from "../header/header.module";
@@ -26,7 +25,6 @@ import {HeaderModule} from "../header/header.module";
     OrgMainComponent,
     OrgInnerComponent,
     OrgMainNavComponent,
-    OrgMainHeaderComponent,
   ],
   providers: [
     OrgService,
