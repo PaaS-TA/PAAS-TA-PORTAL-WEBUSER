@@ -1,1 +1,1 @@
-.log_out > a {text-align: center; padding: 0;}
+.right_nav > li .dropdown-menu#r_user .log_out{ background: #243135; text-align: center; color:#fff; font-size: 14px; line-height: 45px; border-top: 1px solid #404e52; cursor:pointer;}

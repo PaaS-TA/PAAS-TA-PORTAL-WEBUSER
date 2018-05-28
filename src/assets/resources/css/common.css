@@ -338,7 +338,6 @@ header.account{height:76px;}
 .right_nav > li .dropdown-menu#r_user > ul li{ line-height:36px; font-size:16px;}
 .right_nav > li .dropdown-menu#r_user > ul li.on a,
 .right_nav > li .dropdown-menu#r_user > ul li.cur a{color:#64e9fd;}
-.right_nav > li .dropdown-menu#r_user .log_out{ background: #243135;  text-align: center; color:#fff; font-size: 14px; line-height: 45px; border-top: 1px solid #404e52;}
 .right_nav > li .dropdown-menu#bell > div > ul{padding:10px 20px; line-height:40px; max-height:200px; overflow: auto;}
 .right_nav > li .dropdown-menu#bell > div > ul li{overflow: hidden; white-space:nowrap;}
 .right_nav > li .dropdown-menu#bell > div > ul li span{ float:right; cursor: pointer; color:#a7adaf;}
