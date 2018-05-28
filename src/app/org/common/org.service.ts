@@ -5,12 +5,13 @@ import {OrgQuota} from '../../model/org-quota';
 import {Space} from '../../model/space';
 import {Injectable, Input} from '@angular/core';
 import {NGXLogger} from 'ngx-logger';
+import {OrgUserRoleService} from "./org-userrole.service";
 
 
 @Injectable()
 export class OrgService {
   private orgsAdminURL = '/portalapi/v2/orgs-admin';
-  constructor(private common: CommonService, private logger: NGXLogger) {}
+  constructor(private common: CommonService, private orgUserRoleService: OrgUserRoleService, private logger: NGXLogger) {}
 
   private getToken() {
     //return this.common.getToken();
@@ -100,11 +101,17 @@ export class OrgService {
     });
   }
 
-  public cancelOrg(org: Organization, userId: string) {
-    // TODO 1순위로 구현해주세요!!!!!!!!!!!!!!!!!!!!!
-    // org : organization
-    // userId : this.common.getUserId()
-    this.logger.debug('call cancel org :', org, ' / ', userId);
+  public cancelOrg(orgId: string, userId: string) {
+    if (orgId === null && orgId === undefined) { return; }
+    if (userId === null && userId === undefined) { return; }
+
+    this.logger.debug('call cancel org :', orgId, ' / ', userId);
+    // redirect cancel org to OrgUserRoleService.cancelOrgMemberUsingOrgIdAndUserId
+    return (async() =>{
+      let data = await this.orgUserRoleService.cancelOrgMemberByGuid(orgId, userId);
+      this.logger.debug('Cancel member(' + userId + ') of org(' + orgId + ').');
+      return data;
+    })();
   }
 
   private getSampleOrgList() {

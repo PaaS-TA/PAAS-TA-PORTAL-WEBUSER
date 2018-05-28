@@ -30,7 +30,6 @@ export class UsermgmtComponent implements OnInit {
   public password_confirm: string;
   public selectedOrgGuid : string;
   public selectedOrgName : string;
-  public current_popmenu_id: string;
 
   constructor(private httpClient: HttpClient, private common: CommonService,
               private userMgmtService: UsermgmtService,
@@ -42,7 +41,6 @@ export class UsermgmtComponent implements OnInit {
     this.orgs= orgService.getOrgList();
 
     this.token = '';
-    this.current_popmenu_id ='';
   }
 
   userInfo() {
@@ -83,16 +81,9 @@ export class UsermgmtComponent implements OnInit {
     alert(msg);
   }
 
-  popclickOrg(id: string, guid:string, name: string){
-    if (this.current_popmenu_id != id) {
-      this.selectedOrgGuid = guid;
-      this.selectedOrgName = name;
-
-    }else{
-      this.current_popmenu_id = '';
-      this.selectedOrgGuid = '';
-      this.selectedOrgName = '';
-    }
+  popclickOrg(guid:string, name: string){
+    this.selectedOrgGuid = guid;
+    this.selectedOrgName = name;
     console.log("::GUID::" + guid + "::NAME" + name);
   }
 
@@ -111,5 +102,7 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-
+  cancelOrg(orgId: string) {
+    return this.orgService.cancelOrg(orgId, this.common.getUserGuid());
+  }
 }//

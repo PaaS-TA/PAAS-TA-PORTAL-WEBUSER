@@ -3,7 +3,7 @@
     <div class="organization_title_wrap on">
       <div class="organization_btn">
         <div class="organization_btnin">
-          <input class="tempTitle" type="text" [placeholder]="wantedOrgName"
+          <input class="tempTitle" type="text" placeholder="변경할 조직 이름을 입력하세요."
                  [value]="wantedOrgName" [(ngModel)]="wantedOrgName">
           <button class="btns6 colors4 yess2" (click)="renameOrg(true)">변경하기</button>
           <button class="btns6 colors5 nos2" (click)="renameOrg(false)">취소</button>
@@ -164,7 +164,7 @@
             <th class="org_userrole_btns">
               <ng-container *ngIf="isMember(userRole); else notMember">
                 <button class="btns4 colors8" data-toggle="modal"
-                  [attr.data-target]="'#layerpop12-' + org.name"
+                  [attr.data-target]="isMyself(userRole)? '#layerpop2-' + org.name : '#layerpop12-' + org.name"
                   (click)="displayCancelMemberUser(userRole)">멤버 취소</button>
               </ng-container>
               <ng-template #notMember>
@@ -340,7 +340,7 @@
           <!-- Footer -->
           <div class="modal-footer">
             <button type="button" class="btns2 colors4"
-                    data-dismiss="modal">탈퇴
+                    data-dismiss="modal" (click)="cancelMember(true)">탈퇴
             </button>
             <button type="button" class="btns2 colors5"
                     data-dismiss="modal">취소

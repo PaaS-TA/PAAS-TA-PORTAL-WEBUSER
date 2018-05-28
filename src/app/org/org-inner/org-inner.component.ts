@@ -115,9 +115,14 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
-
   renameOrg(isRenamed: boolean) {
     if (isRenamed) {
+      const changingName = this.wantedOrgName;
+      if (changingName === null || changingName === 'null' || changingName.trim() === '') {
+        this.logger.debug('Empty name do not permit.');
+        this.wantedOrgName = this.org.name;
+      }
+
       if (this.org.name !== this.wantedOrgName) {
         this.orgService.renameOrg(this.org, this.wantedOrgName);
       } else {
@@ -294,6 +299,10 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     return true;
   }
 
+  isMyself(userRole: OrgUserRole) {
+    return (this.common.getUserGuid() === userRole.userId);
+  }
+
   isInvited(userRole: OrgUserRole) {
     // TODO isInvited
     return true;
@@ -333,7 +342,10 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   cancelMember(isCanceled: boolean) {
     if (isCanceled) {
       this.logger.warn('Cancel org member : ', this.selectUserRole.userEmail);
-      this.orgUserRoleService.cancelOrgMember(this.userRoles, this.selectUserRole);
+      this.orgUserRoleService.cancelOrgMemberByUserRole(this.userRoles, this.selectUserRole);
+      if (this.isMyself(this.selectUserRole)) {
+        this.removeEvent.emit(this.org);
+      }
     } else {
       this.logger.warn( 'Cancel to canceling org member : ', this.selectUserRole.userEmail);
     }

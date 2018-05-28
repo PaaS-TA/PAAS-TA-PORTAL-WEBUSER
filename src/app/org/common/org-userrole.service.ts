@@ -107,7 +107,7 @@ export class OrgUserRoleService {
     // TODO
   }
 
-  public cancelOrgMemberUsingOrgIdAndUserId(orgId: string, userId: string) {
+  public cancelOrgMemberByGuid(orgId: string, userId: string) {
     const url = this.URLOrgUserCanceling(orgId);
     const params = {
       userId: userId
@@ -121,7 +121,7 @@ export class OrgUserRoleService {
     })();
   }
 
-  public cancelOrgMember(userRoles: Array<OrgUserRole>, cancelingUser: OrgUserRole) {
+  public cancelOrgMemberByUserRole(userRoles: Array<OrgUserRole>, cancelingUser: OrgUserRole) {
     const url = this.URLOrgUserCanceling(cancelingUser.orgId);
     const params = {
       userId: cancelingUser.userId
