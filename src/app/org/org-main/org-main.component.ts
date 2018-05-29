@@ -90,10 +90,10 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
             selfCom.elapsedAttachTime = (Date.now() - startTime);
             logger.debug('Success to attach common2.js...', textStatus, ' / elapsed time :', this.elapsedAttachTime);
           }).fail(function (jqxhr, settings, exception) {
-          logger.error(exception);
-          selfCom.elapsedAttachTime = (Date.now() - startTime);
-          logger.error(
-            'It doesn\'t attach detail event :', this.doAttachEvent, ' / elapsed time :', this.elapsedAttachTime);
+          // ignore error (temp)
+          //logger.error(exception);
+          //selfCom.elapsedAttachTime = (Date.now() - startTime);
+          //logger.error('It doesn\'t attach detail event :', this.doAttachEvent, ' / elapsed time :', this.elapsedAttachTime);
         });
 
         if (this.doAttachEvent === true) {
