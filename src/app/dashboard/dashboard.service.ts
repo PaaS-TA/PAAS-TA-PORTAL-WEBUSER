@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CommonService} from '../common/common.service';
+import {CatalogService} from '../catalog/main/catalog.service';
 import {NGXLogger} from 'ngx-logger';
 import 'rxjs/add/operator/map';
 import {Jsonp} from '@angular/http';
@@ -10,7 +11,7 @@ import {Jsonp} from '@angular/http';
 @Injectable()
 export class DashboardService {
 
-  constructor(private commonService: CommonService, private http: HttpClient, private log: NGXLogger, private jsonp: Jsonp) {
+  constructor(private commonService: CommonService, private catalogService: CatalogService,private http: HttpClient, private log: NGXLogger, private jsonp: Jsonp) {
   }
 
   // @RequestMapping(value = {Constants.V2_URL+"/spaces/{spaceid}/summary"}, method = RequestMethod.GET)
@@ -58,7 +59,49 @@ export class DashboardService {
     }).do(console.log);
   }
 
+  StarterInit(data:any) {
+    this.catalogService.starterpacks = new Array<StarterPack>();
+    this.catalogService.starterpacks = data;
+    this.catalogService.viewstarterpacks = this.catalogService.starterpacks;
+  }
+
+  BuildInit(data:any) {
+    this.catalogService.buildpacks = new Array<BuildPack>();
+    this.catalogService.buildpacks = data;
+    this.catalogService.viewbuildpacks = this.catalogService.buildpacks;
+  }
+
+  ServiceInit(data:any) {
+    this.catalogService.servicepacks = new Array<ServicePack>();
+    this.catalogService.servicepacks = data;
+    this.catalogService.viewservicepacks = this.catalogService.servicepacks;
+  }
+
+  RecentInit(data : any) {
+    this.catalogService.recentpacks = [];
+    this.catalogService.recentpacks = data['list'];
+  }
+
 }//
+
+export class StarterPack
+{
+  buildPackCategoryNo : string;
+  classification : string;
+  classificationSummary : string;
+  classificationValue : string;
+  created : string;
+  description : string;
+  lastmodified : string;
+  name : string;
+  no : string;
+  servicePackCategoryNoList : string;
+  summary : string;
+  thumbImgName : string;
+  thumbImgPath : string;
+  useYn : string;
+  userId : string;
+}
 
 export class ServicePack
 {
@@ -84,4 +127,25 @@ export class ServicePack
   userId : string;
 }
 
+export class BuildPack
+{
+  appSampleFileName : string;
+  appSampleFilePaht : string;
+  appSampleFilePath : string;
+  appSampleFileSize : string;
+  buildPackName : string;
+  classification : string;
+  classificationSummary : string;
+  classificationValue : string;
+  created : string;
+  description : string;
+  lastmodified : string;
+  name : string;
+  no : string;
+  summary : string;
+  thumbImgName : string;
+  thumbImgPath : string;
+  useYn : string;
+  userId : string;
+}
 

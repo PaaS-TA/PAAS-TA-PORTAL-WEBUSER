@@ -5,14 +5,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DashboardService} from './dashboard.service';
-import {ServicePack} from './dashboard.service';
 import {OrgService} from "../org/common/org.service";
 import {Organization} from "../model/organization";
 import {SpaceService} from "../space/space.service";
 import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
-import {CatalogService} from '../catalog/main/catalog.service';
+import {CatalogService,ServicePack,BuildPack,StarterPack} from '../catalog/main/catalog.service';
+import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 
 declare var $: any;
 declare var jQuery: any;
@@ -53,6 +53,8 @@ export class DashboardComponent implements OnInit {
   public spaces: Array<Space>;
   public space: Space;
   public servicepacks: Array<ServicePack>;
+  public buildpacks: Array<BuildPack>;
+  public starterpacks: Array<StarterPack>;
 
   public appSummaryEntities: Observable<any[]>;
   public appEntities: Observable<any[]>;
@@ -83,6 +85,8 @@ export class DashboardComponent implements OnInit {
     this.space = null;
     this.spaces = [];
     this.servicepacks = [];
+    this.buildpacks = [];
+    this.starterpacks = [];
 
     this.isEmpty = true;
     this.isSpace = false;
@@ -97,6 +101,22 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
+      this.dashboardService.StarterInit(data['list']);
+    });
+    this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS).subscribe(data => {
+      this.dashboardService.BuildInit(data['list']);
+    });
+    this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS).subscribe(data => {
+      this.dashboardService.ServiceInit(data['list']);
+    });
+    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid).subscribe(data => {
+      this.dashboardService.RecentInit(data);
+
+    });
+
+
+
     console.log('ngOnInit fired');
     $(document).ready(() => {
       //TODO 임시로...
@@ -194,6 +214,7 @@ export class DashboardComponent implements OnInit {
       });
       return data;
     });
+
   }
 
   renameApp() {
@@ -255,9 +276,9 @@ export class DashboardComponent implements OnInit {
     return this.getAppSummary(this.selectedSpaceId);
   }
 
-  delInstance(guidParam: string) {
+  delInstance() {
     let params = {
-      guid: guidParam
+      guid: this.selectedGuid
     };
 
     this.dashboardService.delInstance(params).subscribe(data => {

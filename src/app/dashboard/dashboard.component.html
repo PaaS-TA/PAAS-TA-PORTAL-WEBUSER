@@ -94,7 +94,7 @@
                   <!--<a [routerLink]="['../appMain']">-->
                   <!--<div (click)="moveAppMain()">-->
                   <div class="app_title" style="cursor: pointer" (click)="moveDashboard(item.name,item.guid)"><a href="#">{{item.name}}</a></div>
-                  <div class="app_img"><img src="{{servicepacks.thumbImgPath}}" alt="" onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div>
+                  <div class="app_img" ><img src="{{servicepacks.thumbImgPath}}" alt="" onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div>
                   <div class="app_per clearfix">
                     <ul>
                       <li>
@@ -353,7 +353,7 @@
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal"[(ngModel)]="selectedGuid" (click)="delInstance(selectedGuid)">삭제</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal"[(ngModel)]="selectedGuid" (click)="delInstance()">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
