@@ -10,19 +10,19 @@
             <ul class="colright_btn">
               <li class="monitoring">
                 <ul>
-                  <li *ngIf="appSummaryState == 'STARTED'"><i class="fas fa-stop" (click)="stopAppClick()"></i></li>
-                  <li *ngIf="appSummaryState != 'STARTED'"><i class="fas fa-play" (click)="startAppClick()"></i></li>
+                  <li *ngIf="appSummaryState == 'STARTED'"><i class="fas fa-stop" (click)="showPopAppStopClick()"></i></li>
+                  <li *ngIf="appSummaryState != 'STARTED'"><i class="fas fa-play" (click)="showPopAppStartClick()"></i></li>
                   <!--<li><i class="fas fa-stop"></i>&lt;!&ndash;i class="colorsR fas fa-sync-alt"></i&ndash;&gt;</li>-->
                 </ul>
               </li>
-              <li class="rot_deg"><i class="rot fas fa-sync-alt" (click)="restageAppClick()"></i>
+              <li class="rot_deg"><i class="rot fas fa-sync-alt" (click)="showPopAppRestageClick()"></i>
               </li>
               <li>
-                <i class="fas fa-ellipsis-v"></i>
+                <i class="fas fa-ellipsis-v" (click)="showAppEditLayer()"></i>
                 <ol class="">
-                  <li class="name_inputTitle"><a class="fas fa-edit" (click)="renameAppClick()"> 이름변경</a>
+                  <li class="name_inputTitle"><a class="fas fa-edit" (click)="renameAppClick()"> {{ 'appMain.app.rename' | translate }}</a>
                   </li>
-                  <li><a class="fas fa-trash-alt" (click)="showPopAppDelClick()"> 삭제</a></li>
+                  <li><a class="fas fa-trash-alt" (click)="showPopAppDelClick()"> {{ 'appMain.app.delete' | translate }}</a></li>
                 </ol>
               </li>
             </ul>
@@ -31,7 +31,7 @@
                 <span>{{appSummaryName}}</span>
                 <div class="headT">
                   <input class="tempTitle" type="text" value="" autocomplete="off" />
-                  <button class="yess" (click)="renameAppSaveClick()">
+                  <button class="yess" (click)="showPopRenameSaveClick()">
                     <i class="far fa-save"></i>
                   </button>
                   <button class="nos">
@@ -39,7 +39,7 @@
                   </button>
                 </div>
               </h1>
-              <p class="copy">{{appSummaryName}}개요 페이지 입니다.</p>
+              <p class="copy">{{ 'appMain.app.summary' | translate : {appSummaryName: appSummaryName} }}</p>
               <div [ngSwitch]="appSummaryState">
                 <button class="btns colors1" *ngSwitchCase="'STARTED'"><img src="/assets/resources/images/main/RUNNING.svg" alt=""/>RUNNING</button>
                 <button class="btns colors2" *ngSwitchCase="'DOWNED'"><img src="/assets/resources/images/main/energy.svg" alt=""/>DOWN</button>
@@ -71,7 +71,7 @@
                 <ol class="monitor_pd">
                   <li>
                     <span>앱 URL:</span>
-                    <button class="btns4 colors4">URL Rink
+                    <button class="btns4 colors4" (click)="showWindowAppLink(appSummaryRouteUri)">URL Rink
                       <div class="">
                         <i>
                           <img src="/assets/resources/images/main/btn_url_dot.png" alt=""/>
@@ -233,14 +233,13 @@
             <div class="sortable_wrap">
               <div class="sortable_top">
                 <p>이벤트</p>
-                <ul class="sortable_right"><!--
-                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li> -->
+                <ul class="sortable_right">
                   <li (click)="tabShowClick('tabContent_event')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
               <div class="table_wrap table_wraps">
                 <div>
-                  <table class="table_event">
+                  <table class="condition">
                     <!-- <caption>이벤트</caption> -->
                     <colgroup>
                       <col style='width: 30px;'>
@@ -250,28 +249,22 @@
                     </colgroup>
                     <thead>
                     <tr>
-                      <td>#
-                      </td>
-                      <td>Status
-                      </td>
-                      <td>Date
-                      </td>
-                      <td>Project
-                      </td>
-                      <td>Account
-                      </td>
-                      <td>Report
-                      </td>
+                      <td>#</td>
+                      <td>Status</td>
+                      <td>Date</td>
+                      <td>Type</td>
+                      <td>Actor</td>
+                      <!--<td>Report</td>-->
                     </tr>
                     </thead>
-                    <tbody *ngFor="let item of appEventsEntitiesRe.slice().reverse(); let i = index">
+                    <tbody *ngFor="let item of appEventsEntitiesRe.slice(); let i = index">
                       <tr>
                         <td>{{i+1}}</td>
-                        <th><i class="fas fa-{{item.iconClass}}"></i></th>
+                        <th><i class="{{item.iconClass}}"></i></th>
                         <td>{{item.date}}</td>
                         <td>{{item.type}}</td>
                         <td>{{item.actor_name}}</td>
-                        <td>{{item.requestText}}</td>
+                        <!--<td>{{item.requestText}}</td>-->
                       </tr>
                     </tbody>
                   </table>
@@ -299,16 +292,11 @@
                     </colgroup>
                     <thead>
                     <tr>
-                      <td>#
-                      </td>
-                      <td>Status
-                      </td>
-                      <td>CPU
-                      </td>
-                      <td>Memory
-                      </td>
-                      <td>Disk
-                      </td>
+                      <td>#</td>
+                      <td>Status</td>
+                      <td>CPU</td>
+                      <td>Memory</td>
+                      <td>Disk</td>
                     </tr>
                     </thead>
                     <tbody *ngFor="let item of appStatusEntities; let i = index">
@@ -353,10 +341,8 @@
             <div class="sortable_wrap">
               <div class="sortable_top">
                 <p>환경변수</p>
-                <ul class="sortable_right"><!--
-                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
-                                    <li><i class="fas fa-cog"></i></li> -->
-                  <li class="bar" data-clipboard-action="cut" data-clipboard-target="#out_a" (click)="copyClick('in_a')"><i class="fas fa-clipboard"></i></li>
+                <ul class="sortable_right">
+                  <!--<li class="bar" data-clipboard-action="cut" data-clipboard-target="#out_a" (click)="copyClick('in_a')"><i class="fas fa-clipboard"></i></li>-->
                   <li (click)="tabShowClick('tabContent_env')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
@@ -368,20 +354,20 @@
                       <col style='*'>
                     </colgroup>
                     <tbody>
-                    <tr>
-                      <th>사용자 정의 URL</th>
-                      <td>
-                        <span *ngFor="let item of appEnvUserEntities">
-                          {{item.eventID}}:{{item.eventData}}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr class="H180">
-                      <th>시스템 정의</th>
-                      <td><!--data-clipboard-target="#bar"-->
-                        <textarea id="in_a">{{appSystemProvidedEnv}}</textarea>
-                      </td>
-                    </tr>
+                      <tr>
+                        <th>사용자 정의 URL</th>
+                        <td>
+                          <span *ngFor="let item of appEnvUserEntities">
+                            {{item.eventID}}:{{item.eventData}}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr class="H180">
+                        <th>시스템 정의</th>
+                        <td>
+                          <textarea id="in_a">{{appSystemProvidedEnv}}</textarea>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -392,13 +378,11 @@
             <div class="sortable_wrap">
               <div class="sortable_top">
                 <p>서비스</p>
-                <ul class="sortable_right"><!--
-                                    <li class="rot_deg2"><i class="fas fa-undo-alt"></i></li>
-                                    <li><i class="fas fa-cog"></i></li> -->
+                <ul class="sortable_right">
                   <li (click)="tabShowClick('tabContent_service')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
-              <div class="table_wrap" *ngIf="appServicesEntities == ''">
+              <div class="table_wrap table_wraps" *ngIf="appServicesEntities == ''">
                 <div>
                   <p class="service_p">이 앱에 대해 서비스가 사용되지 않았습니다.<br>
                     Delivery Pipeline, GitHub 등을 통해 빌드, 테스트 및 배치를<br>
@@ -411,11 +395,11 @@
               </div>
               <div class="table_wrap table_wraps" *ngIf="appServicesEntities != ''">
                 <div>
-                  <table class="table_event">
+                  <table class="condition">
                     <colgroup>
                       <col style='width: 30px;'>
                       <col style='width: 200px;'>
-                      <col style='*'>
+                      <col style='width: 200px;'>
                       <col style='*'>
                     </colgroup>
                     <thead>
@@ -483,24 +467,18 @@
                   </colgroup>
                   <thead>
                   <tr>
-                    <td>#
-                    </td>
-                    <td>Status
-                    </td>
-                    <td>Date
-                    </td>
-                    <td>Project
-                    </td>
-                    <td>Account
-                    </td>
-                    <td>Report
-                    </td>
+                    <td>#</td>
+                    <td>Status</td>
+                    <td>Date</td>
+                    <td>Type</td>
+                    <td>Actor</td>
+                    <td>Report</td>
                   </tr>
                   </thead>
-                  <tbody *ngFor="let item of appEventsEntitiesRe.slice().reverse(); let i = index">
+                  <tbody *ngFor="let item of appEventsEntitiesRe.slice(); let i = index">
                     <tr *ngIf="i < tabContentEventListLimit">
                       <td>{{i+1}}</td>
-                      <th><i class="fas fa-{{item.iconClass}}"></i></th>
+                      <th><i class="{{item.iconClass}}"></i></th>
                       <td>{{item.date}}</td>
                       <td>{{item.type}}</td>
                       <td>{{item.actor_name}}</td>
@@ -561,7 +539,7 @@
                       <td>{{item.memory}} Byets</td>
                       <td>{{item.disk}} Byets</td>
                       <td>{{item.uptime}} (min)</td>
-                      <th><a (click)="statsResrtartClick(item.key)"><span class="BGcolors5 btn_bg_change2">RESTART</span></a></th>
+                      <th><a (click)="showPopStatsResrtartClick(item.key)"><span class="BGcolors5 btn_bg_change2">RESTART</span></a></th>
                     </tr>
                   </tbody>
                   <tfoot>
@@ -629,20 +607,14 @@
                     <col style='*'>
                   </colgroup>
                   <thead>
-                  <tr>
-                    <td>이름
-                    </td>
-                    <td>제공서비스
-                    </td>
-                    <td>서비스명
-                    </td>
-                    <td>대시보드
-                    </td>
-                    <td>연결해제
-                    </td>
-                    <td>Credentials
-                    </td>
-                  </tr>
+                    <tr>
+                      <td>이름</td>
+                      <td>제공서비스</td>
+                      <td>서비스명</td>
+                      <td>대시보드</td>
+                      <td>연결해제</td>
+                      <td>Credentials</td>
+                    </tr>
                   </thead>
                   <tbody *ngFor="let item of appServicesEntities; let i = index">
                     <tr>
@@ -1179,6 +1151,31 @@
 </div>
 
 <!-- modal -->
+<div class="modal fade" id="layerpop_stats_restart">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">인스턴스 재시작</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>인스턴스를 재시작하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="statsResrtartClick()">재시작</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="layerpop_env_add">
   <div class="vertical-alignment-helper">
     <div class="modal-dialog vertical-align-center">
@@ -1368,11 +1365,11 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <div class="">
-            <p><span>{{appSltEnvSystemLabel}}</span><br/>
-              {{appSltEnvSystemName}}
-            </p>
-          </div>
+          <!--<div class="">-->
+            <!--<p><span>{{appSltEnvSystemLabel}}</span><br/>-->
+              <!--{{appSltEnvSystemName}}-->
+            <!--</p>-->
+          <!--</div>-->
           <div class="">
             <table class="modal_t2">
               <colgroup>
@@ -1491,6 +1488,81 @@
   </div>
 </div>
 
+<div class="modal fade" id="layerpop_app_restart">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">App 재시작</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>App 을 재시작하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="restageAppClick()">재시작</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_app_stop">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">App 정지</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>App 을 정지하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="stopAppClick()">정지</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_app_start">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">App 시작</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>App 을 시작하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="startAppClick()">시작</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="layerpop_app_save">
   <div class="vertical-alignment-helper">
     <div class="modal-dialog vertical-align-center">
@@ -1545,16 +1617,3 @@
 
 <textarea id="out_a">
 </textarea>
-
-<!--<script src="/assets/resources/js/clipboard.min.js"></script>-->
-
-<script>
-//  var clipboard = new ClipboardJS('.bar');
-//  clipboard.on('success', function(e) {
-//    alert("복사되었습니다.");
-//    console.log(e);
-//  });
-//  clipboard.on('error', function(e) {
-//    console.log(e);
-//  });
-</script>

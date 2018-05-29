@@ -6,6 +6,7 @@ import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
 import {cataloghistroy} from "../model/cataloghistory";
+import {CatalogComponent} from "../main/catalog.component";
 
 @Component({
   selector: 'app-catalog-development',
@@ -14,6 +15,7 @@ import {cataloghistroy} from "../model/cataloghistory";
 })
 export class CatalogDevelopmentComponent implements OnInit {
   catalogcontans = CATALOGURLConstant;
+
   namecheck : number = 0;
   routecheck : number = 0;
 
@@ -37,9 +39,9 @@ export class CatalogDevelopmentComponent implements OnInit {
   domain: string = ''; // 도메인
   domainid : string; // 도메인id
   buildpack : BuildPack; //빌드팩 정보
-  appname: string; //앱 이름
+  appname: string = ''; //앱 이름
   hostname : string;
-  appurl: string; // 앱URL
+  appurl: string =''; // 앱URL
   memory: number; // 메모리
   disk: number; // 디스크
   appStart : boolean = false; // 앱 시작 여부
@@ -98,6 +100,7 @@ export class CatalogDevelopmentComponent implements OnInit {
       data['resources'].forEach(res => {
         this.appnames.push(res['entity']['name']);
       });
+      this.checkAppName();
       this.catalogService.isLoading(false);
     });
   }
@@ -172,13 +175,13 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   checkAppName() {
-    if(this.pattenTest(this.appname)){
-      this.namecheck = CATALOGURLConstant.NO;
-      return;
-    }
     if (this.appname.length < 1 || this.appname.trim() === ''){
       this.appurl = '';
       this.disableButton(true);
+      return;
+    }
+    if(this.pattenTest(this.appname)){
+      this.namecheck = CATALOGURLConstant.NO;
       return;
     }
     if(this.appname.length < 64){
@@ -247,11 +250,13 @@ export class CatalogDevelopmentComponent implements OnInit {
             this.log.debug(data);
             this.catalogService.postHistroy(CATALOGURLConstant.INSERTHISTROY, new cataloghistroy(this.buildpack.no, CATALOGURLConstant.BUILDPACK, this.catalogService.getUserid())).subscribe
             (data => {
+              alert("앱생성 성공");
               this.log.debug(data);
               this.catalogService.isLoading(false);
               this.router.navigate(['dashboard']);
             });
           }, error =>{
+            alert(error);
             this.log.debug(error);
             this.catalogService.isLoading(false);
             this.router.navigate(['dashboard']);
@@ -260,18 +265,21 @@ export class CatalogDevelopmentComponent implements OnInit {
 
         }
         else if (data['RESULT']===CATALOGURLConstant.FAIL){
+          alert("앱생성 실패");
           this.getRoutes();
           this.routecheck = CATALOGURLConstant.NO;
           this.disableButton(true);
           return false;
         }
       }, error => {
+        alert("라우트 증복 오류");
         this.getRoutes();
         this.routecheck = CATALOGURLConstant.NO;
         this.disableButton(true);
         return false;
       });
     }, error => {
+      alert("앱 이름중복 오류");
       this.getAppNames();
       this.namecheck = CATALOGURLConstant.NO;
       this.disableButton(true);

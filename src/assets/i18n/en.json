@@ -1,0 +1,9 @@
+{
+  "appMain": {
+    "app": {
+      "rename": "rename",
+      "delete": "delete",
+      "summary": "{{ appSummaryName }} is the overview page."
+    }
+  }
+}

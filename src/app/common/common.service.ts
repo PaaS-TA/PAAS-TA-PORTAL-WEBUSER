@@ -19,6 +19,8 @@ export class CommonService {
   isLogin = false;
   headers: HttpHeaders;
   private gateway = '';
+  defaultLang = 'ko';
+  useLang = 'ko';
 
   constructor(public http: HttpClient, public router: Router, public log: NGXLogger) {
     this.headers = new HttpHeaders()

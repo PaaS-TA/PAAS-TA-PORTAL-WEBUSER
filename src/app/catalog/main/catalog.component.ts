@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BuildPack, CatalogService, Service, StarterPack} from "./catalog.service";
+import {BuildPack, CatalogService, ServicePack, StarterPack} from "./catalog.service";
 import {NGXLogger} from 'ngx-logger';
 import {Router} from "@angular/router";
 import {Organization} from "../../model/organization";
@@ -14,14 +14,11 @@ declare var jQuery: any;
   styleUrls: ['./catalog.component.css']
 })
 export class CatalogComponent implements OnInit {
-  
+
 
   searchKeyword : string='';
   userid : string;
-  buildpacks : Array<BuildPack>;
-  starterpacks : Array<StarterPack> = Array<StarterPack>();
   recentpacks : Array<any> = Array<any>();
-  servicepacks : Array<Service> = Array<Service>();
   constructor(private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
     this.userid = catalogService.getUserid();
   }
@@ -68,7 +65,7 @@ export class CatalogComponent implements OnInit {
     this.router.navigate(['catalogdevelopment', build.no]);
   }
 
-  goService(service : Service) {
+  goService(service : ServicePack) {
     this.router.navigate(['catalogservice', service.no]);
   }
 
@@ -85,6 +82,7 @@ export class CatalogComponent implements OnInit {
     }
   }
 
+
   RecentInit(data : any) {
     this.recentpacks = [];
     this.recentpacks = data['list'];
@@ -94,49 +92,46 @@ export class CatalogComponent implements OnInit {
   StarterInit(data : any) {
     this.catalogService.starterpacks = new Array<StarterPack>();
     this.catalogService.starterpacks = data;
-    this.starterpacks = this.catalogService.starterpacks;
+    this.catalogService.viewstarterpacks = this.catalogService.starterpacks;
   }
 
   BuildInit(data : any) {
     this.catalogService.buildpacks = new Array<BuildPack>();
     this.catalogService.buildpacks = data;
-    this.buildpacks = this.catalogService.buildpacks;
+    this.catalogService.viewbuildpacks = this.catalogService.buildpacks;
   }
 
   ServiceInit(data : any) {
-    this.catalogService.servicepacks = new Array<Service>();
+    this.catalogService.servicepacks = new Array<ServicePack>();
     this.catalogService.servicepacks = data;
-    this.servicepacks = this.catalogService.servicepacks;
+    this.catalogService.viewservicepacks = this.catalogService.servicepacks;
   }
 
   SearchStarterPack() {
-    this.starterpacks = new Array<StarterPack>();
-    let starterpacks = this.starterpacks;
+    this.catalogService.viewstarterpacks = new Array<StarterPack>();
     const keyword = this.searchKeyword.toLocaleLowerCase();
     this.catalogService.starterpacks.forEach(function (starterpack) {
       if ((starterpack.description.toLocaleLowerCase().indexOf(keyword) != -1) || (starterpack.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (starterpack.name.toLocaleLowerCase().indexOf(keyword) != -1)) {
-        starterpacks.push(starterpack);
+        this.catalogService.viewstarterpacks.push(starterpack);
       }
     });
   }
 
     SearchBuildPack() {
-    this.buildpacks = new Array<BuildPack>();
-    let buildpacks = this.buildpacks;
+      this.catalogService.viewbuildpacks = new Array<BuildPack>();
     const keyword = this.searchKeyword.toLocaleLowerCase();
     this.catalogService.buildpacks.forEach(function (buildpack) {
       if((buildpack.description.toLocaleLowerCase().indexOf(keyword) != -1) || (buildpack.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (buildpack.name.toLocaleLowerCase().indexOf(keyword) != -1)) {
-        buildpacks.push(buildpack);
+        this.catalogService.viewbuildpacks.push(buildpack);
       }});
   }
 
   SearchServicePack() {
-    this.servicepacks = new Array<Service>();
-    let servicepacks = this.servicepacks;
+    this.catalogService.viewservicepacks = new Array<ServicePack>();
     const keyword = this.searchKeyword.toLocaleLowerCase();
     this.catalogService.servicepacks.forEach(function (servicepack) {
       if((servicepack.description.toLocaleLowerCase().indexOf(keyword) != -1) || (servicepack.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (servicepack.name.toLocaleLowerCase().indexOf(keyword) != -1)) {
-        servicepacks.push(servicepack);
+        this.catalogService.viewservicepacks.push(servicepack);
       }});
   }
 }

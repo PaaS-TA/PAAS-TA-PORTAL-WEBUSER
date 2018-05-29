@@ -19,7 +19,7 @@
               <dl>
                 <dt>
                 <div id="1">
-                  <img src="../../../assets/resources/images/catalog/{{recent.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
+                  <img src="{{recent.thumbImgPath}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                 </div>
                 </dt>
                 <dd>
@@ -29,8 +29,8 @@
                     <li><p>{{recent.description}}</p>
                     </li>
                     <li>
-                      <button *ngIf="recent.useYn==='Y'" class="btns3 colors6">파스타</button>
-                      <button *ngIf="recent.useYn==='N'" class="btns3 colors7">커뮤니티</button>
+                      <button *ngIf="recent.classification==='buildpack_system'" class="btns3 colors6">파스타</button>
+                      <button *ngIf="recent.classification==='buildpack_custom'" class="btns3 colors7">커뮤니티</button>
                     </li>
                   </ul>
                 </dd>
@@ -42,11 +42,11 @@
         <div>
           <p class="tit">앱 템플릿</p>
           <ul>
-            <li *ngFor="let stater of starterpacks" (click)="goStarter(stater)">
+            <li *ngFor="let stater of catalogService.viewstarterpacks" (click)="goStarter(stater)">
               <dl>
                 <dt>
                 <div>
-                  <img src="../../../assets/resources/images/catalog/{{stater.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
+                  <img src="{{stater.thumbImgPath}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                 </div>
                 </dt>
                 <dd>
@@ -70,11 +70,11 @@
         <div class="cataloglast">
           <p class="tit">앱 개발환경</p>
           <ul >
-            <li *ngFor="let build of buildpacks" (click)="goDevelopMent(build)">
+            <li *ngFor="let build of catalogService.viewbuildpacks" (click)="goDevelopMent(build)">
               <dl>
                 <dt>
                 <div>
-                  <img src="../../../assets/resources/images/catalog/{{build.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
+                  <img src="{{build.thumbImgPath}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                 </div>
                 </dt>
                 <dd>
@@ -85,8 +85,8 @@
                     </p>
                     </li>
                     <li>
-                      <button *ngIf="build.useYn==='Y'" class="btns3 colors6">파스타</button>
-                      <button *ngIf="build.useYn==='N'" class="btns3 colors7">커뮤니티</button>
+                      <button *ngIf="build.classification==='buildpack_system'" class="btns3 colors6">파스타</button>
+                      <button *ngIf="build.classification==='buildpack_custom'" class="btns3 colors7">커뮤니티</button>
                     </li>
                   </ul>
                 </dd>
@@ -99,11 +99,11 @@
         <div class="cataloglast" >
           <p class="tit">서비스</p>
           <ul >
-            <li *ngFor="let service of servicepacks" (click)="goService(service)">
+            <li *ngFor="let service of catalogService.viewservicepacks" (click)="goService(service)">
               <dl>
                 <dt>
                 <div>
-                  <img src="../../../assets/resources/images/catalog/{{service.thumbImgName}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
+                  <img src="{{service.thumbImgPath}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                 </div>
                 </dt>
                 <dd>
@@ -114,8 +114,6 @@
                     </p>
                     </li>
                     <li>
-                      <button *ngIf="service.useYn==='Y'" class="btns3 colors6">파스타</button>
-                      <button *ngIf="service.useYn==='N'" class="btns3 colors7">커뮤니티</button>
                     </li>
                   </ul>
                 </dd>
