@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<body class="org">
-<app-app-top [cursorId]="'cur_org'"></app-app-top>
+<app-app-top [cursorId]="'cur_dashboard'"></app-app-top>
 <div>
   <div class="org_wrap">
     <div class="contain_n">
@@ -18,9 +15,12 @@
                 </div>
                 <div class="org_box clearfix">
                   <div>
-                    <input class="form-control" type="text" required="" placeholder="">
-                    <p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>
-                      오류안내
+                    <input class="form-control" type="text" required="" placeholder="생성할 조직명을 입력하세요."
+                           [(ngModel)]="orgName" (keyup)="isExistOrgName($event)">
+                    <p class="text-left red" id="action-info-message">
+                      <i class="fas fa-exclamation-circle exclamation_mark"
+                         [style.display]="errorMessage === ''? 'none' : 'inline-block'"></i>
+                      {{errorMessage}}
                     </p>
                   </div>
                   <div></div>
@@ -44,17 +44,17 @@
                   <p>할당량</p>
                 </div>
                 <div class="organization_table2 maT30 paB40 org_tbl_wrap">
-                  <table class="org_tables_noline">
+                  <table class="org_tables_noline text-center">
                     <colgroup>
-                      <col style='*'>
-                      <col style='*'>
-                      <col style='*'>
-                      <col style='*'>
-                      <col style='*'>
-                      <col style='*'>
-                      <col style='*'>
-                      <col style='*'>
-                      <col style='*'>
+                      <col style=''>
+                      <col style=''>
+                      <col style=''>
+                      <col style=''>
+                      <col style=''>
+                      <col style=''>
+                      <col style=''>
+                      <col style=''>
+                      <col style=''>
                     </colgroup>
                     <thead>
                     <tr>
@@ -70,51 +70,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr *ngFor="let aquota of availableQuotas" class="org_quota"
+                        [ngClass]="{'cur': isSelectedQuota(aquota)}">
                       <td>
-                        <input id="radio1" type="radio" name="radio1" data-target="#layerpop7" data-toggle="modal">
-                        <label for="radio1"></label>
+                        <!-- TODO ngIf isSelectedQuota(aquota) then input radio template else none -->
+                        <!--
+                        <ng-container *ngIf="!isSelectedQuota(aquota); else selected">
+                          <input type="radio" name="radio-quota" [id]="'radio-' + aquota.name"
+                                 (click)="changeQuota(aquota)">
+                          <label [for]="'radio-' + aquota.name"></label>
+                        </ng-container>
+                        <ng-template #selected></ng-template>
+                        -->
+                        <input type="radio" name="radio-quota" [id]="'radio-' + aquota.name"
+                               (click)="changeQuota(aquota)">
+                        <label [for]="'radio-' + aquota.name"></label>
                       </td>
-                      <td>
-                        기본
+                      <td quota-key="name">{{aquota.name}}</td>
+                      <td quota-key="memory-limit">{{aquota.memoryLimit}}</td>
+                      <td quota-key="instance-memory-limit">{{aquota.instanceMemoryLimit}}
                       </td>
-                      <td>10G
-                      </td>
-                      <td>무제한
-                      </td>
-                      <td>100
-                      </td>
-                      <td>100
-                      </td>
-                      <td>무료
-                      </td>
-                      <td>무제한
-                      </td>
-                      <td>0
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input id="radio2" type="radio" name="radio1" checked data-target="#layerpop7" data-toggle="modal">
-                        <label for="radio2"></label>
-                      </td>
-                      <td>
-                        기본
-                      </td>
-                      <td>10G
-                      </td>
-                      <td>무제한
-                      </td>
-                      <td>100
-                      </td>
-                      <td>100
-                      </td>
-                      <td>무료
-                      </td>
-                      <td>무제한
-                      </td>
-                      <td>0
-                      </td>
+                      <td quota-key="routes">{{aquota.totalRoutes}}</td>
+                      <td quota-key="service-instance">{{aquota.totalServices}}</td>
+                      <td quota-key="price">{{aquota.priceKorean}}</td>
+                      <td quota-key="app-instances">{{aquota.applicationInstanceLimit}}</td>
+                      <td quota-key="route-ports">{{aquota.totalReservedRoutePorts}}</td>
                     </tr>
                     </tbody>
                   </table>
@@ -125,13 +105,77 @@
         </div>
         <!-- 할당량 끝 -->
         <div class="cWrap_btn">
-          <button class="btns2 btns2_1 colors4">조직생성</button>
-          <button class="btns2 btns2_1 colors5">취소</button>
+          <button class="btns2 btns2_1 colors4" id="btn_create_org"
+          data-target="#create-popup" data-toggle="modal" (click)="createOrg()"
+          >조직생성</button>
+          <button class="btns2 btns2_1 colors5" (click)="cancelToCreate()">취소</button>
         </div>
       </div>
     </div>
-
   </div>
 </div>
-</body>
-</html>
+<div class="modal fade" id="create-popup" (focusout)="resetToCreate()">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <ng-container *ngIf="createdOrganization && !isError; else failToCreate">
+        <div class="modal-content">
+          <!-- header -->
+          <div class="modal-header">
+            <!-- 닫기(x) 버튼 -->
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <!-- header title -->
+            <h4 class="modal-title">조직 생성 완료</h4>
+          </div>
+          <!-- body -->
+          <div class="modal-body">
+            <div class="">
+              <p class="account_modal_p">
+                <span *ngIf="createdOrganization.name !== '(name_dummy)'">{{createdOrganization.name}} </span>조직 생성을 완료했습니다.<br/>
+                이동 버튼을 누르면 조직관리로 이동합니다.
+              </p>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btns2 colors4"
+                    data-dismiss="modal" (click)="navigateOrg()">이동
+            </button>
+            <button type="button" class="btns2 colors5"
+                    data-dismiss="modal">취소
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #failToCreate>
+        <div class="modal-content">
+          <!-- header -->
+          <div class="modal-header">
+            <!-- 닫기(x) 버튼 -->
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <!-- header title -->
+            <h4 class="modal-title">조직 생성 실패</h4>
+          </div>
+          <!-- body -->
+          <div class="modal-body">
+            <div class="">
+              <p class="account_modal_p">
+                <span *ngIf="createdOrganization.name !== '(name_dummy)'">{{createdOrganization.name}} </span>조직 생성에
+                실패했습니다.<br/>
+                <span class="red">{{errorMessage}}</span>
+              </p>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btns2 colors4"
+                    data-dismiss="modal" disabled>이동
+            </button>
+            <button type="button" class="btns2 colors5"
+                    data-dismiss="modal">취소
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

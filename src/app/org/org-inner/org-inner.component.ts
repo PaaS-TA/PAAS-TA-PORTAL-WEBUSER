@@ -20,6 +20,7 @@ import {OrgUserRoleService} from "../common/org-userrole.service";
 import {DomainService} from "../../domain/domain.service";
 import {Domain} from "../../model/domain";
 import {OrgUserRole} from "../../model/userrole";
+import {current} from "codelyzer/util/syntaxKind";
 
 declare var $: any;
 declare var jQuery: any;
@@ -170,17 +171,22 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  resetNewSpaceName() {
-    this.createSpaceName = "";
+  resetNewSpaceName(currentName?) {
+    if (currentName != null)
+      this.createSpaceName = currentName;
+    else
+      this.createSpaceName = '';
   }
 
   createSpace($event?) {
     if (this.createSpaceName !== null && this.createSpaceName !== "")
       this.spaceService.createSpace(this.spaces, this.org.guid, this.createSpaceName);
 
-    if ($event !== null && $event !== undefined) {
+    if ($event != null) {
       $('#layerpop5-' + this.org.name).modal('hide');
     }
+
+    this.resetNewSpaceName();
   }
 
   renameSpace($event, space: Space) {
@@ -397,7 +403,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  fadeOutButtonSwitch($event) {
+  fadeOutButtonSwitch($event, space?: Space) {
     /*
     // origin
     $(".btns_sw").on("click", function () {
@@ -412,6 +418,11 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
       $(element).parents("tr").prev("tr").find("i").toggleClass("on");
       $(element).parents("tr").toggleClass("on");
     }
+
+    if (space != null)
+      this.resetNewSpaceName(space.name);
+    else
+      this.resetNewSpaceName();
   }
 
   displayDeleteSpace($event, space: Space) {
