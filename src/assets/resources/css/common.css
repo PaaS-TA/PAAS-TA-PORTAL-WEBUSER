@@ -1328,7 +1328,9 @@ body.email h4{color:#293133;}
 .space_pop_submenu li:first-child{margin-top: 6px;}
 .space_pop_submenu li:last-child {margin-bottom:6px}
 .space_pop_menu > i{cursor:pointer}
-.app_title{font-size:36px;font-weight:bold;border-bottom:1px solid #cccccc;color:#293133;padding-bottom:15px}
+.app_title{font-size:36px;font-weight:bold;border-bottom:1px solid #cccccc; padding-bottom:15px; color:#293133; }
+.app_title a{font-size:36px;font-weight:bold; color:#000; }
+.app_title a:hover{font-size:36px;font-weight:bold; color:#293133; text-decoration:underline;}
 .app_img{margin-top:30px;float:left}
 .app_per{margin-top:30px;float:left;margin-left:20px}
 .app_per div{float:left}
