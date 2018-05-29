@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CatalogService} from "../../main/catalog.service";
 import {Router} from "@angular/router";
+import {isUndefined} from "util";
 
 @Component({
   selector: 'app-catalog-nav',
@@ -25,16 +26,20 @@ export class CatalogNavComponent implements OnInit {
     this.catalogService.viewPacks(true, false, false);
   }
 
-  viewBuildPack(){
+  viewBuildPack(value){
     this.router.navigate(['catalog']);
+    
     this.catalogService.viewPacks(false, true, false);
+    if(!isUndefined(value)) {
+      this.catalogService.buildPackFilter(value);
+    }
   }
 
-  viewServicePack(){
+  viewServicePack(value){
     this.router.navigate(['catalog']);
+    
     this.catalogService.viewPacks(false, false, true);
-  }
-
-
-
+    if(!isUndefined(value)) {
+    this.catalogService.servicePackFilter(value);
+  }}
 }

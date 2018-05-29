@@ -37,24 +37,42 @@ export class OrgService {
     return orgs;
   }
 
-  public getOrgList(): Array<Organization> {
+  public getOrgListAsPromise(): Promise<Array<Organization>> {
+    const logger: NGXLogger = this.logger;
     const orgs: Array<Organization> = [];
     const url: string = OrgURLConstant.URLOrgListUsingToken + '';
-    const observable = this.common.doGet(url, this.getToken());
-    observable.subscribe(data => {
+    const processFunc = function(data) {
       if (data.hasOwnProperty('resources')) {
         (data['resources'] as Array<Object>).forEach(orgData => {
           const index =
             orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
-          this.logger.trace('Org(', index, ') :', orgs[index]);
+          logger.trace('Org(', index, ') :', orgs[index]);
         });
+      } else {
+        orgs.push(undefined);
       }
-      this.logger.debug('OrgList :', orgs);
-    });
+      logger.debug('OrgList :', orgs);
+    }
 
     // for-each spaces and quota
+    return (async() => {
+      const data = await this.common.doGet(url, this.getToken()).toPromise();
+      processFunc(data);
+      return orgs;
+    })();
+  }
 
-    return orgs;
+  public getOrgList(): Array<Organization> {
+    const logger: NGXLogger = this.logger;
+    let result: Array<Organization> = [];
+    this.getOrgListAsPromise().then(res => {
+      res.forEach(value => result.push(value));
+    }).catch(res => {
+      logger.error("Fail to get organization list. ", res);
+      result.push(undefined);
+    });
+
+    return result;
   }
 
   public getOrgListAdminOnlySample(): Array<Organization> {

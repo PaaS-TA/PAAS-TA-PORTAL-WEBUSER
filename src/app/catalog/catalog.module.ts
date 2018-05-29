@@ -9,14 +9,15 @@ import {CatalogDetailComponent} from "./catalog-detail/catalog-detail.component"
 import {RoutingModule} from "../app.routing";
 import { CatalogDevelopmentComponent } from './catalog-development/catalog-development.component';
 import { CatalogServiceComponent } from './catalog-service/catalog-service.component';
+import {DashModule} from "../dash/dash.module";
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     RoutingModule,
+    DashModule,    // included TranslateModule
   ],
   declarations: [
-    CatalogHeaderComponent,
     CatalogNavComponent,
     CatalogComponent,
     CatalogDetailComponent,
@@ -24,5 +25,6 @@ import { CatalogServiceComponent } from './catalog-service/catalog-service.compo
     CatalogServiceComponent,
   ],
   providers: [CatalogService],
+  exports: [TranslateModule]
 })
 export class CatalogModule { }

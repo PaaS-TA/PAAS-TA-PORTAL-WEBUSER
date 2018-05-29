@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {CatalogService, BuildPack, Service, StarterPack} from "../main/catalog.service";
+import {CatalogService, BuildPack, ServicePack, StarterPack} from "../main/catalog.service";
 import {NGXLogger} from "ngx-logger";
 import {Organization} from "../../model/organization";
 import {Space} from "../../model/space";
@@ -16,7 +16,7 @@ declare var jQuery: any;
 export class CatalogDetailComponent implements OnInit {
 
   template: StarterPack;
-  apptemplate: Array<BuildPack|Service> = new Array<BuildPack|Service>(); // 앱 구성에 나오는 목록
+  apptemplate: Array<BuildPack|ServicePack> = new Array<BuildPack|ServicePack>(); // 앱 구성에 나오는 목록
   region: string; // 지역
   appname: string; //앱 이름
   appurl: string; // 앱URL

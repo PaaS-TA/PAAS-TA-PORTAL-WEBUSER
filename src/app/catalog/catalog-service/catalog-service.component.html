@@ -1,5 +1,5 @@
 <div class="wrap dashboard">
-  <app-catalog-header></app-catalog-header>
+  <app-app-top [cursorId]="'cur_catalog'"></app-app-top>
   <app-catalog-nav></app-catalog-nav>
   <div class="contain" *ngIf="servicepack">
     <div class="content development_wrap">
@@ -10,7 +10,7 @@
               <dt class="noborder">
               <h1>{{servicepack.name}}</h1>
               <button class="btn" onclick="history.back()">
-                <img src="../../../assets/resources/images/catalog/back.svg" alt=""/>Back
+                <img src="{{servicepack.thumbImgPath}}" alt="" />Back
               </button>
               </dt>
               <dd>
@@ -18,7 +18,7 @@
                   <ul class="icon2">
                     <li>
                       <div class="icon_v">
-                        <img src="../../../assets/resources/images/catalog/catalog_2.png" alt=""/>
+                        <img src="../../../assets/resources/images/catalog/catalog_2.png" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                       </div>
                     </li>
                   </ul>

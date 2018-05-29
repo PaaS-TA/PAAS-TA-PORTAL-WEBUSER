@@ -1,5 +1,5 @@
 <div class="wrap account">
-  <app-common-header></app-common-header>
+  <app-app-top [cursorId]="'cur_org'"></app-app-top>
   <app-org-main-nav (reloadEvent)="reloadOrgs($event)"></app-org-main-nav>
   <div class="contain">
     <div class="content">
@@ -11,9 +11,31 @@
             </button>
           </div>
         </h1>
-        <app-org-inner *ngFor="let org of orgs" [org]="org"
-            (selectEvent)="selectOrg($event)" (removeEvent)="removeOrg($event)">
-        </app-org-inner>
+        <ng-container *ngIf="orgs; else errorGetOrgs">
+          <ng-container *ngIf="orgs.length > 0; else emptyOrgs">
+            <app-org-inner *ngFor="let org of orgs" [org]="org"
+                (selectEvent)="selectOrg($event)" (removeEvent)="removeOrg($event)">
+            </app-org-inner>
+          </ng-container>
+          <ng-template #emptyOrgs>
+            <div class="space_wrap">
+              <div class="space_alert_img"><img src="../../assets/resources/images/space/alert.gif" alt=""/></div>
+              <div class="space_title2">생성하거나 할당받은 조직이 없습니다.</div>
+              <div class="space_txt"><span><em>
+                <a [routerLink]="['/org']">새 조직 추가</a></em></span>
+                로 이동하여 조직 및 공간을 생성하십시오.
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-template #errorGetOrgs>
+          <div class="space_wrap">
+            <div class="space_title2">조직 목록을 가져오려 했으나, 오류가 발생했습니다.</div>
+            <div class="space_txt">페이지를 새로고침하거나, 관리자에게 문의해주시기 바랍니다.
+            </div>
+          </div>
+
+        </ng-template>
       </div><!-- row one_line -->
     </div>
     <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>

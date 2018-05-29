@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
 import {NGXLogger} from "ngx-logger";
 import {CommonService} from "../../common/common.service";
+import {CATALOGURLConstant} from "../common/catalog.constant";
 
 @Injectable()
 export class CatalogService {
-  COMMONAPI : string = '/commonapi';
-  V2_URL : string = '/v2';
-  STARTERGET : string = this.COMMONAPI + this.V2_URL + '/packrelation/';
+
   buildpacks : Array<BuildPack> = Array<BuildPack>();
   starterpacks : Array<StarterPack> = Array<StarterPack>();
   recentpacks : Array<any> = Array<any>();
-  servicepacks : Array<Service> = Array<Service>();
+  servicepacks : Array<ServicePack> = Array<ServicePack>();
   lasttime : number;
   viewstartpack : boolean = true;
   viewbuildpack : boolean = true;
   viewservicepack : boolean = true;
+
+  viewstarterpacks : Array<StarterPack>;
+  viewbuildpacks  : Array<BuildPack>;
+  viewservicepacks  : Array<ServicePack>;
+
   constructor(private common: CommonService, private log: NGXLogger) {
   }
 
@@ -22,8 +26,29 @@ export class CatalogService {
     this.viewstartpack  = value;
     this.viewbuildpack  = value2;
     this.viewservicepack  = value3;
+    if(this.viewstartpack){
+      this.viewstarterpacks = this.starterpacks;
+    }
+    if(this.viewbuildpack){
+      this.viewbuildpacks = this.buildpacks;
+    }
+    if(this.viewservicepack){
+      this.viewservicepacks = this.servicepacks;
+    }
   }
-  
+
+  buildPackFilter(value){
+    this.viewbuildpacks = this.buildpacks.filter(data => { if(data.classification === value){
+      return data;
+    }});
+  }
+
+  servicePackFilter(value){
+    this.viewservicepacks = this.servicepacks.filter(data => { if(data.classification === value){
+      return data;
+    }});
+  }
+
   isLoading(value){
     this.common.isLoading = value;
   }
@@ -69,7 +94,7 @@ export class CatalogService {
   }
 
   CatalogDetailInit(no : number){
-    return this.common.doGet(this.STARTERGET+no ,null).map((res: Response) => {
+    return this.common.doGet(CATALOGURLConstant.GETSTARTERRELATION +no ,null).map((res: Response) => {
       return res;
     });
   }
@@ -137,7 +162,7 @@ export class CatalogService {
       return res;
     });
   }
-  
+
   putAppStart(url : string, param : string){
     return this.common.doPut(url,param, this.common.getToken()).map((res: Response) => {
       return res;
@@ -194,7 +219,7 @@ export class StarterPack
   userId : string;
 }
 
-export class Service
+export class ServicePack
 {
   num : number;
   appBindParameter : string;
