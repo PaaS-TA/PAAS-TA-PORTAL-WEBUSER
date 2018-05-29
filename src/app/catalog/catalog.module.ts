@@ -25,6 +25,6 @@ import {DashModule} from "../dash/dash.module";
     CatalogServiceComponent,
   ],
   providers: [CatalogService],
-  exports: [TranslateModule]
+  exports: []
 })
 export class CatalogModule { }
