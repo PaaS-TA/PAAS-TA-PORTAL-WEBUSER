@@ -10,6 +10,7 @@ import {RoutingModule} from "../app.routing";
 import { CatalogDevelopmentComponent } from './catalog-development/catalog-development.component';
 import { CatalogServiceComponent } from './catalog-service/catalog-service.component';
 import {DashModule} from "../dash/dash.module";
+
 @NgModule({
   imports: [
     CommonModule,

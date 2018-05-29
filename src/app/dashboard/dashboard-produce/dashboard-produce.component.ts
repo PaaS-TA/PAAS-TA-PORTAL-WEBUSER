@@ -11,7 +11,6 @@ import {Organization} from "../../model/organization";
 import {SpaceService} from "../../space/space.service";
 import {Space} from '../../model/space';
 import {SecurityService} from "../../auth/security.service";
-import {CommonHeaderComponent} from "../../header/header.component";
 
 declare var $: any;
 declare var jQuery: any;
@@ -23,7 +22,6 @@ declare var jQuery: any;
   styleUrls: ['./dashboard-produce.component.css'],
 })
 export class DashboardProduceComponent implements OnInit {
-
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
               private orgService: OrgService,

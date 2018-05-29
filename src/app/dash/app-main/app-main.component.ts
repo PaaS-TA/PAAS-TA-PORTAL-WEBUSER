@@ -397,20 +397,20 @@ export class AppMainComponent implements OnInit {
       var memoryBytes = parseInt(memory);
       var s = ['Byets', 'KB', 'MB', 'GB', 'TB', 'PB'];
       var e = Math.floor(Math.log(memoryBytes)/Math.log(1024));
-      // if(e == "-Infinity"){
-      //   memory = "0 "+s[0];
-      // } else {
+      if(e === Number.NEGATIVE_INFINITY){
+        memory = "0 "+s[0];
+      } else {
         memory = (memoryBytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
-      // }
+      }
 
       var diskBytes = parseInt(disk);
       var s = ['Byets', 'KB', 'MB', 'GB', 'TB', 'PB'];
       var e = Math.floor(Math.log(diskBytes)/Math.log(1024));
-      // if(e == "-Infinity"){
-      //   disk = "0 "+s[0];
-      // } else {
+      if(e === Number.NEGATIVE_INFINITY){
+        disk = "0 "+s[0];
+      } else {
         disk = (diskBytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
-      // }
+      }
 
       var obj = {
         statusClass: statusClass,

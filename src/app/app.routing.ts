@@ -65,8 +65,8 @@ const routes: Routes = [
   {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]},
   {path: 'createuser', component: CreateuserComponent},
   {path: 'resetpasswd', component: ResetpasswdComponent},
-  {path: 'auth/create', component: CreateComponent},
-  {path: 'auth/reset', component: ResetComponent},
+  {path: 'authcreate', component: CreateComponent},
+  {path: 'authreset', component: ResetComponent},
 
   {path: 'error', component: ErrorComponent}
 
