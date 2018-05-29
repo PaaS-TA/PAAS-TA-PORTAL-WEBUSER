@@ -11,7 +11,6 @@ import {Jsonp} from '@angular/http';
 export class DashboardService {
 
   constructor(private commonService: CommonService, private http: HttpClient, private log: NGXLogger, private jsonp: Jsonp) {
-
   }
 
   // @RequestMapping(value = {Constants.V2_URL+"/spaces/{spaceid}/summary"}, method = RequestMethod.GET)
@@ -60,5 +59,29 @@ export class DashboardService {
   }
 
 }//
+
+export class ServicePack
+{
+  num : number;
+  appBindParameter : string;
+  appBindYn : string;
+  app_bind_parameter : string;
+  classification : string;
+  classificationSummary : string;
+  classificationValue : string;
+  created : string;
+  dashboardUseYn : string;
+  description : string;
+  lastmodified : string;
+  name : string;
+  no : string;
+  parameter : string;
+  servicePackName : string;
+  summary : string;
+  thumbImgName : string;
+  thumbImgPath : string;
+  useYn : string;
+  userId : string;
+}
 
 
