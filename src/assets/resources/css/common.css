@@ -1359,7 +1359,7 @@ body.email h4{color:#293133;}
 .app_per li:after{display:table;clear:both;content:'';overflow:hidden;visibility:hidden;height:0;width:0;}
 .app_per div:nth-child(1){padding-left:10px;width:105px}
 .app_per div:nth-child(2){width:20px}
-.app_per div:nth-child(3){width:80px;color:#737580}
+.app_per div:nth-child(3){width:auto;color:#737580}
 .app_btn{clear:both;margin:20px 0}
 .app_graph{background:#f0f2f2;box-sizing:border-box;padding:15px 25px 0px 25px;}
 .app_graph div:nth-child(1),.app_graph div:nth-child(4){clear:both;float:left;font-size:15px;font-weight:bold}
