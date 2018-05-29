@@ -27,6 +27,7 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
   private doAttachEvent: Boolean = false;
   private elapsedAttachTime: Number;
   private doSortOrgs: Boolean = false;
+  private isEmpty: Boolean;
 
   constructor(private common: CommonService,
     private orgService: OrgService,
@@ -39,14 +40,24 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
   ngOnInit(): void {}
 
   ngAfterContentChecked(): void {
-    const orgService = this.orgService;
+    if (this.orgs && this.common.isLoading) {
+      const containUndefined = this.orgs.length == 1 && this.orgs[0] == null;
+      if (this.doSortOrgs === false && this.orgs.length > 0) {
+        this.doSortOrgs = true;
+        this.orgs =
+          this.orgs.filter(value => (value !== null && value !== undefined))
+            .sort(Organization.compareTo);
+      }
 
-    if (this.doSortOrgs === false && this.orgs.length > 0) {
-      this.doSortOrgs = true;
-
-      this.orgs =
-        this.orgs.filter(value => (value !== null && value !== undefined))
-          .sort(Organization.compareTo);
+      if (containUndefined) {
+        this.logger.error("undefined");
+        this.orgs = null;
+        this.common.isLoading = false;
+      } else {
+        // empty
+        if (this.orgs.length <= 0)
+          this.common.isLoading = false;
+      }
     }
   }
 
@@ -62,32 +73,34 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
   }
 
   attachDetailEvent() {
-    const scriptURL = '../../assets/resources/js/common2.js';
-    const selfCom = this;
-    const logger = this.logger;
+    if (this.orgs) {
+      const scriptURL = '../../assets/resources/js/common2.js';
+      const selfCom = this;
+      const logger = this.logger;
 
-    if (this.doAttachEvent === false && this.orgs.length > 0) {
-      // TODO : control directly using Angular, instead of common2.js and jQuery
-      // ex) [AS-IS] $('.organization_sw').on('click', function() { ...... })  --->  [TO-BE] Angular
-      const startTime = Date.now();
+      if (this.doAttachEvent === false && this.orgs.length > 0) {
+        // TODO : control directly using Angular, instead of common2.js and jQuery
+        // ex) [AS-IS] $('.organization_sw').on('click', function() { ...... })  --->  [TO-BE] Angular
+        const startTime = Date.now();
 
-      $.ajaxSetup({async: false});
-      $.getScript(scriptURL)
-        .done(function(script, textStatus) {
-          selfCom.doAttachEvent = true;
-          selfCom.elapsedAttachTime = (Date.now() - startTime);
-          logger.debug('Success to attach common2.js...', textStatus, ' / elapsed time :', this.elapsedAttachTime);
-        }).fail(function(jqxhr, settings, exception) {
+        $.ajaxSetup({async: false});
+        $.getScript(scriptURL)
+          .done(function (script, textStatus) {
+            selfCom.doAttachEvent = true;
+            selfCom.elapsedAttachTime = (Date.now() - startTime);
+            logger.debug('Success to attach common2.js...', textStatus, ' / elapsed time :', this.elapsedAttachTime);
+          }).fail(function (jqxhr, settings, exception) {
           logger.error(exception);
           selfCom.elapsedAttachTime = (Date.now() - startTime);
           logger.error(
             'It doesn\'t attach detail event :', this.doAttachEvent, ' / elapsed time :', this.elapsedAttachTime);
         });
 
-      if (this.doAttachEvent === true) {
-        logger.debug('It attaches detail event : ' + this.doAttachEvent);
+        if (this.doAttachEvent === true) {
+          logger.debug('It attaches detail event : ' + this.doAttachEvent);
+        }
+        $.ajaxSetup({async: true});  // rollback
       }
-      $.ajaxSetup({async: true});  // rollback
     }
   }
 
