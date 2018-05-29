@@ -41,7 +41,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'callback', component: CallbackComponent},
   {path: 'app', component: CfAppComponent, canActivate: [AuthGuard]},
-  {path: 'catalog', component: CatalogComponent, canActivate: [AuthGuard]},
+  {path: 'catalog', component: CatalogComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'domain', component: DomainComponent, canActivate: [AuthGuard]},
   {path: 'log', component: LogComponent, canActivate: [AuthGuard]},
