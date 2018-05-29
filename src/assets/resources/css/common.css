@@ -17,13 +17,13 @@ nav,button i,
   -ms-transition:all .3s ease-in-out;
   -moz-transition:all .3s ease-in-out;
   -webkit-transition:all .3s ease-in-out;
-};
+}
 
 /* input */
 label{margin-bottom:0;}
 input,
 select{height:43px; display:inline-block; padding:0px 20px; font-size: 14px; font-weight: 300; border:1px solid #ced4d9;}
-select:hover{border:1px solid #;}
+select:hover{border:1px solid;}
 
 select{
   background-image:url("../images/select.png");

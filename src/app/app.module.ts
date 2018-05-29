@@ -49,7 +49,6 @@ import {CatalogService} from "./catalog/main/catalog.service";
 import {ErrorComponent} from './error/error.component';
 import {IndexModule} from "./index/index.module";
 import {ExternalModule} from "./external/external.module";
-import {HeaderModule} from "./header/header.module";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -81,7 +80,6 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   imports: [
     IndexModule,
-    HeaderModule,
     DashModule,
     OrgModule,
     CatalogModule,
@@ -107,7 +105,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }),
     LoggerModule.forRoot({
-      serverLoggingUrl: '/ps/logs',
+      //serverLoggingUrl: '/ps/logs',
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }), JsonpModule

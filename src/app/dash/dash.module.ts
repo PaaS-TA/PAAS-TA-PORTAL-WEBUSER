@@ -33,6 +33,6 @@ import { WebsocketService } from './tail-logs/websocket.service';
     TailLogsComponent
   ],
   providers: [AppMainService, TailLogsService, WebsocketService],
-  exports: [TranslateModule]
+  exports: [AppTopComponent, TranslateModule]
 })
 export class DashModule { }
