@@ -9,18 +9,16 @@ import {CatalogDetailComponent} from "./catalog-detail/catalog-detail.component"
 import {RoutingModule} from "../app.routing";
 import { CatalogDevelopmentComponent } from './catalog-development/catalog-development.component';
 import { CatalogServiceComponent } from './catalog-service/catalog-service.component';
-import {HeaderModule} from "../header/header.module";
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import {DashModule} from "../dash/dash.module";
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     RoutingModule,
-    HeaderModule,
-    TranslateModule
+    DashModule,    // included TranslateModule
   ],
   declarations: [
-    CatalogHeaderComponent,
     CatalogNavComponent,
     CatalogComponent,
     CatalogDetailComponent,
@@ -28,6 +26,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
     CatalogServiceComponent,
   ],
   providers: [CatalogService],
-  exports: [TranslateModule]
+  exports: [],
 })
 export class CatalogModule { }

@@ -2,7 +2,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-org-main-nav',
-  templateUrl: './org-main-nav.component.html'
+  templateUrl: './org-main-nav.component.html',
+  styleUrls: ['./org-main-nav.component.css'],
 })
 export class OrgMainNavComponent implements OnInit {
   constructor() { }

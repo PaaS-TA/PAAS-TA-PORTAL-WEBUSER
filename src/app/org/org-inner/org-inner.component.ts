@@ -115,6 +115,25 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  selectOrg() {
+    // reply selecting org for org-main.component
+    // TODO
+    /*
+    this.selectEvent.emit(this.org);
+
+    var wrap_line = $(".organization_wrap");
+    $(this).parents(wrap_line).toggleClass("on");
+    var updown = $(this).children("i").attr('class');
+    if( updown == 'fas fa-chevron-down' ){
+      $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+      $(this).html("<i class='fas fa-chevron-up'></i> 세부사항 닫기");
+    } else {
+      $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+      $(this).html("<i class='fas fa-chevron-down'></i> 세부사항 보기");
+    }
+    */
+  }
+
   renameOrg(isRenamed: boolean) {
     if (isRenamed) {
       const changingName = this.wantedOrgName;

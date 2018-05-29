@@ -18,7 +18,7 @@ declare var jQuery: any;
     './org-main.component.css'
   ]
 })
-export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, AfterViewChecked {
+export class OrgMainComponent implements AfterContentChecked, AfterViewChecked {
   orgs: Array<Organization>;
 
   // currentOrg: Organization = null;
@@ -36,8 +36,6 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
     // Real work
     this.orgs = orgService.getOrgList();
   }
-
-  ngOnInit(): void {}
 
   ngAfterContentChecked(): void {
     if (this.orgs && this.common.isLoading) {
@@ -67,39 +65,35 @@ export class OrgMainComponent implements OnInit, DoCheck, AfterContentChecked, A
     logger.trace('after view checked attach click event');
   }
 
-  ngDoCheck(): void {
-    const logger = this.logger;
-    logger.trace('do check attach click event');
-  }
-
   attachDetailEvent() {
-    if (this.orgs) {
-      const scriptURL = '../../assets/resources/js/common2.js';
-      const selfCom = this;
-      const logger = this.logger;
+    const scriptURL = '../../assets/resources/js/common2.js';
+    const selfCom = this;
+    const logger = this.logger;
+    let retryCount = 0;
 
-      if (this.doAttachEvent === false && this.orgs.length > 0) {
-        // TODO : control directly using Angular, instead of common2.js and jQuery
-        // ex) [AS-IS] $('.organization_sw').on('click', function() { ...... })  --->  [TO-BE] Angular
-        const startTime = Date.now();
+    if (this.doAttachEvent === false && this.orgs && this.orgs.length > 0) {
+      // TODO : control directly using Angular, instead of common2.js and jQuery
+      // ex) [AS-IS] $('.organization_sw').on('click', function() { ...... })  --->  [TO-BE] Angular
+      const startTime = Date.now();
 
+      while (retryCount < 3 && this.doAttachEvent === false) {
         $.ajaxSetup({async: false});
-        $.getScript(scriptURL)
-          .done(function (script, textStatus) {
+        $.getScript(scriptURL).fail(function (jqxhr, settings, exception) {
+          selfCom.elapsedAttachTime = (Date.now() - startTime);
+          logger.error('Occured error :', exception);
+          logger.error('It doesn\'t attach detail event :', this.doAttachEvent, ' / elapsed time :', this.elapsedAttachTime);
+        }).done(
+          function (script, textStatus) {
             selfCom.doAttachEvent = true;
             selfCom.elapsedAttachTime = (Date.now() - startTime);
             logger.debug('Success to attach common2.js...', textStatus, ' / elapsed time :', this.elapsedAttachTime);
-          }).fail(function (jqxhr, settings, exception) {
-          // ignore error (temp)
-          //logger.error(exception);
-          //selfCom.elapsedAttachTime = (Date.now() - startTime);
-          //logger.error('It doesn\'t attach detail event :', this.doAttachEvent, ' / elapsed time :', this.elapsedAttachTime);
         });
-
-        if (this.doAttachEvent === true) {
-          logger.debug('It attaches detail event : ' + this.doAttachEvent);
-        }
         $.ajaxSetup({async: true});  // rollback
+        retryCount++;
+      }
+
+      if (this.doAttachEvent === true) {
+        logger.debug('It attaches detail event : ' + this.doAttachEvent);
       }
     }
   }

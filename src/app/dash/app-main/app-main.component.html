@@ -1,5 +1,5 @@
 <div class="wrap dashboard">
-  <app-app-top></app-app-top>
+  <app-app-top [cursorId]="'cur_dashboard_app'" [app-view]="true"></app-app-top>
   <app-app-nav></app-app-nav>
 
   <div class="contain">
@@ -50,39 +50,39 @@
             <div class="maT30">
               <dl class="col_in1_dl">
                 <dt>
-                <ul>
-                  <li><span class="on_dot BGcolors"></span> 지역
-                  </li>
-                  <li>대한민국 ??</li>
-                </ul>
-                <ul>
-                  <li>
-                    <span class="on_dot BGcolors2"></span> 조직
-                  </li>
-                  <li>{{orgName}}</li>
-                </ul>
-                <ul>
-                  <li><span class="on_dot BGcolors3"></span> 공간
-                  </li>
-                  <li>{{spaceName}}</li>
-                </ul>
+                  <ul>
+                    <li><span class="on_dot BGcolors"></span> {{ 'appMain.app.area' | translate }}
+                    </li>
+                    <li>대한민국 ??</li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <span class="on_dot BGcolors2"></span> {{ 'appMain.app.organization' | translate }}
+                    </li>
+                    <li>{{orgName}}</li>
+                  </ul>
+                  <ul>
+                    <li><span class="on_dot BGcolors3"></span> {{ 'appMain.app.space' | translate }}
+                    </li>
+                    <li>{{spaceName}}</li>
+                  </ul>
                 </dt>
                 <dt>
-                <ol class="monitor_pd">
-                  <li>
-                    <span>앱 URL:</span>
-                    <button class="btns4 colors4" (click)="showWindowAppLink(appSummaryRouteUri)">URL Rink
-                      <div class="">
-                        <i>
-                          <img src="/assets/resources/images/main/btn_url_dot.png" alt=""/>
-                        </i>
-                        {{appSummaryRouteUri}}
-                      </div>
-                    </button>
-                  </li>
-                  <li><span>마지막 푸시:</span>{{appSummaryPackageUpdatedAt}}</li>
-                  <li><span>앱 개발환경:</span>{{appSummaryBuildpack}}</li>
-                </ol>
+                  <ol class="monitor_pd">
+                    <li>
+                      <span>{{ 'appMain.app.appUrl' | translate }}:</span>
+                      <button class="btns4 colors4" (click)="showWindowAppLink(appSummaryRouteUri)">URL Rink
+                        <div class="">
+                          <i>
+                            <img src="/assets/resources/images/main/btn_url_dot.png" alt=""/>
+                          </i>
+                          {{appSummaryRouteUri}}
+                        </div>
+                      </button>
+                    </li>
+                    <li><span>{{ 'appMain.app.lastPush' | translate }}:</span>{{appSummaryPackageUpdatedAt}}</li>
+                    <li><span>앱 개발환경:</span>{{appSummaryBuildpack}}</li>
+                  </ol>
                 </dt>
               </dl>
               <div class="clear"></div>
@@ -165,7 +165,7 @@
               <dd>
                 <span class="memS" id="memS1">{{ (appSummaryMemory >= 1024) ? (appSummaryMemory/1024) : (appSummaryMemory) }}</span>
                 <span class="memS" id="memS2" style="display:none;"><input class="instance_in" id="mem_in" type="text" style="font-size: 40px;" value="{{appSummaryMemory}}" /></span>
-                <i>{{ (appSummaryMemory >= 1024) ? 'G' : 'M' }}</i><small> / 최대 100G</small>
+                <i>{{ (appSummaryMemory >= 1024) ? 'G' : 'M' }}</i><small> / 최대 {{appSummaryMemoryMax}}G</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/memory_ico.png" alt="" />
@@ -200,7 +200,7 @@
               <dd>
                 <span class="diskS" id="diskS1">{{ (appSummaryDisk >= 1024) ? (appSummaryDisk/1024) : (appSummaryDisk) }}</span>
                 <span class="diskS" id="diskS2" style="display:none;"><input class="instance_in" id="disk_in" type="text" style="font-size: 40px;" value="{{appSummaryDisk}}" /></span>
-                <i>{{ (appSummaryDisk >= 1024) ? 'G' : 'M' }}</i><small> / 최대 300G</small>
+                <i>{{ (appSummaryDisk >= 1024) ? 'G' : 'M' }}</i><small> / 최대 {{appSummaryDiskMax}}G</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/disk_ico.png" alt="" />
@@ -304,8 +304,8 @@
                         <td>{{i+1}}</td>
                         <th><span class="BGcolors{{item.statusClass}}">{{item.statusText}}</span></th>
                         <td>{{item.cpu}} %</td>
-                        <td>{{item.memory}} Byets</td>
-                        <td>{{item.disk}} Byets</td>
+                        <td>{{item.memory}}</td>
+                        <td>{{item.disk}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -536,8 +536,8 @@
                       <td>{{i+1}}</td>
                       <th><span class="BGcolors{{item.statusClass}}">{{item.statusText}}</span></th>
                       <td>{{item.cpu}} %</td>
-                      <td>{{item.memory}} Byets</td>
-                      <td>{{item.disk}} Byets</td>
+                      <td>{{item.memory}}</td>
+                      <td>{{item.disk}}</td>
                       <td>{{item.uptime}} (min)</td>
                       <th><a (click)="showPopStatsResrtartClick(item.key)"><span class="BGcolors5 btn_bg_change2">RESTART</span></a></th>
                     </tr>

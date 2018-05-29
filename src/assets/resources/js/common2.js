@@ -606,23 +606,23 @@
 
     /*180409 alert layer*/
     // alert page
-    $(".errorWrap").each( function(){
-        var Whight = $(window).height() / 2;
-        var errorWrap = $(this).innerHeight() / 2;
-        var errorarea = Whight - errorWrap - 60 + 'px';
-        $(this).css("top" , errorarea );
-    });
+    // $(".errorWrap").each( function(){
+    //     var Whight = $(window).height() / 2;
+    //     var errorWrap = $(this).innerHeight() / 2;
+    //     var errorarea = Whight - errorWrap - 60 + 'px';
+    //     $(this).css("top" , errorarea );
+    // });
 
-    $(".alertOn").click(function(){
-        $(".alertLayer").addClass("moveAlert");
-    }),
+    // $(".alertOn").click(function(){
+    //     $(".alertLayer").addClass("moveAlert");
+    // }),
     setInterval(function(){
         $(".alertLayer").removeClass("moveAlert");
     }, 5000);
-
-    $(".alertClose").click(function(){
-        $(this).parents(".alertLayer").removeClass("moveAlert");
-    });
+    //
+    // $(".alertClose").click(function(){
+    //     $(this).parents(".alertLayer").removeClass("moveAlert");
+    // });
 
 //넘버 카운팅
 function updown(objNum,plusMinus) {
@@ -639,6 +639,8 @@ function updown(objNum,plusMinus) {
 	}
 }
 
+
+/*
     var clipboard = new ClipboardJS('.bar');
     clipboard.on('success', function(e) {
       alert("복사되었습니다.");
@@ -647,6 +649,7 @@ function updown(objNum,plusMinus) {
     clipboard.on('error', function(e) {
       console.log(e);
     });
+*/
 
     $('#instance_in, #mem_in, #disk_in').keyup(function () {
       this.value = this.value.replace(/[^0-9]/g,'');

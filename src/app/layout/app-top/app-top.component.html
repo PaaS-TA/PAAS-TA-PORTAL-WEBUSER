@@ -1,4 +1,4 @@
-<header class="header">
+<header [class]="'header' + (isShortHeader? ' account' : '')" >
   <div class="logo">
     <a [routerLink]="['../appMain']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
   </div>
@@ -7,9 +7,9 @@
             <label for="checkbox-1"></label>
         </span>
   <ul class="gnb clearfix">
-    <li class="cur" [routerLink]="['../dashboard']"><a >대시보드</a></li>
-    <li><a [routerLink]="['../catalog']">카달로그</a></li>
-    <li><a href="https://github.com/PaaS-TA/Guide-3.0-Penne-">문서</a></li>
+    <li id="cur_dashboard" [routerLink]="['../dashboard']"><a >대시보드</a></li>
+    <li id="cur_catalog"><a [routerLink]="['../catalog']">카달로그</a></li>
+    <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-3.0-Penne-">문서</a></li>
   </ul>
   <ul class="right_nav">
     <li><!-- <a href="#" class="fas fa-user"></a> -->
@@ -22,18 +22,22 @@
             <dl>
               <dt>
                 <i href="#" class="fas fa-user"></i>
-                <img src="/assets/resources/images/account/profile-thumbnail-sample.png" alt="temp" />
+                <img [src]="pictureUrl" alt="temp" />
               </dt>
               <dd>
-                <p>홍길동</p>
-                <p>test@test.com</p>
+                <p>{{name}}</p>
+                <p>{{id}}</p>
               </dd>
             </dl>
           </div>
           <ul class="">
-            <li class="cur"><a [routerLink]="['../usermgmt']">내계정</a></li>
-            <li><a [routerLink]="['../org']">조직관리</a></li>
-            <li><a href="#">사용량조회</a></li>
+            <li id="cur_usermgmt">
+              <a [routerLink]="['../usermgmt']">내계정</a></li>
+            <li id="cur_org">
+              <a [routerLink]="['../org']">조직관리</a></li>
+            <li id="cur_quantity">
+              <a href="javascript:void(0)" (click)="alertMsg('개발 중입니다.')">사용량조회</a>
+            </li>
           </ul>
           <p class="log_out" [routerLink]="['../logout']">로그아웃</p>
         </div>
@@ -49,9 +53,15 @@
           </div>
           <div>
             <ul class="">
+              <ng-container *ngFor="let noti of notifications">
+              <li>
+                <a href="javascript:void(0)">{{noti}}</a><span>
+                <i class="fas fa-times-circle"></i></span></li>
+              </ng-container>
+              <!--
               <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
               <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
-              <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+              -->
             </ul>
           </div>
         </div>
@@ -67,11 +77,28 @@
       </div>
     </li>
   </ul>
-  <div class="header_bottom">
-    <p class="tit">Dashboard</p>
-    <ul class="content_dev">
-      <li>DEV</li>
-      <li>Dev_area</li>
-    </ul>
-  </div>
+  <ng-container *ngIf="isDashboardApp && isAppView; else catalog">
+    <div class="header_bottom">
+      <!-- dashboard container -->
+      <p class="tit">Dashboard</p>
+      <ul class="content_dev">
+        <li>DEV</li>
+        <li>Dev_area</li>
+      </ul>
+    </div>
+  </ng-container>
+  <ng-template #catalog>
+    <!-- catalog container -->
+    <ng-container *ngIf="isCatalog; else emptyMenu">
+      <div class="header_bottom">
+        <p class="tit">Catalog</p>
+        <ul class="content_dev">
+          <li>{{catalogName}}</li>
+        </ul>
+      </div>
+    </ng-container>
+  </ng-template>
+  <ng-template #emptyMenu>
+    <!-- empty container -->
+  </ng-template>
 </header>

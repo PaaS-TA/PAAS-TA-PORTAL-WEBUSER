@@ -3,7 +3,12 @@
     "app": {
       "rename": "rename",
       "delete": "delete",
-      "summary": "{{ appSummaryName }} is the overview page."
+      "summary": "{{ appSummaryName }} is the overview page.",
+      "area": "Area",
+      "organization": "Organization",
+      "space": "Space",
+      "appUrl": "App URL",
+      "lastPush": "Last Push"
     }
   }
 }

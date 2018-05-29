@@ -1,32 +1,40 @@
+<style>
+  .loginWrap {
+    padding-top: 10%;
+  }
+
+</style>
+
 <body class="login_b">
 <div class="loginWrap">
+
   <div class="text_center">
     <a href="#"><img class="logo_login" src="../assets/resources/images/login/login_logo.png" alt="logo"/></a>
-    <p>사용자포탈에 오신 것을 환영합니다!</p>
+    <p i18n="Welcome to Paas-Ta-Portal">사용자포탈에 오신 것을 환영합니다!</p>
   </div>
 
   <form class="form-horizontal maT30" action="">
+    <!--<div class="form-group">-->
+    <!--<div class="col-xs-12">-->
+    <!--<input class="form-control" type="text" required="" placeholder="E-mail" name="username" [(ngModel)]="username"-->
+    <!--(keyup)="hideMsg()">-->
+    <!--</div>-->
+    <!--</div>-->
     <div class="form-group">
-      <div class="col-xs-12">
-        <input class="form-control" type="text" required="" placeholder="E-mail" name="username" [(ngModel)]="username"
-               (keyup)="hideMsg()">
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-xs-12">
-        <input class="form-control" type="password" required="" placeholder="password" name="password"
-               [(ngModel)]="password" (keyup)="hideMsg()">
-        <div *ngIf="error"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{errorMsg}}
-        </p></div>
-      </div>
-    </div>
-    <div class="form-group maT30">
-      <div class="col-xs-12">
-        <button class="btns colors4" (click)="apiLogin()">
-          로그인
-        </button>
+      <!--<div class="col-xs-12">-->
+      <!--<input class="form-control" type="password" required="" placeholder="password" name="password"-->
+      <!--[(ngModel)]="password" (keyup)="hideMsg()">-->
+      <!--<div *ngIf="error"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{errorMsg}}-->
+      <!--</p></div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-group maT30">-->
+      <!--<div class="col-xs-12">-->
+      <!--<button class="btns colors4" (click)="apiLogin()">-->
+      <!--로그인-->
+      <!--</button>-->
 
-      </div>
+      <!--</div>-->
       <div class="col-xs-12">
         <br>
         <button class="btns colors4" (click)="oAuthLogin()">
