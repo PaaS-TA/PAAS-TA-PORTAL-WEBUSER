@@ -1396,7 +1396,7 @@ body.email h4{color:#293133;}
 .alertOn, .alertOn:hover, .alertOn:active {display:block; width:100%; line-height:30px; text-decoration:none !important; margin-top:30px;}
 body.error_b{background:#f0f2f2;}
 .errorWrap{width: 440px; margin: 0 auto; text-align: center; position: relative;}
-.alertLayer{position:absolute; z-index:100; font-size:14px; font-weight:350; line-height:14px; color:#333; width:510px; padding:20px;border-radius:4px;-webkit-box-shadow: 2px 3px 8px 0px rgba(0,0,0,0.23); -moz-box-shadow: 2px 3px 8px 0px rgba(0,0,0,0.23); box-shadow: 2px 3px 8px 0px rgba(0,0,0,0.23);background:#fff;border-left:4px solid #cb3d4a;top:-60px;left:50%;margin-left:-255px;-webkit-transition:-webkit-transform .3s ease-in-out;transition:transform .3s ease-in-out;}
+.alertLayer{position:fixed; z-index:1000; font-size:14px; font-weight:350; line-height:14px; color:#333; width:510px; padding:20px;border-radius:4px;-webkit-box-shadow: 2px 3px 8px 0px rgba(0,0,0,0.23); -moz-box-shadow: 2px 3px 8px 0px rgba(0,0,0,0.23); box-shadow: 2px 3px 8px 0px rgba(0,0,0,0.23);background:#fff;border-left:4px solid #cb3d4a;top:-60px;left:50%;margin-left:-255px;-webkit-transition:-webkit-transform .3s ease-in-out;transition:transform .3s ease-in-out;}
 .alertLayer span.alertClose{display:inline-block;position:absolute;right:15px;width:10px;height:10px;color:#d7d7d7;cursor:pointer;}
 
 .alertLayer.moveAlert{-webkit-transform:translateY(90px);transform:translateY(90px);}

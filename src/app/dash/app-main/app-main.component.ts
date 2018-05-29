@@ -58,7 +58,9 @@ export class AppMainComponent implements OnInit {
   private appSummaryInstance: number;
   private appSummaryInstanceMax: number;
   private appSummaryInstancePer: number;
+  private appSummaryMemoryMax: number;
   private appSummaryMemory: number;
+  private appSummaryDiskMax: number;
   private appSummaryDisk: number;
 
   private appStatsCpuPer: number;
@@ -147,6 +149,8 @@ export class AppMainComponent implements OnInit {
         });
     });
 
+    this.appSummaryMemoryMax = 10;
+    this.appSummaryDiskMax = 10;
     this.tabContentEventListLimit = 5;
     this.tabContentStatsListLimit = 5;
     this.sltAlaramPageItems = 10;
@@ -332,10 +336,12 @@ export class AppMainComponent implements OnInit {
         var cnt = 0;
 
         $.each(data.instances, function (key, dataobj) {
-          if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
-          if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + dataobj.stats.usage.mem / dataobj.stats.mem_quota * 100;
-          if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + dataobj.stats.usage.disk / dataobj.stats.disk_quota * 100;
-          cnt++;
+          if(dataobj.stats != null) {
+            if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
+            if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + dataobj.stats.usage.mem / dataobj.stats.mem_quota * 100;
+            if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + dataobj.stats.usage.disk / dataobj.stats.disk_quota * 100;
+            cnt++;
+          }
         });
 
         this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
@@ -374,10 +380,37 @@ export class AppMainComponent implements OnInit {
       }
       //RESTART statusClass = 4
 
-      cpu = (Math.round((dataobj.stats.usage.cpu * 100) * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
-      memory = dataobj.stats.usage.mem.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      disk = dataobj.stats.usage.disk.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      uptime = (Math.round((dataobj.stats.uptime / 60) * Math.pow(10, 0)) / Math.pow(10, 0)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      if(statusText == "DOWN") {
+        cpu = 0;
+        memory = 0;
+        disk = 0;
+        uptime = 0;
+      } else {
+        cpu = (Math.round((dataobj.stats.usage.cpu * 100) * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
+        // memory = dataobj.stats.usage.mem.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // disk = dataobj.stats.usage.disk.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        memory = dataobj.stats.usage.mem.toString();
+        disk = dataobj.stats.usage.disk.toString();
+        uptime = (Math.round((dataobj.stats.uptime / 60) * Math.pow(10, 0)) / Math.pow(10, 0)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      var memoryBytes = parseInt(memory);
+      var s = ['Byets', 'KB', 'MB', 'GB', 'TB', 'PB'];
+      var e = Math.floor(Math.log(memoryBytes)/Math.log(1024));
+      if(e == "-Infinity"){
+        memory = "0 "+s[0];
+      } else {
+        memory = (memoryBytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+      }
+
+      var diskBytes = parseInt(disk);
+      var s = ['Byets', 'KB', 'MB', 'GB', 'TB', 'PB'];
+      var e = Math.floor(Math.log(diskBytes)/Math.log(1024));
+      if(e == "-Infinity"){
+        disk = "0 "+s[0];
+      } else {
+        disk = (diskBytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+      }
 
       var obj = {
         statusClass: statusClass,
@@ -431,23 +464,40 @@ export class AppMainComponent implements OnInit {
   }
 
   restageAppClick() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     let params = {
       guid: this.appSummaryGuid
     };
     this.appMainService.restageApp(params).subscribe(data => {
       //TODO 재시작 후 시간 텀을주어 init 할 것인가??
-      this.ngOnInit();
+      if(data) {
+        this.ngOnInit();
+
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("App을 재시작 하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("App 재시작이 실패하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
   instanceUpClick() {
-    this.appSummaryInstance = Number(this.appSummaryInstance) + 1;
-    $("#instance_in").val(this.appSummaryInstance);
+    if(this.appSummaryInstanceMax >= (Number(this.appSummaryInstance) + 1)) {
+      this.appSummaryInstance = Number(this.appSummaryInstance) + 1;
+      $("#instance_in").val(this.appSummaryInstance);
+    }
   }
 
   instanceDownClick() {
-    this.appSummaryInstance = Number(this.appSummaryInstance) - 1;
-    $("#instance_in").val(this.appSummaryInstance);
+    if(1 <= (Number(this.appSummaryInstance) - 1)) {
+      this.appSummaryInstance = Number(this.appSummaryInstance) - 1;
+      $("#instance_in").val(this.appSummaryInstance);
+    }
   }
 
   instanceDirectInputClick() {
@@ -467,13 +517,17 @@ export class AppMainComponent implements OnInit {
   }
 
   memUpClick() {
-    this.appSummaryMemory = Number(this.appSummaryMemory) + 1024;
-    $("#mem_in").val(this.appSummaryMemory);
+    if((this.appSummaryMemoryMax*1024) >= (Number(this.appSummaryMemory) + 1024)) {
+      this.appSummaryMemory = Number(this.appSummaryMemory) + 1024;
+      $("#mem_in").val(this.appSummaryMemory);
+    }
   }
 
   memDownClick() {
-    this.appSummaryMemory = Number(this.appSummaryMemory) - 1024;
-    $("#mem_in").val(this.appSummaryMemory);
+    if(1 <= (Number(this.appSummaryMemory) - 1024)) {
+      this.appSummaryMemory = Number(this.appSummaryMemory) - 1024;
+      $("#mem_in").val(this.appSummaryMemory);
+    }
   }
 
   memDirectInputClick() {
@@ -482,7 +536,7 @@ export class AppMainComponent implements OnInit {
       $("#memS1").hide();
       $("#memS2").show();
     } else {
-      $("#mem_in").val(this.appSummaryMemory);
+      this.appSummaryMemory = $("#mem_in").val();
       $("#memS2").hide();
       $("#memS1").show();
     }
@@ -493,13 +547,17 @@ export class AppMainComponent implements OnInit {
   }
 
   diskUpClick() {
-    this.appSummaryDisk = Number(this.appSummaryDisk) + 1024;
-    $("#disk_in").val(this.appSummaryDisk);
+    if((this.appSummaryDiskMax*1024) >= (Number(this.appSummaryDisk) + 1024)) {
+      this.appSummaryDisk = Number(this.appSummaryDisk) + 1024;
+      $("#disk_in").val(this.appSummaryDisk);
+    }
   }
 
   diskDownClick() {
-    this.appSummaryDisk = Number(this.appSummaryDisk) - 1024;
-    $("#disk_in").val(this.appSummaryDisk);
+    if(1 <= (Number(this.appSummaryDisk) - 1024)) {
+      this.appSummaryDisk = Number(this.appSummaryDisk) - 1024;
+      $("#disk_in").val(this.appSummaryDisk);
+    }
   }
 
   diskDirectInputClick() {
@@ -508,7 +566,7 @@ export class AppMainComponent implements OnInit {
       $("#diskS1").hide();
       $("#diskS2").show();
     } else {
-      $("#disk_in").val(this.appSummaryDisk);
+      this.appSummaryDisk = $("#disk_in").val();
       $("#diskS2").hide();
       $("#diskS1").show();
     }
@@ -519,6 +577,8 @@ export class AppMainComponent implements OnInit {
   }
 
   appSaveClick() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
     this.updateApp();
   }
 
@@ -603,22 +663,35 @@ export class AppMainComponent implements OnInit {
       name: name
     };
     this.appMainService.updateApp(params).subscribe(data => {
-      this.ngOnInit();
-      $("[id^='layerpop']").modal("hide");
-      $(".headT,.headT2").css("display","none");
+      if(data) {
+        this.ngOnInit();
 
-      $("#instanceS2").hide();
-      $("#instanceS1").show();
+        $(".headT,.headT2").css("display","none");
 
-      $("#memS2").hide();
-      $("#memS1").show();
+        $("#instanceS2").hide();
+        $("#instanceS1").show();
 
-      $("#diskS2").hide();
-      $("#diskS1").show();
+        $("#memS2").hide();
+        $("#memS1").show();
+
+        $("#diskS2").hide();
+        $("#diskS1").show();
+
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("앱을 수정하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("앱 수정이 실패하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
   updateAppEnv(type, index) {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     var updateEnvironment = {};
     var appEnvName = "";
     var appEnvValue = "";
@@ -655,11 +728,20 @@ export class AppMainComponent implements OnInit {
 
     };
     this.appMainService.updateApp(params).subscribe(data => {
-      this.ngOnInit();
-      $("[id^='layerpop']").modal("hide");
-      $("#add_env").hide();
+      if(data) {
+        this.ngOnInit();
 
-      this.showPopAppRestageClick();
+        $("#add_env").hide();
+        this.showPopAppRestageClick();
+
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("환경변수를 추가 하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("환경변수 추가가 실패하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
@@ -932,6 +1014,9 @@ export class AppMainComponent implements OnInit {
   }
 
   addAppRoute() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     let params = {
       applicationId: this.appGuid,
       host: $("#routeAddHostName").val(),
@@ -939,17 +1024,39 @@ export class AppMainComponent implements OnInit {
       spaceId: this.appSummarySpaceGuid
     };
     this.appMainService.addAppRoute(params).subscribe(data => {
-      this.ngOnInit();
-      $("[id^='layerpop']").modal("hide");
-      $(".lauth_dl").toggleClass("on");
+      if(data) {
+        $(".lauth_dl").toggleClass("on");
+
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("라우트를 추가 하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("라우트 추가가 실패하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
   delAppRoute() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     let params = {};
     this.appMainService.delAppRoute(this.appGuid, this.sltRouteDelGuid, params).subscribe(data => {
-      this.ngOnInit();
-      $("[id^='layerpop']").modal("hide");
+      if(data) {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("라우트 연결해제 하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("라우트 연결해제가 실패하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
@@ -1036,10 +1143,22 @@ export class AppMainComponent implements OnInit {
   }
 
   statsResrtartClick() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     let params = {};
     this.appMainService.terminateInstance(this.appGuid, this.sltStatsInstance, params).subscribe(data => {
-      this.ngOnInit();
-      $("[id^='layerpop']").modal("hide");
+      if(data) {
+        this.ngOnInit();
+
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("인스턴스를 재시작하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("인스턴스를 재시작이 실패하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
@@ -1120,6 +1239,9 @@ export class AppMainComponent implements OnInit {
   }
 
   bindServiceClick() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     var bindParam = "";
 
     if($("input[id^='serviceParamKey_']").length > 0) {
@@ -1147,10 +1269,20 @@ export class AppMainComponent implements OnInit {
       parameter: bindParam
     };
     this.appMainService.bindService(params).subscribe(data => {
-      this.ngOnInit();
-      $("[id^='layerpop']").modal("hide");
-      $(".service_dl").toggleClass("on");
-      this.sltServiceParam = [];
+      if(data) {
+        $(".service_dl").toggleClass("on");
+        this.sltServiceParam = [];
+
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("서비스 연결 하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("서비스 연결 실패하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
@@ -1211,10 +1343,22 @@ export class AppMainComponent implements OnInit {
   }
 
   unbindServiceClick() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     let params = {};
     this.appMainService.unbindService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
-      this.ngOnInit();
-      $("[id^='layerpop']").modal("hide");
+      if(data) {
+        this.ngOnInit();
+
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("서비스 연결해제 하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("서비스 연결해제 실패하였습니다.");
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 

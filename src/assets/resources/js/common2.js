@@ -606,23 +606,23 @@
 
     /*180409 alert layer*/
     // alert page
-    $(".errorWrap").each( function(){
-        var Whight = $(window).height() / 2;
-        var errorWrap = $(this).innerHeight() / 2;
-        var errorarea = Whight - errorWrap - 60 + 'px';
-        $(this).css("top" , errorarea );
-    });
+    // $(".errorWrap").each( function(){
+    //     var Whight = $(window).height() / 2;
+    //     var errorWrap = $(this).innerHeight() / 2;
+    //     var errorarea = Whight - errorWrap - 60 + 'px';
+    //     $(this).css("top" , errorarea );
+    // });
 
-    $(".alertOn").click(function(){
-        $(".alertLayer").addClass("moveAlert");
-    }),
+    // $(".alertOn").click(function(){
+    //     $(".alertLayer").addClass("moveAlert");
+    // }),
     setInterval(function(){
         $(".alertLayer").removeClass("moveAlert");
     }, 5000);
-
-    $(".alertClose").click(function(){
-        $(this).parents(".alertLayer").removeClass("moveAlert");
-    });
+    //
+    // $(".alertClose").click(function(){
+    //     $(this).parents(".alertLayer").removeClass("moveAlert");
+    // });
 
 //넘버 카운팅
 function updown(objNum,plusMinus) {
