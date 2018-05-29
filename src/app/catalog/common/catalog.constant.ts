@@ -2,9 +2,6 @@
  * Created by 박철한 on 2018-05-03.
  */
 export enum CATALOGURLConstant {
-  COMMONAPI = '/commonapi',
-  POTALAPI = '/portalapi',
-  V2_URL = '/v2',
 
   NAMECHECK = '/portalapi/v2/catalogs/apps/',
   CREATEAPP = '/portalapi/v2/catalogs/app',
@@ -20,6 +17,7 @@ export enum CATALOGURLConstant {
   ROUTECHECK = '/commonapi/v2/routes/',
   INSERTHISTROY = '/commonapi/v2/history',
   GETRECENTPACKS = '/commonapi/v2/history/',
+  GETSTARTERRELATION = '/commonapi/v2/packrelation/',
   GETSTARTERPACKS = '/commonapi/v2/starterpacks',
   GETBUILDPACKS = '/commonapi/v2/developpacks',
   GETSERVICEPACKS = '/commonapi/v2/servicepacks',
@@ -43,5 +41,5 @@ export enum CATALOGURLConstant {
   FAIL = 'FAIL',
   SUCCESS ='SUCCESS',
   OK=1,
-  NO=-1
+  NO=-1,
 }
