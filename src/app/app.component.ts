@@ -16,9 +16,9 @@ export class AppComponent implements DoCheck {
   isLoading: boolean = false;
 
   constructor(public common: CommonService, private translate: TranslateService) {
-    translate.setDefaultLang(this.common.defaultLang);
+    this.translate.setDefaultLang(this.common.defaultLang);
+    this.translate.use(this.common.useLang);
 
-    translate.use(this.common.useLang);
 
     $("li[id^='lang_']").removeClass("cur");
     $("#lang_"+this.common.useLang+"").addClass("cur");
