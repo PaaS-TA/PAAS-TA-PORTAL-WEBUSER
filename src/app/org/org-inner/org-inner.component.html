@@ -1,4 +1,4 @@
-<div *ngIf="org">
+<ng-container *ngIf="org">
   <div class="col-md-12 organization_wrap on maT30">
     <div class="organization_title_wrap on">
       <div class="organization_btn">
@@ -14,8 +14,7 @@
       </div>
       <div class="pull-right on">
         <div class="ri_up on">
-          <button class="btns6 colors4 organization_sw"
-                  (click)="selectEvent.emit(org);">
+          <button class="btns6 colors4 organization_sw">
             <i class="fas fa-chevron-down"></i> 세부사항 보기
           </button>
         </div>
@@ -721,4 +720,4 @@
   </div>
   <!--  TODO : delete org -->
   <!-- button (click)="deleteOrg()">선택</button -->
-</div>
+</ng-container>
