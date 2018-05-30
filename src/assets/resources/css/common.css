@@ -668,6 +668,7 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 
 
 .red{font-size: 14px!important; color:#d40031!important;}
+.blue{font-size: 14px!important; color:#039cfd!important;}
 .account_modal_p{margin:16px 0 16px 20px; color:#808487;}
 .account_modal_p span{color:#293133;}
 .account_modal_p a{color:#409ab2;}
@@ -1252,8 +1253,8 @@ body.email h4{color:#293133;}
 .monitor_sel_wrap{width:calc(100% - 60px);margin:0 auto}
 .monitor_sel_container{float:left;width:50%}
 .monitor_sel_container > div{float:left;line-height:45px}
-.monitor_sel_container > div:first-child{width:90px}
-.monitor_sel_container > div:last-child{width:calc(100% - 90px);}
+.monitor_sel_container > div:first-child{width:120px}
+.monitor_sel_container > div:last-child{width:calc(100% - 120px);}
 .monitor_sel_container > div > select{width:90%;max-width:300px}
 .monitor_first_box{float:left;width:47.6%}
 .monitor_second_box{float:left;margin-left:1.6%;width:50.8%}

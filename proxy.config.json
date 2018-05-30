@@ -1,6 +1,6 @@
 {
   "/portalapi/*": {
-    "target": "http://localhost:2222",
+    "target": "http://localhost:2225/portalapi",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
@@ -9,7 +9,7 @@
     }
   },
   "/ws/*": {
-    "target": "ws://localhost:5555",
+    "target": "http://localhost:5555/socket.io",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
@@ -19,7 +19,7 @@
     }
   },
   "/commonapi/*": {
-    "target": "http://localhost:2223",
+    "target": "http://localhost:2225/commonapi",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",

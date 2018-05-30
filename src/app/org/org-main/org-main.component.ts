@@ -31,6 +31,7 @@ export class OrgMainComponent implements AfterContentChecked, AfterViewChecked {
 
   constructor(private common: CommonService,
     private orgService: OrgService,
+    private router: Router,
     private logger: NGXLogger) {
     this.common.isLoading = true;
     // Real work
@@ -66,7 +67,7 @@ export class OrgMainComponent implements AfterContentChecked, AfterViewChecked {
   }
 
   attachDetailEvent() {
-    const scriptURL = '../../assets/resources/js/common2.js';
+    const scriptURL = '/assets/resources/js/common.js';
     const selfCom = this;
     const logger = this.logger;
     let retryCount = 0;
@@ -81,12 +82,12 @@ export class OrgMainComponent implements AfterContentChecked, AfterViewChecked {
         $.getScript(scriptURL).fail(function (jqxhr, settings, exception) {
           selfCom.elapsedAttachTime = (Date.now() - startTime);
           logger.error('Occured error :', exception);
-          logger.error('It doesn\'t attach detail event :', this.doAttachEvent, ' / elapsed time :', this.elapsedAttachTime);
+          logger.error('It doesn\'t attach detail event :', selfCom.doAttachEvent, ' / elapsed time :', selfCom.elapsedAttachTime);
         }).done(
           function (script, textStatus) {
             selfCom.doAttachEvent = true;
             selfCom.elapsedAttachTime = (Date.now() - startTime);
-            logger.debug('Success to attach common2.js...', textStatus, ' / elapsed time :', this.elapsedAttachTime);
+            logger.debug('Success to attach common2.js...', textStatus, ' / elapsed time :', selfCom.elapsedAttachTime);
         });
         $.ajaxSetup({async: true});  // rollback
         retryCount++;
@@ -128,5 +129,9 @@ export class OrgMainComponent implements AfterContentChecked, AfterViewChecked {
 
   get currentOrg() {
     return this.orgs[this.currentOrgIndex];
+  }
+
+  navigateCreateOrg() {
+    this.router.navigate(['/dashboardProduce'], { /* extras are empty */ });
   }
 }

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
-import { Observable, Subject } from 'rxjs/Rx';
 import * as Rx from 'rxjs/Rx';
+import {Observable} from 'rxjs/Rx';
 
 @Injectable()
 export class WebsocketService {
@@ -9,15 +9,16 @@ export class WebsocketService {
   // Our socket connection
   private socket;
 
-  constructor() { }
+  constructor() {
+  }
 
   connect(): Rx.Subject<MessageEvent> {
     // If you aren't familiar with environment variables then
     // you can hard code `environment.ws_url` as `http://localhost:5000`
     // this.socket = io.connect('http://localhost:5555');
 
-    this.socket = io("http://localhost:5555", {
-      // path: "/ws",
+    this.socket = io({
+      path: "/ws",
       transportOptions: {
         polling: {
           'Authorization': "Basic YWRtaW46b3BlbnBhYXN0YQ=="
@@ -29,6 +30,10 @@ export class WebsocketService {
     // // We define our observable which will observe any incoming messages
     // // from our socket.io server.
     let observable = new Observable(observer => {
+      this.socket.on('event', event => {
+        console.log(event);
+      });
+
       this.socket.on('message', (data) => {
         console.log("Received message from Websocket Server")
         // this.socket.emit('method', 'GET');
@@ -60,8 +65,8 @@ export class WebsocketService {
     let observer = {
       next: (data: Object) => {
         var jsonObject = {
-          userName : "111",
-          message : "222"
+          userName: "111",
+          message: "222"
         };
 
         this.socket.emit('message', jsonObject);

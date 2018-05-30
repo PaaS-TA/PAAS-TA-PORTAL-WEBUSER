@@ -34,6 +34,7 @@
     "ngx-loading": "^1.0.14",
     "ngx-logger": "^2.0.2",
     "rxjs": "^5.5.6",
+    "socket.io-client": "^2.1.1",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {

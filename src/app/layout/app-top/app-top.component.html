@@ -2,14 +2,14 @@
   <div class="logo">
     <a [routerLink]="['../appMain']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
   </div>
-		<span class="nav_toggle">
-            <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
-            <label for="checkbox-1"></label>
-        </span>
+  <span class="nav_toggle">
+      <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1">
+      <label for="checkbox-1"></label>
+  </span>
   <ul class="gnb clearfix">
-    <li id="cur_dashboard" [routerLink]="['../dashboard']"><a >대시보드</a></li>
-    <li id="cur_catalog"><a [routerLink]="['../catalog']">카달로그</a></li>
-    <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-3.0-Penne-">문서</a></li>
+    <li id="cur_dashboard" [routerLink]="['../dashboard']"><a >{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
+    <li id="cur_catalog"><a [routerLink]="['../catalog']">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
+    <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-3.0-Penne-">{{ 'common.top.main.linkTextDocument' | translate }}</a></li>
   </ul>
   <ul class="right_nav">
     <li><!-- <a href="#" class="fas fa-user"></a> -->
@@ -32,14 +32,14 @@
           </div>
           <ul class="">
             <li id="cur_usermgmt">
-              <a [routerLink]="['../usermgmt']">내계정</a></li>
+              <a [routerLink]="['../usermgmt']">{{ 'common.top.user.linkTextMyAccount' | translate }}</a></li>
             <li id="cur_org">
-              <a [routerLink]="['../org']">조직관리</a></li>
+              <a [routerLink]="['../org']">{{ 'common.top.user.linkTextOrgManager' | translate }}</a></li>
             <li id="cur_quantity">
-              <a href="javascript:void(0)" (click)="alertMsg('개발 중입니다.')">사용량조회</a>
+              <a href="javascript:void(0)" (click)="alertMsg('개발 중입니다.')">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
             </li>
           </ul>
-          <p class="log_out" [routerLink]="['../logout']">로그아웃</p>
+          <p class="log_out" [routerLink]="['../logout']">{{ 'common.top.user.linkTextLogOut' | translate }}</p>
         </div>
       </div>
     </li>
