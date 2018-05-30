@@ -190,6 +190,49 @@
         "btn1": "삭제",
         "btn2": "취소"
       }
+    },
+    "alertLayer": {
+      "appRestartSuccess": "App을 재시작 하였습니다.",
+      "appRestartFail": "App 재시작이 실패하였습니다.",
+      "appUpdateSuccess": "앱을 수정하였습니다.",
+      "appUpdateFail": "앱 수정이 실패하였습니다.",
+      "envAddSuccess": "환경변수를 추가 하였습니다.",
+      "envAddFail": "환경변수 추가가 실패하였습니다.",
+      "routeAddSuccess": "라우트를 추가 하였습니다.",
+      "routeAddFail": "라우트 추가가 실패하였습니다.",
+      "routeDelSuccess": "라우트 연결해제 하였습니다.",
+      "routeDelFail": "라우트 연결해제가 실패하였습니다.",
+      "instanceRestartSuccess": "인스턴스를 재시작하였습니다.",
+      "instanceRestartFail": "인스턴스를 재시작이 실패하였습니다.",
+      "bindServiceSuccess": "서비스를 연결 하였습니다.",
+      "bindServiceFail": "서비스 연결이 실패하였습니다.",
+      "unbindServiceSuccess": "서비스를 연결해제 하였습니다.",
+      "unbindServiceFail": "서비스 연결해제가 실패하였습니다."
+    },
+    "nav": {
+      "summary": "개요",
+      "event": "이벤트",
+      "stats": "상태",
+      "service": "서비스",
+      "env": "환경변수",
+      "route": "라우트",
+      "logs": "로그",
+      "viewchart": "모니터링"
+    }
+  },
+  "common": {
+    "top": {
+      "main": {
+        "linkTextDashboard": "대시보드",
+        "linkTextCatalog": "카탈로그",
+        "linkTextDocument": "문서"
+      },
+      "user": {
+        "linkTextMyAccount": "내계정",
+        "linkTextOrgManager": "조직관리",
+        "linkTextViewUsage": "사용량조회",
+        "linkTextLogOut": "로그아웃"
+      }
     }
   }
 }

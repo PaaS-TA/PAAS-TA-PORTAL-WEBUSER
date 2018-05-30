@@ -155,40 +155,83 @@
         "btn2": "Cancel"
       },
       "alarmEdit": {
-        "title": "Alarm 변경",
-        "bodyText": "Alarm 을 변경하시겠습니까?",
-        "btn1": "변경",
-        "btn2": "취소"
+        "title": "Change Alarm",
+        "bodyText": "Do you want to change the alarm?",
+        "btn1": "Change",
+        "btn2": "Cancel"
       },
       "appRestart": {
-        "title": "App 재시작",
-        "bodyText": "App 을 재시작하시겠습니까?",
-        "btn1": "재시작",
-        "btn2": "취소"
+        "title": "Restart App",
+        "bodyText": "Do you want to restart the app?",
+        "btn1": "Restart",
+        "btn2": "Cancel"
       },
       "appStop": {
-        "title": "App 정지",
-        "bodyText": "App 을 정지하시겠습니까?",
-        "btn1": "정지",
-        "btn2": "취소"
+        "title": "App suspension",
+        "bodyText": "Stop the app?",
+        "btn1": "Stop",
+        "btn2": "Cancel"
       },
       "appStart": {
-        "title": "App 시작",
-        "bodyText": "App 을 시작하시겠습니까?",
-        "btn1": "시작",
-        "btn2": "취소"
+        "title": "Start App",
+        "bodyText": "Start the app?",
+        "btn1": "Start",
+        "btn2": "Cancel"
       },
       "appSave": {
-        "title": "App 변경",
-        "bodyText": "App 을 변경하시겠습니까?",
-        "btn1": "변경",
-        "btn2": "취소"
+        "title": "Change App",
+        "bodyText": "Are you sure you want to change your app?",
+        "btn1": "Change",
+        "btn2": "Cancel"
       },
       "appDel": {
-        "title": "App 삭제",
-        "bodyText": "App 을 삭제하시겠습니까?",
-        "btn1": "삭제",
-        "btn2": "취소"
+        "title": "Remove App",
+        "bodyText": "Are you sure you want to delete the app?",
+        "btn1": "Delete",
+        "btn2": "Cancel"
+      }
+    },
+    "alertLayer": {
+      "appRestartSuccess": "Restarted the app.",
+      "appRestartFail": "App restart failed.",
+      "appUpdateSuccess": "Bodified your app.",
+      "appUpdateFail": "App fix failed.",
+      "envAddSuccess": "Environment variable added.",
+      "envAddFail": "Environment variable addition failed.",
+      "routeAddSuccess": "Added route.",
+      "routeAddFail": "Route addition failed.",
+      "routeDelSuccess": "Route disconnected.",
+      "routeDelFail": "The route connection failed.",
+      "instanceRestartSuccess": "Instance restarted.",
+      "instanceRestartFail": "Restart the instance failed.",
+      "bindServiceSuccess": "The service is connected.",
+      "bindServiceFail": "Service connection failed.",
+      "unbindServiceSuccess": "You have disconnected the service.",
+      "unbindServiceFail": "Service connection failed."
+    },
+    "nav": {
+      "summary": "summary",
+      "event": "event",
+      "stats": "stats",
+      "service": "service",
+      "env": "Env variable",
+      "route": "route",
+      "logs": "logs",
+      "viewchart": "monitoring"
+    }
+  },
+  "common": {
+    "top": {
+      "main": {
+        "linkTextDashboard": "Dashboard",
+        "linkTextCatalog": "Catalog",
+        "linkTextDocument": "Document"
+      },
+      "user": {
+        "linkTextMyAccount": "My Account",
+        "linkTextOrgManager": "Org Manager",
+        "linkTextViewUsage": "View usage",
+        "linkTextLogOut": "Log Out"
       }
     }
   }
