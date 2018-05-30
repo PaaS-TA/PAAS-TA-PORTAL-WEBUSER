@@ -454,7 +454,8 @@ h5{font-size: 16px;}
 /* modal */
 .btns5{min-width:80px;}
 
-.btns6{min-width:80px; height: 42px; line-height: 42px; padding:0px 40px; border-radius: 3px; border: none; font-weight: bold;}
+.btns6{min-width:80px; height: 42px; line-height: 42px; padding:0px 30px; border-radius: 3px; border: none; font-weight: bold;}
+/*.btns6{min-width:80px; height: 42px; line-height: 42px; padding:0px 40px; border-radius: 3px; border: none; font-weight: bold;}*/
 
 
 .clear{ clear: both;}

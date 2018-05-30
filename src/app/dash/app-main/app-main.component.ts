@@ -5,15 +5,11 @@ import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from "../../common/common.service";
 
-// import { Pipe } from '@angular/core';
 
 declare var Chart: any;
-
-
 declare var $: any;
 declare var jQuery: any;
 
-// @Pipe({ name: 'translate' })
 @Component({
   selector: 'app-app-main',
   templateUrl: './app-main.component.html',
@@ -28,6 +24,8 @@ export class AppMainComponent implements OnInit {
   public appName: string;
   public appGuid: string;
   private isLoading: boolean = false;
+
+  public translateEntities: any = [];
 
   public appSummaryEntities: Observable<any[]>;
   public appStatsEntities: Observable<any[]>;
@@ -183,20 +181,23 @@ export class AppMainComponent implements OnInit {
         this.getAlarm(params['app_guid']);
         this.getAutoscaling(params['app_guid']);
       } else {
-        // TODO test
-        //this.router.navigate(['dashMain']);
         setTimeout(() => this.showLoading(), 0);
+        this.router.navigate(['dashMain']);
 
-        this.appGuid = "80dd102d-8068-4997-b518-c3f04bcdd00f";
-        this.getAppSummary("80dd102d-8068-4997-b518-c3f04bcdd00f");
-
-        this.getAppEvents("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        this.getAppEnv("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        this.getAppRecentLogs("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        this.getAlarms("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        this.getAlarm("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        this.getAutoscaling("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        // this.appGuid = "80dd102d-8068-4997-b518-c3f04bcdd00f";
+        // this.getAppSummary("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        //
+        // this.getAppEvents("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        // this.getAppEnv("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        // this.getAppRecentLogs("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        // this.getAlarms("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        // this.getAlarm("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        // this.getAutoscaling("80dd102d-8068-4997-b518-c3f04bcdd00f");
       }
+
+      this.translate.get('appMain').subscribe(data => {
+        this.translateEntities = data;
+      });
     });
   }
 
@@ -476,11 +477,11 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text("App을 재시작 하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.appRestartSuccess);
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text("App 재시작이 실패하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.appRestartFail);
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -678,11 +679,11 @@ export class AppMainComponent implements OnInit {
         $("#diskS1").show();
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text("앱을 수정하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.appUpdateSuccess);
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text("앱 수정이 실패하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.appUpdateFail);
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -735,11 +736,11 @@ export class AppMainComponent implements OnInit {
         this.showPopAppRestageClick();
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text("환경변수를 추가 하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.envAddSuccess);
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text("환경변수 추가가 실패하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.envAddFail);
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1028,13 +1029,13 @@ export class AppMainComponent implements OnInit {
         $(".lauth_dl").toggleClass("on");
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text("라우트를 추가 하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.routeAddSuccess);
         $(".alertLayer").addClass("moveAlert");
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text("라우트 추가가 실패하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.routeAddFail);
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1048,13 +1049,13 @@ export class AppMainComponent implements OnInit {
     this.appMainService.delAppRoute(this.appGuid, this.sltRouteDelGuid, params).subscribe(data => {
       if(data) {
         this.common.isLoading = false;
-        $(".alertLayer .in").text("라우트 연결해제 하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.routeDelSuccess);
         $(".alertLayer").addClass("moveAlert");
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text("라우트 연결해제가 실패하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.routeDelFail);
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1152,11 +1153,11 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text("인스턴스를 재시작하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.instanceRestartSuccess);
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text("인스턴스를 재시작이 실패하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.instanceRestartFail);
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1274,13 +1275,13 @@ export class AppMainComponent implements OnInit {
         this.sltServiceParam = [];
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text("서비스 연결 하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.bindServiceSuccess);
         $(".alertLayer").addClass("moveAlert");
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text("서비스 연결 실패하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.bindServiceFail);
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1352,11 +1353,11 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text("서비스 연결해제 하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.unbindServiceSuccess);
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text("서비스 연결해제 실패하였습니다.");
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.unbindServiceFail);
         $(".alertLayer").addClass("moveAlert");
       }
     });
