@@ -187,8 +187,8 @@
                   </div>
                   <div class="app_title">{{item.name}}</div>
                   <div class="app_img"><img src="{{servicepacks['thumbImgPath']}}" alt="" onError="this.src='../../assets/resources/images/catalog/JAVAMYSQL.png'"/></div>
-                  <div class="app_per clearfix">
-                    <ul *ngIf="item.service_plan != null">
+                  <div class="app_per clearfix" *ngIf="item.service_plan != null">
+                    <ul>
                       <li>
                         <div>연결 앱</div>
                         <div>:</div>
@@ -203,6 +203,25 @@
                         <div>제공서비스</div>
                         <div>:</div>
                         <div class="serviceTitle">{{item.service_plan.name}}</div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="app_per clearfix" *ngIf="item.dashboard_url == null">
+                    <ul>
+                      <li>
+                        <div>서비스 이름</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{item.name}}</div>
+                      </li>
+                      <!--<li>-->
+                        <!--<div>Credentials</div>-->
+                        <!--<div>:</div>-->
+                        <!--<div class="serviceTitle">{{item.service.label}}</div>-->
+                      <!--</li>-->
+                      <li>
+                        <div>제공서비스</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{item.service_plan}}</div>
                       </li>
                     </ul>
                   </div>
