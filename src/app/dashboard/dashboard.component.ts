@@ -4,7 +4,7 @@ import {NGXLogger} from 'ngx-logger';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {DashboardService} from './dashboard.service';
+import {DashboardService,Service} from './dashboard.service';
 import {OrgService} from "../org/common/org.service";
 import {Organization} from "../model/organization";
 import {SpaceService} from "../space/space.service";
@@ -36,14 +36,21 @@ export class DashboardComponent implements OnInit {
   public selectedSpaceId: string;
 
   public current_popmenu_id: string;
-  public appName: string;
   public instanceName: string;
+
+  public appName: string;
   public appNewName: string;
   public appDelName: string;
   public appSummaryGuid: string; // app guid value
+
   public selectedGuid: string;
   public selectedType: string;
   public selectedName: string;
+
+  public userProvidedServiceName : string;
+  public userProvidedCredentials : string;
+  public userProvidedSyslogDrainUrl : string;
+
   private appStatsCpuPer: number;
   private appStatsMemoryPer: number;
   private appStatsDiskPer: number;
@@ -52,14 +59,16 @@ export class DashboardComponent implements OnInit {
   public org: Organization;
   public spaces: Array<Space>;
   public space: Space;
+  public service: Observable<Service>;
   public servicepacks: Array<ServicePack>;
   public buildpacks: Array<BuildPack>;
   public starterpacks: Array<StarterPack>;
 
-  public appSummaryEntities: Observable<any[]>;
   public appEntities: Observable<any[]>;
-  public servicesEntities: Observable<any[]>;
   public appStatsEntities: Observable<any[]>;
+  public servicesEntities: Observable<any[]>;
+  public appSummaryEntities: Observable<any[]>;
+
 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
@@ -80,6 +89,7 @@ export class DashboardComponent implements OnInit {
     this.spaceGuid = this.commonService.getUserGuid();
 
     this.orgs = orgService.getOrgList();
+    this.service = new Observable<Service>();
 
     this.org = null;
     this.space = null;
@@ -98,6 +108,10 @@ export class DashboardComponent implements OnInit {
     this.appNewName = null;
     this.appDelName = '';
     this.selectedName = '';
+
+    this.userProvidedServiceName = '';
+    this.userProvidedCredentials = '';
+    this.userProvidedSyslogDrainUrl = '';
   }
 
   ngOnInit() {
@@ -261,6 +275,21 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.startApp(params).subscribe(data => {
       return data;
     });
+  }
+
+  userProvidedServiceInstances(){
+    let params = {
+      orgName : this.org.name,
+      spaceId : this.spaceGuid,
+      serviceInstanceName : this.service['serviceInstanceName'],
+      credentialsStr: this.service['credentialsStr'],
+      syslogDrainUrl : this.service['syslogDrainUrl']
+    };
+    this.dashboardService.userProvidedServiceInstances(params).subscribe(data => {
+      console.log(params,data);
+      return data;
+    });
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   renameInstance() {

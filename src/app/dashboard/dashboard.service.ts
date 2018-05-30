@@ -43,7 +43,6 @@ export class DashboardService {
     }).do(console.log);
   }
 
-
   // @RequestMapping(value = {Constants.V2_URL + "/service/{guid}/rename"}, method = RequestMethod.PUT)
   renameInstance(params: any) {
     return this.commonService.doPut('/portalapi/v2/service/' + params.guid + '/rename', params,'').map((res: Response) => {
@@ -58,6 +57,14 @@ export class DashboardService {
       return res;
     }).do(console.log);
   }
+
+  // @RequestMapping(value = {Constants.V2_URL + "/service/userprovidedserviceinstances"}, method = RequestMethod.POST)
+  userProvidedServiceInstances(params: any) {
+    return this.commonService.doPost('/portalapi/v2/service/userprovidedserviceinstances', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
 
   StarterInit(data:any) {
     this.catalogService.starterpacks = new Array<StarterPack>();
@@ -147,5 +154,25 @@ export class BuildPack
   thumbImgPath : string;
   useYn : string;
   userId : string;
+}
+
+export class Service
+{
+  servicePlan : string;
+  boundAppCount : string;
+  serviceLabel : string;
+  servicePlanName : string;
+  spaceName : string;
+  orgName : string;
+  summary : string;
+  newName : string;
+  name : string;
+  serviceName : string;
+  dashboardUrl : string;
+  dashboardUseYn : string;
+  serviceInstanceName : string;
+  credentialsStr : string;
+  classification : string;
+  syslogDrainUrl : string;
 }
 
