@@ -9,14 +9,11 @@
     }
   },
   "/ws/*": {
-    "target": "http://localhost:5555",
+    "target": "http://localhost:5555/socket.io",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
-    "ws": true,
-    "pathRewrite": {
-      "^/": ""
-    }
+    "ws": true
   },
   "/commonapi/*": {
     "target": "http://localhost:2223",
