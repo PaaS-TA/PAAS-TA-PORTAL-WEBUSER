@@ -218,8 +218,12 @@ export class AppMainComponent implements OnInit {
       this.appSummaryName = data.name;
       this.appSummaryGuid = data.guid;
       this.appSummaryState = data.state;
-      this.appSummaryRouteUri = data.routes[0].host + "." + data.routes[0].domain.name;
-      this.appSummaryPackageUpdatedAt = data.package_updated_at.replace('T', '  ').replace('Z', ' ');
+      if(data.routes.length > 0) {
+        this.appSummaryRouteUri = data.routes[0].host + "." + data.routes[0].domain.name;
+      }
+      if(data.package_updated_at != null) {
+        this.appSummaryPackageUpdatedAt = data.package_updated_at.replace('T', '  ').replace('Z', ' ');
+      }
 
       if (data.detected_buildpack != null && data.detected_buildpack != "") {
         this.appSummaryBuildpack = data.detected_buildpack.substring(0, 40) + "..";
@@ -440,7 +444,10 @@ export class AppMainComponent implements OnInit {
 
   startAppClick() {
     let params = {
-      guid: this.appSummaryGuid
+      guid: this.appSummaryGuid,
+      orgName: this.orgName,
+      spaceName: this.spaceName,
+      name: this.appName
     };
     this.appMainService.startApp(params).subscribe(data => {
       this.ngOnInit();
@@ -604,8 +611,7 @@ export class AppMainComponent implements OnInit {
 
   appDelClick() {
     this.appMainService.delApp(this.appGuid).subscribe(data => {
-      this.ngOnInit();
-      $("[id^='layerpop']").modal("hide");
+      this.router.navigate(['dashMain']);
     });
   }
 
