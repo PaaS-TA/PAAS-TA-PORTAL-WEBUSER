@@ -9,13 +9,13 @@
     }
   },
   "/ws/*": {
-    "target": "ws://localhost:5555",
+    "target": "http://localhost:5555",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
     "ws": true,
     "pathRewrite": {
-      "^/ws": ""
+      "^/": ""
     }
   },
   "/commonapi/*": {
