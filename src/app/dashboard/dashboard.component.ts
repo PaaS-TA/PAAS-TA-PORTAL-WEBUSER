@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
 
   public token: string;
   public userid: string;
+  public userGuid: string;
   public spaceGuid: string;
   public selectedSpaceId: string;
 
@@ -86,7 +87,7 @@ export class DashboardComponent implements OnInit {
 
     this.userid = this.commonService.getUserid();
     this.token = this.commonService.getToken();
-    this.spaceGuid = this.commonService.getUserGuid();
+    this.userGuid = this.commonService.getUserGuid();
 
     this.orgs = orgService.getOrgList();
     this.service = new Observable<Service>();
@@ -129,8 +130,6 @@ export class DashboardComponent implements OnInit {
 
     });
 
-
-
     console.log('ngOnInit fired');
     $(document).ready(() => {
       //TODO 임시로...
@@ -144,7 +143,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-
   getOrg(value: string) {
     if (value != '') {
       this.spaces = [];
@@ -156,7 +154,7 @@ export class DashboardComponent implements OnInit {
       if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
         this.isLoadingSpaces = false;
         this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
-        this.log.debug(this.spaces);
+        // this.log.debug(this.spaces);
       }
     }else{
       //초기화
@@ -168,7 +166,7 @@ export class DashboardComponent implements OnInit {
 
   getSpaces(value: string) {
     if (value != '') {
-      this.log.debug(value);
+      // this.log.debug(value);
       this.isEmpty = false;
       this.isSpace = true;
       this.isMessage = false;
@@ -195,7 +193,6 @@ export class DashboardComponent implements OnInit {
         var mem = 0;
         var disk = 0;
         var cnt = 0;
-        console.log(data);
 
         $.each(data.instances, function (key, dataobj) {
           if (dataobj.stats != null) {
@@ -209,12 +206,9 @@ export class DashboardComponent implements OnInit {
         this.appStatsMemoryPer = Math.round(mem / cnt);
         this.appStatsDiskPer = Math.round(disk / cnt);
       }
-
       this.commonService.isLoading = false;
 
-
       this.appEntities = data.apps;
-
       // this.servicesEntities = data.services; sort 재 정렬
       this.servicesEntities = data.services.sort((serA, serB) => {
         const guidA = serA.guid;
@@ -242,11 +236,8 @@ export class DashboardComponent implements OnInit {
       } else {
         console.log('failed.');
       }
-      console.log(data);
       return data;
-    });
-    //.then(this.getAppSummary(this.selectedSpaceId))
-    return this.getAppSummary(this.selectedSpaceId);
+    });return this.getAppSummary(this.selectedSpaceId);
   }
 
   delApp(guidParam: string) {
@@ -260,36 +251,34 @@ export class DashboardComponent implements OnInit {
       } else {
         console.log('failed.');
       }
-      console.log(data);
       return data;
-    });
-    //.then(this.getAppSummary(this.selectedSpaceId))
-    return this.getAppSummary(this.selectedSpaceId);
+    });return this.getAppSummary(this.selectedSpaceId);
   }
 
-  startApp() {
-    let params = {
-      guid: this.selectedGuid
-    };
-
-    this.dashboardService.startApp(params).subscribe(data => {
-      return data;
-    });
+  startAppClick() {
+    return this.appMainService.getAppStats(this.selectedGuid);
   }
 
   userProvidedServiceInstances(){
+
     let params = {
       orgName : this.org.name,
-      spaceId : this.spaceGuid,
+      spaceGuid : this.selectedSpaceId,
       serviceInstanceName : this.service['serviceInstanceName'],
       credentialsStr: this.service['credentialsStr'],
       syslogDrainUrl : this.service['syslogDrainUrl']
     };
+    this.commonService.isLoading = true;
     this.dashboardService.userProvidedServiceInstances(params).subscribe(data => {
       console.log(params,data);
+      this.getAppSummary(this.selectedSpaceId);
+      this.commonService.isLoading = false;
       return data;
+    },error => {
+      this.commonService.isLoading = false;
+      this.getAppSummary(this.selectedSpaceId);
     });
-    return this.getAppSummary(this.selectedSpaceId);
+
   }
 
   renameInstance() {
@@ -298,11 +287,8 @@ export class DashboardComponent implements OnInit {
       newName: this.selectedName
     };
     this.dashboardService.renameInstance(params).subscribe(data => {
-      console.log(params);
       return data;
-    });
-    //.then(this.getAppSummary(this.selectedSpaceId))
-    return this.getAppSummary(this.selectedSpaceId);
+    });return this.getAppSummary(this.selectedSpaceId);
   }
 
   delInstance() {
@@ -312,9 +298,7 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.delInstance(params).subscribe(data => {
       return data;
-    });
-    //.then(this.getAppSummary(this.selectedSpaceId))
-    return (this.getAppSummary(this.selectedSpaceId));
+    });  return (this.getAppSummary(this.selectedSpaceId));
   }
 
   //move catalogDevelopment

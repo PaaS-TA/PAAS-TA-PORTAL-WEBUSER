@@ -87,7 +87,7 @@
                     <i class="fas fa-ellipsis-v" (click)="popclick('apopmenu_'+i,'app',item.guid,item.name)" ></i>
                     <ol class="space_pop_submenu" id="apopmenu_{{i}}">
                       <li data-target="#layerpop1" data-toggle="modal"><a class="fas fa-edit"> 앱 이름변경</a></li>
-                      <li><a class="fas fa-play" (click)="startApp()"> 실행</a></li>
+                      <li><a class="fas fa-play" (click)="startAppClick(itme.guid)"> 실행</a></li>
                       <li data-target="#layerpop2" data-toggle="modal"><a class="fas fa-trash-alt"> 삭제</a></li>
                     </ol>
                   </div>
@@ -188,7 +188,7 @@
                   <div class="app_title">{{item.name}}</div>
                   <div class="app_img"><img src="{{servicepacks['thumbImgPath']}}" alt="" onError="this.src='../../assets/resources/images/catalog/JAVAMYSQL.png'"/></div>
                   <div class="app_per clearfix">
-                    <ul>
+                    <ul *ngIf="item.service_plan != null">
                       <li>
                         <div>연결 앱</div>
                         <div>:</div>
