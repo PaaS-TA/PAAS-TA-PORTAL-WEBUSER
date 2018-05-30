@@ -5,15 +5,11 @@ import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from "../../common/common.service";
 
-// import { Pipe } from '@angular/core';
 
 declare var Chart: any;
-
-
 declare var $: any;
 declare var jQuery: any;
 
-// @Pipe({ name: 'translate' })
 @Component({
   selector: 'app-app-main',
   templateUrl: './app-main.component.html',

@@ -1,14 +1,195 @@
 {
   "appMain": {
     "app": {
-      "rename": "rename",
-      "delete": "delete",
+      "rename": "Rename",
+      "delete": "Delete",
       "summary": "{{ appSummaryName }} is the overview page.",
       "area": "Area",
       "organization": "Organization",
       "space": "Space",
       "appUrl": "App URL",
-      "lastPush": "Last Push"
+      "lastPush": "Last Push",
+      "devEnv": "App Development environment",
+      "maximum": "Max",
+      "amount": "",
+      "directInput": "DirectInput",
+      "save": "Save"
+    },
+    "event": {
+      "title": "Event",
+      "more": "More"
+    },
+    "stats": {
+      "title": "Stats",
+      "more": "More"
+    },
+    "route": {
+      "title": "Route",
+      "connection": "Connection",
+      "placeholderText1": "Please enter hostname",
+      "save": "Save",
+      "cancel": "Cancel",
+      "disconnect": "Disconnect"
+    },
+    "env": {
+      "title": "Environment variable",
+      "userCustom": "Custom URL",
+      "systemCustom": "System definition",
+      "add": "Add",
+      "save": "Save",
+      "cancel": "Cancel",
+      "placeholderText1": "Please enter an environment variable name",
+      "placeholderText2": "Please enter a value"
+    },
+    "service": {
+      "title": "Service",
+      "noneText": "The service is not enabled for this app.<br>Use services that automate build, test, and deployment<br>with Delivery Pipeline, GitHub, and more.",
+      "enrollment": "Enrollment",
+      "serviceConnection": "Service Connection",
+      "select": "Select",
+      "connection": "Connection",
+      "cancel": "Cancel",
+      "name": "Name",
+      "provided": "Provided",
+      "serviceName": "Service Name",
+      "dashboard": "Dashboard",
+      "disconnect": "Disconnect",
+      "credentials": "Credentials"
+    },
+    "logs": {
+      "title": "Logs",
+      "recentLogs": "Recent Logs"
+    },
+    "viewchart": {
+      "tab1": "Trend chart",
+      "tab2": "Setting",
+      "tab3": "Notification history",
+      "settingTab": {
+        "title": "Auto-Scaling Setting",
+        "instanceCnt": "Number of instances",
+        "min": "At least",
+        "max": "Maximum",
+        "cpuThreshold": "CPU Threshold(%)",
+        "memoryThreshold": "Memory Threshold(%)",
+        "measurementTime": "Measurement time (seconds)",
+        "autoEx": "Automatic expansion of virtual machines",
+        "autoSh": "Automatic shrink of virtual machines",
+        "autoShText": "Automatic instance reduction can affect your system.",
+        "change": "Change",
+        "title2": "Alarm setting",
+        "email": "E-mail",
+        "send": "Send",
+        "usingAlarms": "Using alarms"
+      },
+      "notificationHistoryTab": {
+        "title": "Notification history",
+        "resourceType": "Resource type",
+        "alarmRating": "Alarm rating",
+        "date": "Date",
+        "message": "Message",
+        "more": "More"
+      }
+    },
+    "layerpop": {
+      "statsRestart": {
+        "title": "Restart the instance",
+        "bodyText": "Do you want to restart the instance?",
+        "btn1": "Restart",
+        "btn2": "Cancel"
+      },
+      "envAdd": {
+        "title": "Adding environment variables",
+        "bodyText": "Do you want to add the environment variable <span>{{sltEnvAddName}}</span>?",
+        "btn1": "Save",
+        "btn2": "Cancel"
+      },
+      "envEdit": {
+        "title": "Modifying Environment Variables",
+        "bodyText": "Are you sure you want to modify the environment variable <span>{{sltEnvEditName}}</span>?",
+        "btn1": "Save",
+        "btn2": "Cancel"
+      },
+      "envDel": {
+        "title": "Delete environment variables",
+        "bodyText": "Are you sure you want to delete the environment variable <span>{{sltEnvDelName}}</span>?",
+        "btn1": "Delete",
+        "btn2": "Cancel"
+      },
+      "routeAdd": {
+        "title": "Add route",
+        "bodyText": "Add Route <span>{{sltRouteAddName}}</span>?",
+        "btn1": "Save",
+        "btn2": "Cancel"
+      },
+      "routeDel": {
+        "title": "Release Route",
+        "bodyText": "Are you sure you want to unlink <br/><span>{{appSummaryName}}</span> and <span>{{sltRouteDelUri}}</span>?",
+        "btn1": "Delete",
+        "btn2": "Cancel"
+      },
+      "serviceBind": {
+        "title": "Service connection",
+        "bodyText": "Do you want to connect the service <span>{{sltServiceBindName}}</span>?",
+        "btn1": "Save",
+        "btn2": "Cancel"
+      },
+      "serviceUnbind": {
+        "title": "Disconnect service",
+        "bodyText": "Are you sure you want to disconnect the service <span>{{sltServiceUnbindName}}</span>?",
+        "btn1": "Save",
+        "btn2": "Cancel"
+      },
+      "serviceCredentials": {
+        "title": "Credentials",
+        "hostname": "Hostname",
+        "jdbcUrl": "jdbcUrl",
+        "name": "Name",
+        "port": "Port",
+        "username": "Username",
+        "btn1": "Confirm"
+      },
+      "autoscalingEdit": {
+        "title": "Auto-scaling changes",
+        "bodyText": "Are you sure you want to change Auto-scaling?",
+        "btn1": "Change",
+        "btn2": "Cancel"
+      },
+      "alarmEdit": {
+        "title": "Alarm 변경",
+        "bodyText": "Alarm 을 변경하시겠습니까?",
+        "btn1": "변경",
+        "btn2": "취소"
+      },
+      "appRestart": {
+        "title": "App 재시작",
+        "bodyText": "App 을 재시작하시겠습니까?",
+        "btn1": "재시작",
+        "btn2": "취소"
+      },
+      "appStop": {
+        "title": "App 정지",
+        "bodyText": "App 을 정지하시겠습니까?",
+        "btn1": "정지",
+        "btn2": "취소"
+      },
+      "appStart": {
+        "title": "App 시작",
+        "bodyText": "App 을 시작하시겠습니까?",
+        "btn1": "시작",
+        "btn2": "취소"
+      },
+      "appSave": {
+        "title": "App 변경",
+        "bodyText": "App 을 변경하시겠습니까?",
+        "btn1": "변경",
+        "btn2": "취소"
+      },
+      "appDel": {
+        "title": "App 삭제",
+        "bodyText": "App 을 삭제하시겠습니까?",
+        "btn1": "삭제",
+        "btn2": "취소"
+      }
     }
   }
 }
