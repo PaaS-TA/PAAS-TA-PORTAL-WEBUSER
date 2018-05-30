@@ -60,7 +60,20 @@ export class AppTopComponent implements OnInit {
   }
 
   get isShortHeader() {
-    return this.cursorId === 'cur_usermgmt' || this.cursorId === 'cur_dashboard';
+    let short: boolean;
+
+    switch(this.cursorId) {
+      case 'cur_dashboard':
+      case 'cur_usermgmt':
+      case 'cur_org':
+        short = true;
+        break;
+      default:
+        short = false;
+        break;
+    }
+
+    return short;
   }
 
   get isDashboardApp() {

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
-import { Observable, Subject } from 'rxjs/Rx';
 import * as Rx from 'rxjs/Rx';
+import {Observable} from 'rxjs/Rx';
 
 @Injectable()
 export class WebsocketService {
@@ -16,7 +16,7 @@ export class WebsocketService {
     // you can hard code `environment.ws_url` as `http://localhost:5000`
     // this.socket = io.connect('http://localhost:5555');
 
-    this.socket = io("http://localhost:5555", {
+    this.socket = io("/ws", {
       // path: "/ws",
       transportOptions: {
         polling: {

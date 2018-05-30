@@ -26,12 +26,13 @@
           </li>
           <li>
             <div>
-              <select (change)="getApps($event.target.value)">
+              <select (change)="getSpaces($event.target.value)">
                 <option value="" selected="selected" name="space">해당 공간명</option>
                 <option *ngFor="let space of spaces" [value]="space._metadata.guid">{{space.name}}</option>
               </select>
             </div>
           </li>
+          <!--<button (click)="getSpaces(selectedSpaceId)" >TEST</button>-->
         </ul>
       </div>
       <!--<div class="space_btn1"><button class="btnspace colors4 "><img src="../../assets/resources/images/main/btn_icon.png" alt=""/>WEB IDE 사용</button></div>-->
@@ -78,8 +79,8 @@
             </li>
           </ul>
           <ul class="maT30 space_list ">
-            <li  *ngFor="let item of appEntities;  let i = index">
-              <div class="sortable_wrap">
+            <li  *ngFor="let item of appEntities; let i = index">
+              <div class="sortable_wrap"  >
                 <!-- 애플리케이션 영역 시작 -->
                 <div class="space_pop_container">
                   <div class="space_pop_menu" >
@@ -92,8 +93,8 @@
                   </div>
                   <!--<a [routerLink]="['../appMain']">-->
                   <!--<div (click)="moveAppMain()">-->
-                  <div class="app_title" (click)="moveDashboard(item.name,item.guid)">{{item.name}}</div>
-                  <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
+                  <div class="app_title" style="cursor: pointer" (click)="moveDashboard(item.name,item.guid)"><a href="javascript:void(0);">{{item.name}}</a></div>
+                  <div class="app_img" ><img src="{{servicepacks.thumbImgPath}}" alt="" onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div>
                   <div class="app_per clearfix">
                     <ul>
                       <li>
@@ -122,7 +123,8 @@
                   </div>
                   <div class="app_graph clearfix">
                     <div>DISK</div>
-                    <div>{{item.disk_quota}}</div>
+                    <!--<div>{{appStatsCpuPer}}<small _ngcontent-c4=""> / 100%</small></div>-->
+                    <div><span>{{appStatsDiskPer}}</span><i>%</i><small> / 100%</small></div>
                     <div class="space_bar1">
                       <div class="progress">
                         <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
@@ -130,7 +132,8 @@
                       </div>
                     </div>
                     <div>Memory</div>
-                    <div>{{item.memory}}</div>
+                    <!--<div>{{item.memory}}<small _ngcontent-c4=""> / 100%</small></div>-->
+                    <div><span>{{appStatsMemoryPer}}</span><i>%</i><small> / 100%</small></div>
                     <div class="space_bar2">
                       <div class="progress">
                         <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
@@ -147,7 +150,7 @@
             <!-- 애플리케이션 영역 이동 -->
             <li >
               <div class="sortable_wrap"><a [routerLink]="['../catalog']">
-              <!--<div class="sortable_wrap" (click)="goDevelopMent()">-->
+              <!--<div class="sortable_wrap" (click)="moveDevelopMent()">-->
                 <div class="space_empty"></div>
               </a></div>
             </li>
@@ -173,7 +176,8 @@
               <div class="sortable_wrap">
                 <!-- 서비스 영역 시작 -->
                 <div class="space_pop_container space_list_small" >
-                  <div class="space_pop_menu"  >
+                  <div class="space_pop_menu">
+                    <!--<button _ngcontent-c4="" class="btns colors4" (click)="moveDashboardS()">대시보드</button>-->
                     <i class="fas fa-ellipsis-v" (click)="popclick('spopmenu_'+i,'service',item.guid,item.name)"></i>
                     <ol class="space_pop_submenu" id ="spopmenu_{{i}}">
                       <li data-target="#layerpop3" data-toggle="modal"><a class="fas fa-edit"> 서비스 이름변경</a></li>
@@ -182,7 +186,7 @@
                     </ol>
                   </div>
                   <div class="app_title">{{item.name}}</div>
-                  <div class="app_img"><img src="../../../assets/resources/images/space/circle_name.gif" alt=""/></div>
+                  <div class="app_img"><img src="{{servicepacks['thumbImgPath']}}" alt="" onError="this.src='../../assets/resources/images/catalog/JAVAMYSQL.png'"/></div>
                   <div class="app_per clearfix">
                     <ul>
                       <li>
@@ -234,11 +238,11 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" placeholder="{{selectedName}}" class="space_input" [(ngModel)]="appName" name="appName" ngDefaultControl/>
+          <input type="text" placeholder="변경할 앱 이름을 입력하세요." class="space_input" [(ngModel)]="selectedName" name="selectedName"/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="renameApp(appName)">변경</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="renameApp()">변경</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
@@ -283,11 +287,11 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" placeholder="{{selectedName}}" class="space_input" [(ngModel)]="instanceName"/>
+          <input type="text" placeholder="변경할 서비스 이름을 입력하세요." class="space_input" [(ngModel)]="selectedName" name="selectedName"/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="renameInstance(instanceName)">변경</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="renameInstance()">변경</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
@@ -303,28 +307,28 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">User Provided 생성</h4>
+          <h4 class="modal-title" >User Provided 생성</h4>
         </div>
         <!-- body -->
         <div class="modal-body space_pop_align clearfix">
           <ul>
             <li>
               <div>서비스 이름</div>
-              <div><input type="text" id="" class="space_input"/></div>
+              <div><input type="text" name="userProvidedServiceName" [(ngModel)]="service['serviceInstanceName']" class="space_input"/></div>
             </li>
             <li>
               <div>Credentials</div>
-              <div><input type="text" id="" class="space_input"/></div>
+              <div><input type="text" placeholder="credentialsStr:{'username':'admin','password':'password';}" name="userProvidedCredentials" [(ngModel)]="service['credentialsStr']" class="space_input"/></div>
             </li>
             <li>
               <div>Syslog Drain Url</div>
-              <div><input type="text" id="" class="space_input"/></div>
+              <div><input type="text" name="userProvidedSyslogDrainUrl" [(ngModel)]="service['syslogDrainUrl']" class="space_input"/></div>
             </li>
           </ul>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal">생성</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userProvidedServiceInstances()">생성</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
@@ -349,7 +353,7 @@
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal"[(ngModel)]="selectedGuid" (click)="delInstance(selectedGuid)">삭제</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal"[(ngModel)]="selectedGuid" (click)="delInstance()">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
