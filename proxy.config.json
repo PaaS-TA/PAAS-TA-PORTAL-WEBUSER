@@ -16,7 +16,7 @@
     "ws": true
   },
   "/commonapi/*": {
-    "target": "http://localhost:2223",
+    "target": "http://localhost:2222",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
@@ -25,7 +25,7 @@
     }
   },
   "/storageapi/*": {
-    "target": "http://localhost:2225/storageapi",
+    "target": "http://localhost:2222",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",
