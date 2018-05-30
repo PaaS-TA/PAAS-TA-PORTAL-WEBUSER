@@ -8,7 +8,188 @@
       "organization": "조직",
       "space": "공간",
       "appUrl": "앱 URL",
-      "lastPush": "마지막 푸시"
+      "lastPush": "마지막 푸시",
+      "devEnv": "앱 개발환경",
+      "maximum": "최대",
+      "amount": "개",
+      "directInput": "직접입력",
+      "save": "저장"
+    },
+    "event": {
+      "title": "이벤트",
+      "more": "더보기"
+    },
+    "stats": {
+      "title": "상태",
+      "more": "더보기"
+    },
+    "route": {
+      "title": "라우트",
+      "connection": "연결",
+      "placeholderText1": "호스트 이름을 입력하여 주십시오",
+      "save": "저장",
+      "cancel": "취소",
+      "disconnect": "연결해제"
+    },
+    "env": {
+      "title": "환경변수",
+      "userCustom": "사용자 정의 URL",
+      "systemCustom": "시스템 정의",
+      "add": "추가",
+      "save": "저장",
+      "cancel": "취소",
+      "placeholderText1": "환경변수 이름을 입력하여 주십시오",
+      "placeholderText2": "값을 입력하여 주십시오"
+    },
+    "service": {
+      "title": "서비스",
+      "noneText": "이 앱에 대해 서비스가 사용되지 않았습니다.<br>Delivery Pipeline, GitHub 등을 통해 빌드, 테스트 및 배치를<br>자동화하는 서비스를 사용하십시오.",
+      "enrollment": "서비스 등록",
+      "serviceConnection": "서비스 연결",
+      "select": "서비스 선택",
+      "connection": "연결",
+      "cancel": "취소",
+      "name": "이름",
+      "provided": "제공서비스",
+      "serviceName": "서비스명",
+      "dashboard": "대시보드",
+      "disconnect": "연결해제",
+      "credentials": "Credentials"
+    },
+    "logs": {
+      "title": "로그",
+      "recentLogs": "최근 로그"
+    },
+    "viewchart": {
+      "tab1": "추이차트",
+      "tab2": "설정",
+      "tab3": "알림 발생 이력",
+      "settingTab": {
+        "title": "Auto-Scaling 설정",
+        "instanceCnt": "인스턴스 수",
+        "min": "최소",
+        "max": "최대",
+        "cpuThreshold": "CPU 임계 값(%)",
+        "memoryThreshold": "메모리 임계 값(%)",
+        "measurementTime": "측정시간(초)",
+        "autoEx": "가상머신 자동확장",
+        "autoSh": "가상머신 자동축소",
+        "autoShText": "인스턴스 자동축소는 시스템에 영향을 줄 수 있습니다.",
+        "change": "변경",
+        "title2": "알람 설정",
+        "email": "E-mail",
+        "send": "전송",
+        "usingAlarms": "알람 사용"
+      },
+      "notificationHistoryTab": {
+        "title": "알림 발생 이력",
+        "resourceType": "자원유형",
+        "alarmRating": "Alram 등급",
+        "date": "Date",
+        "message": "Message",
+        "more": "더보기"
+      }
+    },
+    "layerpop": {
+      "statsRestart": {
+        "title": "인스턴스 재시작",
+        "bodyText": "인스턴스를 재시작하시겠습니까?",
+        "btn1": "재시작",
+        "btn2": "취소"
+      },
+      "envAdd": {
+        "title": "환경변수 추가",
+        "bodyText": "환경변수 <span>{{sltEnvAddName}}</span> 를 추가하시겠습니까?",
+        "btn1": "저장",
+        "btn2": "취소"
+      },
+      "envEdit": {
+        "title": "환경변수 수정",
+        "bodyText": "환경변수 <span>{{sltEnvEditName}}</span> 를 수정하시겠습니까?",
+        "btn1": "저장",
+        "btn2": "취소"
+      },
+      "envDel": {
+        "title": "환경변수 삭제",
+        "bodyText": "환경변수 <span>{{sltEnvDelName}}</span> 를 삭제하시겠습니까?",
+        "btn1": "삭제",
+        "btn2": "취소"
+      },
+      "routeAdd": {
+        "title": "라우트 추가",
+        "bodyText": "라우트 <span>{{sltRouteAddName}}</span> 를 추가하시겠습니까?",
+        "btn1": "저장",
+        "btn2": "취소"
+      },
+      "routeDel": {
+        "title": "라우트 해제",
+        "bodyText": "<span>{{appSummaryName}}</span> 과 <span>{{sltRouteDelUri}}</span> 의 <br/>연결을 해제하시겠습니까?",
+        "btn1": "삭제",
+        "btn2": "취소"
+      },
+      "serviceBind": {
+        "title": "서비스 연결",
+        "bodyText": "서비스 <span>{{sltServiceBindName}}</span> 를 연결하시겠습니까?",
+        "btn1": "저장",
+        "btn2": "취소"
+      },
+      "serviceUnbind": {
+        "title": "서비스 연결해제",
+        "bodyText": "서비스 <span>{{sltServiceUnbindName}}</span> 를 연결해제 하시겠습니까?",
+        "btn1": "저장",
+        "btn2": "취소"
+      },
+      "serviceCredentials": {
+        "title": "Credentials",
+        "hostname": "Hostname",
+        "jdbcUrl": "jdbcUrl",
+        "name": "Name",
+        "port": "Port",
+        "username": "Username",
+        "btn1": "확인"
+      },
+      "autoscalingEdit": {
+        "title": "Auto-scaling 변경",
+        "bodyText": "Auto-scaling 을 변경하시겠습니까?",
+        "btn1": "변경",
+        "btn2": "취소"
+      },
+      "alarmEdit": {
+        "title": "Alarm 변경",
+        "bodyText": "Alarm 을 변경하시겠습니까?",
+        "btn1": "변경",
+        "btn2": "취소"
+      },
+      "appRestart": {
+        "title": "App 재시작",
+        "bodyText": "App 을 재시작하시겠습니까?",
+        "btn1": "재시작",
+        "btn2": "취소"
+      },
+      "appStop": {
+        "title": "App 정지",
+        "bodyText": "App 을 정지하시겠습니까?",
+        "btn1": "정지",
+        "btn2": "취소"
+      },
+      "appStart": {
+        "title": "App 시작",
+        "bodyText": "App 을 시작하시겠습니까?",
+        "btn1": "시작",
+        "btn2": "취소"
+      },
+      "appSave": {
+        "title": "App 변경",
+        "bodyText": "App 을 변경하시겠습니까?",
+        "btn1": "변경",
+        "btn2": "취소"
+      },
+      "appDel": {
+        "title": "App 삭제",
+        "bodyText": "App 을 삭제하시겠습니까?",
+        "btn1": "삭제",
+        "btn2": "취소"
+      }
     }
   }
 }
