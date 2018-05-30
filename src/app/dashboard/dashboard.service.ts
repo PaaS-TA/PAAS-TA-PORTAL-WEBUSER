@@ -59,12 +59,20 @@ export class DashboardService {
   }
 
   // @RequestMapping(value = {Constants.V2_URL + "/service/userprovidedserviceinstances"}, method = RequestMethod.POST)
-  userProvidedServiceInstances(params: any) {
+  createUserProvided(params: any) {
     return this.commonService.doPost('/portalapi/v2/service/userprovidedserviceinstances', params, '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
+  
+  //@RequestMapping(value = {Constants.V2_URL + "/service/userprovidedserviceinstances/{guid}"}, method = RequestMethod.PUT)
+  // updateUserProvided(params: any) {
+  //   return this.commonService.doPut('/portalapi/v2/service/userprovidedserviceinstances'+ params.guid, params, '').map((res: Response) => {
+  //     return res;
+  //   }).do(console.log);
+  // }
 
+  
 
   StarterInit(data:any) {
     this.catalogService.starterpacks = new Array<StarterPack>();
@@ -170,6 +178,7 @@ export class Service
   serviceName : string;
   dashboardUrl : string;
   dashboardUseYn : string;
+  newServiceInstanceName : string;
   serviceInstanceName : string;
   credentialsStr : string;
   classification : string;
