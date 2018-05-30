@@ -6,6 +6,7 @@ import {RoutingModule} from "../app.routing";
 import {HttpClientModule} from "@angular/common/http";
 import {ResetComponent} from './reset/reset.component';
 import {ExternalcommonService} from "./common/externalcommon.service";
+import { InviteOrgComponent } from './invite-org/invite-org.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import {ExternalcommonService} from "./common/externalcommon.service";
     RoutingModule,
     HttpClientModule,
   ],
-  declarations: [CreateComponent, ResetComponent],
+  declarations: [CreateComponent, ResetComponent, InviteOrgComponent],
   providers: [
     ExternalcommonService
   ]

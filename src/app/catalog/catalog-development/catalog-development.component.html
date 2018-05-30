@@ -175,7 +175,7 @@
           </div>
           <div class="clear"></div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="createApp()"  *ngIf="!disablebutton" >생성</button>
+            <button class="btns2 btns2_1 colors4" (click)="createApp()"  [disabled]="disablebutton" >생성</button>
             <button class="btns2 btns2_1 colors5">취소</button>
           </div>
         </div>

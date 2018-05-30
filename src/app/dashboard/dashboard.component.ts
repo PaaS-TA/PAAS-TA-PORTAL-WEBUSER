@@ -259,8 +259,7 @@ export class DashboardComponent implements OnInit {
     return this.appMainService.getAppStats(this.selectedGuid);
   }
 
-  userProvidedServiceInstances(){
-
+  createUserProvided(){
     let params = {
       orgName : this.org.name,
       spaceGuid : this.selectedSpaceId,
@@ -269,7 +268,7 @@ export class DashboardComponent implements OnInit {
       syslogDrainUrl : this.service['syslogDrainUrl']
     };
     this.commonService.isLoading = true;
-    this.dashboardService.userProvidedServiceInstances(params).subscribe(data => {
+    this.dashboardService.createUserProvided(params).subscribe(data => {
       console.log(params,data);
       this.getAppSummary(this.selectedSpaceId);
       this.commonService.isLoading = false;
@@ -278,8 +277,27 @@ export class DashboardComponent implements OnInit {
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
     });
-
   }
+
+  // updateUserProvided(){
+  //   let params = {
+  //     orgName : this.org.name,
+  //     spaceGuid : this.selectedSpaceId,
+  //     serviceInstanceName : this.service['serviceInstanceName'],
+  //     credentialsStr: this.service['credentialsStr'],
+  //     syslogDrainUrl : this.service['syslogDrainUrl']
+  //   };
+  //   this.commonService.isLoading = true;
+  //   this.dashboardService.updateUserProvided(params).subscribe(data => {
+  //     console.log(params,data);
+  //     this.getAppSummary(this.selectedSpaceId);
+  //     this.commonService.isLoading = false;
+  //     return data;
+  //   },error => {
+  //     this.commonService.isLoading = false;
+  //     this.getAppSummary(this.selectedSpaceId);
+  //   });
+  // }
 
   renameInstance() {
     let params = {

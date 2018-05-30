@@ -65,7 +65,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   activatedRouteInit(){
     const orgname = this.route.snapshot.params['orgname'];
     const spacename = this.route.snapshot.params['spacename'];
-    orgname == null ? (this.orgname = CATALOGURLConstant.OPTIONORG, this.placeholderSetting(true)) : (this.orgname = orgname, this.placeholderSetting(false));
+    orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
     spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE, this.placeholderSetting(true)) : (this.spacename = spacename, this.placeholderSetting(false));
   }
 
@@ -175,9 +175,9 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   checkAppName() {
+    this.disableButton(true);
     if (this.appname.length < 1 || this.appname.trim() === ''){
       this.appurl = '';
-      this.disableButton(true);
       return;
     }
     if(this.pattenTest(this.appname)){

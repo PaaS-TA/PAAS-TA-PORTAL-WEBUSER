@@ -10,7 +10,7 @@
               <dt class="noborder">
               <h1>{{servicepack.name}}</h1>
               <button class="btn" onclick="history.back()">
-                <img src="{{servicepack.thumbImgPath}}" alt="" />Back
+                <img src="../../../assets/resources/images/catalog/back.svg" alt="" />Back
               </button>
               </dt>
               <dd>
@@ -18,7 +18,7 @@
                   <ul class="icon2">
                     <li>
                       <div class="icon_v">
-                        <img src="../../../assets/resources/images/catalog/catalog_2.png" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
+                        <img src="{{servicepack.thumbImgPath}}" alt="" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                       </div>
                     </li>
                   </ul>
@@ -28,10 +28,6 @@
                   <div class="col-6 icon_T">
                     <dl class="development_dl">
                       <dt>요약
-                      </dt>
-                      <dd>{{servicepack.summary}}
-                      </dd>
-                      <dt>설명
                       </dt>
                       <dd>{{servicepack.summary}}
                       </dd>
@@ -45,19 +41,12 @@
               </dd>
               <dt>
               <div class="development_c maT40">
-                <p><span>PHP APP 서비스</span>는 Cloud Foundry 플랫폼 상에서 Container를 생성하고, Container 내부에 PHP 애플리케이션 동작에 필요한 Runtime 환경을 자동으로 구성함으로써, 애플리케이션 비즈니스 로직 구현 외에 개발자가 해야하는 기타 인프라 작업들에 대한 부담을 줄여줍니다.</p>
-                <p><span>PHP APP 서비스</span>가 제공하는 Runtime 환경 서비스의 범위는 다음과 같으며, 사용자의 선택에 따라 자동으로 구성이 가능합니다.</p>
-                <ol>
-                  <li>Server Container(Tomcat, JBoss 등)</li>
-                  <li>Runtime Framework(Spring, 전자정부 프레임워크, KDN Power Framework 등)</li>
-                  <li>Language Runtime Environment(Open JDK)</li>
-                </ol>
-                <p><span>PHP APP 서비스</span>는 애플리케이션의 소스코드관리시스템(Git 등)과 연동하여 실행환경 Container 생성과 동시에 사용자가 개발한 애플리케이션을 자동으로 Container 상에 배치 할 수 있습니다.
-                </p>
-                <p><span>PHP APP 서비스</span>의 Scaling 기능을 통해 사용자는 개발한 애플리케이션의 분산처리 환경을 쉽게 구성 할 수 있으며, Disk와 Memory 설정 만으로 클라우드 기반의 서버 자원을 쉽게 할당 받아 활용할 수 있습니다.
-                </p>
-                <p>애플리케이션 데이터베이스 생성 및 연결, 빌드/배포/테스트 자동화, 디버깅 등의 백-엔드 및 운영 관리 서비스와 IoT 등의 산업 특화 기능을 제공하는 서비스들과의 손쉬운 연결을 통해 사용자 애플리케이션이 제공해야할 비즈니스 요건을 빠르게 구축하고 Delivery 할 수 있습니다.
-                </p>
+              <dl class="development_dl">
+                <dt>설명
+                </dt>
+                <dd>{{servicepack.description}}
+                </dd>
+              </dl>
               </div>
               </dt>
             </dl>
@@ -101,18 +90,11 @@
                     <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}
                     </option>
                   </select>
-                  <div *ngIf="!space"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> 공간이 없습니다.</p></div>
                 </th>
               </tr>
               <tr>
-                <th colspan="3">
-                  <p>서비스 이름</p>
-                </th>
-              </tr>
-              <tr>
-                <th colspan="3">
-                  <input type="text" [(ngModel)]="servicename" placeholder="서비스 이름을 입력하여 주십시오" />
-                </th>
+              <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSPACE}}</p></div>
+                <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSELECTSPACE}}</p></div></th>
               </tr>
               <tr>
                 <th colspan="3">
@@ -128,13 +110,25 @@
               </tr>
               <tr>
                 <th colspan="3">
+                  <p>서비스 이름</p>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="3">
+                  <input type="text" [(ngModel)]="servicename" placeholder="{{serviceplaceholder}}" (ngModelChange)="serviceNameCheck()" [disabled]="disableserviceinput"/>
+                  <div *ngIf="(namecheck === 1 && servicename.length > 0)" ><p class=""><i class=""></i> {{catalogcontans.CREATESUCCESSAPP }}</p></div>
+                  <div *ngIf="(namecheck === -1 && servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{catalogcontans.CREATEFALSEAPP}}</p></div>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="3">
                   <p>서비스 이용사양 선택</p>
                 </th>
               </tr>
               <tr>
                 <th colspan="3">
                   <select class="disabled" [(ngModel)]="plan">
-                    <option *ngFor="let plan of serviceplan" [ngValue]="plan">{{plan.description}}</option>
+                    <option *ngFor="let plan of serviceplan" [ngValue]="plan">{{plan.name}}</option>
                   </select>
                                         <span class="services_tablespan">
                                         </span>
@@ -147,12 +141,12 @@
                 </th>
               </tr>
               <tr  *ngFor="let param of parameter">
-                <th colspan="3" >
+                <th colspan="3" *ngIf="param.type !== 'hidden'">
                   <div class="in">
-                                            <span><i class="cWrapDot"></i>
-                                               {{param.value}}
+                                            <span style="width: auto; min-width: 71px"><i class="cWrapDot"></i>
+                                                 {{param.name}}
                                             </span>
-                    <input type="{{param.key}}" />
+                    <input type="{{param.type}}" [(ngModel)]="param.value"/>
                   </div>
                 </th>
               </tr>
@@ -166,10 +160,10 @@
               <tr *ngFor="let param of appparameter">
                 <th colspan="3">
                   <div class="in">
-                                            <span><i class="cWrapDot"></i>
-                                               {{param.value}}
+                                            <span style="width: auto; min-width: 71px" ><i class="cWrapDot"></i>
+                                               {{param.name}}
                                             </span>
-                    <input type="{{param.key}}" />
+                    <input type="{{param.type}}" [(ngModel)]="param.value"/>
                   </div>
                 </th>
               </tr>
@@ -194,26 +188,35 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let plan of serviceplan">
-                  <td>
-                    <input id="ra{{plan.classnumber}}" type="radio" name="ra1">
-                    <label for="ra{{plan.classnumber}}"></label>
+                <ng-container *ngFor="let service of serviceplan">
+                <tr>
+                  <td *ngIf="service===plan">
+                    <input id="ra1" type="radio" name="ra1" checked="checked" (click)="changePlan(service)">
+                    <label for="ra1"></label>
                   </td>
-                  <td>
-                    기본
+                  <td *ngIf="service!==plan">
+                    <input id="ra2" type="radio" name="ra1" (click)="changePlan(service)">
+                    <label for="ra2"></label>
                   </td>
-                  <td><p>{{plan.extra}}</p>
+                  <td *ngIf="service.free">
+                    무료
+                  </td>
+                  <td *ngIf="!service.free">
+                    표준
+                  </td>
+                  <td><p>{{service.description}}</p>
                     Provisioned throughput capacity:<br/>20 Lookups/sec
                   </td>
                   <td>무료
                   </td>
                 </tr>
+                </ng-container>
                 </tbody>
               </table>
             </div>
           </div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="createService()">생성</button>
+            <button class="btns2 btns2_1 colors4" (click)="createService()" [disabled]="disablebutton">생성</button>
             <button class="btns2 btns2_1 colors5">취소</button>
           </div>
         </div>

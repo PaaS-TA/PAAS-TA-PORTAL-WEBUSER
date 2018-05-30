@@ -109,30 +109,33 @@ export class CatalogComponent implements OnInit {
 
   SearchStarterPack() {
     this.catalogService.viewstarterpacks = new Array<StarterPack>();
+    let view = this.catalogService.viewstarterpacks;
     const keyword = this.searchKeyword.toLocaleLowerCase();
     this.catalogService.starterpacks.forEach(function (starterpack) {
       if ((starterpack.description.toLocaleLowerCase().indexOf(keyword) != -1) || (starterpack.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (starterpack.name.toLocaleLowerCase().indexOf(keyword) != -1)) {
-        this.catalogService.viewstarterpacks.push(starterpack);
+        view.push(starterpack);
       }
     });
   }
 
     SearchBuildPack() {
-      this.catalogService.viewbuildpacks = new Array<BuildPack>();
-    const keyword = this.searchKeyword.toLocaleLowerCase();
-    this.catalogService.buildpacks.forEach(function (buildpack) {
-      if((buildpack.description.toLocaleLowerCase().indexOf(keyword) != -1) || (buildpack.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (buildpack.name.toLocaleLowerCase().indexOf(keyword) != -1)) {
-        this.catalogService.viewbuildpacks.push(buildpack);
-      }});
-  }
+      this.catalogService.buildPackFilter();
+      const keyword = this.searchKeyword.toLocaleLowerCase();
+    this.catalogService.viewbuildpacks = this.catalogService.viewbuildpacks.filter(data => {
+      if((data.description.toLocaleLowerCase().indexOf(keyword) != -1) || (data.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (data.name.toLocaleLowerCase().indexOf(keyword) != -1)){
+        return data;
+      }
+    });
+    }
 
   SearchServicePack() {
-    this.catalogService.viewservicepacks = new Array<ServicePack>();
+    this.catalogService.servicePackFilter();
     const keyword = this.searchKeyword.toLocaleLowerCase();
-    this.catalogService.servicepacks.forEach(function (servicepack) {
-      if((servicepack.description.toLocaleLowerCase().indexOf(keyword) != -1) || (servicepack.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (servicepack.name.toLocaleLowerCase().indexOf(keyword) != -1)) {
-        this.catalogService.viewservicepacks.push(servicepack);
-      }});
+    this.catalogService.viewservicepacks = this.catalogService.viewservicepacks.filter(data => {
+      if((data.description.toLocaleLowerCase().indexOf(keyword) != -1) || (data.summary.toLocaleLowerCase().indexOf(keyword) != -1) || (data.name.toLocaleLowerCase().indexOf(keyword) != -1)){
+        return data;
+      }
+    });
   }
 }
 
