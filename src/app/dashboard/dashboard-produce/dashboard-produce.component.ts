@@ -150,6 +150,16 @@ export class DashboardProduceComponent implements OnInit {
       return;
     }
 
+    const isSelected = $('.org_quota.cur input[name=radio-quota]').length >= 0;
+    if (!isSelected) {
+      msgElement.removeClass('blue');
+      msgElement.addClass('red');
+      btnCreateOrg.attr('disabled', '');
+      this.isError = true;
+      this.errorMessage = '할당량을 선택해야합니다.';
+      return;
+    }
+
     try {
       const url = OrgURLConstant.URLOrgRequestBase + this.orgName + '/exist';
       this.common.doGet(url, this.getToken()).subscribe(data => {
