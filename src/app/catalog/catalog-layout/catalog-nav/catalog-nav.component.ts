@@ -28,18 +28,28 @@ export class CatalogNavComponent implements OnInit {
 
   viewBuildPack(value){
     this.router.navigate(['catalog']);
-    
+
     this.catalogService.viewPacks(false, true, false);
     if(!isUndefined(value)) {
-      this.catalogService.buildPackFilter(value);
+      this.catalogService.buildPackfilter = value;
+      this.catalogService.buildPackFilter();
+    }
+    else {
+      this.catalogService.buildPackfilter = '';
     }
   }
 
   viewServicePack(value){
     this.router.navigate(['catalog']);
-    
+
     this.catalogService.viewPacks(false, false, true);
     if(!isUndefined(value)) {
-    this.catalogService.servicePackFilter(value);
-  }}
+      this.catalogService.servicePackfilter = value;
+    this.catalogService.servicePackFilter();
+  }
+    else{
+      this.catalogService.servicePackfilter = '';
+    }
+  }
+
 }
