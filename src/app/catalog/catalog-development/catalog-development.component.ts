@@ -63,7 +63,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   goDocUrl(){
-    
+
   }
 
   activatedRouteInit(){
@@ -192,7 +192,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     }
     this.disableButton(false);
     this.nameCheck();
-    this.routeCheck();
+    this.checkHostName();
   }
 
   checkHostName(){
@@ -203,8 +203,14 @@ export class CatalogDevelopmentComponent implements OnInit {
     }
     const _hostname = this.appurl.split('.'+this.domain);
     this.hostname = _hostname[0];
-    this.routecheck = CATALOGURLConstant.OK;
+    if(this.routepattenTest( this.hostname)){
+      this.routecheck = CATALOGURLConstant.NO;
+      this.disableButton(true);
+      return;
+    }
     this.disableButton(false);
+    this.routeCheck();
+
   }
 
   disableInput(value : boolean){
@@ -219,7 +225,14 @@ export class CatalogDevelopmentComponent implements OnInit {
   pattenTest(value){
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
-    return (regExpPattern.test(value) || regExpBlankPattern.test(value));
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
+  }
+  routepattenTest(value){
+    const regExpPattern = /[\@\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
   }
 
   createApp() {
