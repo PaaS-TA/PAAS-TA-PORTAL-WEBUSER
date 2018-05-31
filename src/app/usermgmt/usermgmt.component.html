@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
+<style type="text/css">
+  .ime[type=text] {
+    -webkit-ime-mode:active;
+    -moz-ime-mode:active;
+    -ms-ime-mode:active;
+    ime-mode:active;
+  }
+</style>
 <body>
 <div class="wrap account">
   <app-app-top [cursorId]="'cur_usermgmt'"></app-app-top>
@@ -87,7 +95,7 @@
               </caption>
               <colgroup>
                 <col style='width: 123px;'>
-                <col style='*'>
+                <col style=''>
                 <col style='width: 30px;'>
               </colgroup>
               <tbody>
@@ -168,7 +176,7 @@
               </caption>
               <colgroup>
                 <col style='width: 123px;'>
-                <col style='*'>
+                <col style=''>
                 <col style='width: 30px;'>
               </colgroup>
               <tbody>
@@ -203,13 +211,13 @@
                     <div class="account_table_in">
                       <span>새 전화번호
                       </span>
-                      <input type="text" name="tellPhone" [(ngModel)]="tellPhone" ng-required ="true" (keypress)="checkTellPhone(event)"/>
+                      <input type="text" name="tellPhone" [(ngModel)]="tellPhone" (change)="checkTellPhone($event)" (keydown)="checkTellPhone($event)" (keyup)="checkTellPhone($event)" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
-                      <span class="red" use-form-error="isNotSame" *ngIf="!tellPhone">
+                      <span class="red" use-form-error="isNotSame" *ngIf="!isTellPhone" >
                         <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
                       </span>
                     </div>
@@ -270,13 +278,13 @@
               <caption>나의 조직
               </caption>
               <colgroup>
-                <col style='*'>
+                <col style=''>
                 <col style='width: 30px;'>
               </colgroup>
               <tbody>
-              <tr *ngFor="let org of orgs" [(ngModel)]="orgName">
+              <tr *ngFor="let org of orgs">
                 <td>{{org.name}}</td>
-                <th data-target="#layerpop" data-toggle="modal" (click)="popclickOrg(org.guid,org.name)"><i class="fas fa-trash-alt"></i></th>
+                <th data-target="#layerpop" data-toggle="modal" (click)="popclickOrg(org.guid,org.name)"><i class="fas fa-trash-alt" pattern="[A-Za-z0-9]*"></i></th>
               </tr>
               </tbody>
               <tfoot>
