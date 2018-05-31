@@ -122,10 +122,18 @@ export class DashboardComponent implements OnInit {
       this.currentOrg = this.commonService.getCurrentOrgName();
       this.currentSpace = this.commonService.getCurrentSpaceGuid();
       //TODO 수정이 필요함...Space 안불러옴
-      this.getOrg(this.currentOrg);
+      // this.commonService.isLoading = true;
+      // this.currentSpaceBox();
     }
+  }
 
-
+  currentSpaceBox(){
+    this.log.debug("currentSpaceBox");
+    if(this.orgs.length > 0){
+      this.getOrg(this.currentOrg);
+    }else{
+      setTimeout(this.currentSpaceBox(), 3000);
+    }
   }
 
   ngOnInit() {
@@ -169,7 +177,7 @@ export class DashboardComponent implements OnInit {
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;
-
+      this.log.debug(this.orgs);
       if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
 
         this.isLoadingSpaces = false;
@@ -224,7 +232,7 @@ export class DashboardComponent implements OnInit {
 
       $.each(data.apps, function (key, dataobj) {
         $.each(data.appsPer, function (key2, dataobj2) {
-          if(dataobj.guid == dataobj2.guid) {
+          if (dataobj.guid == dataobj2.guid) {
             data.apps[key]["cpuPer"] = dataobj2.cpuPer;
             data.apps[key]["memPer"] = dataobj2.memPer;
             data.apps[key]["diskPer"] = dataobj2.diskPer;
