@@ -140,6 +140,7 @@ export class ServicePack
   thumbImgPath : string;
   useYn : string;
   userId : string;
+  docFileUrl : string;
 }
 
 export class BuildPack
@@ -162,7 +163,7 @@ export class BuildPack
   thumbImgPath : string;
   useYn : string;
   userId : string;
-  docfileurl : string;
+  docFileUrl : string;
 }
 
 export class Service
@@ -184,5 +185,6 @@ export class Service
   credentialsStr : string;
   classification : string;
   syslogDrainUrl : string;
+  docFileUrl : string;
 }
 
