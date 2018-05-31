@@ -4,14 +4,14 @@ import {NGXLogger} from 'ngx-logger';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {DashboardService,Service} from './dashboard.service';
+import {DashboardService, Service} from './dashboard.service';
 import {OrgService} from "../org/common/org.service";
 import {Organization} from "../model/organization";
 import {SpaceService} from "../space/space.service";
 import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
-import {CatalogService,ServicePack,BuildPack,StarterPack} from '../catalog/main/catalog.service';
+import {CatalogService, ServicePack, BuildPack, StarterPack} from '../catalog/main/catalog.service';
 import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 
 declare var $: any;
@@ -48,9 +48,9 @@ export class DashboardComponent implements OnInit {
   public selectedType: string;
   public selectedName: string;
 
-  public userProvidedServiceName : string;
-  public userProvidedCredentials : string;
-  public userProvidedSyslogDrainUrl : string;
+  public userProvidedServiceName: string;
+  public userProvidedCredentials: string;
+  public userProvidedSyslogDrainUrl: string;
 
   private appStatsCpuPer: number;
   private appStatsMemoryPer: number;
@@ -69,7 +69,9 @@ export class DashboardComponent implements OnInit {
   public appStatsEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
-  public swmoon:string;
+
+  public currentOrg: string;
+  public currentSpace: string;
 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
@@ -83,7 +85,7 @@ export class DashboardComponent implements OnInit {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
-  this.swmoon='천재';
+
 
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
@@ -113,6 +115,17 @@ export class DashboardComponent implements OnInit {
     this.userProvidedServiceName = '';
     this.userProvidedCredentials = '';
     this.userProvidedSyslogDrainUrl = '';
+
+    this.currentSpace = '';
+    this.currentOrg = '';
+    if (this.commonService.getCurrentOrgName() != null) {
+      this.currentOrg = this.commonService.getCurrentOrgName();
+      this.currentSpace = this.commonService.getCurrentSpaceGuid();
+      //TODO 수정이 필요함...Space 안불러옴
+      this.getOrg(this.currentOrg);
+    }
+
+
   }
 
   ngOnInit() {
@@ -125,12 +138,12 @@ export class DashboardComponent implements OnInit {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS).subscribe(data => {
       this.dashboardService.ServiceInit(data['list']);
     });
-    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid).subscribe(data => {
+    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS + this.userid).subscribe(data => {
       this.dashboardService.RecentInit(data);
 
     });
 
-    console.log('ngOnInit fired');
+
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
@@ -147,19 +160,30 @@ export class DashboardComponent implements OnInit {
   }
 
   getOrg(value: string) {
+    this.log.debug("::::1 " + value);
     if (value != '') {
+
       this.spaces = [];
       this.org = this.orgs.find(org => org.name === value);
       this.isLoadingSpaces = true;
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;
+
       if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
+
         this.isLoadingSpaces = false;
         this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
         // this.log.debug(this.spaces);
+
+        /*
+         * 세이브 ORG 정보
+         */
+        this.commonService.setCurrentOrgGuid(this.org.guid);
+        this.commonService.setCurrentOrgName(this.org.name);
+
       }
-    }else{
+    } else {
       //초기화
       this.spaces = [];
       this.isEmpty = true;
@@ -169,14 +193,22 @@ export class DashboardComponent implements OnInit {
 
   getSpaces(value: string) {
     if (value != '') {
-      // this.log.debug(value);
+
       this.isEmpty = false;
       this.isSpace = true;
       this.isMessage = false;
       this.selectedSpaceId = value;
       this.space = this.spaces.find(Space => Space['_metadata']['guid'] === value);
+
+      /*
+       * 세이브 ORG 정보
+       */
+      if (this.space != null) {
+        this.commonService.setCurrentSpaceGuid(this.space.name);
+        this.commonService.setCurrentSpaceName(this.space.guid);
+      }
       this.getAppSummary(value);
-    }else{
+    } else {
       //초기화
       this.spaces = [];
       this.isEmpty = true;
@@ -240,7 +272,8 @@ export class DashboardComponent implements OnInit {
         console.log('failed.');
       }
       return data;
-    });return this.getAppSummary(this.selectedSpaceId);
+    });
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   delApp(guidParam: string) {
@@ -255,7 +288,8 @@ export class DashboardComponent implements OnInit {
         console.log('failed.');
       }
       return data;
-    });return this.getAppSummary(this.selectedSpaceId);
+    });
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   showPopAppStopClick() {
@@ -295,45 +329,45 @@ export class DashboardComponent implements OnInit {
   //   return this.appMainService.getAppStats(this.selectedGuid);
   // }
 
-  createUserProvided(){
+  createUserProvided() {
     let params = {
-      orgName : this.org.name,
-      spaceGuid : this.selectedSpaceId,
-      serviceInstanceName : this.service['serviceInstanceName'],
+      orgName: this.org.name,
+      spaceGuid: this.selectedSpaceId,
+      serviceInstanceName: this.service['serviceInstanceName'],
       credentialsStr: this.service['credentialsStr'],
-      syslogDrainUrl : this.service['syslogDrainUrl']
+      syslogDrainUrl: this.service['syslogDrainUrl']
     };
     this.commonService.isLoading = true;
     this.dashboardService.createUserProvided(params).subscribe(data => {
-      console.log(params,data);
+      console.log(params, data);
       this.getAppSummary(this.selectedSpaceId);
       this.commonService.isLoading = false;
       return data;
-    },error => {
+    }, error => {
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
     });
   }
 
-  updateUserProvided(){
+  updateUserProvided() {
     let params = {
-      orgName : this.org.name,
+      orgName: this.org.name,
       guid: this.selectedGuid,
-      serviceInstanceName : this.selectedName,
+      serviceInstanceName: this.selectedName,
       credentialsStr: this.service['credentialsStr'],
-      syslogDrainUrl : this.service['syslogDrainUrl']
+      syslogDrainUrl: this.service['syslogDrainUrl']
     };
     this.commonService.isLoading = true;
     this.dashboardService.updateUserProvided(params).subscribe(data => {
-      console.log(params,data);
-      this.getAppSummary(this.selectedSpaceId);
-      this.commonService.isLoading = false;
-      return data;
-    }
-    ,error => {
-      this.commonService.isLoading = false;
-      this.getAppSummary(this.selectedSpaceId);
-    });
+        console.log(params, data);
+        this.getAppSummary(this.selectedSpaceId);
+        this.commonService.isLoading = false;
+        return data;
+      }
+      , error => {
+        this.commonService.isLoading = false;
+        this.getAppSummary(this.selectedSpaceId);
+      });
   }
 
   renameInstance() {
@@ -343,7 +377,8 @@ export class DashboardComponent implements OnInit {
     };
     this.dashboardService.renameInstance(params).subscribe(data => {
       return data;
-    });return this.getAppSummary(this.selectedSpaceId);
+    });
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   delInstance() {
@@ -353,7 +388,8 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.delInstance(params).subscribe(data => {
       return data;
-    });  return (this.getAppSummary(this.selectedSpaceId));
+    });
+    return (this.getAppSummary(this.selectedSpaceId));
   }
 
   //move catalogDevelopment
@@ -419,7 +455,7 @@ export class DashboardComponent implements OnInit {
       this.selectedGuid = '';
       this.selectedName = '';
     }
-    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid) +' NAME :: ' + name;
+    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid) + ' NAME :: ' + name;
   }
 
 

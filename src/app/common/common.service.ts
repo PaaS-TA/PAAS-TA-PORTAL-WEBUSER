@@ -15,12 +15,12 @@ import {AppConfig} from "../app.config"
 @Injectable()
 export class CommonService {
   isLoading = false;
-  isLoginBtn = false;
-  isLogin = false;
   headers: HttpHeaders;
   private gateway = '';
   defaultLang = 'ko';
   useLang = 'ko';
+
+
 
   constructor(public http: HttpClient, public router: Router, public log: NGXLogger) {
     this.headers = new HttpHeaders()
@@ -138,7 +138,7 @@ export class CommonService {
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
   }
 
-  public refreshSession(){
+  public refreshSession() {
     /*
      * Session Time
      */
@@ -161,17 +161,29 @@ export class CommonService {
     /*
     * 옵션 정보
     */
-    if(cf_user_name == null) {cf_user_name = '';}
+    if (cf_user_name == null) {
+      cf_user_name = '';
+    }
     window.sessionStorage.setItem('cf_username', cf_user_name);
-    if(cf_given_name == null) {cf_given_name = '';}
+    if (cf_given_name == null) {
+      cf_given_name = '';
+    }
     window.sessionStorage.setItem('cf_given_name', cf_given_name);
-    if(cf_family_name == null) {cf_family_name = '';}
+    if (cf_family_name == null) {
+      cf_family_name = '';
+    }
     window.sessionStorage.setItem('cf_family_name', cf_family_name);
-    if(cf_user_email == null) {cf_user_email = '';}
+    if (cf_user_email == null) {
+      cf_user_email = '';
+    }
     window.sessionStorage.setItem('cf_user_email', cf_user_email);
-    if(cf_phone_number == null) {cf_phone_number = '';}
+    if (cf_phone_number == null) {
+      cf_phone_number = '';
+    }
     window.sessionStorage.setItem('cf_phone_number', cf_phone_number);
-    if(cf_previous_logon_time == null) {cf_previous_logon_time = '';}
+    if (cf_previous_logon_time == null) {
+      cf_previous_logon_time = '';
+    }
     window.sessionStorage.setItem('cf_previous_logon_time', cf_previous_logon_time);
 
   }
@@ -190,15 +202,25 @@ export class CommonService {
     /*
     * 옵션 정보
     */
-    if(user_name == null) {user_name = '';}
+    if (user_name == null) {
+      user_name = '';
+    }
     window.sessionStorage.setItem('user_name', user_name);
-    if(tell_phone == null) {tell_phone = '';}
+    if (tell_phone == null) {
+      tell_phone = '';
+    }
     window.sessionStorage.setItem('tell_phone', tell_phone);
-    if(zip_code == null) {zip_code = '';}
+    if (zip_code == null) {
+      zip_code = '';
+    }
     window.sessionStorage.setItem('zip_code', zip_code);
-    if(address == null) {address = '';}
+    if (address == null) {
+      address = '';
+    }
     window.sessionStorage.setItem('address', address);
-    if(img_path == null) {img_path = '';}
+    if (img_path == null) {
+      img_path = '';
+    }
     window.sessionStorage.setItem('img_path', img_path);
 
   }
@@ -246,6 +268,7 @@ export class CommonService {
   private getTokenWithoutRefresh(): string {
     return sessionStorage.getItem('cf_token');
   }
+
   public getRefreshToken(): string {
     return sessionStorage.getItem('cf_refresh_token');
   }
@@ -362,5 +385,45 @@ export class CommonService {
 
     this.log.debug("Reload page :", currentLocation);
     this.router.navigate(['/login'], {queryParams: {returnUrl: currentLocation}});
+  }
+
+  setCurrentLocation(value: any) {
+    window.sessionStorage.setItem('_currentLocation', value);
+  }
+
+  setCurrentOrgName(value: any) {
+    window.sessionStorage.setItem('_currentOrgName', value);
+  }
+
+  setCurrentOrgGuid(value: any) {
+    window.sessionStorage.setItem('_currentOrgGuid', value);
+  }
+
+  setCurrentSpaceName(value: any) {
+    window.sessionStorage.setItem('_currentSpaceName', value);
+  }
+
+  setCurrentSpaceGuid(value: any) {
+    window.sessionStorage.setItem('_currentSpaceGuid', value);
+  }
+
+  getCurrentLocation(): any {
+    return window.sessionStorage.getItem('_currentLocation');
+  }
+
+  getCurrentOrgName(): any {
+    return window.sessionStorage.getItem('_currentOrgName');
+  }
+
+  getCurrentOrgGuid(): any {
+    return window.sessionStorage.getItem('_currentOrgGuid');
+  }
+
+  getCurrentSpaceName(): any {
+    return window.sessionStorage.getItem('_currentSpaceName');
+  }
+
+  getCurrentSpaceGuid(): any {
+    return window.sessionStorage.getItem('_currentSpaceGuid');
   }
 }
