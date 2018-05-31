@@ -152,13 +152,26 @@ export class CommonService {
   public saveCfUserInfo(cf_user_guid: string, cf_user_id: string, cf_user_name: string, cf_given_name: string, cf_family_name: string,
                         cf_user_email: string, cf_phone_number: string, cf_expires: string, cf_previous_logon_time: string) {
     let now = new Date();
+    /*
+    * 필수 정보
+    */
     window.sessionStorage.setItem('cf_user_guid', cf_user_guid);
     window.sessionStorage.setItem('cf_user_id', cf_user_id);
+
+    /*
+    * 옵션 정보
+    */
+    if(cf_user_name == null) {cf_user_name = '';}
     window.sessionStorage.setItem('cf_username', cf_user_name);
+    if(cf_given_name == null) {cf_given_name = '';}
     window.sessionStorage.setItem('cf_given_name', cf_given_name);
+    if(cf_family_name == null) {cf_family_name = '';}
     window.sessionStorage.setItem('cf_family_name', cf_family_name);
+    if(cf_user_email == null) {cf_user_email = '';}
     window.sessionStorage.setItem('cf_user_email', cf_user_email);
+    if(cf_phone_number == null) {cf_phone_number = '';}
     window.sessionStorage.setItem('cf_phone_number', cf_phone_number);
+    if(cf_previous_logon_time == null) {cf_previous_logon_time = '';}
     window.sessionStorage.setItem('cf_previous_logon_time', cf_previous_logon_time);
 
   }
@@ -166,13 +179,26 @@ export class CommonService {
   public saveUserInfo(user_id: string, user_name: string, status: string, tell_phone: string, zip_code: string,
                       address: string, admin_yn: string, img_path: string) {
 
+    /*
+    * 필수 정보
+    */
     window.sessionStorage.setItem('cf_user_id', user_id);
-    window.sessionStorage.setItem('user_name', user_name);
     window.sessionStorage.setItem('status', status);
-    window.sessionStorage.setItem('tell_phone', tell_phone);
-    window.sessionStorage.setItem('zip_code', zip_code);
-    window.sessionStorage.setItem('address', address);
     window.sessionStorage.setItem('admin_yn', admin_yn);
+
+
+    /*
+    * 옵션 정보
+    */
+    if(user_name == null) {user_name = '';}
+    window.sessionStorage.setItem('user_name', user_name);
+    if(tell_phone == null) {tell_phone = '';}
+    window.sessionStorage.setItem('tell_phone', tell_phone);
+    if(zip_code == null) {zip_code = '';}
+    window.sessionStorage.setItem('zip_code', zip_code);
+    if(address == null) {address = '';}
+    window.sessionStorage.setItem('address', address);
+    if(img_path == null) {img_path = '';}
     window.sessionStorage.setItem('img_path', img_path);
 
   }
