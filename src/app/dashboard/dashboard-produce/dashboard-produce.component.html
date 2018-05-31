@@ -16,7 +16,7 @@
                 <div class="org_box clearfix">
                   <div>
                     <input class="form-control" type="text" required="" placeholder="생성할 조직명을 입력하세요."
-                           [(ngModel)]="orgName" (keyup)="isExistOrgName($event)">
+                           [(ngModel)]="orgName" (keyup)="replaceInvalidateString()" (change)="isExistOrgName($event)">
                     <p class="text-left red" id="action-info-message">
                       <i class="fas fa-exclamation-circle exclamation_mark"
                          [style.display]="errorMessage === ''? 'none' : 'inline-block'"></i>

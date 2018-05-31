@@ -59,12 +59,12 @@ export class OrgUserRoleService {
 
   public isManagerFromAPI(orgName: string) {
     const url = this.URLOrgUserIsManager(orgName, this.common.getUserEmail());
-    const observable = this.common.doGet(url, this.getToken());
 
     return (async() => {
       this.logger.debug('is manager from API : before await');
       const data = await this.common.doGet(url, this.getToken()).toPromise();
       this.logger.debug('is manager from API : after await / response :', data);
+
       return data;
     })();
   }
@@ -80,6 +80,7 @@ export class OrgUserRoleService {
       this.logger.debug('associate org user role : before await');
       const data = await this.common.doPut(url, requestBody, this.getToken()).toPromise();
       this.logger.debug('associate org user role : after await / response :', data);
+
       return data;
     })();
   }
@@ -95,6 +96,7 @@ export class OrgUserRoleService {
       this.logger.debug('remove org user role : before await');
       const data = await this.common.doDelete(url, params, this.getToken()).toPromise();
       this.logger.debug('remove org user role : after await / response :', data);
+
       return data;
     })();
   }
@@ -117,6 +119,7 @@ export class OrgUserRoleService {
       this.logger.debug('cancel org member : before await');
       const data = await this.common.doDelete(url, params, this.getToken()).toPromise();
       this.logger.debug('cancel org member : after await');
+
       return data;
     })();
   }
@@ -137,6 +140,7 @@ export class OrgUserRoleService {
       } else {
         this.logger.error('Cannot find to cancel member in user list...', cancelingUser.userEmail);
       }
+
       return data;
     })();
   }
