@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
     }
 
 
-    this.userid = this.commonService.getUserid();
+    this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
     this.userGuid = this.commonService.getUserGuid();
 
@@ -315,25 +315,26 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // updateUserProvided(){
-  //   let params = {
-  //     orgName : this.org.name,
-  //     spaceGuid : this.selectedSpaceId,
-  //     serviceInstanceName : this.service['serviceInstanceName'],
-  //     credentialsStr: this.service['credentialsStr'],
-  //     syslogDrainUrl : this.service['syslogDrainUrl']
-  //   };
-  //   this.commonService.isLoading = true;
-  //   this.dashboardService.updateUserProvided(params).subscribe(data => {
-  //     console.log(params,data);
-  //     this.getAppSummary(this.selectedSpaceId);
-  //     this.commonService.isLoading = false;
-  //     return data;
-  //   },error => {
-  //     this.commonService.isLoading = false;
-  //     this.getAppSummary(this.selectedSpaceId);
-  //   });
-  // }
+  updateUserProvided(){
+    let params = {
+      orgName : this.org.name,
+      guid: this.selectedGuid,
+      serviceInstanceName : this.service['serviceInstanceName'],
+      credentialsStr: this.service['credentialsStr'],
+      syslogDrainUrl : this.service['syslogDrainUrl']
+    };
+    this.commonService.isLoading = true;
+    this.dashboardService.updateUserProvided(params).subscribe(data => {
+      console.log(params,data);
+      this.getAppSummary(this.selectedSpaceId);
+      this.commonService.isLoading = false;
+      return data;
+    }
+    ,error => {
+      this.commonService.isLoading = false;
+      this.getAppSummary(this.selectedSpaceId);
+    });
+  }
 
   renameInstance() {
     let params = {
@@ -390,6 +391,7 @@ export class DashboardComponent implements OnInit {
   }
 
   dashTabClick(id: string) {
+
     $("[id^='dashTab_']").hide();
     $("#" + id).show();
 
@@ -417,7 +419,7 @@ export class DashboardComponent implements OnInit {
       this.selectedGuid = '';
       this.selectedName = '';
     }
-    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid);
+    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid) +' NAME :: ' + name;
   }
 
 
