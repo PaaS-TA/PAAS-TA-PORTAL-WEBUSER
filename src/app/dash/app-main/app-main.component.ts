@@ -129,6 +129,7 @@ export class AppMainComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
 
+
     // translate.setDefaultLang('ko');
     //
     // translate.use('ko');
