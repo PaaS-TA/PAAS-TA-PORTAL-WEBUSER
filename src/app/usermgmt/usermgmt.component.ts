@@ -26,6 +26,8 @@ export class UsermgmtComponent implements OnInit {
   public orgName: string;
   public username: string;
   public password: string;
+  public tellPhone: string;
+  public isTellPhone : boolean;
   public password_new: string;
   public password_confirm: string;
   public selectedOrgGuid : string;
@@ -46,6 +48,7 @@ export class UsermgmtComponent implements OnInit {
   userInfo() {
       this.userMgmtService.userinfo(this.common.getUserid()).subscribe(data => {
          this.user = data;
+         this.tellPhone = data['tellPhone'];
         return data;
     });
   }
@@ -74,8 +77,23 @@ export class UsermgmtComponent implements OnInit {
     };
     this.userMgmtService.updateUserPassword(this.common.getUserid(),params).subscribe(data => {
       console.log(this.common.getUserGuid());
+      if(data.status == "success") {
+        alert("비밀번호 변경 되었습니다.");
+      }else{
+        alert("비밀번호 변경 실패했습니다.");
+      }
     });
   }
+
+  checkTellPhone() {
+    var tellPhone_Pattern = /^[0-9]+$/;
+    if(!tellPhone_Pattern.test(this.tellPhone)) {
+      this.logger.debug('tellPhone :: 1');
+      this.isTellPhone = false;
+      return;
+    }
+    this.isTellPhone = true;
+}
 
   public alertMsg(msg: string) {
     alert(msg);
@@ -105,4 +123,5 @@ export class UsermgmtComponent implements OnInit {
   cancelOrg(orgId: string) {
     return this.orgService.cancelOrg(orgId, this.common.getUserGuid());
   }
+
 }//

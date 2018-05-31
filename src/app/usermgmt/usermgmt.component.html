@@ -134,18 +134,17 @@
                         <span>현재비밀번호</span>
                         <input type="password" name="password" [(ngModel)]="password" ng-required="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
                         <span class="red passred" use-form-error="isNotSame" *ngIf="password!=password">
-                                                        <span></span>
-                                                        <i class="fas fa-exclamation-circle"></i>
-                                                        비밀 번호가 맞지 않습니다.
-                                                    </span>
+                          <span></span>
+                          <i class="fas fa-exclamation-circle"></i>비밀 번호가 맞지 않습니다.
+                        </span>
                       </p>
                       <p>
-                                                    <span>새 비밀번호
-                                                    </span>
+                        <span>새 비밀번호
+                        </span>
                         <input type="password" name="password_new" [(ngModel)]="password_new" ng-required ="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
                       </p>
                       <span>새 비밀번호 확인
-                                                </span>
+                      </span>
                       <input type="password" name="password_confirm" [(ngModel)]="password_confirm" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="updateUserPassword()">변경하기</button>
@@ -153,9 +152,9 @@
                       </div>
                       <span></span>
                       <span class="red"  use-form-error="isNotSame" *ngIf=" password_new && password_confirm &&password_new!=password_confirm">
-                                                    <i class="fas fa-exclamation-circle"></i>
-                                                    입력한 비밀 번호와 다릅니다.
-                                                </span>
+                        <i class="fas fa-exclamation-circle"></i>
+                        입력한 비밀 번호와 다릅니다.
+                      </span>
                     </div>
                   </div>
                 </td>
@@ -182,8 +181,8 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                                                <span>변경할 이름
-                                                </span>
+                      <span>변경할 이름
+                      </span>
                       <input type="text" name="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
@@ -195,22 +194,22 @@
               </tr>
               <tr>
                 <td>전화번호</td>
-                <th>{{user['tellPhone']}}</th>
+                <th>{{tellPhone}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
               </tr>
               <tr class="on">
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                                                <span>새 전화번호
-                                                </span>
-                      <input type="text" name="tellPhone" [(ngModel)]="user['tellPhone']" ng-model-options="{ getterSetter: true }" ng-required="true" require ng-pattern="/^\d{0,9}(\.\d{1,9})?$/" />
+                      <span>새 전화번호
+                      </span>
+                      <input type="text" name="tellPhone" [(ngModel)]="tellPhone" ng-required ="true" (keypress)="checkTellPhone(event)"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
-                      <span class="red" name="isNotSame" use-form-error="isNotSame" *ngIf="tellPhone !='require ng-pattern'">
+                      <span class="red" use-form-error="isNotSame" *ngIf="!tellPhone">
                         <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
                       </span>
                     </div>
@@ -226,8 +225,8 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                                                <span>새 우편번호
-                                                </span>
+                      <span>새 우편번호
+                      </span>
                       <input type="text" name="zipCode" [(ngModel)]="user['zipCode']"
                              ng-model-options="{ getterSetter: true }" ng-reauired = "true" ng-pattern="'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$'"/>
                       <div class="">
@@ -236,8 +235,7 @@
                       </div>
                       <span></span>
                       <span class="red"  use-form-error="isNotSame" *ngIf="user['zipCode']!='^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$'">
-                                                    <i class="fas fa-exclamation-circle"></i>
-                                                    숫자 입력만 가능합니다.
+                        <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
                       </span>
                     </div>
                   </div>
@@ -252,8 +250,8 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                                                <span>새 주소
-                                                </span>
+                      <span>새 주소
+                      </span>
                       <input type="text" name="address" [(ngModel)]="user['address']"
                              ng-model-options="{ getterSetter: true }"/>
                       <div class="">
