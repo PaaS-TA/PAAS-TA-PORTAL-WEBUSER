@@ -1,0 +1,113 @@
+<app-app-top [cursorId]="'cur_quantity'"></app-app-top>
+<app-quantity-nav></app-quantity-nav>
+<div class="contain">
+  <div class="content">
+    <div class="row one_line">
+      <h1>사용량조회 <small>사용중인 앱의 메모리 사용량을 조회합니다.</small>
+      </h1>
+      <div class="col-md-12">
+        <div class="organizations_wrap">
+          <div class="organizations_in">
+            <div>
+              <dl>
+                <dt>
+                  <p>조직
+                  </p>
+                  <p>공간
+                  </p>
+                </dt>
+                <dd>
+                  <select>
+                    <option>Dev
+                    </option>
+                  </select>
+                  <select>
+                    <option>ALL
+                    </option>
+                  </select>
+                </dd>
+              </dl>
+              <dl id="dl2">
+                <dt>
+                  <p>
+                    조회월
+                  </p>
+                </dt>
+                <dd>
+                  <button class="btns2 colors4 pull-right">조회</button>
+                  <select>
+                    <option>2016
+                    </option>
+                  </select> 년
+                  <select>
+                    <option>12
+                    </option>
+                  </select> 월 ~
+                  <select>
+                    <option>2017
+                    </option>
+                  </select> 년
+                  <select>
+                    <option>6
+                    </option>
+                  </select> 월
+                  <div class="quantity_ra">
+                    <input id="ra1" type="radio" name="ra1" />
+                    <label for="ra1"> 1개월</label>
+                    <input id="ra2" type="radio" name="ra1" />
+                    <label for="ra2"> 2개월</label>
+                    <input id="ra3" type="radio" name="ra1" />
+                    <label for="ra3"> 3개월</label>
+                  </div>
+                </dd>
+              </dl>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="organizations_wrap maT30" *ngFor="let chart of charts">
+          <div class="organizations_table">
+            <table>
+              <caption>전체 사용량 GB-시간 <i class="fas fa-exclamation-circle"></i>
+              </caption>
+              <tr>
+                <td>
+                  <div class="asdasd">
+                    <div class="chart_div">
+                      <p>200
+                      </p>
+                      <p>Total Used
+                      </p>
+                    </div>
+                    <canvas name="chartCanvas">
+                    </canvas>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!--
+        <div class="organizations_wrap maT30 last">
+          <div class="organizations_table">
+            <table>
+              <caption>앱별 사용량 GB-시간</caption>
+              <tr>
+                <td>
+                  <div class="asdasd">
+                    <canvas name="myChart2">
+                    </canvas>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        -->
+      </div>
+    </div><!-- row one_line -->
+  </div>
+  <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
+</div>
