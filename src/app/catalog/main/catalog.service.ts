@@ -212,6 +212,7 @@ export class BuildPack
   thumbImgPath : string;
   useYn : string;
   userId : string;
+  docfileurl : string;
 }
 
 export class StarterPack

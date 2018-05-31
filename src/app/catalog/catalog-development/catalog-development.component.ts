@@ -62,6 +62,10 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.disk = 1024;
   }
 
+  goDocUrl(){
+    
+  }
+
   activatedRouteInit(){
     const orgname = this.route.snapshot.params['orgname'];
     const spacename = this.route.snapshot.params['spacename'];
