@@ -132,7 +132,7 @@
                     <div class="space_bar1">
                       <div class="progress">
                         <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                             aria-valuemax="100" style="width: 50%;"></div>
+                             aria-valuemax="100" [ngStyle]="{'width': '' + item.diskPer + '%'}"></div>
                       </div>
                     </div>
                     <div>Memory</div>
@@ -141,7 +141,7 @@
                     <div class="space_bar2">
                       <div class="progress">
                         <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                             aria-valuemax="100" style="width: 60%;"></div>
+                             aria-valuemax="100" [ngStyle]="{'width': '' + item.memPer + '%'}"></div>
                       </div>
                     </div>
                   </div>
@@ -171,7 +171,7 @@
           </ul>
           <div class="space_btn_container clearfix">
             <div class="space_btn2" >
-              <button class="btns colors4" data-target="#layerpop4" data-toggle="modal" >User Provided 생성</button>
+              <button class="btns colors4" data-target="#layerpop4" data-toggle="modal">User Provided 생성</button>
             </div>
           </div>
           <ul class="maT10 space_list space_list_small" >
