@@ -156,7 +156,8 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   appList() {
-    this.apps = new Array<App>();
+    if(this.servicepack.appBindYn === CATALOGURLConstant.YN)
+    {this.apps = new Array<App>();
     this.appsFirst();
     this.catalogService.getAppNames(CATALOGURLConstant.GETLISTAPP + this.org.guid + '/' + this.space.guid).subscribe(data => {
       data['resources'].forEach(app => {
@@ -164,7 +165,7 @@ export class CatalogServiceComponent implements OnInit {
       })
       this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE);
       this.serviceInstanceList();
-    });
+    });}
 
 
   }
@@ -244,10 +245,9 @@ export class CatalogServiceComponent implements OnInit {
       app_bind_parameter: this.setParmeterData(this.appparameter, this.hiddenappparameter)
     };
     console.log(params);
-    // this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
-    // {
-    //   console.log(data);
-    // });
+    this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
+    {
+    });
   }
 
   settingRadioId() {

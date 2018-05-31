@@ -44,4 +44,5 @@ export enum CATALOGURLConstant {
   SUCCESS ='SUCCESS',
   OK=1,
   NO=-1,
+  YN = 'Y',
 }
