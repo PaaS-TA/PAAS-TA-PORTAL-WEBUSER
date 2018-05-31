@@ -11,8 +11,8 @@
           <li>
             <div>
               <select readonly="readonly">
-                <option value="" name="area">미국(USA, 美國)</option>
-                <option value="" selected="selected" name="area">대한민국(KOREA, 韓國)</option>
+                <option value="" name="area">미국(USA)</option>
+                <option value="" selected="selected" name="area">대한민국(KOREA)</option>
               </select>
             </div>
           </li>
@@ -184,8 +184,9 @@
                     <!--<button _ngcontent-c4="" class="btns colors4" (click)="moveDashboardS()">대시보드</button>-->
                     <i class="fas fa-ellipsis-v" (click)="popclick('spopmenu_'+i,'service',item.guid,item.name)"></i>
                     <ol class="space_pop_submenu" id ="spopmenu_{{i}}">
-                      <li data-target="#layerpop3" data-toggle="modal"><a class="fas fa-edit"> 서비스 이름변경</a></li>
-                      <li data-target="#layerpop6" data-toggle="modal"><a class="fas fa-wrench" *ngIf="item.service_plan == null"> 서비스 수정</a></li>
+                      <li data-target="#layerpop3" data-toggle="modal" *ngIf="item.service_plan !== null"><a class="fas fa-edit"> 서비스 이름변경</a></li>
+                      <li data-target="#layerpop7" data-toggle="modal" *ngIf="item.service_plan == null"><a class="fas fa-edit"> 서비스 이름변경</a></li>
+                      <li data-target="#layerpop6" data-toggle="modal" *ngIf="item.service_plan == null"><a class="fas fa-wrench"> 서비스 수정</a></li>
                       <li data-target="#layerpop5" data-toggle="modal"><a class="fas fa-trash-alt"> 삭제</a></li>
                     </ol>
                   </div>
@@ -290,7 +291,7 @@
         </div>
         <!-- Footer -->
         <div class="modal-footer" >
-          <button type="button" class="btns2 colors4" data-dismiss="modal" [(ngModel)]="selectedGuid" (click)="delApp(selectedGuid)">삭제</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" [(ngModel)]="selectedGuid" name="selectedGuid" (click)="delApp(selectedGuid)">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
@@ -315,6 +316,30 @@
         <!-- Footer -->
         <div class="modal-footer">
           <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="renameInstance()">변경</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="layerpop7">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">서비스 이름 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <input type="text" placeholder="변경할 서비스 이름을 입력하세요." class="space_input" [(ngModel)]="selectedName" name="selectedName"/>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="updateUserProvided()">변경</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
@@ -374,7 +399,7 @@
           <ul>
             <li>
               <div>서비스 이름</div>
-              <div><input type="text" name="serviceInstanceName" [(ngModel)]="service['serviceInstanceName']" class="space_input"/></div>
+              <div><input type="text" name="selectedName" [(ngModel)]="selectedName" class="space_input"/></div>
             </li>
             <li>
               <div>Credentials</div>

@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
   public appStatsEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
-
+  public swmoon:string;
 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
-
+  this.swmoon='천재';
 
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit {
     this.appNewName = null;
     this.appDelName = '';
     this.selectedName = '';
-
+    this.selectedGuid = '';
     this.userProvidedServiceName = '';
     this.userProvidedCredentials = '';
     this.userProvidedSyslogDrainUrl = '';
@@ -319,7 +319,7 @@ export class DashboardComponent implements OnInit {
     let params = {
       orgName : this.org.name,
       guid: this.selectedGuid,
-      serviceInstanceName : this.service['serviceInstanceName'],
+      serviceInstanceName : this.selectedName,
       credentialsStr: this.service['credentialsStr'],
       syslogDrainUrl : this.service['syslogDrainUrl']
     };
