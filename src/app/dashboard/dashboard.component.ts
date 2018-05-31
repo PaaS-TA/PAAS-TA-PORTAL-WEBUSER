@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
   public appStatsEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
-
+  public swmoon:string;
 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
@@ -83,9 +83,9 @@ export class DashboardComponent implements OnInit {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
+  this.swmoon='천재';
 
-
-    this.userid = this.commonService.getUserid();
+    this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
     this.userGuid = this.commonService.getUserGuid();
 
@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit {
     this.appNewName = null;
     this.appDelName = '';
     this.selectedName = '';
-
+    this.selectedGuid = '';
     this.userProvidedServiceName = '';
     this.userProvidedCredentials = '';
     this.userProvidedSyslogDrainUrl = '';
@@ -310,25 +310,26 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // updateUserProvided(){
-  //   let params = {
-  //     orgName : this.org.name,
-  //     spaceGuid : this.selectedSpaceId,
-  //     serviceInstanceName : this.service['serviceInstanceName'],
-  //     credentialsStr: this.service['credentialsStr'],
-  //     syslogDrainUrl : this.service['syslogDrainUrl']
-  //   };
-  //   this.commonService.isLoading = true;
-  //   this.dashboardService.updateUserProvided(params).subscribe(data => {
-  //     console.log(params,data);
-  //     this.getAppSummary(this.selectedSpaceId);
-  //     this.commonService.isLoading = false;
-  //     return data;
-  //   },error => {
-  //     this.commonService.isLoading = false;
-  //     this.getAppSummary(this.selectedSpaceId);
-  //   });
-  // }
+  updateUserProvided(){
+    let params = {
+      orgName : this.org.name,
+      guid: this.selectedGuid,
+      serviceInstanceName : this.selectedName,
+      credentialsStr: this.service['credentialsStr'],
+      syslogDrainUrl : this.service['syslogDrainUrl']
+    };
+    this.commonService.isLoading = true;
+    this.dashboardService.updateUserProvided(params).subscribe(data => {
+      console.log(params,data);
+      this.getAppSummary(this.selectedSpaceId);
+      this.commonService.isLoading = false;
+      return data;
+    }
+    ,error => {
+      this.commonService.isLoading = false;
+      this.getAppSummary(this.selectedSpaceId);
+    });
+  }
 
   renameInstance() {
     let params = {
@@ -385,6 +386,7 @@ export class DashboardComponent implements OnInit {
   }
 
   dashTabClick(id: string) {
+
     $("[id^='dashTab_']").hide();
     $("#" + id).show();
 
@@ -412,7 +414,7 @@ export class DashboardComponent implements OnInit {
       this.selectedGuid = '';
       this.selectedName = '';
     }
-    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid);
+    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid) +' NAME :: ' + name;
   }
 
 

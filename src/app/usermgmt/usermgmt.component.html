@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
+<style type="text/css">
+  .ime[type=text] {
+    -webkit-ime-mode:active;
+    -moz-ime-mode:active;
+    -ms-ime-mode:active;
+    ime-mode:active;
+  }
+</style>
 <body>
 <div class="wrap account">
   <app-app-top [cursorId]="'cur_usermgmt'"></app-app-top>
@@ -75,7 +83,8 @@
                 src="https://post-phinf.pstatic.net/MjAxODAzMDVfMTgw/MDAxNTIwMjE2NDY0OTk4.cN9D63H7CpldxOjK4TEUs_knaak89GFsupYLzdW7Khgg.K8RPI6Ej247n0NX7DB47lZaosASz_iAJ2j9I023r33sg.JPEG/ALP_6823.jpg"/>
               </dt>
               <dd>
-                <button class="btns colors4">사진등록</button>
+                <!--<button class="btns colors4">사진등록</button>-->
+               <button class="btns colors4" (click)="alertMsg('개발 중입니다.')">사진등록</button>
               </dd>
             </dl>
           </div>
@@ -87,7 +96,7 @@
               </caption>
               <colgroup>
                 <col style='width: 123px;'>
-                <col style='*'>
+                <col style=''>
                 <col style='width: 30px;'>
               </colgroup>
               <tbody>
@@ -134,18 +143,17 @@
                         <span>현재비밀번호</span>
                         <input type="password" name="password" [(ngModel)]="password" ng-required="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
                         <span class="red passred" use-form-error="isNotSame" *ngIf="password!=password">
-                                                        <span></span>
-                                                        <i class="fas fa-exclamation-circle"></i>
-                                                        비밀 번호가 맞지 않습니다.
-                                                    </span>
+                          <span></span>
+                          <i class="fas fa-exclamation-circle"></i>비밀 번호가 맞지 않습니다.
+                        </span>
                       </p>
                       <p>
-                                                    <span>새 비밀번호
-                                                    </span>
+                        <span>새 비밀번호
+                        </span>
                         <input type="password" name="password_new" [(ngModel)]="password_new" ng-required ="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
                       </p>
                       <span>새 비밀번호 확인
-                                                </span>
+                      </span>
                       <input type="password" name="password_confirm" [(ngModel)]="password_confirm" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="updateUserPassword()">변경하기</button>
@@ -153,9 +161,9 @@
                       </div>
                       <span></span>
                       <span class="red"  use-form-error="isNotSame" *ngIf=" password_new && password_confirm &&password_new!=password_confirm">
-                                                    <i class="fas fa-exclamation-circle"></i>
-                                                    입력한 비밀 번호와 다릅니다.
-                                                </span>
+                        <i class="fas fa-exclamation-circle"></i>
+                        입력한 비밀 번호와 다릅니다.
+                      </span>
                     </div>
                   </div>
                 </td>
@@ -169,7 +177,7 @@
               </caption>
               <colgroup>
                 <col style='width: 123px;'>
-                <col style='*'>
+                <col style=''>
                 <col style='width: 30px;'>
               </colgroup>
               <tbody>
@@ -182,8 +190,8 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                                                <span>변경할 이름
-                                                </span>
+                      <span>변경할 이름
+                      </span>
                       <input type="text" name="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
@@ -195,22 +203,22 @@
               </tr>
               <tr>
                 <td>전화번호</td>
-                <th>{{user['tellPhone']}}</th>
+                <th>{{tellPhone}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
               </tr>
               <tr class="on">
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                                                <span>새 전화번호
-                                                </span>
-                      <input type="text" name="tellPhone" [(ngModel)]="user['tellPhone']" ng-model-options="{ getterSetter: true }" ng-required="true" require ng-pattern="/^\d{0,9}(\.\d{1,9})?$/" />
+                      <span>새 전화번호
+                      </span>
+                      <input type="text" name="tellPhone" [(ngModel)]="tellPhone" (change)="checkTellPhone($event)" (keydown)="checkTellPhone($event)" (keyup)="checkTellPhone($event)" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
-                      <span class="red" name="isNotSame" use-form-error="isNotSame" *ngIf="tellPhone !='require ng-pattern'">
+                      <span class="red" use-form-error="isNotSame" *ngIf="!isTellPhone" >
                         <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
                       </span>
                     </div>
@@ -226,19 +234,13 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                                                <span>새 우편번호
-                                                </span>
-                      <input type="text" name="zipCode" [(ngModel)]="user['zipCode']"
-                             ng-model-options="{ getterSetter: true }" ng-reauired = "true" ng-pattern="'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$'"/>
+                      <span>새 우편번호
+                      </span>
+                      <input type="text" name="zipCode" [(ngModel)]="user['zipCode']"  ng-model-options="{ getterSetter: true }"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
-                      <span></span>
-                      <span class="red"  use-form-error="isNotSame" *ngIf="user['zipCode']!='^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$'">
-                                                    <i class="fas fa-exclamation-circle"></i>
-                                                    숫자 입력만 가능합니다.
-                      </span>
                     </div>
                   </div>
                 </td>
@@ -252,8 +254,8 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                                                <span>새 주소
-                                                </span>
+                      <span>새 주소
+                      </span>
                       <input type="text" name="address" [(ngModel)]="user['address']"
                              ng-model-options="{ getterSetter: true }"/>
                       <div class="">
@@ -272,13 +274,13 @@
               <caption>나의 조직
               </caption>
               <colgroup>
-                <col style='*'>
+                <col style=''>
                 <col style='width: 30px;'>
               </colgroup>
               <tbody>
-              <tr *ngFor="let org of orgs" [(ngModel)]="orgName">
+              <tr *ngFor="let org of orgs">
                 <td>{{org.name}}</td>
-                <th data-target="#layerpop" data-toggle="modal" (click)="popclickOrg(org.guid,org.name)"><i class="fas fa-trash-alt"></i></th>
+                <th data-target="#layerpop" data-toggle="modal" (click)="popclickOrg(org.guid,org.name)"><i class="fas fa-trash-alt" pattern="[A-Za-z0-9]*"></i></th>
               </tr>
               </tbody>
               <tfoot>
@@ -294,7 +296,8 @@
             <!--</div>-->
           </div>
           <div class="account_btn">
-            <button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>
+            <!--<button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>-->
+            <button class="one btns colors5" (click)="alertMsg('개발 중입니다.')" data-toggle="modal">계정삭제</button>
           </div>
         </div>
       </div><!-- row one_line -->

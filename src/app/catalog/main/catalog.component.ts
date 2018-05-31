@@ -35,6 +35,7 @@ export class CatalogComponent implements OnInit {
       this.ServiceInit(data['list']);
     });
     this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid).subscribe(data => {
+      console.log(data);
       this.RecentInit(data);
 
     });
@@ -58,7 +59,8 @@ export class CatalogComponent implements OnInit {
   }
 
   goStarter(starter : StarterPack) {
-    this.router.navigate(['catalogdetail', starter.no]);
+    //this.router.navigate(['catalogdetail', starter.no]);
+    alert("화면 구성중입니다.");
   }
 
   goDevelopMent(build : BuildPack) {
@@ -72,7 +74,8 @@ export class CatalogComponent implements OnInit {
   goHistory(any : any){
     const classification = any['classification'];
     if(classification.includes("starter_")){
-      this.router.navigate(['catalogdetail', any['no']]);
+      //this.router.navigate(['catalogdetail', any['no']]);
+      alert("화면 구성중입니다.");
     }
     else if(classification.includes("buildpack_")){
       this.router.navigate(['catalogdevelopment', any['no']]);
@@ -92,19 +95,30 @@ export class CatalogComponent implements OnInit {
   StarterInit(data : any) {
     this.catalogService.starterpacks = new Array<StarterPack>();
     this.catalogService.starterpacks = data;
+    this.catalogService.starterpacks = this.catalogService.starterpacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }})
     this.catalogService.viewstarterpacks = this.catalogService.starterpacks;
   }
 
   BuildInit(data : any) {
     this.catalogService.buildpacks = new Array<BuildPack>();
     this.catalogService.buildpacks = data;
+
+    this.catalogService.buildpacks = this.catalogService.buildpacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }})
     this.catalogService.viewbuildpacks = this.catalogService.buildpacks;
+    console.log( this.catalogService.viewbuildpacks.length);
   }
 
   ServiceInit(data : any) {
     this.catalogService.servicepacks = new Array<ServicePack>();
     this.catalogService.servicepacks = data;
+
+    this.catalogService.servicepacks = this.catalogService.servicepacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }})
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;
+  }
+
+  getCount(value){
+    console.log(value);
+    return value.length;
   }
 
   SearchStarterPack() {

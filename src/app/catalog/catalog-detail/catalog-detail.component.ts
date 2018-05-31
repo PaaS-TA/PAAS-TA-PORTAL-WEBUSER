@@ -6,6 +6,7 @@ import {Organization} from "../../model/organization";
 import {Space} from "../../model/space";
 import {forEach} from "@angular/router/src/utils/collection";
 import {CATALOGURLConstant} from "../common/catalog.constant";
+import {Catalog} from "../model/Catalog";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -29,25 +30,34 @@ export class CatalogDetailComponent implements OnInit {
   orgs: Array<Organization> = new Array<Organization>(); // 조직 정보
   spaces: Array<Space> = new Array<Space>(); // 공간 정보
   appStart : boolean = false; // 앱 시작 여부
+  catalog : Catalog;
   constructor(private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+    this.catalog = new Catalog();
   }
 
   ngOnInit() {
+    this.domainInit();
+    this.buildAndServiceInit();
+    this.doOrg();
+  }
+  domainInit(){
     this.catalogService.getDomain().subscribe(data => {
-      this.domain = data['resources'][0]['entity']['name'];
-      this.domainid = data['resources'][0]['metadata']['id'];
+      this.catalog.setDomainName(data['resources'][0]['entity']['name']);
+      this.catalog.setDomainId( data['resources'][0]['metadata']['guid']);
     });
+  }
+
+  buildAndServiceInit(){
     this.catalogService.CatalogDetailInit(this.route.snapshot.params['id']).subscribe(data => {
       this.template = data['Starter'];
       this.apptemplate.push(data['Buildpack']);
-      for (let i = 0; i < data['Servicepack'].length; i++) {
-        this.apptemplate.push(data['Servicepack'][i]);
-      }
+      data['Servicepack'].forEach(data => {
+        this.apptemplate.push(data);
+      })
       this.doLayout();
-      this.memory = 512;
-      this.disk = 1024;
+      this.catalog.setMemorySize(512);
+      this.catalog.setDiskSize(1024);
     });
-    this.doOrg();
   }
 
   doOrg() {
@@ -90,10 +100,15 @@ export class CatalogDetailComponent implements OnInit {
       });
       if(this.spaces[0])this.space = this.spaces[0];
     });
+    this.catalog.setOrgId(this.org.guid);
+  }
+
+  spaceSelect(){
+    this.catalog.setSpaceId(this.space.guid);
   }
 
   initAppUrl() {
-    this.appurl = this.appname + '.' + this.domain;
+    this.appurl = this.appname + '.' + this.catalog.getDomainName();
     if (this.appname.length < 1 || this.appname.trim() === '')
       this.appurl = '';
   }
@@ -103,22 +118,17 @@ export class CatalogDetailComponent implements OnInit {
     let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];
     if(appSampleFilePath ==='' || appSampleFilePath === null)
       appSampleFilePath = 'N';
-    let params = {
-      appSampleStartYn : this.appStart ? 'Y' : 'N',
-      appSampleFileName: this.apptemplate[0]['appSampleFileName'],
-      spaceId: this.space.guid,
-      spaceName: this.space.name,
-      orgName: this.org.name,
-      appName: this.appname,
-      name : this.appname,
-      hostName: this.appurl,
-      domainName: this.domainid,
-      memorySize : this.memory,
-      diskSize : this.disk,
-      buildPackName: this.apptemplate[0]['buildPackName'],
-      appSampleFilePath : appSampleFilePath
-    };
-    this.catalogService.postApp(url, params).subscribe(data => {
+    this.catalog.setAppSampleStartYn(this.appStart ? 'Y' : 'N');
+    this.catalog.setAppSampleFileName(this.apptemplate[0]['appSampleFileName']);
+    this.catalog.setBuildPackName(this.apptemplate[0]['buildPackName']);
+    this.catalog.setAppSampleFilePath(appSampleFilePath);
+    this.catalog.setHostName(this.appurl);
+    this.catalog.setAppName(this.appname);
+    this.catalog.setOrgName(this.org.name);
+    this.catalog.setSpaceName(this.space.name);
+    this.catalog.setSpaceId(this.space.guid);
+
+    this.catalogService.postApp(url, this.catalog).subscribe(data => {
       console.log(data);
     });
 

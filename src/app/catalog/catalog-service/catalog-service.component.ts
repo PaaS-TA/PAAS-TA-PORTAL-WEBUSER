@@ -50,6 +50,7 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.catalogService.isLoading(true);
     this.activatedRouteInit();
     this.DomainInit();
     this.orgsFirst();
@@ -109,6 +110,12 @@ export class CatalogServiceComponent implements OnInit {
     this.apps.push(this.app);
   }
 
+  pattenTest(value){
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
+  }
 
   ServiceInit() {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.route.snapshot.params['id']).subscribe(data => {
@@ -118,14 +125,44 @@ export class CatalogServiceComponent implements OnInit {
       this.serviceParameterSetting(this.servicepack.appBindParameter, 'appBindParameter');
       this.serviceplan = new Array<ServicePlan>();
       this.catalogService.getServicePlan(CATALOGURLConstant.GETSERVICEPLAN + this.servicepack.servicePackName).subscribe(data => {
+        console.log(data);
         data['resources'].forEach(a => {
           this.serviceplan.push(new ServicePlan(a['entity'], a['metadata']));
         })
         this.plan = this.serviceplan[0];
+      }, error => {
+        alert("서비스 플랜이 없습니다.");
       });
     });
   }
 
+  serviceAmountSetting(value){
+    value = JSON.parse(value);
+    let amount;
+    if(value.costs){
+      amount = value.costs[0]['amount'].usd;
+      if(amount == 0){
+        return '무료';
+      }return amount + '/' + value.costs[0]['unit'];
+    } return '무료';
+  }
+
+  serviceBulletSetting(value){
+    value = JSON.parse(value);
+    let bullet;
+    if(value.bullets){
+      return value.bullets[0];
+    }
+  }
+  serviceSubBulletSetting(value){
+    try{
+    value = JSON.parse(value);
+    value = value.bullets.pop();
+      return value;
+    }catch (ex){
+      return '';
+    }
+  }
 
   OrgsInit() {
     this.catalogService.getOrglist().subscribe(data => {
@@ -138,11 +175,13 @@ export class CatalogServiceComponent implements OnInit {
           this.spaces.push(new Space(res['metadata'], res['entity'], null));
         });
         if (this.spaces[0])this.space = this.spaces[0];
+        this.catalogService.isLoading(false);
       });
     });
   }
 
   orgSelect() {
+    this.catalogService.isLoading(true);
     this.space = null;
     this.spaces = new Array<Space>();
     this.placeholderSetting(true);
@@ -152,10 +191,12 @@ export class CatalogServiceComponent implements OnInit {
         this.spaces.push(new Space(res['metadata'], res['entity'], null));
       });
       if (this.spaces[0])this.space = this.spaces[0];
+      this.catalogService.isLoading(false);
     });
   }
 
   appList() {
+    this.catalogService.isLoading(true);
     if(this.servicepack.appBindYn === CATALOGURLConstant.YN)
     {this.apps = new Array<App>();
     this.appsFirst();
@@ -177,6 +218,7 @@ export class CatalogServiceComponent implements OnInit {
         this.servicenamelist.push(resources['entity']['name']);
       })
       this.serviceNameCheck();
+      this.catalogService.isLoading(false);
     });
   }
 
@@ -184,9 +226,16 @@ export class CatalogServiceComponent implements OnInit {
     this.disableButton(true);
     if (this.servicename.length < 1 || this.servicename.trim() === '') {
       this.namecheck = 0;
+      this.disableButton(true);
+      return;
+    }
+    if(this.pattenTest(this.servicename)){
+      this.namecheck = CATALOGURLConstant.NO;
+      this.disableButton(true);
       return;
     }
     this.namecheck = CATALOGURLConstant.OK;
+    console.log(this.servicenamelist);
     this.servicenamelist.forEach(name => {
       if (name === this.servicename) {
         this.namecheck = CATALOGURLConstant.NO;
@@ -199,7 +248,7 @@ export class CatalogServiceComponent implements OnInit {
   serviceParameterSetting(value, key) {
     let param = new Array<Parameter>();
     let hiddenparam = new Array<Parameter>();
-    if (value != 'undefined' && value != null && value != '') {
+    if (value != 'undefined' && value != null && value != '{}' && value != '') {
       const str = value.replace("}", "");
       const str2 = str.replace("{", "");
       const split = str2.split(",");
@@ -209,15 +258,11 @@ export class CatalogServiceComponent implements OnInit {
         if (splitSign != null && splitSign != 'undefined' && splitSign != '') {
           if (splitSign[1].trim() == "text") {
             param.push(new Parameter("text", splitSign[0]));
-          }
-          if (splitSign[1].trim() == "password") {
+          }if (splitSign[1].trim() == "password") {
             param.push(new Parameter("password", splitSign[0]));
-          }
-          if (splitSign[1].trim() == "default") {
+          } if (splitSign[1].trim() == "default") {
             hiddenparam.push(new Parameter("hidden", splitSign[0]));
-          }
-        }
-      });
+          }}});
       if (key == 'parameter') {
         this.parameter = param;
         this.hiddenparameter = hiddenparam;
@@ -247,6 +292,8 @@ export class CatalogServiceComponent implements OnInit {
     {
       alert("서비스생성 완료");
       this.router.navigate(['dashboard']);
+    }, error => {
+      alert("서비스생성 실패");
     });
   }
 
@@ -266,18 +313,15 @@ export class CatalogServiceComponent implements OnInit {
           data = data + ',' + param.getParameter();
         } else {
           data = param.getParameter();
-        }
-      });
-    }
-    if (value2 != 'undefined' && value2 != null && value2 !== 'undefined' && value2 !== null) {
+        }});
+    }if (value2 != 'undefined' && value2 != null && value2 !== 'undefined' && value2 !== null) {
       value2.forEach(param => {
         param.value = "default";
         if (data !== '') {
           data = data + ',' + param.getParameter();
         } else {
           data = param.getParameter();
-        }
-      });
+        }});
     }
     return '{' + data + '}';
   }
