@@ -220,30 +220,25 @@ export class DashboardComponent implements OnInit {
     this.showLoading();
 
     this.dashboardService.getAppSummary(value).subscribe(data => {
-
-      // 애플리케이션 DISK,Memory %
-      if (data) {
-        this.appStatsEntities = data.instances;
-        var cpu = 0;
-        var mem = 0;
-        var disk = 0;
-        var cnt = 0;
-
-        $.each(data.instances, function (key, dataobj) {
-          if (dataobj.stats != null) {
-            if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
-            if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + dataobj.stats.usage.mem / dataobj.stats.mem_quota * 100;
-            if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + dataobj.stats.usage.disk / dataobj.stats.disk_quota * 100;
-            cnt++;
-          }
-        });
-        this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
-        this.appStatsMemoryPer = Math.round(mem / cnt);
-        this.appStatsDiskPer = Math.round(disk / cnt);
-      }
       this.commonService.isLoading = false;
 
+      $.each(data.apps, function (key, dataobj) {
+        $.each(data.appsPer, function (key2, dataobj2) {
+          if(dataobj.guid == dataobj2.guid) {
+            data.apps[key]["cpuPer"] = dataobj2.cpuPer;
+            data.apps[key]["memPer"] = dataobj2.memPer;
+            data.apps[key]["diskPer"] = dataobj2.diskPer;
+          }
+        });
+      });
+
+
+      // console.log(data.apps["0"]);
       this.appEntities = data.apps;
+
+      // console.log(this.appEntities);
+
+
       // this.servicesEntities = data.services; sort 재 정렬
       this.servicesEntities = data.services.sort((serA, serB) => {
         const guidA = serA.guid;
