@@ -242,7 +242,7 @@ export class CatalogDevelopmentComponent implements OnInit {
             appName: this.appname,
             name : this.appname,
             hostName: this.appurl,
-            domainName: this.domainid,
+            domainId: this.domainid,
             memorySize : this.memory,
             diskSize : this.disk,
             buildPackName: this.buildpack['buildPackName'],
