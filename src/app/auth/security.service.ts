@@ -22,6 +22,23 @@ export class SecurityService {
   /*
    * 로그인 시도 - > OAUTH 로그인용
    */
+  doLogout() {
+    this.log.debug('doLogout()');
+    this.common.signOut();
+    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
+
+    window.location.href = AppConfig.logoutUrl +
+      '?response_type=' + AppConfig.code +
+      '&client_id=' + AppConfig.clientId +
+      '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&scope=' + AppConfig.scope +
+      '&state=';
+  }
+
+
+  /*
+   * 로그인 시도 - > OAUTH 로그인용
+   */
   doAuthorization() {
     this.log.debug('doAuthorization()');
 
@@ -177,7 +194,7 @@ export class SecurityService {
           data['User']['zipCode'], data['User']['address'], data['User']['addressDetail'], data['User']['imgPath']);
 
         const nextUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
-        this.router.navigate([ nextUrl ] );
+        this.router.navigate([nextUrl]);
       } else {
         this.saveUserDB(userId);
       }

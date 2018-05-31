@@ -48,11 +48,11 @@ export class ResetComponent implements OnInit {
           }
           if (accessCount > 3) {
             let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-            this.externalService.updateToken(this.userId, userInfo);
+            this.externalService.updateInfo(this.userId, userInfo);
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           } else {
             let userInfo = {'authAccessCnt': (accessCount + 1)};
-            this.externalService.updateToken(this.userId, userInfo);
+            this.externalService.updateInfo(this.userId, userInfo);
           }
         }
       });
@@ -109,7 +109,7 @@ export class ResetComponent implements OnInit {
           this.commonService.isLoading = false;
           alert('성공적으로 변경');
           let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-          this.externalService.updateToken(this.userId, userInfo);
+          this.externalService.updateInfo(this.userId, userInfo);
           this.router.navigate(['login']);
         } else {
           alert(data['msg']);
