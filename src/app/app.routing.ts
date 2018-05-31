@@ -58,7 +58,7 @@ const routes: Routes = [
   {path: 'catalogdevelopment/:id', component: CatalogDevelopmentComponent, canActivate: [AuthGuard]},
   {path: 'catalogdevelopment/:id/:orgname/:spacename', component: CatalogDevelopmentComponent, canActivate: [AuthGuard]},
   {path: 'catalogservice/:id', component: CatalogServiceComponent, canActivate: [AuthGuard]},
-  {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard]},
+  {path: 'logout', component: LogoutComponent},
   {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},
   {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]},
   {path: 'tailLogs', component: TailLogsComponent, canActivate: [AuthGuard]},

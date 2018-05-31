@@ -11,19 +11,15 @@ import {SecurityService} from '../auth/security.service';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private router: Router, private common: CommonService,private log: NGXLogger) {
+  constructor(private router: Router, private security: SecurityService,private log: NGXLogger) {
     this.LogOut();
-    router.navigate(['/']);
   }
 
   ngOnInit() {
   }
 
   LogOut() {
-    this.common.isLogin = false;
-    this.log.debug('Logout:::::::::::::::::::::::::::::::::::::::');
-    this.common.signOut();
-    this.router.navigate(['/']);
+    this.security.doLogout();
   }
 
 }
