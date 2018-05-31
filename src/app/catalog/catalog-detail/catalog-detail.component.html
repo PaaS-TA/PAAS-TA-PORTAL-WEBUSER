@@ -20,7 +20,7 @@
                   <ul class="icon">
                     <li *ngFor="let app of apptemplate">
                       <div>
-                        <img title="{{app.description}}" src="../../../assets/resources/images/catalog/{{app.thumbImgName}}" alt="{{app.name}}" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
+                        <img title="{{app.description}}" src="{{app.thumbImgPath}}" alt="{{app.name}}" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
                       </div>
                     </li>
                   </ul>
@@ -83,7 +83,7 @@
                     </tr>
                     <tr>
                       <td>
-                        <select [(ngModel)]="space">
+                        <select [(ngModel)]="space" (ngModelChange)="spaceSelect()">
                           <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}
                           </option>
                         </select>
@@ -127,7 +127,7 @@
                     </tr>
                     <tr>
                       <th>
-                        <select [(ngModel)]="memory">
+                        <select [(ngModel)]="catalog.memorySize">
                           <option>512
                           </option>
                           <option>1024
@@ -139,7 +139,7 @@
                         </select>
                       </th>
                       <td>
-                        <select [(ngModel)]="disk">
+                        <select [(ngModel)]="catalog.diskSize">
                           <option>1024
                           </option>
                           <option>1280
@@ -158,7 +158,7 @@
                     </tr>
                     <tr>
                       <td colspan="2">
-                        <input text="text" disabled value="au-syd.mybluemix.net" [(ngModel)]="domain"/>
+                        <input text="text" disabled value="au-syd.mybluemix.net" [(ngModel)]="catalog.domainName"/>
                       </td>
                     </tr>
                     </tbody>
@@ -299,272 +299,6 @@
                       <td>
                         <input id='ra3' type="radio" name="ra01" />
                         <label for="ra3"></label>
-                      </td>
-                      <td>고급
-                      </td>
-                      <th><p>30 GB of free data storage</p>
-                        Tiered provisioned throughput capacity, starting at: 300 Lookups/sec
-                      </th>
-                      <th>US$5,000.00 USD/Instance
-                      </th>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="detail_bottom maT30">
-                  <table class="line_tables">
-                    <caption>서비스 이용 가격 안내
-                    </caption>
-                    <colgroup>
-                      <col style='width:10%;'>
-                      <col style='width:10%;'>
-                      <col style=''>
-                      <col style=''>
-                    </colgroup>
-                    <thead>
-                    <td><p>선택</p>
-                    </td>
-                    <td><p>상품</p>
-                    </td>
-                    <td><p>기능</p>
-                    </td>
-                    <td><p>가격</p>
-                    </td>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td>
-                        <input id='ra4' type="radio" name="ra02" />
-                        <label for="ra4"></label>
-                      </td>
-                      <td>기본
-                      </td>
-                      <th><p>1GB of data storage</p>
-                        Provisioned throughput capacity: 20 Lookups/sec
-                      </th>
-                      <th>무료
-                      </th>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input id='ra5' type="radio" name="ra02" />
-                        <label for="ra5"></label>
-                      </td>
-                      <td>표준
-                      </td>
-                      <th><p>10 GB of free data storage</p>
-                        Tiered provisioned throughput capacity, starting at: 100 Lookups/sec
-                      </th>
-                      <th>US$0.50 USD/Write per second
-                        <span>US$5.00 USD/Query per second</span>
-                      </th>
-                    </tr>
-                    <tr class="cur">
-                      <td>
-                        <input id='ra6' type="radio" name="ra02" checked />
-                        <label for="ra6"></label>
-                      </td>
-                      <td>고급
-                      </td>
-                      <th><p>30 GB of free data storage</p>
-                        Tiered provisioned throughput capacity, starting at: 300 Lookups/sec
-                      </th>
-                      <th>US$5,000.00 USD/Instance
-                      </th>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </dd>
-              <dd class="cWrap_table_wrap">
-                <div class="btnWrap">
-                  <span class="cWraprightspan">앱 연결여부</span>
-                  <input id="switch5" type="checkbox" checked="checked" switch2="none">
-                  <label for="switch5"></label>
-                </div>
-                <div class="cWrap_table">
-                  <table>
-                    <colgroup>
-                      <col style=''>
-                    </colgroup>
-                    <tbody>
-                    <tr>
-                      <td><p>Mqsql DBMS 서비스</p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><input type="text" placeholder="서비스 이름 입력하여 주십시오" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><p>서비스 이용 사양 선택</p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <select>
-                          <option>Mysql-Plan1-10con
-                          </option>
-                        </select>
-                        <span>This is a mysql plan1. 10 user connections</span>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="cWrap_table">
-                  <table>
-                    <colgroup>
-                      <col style='width:62px'>
-                      <col style=''>
-                    </colgroup>
-                    <tbody>
-                    <tr>
-                      <td colspan="2"><p>서비스 생성 파라미터</p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <i class="cWrapDot"></i>URL :
-                      </td>
-                      <td><input type="text" value=""/>
-                      </td>
-                    </tr>
-                    <tr class="rea">
-                      <td>
-                        <i class="cWrapDot"></i>URL :
-                      </td>
-                      <td><input type="text" value=""/>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <i class="cWrapDot"></i>URL :
-                      </td>
-                      <td><input type="text" value=""/>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="clear">
-                </div>
-                <div class="detail_bottom">
-                  <table class="line_tables">
-                    <caption>서비스 이용 가격 안내
-                    </caption>
-                    <colgroup>
-                      <col style='width:10%;'>
-                      <col style='width:10%;'>
-                      <col style=''>
-                      <col style=''>
-                    </colgroup>
-                    <thead>
-                    <td><p>선택</p>
-                    </td>
-                    <td><p>상품</p>
-                    </td>
-                    <td><p>기능</p>
-                    </td>
-                    <td><p>가격</p>
-                    </td>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td>
-                        <input id='ra7' type="radio" name="ra03" />
-                        <label for="ra7"></label>
-                      </td>
-                      <td>기본
-                      </td>
-                      <th><p>1GB of data storage</p>
-                        Provisioned throughput capacity: 20 Lookups/sec
-                      </th>
-                      <th>무료
-                      </th>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input id='ra8' type="radio" name="ra03" />
-                        <label for="ra8"></label>
-                      </td>
-                      <td>표준
-                      </td>
-                      <th><p>10 GB of free data storage</p>
-                        Tiered provisioned throughput capacity, starting at: 100 Lookups/sec
-                      </th>
-                      <th>US$0.50 USD/Write per second
-                        <span>US$5.00 USD/Query per second</span>
-                      </th>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input id='ra9' type="radio" name="ra03" />
-                        <label for="ra9"></label>
-                      </td>
-                      <td>고급
-                      </td>
-                      <th><p>30 GB of free data storage</p>
-                        Tiered provisioned throughput capacity, starting at: 300 Lookups/sec
-                      </th>
-                      <th>US$5,000.00 USD/Instance
-                      </th>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="detail_bottom maT30">
-                  <table class="line_tables">
-                    <caption>서비스 이용 가격 안내
-                    </caption>
-                    <colgroup>
-                      <col style='width:10%;'>
-                      <col style='width:10%;'>
-                      <col style=''>
-                      <col style=''>
-                    </colgroup>
-                    <thead>
-                    <td><p>선택</p>
-                    </td>
-                    <td><p>상품</p>
-                    </td>
-                    <td><p>기능</p>
-                    </td>
-                    <td><p>가격</p>
-                    </td>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td>
-                        <input id='ra10' type="radio" name="ra04" />
-                        <label for="ra10"></label>
-                      </td>
-                      <td>기본
-                      </td>
-                      <th><p>1GB of data storage</p>
-                        Provisioned throughput capacity: 20 Lookups/sec
-                      </th>
-                      <th>무료
-                      </th>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input id='ra11' type="radio" name="ra04" />
-                        <label for="ra11"></label>
-                      </td>
-                      <td>표준
-                      </td>
-                      <th><p>10 GB of free data storage</p>
-                        Tiered provisioned throughput capacity, starting at: 100 Lookups/sec
-                      </th>
-                      <th>US$0.50 USD/Write per second
-                        <span>US$5.00 USD/Query per second</span>
-                      </th>
-                    </tr>
-                    <tr class="cur">
-                      <td>
-                        <input id='ra12' type="radio" name="ra04" checked />
-                        <label for="ra12"></label>
                       </td>
                       <td>고급
                       </td>
