@@ -77,7 +77,6 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.catalogService.getDomain().subscribe(data => {
       this.domain = data['resources'][0]['entity']['name'];
       this.domainid = data['resources'][0]['metadata']['guid'];
-      console.log(this.domainid);
     });
   }
 
@@ -90,7 +89,6 @@ export class CatalogDevelopmentComponent implements OnInit {
   getRoutes(){
     this.hostnames = new Array<string>();
     this.catalogService.getRoutes(CATALOGURLConstant.GETLISTROUTE).subscribe(data => {
-      console.log(data);
       data.forEach(route => {
         this.hostnames.push(route['host']);
       });
@@ -295,7 +293,6 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.namecheck = CATALOGURLConstant.OK;
     this.appnames.forEach(name => {
       if(name === this.appname){
-        console.log(name);
         this.namecheck = CATALOGURLConstant.NO;
         this.disableButton(true);
         return;
