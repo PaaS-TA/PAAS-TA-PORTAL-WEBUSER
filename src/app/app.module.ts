@@ -52,6 +52,7 @@ import {ExternalModule} from "./external/external.module";
 import {InviteOrgComponent} from "./external/invite-org/invite-org.component";
 import {OrgQuotaService} from "./org/common/org-quota.service";
 import {OrgService} from "./org/common/org.service";
+import {QuantityModule} from "./quantity/quantity.module";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -86,6 +87,7 @@ export function createTranslateLoader(http: HttpClient) {
     DashModule,
     OrgModule,
     CatalogModule,
+    QuantityModule,
     FormsModule,
     RoutingModule,
     HttpClientModule,

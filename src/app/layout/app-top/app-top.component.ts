@@ -20,7 +20,8 @@ export class AppTopComponent implements OnInit {
   catalogName: string;
 
   allMenuCursorIds: string[] = [
-    'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc', 'cur_usermgmt', 'cur_org', 'cur_quantity'
+    'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc',
+    'cur_usermgmt', 'cur_org', 'cur_quantity',
   ];
 
   constructor(private translate: TranslateService, private common: CommonService,
@@ -66,6 +67,7 @@ export class AppTopComponent implements OnInit {
       case 'cur_dashboard':
       case 'cur_usermgmt':
       case 'cur_org':
+      case 'cur_quantity':
         short = true;
         break;
       default:

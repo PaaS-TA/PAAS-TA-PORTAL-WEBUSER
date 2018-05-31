@@ -141,6 +141,9 @@ export class DashboardComponent implements OnInit {
           console.log(exception);
         });
     });
+
+    $("[id^='apopmenu_']").hide();
+    $("[id^='layerpop']").modal("hide");
   }
 
   getOrg(value: string) {
@@ -255,9 +258,42 @@ export class DashboardComponent implements OnInit {
     });return this.getAppSummary(this.selectedSpaceId);
   }
 
-  startAppClick() {
-    return this.appMainService.getAppStats(this.selectedGuid);
+  showPopAppStopClick() {
+    $("#layerpop_app_stop").modal("show");
   }
+
+  stopAppClick() {
+    $("[id^='layerpop']").modal("hide");
+    let params = {
+      guid: this.selectedGuid
+    };
+    this.appMainService.stopApp(params).subscribe(data => {
+      this.getAppSummary(this.selectedSpaceId);
+      this.ngOnInit();
+    });
+  }
+
+  showPopAppStartClick() {
+    $("#layerpop_app_start").modal("show");
+  }
+
+  startAppClick() {
+    $("[id^='layerpop']").modal("hide");
+    let params = {
+      guid: this.selectedGuid,
+      orgName: this.org['name'],
+      spaceName: this.space['name'],
+      name: this.selectedName
+    };
+    this.appMainService.startApp(params).subscribe(data => {
+      this.getAppSummary(this.selectedSpaceId);
+      this.ngOnInit();
+    });
+  }
+
+  // startAppClick() {
+  //   return this.appMainService.getAppStats(this.selectedGuid);
+  // }
 
   createUserProvided(){
     let params = {

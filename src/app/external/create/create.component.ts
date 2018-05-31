@@ -44,16 +44,16 @@ export class CreateComponent implements OnInit {
           let now = new Date();
           if (accessTime <= now.getTime().toString()) {
             let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-            this.externalService.updateToken(this.userId, userInfo);
+            this.externalService.updateInfo(this.userId, userInfo);
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           }
           if (accessCount > 3) {
             let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-            this.externalService.updateToken(this.userId, userInfo);
+            this.externalService.updateInfo(this.userId, userInfo);
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           } else {
             let userInfo = {'authAccessCnt': (accessCount + 1)};
-            this.externalService.updateToken(this.userId, userInfo);
+            this.externalService.updateInfo(this.userId, userInfo);
           }
         }
       });
@@ -117,13 +117,20 @@ export class CreateComponent implements OnInit {
         'tellPhone': '',
         'address': ''
       }
+
       this.externalService.createUser(param).subscribe(data => {
         this.commonService.isLoading = true;
         if (data['result'] == true) {
           this.commonService.isLoading = false;
           alert('성공적으로 생성');
-          let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-          this.externalService.updateToken(this.userId, userInfo);
+          let userInfo = {
+            'userId': this.userId,
+            'userName': this.username,
+            'refreshToken': '',
+            'authAccessTime': '',
+            'authAccessCnt': 0
+          };
+          this.externalService.updateInfo(this.userId, userInfo);
           this.router.navigate(['login']);
         } else {
           alert(data['msg']);

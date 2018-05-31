@@ -17,7 +17,7 @@ export class ExternalcommonService {
     return this.commonService.doPost('/portalapi/v2/users/password/reset', param, '');
   }
 
-  updateToken(userId: string, param) {
+  updateInfo(userId: string, param) {
     return this.commonService
       .doPut('/commonapi/v2/user/' + userId, param, '').map((res: Response) => {
         return res['result'];
