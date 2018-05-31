@@ -177,7 +177,6 @@
                 <td>이름</td>
                 <th> {{user['userName']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
-                <td>
               </tr>
               <tr class="on">
                 <td colspan="3">
@@ -198,7 +197,6 @@
                 <td>전화번호</td>
                 <th>{{user['tellPhone']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
-                <td>
               </tr>
               <tr class="on">
                 <td colspan="3">
@@ -206,15 +204,14 @@
                     <div class="account_table_in">
                                                 <span>새 전화번호
                                                 </span>
-                      <input type="text" name="tellPhone" [(ngModel)]="user['tellPhone']" ng-model-options="{ getterSetter: true }" ng-required="true" ng-pattern="/^\d{3}-\d{3,4}-\d{4}$/" />
+                      <input type="text" name="tellPhone" [(ngModel)]="user['tellPhone']" ng-model-options="{ getterSetter: true }" ng-required="true" require ng-pattern="/^\d{0,9}(\.\d{1,9})?$/" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
-                      <span class="red" use-form-error="isNotSame" *ngIf="user['tellPhone']!=''">
-                                                    <i class="fas fa-exclamation-circle" ></i>
-                                                    숫자 입력만 가능합니다.
+                      <span class="red" name="isNotSame" use-form-error="isNotSame" *ngIf="tellPhone !='require ng-pattern'">
+                        <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
                       </span>
                     </div>
                   </div>
@@ -224,8 +221,7 @@
                 <td>우편번호</td>
                 <th>{{user['zipCode']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
-                <td>
-              </tr>
+                    </tr>
               <tr class="on">
                 <td colspan="3">
                   <div class="">
@@ -251,8 +247,7 @@
                 <td>주소</td>
                 <th>{{user['address']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
-                <td>
-              </tr>
+                        </tr>
               <tr class="on">
                 <td colspan="3">
                   <div class="">
