@@ -126,9 +126,8 @@ export class AppMainComponent implements OnInit {
   public sltChartGroupBy: number;
 
 
-  constructor(private route: ActivatedRoute, private router: Router, private appMainService: AppMainService, private common: CommonService) {
+  constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
-    
 
     // translate.setDefaultLang('ko');
     //
