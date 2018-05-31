@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NGXLogger} from "ngx-logger";
 import {BuildPack, CatalogService, ServicePack} from "../main/catalog.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
@@ -45,7 +45,7 @@ export class CatalogServiceComponent implements OnInit {
 
   radionumber:number;
 
-  constructor(private route:ActivatedRoute, private catalogService:CatalogService, private log:NGXLogger) {
+  constructor(private router : Router, private route:ActivatedRoute, private catalogService:CatalogService, private log:NGXLogger) {
 
   }
 
@@ -156,7 +156,8 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   appList() {
-    this.apps = new Array<App>();
+    if(this.servicepack.appBindYn === CATALOGURLConstant.YN)
+    {this.apps = new Array<App>();
     this.appsFirst();
     this.catalogService.getAppNames(CATALOGURLConstant.GETLISTAPP + this.org.guid + '/' + this.space.guid).subscribe(data => {
       data['resources'].forEach(app => {
@@ -164,7 +165,7 @@ export class CatalogServiceComponent implements OnInit {
       })
       this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE);
       this.serviceInstanceList();
-    });
+    });}
 
 
   }
@@ -192,7 +193,6 @@ export class CatalogServiceComponent implements OnInit {
         return;
       }
     });
-    console.log(this.disablebutton);
     this.disableButton(false);
   }
 
@@ -231,7 +231,7 @@ export class CatalogServiceComponent implements OnInit {
 
   insertHistroy() {
 
-    this.catalogService.postHistroy(CATALOGURLConstant.INSERTHISTROY, new cataloghistroy(this.servicepack.no, CATALOGURLConstant.SERVICEPACK, this.catalogService.getUserid())).subscribe(data => console.log(data));
+    this.catalogService.postHistroy(CATALOGURLConstant.INSERTHISTROY, new cataloghistroy(this.servicepack.no, CATALOGURLConstant.SERVICEPACK, this.catalogService.getUserid())).subscribe(data => data);
   }
 
   createService() {
@@ -243,11 +243,11 @@ export class CatalogServiceComponent implements OnInit {
       parameter: this.setParmeterData(this.parameter, this.hiddenparameter),
       app_bind_parameter: this.setParmeterData(this.appparameter, this.hiddenappparameter)
     };
-    console.log(params);
-    // this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
-    // {
-    //   console.log(data);
-    // });
+    this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
+    {
+      alert("서비스생성 완료");
+      this.router.navigate(['dashboard']);
+    });
   }
 
   settingRadioId() {
