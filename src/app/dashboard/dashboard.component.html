@@ -87,7 +87,9 @@
                     <i class="fas fa-ellipsis-v" (click)="popclick('apopmenu_'+i,'app',item.guid,item.name)" ></i>
                     <ol class="space_pop_submenu" id="apopmenu_{{i}}">
                       <li data-target="#layerpop1" data-toggle="modal"><a class="fas fa-edit"> 앱 이름변경</a></li>
-                      <li><a class="fas fa-play" (click)="startAppClick(itme.guid)"> 실행</a></li>
+                      <!--<li><a class="fas fa-play" (click)="startAppClick(itme.guid)"> 실행</a></li>-->
+                      <li *ngIf="item.state == 'STARTED'"><a class="fas fa-stop" (click)="showPopAppStopClick()"> 정지</a></li>
+                      <li *ngIf="item.state != 'STARTED'"><a class="fas fa-play" (click)="showPopAppStartClick()"> 실행</a></li>
                       <li data-target="#layerpop2" data-toggle="modal"><a class="fas fa-trash-alt"> 삭제</a></li>
                     </ol>
                   </div>
@@ -117,9 +119,11 @@
                     </ul>
                   </div>
                   <div class="clear"></div>
-                  <div class="app_btn">
-                    <button class="btns colors1"><img src="../../../assets/resources/images/main/RUNNING.svg" alt=""/>STAGED
-                    </button>
+                  <div class="app_btn" [ngSwitch]="item.state">
+                    <button class="btns colors1" *ngSwitchCase="'STARTED'"><img src="../../../assets/resources/images/main/RUNNING.svg" alt=""/>STARTED</button>
+                    <button class="btns colors2" *ngSwitchCase="'DOWNED'"><img src="../../../assets/resources/images/main/energy.svg" alt=""/>DOWN</button>
+                    <button class="btns colors2"*ngSwitchCase="'CRASHED'"><img src="../../../assets/resources/images/main/energy.svg" alt=""/>CRASHED</button>
+                    <button class="btns colors3" *ngSwitchDefault><img src="../../../assets/resources/images/main/moon.svg" alt=""/>STOP</button>
                   </div>
                   <div class="app_graph clearfix">
                     <div>DISK</div>
@@ -379,6 +383,57 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="layerpop_app_stop">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">{{ 'appMain.layerpop.appStop.title' | translate }}</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>App {{selectedName}} 을 정지하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="stopAppClick()">{{ 'appMain.layerpop.appStop.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'appMain.layerpop.appStop.btn2' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_app_start">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">{{ 'appMain.layerpop.appStart.title' | translate }}</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>App {{selectedName}} 을 시작하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="startAppClick()">{{ 'appMain.layerpop.appStart.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'appMain.layerpop.appStart.btn2' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 <div class="footer_n">Copyright © 2018 PaaS-TA. All rights reserved</div>
 </html>

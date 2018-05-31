@@ -32,6 +32,7 @@ import {CatalogServiceComponent} from "./catalog/catalog-service/catalog-service
 import {CreateComponent} from "./external/create/create.component";
 import {ResetComponent} from "./external/reset/reset.component";
 import {InviteOrgComponent} from "./external/invite-org/invite-org.component";
+import {QuantityMainComponent} from "./quantity/quantity-main/quantity-main.component";
 
 /*
 * Route 모듈 설정
@@ -64,6 +65,7 @@ const routes: Routes = [
   {path: 'tailLogs', component: TailLogsComponent, canActivate: [AuthGuard]},
   {path: 'dashboardSpace', component: DashboardSpaceComponent, canActivate: [AuthGuard]},
   {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]},
+  {path: 'quantity', component: QuantityMainComponent, canActivate: [AuthGuard]},
   {path: 'createuser', component: CreateuserComponent},
   {path: 'resetpasswd', component: ResetpasswdComponent},
   {path: 'authcreate', component: CreateComponent},
