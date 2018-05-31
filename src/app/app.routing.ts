@@ -65,12 +65,12 @@ const routes: Routes = [
   {path: 'tailLogs', component: TailLogsComponent, canActivate: [AuthGuard]},
   {path: 'dashboardSpace', component: DashboardSpaceComponent, canActivate: [AuthGuard]},
   {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]},
+  {path: 'quantity', component: QuantityMainComponent, canActivate: [AuthGuard]},
   {path: 'createuser', component: CreateuserComponent},
   {path: 'resetpasswd', component: ResetpasswdComponent},
   {path: 'authcreate', component: CreateComponent},
   {path: 'authreset', component: ResetComponent},
   {path: 'inviteorg', component: InviteOrgComponent},
-  {path: 'quantity', component: QuantityMainComponent},
   {path: 'error', component: ErrorComponent}
 
 ];
