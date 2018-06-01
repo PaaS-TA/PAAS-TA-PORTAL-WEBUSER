@@ -350,9 +350,23 @@ export class AppMainComponent implements OnInit {
           }
         });
 
-        this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
-        this.appStatsMemoryPer = Math.round(mem / cnt);
-        this.appStatsDiskPer = Math.round(disk / cnt);
+        if(cpu > 0){
+          this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
+        } else {
+          this.appStatsCpuPer = 0;
+        }
+        
+        if(mem > 0) {
+          this.appStatsMemoryPer = Math.round(mem / cnt);
+        } else {
+          this.appStatsMemoryPer = 0;
+        }
+
+        if(mem > 0) {
+          this.appStatsDiskPer = Math.round(disk / cnt);
+        } else {
+          this.appStatsDiskPer = 0;
+        }
 
         $("#cpuPer").val(this.appStatsCpuPer);
         $("#memoryPer").val(this.appStatsMemoryPer);

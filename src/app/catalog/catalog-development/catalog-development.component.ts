@@ -44,7 +44,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   appurl: string =''; // 앱URL
   memory: number; // 메모리
   disk: number; // 디스크
-  appStart : boolean = false; // 앱 시작 여부
+  appStart : boolean = true; // 앱 시작 여부
 
   constructor(private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
     this.catalogService.isLoading(false);
@@ -271,7 +271,7 @@ export class CatalogDevelopmentComponent implements OnInit {
               this.router.navigate(['dashboard']);
             });
           }, error =>{
-            alert(error);
+            alert("Time out Error");
             this.log.debug(error);
             this.catalogService.isLoading(false);
             this.router.navigate(['dashboard']);
