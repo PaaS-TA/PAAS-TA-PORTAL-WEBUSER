@@ -4,14 +4,14 @@ import {NGXLogger} from 'ngx-logger';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {DashboardService,Service} from './dashboard.service';
+import {DashboardService, Service} from './dashboard.service';
 import {OrgService} from "../org/common/org.service";
 import {Organization} from "../model/organization";
 import {SpaceService} from "../space/space.service";
 import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
-import {CatalogService,ServicePack,BuildPack,StarterPack} from '../catalog/main/catalog.service';
+import {CatalogService, ServicePack, BuildPack, StarterPack} from '../catalog/main/catalog.service';
 import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 
 declare var $: any;
@@ -48,9 +48,9 @@ export class DashboardComponent implements OnInit {
   public selectedType: string;
   public selectedName: string;
 
-  public userProvidedServiceName : string;
-  public userProvidedCredentials : string;
-  public userProvidedSyslogDrainUrl : string;
+  public userProvidedServiceName: string;
+  public userProvidedCredentials: string;
+  public userProvidedSyslogDrainUrl: string;
 
   private appStatsCpuPer: number;
   private appStatsMemoryPer: number;
@@ -70,6 +70,8 @@ export class DashboardComponent implements OnInit {
   public servicesEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
 
+  public currentOrg: string;
+  public currentSpace: string;
 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
@@ -109,10 +111,29 @@ export class DashboardComponent implements OnInit {
     this.appNewName = null;
     this.appDelName = '';
     this.selectedName = '';
-
+    this.selectedGuid = '';
     this.userProvidedServiceName = '';
     this.userProvidedCredentials = '';
     this.userProvidedSyslogDrainUrl = '';
+
+    this.currentSpace = '';
+    this.currentOrg = '';
+    if (this.commonService.getCurrentOrgName() != null) {
+      this.currentOrg = this.commonService.getCurrentOrgName();
+      this.currentSpace = this.commonService.getCurrentSpaceGuid();
+      //TODO 수정이 필요함...Space 안불러옴
+      // this.commonService.isLoading = true;
+      // this.currentSpaceBox();
+    }
+  }
+
+  currentSpaceBox(){
+    this.log.debug("currentSpaceBox");
+    if(this.orgs.length > 0){
+      this.getOrg(this.currentOrg);
+    }else{
+      setTimeout(this.currentSpaceBox(), 3000);
+    }
   }
 
   ngOnInit() {
@@ -125,12 +146,12 @@ export class DashboardComponent implements OnInit {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS).subscribe(data => {
       this.dashboardService.ServiceInit(data['list']);
     });
-    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid).subscribe(data => {
+    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS + this.userid).subscribe(data => {
       this.dashboardService.RecentInit(data);
 
     });
 
-    console.log('ngOnInit fired');
+
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
@@ -147,19 +168,30 @@ export class DashboardComponent implements OnInit {
   }
 
   getOrg(value: string) {
+    this.log.debug("::::1 " + value);
     if (value != '') {
+
       this.spaces = [];
       this.org = this.orgs.find(org => org.name === value);
       this.isLoadingSpaces = true;
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;
+      this.log.debug(this.orgs);
       if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
+
         this.isLoadingSpaces = false;
         this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
         // this.log.debug(this.spaces);
+
+        /*
+         * 세이브 ORG 정보
+         */
+        this.commonService.setCurrentOrgGuid(this.org.guid);
+        this.commonService.setCurrentOrgName(this.org.name);
+
       }
-    }else{
+    } else {
       //초기화
       this.spaces = [];
       this.isEmpty = true;
@@ -169,14 +201,22 @@ export class DashboardComponent implements OnInit {
 
   getSpaces(value: string) {
     if (value != '') {
-      // this.log.debug(value);
+
       this.isEmpty = false;
       this.isSpace = true;
       this.isMessage = false;
       this.selectedSpaceId = value;
       this.space = this.spaces.find(Space => Space['_metadata']['guid'] === value);
+
+      /*
+       * 세이브 ORG 정보
+       */
+      if (this.space != null) {
+        this.commonService.setCurrentSpaceGuid(this.space.name);
+        this.commonService.setCurrentSpaceName(this.space.guid);
+      }
       this.getAppSummary(value);
-    }else{
+    } else {
       //초기화
       this.spaces = [];
       this.isEmpty = true;
@@ -188,30 +228,25 @@ export class DashboardComponent implements OnInit {
     this.showLoading();
 
     this.dashboardService.getAppSummary(value).subscribe(data => {
-
-      // 애플리케이션 DISK,Memory %
-      if (data) {
-        this.appStatsEntities = data.instances;
-        var cpu = 0;
-        var mem = 0;
-        var disk = 0;
-        var cnt = 0;
-
-        $.each(data.instances, function (key, dataobj) {
-          if (dataobj.stats != null) {
-            if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
-            if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + dataobj.stats.usage.mem / dataobj.stats.mem_quota * 100;
-            if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + dataobj.stats.usage.disk / dataobj.stats.disk_quota * 100;
-            cnt++;
-          }
-        });
-        this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
-        this.appStatsMemoryPer = Math.round(mem / cnt);
-        this.appStatsDiskPer = Math.round(disk / cnt);
-      }
       this.commonService.isLoading = false;
 
+      $.each(data.apps, function (key, dataobj) {
+        $.each(data.appsPer, function (key2, dataobj2) {
+          if (dataobj.guid == dataobj2.guid) {
+            data.apps[key]["cpuPer"] = dataobj2.cpuPer;
+            data.apps[key]["memPer"] = dataobj2.memPer;
+            data.apps[key]["diskPer"] = dataobj2.diskPer;
+          }
+        });
+      });
+
+
+      // console.log(data.apps["0"]);
       this.appEntities = data.apps;
+
+      // console.log(this.appEntities);
+
+
       // this.servicesEntities = data.services; sort 재 정렬
       this.servicesEntities = data.services.sort((serA, serB) => {
         const guidA = serA.guid;
@@ -240,7 +275,8 @@ export class DashboardComponent implements OnInit {
         console.log('failed.');
       }
       return data;
-    });return this.getAppSummary(this.selectedSpaceId);
+    });
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   delApp(guidParam: string) {
@@ -255,7 +291,8 @@ export class DashboardComponent implements OnInit {
         console.log('failed.');
       }
       return data;
-    });return this.getAppSummary(this.selectedSpaceId);
+    });
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   showPopAppStopClick() {
@@ -295,45 +332,45 @@ export class DashboardComponent implements OnInit {
   //   return this.appMainService.getAppStats(this.selectedGuid);
   // }
 
-  createUserProvided(){
+  createUserProvided() {
     let params = {
-      orgName : this.org.name,
-      spaceGuid : this.selectedSpaceId,
-      serviceInstanceName : this.service['serviceInstanceName'],
+      orgName: this.org.name,
+      spaceGuid: this.selectedSpaceId,
+      serviceInstanceName: this.service['serviceInstanceName'],
       credentialsStr: this.service['credentialsStr'],
-      syslogDrainUrl : this.service['syslogDrainUrl']
+      syslogDrainUrl: this.service['syslogDrainUrl']
     };
     this.commonService.isLoading = true;
     this.dashboardService.createUserProvided(params).subscribe(data => {
-      console.log(params,data);
+      console.log(params, data);
       this.getAppSummary(this.selectedSpaceId);
       this.commonService.isLoading = false;
       return data;
-    },error => {
+    }, error => {
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
     });
   }
 
-  updateUserProvided(){
+  updateUserProvided() {
     let params = {
-      orgName : this.org.name,
+      orgName: this.org.name,
       guid: this.selectedGuid,
-      serviceInstanceName : this.service['serviceInstanceName'],
+      serviceInstanceName: this.selectedName,
       credentialsStr: this.service['credentialsStr'],
-      syslogDrainUrl : this.service['syslogDrainUrl']
+      syslogDrainUrl: this.service['syslogDrainUrl']
     };
     this.commonService.isLoading = true;
     this.dashboardService.updateUserProvided(params).subscribe(data => {
-      console.log(params,data);
-      this.getAppSummary(this.selectedSpaceId);
-      this.commonService.isLoading = false;
-      return data;
-    }
-    ,error => {
-      this.commonService.isLoading = false;
-      this.getAppSummary(this.selectedSpaceId);
-    });
+        console.log(params, data);
+        this.getAppSummary(this.selectedSpaceId);
+        this.commonService.isLoading = false;
+        return data;
+      }
+      , error => {
+        this.commonService.isLoading = false;
+        this.getAppSummary(this.selectedSpaceId);
+      });
   }
 
   renameInstance() {
@@ -343,7 +380,8 @@ export class DashboardComponent implements OnInit {
     };
     this.dashboardService.renameInstance(params).subscribe(data => {
       return data;
-    });return this.getAppSummary(this.selectedSpaceId);
+    });
+    return this.getAppSummary(this.selectedSpaceId);
   }
 
   delInstance() {
@@ -353,7 +391,8 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.delInstance(params).subscribe(data => {
       return data;
-    });  return (this.getAppSummary(this.selectedSpaceId));
+    });
+    return (this.getAppSummary(this.selectedSpaceId));
   }
 
   //move catalogDevelopment
@@ -419,7 +458,7 @@ export class DashboardComponent implements OnInit {
       this.selectedGuid = '';
       this.selectedName = '';
     }
-    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid) +' NAME :: ' + name;
+    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid) + ' NAME :: ' + name;
   }
 
 

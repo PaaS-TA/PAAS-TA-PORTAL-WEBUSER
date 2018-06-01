@@ -83,7 +83,8 @@
                 src="https://post-phinf.pstatic.net/MjAxODAzMDVfMTgw/MDAxNTIwMjE2NDY0OTk4.cN9D63H7CpldxOjK4TEUs_knaak89GFsupYLzdW7Khgg.K8RPI6Ej247n0NX7DB47lZaosASz_iAJ2j9I023r33sg.JPEG/ALP_6823.jpg"/>
               </dt>
               <dd>
-                <button class="btns colors4">사진등록</button>
+                <!--<button class="btns colors4">사진등록</button>-->
+               <button class="btns colors4" (click)="alertMsg('개발 중입니다.')">사진등록</button>
               </dd>
             </dl>
           </div>
@@ -235,16 +236,11 @@
                     <div class="account_table_in">
                       <span>새 우편번호
                       </span>
-                      <input type="text" name="zipCode" [(ngModel)]="user['zipCode']"
-                             ng-model-options="{ getterSetter: true }" ng-reauired = "true" ng-pattern="'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$'"/>
+                      <input type="text" name="zipCode" [(ngModel)]="user['zipCode']"  ng-model-options="{ getterSetter: true }"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
-                      <span></span>
-                      <span class="red"  use-form-error="isNotSame" *ngIf="user['zipCode']!='^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$'">
-                        <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
-                      </span>
                     </div>
                   </div>
                 </td>
@@ -300,7 +296,8 @@
             <!--</div>-->
           </div>
           <div class="account_btn">
-            <button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>
+            <!--<button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>-->
+            <button class="one btns colors5" (click)="alertMsg('개발 중입니다.')" data-toggle="modal">계정삭제</button>
           </div>
         </div>
       </div><!-- row one_line -->

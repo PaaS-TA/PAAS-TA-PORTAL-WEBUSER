@@ -137,10 +137,23 @@ export class DashboardProduceComponent implements OnInit {
     this.logger.debug('Select quota : ' + this.selectQuota.name);
   }
 
+  private replaceInvalidateString() {
+	const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#@$%&\\\=\(\'\"]/g;
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+	
+	this.orgName = this.orgName.replace(regExpPattern, '')
+	  .replace(regExpBlankPattern, '')
+	  .replace(regKoreanPattern, '').substring(0, 64);
+  }
+  
+  
   isExistOrgName() {
-    const msgElement = $('#action-info-message');
+	this.replaceInvalidateString();
+	  
+	const msgElement = $('#action-info-message');
     const btnCreateOrg = $('#btn_create_org');
-
+	
     if (this.orgName == null || (this.orgName != null && "" === this.orgName.trim())) {
       msgElement.removeClass('blue');
       msgElement.addClass('red');

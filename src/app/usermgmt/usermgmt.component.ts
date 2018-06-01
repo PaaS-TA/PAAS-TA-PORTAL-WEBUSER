@@ -80,11 +80,7 @@ export class UsermgmtComponent implements OnInit {
     };
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.log(this.common.getUserGuid());
-      if (data.status == "success") {
-        alert("비밀번호 변경 되었습니다.");
-      } else {
-        alert("비밀번호 변경 실패했습니다.");
-      }
+      alert("비밀번호 변경이 완료되었습니다.");
     });
   }
 

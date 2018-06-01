@@ -189,7 +189,21 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     this.resetNewSpaceName();
   }
 
+  replaceInvalidateString($event) {
+	const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#@$%&\\\=\(\'\"]/g;
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+	
+	let typingStr = $event.target.value.replace(regExpPattern, '')
+	  .replace(regExpBlankPattern, '').replace(regKoreanPattern, '')
+	  .substring(0, 64);
+	
+	$event.target.value = typingStr;
+  }
+  
   renameSpace($event, space: Space) {
+	this.replaceInvalidateString($event);
+	
     // the value of input element (#wtc-{space.guid})
     const inputElem = $('#wtc-' + space.guid)[0];
     const wantedToChangeName = inputElem.value;

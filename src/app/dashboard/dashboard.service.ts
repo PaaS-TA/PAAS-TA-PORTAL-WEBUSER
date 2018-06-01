@@ -16,7 +16,7 @@ export class DashboardService {
 
   // @RequestMapping(value = {Constants.V2_URL+"/spaces/{spaceid}/summary"}, method = RequestMethod.GET)
   getAppSummary(spaceid: string) {
-    return this.commonService.doGet('/portalapi/v2/spaces/' + spaceid + '/summary', '').map((res: Response) => {
+    return this.commonService.doGet('/portalapi/v2/spaces/' + spaceid + '/summarylist', '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
@@ -72,7 +72,7 @@ export class DashboardService {
     }).do(console.log);
   }
 
-  
+
   StarterInit(data:any) {
     this.catalogService.starterpacks = new Array<StarterPack>();
     this.catalogService.starterpacks = data;
