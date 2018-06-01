@@ -121,10 +121,11 @@ export class DashboardComponent implements OnInit {
     if (this.commonService.getCurrentOrgName() != null) {
       this.currentOrg = this.commonService.getCurrentOrgName();
       this.currentSpace = this.commonService.getCurrentSpaceGuid();
+       console.log("currentSpace" + this.commonService.getCurrentSpaceGuid());
       //TODO 수정이 필요함...Space 안불러옴
       // this.commonService.isLoading = true;
       // this.currentSpaceBox();
-    }
+     }
   }
 
   currentSpaceBox(){
@@ -189,7 +190,7 @@ export class DashboardComponent implements OnInit {
          */
         this.commonService.setCurrentOrgGuid(this.org.guid);
         this.commonService.setCurrentOrgName(this.org.name);
-
+        this.commonService.setCurrentLocation(this.space.guid);
       }
     } else {
       //초기화
@@ -269,11 +270,6 @@ export class DashboardComponent implements OnInit {
       newName: this.selectedName,
     };
     this.dashboardService.renameApp(params).subscribe(data => {
-      if (data == 1) {
-        console.log('success');
-      } else {
-        console.log('failed.');
-      }
       return data;
     });
     return this.getAppSummary(this.selectedSpaceId);
@@ -415,7 +411,7 @@ export class DashboardComponent implements OnInit {
         space_name: space_name,
         space_guid: space_guid,
         app_name: app_name,
-        app_guid: app_guid
+        app_guid: app_guid,
       }
     });
   }
