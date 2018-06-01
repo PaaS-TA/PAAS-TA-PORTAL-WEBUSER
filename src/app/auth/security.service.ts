@@ -25,7 +25,7 @@ export class SecurityService {
   doLogout() {
     this.log.debug('doLogout()');
     this.common.signOut();
-    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
+    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
 
     window.location.href = AppConfig.logoutUrl +
       '?response_type=' + AppConfig.code +
