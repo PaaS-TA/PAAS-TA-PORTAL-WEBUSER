@@ -66,10 +66,12 @@ export class OrgInnerComponent implements OnInit, DoCheck {
               private quotaService: OrgQuotaService,
               private common: CommonService,
               private logger: NGXLogger) {
-    this.common.isLoading = true;
+
   }
 
   ngOnInit(): void {
+    this.common.isLoading = true;
+
     const orgId = this.org.guid;
     this.setSpaces(this.spaceService.getOrgSpaceList(orgId));
     this.setQuota(this.quotaService.getOrgQuota(orgId));
