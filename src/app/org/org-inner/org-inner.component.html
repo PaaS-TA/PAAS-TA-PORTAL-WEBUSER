@@ -5,6 +5,7 @@
         <div class="organization_btnin">
           <input class="tempTitle" type="text" placeholder="변경할 조직 이름을 입력하세요."
 				(keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)"
+				(focusout)="replaceInvalidateString($event)"
                 [value]="wantedOrgName" [(ngModel)]="wantedOrgName">
           <button class="btns6 colors4 yess2" (click)="renameOrg(true)">변경하기</button>
           <button class="btns6 colors5 nos2" (click)="renameOrg(false)">취소</button>
@@ -35,7 +36,7 @@
           </ul>
         </div>
       </div>
-      <p class="tit">Paas-TA / {{org.name}}</p>
+      <p class="tit">{{org.name}}</p>
     </div>
     <!-- organization_title_wrap -->
     <div class="organization_table_wrap">
@@ -344,7 +345,7 @@
                     data-dismiss="modal" (click)="cancelMember(true)">탈퇴
             </button>
             <button type="button" class="btns2 colors5"
-                    data-dismiss="modal">취소
+                    data-dismiss="modal" (click)="resetCancelMember()">취소
             </button>
           </div>
         </div>
@@ -529,7 +530,7 @@
           <!-- header -->
           <div class="modal-header">
             <!-- 닫기(x) 버튼 -->
-            <button type="button" class="close" data-dismiss="modal">×</button>
+            <button type="button" class="close" data-dismiss="modal" (click)="resetNewDomainName()">×</button>
             <!-- header title -->
             <h4 class="modal-title">도메인 추가</h4>
           </div>
@@ -537,16 +538,17 @@
           <div class="modal-body">
             <div class="">
               <input type="text" placeholder="도메인 명을 입력하세요"
-			      (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" />
+                     (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)"
+                     (keyup.enter)="addDomain($event)" [(ngModel)]="createDomainName"/>
             </div>
           </div>
           <!-- Footer -->
           <div class="modal-footer">
             <button type="button" class="btns2 colors4"
-                    data-dismiss="modal">추가
+                    data-dismiss="modal" (click)="addDomain($event)">추가
             </button>
             <button type="button" class="btns2 colors5"
-                    data-dismiss="modal">취소
+                    data-dismiss="modal" (click)="resetNewDomainName()">취소
             </button>
           </div>
         </div>
@@ -561,7 +563,7 @@
           <!-- header -->
           <div class="modal-header">
             <!-- 닫기(x) 버튼 -->
-            <button type="button" class="close" data-dismiss="modal">×</button>
+            <button type="button" class="close" data-dismiss="modal" (click)="changeQuota(false)">×</button>
             <!-- header title -->
             <h4 class="modal-title">할당량 변경</h4>
           </div>
@@ -579,7 +581,7 @@
                     data-dismiss="modal" (click)="changeQuota(true)">변경
             </button>
             <button type="button" class="btns2 colors5"
-                    data-dismiss="modal">취소
+                    data-dismiss="modal" (click)="changeQuota(false)">취소
             </button>
           </div>
         </div>
@@ -595,7 +597,7 @@
           <!-- header -->
           <div class="modal-header">
             <!-- 닫기(x) 버튼 -->
-            <button type="button" class="close" data-dismiss="modal">×</button>
+            <button type="button" class="close" data-dismiss="modal" (click)="deleteDomain(false)">×</button>
             <!-- header title -->
             <h4 class="modal-title">도메인 삭제</h4>
           </div>

@@ -47,6 +47,7 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
   private exactlyQuotaIndex = null;
 
   private createSpaceName: String = "";  // Space name it's wanted to create
+  private createDomainName: String = "";
   private selectSpace: Space = Space.empty();
   private selectQuota: OrgQuota = OrgQuota.empty();
   private selectDomain: Domain = Domain.empty();
@@ -193,17 +194,17 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
 	const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#@$%&\\\=\(\'\"]/g;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-	
+
 	let typingStr = $event.target.value.replace(regExpPattern, '')
 	  .replace(regExpBlankPattern, '').replace(regKoreanPattern, '')
 	  .substring(0, 64);
-	
+
 	$event.target.value = typingStr;
   }
-  
+
   renameSpace($event, space: Space) {
 	this.replaceInvalidateString($event);
-	
+
     // the value of input element (#wtc-{space.guid})
     const inputElem = $('#wtc-' + space.guid)[0];
     const wantedToChangeName = inputElem.value;
@@ -390,6 +391,10 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  resetCancelMember() {
+    this.selectUserRole = OrgUserRole.empty();
+  }
+
   private isValid(param): boolean {
     if (param === null || param === undefined) {
       return false;
@@ -443,6 +448,30 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     // event
     this.selectSpace = space;
     this.logger.debug('Selected space to delete is ', this.selectSpace.name, ' : ', this.selectSpace);
+  }
+
+  /*
+  if (this.createSpaceName !== null && this.createSpaceName !== "")
+      this.spaceService.createSpace(this.spaces, this.org.guid, this.createSpaceName);
+
+    if ($event != null) {
+      $('#layerpop5-' + this.org.name).modal('hide');
+    }
+
+    this.resetNewSpaceName();
+   */
+
+  addDomain($event) {
+    if (this.createDomainName != null && this.createDomainName !== "")
+      this.domainService.addDomain(this.org.guid, this.createDomainName, () => {
+        this.reloadDomains();
+      });
+
+    this.resetNewDomainName();
+  }
+
+  resetNewDomainName() {
+    this.createDomainName = "";
   }
 
   displayChangeQuota($event, quota: OrgQuota) {

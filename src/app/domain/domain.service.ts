@@ -49,7 +49,7 @@ export class DomainService {
     const domains = this.getDomainList(orgId, scope);
   }
 
-  public addDomain(orgIdParam: string, domainNameParam: string): void {
+  public addDomain(orgIdParam: String, domainNameParam: String, func?: Function): void {
     const url = this.URLDomainRequest;
     const body = {orgId: orgIdParam, domainName: domainNameParam};
 
@@ -57,6 +57,8 @@ export class DomainService {
     const observable = this.common.doPost(url, body, this.getToken());
     observable.subscribe(data => {
       this.logger.debug('Result of adding domain (' + domainNameParam + ') :', data);
+      if (func != null)
+        func();
     })
   }
 
