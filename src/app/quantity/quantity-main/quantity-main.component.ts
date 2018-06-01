@@ -16,7 +16,8 @@ declare var Chart;
 export class QuantityMainComponent implements OnInit, AfterContentChecked {
   private charts: Array<QuantityChart> = [];
   private isLoadingChart: Boolean = null;
-  constructor(private quantityService: QuantityMainService, private logger: NGXLogger) { }
+  constructor(private common: CommonService, private quantityService: QuantityMainService,
+              private logger: NGXLogger) { }
 
   ngOnInit() {
     this.getCharts();
@@ -24,6 +25,14 @@ export class QuantityMainComponent implements OnInit, AfterContentChecked {
 
   ngAfterContentChecked() {
     this.drawCharts();
+  }
+
+  alertMsg(msg) {
+    window.alert(msg);
+  }
+
+  getQuantity() {
+    this.alertMsg('준비 중입니다.');
   }
 
   getCharts() {
