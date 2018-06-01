@@ -1,13 +1,13 @@
 <header [class]="'header' + (isShortHeader? ' account' : '')" >
   <div class="logo">
-    <a [routerLink]="['../appMain']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
+    <a [routerLink]="['/dashboard']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
   </div>
   <span class="nav_toggle">
       <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1">
       <label for="checkbox-1"></label>
   </span>
   <ul class="gnb clearfix">
-    <li id="cur_dashboard" [routerLink]="['/dashboard']"><a >{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
+    <li id="cur_dashboard" ><a [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
     <li id="cur_catalog"><a [routerLink]="['/catalog']">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
     <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-3.0-Penne-">{{ 'common.top.main.linkTextDocument' | translate }}</a></li>
   </ul>

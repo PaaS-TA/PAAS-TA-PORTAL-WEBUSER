@@ -225,13 +225,13 @@ export class CatalogDevelopmentComponent implements OnInit {
   pattenTest(value){
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
     return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
   }
   routepattenTest(value){
     const regExpPattern = /[\@\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
     return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
   }
 
@@ -276,8 +276,6 @@ export class CatalogDevelopmentComponent implements OnInit {
             this.catalogService.isLoading(false);
             this.router.navigate(['dashboard']);
           });
-
-
         }
         else if (data['RESULT']===CATALOGURLConstant.FAIL){
           alert("앱생성 실패");
