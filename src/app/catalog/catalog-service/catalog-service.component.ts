@@ -196,9 +196,10 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   appList() {
-    this.catalogService.isLoading(true);
     if(this.servicepack.appBindYn === CATALOGURLConstant.YN)
-    {this.apps = new Array<App>();
+    {
+      this.catalogService.isLoading(true);
+      this.apps = new Array<App>();
     this.appsFirst();
     this.catalogService.getAppNames(CATALOGURLConstant.GETLISTAPP + this.org.guid + '/' + this.space.guid).subscribe(data => {
       data['resources'].forEach(app => {
@@ -207,8 +208,6 @@ export class CatalogServiceComponent implements OnInit {
       this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE);
       this.serviceInstanceList();
     });}
-
-
   }
 
   serviceInstanceList() {
