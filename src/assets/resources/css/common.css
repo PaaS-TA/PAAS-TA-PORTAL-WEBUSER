@@ -1403,7 +1403,9 @@ body.error_b{background:#f0f2f2;}
 .alertLayer span.alertClose{display:inline-block;position:absolute;right:15px;width:10px;height:10px;color:#d7d7d7;cursor:pointer;}
 
 .alertLayer.moveAlert{-webkit-transform:translateY(90px);transform:translateY(90px);}
-.space_alert_img.error{margin-top:150px;}
-.space_title3.error{margin-top:70px; text-align:center;}
-.space_txt.error{color:808487;font-size:18px;}
-.errorOn, .errorOn:hover, .errorOn:active{display:block; width:200px;height:50px;font-size:20px;line-height:50px;text-align:center;margin:80px auto 0;border-radius:3px;}
+
+/*180601 error page 추가*/
+.space_alert_img.error{margin-top:0;padding-top:120px;}
+.space_title3.error{margin-top:70px; text-align:center; font-size:26px}
+.space_txt.error{color:808487;font-size:16px;}
+.errorOn, .errorOn:hover, .errorOn:active{display:block; width:200px;height:50px;font-size:20px;line-height:50px;text-align:center;margin:60px auto 0;border-radius:3px;}
