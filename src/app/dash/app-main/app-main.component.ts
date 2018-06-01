@@ -129,6 +129,7 @@ export class AppMainComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
 
+
     // translate.setDefaultLang('ko');
     //
     // translate.use('ko');
@@ -1896,7 +1897,7 @@ export class AppMainComponent implements OnInit {
   }
 
   showWindowTailLogs() {
-    window.open('http://localhost:8080/tailLogs?name='+this.appName+'&org='+this.orgName+'&space='+this.spaceName+'&guid='+this.appGuid+'', '_blank', 'location=no, directories=no width=1000, height=700');
+    window.open('/tailLogs?name='+this.appName+'&org='+this.orgName+'&space='+this.spaceName+'&guid='+this.appGuid+'', '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
   showWindowAppLink(urlLink: string) {

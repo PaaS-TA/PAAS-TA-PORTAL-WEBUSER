@@ -110,6 +110,12 @@ export class CatalogServiceComponent implements OnInit {
     this.apps.push(this.app);
   }
 
+  pattenTest(value){
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
+  }
 
   ServiceInit() {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.route.snapshot.params['id']).subscribe(data => {
@@ -190,9 +196,10 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   appList() {
-    this.catalogService.isLoading(true);
     if(this.servicepack.appBindYn === CATALOGURLConstant.YN)
-    {this.apps = new Array<App>();
+    {
+      this.catalogService.isLoading(true);
+      this.apps = new Array<App>();
     this.appsFirst();
     this.catalogService.getAppNames(CATALOGURLConstant.GETLISTAPP + this.org.guid + '/' + this.space.guid).subscribe(data => {
       data['resources'].forEach(app => {
@@ -201,8 +208,6 @@ export class CatalogServiceComponent implements OnInit {
       this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE);
       this.serviceInstanceList();
     });}
-
-
   }
 
   serviceInstanceList() {
@@ -220,9 +225,16 @@ export class CatalogServiceComponent implements OnInit {
     this.disableButton(true);
     if (this.servicename.length < 1 || this.servicename.trim() === '') {
       this.namecheck = 0;
+      this.disableButton(true);
+      return;
+    }
+    if(this.pattenTest(this.servicename)){
+      this.namecheck = CATALOGURLConstant.NO;
+      this.disableButton(true);
       return;
     }
     this.namecheck = CATALOGURLConstant.OK;
+    console.log(this.servicenamelist);
     this.servicenamelist.forEach(name => {
       if (name === this.servicename) {
         this.namecheck = CATALOGURLConstant.NO;
