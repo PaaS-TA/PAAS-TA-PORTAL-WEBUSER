@@ -3,6 +3,7 @@ import {QuantityMainService} from "./quantity-main.service";
 import {Router} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
 import {RoutingModule} from "../../app.routing";
+import {CommonService} from "../../common/common.service";
 
 declare var jQuery;
 declare var $;
