@@ -2,6 +2,7 @@
   "appMain": {
     "app": {
       "rename": "Rename",
+      "restage": "Restage",
       "delete": "Delete",
       "summary": "{{ appSummaryName }} is the overview page.",
       "area": "Area",
@@ -9,7 +10,7 @@
       "space": "Space",
       "appUrl": "App URL",
       "lastPush": "Last Push",
-      "devEnv": "App Development environment",
+      "buildpack": "Buildpack",
       "maximum": "Max",
       "amount": "",
       "directInput": "DirectInput",
@@ -146,6 +147,7 @@
         "name": "Name",
         "port": "Port",
         "username": "Username",
+        "password": "Password",
         "btn1": "Confirm"
       },
       "autoscalingEdit": {
