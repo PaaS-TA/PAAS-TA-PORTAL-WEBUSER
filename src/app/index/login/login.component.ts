@@ -19,20 +19,23 @@ export class LoginComponent implements OnInit {
 
 
   constructor(public common: CommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger, private loginService: LoginService) {
-
-  }
-
-  ngOnInit() {
     this.error = false;
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     if (this.common.getToken() != null) {
       this.loginService.doGo(this.returnUrl);
+    }else{
+      this.common.isLoading = true;
+      this.oAuthLogin();
     }
     let err = this.route.snapshot.queryParams['error'];
     this.log.debug('ERROR : ' + err);
     if (err != null) {
       this.showMsg(err);
     }
+  }
+
+  ngOnInit() {
+
   }
 
 

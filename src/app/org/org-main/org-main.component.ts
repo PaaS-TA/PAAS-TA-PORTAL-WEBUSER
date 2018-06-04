@@ -67,7 +67,7 @@ export class OrgMainComponent implements AfterContentChecked, AfterViewChecked {
   }
 
   attachDetailEvent() {
-    const scriptURL = '/assets/resources/js/common.js';
+    const scriptURL = '/assets/resources/js/common2.js';
     const selfCom = this;
     const logger = this.logger;
     let retryCount = 0;

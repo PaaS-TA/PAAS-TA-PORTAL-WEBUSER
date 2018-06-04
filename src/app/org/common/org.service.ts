@@ -67,6 +67,8 @@ export class OrgService {
     let result: Array<Organization> = [];
     this.getOrgListAsPromise().then(res => {
       res.forEach(value => result.push(value));
+
+
     }).catch(res => {
       logger.error("Fail to get organization list. ", res);
       result.push(undefined);
