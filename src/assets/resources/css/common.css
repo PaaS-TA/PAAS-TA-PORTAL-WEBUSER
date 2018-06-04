@@ -145,7 +145,7 @@ header.account{height:76px;}
 .catalog > div{margin-left: 0.3%; clear: both; float: none;}
 .catalog > div:after{content:""; float:none; clear:both; display:block;}
 .catalog > div > ul{width: 100%;}
-.catalog > div > ul > li{width:23.12%; margin-right:2.5%; border: 1px solid #e6e6e6; float:left; border-radius: 3px; background: #ffffff;}
+.catalog > div > ul > li{width:23.12%; margin-right:2.5%; border: 1px solid #e6e6e6; float:left; border-radius: 3px; background: #ffffff; cursor: pointer;}
 .catalog > div > ul > li:nth-child(4n){margin-right:0%;}
 .catalog > div > ul > li:nth-child(n+5){margin-top:30px;}
 .catalog > div > ul > li:hover{ border: 1px solid #357f94;}
@@ -424,8 +424,7 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
 */
 
 .nav_2d{position: absolute; left:119px; top:0; width: 250px; margin:0; padding:0; z-index: 9999999; background: #f5f5f5; display: none;
-  border-left: solid 1px #e7eaec; box-shadow:0px 1px 10px black;}
-
+  border-left: solid 1px #e7eaec; box-shadow:0px 1px 10px black; }
 .nav_2d div > ul > li{color:#808487; font-size:14px;  margin-bottom:20px; margin-bottom:20px; padding-left:20px; cursor: pointer;}
 .nav_2d div > ul > li i{width:24px;}
 .nav_2d div > ul > li.titles{ color:#293133; font-size:16px; margin-top:40px; cursor: default; }

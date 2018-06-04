@@ -29,7 +29,7 @@
                   </i>
                   <div class="col-6 icon_T">
                     <h5 class="icon_TT">{{apptemplate[0].name}}</h5>
-                    <span class="icon_TC">{{apptemplate[0].description}}
+                    <span class="icon_TC" [innerHTML]="apptemplate[0].description">
                                         </span>
                   </div>
                 </div>
@@ -174,10 +174,10 @@
               <dt>
               <h4>서비스 이용사양 선택</h4>
               </dt>
-              <dd class="cWrap_table_wrap">
+              <dd class="cWrap_table_wrap" *ngFor="let serviceplan of this.serviceplanlist">
                 <div class="btnWrap">
                   <span class="cWraprightspan">앱 연결여부</span>
-                  <input id="switch4" type="checkbox" checked="checked" switch2="none">
+                  <input id="switch4" type="checkbox" [(ngModel)]="serviceplan.appbind"  switch2="none">
                   <label for="switch4"></label>
                 </div>
                 <div class="cWrap_table">
@@ -187,7 +187,7 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                      <td><p>Mqsql DBMS 서비스</p>
+                      <td><p>{{serviceplan.name}}</p>
                       </td>
                     </tr>
                     <tr>
@@ -200,11 +200,11 @@
                     </tr>
                     <tr>
                       <td>
-                        <select>
-                          <option>Mysql-Plan1-10con
+                        <select [(ngModel)]="serviceplan.plan">
+                          <option *ngFor="let plan of serviceplan.plans" [ngValue]="plan">{{plan.entity.name}}
                           </option>
                         </select>
-                        <span>This is a mysql plan1. 10 user connections</span>
+                        <span>{{serviceplan.plan.description}}</span>
                       </td>
                     </tr>
                     </tbody>

@@ -46,7 +46,7 @@
               <dl class="development_dl">
                 <dt>설명
                 </dt>
-                <dd>{{servicepack.description}}
+                <dd [innerHTML]="servicepack.description">
                 </dd>
               </dl>
               </div>
@@ -98,12 +98,12 @@
               <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSPACE}}</p></div>
                 <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSELECTSPACE}}</p></div></th>
               </tr>
-              <tr>
+              <tr *ngIf="servicepack.appBindYn === catalogcontans.YN">
                 <th colspan="3">
                   <p>앱</p>
                 </th>
               </tr>
-              <tr>
+              <tr *ngIf="servicepack.appBindYn === catalogcontans.YN">
                 <th colspan="3">
                   <select [(ngModel)]="app">
                     <option *ngFor="let app of apps" [ngValue]="app">{{app.name}}</option>

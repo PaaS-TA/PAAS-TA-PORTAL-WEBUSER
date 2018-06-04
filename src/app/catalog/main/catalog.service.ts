@@ -67,6 +67,24 @@ export class CatalogService {
     this.common.isLoading = value;
   }
 
+  getOrgName(){
+    return this.common.getCurrentOrgName();
+  }
+
+  getSpaceName(){
+    return this.common.getCurrentSpaceName();
+  }
+
+  setCurrentOrg(name, guid){
+    this.common.setCurrentOrgName(name);
+    this.common.setCurrentOrgGuid(guid);
+  }
+
+  setCurrentSpace(name, guid){
+    this.common.setCurrentSpaceName(name);
+    this.common.setCurrentSpaceGuid(guid);
+  }
+
   getUserid() : string{
     return this.common.getUserid();
   }

@@ -59,8 +59,8 @@ export class CatalogComponent implements OnInit {
   }
 
   goStarter(starter : StarterPack) {
-    //this.router.navigate(['catalogdetail', starter.no]);
-    alert("화면 구성중입니다.");
+    this.router.navigate(['catalogdetail', starter.no]);
+    //alert("화면 구성중입니다.");
   }
 
   goDevelopMent(build : BuildPack) {

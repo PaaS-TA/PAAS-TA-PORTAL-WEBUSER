@@ -50,7 +50,7 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.catalogService.isLoading(true);
+    this.catalogService.isLoading(false);
     this.activatedRouteInit();
     this.DomainInit();
     this.orgsFirst();
@@ -61,8 +61,8 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   activatedRouteInit() {
-    const orgname = this.route.snapshot.params['orgname'];
-    const spacename = this.route.snapshot.params['spacename'];
+    const orgname = this.catalogService.getOrgName();
+    const spacename = this.catalogService.getSpaceName();
     orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
     spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE, this.placeholderSetting(true)) : (this.spacename = spacename, this.placeholderSetting(false));
   }
@@ -121,6 +121,7 @@ export class CatalogServiceComponent implements OnInit {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.route.snapshot.params['id']).subscribe(data => {
 
       this.servicepack = data['list'][0];
+      console.log(this.servicepack);
       this.serviceParameterSetting(this.servicepack.parameter, 'parameter');
       this.serviceParameterSetting(this.servicepack.appBindParameter, 'appBindParameter');
       this.serviceplan = new Array<ServicePlan>();
@@ -138,9 +139,11 @@ export class CatalogServiceComponent implements OnInit {
 
   serviceAmountSetting(value){
     value = JSON.parse(value);
+    console.log(value);
     let amount;
     if(value.costs){
       amount = value.costs[0]['amount'].usd;
+
       if(amount == 0){
         return '무료';
       }return amount + '/' + value.costs[0]['unit'];
@@ -167,14 +170,20 @@ export class CatalogServiceComponent implements OnInit {
   OrgsInit() {
     this.catalogService.getOrglist().subscribe(data => {
       data['resources'].forEach(res => {
-        this.orgs.push(new Organization(res['metadata'], res['entity']));
+        const _org = new Organization(res['metadata'], res['entity']);
+        this.orgs.push(_org);
+        if(_org.name === this.orgname){
+          this.org = _org;
+        }
       });
-      this.org = this.orgs[0];
-      this.catalogService.getSpacelist(this.orgs[0].guid).subscribe(data => {
+      this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
         data['spaceList']['resources'].forEach(res => {
-          this.spaces.push(new Space(res['metadata'], res['entity'], null));
-        });
-        if (this.spaces[0])this.space = this.spaces[0];
+          const _space = new Space(res['metadata'], res['entity'], null);
+          this.spaces.push(_space);
+          if(_space.name === this.spacename){
+            this.space = _space;
+            this.appList();
+          } });
         this.catalogService.isLoading(false);
       });
     });
@@ -182,6 +191,7 @@ export class CatalogServiceComponent implements OnInit {
 
   orgSelect() {
     this.catalogService.isLoading(true);
+    this.catalogService.setCurrentOrg(this.org.name, this.org.guid);
     this.space = null;
     this.spaces = new Array<Space>();
     this.placeholderSetting(true);
@@ -196,6 +206,7 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   appList() {
+    this.catalogService.setCurrentSpace(this.space.name, this.space.guid);
     if(this.servicepack.appBindYn === CATALOGURLConstant.YN)
     {
       this.catalogService.isLoading(true);
@@ -234,7 +245,6 @@ export class CatalogServiceComponent implements OnInit {
       return;
     }
     this.namecheck = CATALOGURLConstant.OK;
-    console.log(this.servicenamelist);
     this.servicenamelist.forEach(name => {
       if (name === this.servicename) {
         this.namecheck = CATALOGURLConstant.NO;

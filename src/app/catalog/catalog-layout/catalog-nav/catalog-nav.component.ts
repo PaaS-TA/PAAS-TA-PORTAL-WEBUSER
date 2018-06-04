@@ -21,7 +21,8 @@ export class CatalogNavComponent implements OnInit {
     this.catalogService.viewPacks(true, true, true);
   }
 
-  viewStarterPack(){
+  viewStarterPack(value){
+    console.log(value);
     this.router.navigate(['catalog']);
     this.catalogService.viewPacks(true, false, false);
   }

@@ -7,6 +7,7 @@ import {Space} from "../../model/space";
 import {forEach} from "@angular/router/src/utils/collection";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Catalog} from "../model/Catalog";
+import {ServicePlan} from "../model/Serviceplan";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -17,19 +18,20 @@ declare var jQuery: any;
 export class CatalogDetailComponent implements OnInit {
 
   template: StarterPack;
-  apptemplate: Array<BuildPack|ServicePack> = new Array<BuildPack|ServicePack>(); // 앱 구성에 나오는 목록
+  apptemplate: Array<any> = new Array<any>(); // 앱 구성에 나오는 목록
+  serviceplanlist : Array<any> = new Array<any>();
   region: string; // 지역
   appname: string; //앱 이름
   appurl: string; // 앱URL
   domain: string; // 도메인
-  domainid : string; // 도메인id
   memory: number; // 메모리
   disk: number; // 디스크
   space : Space;
   org : Organization;
   orgs: Array<Organization> = new Array<Organization>(); // 조직 정보
   spaces: Array<Space> = new Array<Space>(); // 공간 정보
-  appStart : boolean = false; // 앱 시작 여부
+  appStart : boolean = true; // 앱 시작 여부
+  appbind : boolean = true;
   catalog : Catalog;
   constructor(private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
     this.catalog = new Catalog();
@@ -53,7 +55,17 @@ export class CatalogDetailComponent implements OnInit {
       this.apptemplate.push(data['Buildpack']);
       data['Servicepack'].forEach(data => {
         this.apptemplate.push(data);
-      })
+        this.catalogService.getServicePlan(CATALOGURLConstant.GETSERVICEPLAN + data.servicePackName).subscribe(list => {
+          let planlist = data;
+          planlist.appbind = true;
+          planlist.plans = list['resources'];
+          planlist.plan = planlist.plans[0];
+          this.serviceplanlist.push(planlist);
+          console.log(this.serviceplanlist);
+        }, error => {
+          alert("서비스 플랜이 없습니다.");
+        });
+      });
       this.doLayout();
       this.catalog.setMemorySize(512);
       this.catalog.setDiskSize(1024);

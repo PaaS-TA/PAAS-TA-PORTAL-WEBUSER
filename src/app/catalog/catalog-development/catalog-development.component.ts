@@ -67,8 +67,9 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   activatedRouteInit(){
-    const orgname = this.route.snapshot.params['orgname'];
-    const spacename = this.route.snapshot.params['spacename'];
+    const orgname = this.catalogService.getOrgName();
+    const spacename = this.catalogService.getSpaceName();
+    console.log(orgname, spacename);
     orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
     spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE, this.placeholderSetting(true)) : (this.spacename = spacename, this.placeholderSetting(false));
   }
@@ -144,6 +145,7 @@ export class CatalogDevelopmentComponent implements OnInit {
 
   orgSelect() {
     this.catalogService.isLoading(true);
+    this.catalogService.setCurrentOrg(this.org.name, this.org.guid);
     this.spaces = new Array<Space>();
     this.placeholderSetting(true);
     this.spacesFrist();
@@ -157,6 +159,7 @@ export class CatalogDevelopmentComponent implements OnInit {
 
   spaceSelect(){
     this.catalogService.isLoading(true);
+    this.catalogService.setCurrentSpace(this.space.name, this.space.guid);
     this.getAppNames();
     this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE);
   }
