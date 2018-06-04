@@ -6,6 +6,7 @@ import {Observable} from 'rxjs/Observable';
 import {NGXLogger} from 'ngx-logger';
 import {Organization} from '../model/organization';
 import {OrgService} from '../org/common/org.service';
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormControl} from '@angular/forms';
 import {viewWrappedDebugError} from '@angular/core/src/view/errors';
 import {validate} from 'codelyzer/walkerFactory/walkerFn';
@@ -28,7 +29,14 @@ export class UsermgmtComponent implements OnInit {
   public username: string = '';
   public password: string = '';
   public tellPhone: string;
+  public zipCode: string;
+
+  public isPassword: boolean;
+  public isRePassword: boolean;
   public isTellPhone: boolean;
+  public isZipCode : boolean;
+
+  public password_now: string = '';
   public password_new: string = '';
   public password_confirm: string = '';
   public selectedOrgGuid: string = '';
@@ -37,13 +45,17 @@ export class UsermgmtComponent implements OnInit {
   constructor(private httpClient: HttpClient, private common: CommonService,
               private userMgmtService: UsermgmtService,
               private orgService: OrgService,
-              private logger: NGXLogger) {
+              private router: Router,
+              private route: ActivatedRoute,
+              private log: NGXLogger) {
 
     this.userInfo();
     this.user = new Observable<User>();
     this.orgs = orgService.getOrgList();
     this.token = '';
     this.orgName = '';
+    this.isPassword = false;
+    this.isRePassword = true;
   }
 
 
@@ -51,44 +63,73 @@ export class UsermgmtComponent implements OnInit {
     this.userMgmtService.userinfo(this.common.getUserid()).subscribe(data => {
       this.user = data;
       this.tellPhone = data['tellPhone'];
+      this.zipCode = data['zipCode'];
       return data;
     });
   }
 
   userSave() {
-    let params = {
+    if(this.isTellPhone && this.zipCode){
+      let params = {
       userName: this.user['userName'],
-      tellPhone: this.user['tellPhone'],
-      zipCode: this.user['zipCode'],
+      tellPhone: this.tellPhone,
+      zipCode: this.zipCode,
       address: this.user['address']
     };
-    this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-      if (data == 1) {
-        console.log('success');
-      } else {
-        console.log('User does not exist');
-      }
-      console.log(data);
-      return data;
-    });
+
+      this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
+        this.common.isLoading = true;
+        if (data['result'] == true) {
+          this.common.isLoading = false;
+          alert('성공적으로 생성');
+          console.log(data);
+          return data
+        }else{
+          this.common.isLoading = false;
+        }
+      });
+    }
   }
+
+  checkPassword(event: any) {
+    this.log.debug('password_new :: ' + this.password_new);
+    var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
+    if (!reg_pwd.test(this.password_new)) {
+      this.log.debug('password :: 1');
+      this.isPassword = false;
+      return;
+    }
+    this.isPassword = true;
+  }
+
+  checkRePassword(event: any) {
+    this.log.debug('password_confirm :: ' + this.password_confirm);
+    if (this.password_new == this.password_confirm) {
+      this.isRePassword = true;
+    } else {
+      this.isRePassword = false;
+    }
+  }
+
 
   updateUserPassword() {
     let params = {
-      oldPassword: this.password,
+      oldPassword: this.password_now,
       password: this.password_new
     };
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.log(this.common.getUserGuid());
-      alert("비밀번호 변경이 완료되었습니다.");
+      //TODO : alert 메세지 알람 필수
     });
   }
 
   checkTellPhone(event: any) {
     if (this.isNumber(this.tellPhone)) {
       this.isTellPhone = true;
-    } else {
+      return this.userSave();
+    } else{
       this.isTellPhone = false;
+      return this.tellPhone;
     }
   }
 
@@ -100,6 +141,16 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
+  checkZipCode(event: any) {
+    // var reg_zip = /^[a-z0-9_-]{3,6}$/;
+    if (this.isNumber(this.zipCode)) {
+      this.isZipCode = true;
+      return this.userSave();
+    } else {
+      this.isZipCode = false;
+      return this.tellPhone;
+    }
+  }
 
   public alertMsg(msg: string) {
     alert(msg);

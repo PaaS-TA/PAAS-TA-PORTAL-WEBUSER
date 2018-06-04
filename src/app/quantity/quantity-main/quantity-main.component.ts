@@ -3,6 +3,7 @@ import {QuantityMainService} from "./quantity-main.service";
 import {Router} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
 import {RoutingModule} from "../../app.routing";
+import {CommonService} from "../../common/common.service";
 
 declare var jQuery;
 declare var $;
@@ -16,7 +17,8 @@ declare var Chart;
 export class QuantityMainComponent implements OnInit, AfterContentChecked {
   private charts: Array<QuantityChart> = [];
   private isLoadingChart: Boolean = null;
-  constructor(private quantityService: QuantityMainService, private logger: NGXLogger) { }
+  constructor(private common: CommonService, private quantityService: QuantityMainService,
+              private logger: NGXLogger) { }
 
   ngOnInit() {
     this.getCharts();
@@ -24,6 +26,14 @@ export class QuantityMainComponent implements OnInit, AfterContentChecked {
 
   ngAfterContentChecked() {
     this.drawCharts();
+  }
+
+  alertMsg(msg) {
+    window.alert(msg);
+  }
+
+  getQuantity() {
+    this.alertMsg('준비 중입니다.');
   }
 
   getCharts() {

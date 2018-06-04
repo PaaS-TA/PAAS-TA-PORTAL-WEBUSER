@@ -36,7 +36,7 @@ declare var jQuery: any;
     './org-inner.component.css',
   ],
 })
-export class OrgInnerComponent implements OnInit, AfterViewChecked {
+export class OrgInnerComponent implements OnInit, DoCheck {
   @Input('org') org: Organization;
   @Input('wantedOrgName') wantedOrgName: String;
 
@@ -66,10 +66,12 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
               private quotaService: OrgQuotaService,
               private common: CommonService,
               private logger: NGXLogger) {
-    this.common.isLoading = true;
+
   }
 
   ngOnInit(): void {
+    this.common.isLoading = true;
+
     const orgId = this.org.guid;
     this.setSpaces(this.spaceService.getOrgSpaceList(orgId));
     this.setQuota(this.quotaService.getOrgQuota(orgId));
@@ -81,7 +83,11 @@ export class OrgInnerComponent implements OnInit, AfterViewChecked {
     this.wantedOrgName = this.org.name;
   }
 
-  ngAfterViewChecked(): void {
+  ngDoCheck(): void {
+    this.afterViewChecked();
+  }
+
+  afterViewChecked(): void {
     if (null !== this.org) {
       if (this.quota.valid && this.availableQuotas.length > 0 && this.exactlyQuotaIndex === null) {
         this.exactlyQuotaIndex =

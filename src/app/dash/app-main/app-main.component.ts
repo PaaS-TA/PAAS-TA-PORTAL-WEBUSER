@@ -129,10 +129,7 @@ export class AppMainComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
 
-
-    // translate.setDefaultLang('ko');
-    //
-    // translate.use('ko');
+    setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
   }
 
   ngOnInit() {
@@ -183,17 +180,7 @@ export class AppMainComponent implements OnInit {
         this.getAutoscaling(params['app_guid']);
       } else {
         setTimeout(() => this.showLoading(), 0);
-        this.router.navigate(['dashMain']);
-
-        // this.appGuid = "80dd102d-8068-4997-b518-c3f04bcdd00f";
-        // this.getAppSummary("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        //
-        // this.getAppEvents("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        // this.getAppEnv("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        // this.getAppRecentLogs("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        // this.getAlarms("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        // this.getAlarm("80dd102d-8068-4997-b518-c3f04bcdd00f");
-        // this.getAutoscaling("80dd102d-8068-4997-b518-c3f04bcdd00f");
+        this.router.navigate(['dashboard']);
       }
 
       this.translate.get('appMain').subscribe(data => {
@@ -226,10 +213,18 @@ export class AppMainComponent implements OnInit {
         this.appSummaryPackageUpdatedAt = data.package_updated_at.replace('T', '  ').replace('Z', ' ');
       }
 
-      if (data.detected_buildpack != null && data.detected_buildpack != "") {
-        this.appSummaryBuildpack = data.detected_buildpack.substring(0, 40) + "..";
-      } else if (data.buildpack != null) {
-        this.appSummaryBuildpack = data.buildpack.substring(0, 40) + "..";
+      if(data.detected_buildpack != null && data.detected_buildpack != "") {
+        if(data.detected_buildpack.length > 40) {
+          this.appSummaryBuildpack = data.detected_buildpack.substring(0, 40) + "..";
+        } else {
+          this.appSummaryBuildpack = data.detected_buildpack;
+        }
+      } else if(data.buildpack != null) {
+        if(data.buildpack.length > 40) {
+          this.appSummaryBuildpack = data.buildpack.substring(0, 40) + "..";
+        } else {
+          this.appSummaryBuildpack = data.buildpack;
+        }
       }
 
       this.appSummaryInstance = data.instances;
@@ -297,7 +292,7 @@ export class AppMainComponent implements OnInit {
 
       $.each(data.services, function (key, dataobj) {
         $.each(servicepacks, function (key2, dataobj2) {
-          if((dataobj.service_plan.service.label == dataobj2.servicePackName) && (dataobj2.appBindYn == "Y")) {
+          if((dataobj.service_plan.service.label == dataobj2.servicePackName) && (dataobj2.appBindYn == "Y") && (dataobj2.useYn == "Y")) {
 
             if(JSON.stringify(useServices).indexOf("\"name\":\""+dataobj.name+"\"") < 0) {
               var obj = {
@@ -350,9 +345,27 @@ export class AppMainComponent implements OnInit {
           }
         });
 
-        this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
-        this.appStatsMemoryPer = Math.round(mem / cnt);
-        this.appStatsDiskPer = Math.round(disk / cnt);
+        if(cpu > 0){
+          if(Number((cpu / cnt).toFixed(0)) > 100) {
+            this.appStatsCpuPer = 100;
+          } else {
+            this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
+          }
+        } else {
+          this.appStatsCpuPer = 0;
+        }
+
+        if(mem > 0) {
+          this.appStatsMemoryPer = Math.round(mem / cnt);
+        } else {
+          this.appStatsMemoryPer = 0;
+        }
+
+        if(mem > 0) {
+          this.appStatsDiskPer = Math.round(disk / cnt);
+        } else {
+          this.appStatsDiskPer = 0;
+        }
 
         $("#cpuPer").val(this.appStatsCpuPer);
         $("#memoryPer").val(this.appStatsMemoryPer);
@@ -486,10 +499,12 @@ export class AppMainComponent implements OnInit {
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.appRestartSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.appRestartFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -542,10 +557,16 @@ export class AppMainComponent implements OnInit {
   memDirectInputClick() {
     if($("#memS2").css("display") == "none") {
       this.appSummaryMemory = $("#mem_in").val();
+      $("#memS2").next().text("M");
       $("#memS1").hide();
       $("#memS2").show();
     } else {
       this.appSummaryMemory = $("#mem_in").val();
+      if(this.appSummaryMemory >= 1024) {
+        $("#memS2").next().text("G");
+      } else {
+        $("#memS2").next().text("M");
+      }
       $("#memS2").hide();
       $("#memS1").show();
     }
@@ -572,10 +593,16 @@ export class AppMainComponent implements OnInit {
   diskDirectInputClick() {
     if($("#diskS2").css("display") == "none") {
       this.appSummaryDisk = $("#disk_in").val();
+      $("#diskS2").next().text("M");
       $("#diskS1").hide();
       $("#diskS2").show();
     } else {
       this.appSummaryDisk = $("#disk_in").val();
+      if(this.appSummaryDisk >= 1024) {
+        $("#diskS2").next().text("G");
+      } else {
+        $("#diskS2").next().text("M");
+      }
       $("#diskS2").hide();
       $("#diskS1").show();
     }
@@ -687,10 +714,12 @@ export class AppMainComponent implements OnInit {
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.appUpdateSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.appUpdateFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -737,17 +766,18 @@ export class AppMainComponent implements OnInit {
     };
     this.appMainService.updateApp(params).subscribe(data => {
       if(data) {
-        this.ngOnInit();
-
         $("#add_env").hide();
-        this.showPopAppRestageClick();
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.envAddSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
+
+        this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.envAddFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1037,12 +1067,14 @@ export class AppMainComponent implements OnInit {
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.routeAddSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.routeAddFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1057,12 +1089,14 @@ export class AppMainComponent implements OnInit {
       if(data) {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.routeDelSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.routeDelFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1145,7 +1179,7 @@ export class AppMainComponent implements OnInit {
     this.tabContentStatsListLimit = this.tabContentStatsListLimit + 5;
   }
 
-  showPopStatsResrtartClick(index: string) {
+  showPopStatsRestartClick(index: string) {
     this.sltStatsInstance = index;
     $("#layerpop_stats_restart").modal("show");
   }
@@ -1161,10 +1195,12 @@ export class AppMainComponent implements OnInit {
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.instanceRestartSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.instanceRestartFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1283,12 +1319,14 @@ export class AppMainComponent implements OnInit {
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.bindServiceSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
 
-        this.ngOnInit();
+        this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.bindServiceFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1357,14 +1395,16 @@ export class AppMainComponent implements OnInit {
     let params = {};
     this.appMainService.unbindService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
       if(data) {
-        this.ngOnInit();
-
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.unbindServiceSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
+
+        this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.unbindServiceFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1508,7 +1548,25 @@ export class AppMainComponent implements OnInit {
         }
       });
 
-      // console.log(levelsObj);
+      if(levelsArray2.length == 0)
+        levelsArray2 = [""];
+
+      if(datasetsArray.length == 0)
+        datasetsArray = [{
+          label: "",
+          data: [0],
+          lineTension: 0,
+          fill: false,
+          borderWidth: 0,
+          backgroundColor: '#d7dee6',
+          pointBorderColor: '#d7dee6',
+          pointBackgroundColor: '#d7dee6',
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointHitRadius: 10,
+          pointBorderWidth: 0,
+          pointStyle: 'rectRounded'
+        }];
 
       var speedData = null;
       speedData = {
@@ -1669,7 +1727,25 @@ export class AppMainComponent implements OnInit {
         }
       });
 
-      // console.log(levelsObj);
+      if(levelsArray2.length == 0)
+        levelsArray2 = [""];
+
+      if(datasetsArray.length == 0)
+        datasetsArray = [{
+          label: "",
+          data: [0],
+          lineTension: 0,
+          fill: false,
+          borderWidth: 0,
+          backgroundColor: '#d7dee6',
+          pointBorderColor: '#d7dee6',
+          pointBackgroundColor: '#d7dee6',
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointHitRadius: 10,
+          pointBorderWidth: 0,
+          pointStyle: 'rectRounded'
+        }];
 
       var speedData = null;
       speedData = {
@@ -1830,7 +1906,25 @@ export class AppMainComponent implements OnInit {
         }
       });
 
-      // console.log(levelsObj);
+      if(levelsArray2.length == 0)
+        levelsArray2 = [""];
+
+      if(datasetsArray.length == 0)
+        datasetsArray = [{
+          label: "",
+          data: [0],
+          lineTension: 0,
+          fill: false,
+          borderWidth: 0,
+          backgroundColor: '#d7dee6',
+          pointBorderColor: '#d7dee6',
+          pointBackgroundColor: '#d7dee6',
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointHitRadius: 10,
+          pointBorderWidth: 0,
+          pointStyle: 'rectRounded'
+        }];
 
       var speedData = null;
       speedData = {

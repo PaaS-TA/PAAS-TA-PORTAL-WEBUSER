@@ -2,6 +2,7 @@
   "appMain": {
     "app": {
       "rename": "이름변경",
+      "restage": "재시작",
       "delete": "삭제",
       "summary": "{{ appSummaryName }} 개요 페이지 입니다.",
       "area": "지역",
@@ -9,7 +10,7 @@
       "space": "공간",
       "appUrl": "앱 URL",
       "lastPush": "마지막 푸시",
-      "devEnv": "앱 개발환경",
+      "buildpack": "빌드팩",
       "maximum": "최대",
       "amount": "개",
       "directInput": "직접입력",
@@ -146,6 +147,7 @@
         "name": "Name",
         "port": "Port",
         "username": "Username",
+        "password": "Password",
         "btn1": "확인"
       },
       "autoscalingEdit": {

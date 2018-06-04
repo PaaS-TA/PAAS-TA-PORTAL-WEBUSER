@@ -1067,7 +1067,7 @@ body.email h4{color:#293133;}
 .instance_in,
 .cpu_in,
 .mem_in,
-.disk_in{width:150px; font-weight:bold; font-size:60px; line-height:68px; height:68px; vertical-align: top; background:transparent; border: 1px solid #fff!important; color:#fff!important;}
+.disk_in{width:140px; font-weight:bold; font-size:60px; line-height:68px; height:68px; vertical-align: top; background:transparent; border: 1px solid #fff!important; color:#fff!important;}
 .test{width:120px; font-size:30px; height:54px; vertical-align: top; margin-top:8px; background:transparent;}
 
 @media all and (min-width: 990px) and (max-width: 1650px) {
@@ -1402,3 +1402,9 @@ body.error_b{background:#f0f2f2;}
 .alertLayer span.alertClose{display:inline-block;position:absolute;right:15px;width:10px;height:10px;color:#d7d7d7;cursor:pointer;}
 
 .alertLayer.moveAlert{-webkit-transform:translateY(90px);transform:translateY(90px);}
+
+/*180601 error page 추가*/
+.space_alert_img.error{margin-top:0;padding-top:120px;}
+.space_title3.error{margin-top:70px; text-align:center; font-size:26px}
+.space_txt.error{color:808487;font-size:16px;}
+.errorOn, .errorOn:hover, .errorOn:active{display:block; width:200px;height:50px;font-size:20px;line-height:50px;text-align:center;margin:60px auto 0;border-radius:3px;}

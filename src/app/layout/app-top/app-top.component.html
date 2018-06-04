@@ -36,7 +36,7 @@
             <li id="cur_org">
               <a [routerLink]="['/org']">{{ 'common.top.user.linkTextOrgManager' | translate }}</a></li>
             <li id="cur_quantity">
-              <a href="javascript:void(0)" (click)="alertMsg('개발 중입니다.')">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
+              <a [routerLink]="['/quantity']">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
             </li>
           </ul>
           <p class="log_out" [routerLink]="['/logout']">{{ 'common.top.user.linkTextLogOut' | translate }}</p>
