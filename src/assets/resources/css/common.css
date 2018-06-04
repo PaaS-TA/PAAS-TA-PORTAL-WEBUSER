@@ -1068,7 +1068,7 @@ body.email h4{color:#293133;}
 .instance_in,
 .cpu_in,
 .mem_in,
-.disk_in{width:150px; font-weight:bold; font-size:60px; line-height:68px; height:68px; vertical-align: top; background:transparent; border: 1px solid #fff!important; color:#fff!important;}
+.disk_in{width:140px; font-weight:bold; font-size:60px; line-height:68px; height:68px; vertical-align: top; background:transparent; border: 1px solid #fff!important; color:#fff!important;}
 .test{width:120px; font-size:30px; height:54px; vertical-align: top; margin-top:8px; background:transparent;}
 
 @media all and (min-width: 990px) and (max-width: 1650px) {

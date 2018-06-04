@@ -10,18 +10,18 @@
             <ul class="colright_btn">
               <li class="monitoring">
                 <ul>
-                  <li *ngIf="appSummaryState == 'STARTED'"><i class="fas fa-stop" (click)="showPopAppStopClick()"></i></li>
-                  <li *ngIf="appSummaryState != 'STARTED'"><i class="fas fa-play" (click)="showPopAppStartClick()"></i></li>
+                  <li *ngIf="appSummaryState == 'STARTED'"><i class="fas fa-stop" title="Stop" (click)="showPopAppStopClick()"></i></li>
+                  <li *ngIf="appSummaryState != 'STARTED'"><i class="fas fa-play" title="Start" (click)="showPopAppStartClick()"></i></li>
                   <!--<li><i class="fas fa-stop"></i>&lt;!&ndash;i class="colorsR fas fa-sync-alt"></i&ndash;&gt;</li>-->
                 </ul>
               </li>
-              <li class="rot_deg"><i class="rot fas fa-sync-alt" (click)="showPopAppRestageClick()"></i>
+              <li class="rot_deg"><i class="rot fas fa-sync-alt" title="Refresh" (click)="refreshClick()"></i>
               </li>
               <li>
                 <i class="fas fa-ellipsis-v" (click)="showAppEditLayer()"></i>
                 <ol class="">
-                  <li class="name_inputTitle"><a class="fas fa-edit" (click)="renameAppClick()"> {{ 'appMain.app.rename' | translate }}</a>
-                  </li>
+                  <li class="name_inputTitle"><a class="fas fa-edit" (click)="renameAppClick()"> {{ 'appMain.app.rename' | translate }}</a></li>
+                  <li><a class="fas fa-sync" (click)="showPopAppRestageClick()"> {{ 'appMain.app.restage' | translate }}</a></li>
                   <li><a class="fas fa-trash-alt" (click)="showPopAppDelClick()"> {{ 'appMain.app.delete' | translate }}</a></li>
                 </ol>
               </li>
@@ -81,7 +81,7 @@
                       </button>
                     </li>
                     <li><span>{{ 'appMain.app.lastPush' | translate }}:</span>{{appSummaryPackageUpdatedAt}}</li>
-                    <li><span>{{ 'appMain.app.devEnv' | translate }}:</span>{{appSummaryBuildpack}}</li>
+                    <li><span>{{ 'appMain.app.buildpack' | translate }}:</span>{{appSummaryBuildpack}}</li>
                   </ol>
                 </dt>
               </dl>
@@ -145,12 +145,6 @@
               </dd>
               <dt>
               <ul class="instance_ul">
-                <!--li><button class="btns0 colors0"><i class="fas fa-angle-up"></i></button>
-                </li>
-                <li><button class="btns0 colors0"><i class="fas fa-angle-down"></i></button>
-                </li>
-                <li><button class="btns0 colors0">저장</button>
-                </li-->
               </ul>
               </dt>
             </dl>
@@ -163,7 +157,7 @@
                 <span class="pull-right rights"></span>
               </dt>
               <dd>
-                <span class="memS" id="memS1">{{ (appSummaryMemory >= 1024) ? (appSummaryMemory/1024) : (appSummaryMemory) }}</span>
+                <span class="memS" id="memS1">{{ (appSummaryMemory >= 1024) ? ((appSummaryMemory%1024 == 0) ? (appSummaryMemory/1024) : (appSummaryMemory/1024).toFixed(2)) : (appSummaryMemory) }}</span>
                 <span class="memS" id="memS2" style="display:none;"><input class="instance_in" id="mem_in" type="text" style="font-size: 40px;" value="{{appSummaryMemory}}" /></span>
                 <i>{{ (appSummaryMemory >= 1024) ? 'G' : 'M' }}</i><small> / {{ 'appMain.app.maximum' | translate }} {{appSummaryMemoryMax}}G</small>
                 <div class="pull-right">
@@ -198,7 +192,7 @@
                 <span class="pull-right rights"></span>
               </dt>
               <dd>
-                <span class="diskS" id="diskS1">{{ (appSummaryDisk >= 1024) ? (appSummaryDisk/1024) : (appSummaryDisk) }}</span>
+                <span class="diskS" id="diskS1">{{ (appSummaryDisk >= 1024) ? ((appSummaryDisk%1024 == 0) ? (appSummaryDisk/1024) : (appSummaryDisk/1024).toFixed(2)) : (appSummaryDisk) }}</span>
                 <span class="diskS" id="diskS2" style="display:none;"><input class="instance_in" id="disk_in" type="text" style="font-size: 40px;" value="{{appSummaryDisk}}" /></span>
                 <i>{{ (appSummaryDisk >= 1024) ? 'G' : 'M' }}</i><small> / {{ 'appMain.app.maximum' | translate }} {{appSummaryDiskMax}}G</small>
                 <div class="pull-right">
@@ -479,7 +473,7 @@
                     </tr>
                   </tbody>
                   <tfoot>
-                    <tr>
+                    <tr *ngIf="appEventsEntitiesRe.length > tabContentEventListLimit">
                       <td colspan="6">
                         <button class="btns2 btns2_1 colors4 event_btns" (click)="eventListMoreClick()">{{ 'appMain.event.more' | translate }}</button>
                       </td>
@@ -532,11 +526,11 @@
                       <td>{{item.memory}}</td>
                       <td>{{item.disk}}</td>
                       <td>{{item.uptime}} (min)</td>
-                      <th><a (click)="showPopStatsResrtartClick(item.key)"><span class="BGcolors5 btn_bg_change2">RESTART</span></a></th>
+                      <th><a (click)="showPopStatsRestartClick(item.key)"><span class="BGcolors5 btn_bg_change2">RESTART</span></a></th>
                     </tr>
                   </tbody>
                   <tfoot>
-                    <tr>
+                    <tr *ngIf="appStatusEntities.length > tabContentStatsListLimit">
                       <td colspan="7">
                           <button class="btns2 btns2_1 colors4 event_btns"  (click)="statsListMoreClick()">{{ 'appMain.stats.more' | translate }}</button>
                       </td>
