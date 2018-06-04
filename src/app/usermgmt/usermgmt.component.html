@@ -141,8 +141,8 @@
                     <div class="account_table_in">
                       <p>
                         <span>현재비밀번호</span>
-                        <input type="password" name="password" [(ngModel)]="password" ng-required="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
-                        <span class="red passred" use-form-error="isNotSame" *ngIf="password!=password">
+                        <input type="password" name="password_now" [(ngModel)]="password_now" ng-required="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/"/>
+                        <span class="red passred" use-form-error="isNotSame" *ngIf="password_now!=password_now">
                           <span></span>
                           <i class="fas fa-exclamation-circle"></i>비밀 번호가 맞지 않습니다.
                         </span>
@@ -150,17 +150,20 @@
                       <p>
                         <span>새 비밀번호
                         </span>
-                        <input type="password" name="password_new" [(ngModel)]="password_new" ng-required ="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/"/>
+                        <input type="password" [(ngModel)]="password_new" name="password_new" required="" (change)="checkPassword($event)" (keydown)="checkPassword($event)" (keyup)="checkPassword($event)">
+                        <br> <span></span>
+                        <span class="red"  use-form-error="isNotSame" *ngIf="!isPassword">
+                        <i class="fas fa-exclamation-circle"></i>영문,숫자를 혼합하여 6~20자 이내 공백 미포함</span>
                       </p>
                       <span>새 비밀번호 확인
                       </span>
-                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/" />
+                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" required="" (change)="checkRePassword($event)"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="updateUserPassword()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
-                      <span class="red"  use-form-error="isNotSame" *ngIf=" password_new && password_confirm &&password_new!=password_confirm">
+                      <span class="red"  use-form-error="isNotSame" *ngIf="!isRePassword">
                         <i class="fas fa-exclamation-circle"></i>
                         입력한 비밀 번호와 다릅니다.
                       </span>
@@ -212,9 +215,9 @@
                     <div class="account_table_in">
                       <span>새 전화번호
                       </span>
-                      <input type="text" name="tellPhone" [(ngModel)]="tellPhone" (change)="checkTellPhone($event)" (keydown)="checkTellPhone($event)" (keyup)="checkTellPhone($event)" />
+                      <input type="text" name="tellPhone" [(ngModel)]="tellPhone" (change)="checkTellPhone($event)" (keydown)="checkTellPhone($event)" (keyup)="checkTellPhone($event)"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="checkTellPhone()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
@@ -227,7 +230,7 @@
               </tr>
               <tr>
                 <td>우편번호</td>
-                <th>{{user['zipCode']}}</th>
+                <th>{{zipCode}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
                     </tr>
               <tr class="on">
@@ -236,11 +239,15 @@
                     <div class="account_table_in">
                       <span>새 우편번호
                       </span>
-                      <input type="text" name="zipCode" [(ngModel)]="user['zipCode']"  ng-model-options="{ getterSetter: true }"/>
+                      <input type="text" name="zipCode" [(ngModel)]="zipCode" (change)="checkZipCode($event)" (keydown)="checkZipCode($event)" (keyup)="checkZipCode($event)"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="checkZipCode()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
+                      <span></span>
+                      <span class="red" use-form-error="isNotSame" *ngIf="!isZipCode" >
+                        <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
+                      </span>
                     </div>
                   </div>
                 </td>
@@ -256,8 +263,7 @@
                     <div class="account_table_in">
                       <span>새 주소
                       </span>
-                      <input type="text" name="address" [(ngModel)]="user['address']"
-                             ng-model-options="{ getterSetter: true }"/>
+                      <input type="text" name="address" [(ngModel)]="user['address']" ng-model-options="{ getterSetter: true }"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
