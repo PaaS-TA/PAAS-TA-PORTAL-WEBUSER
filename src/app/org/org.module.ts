@@ -12,6 +12,7 @@ import { OrgMainNavComponent } from './org-main-nav/org-main-nav.component';
 import { DomainService } from "../domain/domain.service";
 import { OrgUserRoleService } from "./common/org-userrole.service";
 import {DashModule} from "../dash/dash.module";
+import {ANIMATION_TYPES, LoadingModule} from "ngx-loading";
 
 @NgModule({
   imports: [
@@ -19,6 +20,15 @@ import {DashModule} from "../dash/dash.module";
     RoutingModule,
     FormsModule,
     DashModule,
+    LoadingModule.forRoot({
+      animationType: ANIMATION_TYPES.chasingDots,
+      backdropBackgroundColour: 'rgba(0,0,0,0.3)',
+      backdropBorderRadius: '14px',
+      fullScreenBackdrop: true,
+      primaryColour: '#bf8cff',
+      secondaryColour: '#46adbc',
+      tertiaryColour: '#6ce6ff'
+    }),
   ],
   declarations: [
     OrgMainComponent,

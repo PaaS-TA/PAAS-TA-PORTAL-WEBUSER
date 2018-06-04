@@ -68,7 +68,6 @@ export class OrgInnerComponent implements OnInit, DoCheck {
               private quotaService: OrgQuotaService,
               private common: CommonService,
               private logger: NGXLogger) {
-
   }
 
   ngOnInit(): void {
@@ -80,6 +79,7 @@ export class OrgInnerComponent implements OnInit, DoCheck {
     this.setAvailableQuotas(this.quotaService.getOrgAvailableQuota());
     this.setOrgDomains(this.domainService.getDomainList(orgId, "all"));
     this.setOrgUserRoles(this.orgUserRoleService.getUserRoles(orgId));
+    this.setSpaceUserRoles([]);
 
     // placeholder && default value
     this.wantedOrgName = this.org.name;
@@ -214,7 +214,7 @@ export class OrgInnerComponent implements OnInit, DoCheck {
   replaceInvalidateDomainString($event) {
     //const regEmailExpPattern = /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9]+\.)?[a-zA-Z0-9-]+[a-zA-Z0-9-]*[a-zA-Z0-9]\.)*([a-zA-Z0-9])+$/g
     //const regDomainExpPattern = /^(?:(?:[a-zA-Z0-9]+\.)?[a-zA-Z0-9-]*[a-zA-Z0-9-]*[a-zA-Z0-9]\.)*([a-zA-Z0-9])+$/g
-    
+
     const regFirstExpPattern = /^[\{\}\[\]\/?,;:|\)*~`!^+<>\#\-_@$%&\\\=\(\'\"]+/g;
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#_@$%&\\\=\(\'\"]/g;
     const regLastExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#\-_@$%&\\\=\(\'\"]$/g;

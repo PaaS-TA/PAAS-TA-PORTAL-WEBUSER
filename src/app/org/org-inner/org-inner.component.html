@@ -150,7 +150,7 @@
           <thead>
           <tr>
             <td>사용자</td>
-            <td colspan="4">역할설정</td>
+            <td colspan="4">조직 역할 설정</td>
           </tr>
           </thead>
           <tbody>
@@ -422,7 +422,7 @@
               <thead>
               <tr>
                 <td>조직</td>
-                <td colspan="3">부여할 조직 내 역할</td>
+                <td colspan="3">부여할 조직 역할</td>
               </tr>
               </thead>
               <tbody>
@@ -455,7 +455,7 @@
               <thead>
               <tr>
                 <td>공간</td>
-                <td colspan="3">부여할 공간 내 역할</td>
+                <td colspan="3">부여할 공간 역할</td>
               </tr>
               </thead>
               <tbody>
@@ -747,50 +747,55 @@
           </div>
           <!-- body -->
           <div class="modal-body">
-            <!-- inviting user middle : space role -->
-            <table class="maT30">
-              <colgroup>
-                <col style=''>
-                <col style=''>
-                <col style=''>
-                <col style=''>
-              </colgroup>
-              <thead>
-              <tr>
-                <td>공간</td>
-                <td colspan="3">부여할 공간 내 역할</td>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let spaceUserRoles of spaceUserRoles">
-                <td>{{spaceUserRoles.userEmail}}</td>
-                <td>
-                  <input [id]="'invite-modal-sm-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
-                         class="checkSel3" type="checkbox" [checked]='spaceUserRoles.isSpaceManager'
-                         [disabled]="!isOrgManagerLoginnedInUser"
-                         (click)="changeSpaceUserRole($event, spaceUserRoles, 'SpaceManager')"/>
-                  <label [for]="'invite-modal-sm-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
-                         [title]="'공간 관리자'">SpaceManager</label></td>
-                <td>
-                  <input [id]="'invite-modal-sd-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
-                         class="checkSel3" type="checkbox" [checked]='spaceUserRoles.isSpaceDeveloper'
-                         [disabled]="!isOrgManagerLoginnedInUser"
-                         (click)="changeSpaceUserRole($event, spaceUserRoles, 'SpaceDeveloper')"/>
-                  <label [for]="'invite-modal-sd-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
-                         [title]="'공간 개발자'">SpaceDeveloper</label></td>
-                <td>
-                  <input [id]="'invite-modal-sa-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
-                         class="checkSel3" type="checkbox" [checked]='spaceUserRoles.isSpaceAuditor'
-                         [disabled]="!isOrgManagerLoginnedInUser"
-                         (click)="changeSpaceUserRole($event, spaceUserRoles, 'SpaceAuditor')"/>
-                  <label [for]="'invite-modal-sa-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
-                         [title]="'공간 참관인'">SpaceAuditor</label></td>
-              </tr>
-              </tbody>
-            </table>
-            <!-- checkAll event : common2.js:238 checkAll2 -->
-            <input [id]="'invite-checkAll3-' + org.indexOfOrgs" class="checkAll3" type="checkbox"/>
-            <label [for]="'invite-checkAll3-' + org.indexOfOrgs" class="maT10">전체 선택</label>
+            <ng-container *ngIf="spaceUserRoles.length > 0; else loadingBeforeChangeSpaceRole">
+              <!-- inviting user middle : space role -->
+              <table>
+                <colgroup>
+                  <col style=''>
+                  <col style=''>
+                  <col style=''>
+                  <col style=''>
+                </colgroup>
+                <thead>
+                <tr>
+                  <td>사용자</td>
+                  <td colspan="3">부여할 공간 역할</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let spaceUserRoles of spaceUserRoles">
+                  <td>{{spaceUserRoles.userEmail}}</td>
+                  <td>
+                    <input [id]="'invite-modal-sm-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           class="checkSel3" type="checkbox" [checked]='spaceUserRoles.isSpaceManager'
+                           [disabled]="!isOrgManagerLoginnedInUser"
+                           (click)="changeSpaceUserRole($event, spaceUserRoles, 'SpaceManager')"/>
+                    <label [for]="'invite-modal-sm-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           [title]="'공간 관리자'">SpaceManager</label></td>
+                  <td>
+                    <input [id]="'invite-modal-sd-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           class="checkSel3" type="checkbox" [checked]='spaceUserRoles.isSpaceDeveloper'
+                           [disabled]="!isOrgManagerLoginnedInUser"
+                           (click)="changeSpaceUserRole($event, spaceUserRoles, 'SpaceDeveloper')"/>
+                    <label [for]="'invite-modal-sd-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           [title]="'공간 개발자'">SpaceDeveloper</label></td>
+                  <td>
+                    <input [id]="'invite-modal-sa-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           class="checkSel3" type="checkbox" [checked]='spaceUserRoles.isSpaceAuditor'
+                           [disabled]="!isOrgManagerLoginnedInUser"
+                           (click)="changeSpaceUserRole($event, spaceUserRoles, 'SpaceAuditor')"/>
+                    <label [for]="'invite-modal-sa-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           [title]="'공간 참관인'">SpaceAuditor</label></td>
+                </tr>
+                </tbody>
+              </table>
+              <!-- checkAll event : common2.js:238 checkAll2 -->
+              <input [id]="'invite-checkAll3-' + org.indexOfOrgs" class="checkAll3" type="checkbox"/>
+              <label [for]="'invite-checkAll3-' + org.indexOfOrgs" class="maT10">전체 선택</label>
+            </ng-container>
+            <ng-template #loadingBeforeChangeSpaceRole>
+              <ngx-loading [show]="spaceUserRoles.length <= 0" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            </ng-template>
           </div>
           <!-- Footer -->
           <div class="modal-footer">
