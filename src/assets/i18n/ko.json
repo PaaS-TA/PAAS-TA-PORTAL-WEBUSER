@@ -147,6 +147,7 @@
         "name": "Name",
         "port": "Port",
         "username": "Username",
+        "password": "Password",
         "btn1": "확인"
       },
       "autoscalingEdit": {

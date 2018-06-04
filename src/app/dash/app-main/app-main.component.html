@@ -1403,6 +1403,12 @@
                     {{appSltEnvSystemCredentialsUsername}}
                   </td>
                 </tr>
+                <tr *ngIf="appSltEnvSystemCredentialsPassword != ''">
+                  <td>{{ 'appMain.layerpop.serviceCredentials.password' | translate }}</td>
+                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
+                    {{appSltEnvSystemCredentialsPassword}}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>

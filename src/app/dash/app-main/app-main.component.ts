@@ -129,7 +129,7 @@ export class AppMainComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
 
-    setInterval(() => { this.ngOnInit(); }, 1000 * 60);
+    setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
   }
 
   ngOnInit() {
@@ -499,10 +499,12 @@ export class AppMainComponent implements OnInit {
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.appRestartSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.appRestartFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1065,12 +1067,14 @@ export class AppMainComponent implements OnInit {
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.routeAddSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.routeAddFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1085,12 +1089,14 @@ export class AppMainComponent implements OnInit {
       if(data) {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.routeDelSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.routeDelFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1189,10 +1195,12 @@ export class AppMainComponent implements OnInit {
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.instanceRestartSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.instanceRestartFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1311,12 +1319,14 @@ export class AppMainComponent implements OnInit {
 
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.bindServiceSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
 
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.bindServiceFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
@@ -1387,12 +1397,14 @@ export class AppMainComponent implements OnInit {
       if(data) {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.unbindServiceSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
 
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.unbindServiceFail);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
     });
