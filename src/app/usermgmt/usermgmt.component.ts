@@ -168,7 +168,9 @@ export class UsermgmtComponent implements OnInit {
   }
 
   cancelOrg(orgId: string) {
-    return this.orgService.cancelOrg(orgId, this.common.getUserGuid());
+    this.common.isLoading = true;
+    this.orgService.cancelOrg(orgId, this.common.getUserGuid());
+    this.common.isLoading = false;
   }
 
   userAllDelete(){
@@ -177,18 +179,17 @@ export class UsermgmtComponent implements OnInit {
     // 로그인 삭제
     this.common.isLoading = true;
     this.apiLogin(this.username,this.password).subscribe(data => {
-      if(data ==1){
+      this.log.debug(data['user_name']);
+      if(data['user_name'] == this.user['userId']){
         this.common.isLoading = false;
         console.log('success');
         alert("delete success:)");
         // 계정삭제:cf,db
-        this.userMgmtService.userAllDelete(this.common.getUserGuid()).subscribe();
+        this.userMgmtService.userAllDelete(this.common.getUserGuid(),'').subscribe();
       }else{
         this.common.isLoading = false;
         console.log('delete does not exist');
-        alert("u email or password check :(");
       }
-      console.log(data);
       return data;
     }, error => {
       this.common.isLoading = false;
@@ -203,7 +204,6 @@ export class UsermgmtComponent implements OnInit {
       password: this.password_check
     };
     return this.common.doPost('/portalapi/login', params, '').map(data => {
-      this.log.debug(data);
       return data;
     });
   }

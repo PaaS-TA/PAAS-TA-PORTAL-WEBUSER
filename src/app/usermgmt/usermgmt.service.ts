@@ -31,8 +31,8 @@ export class UsermgmtService {
   }
 
   // @DeleteMapping(V2_URL + "/user/{guid}/all")  ::CF&DB
-  userAllDelete(guid: string,param:any){
-    return this.common.doDelete('/portalapi/v2/users/' + guid+ '/all', null,this.common.getToken()).map((res: Response) => {return res['result'];});
+  userAllDelete(guid: string, param:any){
+    return this.common.doDelete('/commonapi/v2/user/' + guid+ '/all', '', this.common.getToken()).map((res: Response) => {this.log.debug(res); return res;});
   }
 
 }
