@@ -7,10 +7,12 @@ import {NGXLogger} from 'ngx-logger';
 import {Organization} from '../model/organization';
 import {OrgService} from '../org/common/org.service';
 import {ActivatedRoute, Router} from "@angular/router";
+import {SecurityService} from "../auth/security.service";
 import {FormControl} from '@angular/forms';
 import {viewWrappedDebugError} from '@angular/core/src/view/errors';
 import {validate} from 'codelyzer/walkerFactory/walkerFn';
 import {isNumber} from "util";
+import {userInfo} from "os";
 
 declare var $: any;
 declare var jQuery: any;
@@ -33,12 +35,14 @@ export class UsermgmtComponent implements OnInit {
 
   public isPassword: boolean;
   public isRePassword: boolean;
+  public isChPassword: boolean;
   public isTellPhone: boolean;
   public isZipCode : boolean;
 
   public password_now: string = '';
   public password_new: string = '';
   public password_confirm: string = '';
+  public password_check: string = '';
   public selectedOrgGuid: string = '';
   public selectedOrgName: string = '';
 
@@ -47,6 +51,7 @@ export class UsermgmtComponent implements OnInit {
               private orgService: OrgService,
               private router: Router,
               private route: ActivatedRoute,
+              private sec: SecurityService,
               private log: NGXLogger) {
 
     this.userInfo();
@@ -56,11 +61,12 @@ export class UsermgmtComponent implements OnInit {
     this.orgName = '';
     this.isPassword = false;
     this.isRePassword = true;
+    this.isChPassword = true;
   }
-
 
   userInfo() {
     this.userMgmtService.userinfo(this.common.getUserid()).subscribe(data => {
+      console.log(data);
       this.user = data;
       this.tellPhone = data['tellPhone'];
       this.zipCode = data['zipCode'];
@@ -69,23 +75,22 @@ export class UsermgmtComponent implements OnInit {
   }
 
   userSave() {
-    if(this.isTellPhone && this.zipCode){
+    if(this.isTellPhone || this.isZipCode){
       let params = {
       userName: this.user['userName'],
       tellPhone: this.tellPhone,
       zipCode: this.zipCode,
       address: this.user['address']
     };
-
+      this.common.isLoading = true;
       this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-        this.common.isLoading = true;
-        if (data['result'] == true) {
+        if (data== 1) {
           this.common.isLoading = false;
           alert('성공적으로 생성');
           console.log(data);
-          return data
         }else{
           this.common.isLoading = false;
+          return data;
         }
       });
     }
@@ -111,6 +116,14 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
+  checkChPassword(event: any) {
+    this.log.debug('password_check :: ' + this.password_check);
+    if (this.password_now == this.password_check) {
+      this.isChPassword = true;
+    } else {
+      this.isChPassword = false;
+    }
+  }
 
   updateUserPassword() {
     let params = {
@@ -123,16 +136,6 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-  checkTellPhone(event: any) {
-    if (this.isNumber(this.tellPhone)) {
-      this.isTellPhone = true;
-      return this.userSave();
-    } else{
-      this.isTellPhone = false;
-      return this.tellPhone;
-    }
-  }
-
   isNumber(data) {
     if (isNaN(data)) {
       return false;
@@ -141,19 +144,21 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
+  checkTellPhone(event: any) {
+    if (this.isNumber(this.tellPhone)) {
+      this.isTellPhone = true;
+    } else{
+      this.isTellPhone = false;
+    }
+  }
+
   checkZipCode(event: any) {
     // var reg_zip = /^[a-z0-9_-]{3,6}$/;
     if (this.isNumber(this.zipCode)) {
       this.isZipCode = true;
-      return this.userSave();
     } else {
       this.isZipCode = false;
-      return this.tellPhone;
     }
-  }
-
-  public alertMsg(msg: string) {
-    alert(msg);
   }
 
   popclickOrg(guid: string, name: string) {
@@ -161,6 +166,79 @@ export class UsermgmtComponent implements OnInit {
     this.selectedOrgName = name;
     console.log("::GUID::" + guid + "::NAME" + name);
   }
+
+  cancelOrg(orgId: string) {
+    return this.orgService.cancelOrg(orgId, this.common.getUserGuid());
+  }
+
+  userAllDelete(){
+    console.log(":: delete start ::" + " username : " +this.user['userId'] +"  "+ "password :" + this.password_check +"  "+"userGuid :" + this.common.getUserGuid()+"  "+"Guid :" + this.common.getUserid());
+    // 로그인 시도
+    // 로그인 삭제
+    // this.common.signOut();
+    this.common.isLoading = true;
+    this.apiLogin(this.username,this.password).subscribe(data => {
+      if(data ==1){
+        this.common.isLoading = false;
+        console.log('success');
+        alert("delete success:)");
+        // 계정삭제:cf,db
+        this.userMgmtService.userAllDelete(this.common.getUserGuid()).subscribe();
+        this.userMgmtService.userDelete(this.common.getUserGuid()).subscribe();
+      }else{
+        this.common.isLoading = false;
+        console.log('delete does not exist');
+        alert("u email or password check :(");
+      }
+      console.log(data);
+      return data;
+    }, error => {
+      this.common.isLoading = false;
+    });
+  }
+
+  apiLogin(username: string, password: string) {
+    this.common.isLoading = true;
+    console.log(":: api Login ::" + " username : " +this.user['userId'] +"  "+ "password :" + this.password_check +"  "+"userGuid :" + this.common.getUserGuid()+"  "+"Guid :" + this.common.getUserid());
+    let params = {
+      id: this.user['userId'],
+      password: this.password_check
+    };
+    return this.common.doPost('/portalapi/login', params, '').map(data => {
+      this.log.debug(data);
+      return data;
+    });
+  }
+
+
+  // userAllDelete2(){
+  //   console.log(":: delete start ::" + " username : " +this.user['userId'] +"  "+ "password :" + this.password_check +"  "+"userGuid :" + this.common.getUserGuid()+"  "+"Guid :" + this.common.getUserid());
+  //   if(this.user['userId'] && this.password_check){
+  //     this.common.isLoading = true;
+  //
+  //     //'cf' delete
+  //     this.userMgmtService.userAllDelete(this.common.getUserGuid()).subscribe(data => {
+  //       console.log(data);
+  //       if(data == 1){
+  //         this.common.isLoading = false;
+  //         console.log('success');
+  //         alert("delete success:)");
+  //         //db delete
+  //         this.userMgmtService.userDelete(this.common.getUserGuid()).subscribe();
+  //       }else{
+  //         this.common.isLoading = false;
+  //         console.log('delete does not exist');
+  //         alert("u email or password check :(");
+  //       }
+  //       console.log(data);
+  //       return data;
+  //     }, error => {
+  //       // api Login
+  //       // this.userMgmtService.apiLogin(this.username, this.password).subscribe();
+  //       this.common.isLoading = false;
+  //     });
+  //   }
+  // }
 
   ngOnInit() {
     console.log('ngOnInit fired');
@@ -175,10 +253,6 @@ export class UsermgmtComponent implements OnInit {
           console.log(exception);
         });
     });
-  }
-
-  cancelOrg(orgId: string) {
-    return this.orgService.cancelOrg(orgId, this.common.getUserGuid());
   }
 
 }//
