@@ -21,23 +21,18 @@ export class UsermgmtService {
     return this.common.doGet('/commonapi/v2/user/' + username, this.common.getToken()).map((res: Response) => {return res['User'];});
   }
 
-  userSave(userId: string, param) {
+  userSave(userId: string, param:any) {
     return this.common.doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {return res['result'];});
   }
 
-  updateUserPassword(userId:string ,param){
+  updateUserPassword(userId:string ,param:any){
     console.log('TOKEN ::: ' + this.common.getToken());
     return this.common.doPut('/portalapi/v2/users/' +userId + '/password/update', param, this.common.getToken()).map((res: Response) => {return res['result'];});
   }
 
-  // @DeleteMapping(V2_URL + "/user/{userId:.+}") ::DB
-  userDelete(userId: string){
-    return this.common.doDelete('/commonapi/v2/user/' + userId, null,'').map((res: Response) => {return res['result'];});
-  }
-
-  // @DeleteMapping(value = {V2_URL + "/users/{guid}"}) ::CF
-  userAllDelete(guid: string){
-    return this.common.doDelete('/portalapi/v2/users/' + guid, null,'').map((res: Response) => {return res['result'];});
+  // @DeleteMapping(V2_URL + "/user/{guid}/all")  ::CF&DB
+  userAllDelete(guid: string,param:any){
+    return this.common.doDelete('/portalapi/v2/users/' + guid+ '/all', null,this.common.getToken()).map((res: Response) => {return res['result'];});
   }
 
 }

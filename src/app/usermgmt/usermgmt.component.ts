@@ -175,7 +175,6 @@ export class UsermgmtComponent implements OnInit {
     console.log(":: delete start ::" + " username : " +this.user['userId'] +"  "+ "password :" + this.password_check +"  "+"userGuid :" + this.common.getUserGuid()+"  "+"Guid :" + this.common.getUserid());
     // 로그인 시도
     // 로그인 삭제
-    // this.common.signOut();
     this.common.isLoading = true;
     this.apiLogin(this.username,this.password).subscribe(data => {
       if(data ==1){
@@ -184,7 +183,6 @@ export class UsermgmtComponent implements OnInit {
         alert("delete success:)");
         // 계정삭제:cf,db
         this.userMgmtService.userAllDelete(this.common.getUserGuid()).subscribe();
-        this.userMgmtService.userDelete(this.common.getUserGuid()).subscribe();
       }else{
         this.common.isLoading = false;
         console.log('delete does not exist');
@@ -209,36 +207,6 @@ export class UsermgmtComponent implements OnInit {
       return data;
     });
   }
-
-
-  // userAllDelete2(){
-  //   console.log(":: delete start ::" + " username : " +this.user['userId'] +"  "+ "password :" + this.password_check +"  "+"userGuid :" + this.common.getUserGuid()+"  "+"Guid :" + this.common.getUserid());
-  //   if(this.user['userId'] && this.password_check){
-  //     this.common.isLoading = true;
-  //
-  //     //'cf' delete
-  //     this.userMgmtService.userAllDelete(this.common.getUserGuid()).subscribe(data => {
-  //       console.log(data);
-  //       if(data == 1){
-  //         this.common.isLoading = false;
-  //         console.log('success');
-  //         alert("delete success:)");
-  //         //db delete
-  //         this.userMgmtService.userDelete(this.common.getUserGuid()).subscribe();
-  //       }else{
-  //         this.common.isLoading = false;
-  //         console.log('delete does not exist');
-  //         alert("u email or password check :(");
-  //       }
-  //       console.log(data);
-  //       return data;
-  //     }, error => {
-  //       // api Login
-  //       // this.userMgmtService.apiLogin(this.username, this.password).subscribe();
-  //       this.common.isLoading = false;
-  //     });
-  //   }
-  // }
 
   ngOnInit() {
     console.log('ngOnInit fired');
