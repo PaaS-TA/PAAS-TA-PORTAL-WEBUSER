@@ -90,7 +90,7 @@ export class DashboardComponent implements OnInit {
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
     this.userGuid = this.commonService.getUserGuid();
-
+    console.log(this.userGuid);
     this.orgs = orgService.getOrgList();
     this.service = new Observable<Service>();
 
