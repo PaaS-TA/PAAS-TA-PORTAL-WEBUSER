@@ -227,7 +227,8 @@
       "main": {
         "linkTextDashboard": "대시보드",
         "linkTextCatalog": "카탈로그",
-        "linkTextDocument": "문서"
+        "linkTextDocument": "문서",
+        "login" : "로그인"
       },
       "user": {
         "linkTextMyAccount": "내계정",

@@ -10,6 +10,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {IndexCommonService} from "./userAccountMgmt/index-common.service";
 import {CommonService} from "../common/common.service";
+import {DashModule} from "../dash/dash.module";
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import {CommonService} from "../common/common.service";
     FormsModule,
     RoutingModule,
     HttpClientModule,
+    DashModule,
   ],
   declarations: [
     IndexComponent,
