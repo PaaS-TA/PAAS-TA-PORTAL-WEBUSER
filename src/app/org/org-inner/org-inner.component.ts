@@ -566,4 +566,55 @@ export class OrgInnerComponent implements OnInit, DoCheck {
       this.common.isLoading = false;
     }));
   }
+
+
+  userInviteClick(indexOfOrgs: string) {
+    var inviteObj = {};
+    var inviteObjOrg = [];
+    var inviteObjSpace = [];
+    var orgObj = {};
+    var spaceObj = {};
+
+    orgObj = {
+      "om" : $("[id^='invite-modal-om-"+indexOfOrgs+"']").is(":checked"),
+      "bm" : $("[id^='invite-modal-bm-"+indexOfOrgs+"']").is(":checked"),
+      "oa" : $("[id^='invite-modal-oa-"+indexOfOrgs+"']").is(":checked")
+    };
+    inviteObjOrg.push(orgObj);
+    inviteObj["org"] = inviteObjOrg;
+
+    for(var i = 0; i < $("[id^='invite-modal-sm-"+indexOfOrgs+"']").length; i++ ) {
+      var spaceGuid = $("[id^='invite-modal-sm-"+indexOfOrgs+"']")[i].value;
+      var spaceRoleObj = {};
+      var roleObjSpace = [];
+
+      spaceRoleObj = {
+        "sm" : $("[id^='invite-modal-sm-"+indexOfOrgs+"']").eq(i).is(":checked"),
+        "sd" : $("[id^='invite-modal-sd-"+indexOfOrgs+"']").eq(i).is(":checked"),
+        "sa" : $("[id^='invite-modal-sa-"+indexOfOrgs+"']").eq(i).is(":checked")
+      };
+      roleObjSpace.push(spaceRoleObj);
+      spaceObj[spaceGuid] = roleObjSpace;
+    }
+    inviteObjSpace.push(spaceObj);
+    inviteObj["space"] = inviteObjSpace;
+
+    let params = {
+      orgName: this.org.name,
+      orgId: this.org.guid,
+      refreshToken: this.common.getRefreshToken(),
+      userEmail: $("[id='userEmail-"+indexOfOrgs+"']").val(),
+      userRole: JSON.stringify(inviteObj)
+    };
+
+    this.orgService.userInviteEmailSend(params).subscribe(data => {
+      if(data) {
+        $("[id^='layerpop']").modal("hide");
+        this.common.isLoading = false;
+        $(".alertLayer .in").text("사용자를 초대하였습니다.");
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
+        $(".alertLayer").addClass("moveAlert");
+      }
+    });
+  }
 }
