@@ -1,2 +1,4 @@
 /* logout mouse cursor */
 .right_nav > li .dropdown-menu#r_user .log_out{ background: #243135; text-align: center; color:#fff; font-size: 14px; line-height: 45px; border-top: 1px solid #404e52; cursor: pointer;}
+.right_nav > li > a{display:inline-block;line-height:76px;color:#fff;font-size:18px;text-align:left; font-weight: normal;}
+.right_nav > li > a:hover{color:#64e9fd ;}

@@ -227,7 +227,8 @@
       "main": {
         "linkTextDashboard": "Dashboard",
         "linkTextCatalog": "Catalog",
-        "linkTextDocument": "Document"
+        "linkTextDocument": "Document",
+        "login" : "Login"
       },
       "user": {
         "linkTextMyAccount": "My Account",

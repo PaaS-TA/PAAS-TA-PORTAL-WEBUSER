@@ -82,7 +82,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   buildInit() {
-    this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.route.snapshot.params['id']).subscribe(data => {
+    this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
       this.buildpack =  data['list'][0];
     });
   }
@@ -262,17 +262,21 @@ export class CatalogDevelopmentComponent implements OnInit {
             memorySize : this.memory,
             diskSize : this.disk,
             buildPackName: this.buildpack['buildPackName'],
-            appSampleFilePath : appSampleFilePath
+            appSampleFilePath : appSampleFilePath,
+            catalogType : CATALOGURLConstant.BUILDPACK,
+            catalogNo : this.buildpack.no,
+            userId : this.catalogService.getUserid()
           };
           this.catalogService.postApp(CATALOGURLConstant.CREATEAPP, params).subscribe(data => {
             this.log.debug(data);
-            this.catalogService.postHistroy(CATALOGURLConstant.INSERTHISTROY, new cataloghistroy(this.buildpack.no, CATALOGURLConstant.BUILDPACK, this.catalogService.getUserid())).subscribe
-            (data => {
-              alert("앱생성 성공");
-              this.log.debug(data);
-              this.catalogService.isLoading(false);
-              this.router.navigate(['dashboard']);
-            });
+             this.catalogService.isLoading(false);
+             this.router.navigate(['dashboard']);
+            // this.catalogService.postHistroy(CATALOGURLConstant.INSERTHISTROY, new cataloghistroy(this.buildpack.no, CATALOGURLConstant.BUILDPACK, this.catalogService.getUserid())).subscribe
+            // (data => {
+            //   alert("앱생성 성공");
+            //   this.log.debug(data);
+
+            // });
           }, error =>{
             alert("Time out Error");
             this.log.debug(error);

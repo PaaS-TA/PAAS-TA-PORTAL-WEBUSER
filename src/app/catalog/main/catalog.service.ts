@@ -6,10 +6,10 @@ import {CATALOGURLConstant} from "../common/catalog.constant";
 @Injectable()
 export class CatalogService {
 
-  buildpacks : Array<BuildPack> = Array<BuildPack>();
-  starterpacks : Array<StarterPack> = Array<StarterPack>();
-  recentpacks : Array<any> = Array<any>();
-  servicepacks : Array<ServicePack> = Array<ServicePack>();
+  buildpacks : Array<BuildPack>;
+  starterpacks : Array<StarterPack>;
+  recentpacks : Array<any>;
+  servicepacks : Array<ServicePack>;
   lasttime : number;
   viewstartpack : boolean = true;
   viewbuildpack : boolean = true;
@@ -23,6 +23,9 @@ export class CatalogService {
   buildPackfilter : string = '';
   servicePackfilter : string = '';
   constructor(private common: CommonService, private log: NGXLogger) {
+    this.viewstarterpacks  = new Array<StarterPack>();
+    this.viewbuildpacks  = new Array<BuildPack>();
+    this.viewservicepacks  = new Array<ServicePack>();
   }
 
   viewPacks(value, value2, value3){
@@ -83,6 +86,14 @@ export class CatalogService {
   setCurrentSpace(name, guid){
     this.common.setCurrentSpaceName(name);
     this.common.setCurrentSpaceGuid(guid);
+  }
+
+  setCurrentCatalogNumber(number){
+    this.common.setCurrentCatalogNumber(number);
+  }
+
+  getCurrentCatalogNumber(){
+    return this.common.getCurrentCatalogNumber();
   }
 
   getUserid() : string{

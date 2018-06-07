@@ -59,29 +59,34 @@ export class CatalogComponent implements OnInit {
   }
 
   goStarter(starter : StarterPack) {
-    this.router.navigate(['catalogdetail', starter.no]);
+    this.catalogService.setCurrentCatalogNumber(starter.no);
+    this.router.navigate(['catalogdetail']);
     //alert("화면 구성중입니다.");
   }
 
   goDevelopMent(build : BuildPack) {
-    this.router.navigate(['catalogdevelopment', build.no]);
+    this.catalogService.setCurrentCatalogNumber(build.no);
+    this.router.navigate(['catalogdevelopment']);
   }
 
   goService(service : ServicePack) {
-    this.router.navigate(['catalogservice', service.no]);
+    this.catalogService.setCurrentCatalogNumber(service.no);
+    this.router.navigate(['catalogservice']);
   }
 
   goHistory(any : any){
     const classification = any['classification'];
     if(classification.includes("starter_")){
-      //this.router.navigate(['catalogdetail', any['no']]);
-      alert("화면 구성중입니다.");
+      this.catalogService.setCurrentCatalogNumber(any['no']);
+      this.router.navigate(['catalogdetail']);
     }
     else if(classification.includes("buildpack_")){
-      this.router.navigate(['catalogdevelopment', any['no']]);
+      this.catalogService.setCurrentCatalogNumber(any['no']);
+      this.router.navigate(['catalogdevelopment']);
     }
     else if(classification.includes("service_")){
-      this.router.navigate(['catalogservice', any['no']]);
+      this.catalogService.setCurrentCatalogNumber(any['no']);
+      this.router.navigate(['catalogservice']);
     }
   }
 
@@ -111,7 +116,6 @@ export class CatalogComponent implements OnInit {
   ServiceInit(data : any) {
     this.catalogService.servicepacks = new Array<ServicePack>();
     this.catalogService.servicepacks = data;
-
     this.catalogService.servicepacks = this.catalogService.servicepacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }})
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;
   }
