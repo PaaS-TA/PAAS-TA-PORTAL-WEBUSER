@@ -118,7 +118,7 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   ServiceInit() {
-    this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.route.snapshot.params['id']).subscribe(data => {
+    this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
 
       this.servicepack = data['list'][0];
       console.log(this.servicepack);
@@ -294,7 +294,10 @@ export class CatalogServiceComponent implements OnInit {
       servicePlan: this.plan.guid,
       appGuid: this.app.guid,
       parameter: this.setParmeterData(this.parameter, this.hiddenparameter),
-      app_bind_parameter: this.setParmeterData(this.appparameter, this.hiddenappparameter)
+      app_bind_parameter: this.setParmeterData(this.appparameter, this.hiddenappparameter),
+      catalogType : CATALOGURLConstant.SERVICEPACK,
+      catalogNo : this.servicepack.no,
+      userId : this.catalogService.getUserid()
     };
     this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
     {

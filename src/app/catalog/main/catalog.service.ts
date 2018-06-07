@@ -88,6 +88,14 @@ export class CatalogService {
     this.common.setCurrentSpaceGuid(guid);
   }
 
+  setCurrentCatalogNumber(number){
+    this.common.setCurrentCatalogNumber(number);
+  }
+
+  getCurrentCatalogNumber(){
+    return this.common.getCurrentCatalogNumber();
+  }
+
   getUserid() : string{
     return this.common.getUserid();
   }

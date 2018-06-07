@@ -106,7 +106,7 @@ export class CommonService {
     window.sessionStorage.removeItem('admin_yn');
     window.sessionStorage.removeItem('img_path');
     window.sessionStorage.removeItem('expires_in');
-
+    window.sessionStorage.removeItem('catalog_number');
 
   }
 
@@ -406,6 +406,9 @@ export class CommonService {
   setCurrentSpaceGuid(value: any) {
     window.sessionStorage.setItem('_currentSpaceGuid', value);
   }
+  setCurrentCatalogNumber(value : any){
+    window.sessionStorage.setItem('catalog_number', value);
+  }
 
   getCurrentLocation(): any {
     return window.sessionStorage.getItem('_currentLocation');
@@ -425,5 +428,8 @@ export class CommonService {
 
   getCurrentSpaceGuid(): any {
     return window.sessionStorage.getItem('_currentSpaceGuid');
+  }
+  getCurrentCatalogNumber(): any{
+    return window.sessionStorage.getItem('catalog_number');
   }
 }

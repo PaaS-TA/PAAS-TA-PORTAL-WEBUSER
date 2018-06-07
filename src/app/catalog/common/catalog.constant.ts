@@ -28,6 +28,7 @@ export enum CATALOGURLConstant {
 
   SERVICEPACK = 'servicePack',
   BUILDPACK = 'buildPack',
+  STARTERPACK = 'starter',
   CREATESUCCESSAPP = '현재 이름으로 앱을 생성할수 있습니다.',
   CREATEFALSEAPP ='현재 이름으로 앱을 생성할수 없습니다.',
   CREATESUCCESSROUTE='현재 호스트로 라우트를 생성할수 있습니다.',
