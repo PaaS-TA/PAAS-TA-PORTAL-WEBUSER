@@ -111,7 +111,6 @@ export class CatalogComponent implements OnInit {
   ServiceInit(data : any) {
     this.catalogService.servicepacks = new Array<ServicePack>();
     this.catalogService.servicepacks = data;
-
     this.catalogService.servicepacks = this.catalogService.servicepacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }})
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;
   }
