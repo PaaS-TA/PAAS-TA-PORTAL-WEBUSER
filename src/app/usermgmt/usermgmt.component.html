@@ -142,7 +142,7 @@
                       <p>
                         <span>현재비밀번호</span>
                         <input type="password" name="password_now" [(ngModel)]="password_now" ng-required="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/"/>
-                        <span class="red passred" use-form-error="isNotSame" *ngIf="password_now!=password_now">
+                        <span class="red passred" use-form-error="isNotSame" *ngIf="!password_now">
                           <span></span>
                           <i class="fas fa-exclamation-circle"></i>비밀 번호가 맞지 않습니다.
                         </span>
@@ -153,7 +153,7 @@
                         <input type="password" [(ngModel)]="password_new" name="password_new" required="" (change)="checkPassword($event)" (keydown)="checkPassword($event)" (keyup)="checkPassword($event)">
                         <br> <span></span>
                         <span class="red"  use-form-error="isNotSame" *ngIf="!isPassword">
-                        <i class="fas fa-exclamation-circle"></i>영문,숫자를 혼합하여 6~20자 이내 공백 미포함</span>
+                        <i class="fas fa-exclamation-circle"></i>영문,숫자를 혼합하여 6~20자 이내 공백 미포함 입력만 가능합니다.</span>
                       </p>
                       <span>새 비밀번호 확인
                       </span>
@@ -217,7 +217,7 @@
                       </span>
                       <input type="text" name="tellPhone" [(ngModel)]="tellPhone" (change)="checkTellPhone($event)" (keydown)="checkTellPhone($event)" (keyup)="checkTellPhone($event)"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="checkTellPhone()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
@@ -241,7 +241,7 @@
                       </span>
                       <input type="text" name="zipCode" [(ngModel)]="zipCode" (change)="checkZipCode($event)" (keydown)="checkZipCode($event)" (keyup)="checkZipCode($event)"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="checkZipCode()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
@@ -302,8 +302,7 @@
             <!--</div>-->
           </div>
           <div class="account_btn">
-            <!--<button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>-->
-            <button class="one btns colors5" (click)="alertMsg('개발 중입니다.')" data-toggle="modal">계정삭제</button>
+            <button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>
           </div>
         </div>
       </div><!-- row one_line -->
@@ -356,13 +355,15 @@
             <p class="account_modal_p">계정 삭제를 선택 하면 모든 조직과 공간이 삭제 되며 되돌릴 수 없습니다.<br/>
               <span>{{user['userId']}}</span>을 삭제하시겠습니까?
             </p>
-            <input type="text" placeholder="이메일 입력"/><input type="text" placeholder="비밀번호 입력"/>
-            <p class="red"><i class="fas fa-exclamation-circle"></i> 비밀 번호가 일치하지 않습니다</p>
+            <input type="text" placeholder="이메일 입력" [(ngModel)]="user['userId']"/>
+            <input type="password" placeholder="비밀번호 입력" name="password_check" [(ngModel)]="password_check" (click)="checkChPassword($event)" (keydown)="checkChPassword($event)" (keyup)="checkChPassword($event)"/>
+            <p class="red"  *ngIf="!isChPassword">
+              <i class="fas fa-exclamation-circle"></i> 비밀 번호가 일치하지 않습니다</p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal">삭제</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userAllDelete()">삭제</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
