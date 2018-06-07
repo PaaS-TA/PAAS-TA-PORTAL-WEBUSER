@@ -19,7 +19,7 @@ import {NGXLogger} from 'ngx-logger';
 import {OrgUserRoleService} from "../common/org-userrole.service";
 import {DomainService} from "../../domain/domain.service";
 import {Domain} from "../../model/domain";
-import {OrgUserRole} from "../../model/userrole";
+import {OrgUserRole, SpaceUserRole} from "../../model/userrole";
 import {current} from "codelyzer/util/syntaxKind";
 
 declare var $: any;
@@ -54,6 +54,8 @@ export class OrgInnerComponent implements OnInit, DoCheck {
 
   private selectUserRole: OrgUserRole = OrgUserRole.empty();
 
+  private _spaceUserRoles: Array<SpaceUserRole>;
+
   @Output() selectEvent = new EventEmitter<Organization>();
   @Output() removeEvent = new EventEmitter<Organization>();
 
@@ -66,7 +68,6 @@ export class OrgInnerComponent implements OnInit, DoCheck {
               private quotaService: OrgQuotaService,
               private common: CommonService,
               private logger: NGXLogger) {
-
   }
 
   ngOnInit(): void {
@@ -78,6 +79,7 @@ export class OrgInnerComponent implements OnInit, DoCheck {
     this.setAvailableQuotas(this.quotaService.getOrgAvailableQuota());
     this.setOrgDomains(this.domainService.getDomainList(orgId, "all"));
     this.setOrgUserRoles(this.orgUserRoleService.getUserRoles(orgId));
+    this.setSpaceUserRoles([]);
 
     // placeholder && default value
     this.wantedOrgName = this.org.name;
@@ -95,7 +97,7 @@ export class OrgInnerComponent implements OnInit, DoCheck {
             orgQuota => (orgQuota === this.quota) || (orgQuota.guid === this.quota.guid));
 
         if (this.exactlyQuotaIndex !== -1) {
-          const elements = $('#radio-' + this.org.name + '-' + this.quota.name);
+          const elements = $('#radio-' + this.org.indexOfOrgs + '-' + this.quota.name);
           const valid = elements.length > 0 && elements[0] !== undefined && elements[0].tagName === 'INPUT';
           if (valid) {
             elements[0].checked = 'checked';
@@ -190,22 +192,41 @@ export class OrgInnerComponent implements OnInit, DoCheck {
       this.spaceService.createSpace(this.spaces, this.org.guid, this.createSpaceName);
 
     if ($event != null) {
-      $('#layerpop5-' + this.org.name).modal('hide');
+      $('#layerpop5-' + this.org.indexOfOrgs).modal('hide');
     }
 
     this.resetNewSpaceName();
   }
 
   replaceInvalidateString($event) {
-	const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#@$%&\\\=\(\'\"]/g;
+    const regFirstExpPattern = /^[\{\}\[\]\/?,;:|\)*~`!^+<>\#\-_@$%&\\\=\(\'\"]+/g;
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#@$%&\\\=\(\'\"]/g;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
 
-	let typingStr = $event.target.value.replace(regExpPattern, '')
-	  .replace(regExpBlankPattern, '').replace(regKoreanPattern, '')
-	  .substring(0, 64);
+    let typingStr = $event.target.value.replace(regFirstExpPattern, '')
+      .replace(regExpPattern, '').replace(regExpBlankPattern, '')
+      .replace(regKoreanPattern, '').substring(0, 64);
 
-	$event.target.value = typingStr;
+    $event.target.value = typingStr;
+  }
+
+  replaceInvalidateDomainString($event) {
+    //const regEmailExpPattern = /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9]+\.)?[a-zA-Z0-9-]+[a-zA-Z0-9-]*[a-zA-Z0-9]\.)*([a-zA-Z0-9])+$/g
+    //const regDomainExpPattern = /^(?:(?:[a-zA-Z0-9]+\.)?[a-zA-Z0-9-]*[a-zA-Z0-9-]*[a-zA-Z0-9]\.)*([a-zA-Z0-9])+$/g
+
+    const regFirstExpPattern = /^[\{\}\[\]\/?,;:|\)*~`!^+<>\#\-_@$%&\\\=\(\'\"]+/g;
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#_@$%&\\\=\(\'\"]/g;
+    const regLastExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#\-_@$%&\\\=\(\'\"]$/g;
+
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+
+    let typingStr = $event.target.value.replace(regExpPattern, '')
+      .replace(regExpBlankPattern, '').replace(regKoreanPattern, '')
+      .substring(0, 64);
+
+    $event.target.value = typingStr;
   }
 
   renameSpace($event, space: Space) {
@@ -295,7 +316,7 @@ export class OrgInnerComponent implements OnInit, DoCheck {
     this.selectSpace = Space.empty();
   }
 
-  get userRoles() {
+  get userRoles(): Array<OrgUserRole> {
     return this._orgUserRoles;
   }
 
@@ -305,6 +326,17 @@ export class OrgInnerComponent implements OnInit, DoCheck {
     } else {
       this._orgUserRoles = userRolesParam;
     }
+  }
+
+  get spaceUserRoles(): Array<SpaceUserRole> {
+    return this._spaceUserRoles;
+  }
+
+  private setSpaceUserRoles(spaceUserRolesParam: Array<SpaceUserRole>) {
+    if (spaceUserRolesParam == null)
+      this._spaceUserRoles = [];
+    else
+      this._spaceUserRoles = spaceUserRolesParam;
   }
 
   isSelectedQuota(quota: OrgQuota) {
@@ -359,12 +391,28 @@ export class OrgInnerComponent implements OnInit, DoCheck {
     const isChecked = $event.target.checked;
     if (isChecked) {
       const result = this.orgUserRoleService.associateOrgUserRole(userRole, role);
-      this.logger.debug('Associate ' + userRole.userEmail + '|role#' + role + ' / result :', result);
+      this.logger.debug('Associate ' + userRole.userEmail + '| role#' + role + ' / result :', result);
       if (!result)
         $event.target.checked = !isChecked;
     } else {
       const result = this.orgUserRoleService.removeOrgUserRole(userRole, role);
-      this.logger.debug('Remove ' + userRole.userEmail + '|role#' + role + ' / result :', result);
+      this.logger.debug('Remove ' + userRole.userEmail + '| role#' + role + ' / result :', result);
+      if (!result)
+        $event.target.checked = !isChecked;
+    }
+  }
+
+  changeSpaceUserRole($event, spaceUserRole: SpaceUserRole, role: string) {
+    this.logger.info('? -> ', $event.target.checked);
+    const isChecked = $event.target.checked;
+    if (isChecked) {
+      const result = this.orgUserRoleService.associateSpaceUserRole(spaceUserRole, role);
+      this.logger.debug('Associate ' + spaceUserRole.userEmail + '| role#' + role + ' / result :', result);
+      if (!result)
+        $event.target.checked = !isChecked;
+    } else {
+      const result = this.orgUserRoleService.removeSpaceUserRole(spaceUserRole, role);
+      this.logger.debug('Remove ' + spaceUserRole.userEmail + '| role#' + role + ' / result :', result);
       if (!result)
         $event.target.checked = !isChecked;
     }
@@ -407,6 +455,17 @@ export class OrgInnerComponent implements OnInit, DoCheck {
     } else {
       return true;
     }
+  }
+
+  displayChangeSpaceRole(space: Space) {
+    this.common.isLoading = true;
+
+    this.selectSpace = space;
+    this.setSpaceUserRoles(this.orgUserRoleService.getSpaceUserRoles(space.guid, () => {
+      this.common.isLoading = false;
+    }));
+
+    this.logger.debug('Selected space to change space role is ', this.selectSpace.name, ' : ', this.selectSpace);
   }
 
   displayRenameSpace($event) {
@@ -461,7 +520,7 @@ export class OrgInnerComponent implements OnInit, DoCheck {
       this.spaceService.createSpace(this.spaces, this.org.guid, this.createSpaceName);
 
     if ($event != null) {
-      $('#layerpop5-' + this.org.name).modal('hide');
+      $('#layerpop5-' + this.org.indexOfOrgs).modal('hide');
     }
 
     this.resetNewSpaceName();
@@ -486,7 +545,7 @@ export class OrgInnerComponent implements OnInit, DoCheck {
   }
 
   cancelChangeQuota() {
-    $('input[name=radio-' + this.org.name + ']').each((idx, element) => element.checked = '');
+    $('input[name=radio-' + this.org.indexOfOrgs + ']').each((idx, element) => element.checked = '');
   }
 
   displayDeleteDomain($event, domain: Domain) {

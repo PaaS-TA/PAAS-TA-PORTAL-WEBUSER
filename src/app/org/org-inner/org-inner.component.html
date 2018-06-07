@@ -28,7 +28,7 @@
                 <i class="fas fa-edit"></i>&nbsp;&nbsp;이름 변경
               </p>
             </li>
-            <li [attr.data-target]="'#layerpop-' + org.name" data-toggle="modal">
+            <li [attr.data-target]="'#layerpop-' + org.indexOfOrgs" data-toggle="modal">
               <p>
                 <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;삭제
               </p>
@@ -45,7 +45,7 @@
           <caption>
             공간<span (click)="reloadSpaces()">{{spaces.length}}</span>
             <div class="pull-right">
-              <button class="btns6 colors4" [attr.data-target]="'#layerpop5-' + org.name"
+              <button class="btns6 colors4" [attr.data-target]="'#layerpop5-' + org.indexOfOrgs"
                       data-toggle="modal">
                 <i class="fas fa-plus"></i> 공간 생성
               </button>
@@ -59,9 +59,17 @@
           <tbody>
             <ng-container *ngFor='let space of spaces'>
               <tr>
-                <td><p>{{space.name}}</p></td>
+                <td>
+                  <ng-container *ngIf="isOrgManagerLoginnedInUser; else cannotHandleSpaceRole">
+                    <p [attr.data-target]="'#layerpop13-' + org.indexOfOrgs" data-toggle="modal"
+                       (click)="displayChangeSpaceRole(space)" style="cursor: pointer;">{{space.name}}</p>
+                  </ng-container>
+                  <ng-template #cannotHandleSpaceRole>
+                    <p>{{space.name}}</p>
+                  </ng-template>
+                </td>
                 <th><i class="fas fa-edit" (click)="displayRenameSpace($event)"></i></th>
-                <th [attr.data-target]="'#layerpop3-' + org.name" data-toggle="modal"
+                <th [attr.data-target]="'#layerpop3-' + org.indexOfOrgs" data-toggle="modal"
                     (click)="displayDeleteSpace($event, space)">
                   <i class="fas fa-trash-alt"></i></th>
               </tr>
@@ -93,7 +101,7 @@
             도메인<span (click)="reloadDomains()">{{domains.length}}</span>
             <div class="pull-right">
               <button class="btns6 colors4" data-toggle="modal"
-                [attr.data-target]="'#layerpop6-' + org.name">
+                [attr.data-target]="'#layerpop6-' + org.indexOfOrgs">
                 <i class="fas fa-plus"></i> 도메인 추가
               </button>
             </div>
@@ -112,7 +120,7 @@
               <ng-template #privateDomain>
                 <i class="fas fa-trash-alt" data-toggle="modal"
                    [title]="domain.name + ' 삭제'"
-                   [attr.data-target]="'#layerpop9-' + org.name"
+                   [attr.data-target]="'#layerpop9-' + org.indexOfOrgs"
                    (click)="displayDeleteDomain($event, domain)"></i>
               </ng-template>
             </th>
@@ -126,7 +134,7 @@
           <caption>
             사용자<span>{{userRoles.length}}</span>
             <div class="pull-right">
-              <button class="btns6 colors4" [attr.data-target]="'#layerpop4-' + org.name"
+              <button class="btns6 colors4" [attr.data-target]="'#layerpop4-' + org.indexOfOrgs"
                       data-toggle="modal">
                 <i class="fas fa-plus"></i> 사용자 초대
               </button>
@@ -142,41 +150,41 @@
           <thead>
           <tr>
             <td>사용자</td>
-            <td colspan="4">역할설정</td>
+            <td colspan="4">조직 역할 설정</td>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor='let userRole of userRoles'>
             <td>{{userRole.userEmail}}</td>
-            <td><input [attr.id]="'rc1-' + org.name + '-' + userRole.userEmail"
+            <td><input [attr.id]="'rc1-' + org.indexOfOrgs + '-' + userRole.userEmail"
                  type="checkbox" [checked]='userRole.isOrgManager'
                  [disabled]="!isOrgManagerLoginnedInUser"
                  (click)="changeUserRole($event, userRole, 'OrgManager')">
-              <label [attr.for]="'rc1-' + org.name + '-' + userRole.userEmail">OrgManager(조직 관리자)</label></td>
-            <td><input [attr.id]="'rc2-' + org.name + '-' + userRole.userEmail"
+              <label [attr.for]="'rc1-' + org.indexOfOrgs + '-' + userRole.userEmail">OrgManager(조직 관리자)</label></td>
+            <td><input [attr.id]="'rc2-' + org.indexOfOrgs + '-' + userRole.userEmail"
                  type="checkbox" [checked]='userRole.isBillingManager'
                  [disabled]="!isOrgManagerLoginnedInUser"
                  (click)="changeUserRole($event, userRole, 'BillingManager')">
-              <label [attr.for]="'rc2-' + org.name + '-' + userRole.userEmail">BillingManager(조직 결제 관리자)</label></td>
-            <td><input [attr.id]="'rc3-' + org.name + '-' + userRole.userEmail"
+              <label [attr.for]="'rc2-' + org.indexOfOrgs + '-' + userRole.userEmail">BillingManager(조직 결제 관리자)</label></td>
+            <td><input [attr.id]="'rc3-' + org.indexOfOrgs + '-' + userRole.userEmail"
                  type="checkbox" [checked]='userRole.isOrgAuditor'
                  [disabled]="!isOrgManagerLoginnedInUser"
                  (click)="changeUserRole($event, userRole, 'OrgAuditor')">
-              <label [attr.for]="'rc3-' + org.name + '-' + userRole.userEmail">OrgAuditor(조직 참관인)</label></td>
+              <label [attr.for]="'rc3-' + org.indexOfOrgs + '-' + userRole.userEmail">OrgAuditor(조직 참관인)</label></td>
             <th class="org_userrole_btns">
               <ng-container *ngIf="isMember(userRole); else notMember">
                 <button class="btns4 colors8" data-toggle="modal"
-                  [attr.data-target]="isMyself(userRole)? '#layerpop2-' + org.name : '#layerpop12-' + org.name"
+                  [attr.data-target]="isMyself(userRole)? '#layerpop2-' + org.indexOfOrgs : '#layerpop12-' + org.indexOfOrgs"
                   (click)="displayCancelMemberUser(userRole)">멤버 취소</button>
               </ng-container>
               <ng-template #notMember>
                 <button class="btns4 colors8" data-toggle="modal"
-                  [attr.data-target]="'#layerpop10-' + org.name"
+                  [attr.data-target]="'#layerpop10-' + org.indexOfOrgs"
                   (click)="displayInviteUser(userRole)">초대
                   <ng-container *ngIf="isInvited(userRole)">재</ng-container>전송</button>
                 <ng-container *ngIf="isInvited(userRole)">
                   <button class="btns4 colors8" data-toggle="modal"
-                    [attr.data-target]="'#layerpop11-' + org.name"
+                    [attr.data-target]="'#layerpop11-' + org.indexOfOrgs"
                     (click)="displayCancelInvitionUser(userRole)">초대 취소</button>
                 </ng-container>
               </ng-template>
@@ -258,9 +266,9 @@
             <td>
               <!-- TODO ngIf isSelectedQuota(aquota) then input radio template else none -->
               <ng-container *ngIf="!isSelectedQuota(aquota); else selected">
-                <input type="radio" [name]="'radio-' + org.name"
-                  [id]="'radio-' + org.name + '-' + aquota.name"
-                  [attr.data-target]="'#layerpop7-' + org.name"
+                <input type="radio" [name]="'radio-' + org.indexOfOrgs"
+                  [id]="'radio-' + org.indexOfOrgs + '-' + aquota.name"
+                  [attr.data-target]="'#layerpop7-' + org.indexOfOrgs"
                   data-toggle="modal" (click)="displayChangeQuota($event, aquota)">
                 <label [for]="org.name + '-' + aquota.name"></label>
               </ng-container>
@@ -285,7 +293,7 @@
 
   <!-- org-inner event model -->
   <!-- modal : layerpop-->
-  <div class="modal fade" [id]="'layerpop-' + org.name">
+  <div class="modal fade" [id]="'layerpop-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -319,7 +327,7 @@
     </div>
   </div>
   <!-- modal : layerpop2 -->
-  <div class="modal fade" [id]="'layerpop2-' + org.name">
+  <div class="modal fade" [id]="'layerpop2-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -353,7 +361,7 @@
     </div>
   </div>
   <!-- modal : layerpop3 -->
-  <div class="modal fade" [id]="'layerpop3-' + org.name">
+  <div class="modal fade" [id]="'layerpop3-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -387,7 +395,7 @@
     </div>
   </div>
   <!-- modal : layerpop4 -->
-  <div class="modal fade" [id]="'layerpop4-' + org.name">
+  <div class="modal fade" [id]="'layerpop4-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -414,27 +422,27 @@
               <thead>
               <tr>
                 <td>조직</td>
-                <td colspan="3">부여할 조직 내 역할</td>
+                <td colspan="3">부여할 조직 역할</td>
               </tr>
               </thead>
               <tbody>
               <tr>
                 <td>{{org.name}}</td>
                 <td>
-                  <input [id]="'invite-modal-om-' + org.name" class="checkSel" type="checkbox" title="조직 관리자"/>
-                  <label [for]="'invite-modal-om-' + org.name">OrgManager</label></td>
+                  <input [id]="'invite-modal-om-' + org.indexOfOrgs" class="checkSel" type="checkbox" title="조직 관리자"/>
+                  <label [for]="'invite-modal-om-' + org.indexOfOrgs">OrgManager</label></td>
                 <td>
-                  <input [id]="'invite-modal-bm-' + org.name" class="checkSel" type="checkbox" title="조직 결제 관리자"/>
-                  <label [for]="'invite-modal-bm-' + org.name">BillingManager</label></td>
+                  <input [id]="'invite-modal-bm-' + org.indexOfOrgs" class="checkSel" type="checkbox" title="조직 결제 관리자"/>
+                  <label [for]="'invite-modal-bm-' + org.indexOfOrgs">BillingManager</label></td>
                 <td>
-                  <input [id]="'invite-modal-oa-' + org.name" class="checkSel" type="checkbox" title="조직 참관인"/>
-                  <label [for]="'invite-modal-oa-' + org.name">OrgAuditor</label></td>
+                  <input [id]="'invite-modal-oa-' + org.indexOfOrgs" class="checkSel" type="checkbox" title="조직 참관인"/>
+                  <label [for]="'invite-modal-oa-' + org.indexOfOrgs">OrgAuditor</label></td>
               </tr>
               </tbody>
             </table>
             <!-- checkAll event : common2.js:234 checkAll-->
-            <input [id]="'invite-checkAll-' + org.name" class="checkAll" type="checkbox"/>
-            <label [for]="'invite-checkAll-' + org.name" class="maT10">전체 선택</label>
+            <input [id]="'invite-checkAll-' + org.indexOfOrgs" class="checkAll" type="checkbox"/>
+            <label [for]="'invite-checkAll-' + org.indexOfOrgs" class="maT10">전체 선택</label>
 
             <!-- inviting user middle : space role -->
             <table class="maT30">
@@ -447,33 +455,33 @@
               <thead>
               <tr>
                 <td>공간</td>
-                <td colspan="3">부여할 공간 내 역할</td>
+                <td colspan="3">부여할 공간 역할</td>
               </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let space of spaces">
                   <td>{{space.name}}</td>
                   <td>
-                    <input [id]="'invite-modal-sm-' + org.name + '-' + space.name"
+                    <input [id]="'invite-modal-sm-' + org.indexOfOrgs + '-' + space.name"
                            class="checkSel2" type="checkbox"/>
-                    <label [for]="'invite-modal-sm-' + org.name + '-' + space.name"
+                    <label [for]="'invite-modal-sm-' + org.indexOfOrgs + '-' + space.name"
                            [title]="'공간 관리자'">SpaceManager</label></td>
                   <td>
-                    <input [id]="'invite-modal-sd-' + org.name + '-' + space.name"
+                    <input [id]="'invite-modal-sd-' + org.indexOfOrgs + '-' + space.name"
                            class="checkSel2" type="checkbox"/>
-                    <label [for]="'invite-modal-sd-' + org.name + '-' + space.name"
+                    <label [for]="'invite-modal-sd-' + org.indexOfOrgs + '-' + space.name"
                            [title]="'공간 개발자'">SpaceDeveloper</label></td>
                   <td>
-                    <input [id]="'invite-modal-sa-' + org.name + '-' + space.name"
+                    <input [id]="'invite-modal-sa-' + org.indexOfOrgs + '-' + space.name"
                            class="checkSel2" type="checkbox"/>
-                    <label [for]="'invite-modal-sa-' + org.name + '-' + space.name"
+                    <label [for]="'invite-modal-sa-' + org.indexOfOrgs + '-' + space.name"
                            [title]="'공간 참관인'">SpaceAuditor</label></td>
                 </tr>
               </tbody>
             </table>
             <!-- checkAll event : common2.js:238 checkAll2 -->
-            <input class="checkAll2" id="checkAll2" type="checkbox"/>
-            <label class="maT10" for="checkAll2">전체선택</label>
+            <input [id]="'invite-checkAll2-' + org.indexOfOrgs" class="checkAll2" type="checkbox"/>
+            <label [for]="'invite-checkAll2-' + org.indexOfOrgs" class="maT10">전체 선택</label>
           </div>
           <!-- Footer -->
           <div class="modal-footer">
@@ -489,7 +497,7 @@
     </div>
   </div>
   <!-- modal : layerpop5 -->
-  <div class="modal fade" [id]="'layerpop5-' + org.name">
+  <div class="modal fade" [id]="'layerpop5-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -523,7 +531,7 @@
     </div>
   </div>
   <!-- modal : layerpop6 -->
-  <div class="modal fade" [id]="'layerpop6-' + org.name">
+  <div class="modal fade" [id]="'layerpop6-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -556,7 +564,7 @@
     </div>
   </div>
   <!-- modal : layerpop7 -->
-  <div class="modal fade" [id]="'layerpop7-' + org.name" (focusout)="changeQuota(false)">
+  <div class="modal fade" [id]="'layerpop7-' + org.indexOfOrgs" (focusout)="changeQuota(false)">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -590,7 +598,7 @@
   </div>
   <!-- modal : layerpop8 ===> remove 'apply WEB IDE' -->
   <!-- modal : layerpop9 -->
-  <div class="modal fade" [id]="'layerpop9-' + org.name">
+  <div class="modal fade" [id]="'layerpop9-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -623,7 +631,7 @@
     </div>
   </div>
   <!-- modal : layerpop10 -->
-  <div class="modal fade" [id]="'layerpop10-' + org.name">
+  <div class="modal fade" [id]="'layerpop10-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -658,7 +666,7 @@
     </div>
   </div>
   <!-- modal : layerpop11 -->
-  <div class="modal fade" [id]="'layerpop11-' + org.name">
+  <div class="modal fade" [id]="'layerpop11-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -691,7 +699,7 @@
     </div>
   </div>
   <!-- modal : layerpop12 -->
-  <div class="modal fade" [id]="'layerpop12-' + org.name">
+  <div class="modal fade" [id]="'layerpop12-' + org.indexOfOrgs">
     <div class="vertical-alignment-helper">
       <div class="modal-dialog vertical-align-center">
         <div class="modal-content">
@@ -724,6 +732,79 @@
       </div>
     </div>
   </div>
-  <!--  TODO : delete org -->
-  <!-- button (click)="deleteOrg()">선택</button -->
+
+  <!-- modal : layerpop13 : change space role(s) -->
+  <div class="modal fade" [id]="'layerpop13-' + org.indexOfOrgs">
+    <div class="vertical-alignment-helper">
+      <div class="modal-dialog vertical-align-center">
+        <div class="modal-content">
+          <!-- header -->
+          <div class="modal-header">
+            <!-- 닫기(x) 버튼 -->
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <!-- header title -->
+            <h4 class="modal-title">공간 역할 설정 : {{selectSpace.name}}</h4>
+          </div>
+          <!-- body -->
+          <div class="modal-body">
+            <ng-container *ngIf="spaceUserRoles.length > 0; else loadingBeforeChangeSpaceRole">
+              <!-- inviting user middle : space role -->
+              <table>
+                <colgroup>
+                  <col style=''>
+                  <col style=''>
+                  <col style=''>
+                  <col style=''>
+                </colgroup>
+                <thead>
+                <tr>
+                  <td>사용자</td>
+                  <td colspan="3">부여할 공간 역할</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let spaceUserRoles of spaceUserRoles">
+                  <td>{{spaceUserRoles.userEmail}}</td>
+                  <td>
+                    <input [id]="'invite-modal-sm-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           class="checkSel3" type="checkbox" [checked]='spaceUserRoles.isSpaceManager'
+                           [disabled]="!isOrgManagerLoginnedInUser"
+                           (click)="changeSpaceUserRole($event, spaceUserRoles, 'SpaceManager')"/>
+                    <label [for]="'invite-modal-sm-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           [title]="'공간 관리자'">SpaceManager</label></td>
+                  <td>
+                    <input [id]="'invite-modal-sd-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           class="checkSel3" type="checkbox" [checked]='spaceUserRoles.isSpaceDeveloper'
+                           [disabled]="!isOrgManagerLoginnedInUser"
+                           (click)="changeSpaceUserRole($event, spaceUserRoles, 'SpaceDeveloper')"/>
+                    <label [for]="'invite-modal-sd-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           [title]="'공간 개발자'">SpaceDeveloper</label></td>
+                  <td>
+                    <input [id]="'invite-modal-sa-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           class="checkSel3" type="checkbox" [checked]='spaceUserRoles.isSpaceAuditor'
+                           [disabled]="!isOrgManagerLoginnedInUser"
+                           (click)="changeSpaceUserRole($event, spaceUserRoles, 'SpaceAuditor')"/>
+                    <label [for]="'invite-modal-sa-' + org.indexOfOrgs + '-' + spaceUserRoles.index"
+                           [title]="'공간 참관인'">SpaceAuditor</label></td>
+                </tr>
+                </tbody>
+              </table>
+              <!-- checkAll event : common2.js:238 checkAll2 -->
+              <input [id]="'invite-checkAll3-' + org.indexOfOrgs" class="checkAll3" type="checkbox"/>
+              <label [for]="'invite-checkAll3-' + org.indexOfOrgs" class="maT10">전체 선택</label>
+            </ng-container>
+            <ng-template #loadingBeforeChangeSpaceRole>
+              <ngx-loading [show]="spaceUserRoles.length <= 0" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            </ng-template>
+          </div>
+          <!-- Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btns2 colors5" data-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 </ng-container>

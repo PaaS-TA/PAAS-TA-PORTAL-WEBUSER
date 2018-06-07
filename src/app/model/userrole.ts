@@ -8,10 +8,10 @@ export class UserRole {
   }
    */
   private _data;
-  private _orgId;
+  private _guid;
 
-  constructor(_orgId: string, _data?) {
-    this.setOrgId(_orgId);
+  constructor(_guid: string, _data?) {
+    this.setGuid(_guid);
     this.data = _data;
   }
 
@@ -35,15 +35,15 @@ export class UserRole {
     }
   }
 
-  get orgId() {
-    return this._orgId;
+  get guid() {
+    return this._guid;
   }
 
-  private setOrgId(extOrgId) {
-    if (extOrgId === null || extOrgId === undefined) {
-      this._orgId = '(dummy-org-id)';
+  private setGuid(extGuid) {
+    if (extGuid === null || extGuid === undefined) {
+      this._guid = '(dummy-org-id)';
     } else {
-      this._orgId = extOrgId;
+      this._guid = extGuid;
     }
   }
 
@@ -65,6 +65,10 @@ export class OrgUserRole extends UserRole {
     return new OrgUserRole(null);
   }
 
+  get orgId() {
+    return this.guid;
+  }
+
   get isOrgManager() {
     return this.roles.filter( role => {return role === 'OrgManager'} ).length == 1;
   }
@@ -79,7 +83,25 @@ export class OrgUserRole extends UserRole {
 }
 
 export class SpaceUserRole extends UserRole {
+  index: number;
+
   static empty() {
     return new SpaceUserRole(null);
+  }
+
+  get spaceId() {
+    return this.guid;
+  }
+
+  get isSpaceManager() {
+    return this.roles.filter(role => { return role === 'SpaceManager'} ).length == 1;
+  }
+
+  get isSpaceDeveloper() {
+    return this.roles.filter(role => { return role === 'SpaceDeveloper'} ).length == 1;
+  }
+
+  get isSpaceAuditor() {
+    return this.roles.filter(role => { return role === 'SpaceAuditor'} ).length == 1;
   }
 }

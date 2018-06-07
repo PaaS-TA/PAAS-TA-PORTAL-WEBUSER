@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
-import {OrgUserRole} from "../../model/userrole";
+import {OrgUserRole, SpaceUserRole} from "../../model/userrole";
 
 @Injectable()
 export class OrgUserRoleService {
@@ -15,9 +15,17 @@ export class OrgUserRoleService {
     return '/portalapi/v2/orgs';
   }
 
+  private get URLSpaceRequest() {
+    return '/portalapi/v2/spaces';
+  }
+
   private URLOrgUserRoles(orgId: string) {
     // GET, PUT, DELETE
     return this.URLOrgRequest + '/' + orgId + '/user-roles';
+  }
+
+  private URLSpaceUserRole(spaceId: string) {
+    return this.URLSpaceRequest + '/' + spaceId + '/user-roles';
   }
 
   private URLOrgUserRoleByUsername(orgName: string, userName: string) {
@@ -30,6 +38,10 @@ export class OrgUserRoleService {
 
   private URLOrgUserCanceling(orgId: string) {
     return this.URLOrgRequest + '/' + orgId + '/member';
+  }
+
+  private URLOrgSpaceUserRoles(spaceId: string) {
+    return this.URLSpaceRequest + '/' + spaceId + '/user-roles';
   }
 
   public getUserRoles(orgId: string) {
@@ -49,6 +61,28 @@ export class OrgUserRoleService {
     });
 
     return userRoles;
+  }
+
+  public getSpaceUserRoles(spaceId: string, func?: Function) {
+    const spaceUserRoles: Array<SpaceUserRole>  = new Array<SpaceUserRole>();
+    const url = this.URLOrgSpaceUserRoles(spaceId);
+
+    const observable = this.common.doGet(url, this.getToken());
+    observable.subscribe(data => {
+      if (data.hasOwnProperty('user_roles')) {
+        (data['user_roles'] as Array<Object>).forEach(roleData => {
+          const index = spaceUserRoles.push(new SpaceUserRole(spaceId, roleData)) - 1;
+          spaceUserRoles[index].index = index;
+          this.logger.trace('SpaceUserRole(', index, ') :', spaceUserRoles[index]);
+        })
+      }
+      this.logger.debug('SpaceUserRole :', spaceUserRoles);
+
+      if (func != null)
+        func();
+    });
+
+    return spaceUserRoles;
   }
 
   public isManagerFromUserRoles(roles: Array<OrgUserRole>): boolean {
@@ -87,6 +121,38 @@ export class OrgUserRoleService {
 
   public removeOrgUserRole(user: OrgUserRole, removeRole: string) {
     const url = this.URLOrgUserRoles(user.orgId);
+    const params = {
+      userId: user.userId,
+      role: removeRole
+    };
+
+    return (async() => {
+      this.logger.debug('remove org user role : before await');
+      const data = await this.common.doDelete(url, params, this.getToken()).toPromise();
+      this.logger.debug('remove org user role : after await / response :', data);
+
+      return data;
+    })();
+  }
+
+  public associateSpaceUserRole(user: SpaceUserRole, associateRole: string) {
+    const url = this.URLSpaceUserRole(user.spaceId);
+    const requestBody = {
+      userId: user.userId,
+      role: associateRole
+    };
+
+    return (async() => {
+      this.logger.debug('associate org user role : before await');
+      const data = await this.common.doPut(url, requestBody, this.getToken()).toPromise();
+      this.logger.debug('associate org user role : after await / response :', data);
+
+      return data;
+    })();
+  }
+
+  public removeSpaceUserRole(user: SpaceUserRole, removeRole: string) {
+    const url = this.URLSpaceUserRole(user.spaceId);
     const params = {
       userId: user.userId,
       role: removeRole

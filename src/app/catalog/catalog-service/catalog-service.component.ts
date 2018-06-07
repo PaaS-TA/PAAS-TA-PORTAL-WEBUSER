@@ -139,7 +139,6 @@ export class CatalogServiceComponent implements OnInit {
 
   serviceAmountSetting(value){
     value = JSON.parse(value);
-    console.log(value);
     let amount;
     if(value.costs){
       amount = value.costs[0]['amount'].usd;
@@ -207,8 +206,7 @@ export class CatalogServiceComponent implements OnInit {
 
   appList() {
     this.catalogService.setCurrentSpace(this.space.name, this.space.guid);
-    if(this.servicepack.appBindYn === CATALOGURLConstant.YN)
-    {
+
       this.catalogService.isLoading(true);
       this.apps = new Array<App>();
     this.appsFirst();
@@ -217,8 +215,8 @@ export class CatalogServiceComponent implements OnInit {
         this.apps.push(new App(app['metadata'], app['entity']));
       })
       this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE);
-      this.serviceInstanceList();
-    });}
+    });
+    this.serviceInstanceList();
   }
 
   serviceInstanceList() {
@@ -280,8 +278,9 @@ export class CatalogServiceComponent implements OnInit {
         this.hiddenappparameter = hiddenparam;
       }
     }
-
   }
+
+
 
   insertHistroy() {
 

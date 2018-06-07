@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, DoCheck, OnInit} from '@angular/core';
 import {CommonService} from '../../common/common.service';
 import {NGXLogger} from 'ngx-logger';
 
@@ -23,9 +23,10 @@ declare var jQuery: any;
   templateUrl: './dashboard-produce.component.html',
   styleUrls: ['./dashboard-produce.component.css'],
 })
-export class DashboardProduceComponent implements OnInit {
+export class DashboardProduceComponent implements OnInit, DoCheck {
   public errorMessage: string;
   public isError: boolean;
+  private isDone: boolean;
 
   private doAttachEvent: boolean = false;
   private _availableQuotas: Array<OrgQuota>;
@@ -34,7 +35,6 @@ export class DashboardProduceComponent implements OnInit {
   private _selectQuota: OrgQuota;
 
   private _createdOrg: Organization;
-
 
   constructor(private common: CommonService,
               private orgService: OrgService,
@@ -65,6 +65,18 @@ export class DashboardProduceComponent implements OnInit {
 
     if (this.doAttachEvent)
       logger.debug('It attaches detail event : ' + this.doAttachEvent);
+  }
+
+  ngDoCheck() {
+    /*
+    const quotaElements = $('input[name=radio-quota]');
+    if (quotaElements.length > 0) {
+      let checked = false;
+      quotaElements.forEach(element => checked |= element[checked]);
+      if (!checked)
+        quotaElements[0]
+    }
+    */
   }
 
   get orgName() {
@@ -141,79 +153,84 @@ export class DashboardProduceComponent implements OnInit {
 	const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#@$%&\\\=\(\'\"]/g;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-	
+
 	this.orgName = this.orgName.replace(regExpPattern, '')
 	  .replace(regExpBlankPattern, '')
 	  .replace(regKoreanPattern, '').substring(0, 64);
   }
-  
-  
+
+
   isExistOrgName() {
-	this.replaceInvalidateString();
-	  
-	const msgElement = $('#action-info-message');
-    const btnCreateOrg = $('#btn_create_org');
-	
-    if (this.orgName == null || (this.orgName != null && "" === this.orgName.trim())) {
-      msgElement.removeClass('blue');
-      msgElement.addClass('red');
-      btnCreateOrg.attr('disabled', '');
-      this.isError = true;
-      this.errorMessage = '조직 이름이 비어있습니다.';
-      return;
-    }
+    if (!this.common.isLoading && !this.isDone) {
+      this.replaceInvalidateString();
 
-    const isSelected = $('.org_quota.cur input[name=radio-quota]').length >= 0;
-    if (!isSelected) {
-      msgElement.removeClass('blue');
-      msgElement.addClass('red');
-      btnCreateOrg.attr('disabled', '');
-      this.isError = true;
-      this.errorMessage = '할당량을 선택해야합니다.';
-      return;
-    }
+      const msgElement = $('#action-info-message');
+      const btnCreateOrg = $('#btn_create_org');
 
-    try {
-      const url = OrgURLConstant.URLOrgRequestBase + this.orgName + '/exist';
-      this.common.doGet(url, this.getToken()).subscribe(data => {
-        if (data === false || data === 'false') {
-          // can create org using new name
-          msgElement.removeClass('red');
-          msgElement.addClass('blue');
-          btnCreateOrg.removeAttr('disabled');
-          this.isError = false;
-          this.errorMessage = '생성이 가능합니다.';
-        } else if (data === true || data === 'true') {
-          // "CANNOT" create org using new name
-          msgElement.removeClass('blue');
-          msgElement.addClass('red');
-          btnCreateOrg.attr('disabled', '');
-          this.isError = true;
-          this.errorMessage = '입력한 이름을 가진 조직이 이미 존재합니다.';
-        } else {
-          // "CANNOT" create org using new name (bad request or server error)
-          msgElement.removeClass('blue');
-          msgElement.addClass('red');
-          btnCreateOrg.attr('disabled', '');
-          this.isError = true;
-          this.errorMessage = '잘못된 요청입니다. 관리자에게 문의하십시오.';
-        }
-      });
-    } catch (error) {
-      // "CANNOT" create org using new name (server error)
-      msgElement.removeClass('blue');
-      msgElement.addClass('red');
-      btnCreateOrg.attr('disabled', '');
-      this.isError = true;
-      this.errorMessage = '서버가 불안정합니다. 관리자에게 문의하십시오.';
-      this.logger.error('Occured error :', error);
+      if (this.orgName == null || (this.orgName != null && "" === this.orgName.trim())) {
+        msgElement.removeClass('blue');
+        msgElement.addClass('red');
+        btnCreateOrg.attr('disabled', '');
+        this.isError = true;
+        this.errorMessage = '조직 이름이 비어있습니다.';
+        return;
+      }
+
+      const isSelected = $('.org_quota.cur input[name=radio-quota]').length >= 0;
+      if (!isSelected) {
+        msgElement.removeClass('blue');
+        msgElement.addClass('red');
+        btnCreateOrg.attr('disabled', '');
+        this.isError = true;
+        this.errorMessage = '할당량을 선택해야합니다.';
+        return;
+      }
+
+      this.errorMessage = '';
+
+      try {
+        const url = OrgURLConstant.URLOrgRequestBase + this.orgName + '/exist';
+        this.common.doGet(url, this.getToken()).subscribe(data => {
+          if (data === false || data === 'false') {
+            // can create org using new name
+            msgElement.removeClass('red');
+            msgElement.addClass('blue');
+            btnCreateOrg.removeAttr('disabled');
+            this.isError = false;
+            this.errorMessage = '생성이 가능합니다.';
+          } else if (data === true || data === 'true') {
+            // "CANNOT" create org using new name
+            msgElement.removeClass('blue');
+            msgElement.addClass('red');
+            btnCreateOrg.attr('disabled', '');
+            this.isError = true;
+            this.errorMessage = '입력한 이름을 가진 조직이 이미 존재합니다.';
+          } else {
+            // "CANNOT" create org using new name (bad request or server error)
+            msgElement.removeClass('blue');
+            msgElement.addClass('red');
+            btnCreateOrg.attr('disabled', '');
+            this.isError = true;
+            this.errorMessage = '잘못된 요청입니다. 관리자에게 문의하십시오.';
+          }
+        });
+      } catch (error) {
+        // "CANNOT" create org using new name (server error)
+        msgElement.removeClass('blue');
+        msgElement.addClass('red');
+        btnCreateOrg.attr('disabled', '');
+        this.isError = true;
+        this.errorMessage = '서버가 불안정합니다. 관리자에게 문의하십시오.';
+        this.logger.error('Occured error :', error);
+      }
     }
   }
 
   resetToCreate() {
     this.orgName = '';
-    this.isError = false;
     this.errorMessage = '';
+    this.isError = false;
+    this.isDone = false;
     this.selectQuota = OrgQuota.empty();
     this.createdOrganization = new Organization(null, null);
   }
@@ -230,6 +247,7 @@ export class DashboardProduceComponent implements OnInit {
 
     this.isExistOrgName();
     if (!this.isError) {
+      this.isDone = true;
       const data = await this.common.doPost(url, body, this.getToken()).toPromise();
       const org: Organization = new Organization(data['metadata'], data['entity']);
       if (org.name === this.orgName) {

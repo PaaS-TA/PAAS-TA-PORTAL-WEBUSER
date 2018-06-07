@@ -28,6 +28,7 @@ export class OrgService {
         (data['resources'] as Array<Object>).forEach(orgData => {
           const index =
             orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
+          orgs[index].indexOfOrgs = index;
           this.logger.trace('Org(', index, ') :', orgs[index]);
         });
       }
@@ -46,6 +47,7 @@ export class OrgService {
         (data['resources'] as Array<Object>).forEach(orgData => {
           const index =
             orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
+          orgs[index].indexOfOrgs = index;
           logger.trace('Org(', index, ') :', orgs[index]);
         });
       } else {
@@ -85,6 +87,7 @@ export class OrgService {
 
     resources.forEach(orgData => {
       const index = orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
+      orgs[index].indexOfOrgs = index;
       this.logger.trace(orgs[index]);
     });
 

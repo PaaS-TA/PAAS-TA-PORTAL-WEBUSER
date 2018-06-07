@@ -235,8 +235,22 @@
         $(".checkSel").prop('checked', $(this).prop("checked"));
     });
 
-     $(".checkAll2").change(function() {
+    $(".checkAll2").change(function() {
         $(".checkSel2").prop('checked', $(this).prop("checked"));
+    });
+
+    $(".checkAll3").change(function() {
+      //$(".checkSel3").not(':checked')
+      //var isChecked = $(this).prop("checked");
+      if ($(this).prop("checked")) {
+        // checked
+        $(".checkSel3").not(':checked').click();
+      } else {
+        // not checked
+        $(".checkSel3:checked").click();
+      }
+
+      $(".checkSel3").prop('checked', $(this).prop("checked"));
     });
 
     $(".checkSel").change(function() {
@@ -255,6 +269,15 @@
         if (allcount == ckcount) {
             $(".checkAll2").prop('checked', true);
         };
+    });
+
+    $(".checkSel3").change(function() {
+      var allcount = $(".checkSel3").length;
+      var ckcount = $(".checkSel3:checked").length;
+      $(".checkAll3").prop('checked', false);
+      if (allcount == ckcount) {
+        $(".checkAll3").prop('checked', true);
+      };
     });
 
     /* input */
