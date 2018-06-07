@@ -409,7 +409,7 @@
           <!-- body -->
           <div class="modal-body">
             <!-- inviting user top -->
-            <input class="w100" placeholder="invite.user.name@domain.com"/>
+            <input class="w100" [id]="'userEmail-' + org.indexOfOrgs" placeholder="invite.user.name@domain.com"/>
             <span class="red">* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.</span>
             <!-- inviting user middle : organization role -->
             <table class="maT30">
@@ -463,7 +463,7 @@
                   <td>{{space.name}}</td>
                   <td>
                     <input [id]="'invite-modal-sm-' + org.indexOfOrgs + '-' + space.name"
-                           class="checkSel2" type="checkbox"/>
+                           class="checkSel2" type="checkbox" [value]="space.guid"/>
                     <label [for]="'invite-modal-sm-' + org.indexOfOrgs + '-' + space.name"
                            [title]="'공간 관리자'">SpaceManager</label></td>
                   <td>
@@ -485,12 +485,8 @@
           </div>
           <!-- Footer -->
           <div class="modal-footer">
-            <button type="button" class="btns2 colors4"
-                    data-dismiss="modal">초대
-            </button>
-            <button type="button" class="btns2 colors5"
-                    data-dismiss="modal">취소
-            </button>
+            <button type="button" class="btns2 colors4" (click)="userInviteClick(org.indexOfOrgs)">초대</button>
+            <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
           </div>
         </div>
       </div>

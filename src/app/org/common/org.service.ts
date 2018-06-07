@@ -174,4 +174,17 @@ export class OrgService {
       'total_results': 1
     };
   }
+
+
+  userInviteEmailSend(params: any) {
+    return this.common.doPost('/commonapi/v2/email/inviteOrg', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  userInviteAccept(params: any) {
+    return this.common.doPut('/portalapi/v2/orgs/user-roles', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 }
