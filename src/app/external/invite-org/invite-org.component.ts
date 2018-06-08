@@ -15,7 +15,7 @@ declare var jQuery: any;
   styleUrls: ['./invite-org.component.css']
 })
 export class InviteOrgComponent implements OnInit, AfterViewChecked {
-  private waitTime: number = 15 * 1000;
+  private waitTime: number = 5 * 1000;
   private timestamp: number;
 
   private _userId: string;
