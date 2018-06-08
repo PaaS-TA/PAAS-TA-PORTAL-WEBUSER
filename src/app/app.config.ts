@@ -1,5 +1,5 @@
 export const AppConfig = {
-  clientId: 'localportalclient',
+  clientId: 'portalclient',
   clientSecret: 'clientsecret',
   redirectUri: window.location.origin + '/callback',
   scope: 'openid cloud_controller_service_permissions.read cloud_controller.read cloud_controller.write',
