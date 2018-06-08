@@ -42,13 +42,37 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
     // remove parameters
     //location.hash = '';
     //location.search = '';
+    this.userInviteAccept();
 
-    window.setTimeout(() => {
-      this.common.isLoading = false;
+    // window.setTimeout(() => {
+    //   this.common.isLoading = false;
+    //
+    //   this.timestamp = new Date().getTime();
+    //   this.logger.debug('first false action!');
+    // }, 10000);
+  }
 
-      this.timestamp = new Date().getTime();
-      this.logger.debug('first false action!');
-    }, 10000);
+  userInviteAccept() {
+    let params = {
+      token: this.refreshToken
+    };
+
+    this.orgService.userInviteAccept(params).subscribe(data => {
+      console.log(data);
+
+      if(data != null) {
+        $("[id^='layerpop']").modal("hide");
+        this.common.isLoading = false;
+      }
+
+      setTimeout(() => {
+        const current = new Date().getTime();
+        this.logger.debug('auto-navigate organization... ');
+        this.logger.debug('userId : ', this.userId, ' / orgName : ', this.orgName, ' / refreshToken : ', this.refreshToken);
+        this.logger.debug('start : ', this.timestamp, 'want to wait time : ', this.waitTime, 'real wait time : ', (current - this.timestamp), 'ms');
+        this.router.navigate(['/']);
+      }, this.waitTime);
+    });
   }
 
   ngAfterViewChecked() {

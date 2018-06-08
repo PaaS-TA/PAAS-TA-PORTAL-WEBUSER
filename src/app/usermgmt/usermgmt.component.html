@@ -83,8 +83,7 @@
                 src="https://post-phinf.pstatic.net/MjAxODAzMDVfMTgw/MDAxNTIwMjE2NDY0OTk4.cN9D63H7CpldxOjK4TEUs_knaak89GFsupYLzdW7Khgg.K8RPI6Ej247n0NX7DB47lZaosASz_iAJ2j9I023r33sg.JPEG/ALP_6823.jpg"/>
               </dt>
               <dd>
-                <!--<button class="btns colors4">사진등록</button>-->
-               <button class="btns colors4" (click)="alertMsg('개발 중입니다.')">사진등록</button>
+                <button class="btns colors4">사진등록</button>
               </dd>
             </dl>
           </div>
@@ -141,8 +140,8 @@
                     <div class="account_table_in">
                       <p>
                         <span>현재비밀번호</span>
-                        <input type="password" name="password_now" [(ngModel)]="password_now" ng-required="true" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/"/>
-                        <span class="red passred" use-form-error="isNotSame" *ngIf="!password_now">
+                        <input type="password" name="password_now" [(ngModel)]="password_now" (change)="checkOriginalPassword($event)" (keydown)="checkOriginalPassword($event)" (keyup)="checkOriginalPassword($event)"/>
+                        <span class="red passred" use-form-error="isNotSame" *ngIf="!isOrignPassword">
                           <span></span>
                           <i class="fas fa-exclamation-circle"></i>비밀 번호가 맞지 않습니다.
                         </span>

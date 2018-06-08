@@ -36,6 +36,8 @@ export class UsermgmtComponent implements OnInit {
   public isPassword: boolean;
   public isRePassword: boolean;
   public isChPassword: boolean;
+  public isOrignPassword: boolean;
+
   public isTellPhone: boolean;
   public isZipCode : boolean;
 
@@ -46,19 +48,18 @@ export class UsermgmtComponent implements OnInit {
   public selectedOrgGuid: string = '';
   public selectedOrgName: string = '';
 
-  constructor(private httpClient: HttpClient, private common: CommonService,
-              private userMgmtService: UsermgmtService,
-              private orgService: OrgService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private sec: SecurityService,
-              private log: NGXLogger) {
+  public fileToUpload: File = null;
+
+  constructor(private httpClient: HttpClient, private common: CommonService, private userMgmtService: UsermgmtService, private orgService: OrgService,
+              private router: Router, private route: ActivatedRoute, private sec: SecurityService, private log: NGXLogger) {
 
     this.userInfo();
     this.user = new Observable<User>();
     this.orgs = orgService.getOrgList();
     this.token = '';
     this.orgName = '';
+    this.password = '';
+    this.isOrignPassword = true;
     this.isPassword = false;
     this.isRePassword = true;
     this.isChPassword = true;
@@ -96,11 +97,21 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
+  checkOriginalPassword(event: any) {
+    this.log.debug('password_now :: ' + this.password_now);
+    var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
+    //TODO  로그인시 사용되는 비밀번호 비교 필수!
+    if (!reg_pwd.test(this.password_now)) {
+      this.isOrignPassword = false;
+    } else {
+      this.isOrignPassword = true;
+    }
+  }
+
   checkPassword(event: any) {
     this.log.debug('password_new :: ' + this.password_new);
     var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
     if (!reg_pwd.test(this.password_new)) {
-      this.log.debug('password :: 1');
       this.isPassword = false;
       return;
     }
@@ -131,8 +142,12 @@ export class UsermgmtComponent implements OnInit {
       password: this.password_new
     };
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
-      console.log(this.common.getUserGuid());
-      //TODO : alert 메세지 알람 필수
+      console.debug(this.common.getUserGuid());
+      if(!data.oldPassword){
+        alert("비밀번호가 변경되었습니다.");
+      }else{
+        alert("비밀번호를 다시 입력하세요.");
+      }
     });
   }
 
@@ -175,8 +190,6 @@ export class UsermgmtComponent implements OnInit {
 
   userAllDelete(){
     console.log(":: delete start ::" + " username : " +this.user['userId'] +"  "+ "password :" + this.password_check +"  "+"userGuid :" + this.common.getUserGuid()+"  "+"Guid :" + this.common.getUserid());
-    // 로그인 시도
-    // 로그인 삭제
     this.common.isLoading = true;
     this.apiLogin(this.username,this.password).subscribe(data => {
       this.log.debug(data['user_name']);

@@ -108,7 +108,7 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   buildAndServiceInit(){
-    this.catalogService.CatalogDetailInit(this.route.snapshot.params['id']).subscribe(data => {
+    this.catalogService.CatalogDetailInit(this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
       this.template = data['Starter'];
       this.apptemplate.push(data['Buildpack']);
       data['Servicepack'].forEach(data => {
@@ -454,7 +454,10 @@ export class CatalogDetailComponent implements OnInit {
       diskSize : this.disk,
       buildPackName: this.apptemplate[0]['buildPackName'],
       appSampleFilePath : appSampleFilePath,
-      servicePlanList : paramlist
+      servicePlanList : paramlist,
+      catalogType : CATALOGURLConstant.STARTERPACK,
+      catalogNo : this.template.no,
+      userId : this.catalogService.getUserid()
     };
     this.catalogService.postApp(url, param).subscribe(data => {
       this.catalogService.isLoading(false);
