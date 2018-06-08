@@ -73,7 +73,7 @@ export class DashboardService {
     }).do(console.log);
   }
 
-  getServicePacks(data: any):Observable<any[]> {
+  getServicePacks(){
     return this.commonService.doGet('/commonapi/v2/servicepacks', this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);

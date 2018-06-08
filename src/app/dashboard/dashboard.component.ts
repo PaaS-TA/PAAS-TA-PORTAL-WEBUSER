@@ -215,11 +215,8 @@ export class DashboardComponent implements OnInit {
             data.apps[key]["thumbImgPath"] = dataobj2.thumbImgPath;
           }
         });
-      }).then(this.thumnail());
-
-
+      });
       this.appEntities = data.apps;
-
       this.servicesEntities = data.services.sort((serA, serB) => {
         const guidA = serA.guid;
         const guidB = serB.guid;
@@ -231,21 +228,41 @@ export class DashboardComponent implements OnInit {
           return 1;
       });
       return data;
+    }, error => {
+    }, () => {
+      this.thumnail();
     });
 
   }
 
 
-  thumnail(){
+  thumnail(): void {
+    this.log.debug("Start");
+    this.log.debug(this.servicesEntities);
     this.dashboardService.getServicePacks().subscribe(data => {
+      $.each(this.servicesEntities, function (skey, servicesEntitie) {
+        let cnt = 0;
+        $.each(data['list'], function (dkey, servicepack) {
+          if (servicesEntitie['service_plan'] != null) {
+            console.log(servicesEntitie['service_plan']['service']['label'] + ' == ' + servicepack['servicePackName'] + ' = ' + (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']));
 
-      // console.log('====================================================');
-      // this.servicepacks = data2['list'];Observable
-      // console.log('====================================================');
-      // console.log(this.servicepacks);
-      // console.log('====================================================');
+            if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
+              servicesEntitie['thumbImgPath'] = servicepack['thumbImgPath'];
+              cnt++
+            }
+          }
+
+        })
+        if (cnt == 0) {
+          servicesEntitie['thumbImgPath'] = 'DEFALUT';
+        }
+      });
       return data;
-    });//
+    }, error => {
+    }, () => {
+      this.log.debug('END');
+      this.log.debug(this.servicesEntities);
+    });
   }
 
   renameApp() {
