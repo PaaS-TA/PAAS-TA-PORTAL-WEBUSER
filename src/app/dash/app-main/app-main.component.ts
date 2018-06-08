@@ -457,6 +457,9 @@ export class AppMainComponent implements OnInit {
   }
 
   startAppClick() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     let params = {
       guid: this.appSummaryGuid,
       orgName: this.orgName,
@@ -473,6 +476,9 @@ export class AppMainComponent implements OnInit {
   }
 
   stopAppClick() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     let params = {
       guid: this.appSummaryGuid
     };

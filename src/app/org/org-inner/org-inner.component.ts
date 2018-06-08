@@ -569,6 +569,9 @@ export class OrgInnerComponent implements OnInit, DoCheck {
 
 
   userInviteClick(indexOfOrgs: string) {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
     var inviteObj = {};
     var inviteObjOrg = [];
     var inviteObjSpace = [];
@@ -609,7 +612,6 @@ export class OrgInnerComponent implements OnInit, DoCheck {
 
     this.orgService.userInviteEmailSend(params).subscribe(data => {
       if(data) {
-        $("[id^='layerpop']").modal("hide");
         this.common.isLoading = false;
         $(".alertLayer .in").text("사용자를 초대하였습니다.");
         $(".alertLayer").css('border-left','4px solid #3d10ef');
