@@ -12,7 +12,6 @@ import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 import {CatalogService, ServicePack, BuildPack, StarterPack} from '../catalog/main/catalog.service';
-import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 
 declare var $: any;
 declare var jQuery: any;
@@ -69,9 +68,12 @@ export class DashboardComponent implements OnInit {
   public appStatsEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
+  public ReServicepacksEntities: Observable<any[]>;
 
   public currentOrg: string;
   public currentSpace: string;
+
+  public servicepackthumbImgPath: string;
 
   constructor(private commonService: CommonService,
               private dashboardService: DashboardService,
@@ -121,49 +123,23 @@ export class DashboardComponent implements OnInit {
     if (this.commonService.getCurrentOrgName() != null) {
       this.currentOrg = this.commonService.getCurrentOrgName();
       this.currentSpace = this.commonService.getCurrentSpaceGuid();
-       console.log("currentSpace" + this.commonService.getCurrentSpaceGuid());
+      //console.log("currentSpace : " + this.commonService.getCurrentSpaceGuid());
       //TODO 수정이 필요함...Space 안불러옴
       // this.commonService.isLoading = true;
       // this.currentSpaceBox();
-     }
+    }
   }
 
-  currentSpaceBox(){
+  currentSpaceBox() {
     this.log.debug("currentSpaceBox");
-    if(this.orgs.length > 0){
+    if (this.orgs.length > 0) {
       this.getOrg(this.currentOrg);
-    }else{
+    } else {
       setTimeout(this.currentSpaceBox(), 3000);
     }
   }
 
   ngOnInit() {
-    this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
-      this.dashboardService.StarterInit(data['list']);
-    });
-    this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS).subscribe(data => {
-      this.dashboardService.BuildInit(data['list']);
-    });
-    this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS).subscribe(data => {
-      this.dashboardService.ServiceInit(data['list']);
-    });
-    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS + this.userid).subscribe(data => {
-      this.dashboardService.RecentInit(data);
-
-    });
-
-
-    $(document).ready(() => {
-      //TODO 임시로...
-      $.getScript("../../assets/resources/js/common2.js")
-        .done(function (script, textStatus) {
-          //console.log( textStatus );
-        })
-        .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
-        });
-    });
-
     $("[id^='apopmenu_']").hide();
     $("[id^='layerpop']").modal("hide");
   }
@@ -219,7 +195,7 @@ export class DashboardComponent implements OnInit {
       this.getAppSummary(value);
     } else {
       //초기화
-      this.spaces = [];
+      // this.spaces = [];
       this.isEmpty = true;
       this.isSpace = false;
     }
@@ -230,25 +206,20 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getAppSummary(value).subscribe(data => {
       this.commonService.isLoading = false;
-
       $.each(data.apps, function (key, dataobj) {
         $.each(data.appsPer, function (key2, dataobj2) {
           if (dataobj.guid == dataobj2.guid) {
             data.apps[key]["cpuPer"] = dataobj2.cpuPer;
             data.apps[key]["memPer"] = dataobj2.memPer;
             data.apps[key]["diskPer"] = dataobj2.diskPer;
+            data.apps[key]["thumbImgPath"] = dataobj2.thumbImgPath;
           }
         });
-      });
+      }).then(this.thumnail());
 
 
-      // console.log(data.apps["0"]);
       this.appEntities = data.apps;
 
-      // console.log(this.appEntities);
-
-
-      // this.servicesEntities = data.services; sort 재 정렬
       this.servicesEntities = data.services.sort((serA, serB) => {
         const guidA = serA.guid;
         const guidB = serB.guid;
@@ -262,6 +233,19 @@ export class DashboardComponent implements OnInit {
       return data;
     });
 
+  }
+
+
+  thumnail(){
+    this.dashboardService.getServicePacks().subscribe(data => {
+
+      // console.log('====================================================');
+      // this.servicepacks = data2['list'];Observable
+      // console.log('====================================================');
+      // console.log(this.servicepacks);
+      // console.log('====================================================');
+      return data;
+    });//
   }
 
   renameApp() {
@@ -281,11 +265,6 @@ export class DashboardComponent implements OnInit {
     };
 
     this.dashboardService.delApp(params).subscribe(data => {
-      if (data == 1) {
-        console.log('success');
-      } else {
-        console.log('failed.');
-      }
       return data;
     });
     return this.getAppSummary(this.selectedSpaceId);
@@ -338,8 +317,9 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.createUserProvided(params).subscribe(data => {
-      console.log(params, data);
+      //console.log(params, data);
       this.getAppSummary(this.selectedSpaceId);
+      this.ngOnInit();
       this.commonService.isLoading = false;
       return data;
     }, error => {
@@ -358,7 +338,7 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.updateUserProvided(params).subscribe(data => {
-        console.log(params, data);
+        //console.log(params, data);
         this.getAppSummary(this.selectedSpaceId);
         this.commonService.isLoading = false;
         return data;
@@ -393,7 +373,7 @@ export class DashboardComponent implements OnInit {
 
   //move catalogDevelopment
   moveDevelopMent() {
-    console.log(this.space);
+    //console.log(this.space);
     this.router.navigate(['catalogdevelopment', this.org.guid, this.org.name, this.space['name']]);
   }
 
