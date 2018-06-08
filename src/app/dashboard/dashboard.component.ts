@@ -206,6 +206,16 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getAppSummary(value).subscribe(data => {
       this.commonService.isLoading = false;
+      this.dashboardService.getServicePacks().subscribe(data2 => {
+
+        this.servicepacks = data2['list'];
+        console.log(this.servicepacks);
+
+      });//
+      console.log("servicepacks" + this.servicepacks);
+      console.log(this.servicepacks);
+
+
       $.each(data.apps, function (key, dataobj) {
         $.each(data.appsPer, function (key2, dataobj2) {
           if (dataobj.guid == dataobj2.guid) {
@@ -215,11 +225,38 @@ export class DashboardComponent implements OnInit {
             data.apps[key]["thumbImgPath"] = dataobj2.thumbImgPath;
           }
         });
-      }).then(this.thumnail());
 
+
+        $.each(data.services, function (key, obj) {
+          $.each(this.servicepacks, function (key, obj2) {
+
+            // if (obj.service_plan.service.label == ) {
+            // }
+          });
+          obj['thumbImgPath'] = "" + key;
+        });
+
+      });
+
+      // var ReServicepacks = [];
+      // this.log.debug("여기3");
+      //   $.each(data.services, function (key, dataobj) {
+      //     $.each(this.servicepacks, function (key2, dataobj2) {
+      //     if(dataobj.service_plan.service.label == dataobj2.servicePackName) {
+      //       var obj = {
+      //         SthumbImgPath : dataobj2.thumbImgPath
+      //       };
+      //       ReServicepacks.push(obj);
+      //     }
+      //   });
+      //     this.ReServicepacksEntities = ReServicepacks;
+      //     console.debug("밑에꺼임");
+      //     console.debug(ReServicepacks);
+      // });
 
       this.appEntities = data.apps;
 
+      // this.servicesEntities = data.services; sort 재 정렬
       this.servicesEntities = data.services.sort((serA, serB) => {
         const guidA = serA.guid;
         const guidB = serB.guid;
@@ -233,19 +270,6 @@ export class DashboardComponent implements OnInit {
       return data;
     });
 
-  }
-
-
-  thumnail(){
-    this.dashboardService.getServicePacks().subscribe(data => {
-
-      // console.log('====================================================');
-      // this.servicepacks = data2['list'];Observable
-      // console.log('====================================================');
-      // console.log(this.servicepacks);
-      // console.log('====================================================');
-      return data;
-    });//
   }
 
   renameApp() {
@@ -436,7 +460,6 @@ export class DashboardComponent implements OnInit {
     }
     this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid) + ' NAME :: ' + name;
   }
-
 
 }//
 
