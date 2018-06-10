@@ -12,6 +12,7 @@ import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 import {CatalogService, ServicePack, BuildPack, StarterPack} from '../catalog/main/catalog.service';
+import {isBoolean} from "util";
 
 declare var $: any;
 declare var jQuery: any;
@@ -27,6 +28,9 @@ export class DashboardComponent implements OnInit {
   public isEmpty: boolean;
   public isSpace: boolean = false;
   public isMessage: boolean;
+  public isPattenTest : boolean;
+  public disablebutton : boolean;
+  public disableappinput : boolean;
   private isLoadingSpaces = false;
 
   public token: string;
@@ -34,6 +38,7 @@ export class DashboardComponent implements OnInit {
   public userGuid: string;
   public spaceGuid: string;
   public selectedSpaceId: string;
+  public appplaceholder : string;
 
   public current_popmenu_id: string;
   public instanceName: string;
@@ -75,19 +80,12 @@ export class DashboardComponent implements OnInit {
 
   public servicepackthumbImgPath: string;
 
-  constructor(private commonService: CommonService,
-              private dashboardService: DashboardService,
-              private orgService: OrgService,
-              private spaceService: SpaceService,
-              private log: NGXLogger,
-              private appMainService: AppMainService,
-              private route: ActivatedRoute,
-              private catalogService: CatalogService,
-              private router: Router, private http: HttpClient) {
+  constructor(private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService,
+              private spaceService: SpaceService, private log: NGXLogger, private appMainService: AppMainService,
+              private route: ActivatedRoute, private catalogService: CatalogService, private router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
-
 
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
@@ -137,6 +135,17 @@ export class DashboardComponent implements OnInit {
     } else {
       setTimeout(this.currentSpaceBox(), 3000);
     }
+  }
+
+  disableInput(value : boolean){
+    this.disableappinput = value;
+  }
+  disableButton(value : boolean){
+    this.disablebutton = value;
+  }
+  placeholderSetting(value : boolean){
+    this.disableappinput = value;
+    this.disablebutton = value;
   }
 
   ngOnInit() {
@@ -202,10 +211,12 @@ export class DashboardComponent implements OnInit {
   }
 
   getAppSummary(value: string) {
+
     this.showLoading();
 
     this.dashboardService.getAppSummary(value).subscribe(data => {
       this.commonService.isLoading = false;
+
       $.each(data.apps, function (key, dataobj) {
         $.each(data.appsPer, function (key2, dataobj2) {
           if (dataobj.guid == dataobj2.guid) {
@@ -216,7 +227,9 @@ export class DashboardComponent implements OnInit {
           }
         });
       });
+
       this.appEntities = data.apps;
+      this.thumnailApp();
 
       this.servicesEntities = data.services.sort((serA, serB) => {
         const guidA = serA.guid;
@@ -229,20 +242,22 @@ export class DashboardComponent implements OnInit {
           return 1;
       });
       return data;
+    }, error => {
+    }, () => {
+      this.thumnail();
     });
 
   }
 
-
   thumnail(): void {
-    this.log.debug("Start");
-    this.log.debug(this.servicesEntities);
+    // this.log.debug("Start");
+    // this.log.debug(this.servicesEntities);
     this.dashboardService.getServicePacks().subscribe(data => {
       $.each(this.servicesEntities, function (skey, servicesEntitie) {
         let cnt = 0;
         $.each(data['list'], function (dkey, servicepack) {
           if (servicesEntitie['service_plan'] != null) {
-            console.log(servicesEntitie['service_plan']['service']['label'] + ' == ' + servicepack['servicePackName'] + ' = ' + (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']));
+            // console.log(servicesEntitie['service_plan']['service']['label'] + ' == ' + servicepack['servicePackName'] + ' = ' + (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']));
 
             if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
               servicesEntitie['thumbImgPath'] = servicepack['thumbImgPath'];
@@ -258,8 +273,37 @@ export class DashboardComponent implements OnInit {
       return data;
     }, error => {
     }, () => {
+      // this.log.debug('END');
+      // this.log.debug(this.servicesEntities);
+    });
+  }
+
+  thumnailApp(): void {
+    this.log.debug("Start");
+    this.log.debug(this.appEntities);
+    this.dashboardService.getBuildPacks().subscribe(data => {
+      $.each(this.appEntities, function (skey, appEntitie) {
+        let cnt = 0;
+        $.each(data['list'], function (dkey, buildpack) {
+          if (appEntitie['buildpack'] != null) {
+            console.log(appEntitie['buildpack'] + ' == ' + buildpack['buildPackName'] + ' = ' + (appEntitie['buildpack'] === buildpack['buildPackName']));
+
+            if (appEntitie['buildpack'] === buildpack['buildPackName']) {
+              appEntitie['thumbImgPath'] = buildpack['thumbImgPath'];
+              cnt++
+            }
+          }
+
+        })
+        if (cnt == 0) {
+          appEntitie['thumbImgPath'] = 'DEFALUT';
+        }
+      });
+      return data;
+    }, error => {
+    }, () => {
       this.log.debug('END');
-      this.log.debug(this.servicesEntities);
+      this.log.debug(this.appEntities);
     });
   }
 
@@ -269,8 +313,8 @@ export class DashboardComponent implements OnInit {
       newName: this.selectedName,
     };
     this.dashboardService.renameApp(params).subscribe(data => {
-      return data;
-    });
+        return data; //
+    }); //
     return this.getAppSummary(this.selectedSpaceId);
   }
 
@@ -384,6 +428,26 @@ export class DashboardComponent implements OnInit {
       return data;
     });
     return (this.getAppSummary(this.selectedSpaceId));
+  }
+
+  patten(value){
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+    return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
+  }
+
+  pattenCheck(value) {
+    if (this.patten(this.selectedName)) {
+      this.isPattenTest = false;
+      this.disableButton(false);
+      console.log(this.placeholderSetting);
+      alert("다시입력해라");
+    }
+    this.disableInput(value);
+    this.isPattenTest = true;
+    this.disableButton(true);
+    return;
   }
 
   //move catalogDevelopment

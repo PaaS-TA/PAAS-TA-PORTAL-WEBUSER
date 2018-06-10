@@ -156,7 +156,7 @@
                       </p>
                       <span>새 비밀번호 확인
                       </span>
-                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" required="" (change)="checkRePassword($event)"/>
+                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" required="" (change)="checkRePassword($event)" (keydown)="checkRePassword($event)" (keyup)="checkRePassword($event)"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="updateUserPassword()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
@@ -220,7 +220,7 @@
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
-                      <span class="red" use-form-error="isNotSame" *ngIf="!isTellPhone" >
+                      <span class="red" use-form-error="isNotSame" *ngIf="!isTellPhone">
                         <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
                       </span>
                     </div>
@@ -356,8 +356,8 @@
             </p>
             <input type="text" placeholder="이메일 입력" [(ngModel)]="user['userId']"/>
             <input type="password" placeholder="비밀번호 입력" name="password_check" [(ngModel)]="password_check" (click)="checkChPassword($event)" (keydown)="checkChPassword($event)" (keyup)="checkChPassword($event)"/>
-            <p class="red"  *ngIf="!isChPassword">
-              <i class="fas fa-exclamation-circle"></i> 비밀 번호가 일치하지 않습니다</p>
+            <p class="red" use-form-error="isNotSame" *ngIf="!isChPassword">
+              <i class="fas fa-exclamation-circle"></i> 비밀 번호가 일치하지 않습니다.</p>
           </div>
         </div>
         <!-- Footer -->

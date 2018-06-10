@@ -79,6 +79,12 @@ export class DashboardService {
     }).do(console.log);
   }
 
+  getBuildPacks() {
+    return this.commonService.doGet('/commonapi/v2/developpacks', this.commonService.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
   RecentInit(data: any) {
     this.catalogService.recentpacks = [];
     this.catalogService.recentpacks = data['list'];
