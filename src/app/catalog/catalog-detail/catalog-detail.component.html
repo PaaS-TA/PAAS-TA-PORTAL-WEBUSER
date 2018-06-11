@@ -39,7 +39,7 @@
           <div class="cWrap maT30">
             <dl>
               <dt>
-              <h4>앱 생성</h4>
+              <h4>{{ 'catalog.appTemplate.createanApp' | translate }}</h4>
               <div class="btnWrap" >
                 <span class="cWraprightspan">{{ 'catalog.appTemplate.whetherTheAppIsStarted' | translate }}</span>
                 <input id="switch3" type="checkbox" [(ngModel)]="appStart"  switch2="none">
@@ -112,7 +112,7 @@
                     </tr>
                     <tr>
                       <td  colspan="2">
-                        <input type="text" placeholder="{{ appplaceholder }}"  [(ngModel)]="appname" (ngModelChange)="checkAppName()" [disabled]="disableappinput"/>
+                        <input type="text" placeholder="{{ 'catalog.contants.inputAppName' | translate }}"  [(ngModel)]="appname" (ngModelChange)="checkAppName()" [disabled]="disableappinput"/>
                         <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
                         <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>  {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
                       </td>
@@ -124,7 +124,7 @@
                     </tr>
                     <tr>
                       <td colspan="2">
-                        <input name="route" type="text" placeholder="{{routeplaceholder}}" [(ngModel)]="appurl" (ngModelChange)="checkHostName()" [disabled]="disablerouteinput" [maxlength]="64 + domain.length"/>
+                        <input name="route" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}"   [(ngModel)]="appurl" (ngModelChange)="checkHostName()" [disabled]="disablerouteinput" [maxlength]="64 + domain.length"/>
                         <div *ngIf="(routecheck === 1 && appurl.length > 0)"><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
                         <div *ngIf="(routecheck === -1  && appurl.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
                       </td>
@@ -207,7 +207,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td><input type="text" placeholder="서비스 이름 입력하여 주십시오" [(ngModel)]="serviceplan.servicename" (ngModelChange)="serviceNameCheck(serviceplan)" [disabled]="disablerouteinput"/>
+                      <td><input type="text" placeholder="{{ 'catalog.contants.inputService' | translate }}" [(ngModel)]="serviceplan.servicename" (ngModelChange)="serviceNameCheck(serviceplan)" [disabled]="disablerouteinput"/>
                         <div *ngIf="(serviceplan.servicenamecheck === 1 && serviceplan.servicename.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.appTemplate.createSuccessService' | translate }}</p></div>
                         <div *ngIf="(serviceplan.servicenamecheck === -1 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.appTemplate.createFalseService' | translate }}</p></div>
                         <div *ngIf="(serviceplan.servicenamecheck === 2 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.appTemplate.overLapService' | translate }}</p></div>
@@ -299,10 +299,10 @@
                         <label for="ra2"></label>
                       </td>
                       <td *ngIf="plan.entity.free">
-                        무료
+                        {{ 'catalog.appTemplate.free' | translate }}
                       </td>
                       <td *ngIf="!plan.entity.free">
-                        표준
+                        {{ 'catalog.appTemplate.standard' | translate }}
                       </td>
                       <th><p>{{plan.entity.description}}</p>
                         {{plan.bullet}}<br/>{{plan.subbullet}}

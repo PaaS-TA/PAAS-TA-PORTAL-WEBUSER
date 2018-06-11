@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {NGXLogger} from "ngx-logger";
 import {CommonService} from "../../common/common.service";
 import {CATALOGURLConstant} from "../common/catalog.constant";
-
+declare var $: any;
 @Injectable()
 export class CatalogService {
 
@@ -69,6 +69,17 @@ export class CatalogService {
 
   isLoading(value){
     this.common.isLoading = value;
+  }
+
+  alertMessage(value, result){
+    $(".alertLayer .in").text(value);
+    if(result){
+      $(".alertLayer").css('border-left','4px solid #3d10ef');
+    }
+    else{
+      $(".alertLayer").css('border-left','4px solid #cb3d4a');
+    }
+    $(".alertLayer").addClass("moveAlert");
   }
 
   getOrgName(){

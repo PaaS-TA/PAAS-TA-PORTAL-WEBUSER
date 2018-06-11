@@ -153,15 +153,18 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   serviceAmountSetting(value){
+    console.log(value);
+    try{
     value = JSON.parse(value);
     let amount;
     if(value.costs){
       amount = value.costs[0]['amount'].usd;
-
-      if(amount == 0){
-        return '무료';
-      }return amount + '/' + value.costs[0]['unit'];
-    } return '무료';
+      }
+    return amount + '/' + value.costs[0]['unit'];
+    }
+    catch(error){
+      return '0/MONTHLY';
+    }
   }
 
   serviceBulletSetting(value){

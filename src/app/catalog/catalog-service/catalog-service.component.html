@@ -97,8 +97,8 @@
                 </th>
               </tr>
               <tr>
-              <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSPACE}}</p></div>
-                <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSELECTSPACE}}</p></div></th>
+              <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSpace' | translate }}</p></div>
+                <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSelectSpace' | translate }}</p></div></th>
               </tr>
               <tr *ngIf="servicepack.appBindYn === catalogcontans.YN">
                 <th colspan="3">
@@ -119,9 +119,9 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <input type="text" [(ngModel)]="servicename" placeholder="{{serviceplaceholder}}" (ngModelChange)="serviceNameCheck()" [disabled]="disableserviceinput"/>
-                  <div *ngIf="(namecheck === 1 && servicename.length > 0)" ><p class=""><i class=""></i> {{catalogcontans.CREATESUCCESSAPP }}</p></div>
-                  <div *ngIf="(namecheck === -1 && servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{catalogcontans.CREATEFALSEAPP}}</p></div>
+                  <input type="text" [(ngModel)]="servicename" placeholder="{{ 'catalog.contants.inputService' | translate }}" (ngModelChange)="serviceNameCheck()" [disabled]="disableserviceinput"/>
+                  <div *ngIf="(namecheck === 1 && servicename.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
+                  <div *ngIf="(namecheck === -1 && servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseService' | translate }}</p></div>
                 </th>
               </tr>
               <tr>
@@ -203,10 +203,10 @@
                     <label for="ra2"></label>
                   </td>
                   <td *ngIf="service.free">
-                    무료
+                    {{ 'catalog.appTemplate.free' | translate }}
                   </td>
                   <td *ngIf="!service.free">
-                    표준
+                    {{ 'catalog.appTemplate.standard' | translate }}
                   </td>
                   <td><p>{{service.description}}</p>
                     {{ serviceBulletSetting(service.extra)}}<br/>{{serviceSubBulletSetting(service.extra)}}

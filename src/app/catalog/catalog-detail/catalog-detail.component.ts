@@ -49,11 +49,9 @@ export class CatalogDetailComponent implements OnInit {
   spaces: Array<Space> = new Array<Space>(); // 공간 정보
   appStart : boolean = true; // 앱 시작 여부
   appbind : boolean = true;
-
   buttonid : number = 0;
   switchid : number = 3;
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
-
   }
 
   ngOnInit() {
@@ -65,6 +63,9 @@ export class CatalogDetailComponent implements OnInit {
     this.spacesFrist();
     this.orgsInit();
     this.doLayout();
+    this.translate.get('catalog').subscribe(data => {
+      this.translateEntities = data;
+    });
   }
 
   domainInit(){
@@ -96,14 +97,14 @@ export class CatalogDetailComponent implements OnInit {
     console.log("통과");
     this.disableInput(value);
     this.disableButton(true);
-    if(value){
-      this.appplaceholder = "{{'catalog.contants.selectOrgAndSpace' | translate }} ";
-      this.routeplaceholder = "'catalog.contants.selectOrgAndSpace' | translate";
-    }
-    else{
-      this.appplaceholder = "'catalog.contants.inputAppName' | translate";
-      this.routeplaceholder = "'catalog.contants.inputHostName' | translate";
-    }
+    // if(value){
+    //   this.appplaceholder = "{{'catalog.contants.selectOrgAndSpace' | translate }} ";
+    //   this.routeplaceholder = "'catalog.contants.selectOrgAndSpace' | translate";
+    // }
+    // else{
+    //   this.appplaceholder = "'catalog.contants.inputAppName' | translate";
+    //   this.routeplaceholder = "'catalog.contants.inputHostName' | translate";
+    // }
   }
   disableInput(value : boolean){
     this.disableappinput = value;
@@ -376,11 +377,9 @@ export class CatalogDetailComponent implements OnInit {
     let amount;
     if(value.costs){
       amount = value.costs[0]['amount'].usd;
+    }
+    return amount + '/' + value.costs[0]['unit'];
 
-      if(amount == 0){
-        return '무료';
-      }return amount + '/' + value.costs[0]['unit'];
-    } return '무료';
   }
 
   serviceParameterSetting(planlist, key, params) {
@@ -438,66 +437,68 @@ export class CatalogDetailComponent implements OnInit {
 
 
   createApp() {
-    this.catalogService.isLoading(true);
-    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
-        if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
-          const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
-          let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];
-          if(appSampleFilePath ==='' || appSampleFilePath === null)
-            appSampleFilePath = 'N';
-          let paramlist = new Array<any>();
-          this.serviceplanlist.forEach(list => {
-            let serviceparam = {
-              name: list.servicename,
-              servicePlan: list.plan.metadata.guid,
-              parameter: this.setParmeterData(list.serviceparameter, list.hiddenserviceparameter),
-              app_bind_parameter: this.setParmeterData(list.appparameter, list.hiddenappparameter),
-              appGuid : list.appbind ? '' : '(id_dummy)',
-            };
-            paramlist.push(serviceparam);
-          });
-          let param ={
-            appSampleStartYn : this.appStart ? 'Y' : 'N',
-            appSampleFileName: this.apptemplate[0]['appSampleFileName'],
-            spaceId: this.space.guid,
-            spaceName: this.space.name,
-            orgName: this.org.name,
-            appName: this.appname,
-            name : this.appname,
-            hostName: this.appurl,
-            domainId: this.domainid,
-            memorySize : this.memory,
-            diskSize : this.disk,
-            buildPackName: this.apptemplate[0]['buildPackName'],
-            appSampleFilePath : appSampleFilePath,
-            servicePlanList : paramlist,
-            catalogType : CATALOGURLConstant.STARTERPACK,
-            catalogNo : this.template.no,
-            userId : this.catalogService.getUserid()
-          };
-          this.catalogService.postApp(url, param).subscribe(data => {
-            this.catalogService.isLoading(false);
-            alert("앱 템플릿 생성 완료");
-            this.router.navigate(['dashboard']);
-          }, error => {
-            this.catalogService.isLoading(false);
-            alert("앱 템플릿 생성 실패");
-          });
-        }
-      }, error => {
-        alert("라우트 증복 오류");
-        this.getRoutes();
-        this.routecheck = CATALOGURLConstant.NO;
-        this.disableButton(true);
-        return false;
-      });
-    }, error => {
-      alert("앱 이름중복 오류");
-      this.getAppNames();
-      this.namecheck = CATALOGURLConstant.NO;
-      this.disableButton(true);
-    });
-
+    console.log(this.translateEntities);
+    this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
+    //
+    // this.catalogService.isLoading(true);
+    // this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
+    //   this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
+    //     if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
+    //       const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
+    //       let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];
+    //       if(appSampleFilePath ==='' || appSampleFilePath === null)
+    //         appSampleFilePath = 'N';
+    //       let paramlist = new Array<any>();
+    //       this.serviceplanlist.forEach(list => {
+    //         let serviceparam = {
+    //           name: list.servicename,
+    //           servicePlan: list.plan.metadata.guid,
+    //           parameter: this.setParmeterData(list.serviceparameter, list.hiddenserviceparameter),
+    //           app_bind_parameter: this.setParmeterData(list.appparameter, list.hiddenappparameter),
+    //           appGuid : list.appbind ? '' : '(id_dummy)',
+    //         };
+    //         paramlist.push(serviceparam);
+    //       });
+    //       let param ={
+    //         appSampleStartYn : this.appStart ? 'Y' : 'N',
+    //         appSampleFileName: this.apptemplate[0]['appSampleFileName'],
+    //         spaceId: this.space.guid,
+    //         spaceName: this.space.name,
+    //         orgName: this.org.name,
+    //         appName: this.appname,
+    //         name : this.appname,
+    //         hostName: this.appurl,
+    //         domainId: this.domainid,
+    //         memorySize : this.memory,
+    //         diskSize : this.disk,
+    //         buildPackName: this.apptemplate[0]['buildPackName'],
+    //         appSampleFilePath : appSampleFilePath,
+    //         servicePlanList : paramlist,
+    //         catalogType : CATALOGURLConstant.STARTERPACK,
+    //         catalogNo : this.template.no,
+    //         userId : this.catalogService.getUserid()
+    //       };
+    //       this.catalogService.postApp(url, param).subscribe(data => {
+    //         this.catalogService.isLoading(false);
+    //         alert("앱 템플릿 생성 완료");
+    //         this.router.navigate(['dashboard']);
+    //       }, error => {
+    //         this.catalogService.isLoading(false);
+    //         alert("앱 템플릿 생성 실패");
+    //       });
+    //     }
+    //   }, error => {
+    //     alert("라우트 증복 오류");
+    //     this.getRoutes();
+    //     this.routecheck = CATALOGURLConstant.NO;
+    //     this.disableButton(true);
+    //     return false;
+    //   });
+    // }, error => {
+    //   this.catalogService.alertMessage(this.translateEntities['result']['appNameError'], false);
+    //   this.getAppNames();
+    //   this.namecheck = CATALOGURLConstant.NO;
+    //   this.disableButton(true);
+    // });
   }
 }

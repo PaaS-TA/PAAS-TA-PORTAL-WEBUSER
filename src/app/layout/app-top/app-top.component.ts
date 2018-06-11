@@ -17,7 +17,7 @@ export class AppTopComponent implements OnInit {
   @Input('app-view') isAppView: Boolean;
   @Input('catalog-view') isCatalogView: Boolean;
 
-  catalogName: string;
+  catalogName: number;
 
   allMenuCursorIds: string[] = [
     'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc',
@@ -40,16 +40,16 @@ export class AppTopComponent implements OnInit {
     // related to catalog current menu
     const url = this.router['url'].split("/")[1];
     if(url.indexOf('detail') > 0){
-      this.catalogName = '앱 템플릿';
+      this.catalogName = 0;
     }
     else if(url.indexOf('development') > 0){
-      this.catalogName = '앱 개발환경';
+      this.catalogName = 1;
     }
     else if(url.indexOf('service') > 0){
-      this.catalogName = '서비스';
+      this.catalogName = 2;
     }
     else{
-      this.catalogName = '전체보기';
+      this.catalogName = 3;//"<p> 'catalog.nav.viewAll' | translate </p>";
     }
   }
 

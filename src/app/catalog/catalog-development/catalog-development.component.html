@@ -104,8 +104,8 @@
                 </th>
               </tr>
               <tr>
-              <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSPACE}}</p></div>
-                <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSELECTSPACE}}</p></div></th>
+              <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSpace' | translate }}</p></div>
+                <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSelectSpace' | translate }}</p></div></th>
               </tr>
               <tr>
                 <td><p>{{ 'catalog.appDevelopment.memory' | translate }}</p>
@@ -150,9 +150,9 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <input type="text" placeholder="{{appplaceholder}}"  [(ngModel)]="appname" (ngModelChange)="checkAppName()" [disabled]="disableappinput"/>
-                  <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class=""><i class=""></i> {{catalogcontans.CREATESUCCESSAPP }}</p></div>
-                  <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{catalogcontans.CREATEFALSEAPP}}</p></div>
+                  <input type="text" placeholder="{{ 'catalog.contants.inputAppName' | translate }}"  [(ngModel)]="appname" (ngModelChange)="checkAppName()" [disabled]="disableappinput"/>
+                  <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class=""><i class=""></i>{{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
+                  <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
                 </th>
               </tr>
               <tr>
@@ -162,9 +162,9 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <input name="route" type="text" placeholder="{{routeplaceholder}}" [(ngModel)]="appurl" (ngModelChange)="checkHostName()" [disabled]="disablerouteinput" [maxlength]="64 + domain.length"/>
-                  <div *ngIf="(routecheck === 1 && appurl.length > 0)"><p class=""><i class=""></i> {{catalogcontans.CREATESUCCESSROUTE}}</p></div>
-                  <div *ngIf="(routecheck === -1  && appurl.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{catalogcontans.CREATEFASLEROUTE}}</p></div>
+                  <input name="route" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}" [(ngModel)]="appurl" (ngModelChange)="checkHostName()" [disabled]="disablerouteinput" [maxlength]="64 + domain.length"/>
+                  <div *ngIf="(routecheck === 1 && appurl.length > 0)"><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
+                  <div *ngIf="(routecheck === -1  && appurl.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
                 </th>
               </tr>
               <tr>
