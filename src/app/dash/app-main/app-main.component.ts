@@ -160,10 +160,12 @@ export class AppMainComponent implements OnInit {
     this.sltChartGroupBy = 1;
 
     $("[id^='layerpop']").modal("hide");
-    $("#layerpop_app_save").modal("hide");
+
+    if($(".colright_btn li > ol").hasClass('on'))
+      $(".colright_btn li > ol").toggleClass('on');
 
     this.route.queryParams.subscribe(params => {
-      if (Object.keys(params).length > 0) {
+      if(Object.keys(params).length > 0) {
         setTimeout(() => this.showLoading(), 0);
 
         this.orgName = params['org_name'];
@@ -174,7 +176,6 @@ export class AppMainComponent implements OnInit {
         this.appGuid = params['app_guid'];
 
         this.getAppSummary(params['app_guid']);
-
         this.getAppEvents(params['app_guid']);
         this.getAppEnv(params['app_guid']);
         this.getAppRecentLogs(params['app_guid']);
@@ -527,7 +528,19 @@ export class AppMainComponent implements OnInit {
       name: this.appName
     };
     this.appMainService.startApp(params).subscribe(data => {
-      this.ngOnInit();
+      if(data.result) {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.appstartSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
+        $(".alertLayer").addClass("moveAlert");
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.appstartFail+"<br><br>"+data.msg.description);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
@@ -543,7 +556,19 @@ export class AppMainComponent implements OnInit {
       guid: this.appSummaryGuid
     };
     this.appMainService.stopApp(params).subscribe(data => {
-      this.ngOnInit();
+      if(data.result) {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.appstopSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
+        $(".alertLayer").addClass("moveAlert");
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.appstopFail+"<br><br>"+data.msg.description);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
@@ -561,7 +586,7 @@ export class AppMainComponent implements OnInit {
     };
     this.appMainService.restageApp(params).subscribe(data => {
       //TODO 재시작 후 시간 텀을주어 init 할 것인가??
-      if(data) {
+      if(data.result) {
         this.ngOnInit();
 
         this.common.isLoading = false;
@@ -570,7 +595,7 @@ export class AppMainComponent implements OnInit {
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.appRestartFail);
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.appRestartFail+"<br><br>"+data.msg.description);
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
@@ -707,7 +732,19 @@ export class AppMainComponent implements OnInit {
 
   appDelClick() {
     this.appMainService.delApp(this.appGuid).subscribe(data => {
-      this.router.navigate(['dashMain']);
+      if(data.result) {
+        this.common.isLoading = false;
+        $(".alertLayer .in").text(this.translateEntities.alertLayer.appDelSuccess);
+        $(".alertLayer").css('border-left','4px solid #3d10ef');
+        $(".alertLayer").addClass("moveAlert");
+
+        this.router.navigate(['dashMain']);
+      } else {
+        this.common.isLoading = false;
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.appDelFail+"<br><br>"+data.msg.description);
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
+        $(".alertLayer").addClass("moveAlert");
+      }
     });
   }
 
@@ -766,7 +803,7 @@ export class AppMainComponent implements OnInit {
       name: name
     };
     this.appMainService.updateApp(params).subscribe(data => {
-      if(data) {
+      if(data.result) {
         $(".headT,.headT2").css("display","none");
 
         $("#instanceS2").hide();
@@ -794,13 +831,14 @@ export class AppMainComponent implements OnInit {
         $(".alertLayer .in").text(this.translateEntities.alertLayer.appUpdateSuccess);
         $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
+
+        this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.appUpdateFail);
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.appUpdateFail+"<br><br>"+data.msg.description);
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
-      this.ngOnInit();
     });
   }
 
@@ -811,6 +849,8 @@ export class AppMainComponent implements OnInit {
     var updateEnvironment = {};
     var appEnvName = "";
     var appEnvValue = "";
+    var alertLayerSuccessText = "";
+    var alertLayerFailText = "";
 
     if (type == "add") {
       for (var i = 0; i < $("[id^='envEditId']").size(); i++) {
@@ -821,12 +861,18 @@ export class AppMainComponent implements OnInit {
       appEnvName = $("#envAddId").val();
       appEnvValue = $("#envAddData").val();
       updateEnvironment[appEnvName] = appEnvValue;
+
+      alertLayerSuccessText = this.translateEntities.alertLayer.envAddSuccess;
+      alertLayerFailText = this.translateEntities.alertLayer.envAddFail;
     } else if (type == "modify") {
       for (var i = 0; i < $("[id^='envEditId']").size(); i++) {
         appEnvName = $("#envEditId" + i).val();
         appEnvValue = $("#envEditData" + i).val();
         updateEnvironment[appEnvName] = appEnvValue;
       }
+
+      alertLayerSuccessText = this.translateEntities.alertLayer.envModySuccess;
+      alertLayerFailText = this.translateEntities.alertLayer.envModyFail;
     } else if (type == "delete") {
       for (var i = 0; i < $("[id^='envEditId']").size(); i++) {
         appEnvName = $("#envEditId" + i).val();
@@ -836,6 +882,9 @@ export class AppMainComponent implements OnInit {
 
       appEnvName = this.sltEnvDelName;
       delete updateEnvironment[appEnvName];
+
+      alertLayerSuccessText = this.translateEntities.alertLayer.envDelSuccess;
+      alertLayerFailText = this.translateEntities.alertLayer.envDelFail;
     }
 
     let params = {
@@ -844,18 +893,18 @@ export class AppMainComponent implements OnInit {
 
     };
     this.appMainService.updateApp(params).subscribe(data => {
-      if(data) {
+      if(data.result) {
         $("#add_env").hide();
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.envAddSuccess);
+        $(".alertLayer .in").text(alertLayerSuccessText);
         $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
 
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.envAddFail);
+        $(".alertLayer .in").html(alertLayerFailText+"<br><br>"+data.msg.description);
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
@@ -1152,8 +1201,7 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.routeAddFail+"<br><br>"+data.message.description);
-        // $(".alertLayer .in").html(this.translateEntities.alertLayer.routeAddFail+" Message "+data.message.description);
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.routeAddFail+"<br><br>"+data.msg.description);
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
@@ -1166,7 +1214,7 @@ export class AppMainComponent implements OnInit {
 
     let params = {};
     this.appMainService.delAppRoute(this.appGuid, this.sltRouteDelGuid, params).subscribe(data => {
-      if(data) {
+      if(data.result) {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.routeDelSuccess);
         $(".alertLayer").css('border-left','4px solid #3d10ef');
@@ -1175,7 +1223,7 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.routeDelFail);
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.routeDelFail+"<br><br>"+data.msg.description);
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
@@ -1270,7 +1318,7 @@ export class AppMainComponent implements OnInit {
 
     let params = {};
     this.appMainService.terminateInstance(this.appGuid, this.sltStatsInstance, params).subscribe(data => {
-      if(data) {
+      if(data.result) {
         this.ngOnInit();
 
         this.common.isLoading = false;
@@ -1279,7 +1327,7 @@ export class AppMainComponent implements OnInit {
         $(".alertLayer").addClass("moveAlert");
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.instanceRestartFail);
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.instanceRestartFail+"<br><br>"+data.msg.description);
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
@@ -1393,7 +1441,7 @@ export class AppMainComponent implements OnInit {
       parameter: bindParam
     };
     this.appMainService.bindService(params).subscribe(data => {
-      if(data) {
+      if(data.result) {
         $(".service_dl").toggleClass("on");
         this.sltServiceParam = [];
 
@@ -1405,7 +1453,7 @@ export class AppMainComponent implements OnInit {
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.bindServiceFail);
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.bindServiceFail+"<br><br>"+data.msg.description);
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
@@ -1474,7 +1522,7 @@ export class AppMainComponent implements OnInit {
 
     let params = {};
     this.appMainService.unbindService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
-      if(data) {
+      if(data.result) {
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.unbindServiceSuccess);
         $(".alertLayer").css('border-left','4px solid #3d10ef');
@@ -1483,7 +1531,7 @@ export class AppMainComponent implements OnInit {
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.unbindServiceFail);
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.unbindServiceFail+"<br><br>"+data.msg.description);
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
