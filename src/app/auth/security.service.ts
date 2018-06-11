@@ -5,10 +5,6 @@ import {NGXLogger} from 'ngx-logger';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {CommonService} from '../common/common.service';
-import {appendChild} from '@angular/core/src/render3/node_manipulation';
-import {toBase64String} from '@angular/compiler/src/output/source_map';
-import {UsermgmtService} from "../usermgmt/usermgmt.service";
-import {LoginComponent} from "../index/login/login.component";
 import {AppConfig} from "../app.config"
 
 
@@ -44,7 +40,7 @@ export class SecurityService {
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
     const params = {
-      'response_type': 'code',
+      // 'response_type': 'code',
       'client_id': AppConfig.clientId,
       'scope': AppConfig.scope,
       'redirect_uri': AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl)
@@ -55,11 +51,11 @@ export class SecurityService {
         '?response_type=' + AppConfig.code +
         '&client_id=' + AppConfig.clientId +
         '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
-        '&scope=' + AppConfig.scope +
-        '&state=';
+        '&scope=' + AppConfig.scope;
     });
 
   }
+
 
   /*
    * 토큰 추출 - > OAUTH 로그인용
