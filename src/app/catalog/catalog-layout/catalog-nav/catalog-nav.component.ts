@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CatalogService} from "../../main/catalog.service";
 import {Router} from "@angular/router";
 import {isUndefined} from "util";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-catalog-nav',
@@ -10,7 +11,7 @@ import {isUndefined} from "util";
 })
 export class CatalogNavComponent implements OnInit {
 
-  constructor(private catalogService: CatalogService, private router: Router) {
+  constructor(private translate: TranslateService,private catalogService: CatalogService, private router: Router) {
   }
 
   ngOnInit() {
@@ -24,13 +25,15 @@ export class CatalogNavComponent implements OnInit {
   viewStarterPack(value){
     console.log(value);
     this.router.navigate(['catalog']);
+    this.catalogService.check = false;
     this.catalogService.viewPacks(true, false, false);
   }
 
   viewBuildPack(value){
     this.router.navigate(['catalog']);
-
+    this.catalogService.check = false;
     this.catalogService.viewPacks(false, true, false);
+
     if(!isUndefined(value)) {
       this.catalogService.buildPackfilter = value;
       this.catalogService.buildPackFilter();
@@ -42,7 +45,7 @@ export class CatalogNavComponent implements OnInit {
 
   viewServicePack(value){
     this.router.navigate(['catalog']);
-
+    this.catalogService.check = false;
     this.catalogService.viewPacks(false, false, true);
     if(!isUndefined(value)) {
       this.catalogService.servicePackfilter = value;

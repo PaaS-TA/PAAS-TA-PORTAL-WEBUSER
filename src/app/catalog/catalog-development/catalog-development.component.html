@@ -27,13 +27,13 @@
                   </i>
                   <div class="col-6 icon_T">
                     <dl class="development_dl">
-                      <dt>요약
+                      <dt>{{ 'catalog.appDevelopment.summary' | translate }}
                       </dt>
                       <dd>{{buildpack.summary}}
                       </dd>
                       <dt>
                         <a  href="{{buildpack.docFileUrl}}" target="_blank">
-                        <button class="btns2 btns2_1 colors4">문서보기
+                        <button class="btns2 btns2_1 colors4">{{ 'catalog.appDevelopment.viewDocument' | translate }}
                         </button>
                         </a>
                       </dt>
@@ -44,7 +44,7 @@
               <dt>
               <div class="development_c maT40">
               <dl class="development_dl">
-              <dt>설명
+              <dt>{{ 'catalog.appDevelopment.description' | translate }}
               </dt>
               <dd [innerHTML]="buildpack.description">
               </dd>
@@ -57,9 +57,9 @@
         <div class="col-md-6">
           <div class="services_wrap">
             <table class="services_t">
-              <caption>앱 생성
+              <caption>{{ 'catalog.appDevelopment.createAnApp' | translate }}
                 <div class="btnWrap">
-                  <span class="cWraprightspan">앱 시작여부</span>
+                  <span class="cWraprightspan">{{ 'catalog.appDevelopment.whetherTheAppIsStarted' | translate }}</span>
                   <input id="switch3" type="checkbox" checked="checked" [(ngModel)]="appStart" switch2="none">
                   <label for="switch3"></label>
                 </div>
@@ -71,11 +71,11 @@
               </colgroup>
               <thead>
               <tr>
-                <td><p>지역</p>
+                <td><p>{{ 'catalog.appDevelopment.region' | translate }}</p>
                 </td>
-                <td><p>조직</p>
+                <td><p>{{ 'catalog.appDevelopment.organization' | translate }}</p>
                 </td>
-                <td><p>공간</p>
+                <td><p>{{ 'catalog.appDevelopment.space' | translate }}</p>
                 </td>
               </tr>
               </thead>
@@ -83,7 +83,9 @@
               <tr>
                 <td>
                   <select>
-                    <option>대한민국
+                    <option >{{ 'catalog.region.korea' | translate }}
+                    </option>
+                    <option >{{ 'catalog.region.usa' | translate }}
                     </option>
                   </select>
                 </td>
@@ -106,15 +108,19 @@
                 <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSELECTSPACE}}</p></div></th>
               </tr>
               <tr>
-                <td><p>메모리</p>
+                <td><p>{{ 'catalog.appDevelopment.memory' | translate }}</p>
                 </td>
-                <td><p>디스크</p>
+                <td><p>{{ 'catalog.appDevelopment.disk' | translate }}</p>
                 </td>
               </tr>
               <tr>
                 <td>
                   <select [(ngModel)]="memory">
+                    <option>256
+                    </option>
                     <option>512
+                    </option>
+                    <option>768
                     </option>
                     <option>1024
                     </option>
@@ -139,7 +145,7 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <p>앱 이름</p>
+                  <p>{{ 'catalog.appDevelopment.appName' | translate }}</p>
                 </th>
               </tr>
               <tr>
@@ -151,7 +157,7 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <p>앱 URL</p>
+                  <p>{{ 'catalog.appDevelopment.appURL' | translate }}</p>
                 </th>
               </tr>
               <tr>
@@ -163,7 +169,7 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <p>도메인</p>
+                  <p>{{ 'catalog.appDevelopment.domain' | translate }}</p>
                 </th>
               </tr>
               <tr>
@@ -176,8 +182,8 @@
           </div>
           <div class="clear"></div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="createApp()"  [disabled]="disablebutton" >생성</button>
-            <button class="btns2 btns2_1 colors5">취소</button>
+            <button class="btns2 btns2_1 colors4" (click)="createApp()"  [disabled]="disablebutton" >{{ 'catalog.appDevelopment.produce' | translate }}</button>
+            <button class="btns2 btns2_1 colors5" [routerLink]="['/catalog']">{{ 'catalog.appDevelopment.cancel' | translate }}</button>
           </div>
         </div>
       </div><!-- row one_line -->

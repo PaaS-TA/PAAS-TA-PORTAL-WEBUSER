@@ -15,7 +15,7 @@
               </button>
               </dt>
               <dd>
-                <h4 class="maT30">앱 템플릿 구성</h4>
+                <h4 class="maT30">{{ 'catalog.appTemplate.configureAppTemplates' | translate }}</h4>
                 <div class="cWrap_line maT30" >
                   <ul class="icon">
                     <li *ngFor="let app of apptemplate">
@@ -41,7 +41,7 @@
               <dt>
               <h4>앱 생성</h4>
               <div class="btnWrap" >
-                <span class="cWraprightspan">앱 시작여부</span>
+                <span class="cWraprightspan">{{ 'catalog.appTemplate.whetherTheAppIsStarted' | translate }}</span>
                 <input id="switch3" type="checkbox" [(ngModel)]="appStart"  switch2="none">
                 <label for="switch3"></label>
               </div>
@@ -54,19 +54,21 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                      <td colspan="2"><p>지역</p>
+                      <td colspan="2"><p>{{ 'catalog.appTemplate.region' | translate }}</p>
                       </td>
                     </tr>
                     <tr>
                       <td colspan="2">
-                        <select>
-                          <option>대한민국
+                        <select >
+                          <option >{{ 'catalog.region.korea' | translate }}
+                          </option>
+                          <option >{{ 'catalog.region.usa' | translate }}
                           </option>
                         </select>
                       </td>
                     </tr>
                     <tr>
-                      <td><p>조직</p>
+                      <td><p>{{ 'catalog.appTemplate.organization' | translate }}</p>
                       </td>
                     </tr>
                     <tr>
@@ -78,7 +80,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td><p>공간</p>
+                      <td><p>{{ 'catalog.appTemplate.space' | translate }}</p>
                       </td>
                     </tr>
                     <tr>
@@ -90,8 +92,8 @@
                       </td>
                     </tr>
                     <tr>
-                      <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSPACE}}</p></div>
-                        <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{catalogcontans.NOTSELECTSPACE}}</p></div></th>
+                      <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSpace' | translate }}</p></div>
+                        <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSelectSpace' | translate }}</p></div></th>
                     </tr>
                     </tbody>
                   </table>
@@ -105,38 +107,42 @@
                     <tbody>
                     <tr>
                       <td  colspan="2">
-                        <p>앱 이름</p>
+                        <p>{{ 'catalog.appTemplate.appName' | translate }}</p>
                       </td>
                     </tr>
                     <tr>
                       <td  colspan="2">
-                        <input type="text" placeholder="{{appplaceholder}}"  [(ngModel)]="appname" (ngModelChange)="checkAppName()" [disabled]="disableappinput"/>
-                        <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class=""><i class=""></i> {{catalogcontans.CREATESUCCESSAPP }}</p></div>
-                        <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{catalogcontans.CREATEFALSEAPP}}</p></div>
+                        <input type="text" placeholder="{{ appplaceholder }}"  [(ngModel)]="appname" (ngModelChange)="checkAppName()" [disabled]="disableappinput"/>
+                        <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
+                        <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>  {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
                       </td>
                     </tr>
                     <tr>
                       <td colspan="2">
-                        <p>앱 URL</p>
+                        <p>{{ 'catalog.appTemplate.appURL' | translate }}</p>
                       </td>
                     </tr>
                     <tr>
                       <td colspan="2">
                         <input name="route" type="text" placeholder="{{routeplaceholder}}" [(ngModel)]="appurl" (ngModelChange)="checkHostName()" [disabled]="disablerouteinput" [maxlength]="64 + domain.length"/>
-                        <div *ngIf="(routecheck === 1 && appurl.length > 0)"><p class=""><i class=""></i> {{catalogcontans.CREATESUCCESSROUTE}}</p></div>
-                        <div *ngIf="(routecheck === -1  && appurl.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{catalogcontans.CREATEFASLEROUTE}}</p></div>
+                        <div *ngIf="(routecheck === 1 && appurl.length > 0)"><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
+                        <div *ngIf="(routecheck === -1  && appurl.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
                       </td>
                     </tr>
                     <tr>
-                      <td><p>메모리</p>
+                      <td><p>{{ 'catalog.appTemplate.memory' | translate }}</p>
                       </td>
-                      <td><p>디스크</p>
+                      <td><p>{{ 'catalog.appTemplate.disk' | translate }}</p>
                       </td>
                     </tr>
                     <tr>
                       <th>
                         <select [(ngModel)]="memory">
+                          <option>256
+                          </option>
                           <option>512
+                          </option>
+                          <option>768
                           </option>
                           <option>1024
                           </option>
@@ -163,7 +169,7 @@
                     </tr>
                     <tr>
                       <td colspan="2">
-                        <p>도메인</p>
+                        <p>{{ 'catalog.appTemplate.domain' | translate }}</p>
                       </td>
                     </tr>
                     <tr>
@@ -182,11 +188,11 @@
           <div class="cWrap maT30 cataloglast">
             <dl>
               <dt>
-              <h4>서비스 이용사양 선택</h4>
+              <h4>{{ 'catalog.appTemplate.selectServiceUsageSpecification' | translate }}</h4>
               </dt>
               <dd class="cWrap_table_wrap" *ngFor="let serviceplan of serviceplanlist">
                 <div class="btnWrap" *ngIf="serviceplan.appBindYn === 'Y'">
-                  <span class="cWraprightspan">앱 연결여부</span>
+                  <span class="cWraprightspan">{{ 'catalog.appTemplate.whetherTheAppIsConnected' | translate }}</span>
                   <input id="{{serviceplan.switchid}}" type="checkbox" [(ngModel)]="serviceplan.appbind"  switch2="none">
                   <label for="{{serviceplan.switchid}}"></label>
                 </div>
@@ -202,13 +208,13 @@
                     </tr>
                     <tr>
                       <td><input type="text" placeholder="서비스 이름 입력하여 주십시오" [(ngModel)]="serviceplan.servicename" (ngModelChange)="serviceNameCheck(serviceplan)" [disabled]="disablerouteinput"/>
-                        <div *ngIf="(serviceplan.servicenamecheck === 1 && serviceplan.servicename.length > 0)" ><p class=""><i class=""></i> {{catalogcontans.CREATESUCCESSSERVICE }}</p></div>
-                        <div *ngIf="(serviceplan.servicenamecheck === -1 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{catalogcontans.CREATEFALSESERVICE}}</p></div>
-                        <div *ngIf="(serviceplan.servicenamecheck === 2 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{catalogcontans.OVERLAPSERVICE}}</p></div>
+                        <div *ngIf="(serviceplan.servicenamecheck === 1 && serviceplan.servicename.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.appTemplate.createSuccessService' | translate }}</p></div>
+                        <div *ngIf="(serviceplan.servicenamecheck === -1 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.appTemplate.createFalseService' | translate }}</p></div>
+                        <div *ngIf="(serviceplan.servicenamecheck === 2 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.appTemplate.overLapService' | translate }}</p></div>
                       </td>
                     </tr>
                     <tr>
-                      <td><p>서비스 이용 사양 선택</p>
+                      <td><p>{{ 'catalog.appTemplate.selectServiceUsageSpecification' | translate }}</p>
                       </td>
                     </tr>
                     <tr>
@@ -232,7 +238,7 @@
                     <tbody>
                     <ng-container *ngIf="serviceplan.serviceparameter && serviceplan.serviceparameter.length > 0">
                     <tr>
-                      <td colspan="2"><p>서비스 생성 파라미터</p>
+                      <td colspan="2"><p>{{ 'catalog.appTemplate.serviceCreationParameters' | translate }}</p>
                       </td>
                     </tr>
                     <tr *ngFor="let parameter of serviceplan.serviceparameter">
@@ -245,7 +251,7 @@
                     </ng-container>
                     <ng-container *ngIf="serviceplan.appparameter && serviceplan.appparameter.length > 0 && serviceplan.appbind">
                       <tr>
-                        <td colspan="2"><p>앱 생성 파라미터</p>
+                        <td colspan="2"><p>{{ 'catalog.appTemplate.appBindParameters' | translate }}</p>
                         </td>
                       </tr>
                       <tr *ngFor="let parameter of serviceplan.appparameter">
@@ -263,7 +269,7 @@
                 </div>
                 <div class="detail_bottom">
                   <table class="line_tables">
-                    <caption>서비스 이용 가격 안내
+                    <caption>{{ 'catalog.appTemplate.serviceUsePriceGuide' | translate }}
                     </caption>
                     <colgroup>
                       <col style='width:10%;'>
@@ -272,13 +278,13 @@
                       <col style=''>
                     </colgroup>
                     <thead>
-                    <td style="height: 58px"><p>선택</p>
+                    <td style="height: 58px"><p>{{ 'catalog.appTemplate.select' | translate }}</p>
                     </td>
-                    <td style="height: 58px"><p>상품</p>
+                    <td style="height: 58px"><p>{{ 'catalog.appTemplate.goods' | translate }}</p>
                     </td>
-                    <td style="height: 58px"><p>기능</p>
+                    <td style="height: 58px"><p>{{ 'catalog.appTemplate.function' | translate }}</p>
                     </td>
-                    <td style="height: 58px"><p>가격</p>
+                    <td style="height: 58px"><p>{{ 'catalog.appTemplate.price' | translate }}</p>
                     </td>
                     </thead>
                     <tbody>
@@ -312,8 +318,8 @@
             </dl>
           </div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="createApp()">생성</button>
-            <button class="btns2 btns2_1 colors5">취소</button>
+            <button class="btns2 btns2_1 colors4" (click)="createApp()">{{ 'catalog.appTemplate.produce' | translate }}</button>
+            <button class="btns2 btns2_1 colors5" [routerLink]="['/catalog']">{{ 'catalog.appTemplate.cancel' | translate }}</button>
           </div>
         </div>
       </div><!-- row one_line -->

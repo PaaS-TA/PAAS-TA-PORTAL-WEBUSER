@@ -11,6 +11,7 @@ export class CatalogService {
   recentpacks : Array<any>;
   servicepacks : Array<ServicePack>;
   lasttime : number;
+  check : boolean = true;
   viewstartpack : boolean = true;
   viewbuildpack : boolean = true;
   viewservicepack : boolean = true;

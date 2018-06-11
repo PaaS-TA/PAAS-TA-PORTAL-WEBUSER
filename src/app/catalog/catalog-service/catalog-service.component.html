@@ -27,13 +27,13 @@
                   </i>
                   <div class="col-6 icon_T">
                     <dl class="development_dl">
-                      <dt>요약
+                      <dt>{{ 'catalog.service.summary' | translate }}
                       </dt>
                       <dd>{{servicepack.summary}}
                       </dd>
                       <dt>
                         <a  href="{{servicepack.docFileUrl}}" target="_blank">
-                        <button class="btns2 btns2_1 colors4">문서보기
+                        <button class="btns2 btns2_1 colors4">{{ 'catalog.service.viewDocument' | translate }}
                         </button>
                           </a>
                       </dt>
@@ -44,7 +44,7 @@
               <dt>
               <div class="development_c maT40">
               <dl class="development_dl">
-                <dt>설명
+                <dt>{{ 'catalog.service.description' | translate }}
                 </dt>
                 <dd [innerHTML]="servicepack.description">
                 </dd>
@@ -57,7 +57,7 @@
         <div class="col-md-6">
           <div class="services_wrap">
             <table class="services_t">
-              <caption>서비스 생성</caption>
+              <caption>{{ 'catalog.service.createService' | translate }}</caption>
               <colgroup>
                 <col style="width:33%;">
                 <col style="width:36%;">
@@ -65,11 +65,11 @@
               </colgroup>
               <thead>
               <tr>
-                <td><p>지역</p>
+                <td><p>{{ 'catalog.service.region' | translate }}</p>
                 </td>
-                <td><p>조직</p>
+                <td><p>{{ 'catalog.service.organization' | translate }}</p>
                 </td>
-                <td><p>공간</p>
+                <td><p>{{ 'catalog.service.space' | translate }}</p>
                 </td>
               </tr>
               </thead>
@@ -77,7 +77,9 @@
               <tr>
                 <td>
                   <select>
-                    <option>대한민국
+                    <option >{{ 'catalog.region.korea' | translate }}
+                    </option>
+                    <option >{{ 'catalog.region.usa' | translate }}
                     </option>
                   </select>
                 </td>
@@ -100,7 +102,7 @@
               </tr>
               <tr *ngIf="servicepack.appBindYn === catalogcontans.YN">
                 <th colspan="3">
-                  <p>앱</p>
+                  <p>{{ 'catalog.service.apps' | translate }}</p>
                 </th>
               </tr>
               <tr *ngIf="servicepack.appBindYn === catalogcontans.YN">
@@ -112,7 +114,7 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <p>서비스 이름</p>
+                  <p>{{ 'catalog.service.serviceName' | translate }}</p>
                 </th>
               </tr>
               <tr>
@@ -124,7 +126,7 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <p>서비스 이용사양 선택</p>
+                  <p>{{ 'catalog.service.selectServiceUsagespecification' | translate }}</p>
                 </th>
               </tr>
               <tr>
@@ -139,7 +141,7 @@
               <ng-container *ngIf="parameter">
               <tr>
                 <th colspan="3">
-                  <p>서비스 생성 파라미터</p>
+                  <p>{{ 'catalog.service.serviceCreationParameters' | translate }}</p>
                 </th>
               </tr>
               <tr  *ngFor="let param of parameter">
@@ -156,7 +158,7 @@
               <ng-container *ngIf="appparameter && app.name!==catalogcontans.NOTAPPBINDING">
               <tr >
                 <th colspan="3" >
-                  <p>앱 생성 파라미터</p>
+                  <p>{{ 'catalog.service.appBindParameters' | translate }}</p>
                 </th>
               </tr>
               <tr *ngFor="let param of appparameter">
@@ -173,7 +175,7 @@
               </tbody>
             </table>
             <div class="services_bottom maT20">
-              <h4>서비스 이용 가격 안내 </h4>
+              <h4>{{ 'catalog.service.serviceUsePriceGuide' | translate }} </h4>
               <table class="line_tables">
                 <colgroup>
                   <col style="width:70px">
@@ -183,10 +185,10 @@
                 </colgroup>
                 <thead>
                 <tr>
-                  <td>선택</td>
-                  <td>상품</td>
-                  <td>기능</td>
-                  <td>가격</td>
+                  <td>{{ 'catalog.service.select' | translate }}</td>
+                  <td>{{ 'catalog.service.goods' | translate }}</td>
+                  <td>{{ 'catalog.service.function' | translate }}</td>
+                  <td>{{ 'catalog.service.price' | translate }}</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -218,8 +220,8 @@
             </div>
           </div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="createService()" [disabled]="disablebutton">생성</button>
-            <button class="btns2 btns2_1 colors5">취소</button>
+            <button class="btns2 btns2_1 colors4" (click)="createService()" [disabled]="disablebutton">{{ 'catalog.service.produce' | translate }}</button>
+            <button class="btns2 btns2_1 colors5" [routerLink]="['/catalog']">{{ 'catalog.service.cancel' | translate }}</button>
           </div>
         </div>
       </div><!-- row one_line -->

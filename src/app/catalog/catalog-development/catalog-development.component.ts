@@ -7,7 +7,8 @@ import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
 import {cataloghistroy} from "../model/cataloghistory";
 import {CatalogComponent} from "../main/catalog.component";
-
+declare var $: any;
+declare var jQuery: any;
 @Component({
   selector: 'app-catalog-development',
   templateUrl: './catalog-development.component.html',
@@ -58,12 +59,22 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.orgsFrist();
     this.spacesFrist();
     this.orgsInit();
-    this.memory = 512;
-    this.disk = 1024;
+    this.doLayout();
+    this.memory = 256;
+    this.disk = 512;
   }
 
-  goDocUrl(){
-
+  doLayout() {
+    $(document).ready(() => {
+      //TODO 임시로...
+      $.getScript("../../assets/resources/js/common2.js")
+        .done(function (script, textStatus) {
+          //console.log( textStatus );
+        })
+        .fail(function (jqxhr, settings, exception) {
+          console.log(exception);
+        });
+    });
   }
 
   activatedRouteInit(){
@@ -241,11 +252,8 @@ export class CatalogDevelopmentComponent implements OnInit {
   createApp() {
     this.catalogService.isLoading(true);
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      this.namecheck = CATALOGURLConstant.OK;
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
-          this.routecheck = CATALOGURLConstant.OK;
-
           let appSampleFilePath = this.buildpack['appSampleFilePath'];
           if(appSampleFilePath ==='' || appSampleFilePath === null)
             appSampleFilePath = 'N';
@@ -271,12 +279,6 @@ export class CatalogDevelopmentComponent implements OnInit {
             this.log.debug(data);
              this.catalogService.isLoading(false);
              this.router.navigate(['dashboard']);
-            // this.catalogService.postHistroy(CATALOGURLConstant.INSERTHISTROY, new cataloghistroy(this.buildpack.no, CATALOGURLConstant.BUILDPACK, this.catalogService.getUserid())).subscribe
-            // (data => {
-            //   alert("앱생성 성공");
-            //   this.log.debug(data);
-
-            // });
           }, error =>{
             alert("Time out Error");
             this.log.debug(error);

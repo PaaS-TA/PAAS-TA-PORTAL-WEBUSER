@@ -5,6 +5,7 @@ import {NGXLogger} from "ngx-logger";
 import {Organization} from "../../model/organization";
 import {Space} from "../../model/space";
 import {CATALOGURLConstant} from "../common/catalog.constant";
+import {TranslateService} from "@ngx-translate/core";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -16,6 +17,10 @@ export class CatalogDetailComponent implements OnInit {
   catalogcontans = CATALOGURLConstant;
 
   template: StarterPack;
+  translateEntities : any;
+  trans : string;
+
+
   apptemplate: Array<any> = new Array<any>(); // 앱 구성에 나오는 목록
   serviceplanlist : Array<any> = new Array<any>();
   servicenamelist : Array<any>;
@@ -47,7 +52,7 @@ export class CatalogDetailComponent implements OnInit {
 
   buttonid : number = 0;
   switchid : number = 3;
-  constructor(private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+  constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
 
   }
 
@@ -88,15 +93,16 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   placeholderSetting(value : boolean){
+    console.log("통과");
     this.disableInput(value);
     this.disableButton(true);
     if(value){
-      this.appplaceholder = CATALOGURLConstant.SELECTORGANDSPACE;
-      this.routeplaceholder = CATALOGURLConstant.SELECTORGANDSPACE;
+      this.appplaceholder = "{{'catalog.contants.selectOrgAndSpace' | translate }} ";
+      this.routeplaceholder = "'catalog.contants.selectOrgAndSpace' | translate";
     }
     else{
-      this.appplaceholder = CATALOGURLConstant.INPUTAPPNAME;
-      this.routeplaceholder = CATALOGURLConstant.INPUTHOSTNAME;
+      this.appplaceholder = "'catalog.contants.inputAppName' | translate";
+      this.routeplaceholder = "'catalog.contants.inputHostName' | translate";
     }
   }
   disableInput(value : boolean){
@@ -131,6 +137,13 @@ export class CatalogDetailComponent implements OnInit {
           this.serviceParameterSetting(planlist, 'appBindParameter', planlist.appBindParameter);
           this.serviceplanlist.push(planlist);
           console.log(this.serviceplanlist);
+          $.getScript("../../assets/resources/js/common2.js")
+            .done(function (script, textStatus) {
+              //console.log( textStatus );
+            })
+            .fail(function (jqxhr, settings, exception) {
+              console.log(exception);
+            });
         }, error => {
           alert("서비스 플랜이 없습니다.");
         });
@@ -231,6 +244,7 @@ export class CatalogDetailComponent implements OnInit {
       this.catalogService.isLoading(false);
     });
     this.doLayout();
+    console.log(this.trans);
   }
 
   checkAppName() {
@@ -425,47 +439,65 @@ export class CatalogDetailComponent implements OnInit {
 
   createApp() {
     this.catalogService.isLoading(true);
-    const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
-    let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];
-    if(appSampleFilePath ==='' || appSampleFilePath === null)
-      appSampleFilePath = 'N';
-    let paramlist = new Array<any>();
-    this.serviceplanlist.forEach(list => {
-      let serviceparam = {
-        name: list.servicename,
-        servicePlan: list.plan.metadata.guid,
-        parameter: this.setParmeterData(list.serviceparameter, list.hiddenserviceparameter),
-        app_bind_parameter: this.setParmeterData(list.appparameter, list.hiddenappparameter),
-        appGuid : list.appbind ? '' : '(id_dummy)',
-      };
-      paramlist.push(serviceparam);
-    });
-    let param ={
-      appSampleStartYn : this.appStart ? 'Y' : 'N',
-      appSampleFileName: this.apptemplate[0]['appSampleFileName'],
-      spaceId: this.space.guid,
-      spaceName: this.space.name,
-      orgName: this.org.name,
-      appName: this.appname,
-      name : this.appname,
-      hostName: this.appurl,
-      domainId: this.domainid,
-      memorySize : this.memory,
-      diskSize : this.disk,
-      buildPackName: this.apptemplate[0]['buildPackName'],
-      appSampleFilePath : appSampleFilePath,
-      servicePlanList : paramlist,
-      catalogType : CATALOGURLConstant.STARTERPACK,
-      catalogNo : this.template.no,
-      userId : this.catalogService.getUserid()
-    };
-    this.catalogService.postApp(url, param).subscribe(data => {
-      this.catalogService.isLoading(false);
-      alert("앱 템플릿 생성 완료");
-      this.router.navigate(['dashboard']);
+    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
+      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
+        if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
+          const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
+          let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];
+          if(appSampleFilePath ==='' || appSampleFilePath === null)
+            appSampleFilePath = 'N';
+          let paramlist = new Array<any>();
+          this.serviceplanlist.forEach(list => {
+            let serviceparam = {
+              name: list.servicename,
+              servicePlan: list.plan.metadata.guid,
+              parameter: this.setParmeterData(list.serviceparameter, list.hiddenserviceparameter),
+              app_bind_parameter: this.setParmeterData(list.appparameter, list.hiddenappparameter),
+              appGuid : list.appbind ? '' : '(id_dummy)',
+            };
+            paramlist.push(serviceparam);
+          });
+          let param ={
+            appSampleStartYn : this.appStart ? 'Y' : 'N',
+            appSampleFileName: this.apptemplate[0]['appSampleFileName'],
+            spaceId: this.space.guid,
+            spaceName: this.space.name,
+            orgName: this.org.name,
+            appName: this.appname,
+            name : this.appname,
+            hostName: this.appurl,
+            domainId: this.domainid,
+            memorySize : this.memory,
+            diskSize : this.disk,
+            buildPackName: this.apptemplate[0]['buildPackName'],
+            appSampleFilePath : appSampleFilePath,
+            servicePlanList : paramlist,
+            catalogType : CATALOGURLConstant.STARTERPACK,
+            catalogNo : this.template.no,
+            userId : this.catalogService.getUserid()
+          };
+          this.catalogService.postApp(url, param).subscribe(data => {
+            this.catalogService.isLoading(false);
+            alert("앱 템플릿 생성 완료");
+            this.router.navigate(['dashboard']);
+          }, error => {
+            this.catalogService.isLoading(false);
+            alert("앱 템플릿 생성 실패");
+          });
+        }
+      }, error => {
+        alert("라우트 증복 오류");
+        this.getRoutes();
+        this.routecheck = CATALOGURLConstant.NO;
+        this.disableButton(true);
+        return false;
+      });
     }, error => {
-      this.catalogService.isLoading(false);
-      alert("앱 템플릿 생성 실패");
+      alert("앱 이름중복 오류");
+      this.getAppNames();
+      this.namecheck = CATALOGURLConstant.NO;
+      this.disableButton(true);
     });
+
   }
 }
