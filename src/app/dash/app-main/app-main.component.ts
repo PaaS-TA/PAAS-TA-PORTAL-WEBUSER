@@ -39,6 +39,8 @@ export class AppMainComponent implements OnInit {
   public appRoutesEntitiesRe: any = [];
   public appDomainsEntities: Observable<any[]>;
   public appServicesEntities: Observable<any[]>;
+  public appServicesEntitiesRe: any = [];
+  public appServicesEntitiesRe2: any = [];
   public appAlarmsEntities: Observable<any[]>;
   public appAlaramEntities: Observable<any[]>;
   public appAutoscalingEntities: Observable<any[]>;
@@ -158,6 +160,7 @@ export class AppMainComponent implements OnInit {
     this.sltChartGroupBy = 1;
 
     $("[id^='layerpop']").modal("hide");
+    $("#layerpop_app_save").modal("hide");
 
     this.route.queryParams.subscribe(params => {
       if (Object.keys(params).length > 0) {
@@ -200,6 +203,44 @@ export class AppMainComponent implements OnInit {
       this.appRoutesEntities = data.routes;
       this.appDomainsEntities = data.available_domains;
       this.appServicesEntities = data.services;
+
+      var apmServer = "";
+      var apmAppName = "";
+      var appServices = [];
+      var appServiceDashboardUri = "";
+      $.each(data.services, function (key, serviceObj) {
+        if(serviceObj.service_plan != undefined) {
+          if(serviceObj.service_plan.service != undefined && serviceObj.service_plan.service.label == "Pinpoint") {
+            // $("#apmBtn").attr("disabled", false);
+            //
+            // if (data.detected_start_command.indexOf("org.springframework.boot.loader.WarLauncher") > 0) {
+            if (data.detected_start_command.indexOf("org.springframework.boot") > 0) {
+              apmServer = "SPRING_BOOT";
+            } else {
+              apmServer = "TOMCAT";
+            }
+
+            apmAppName = data.detected_start_command.substring(data.detected_start_command.indexOf("applicationName") + 16);
+            apmAppName = apmAppName.substring(0, apmAppName.indexOf(" "));
+            apmAppName = apmAppName.replace('"', '');
+
+            appServiceDashboardUri = serviceObj.dashboard_url + "/" + apmAppName + "@" + apmServer;
+          } else {
+            appServiceDashboardUri = serviceObj.dashboard_url;
+          }
+        } else {
+          appServiceDashboardUri = serviceObj.dashboard_url;
+        }
+
+        var obj = {
+          name: serviceObj.name,
+          service_plan: serviceObj.service_plan,
+          dashboard_url: appServiceDashboardUri,
+          guid: serviceObj.guid
+        };
+        appServices.push(obj);
+      });
+      this.appServicesEntitiesRe = appServices;
 
       this.appSummarySpaceGuid = data.space_guid;
 
@@ -315,6 +356,25 @@ export class AppMainComponent implements OnInit {
   getServicepacks() {
     this.appMainService.getServicepacks().subscribe(data => {
       this.servicepacksEntities = data.list;
+
+      var appServices = [];
+      var useYn = "N";
+      $.each(this.appServicesEntitiesRe, function (key, serviceObj) {
+        $.each(data.list, function (key2, dataobj2) {
+          if(serviceObj.service_plan.service.label == dataobj2.servicePackName) {
+            useYn = dataobj2.dashboardUseYn;
+          }
+        });
+        var obj = {
+          name: serviceObj.name,
+          service_plan: serviceObj.service_plan,
+          dashboard_url: serviceObj.dashboard_url,
+          guid: serviceObj.guid,
+          useYn: useYn
+        };
+        appServices.push(obj);
+      });
+      this.appServicesEntitiesRe2 = appServices;
 
       this.getSpaceSummary();
     });
@@ -493,6 +553,7 @@ export class AppMainComponent implements OnInit {
 
   restageAppClick() {
     $("[id^='layerpop']").modal("hide");
+    $("#layerpop_app_save").modal("hide");
     this.common.isLoading = true;
 
     let params = {
@@ -620,6 +681,7 @@ export class AppMainComponent implements OnInit {
 
   appSaveClick() {
     $("[id^='layerpop']").modal("hide");
+    $("#layerpop_app_save").modal("hide");
     this.common.isLoading = true;
     this.updateApp();
   }
@@ -705,8 +767,6 @@ export class AppMainComponent implements OnInit {
     };
     this.appMainService.updateApp(params).subscribe(data => {
       if(data) {
-        this.ngOnInit();
-
         $(".headT,.headT2").css("display","none");
 
         $("#instanceS2").hide();
@@ -718,6 +778,18 @@ export class AppMainComponent implements OnInit {
         $("#diskS2").hide();
         $("#diskS1").show();
 
+        if(memoryChange >= 1024) {
+          $("#memS2").next().text("G");
+        } else {
+          $("#memS2").next().text("M");
+        }
+
+        if(diskChange >= 1024) {
+          $("#diskS2").next().text("G");
+        } else {
+          $("#diskS2").next().text("M");
+        }
+
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.appUpdateSuccess);
         $(".alertLayer").css('border-left','4px solid #3d10ef');
@@ -728,6 +800,7 @@ export class AppMainComponent implements OnInit {
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
+      this.ngOnInit();
     });
   }
 
@@ -1068,7 +1141,7 @@ export class AppMainComponent implements OnInit {
       spaceId: this.appSummarySpaceGuid
     };
     this.appMainService.addAppRoute(params).subscribe(data => {
-      if(data) {
+      if(data.result) {
         $(".lauth_dl").toggleClass("on");
 
         this.common.isLoading = false;
@@ -1079,7 +1152,8 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.routeAddFail);
+        $(".alertLayer .in").html(this.translateEntities.alertLayer.routeAddFail+"<br><br>"+data.message.description);
+        // $(".alertLayer .in").html(this.translateEntities.alertLayer.routeAddFail+" Message "+data.message.description);
         $(".alertLayer").css('border-left','4px solid #cb3d4a');
         $(".alertLayer").addClass("moveAlert");
       }
