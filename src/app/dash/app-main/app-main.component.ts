@@ -184,6 +184,11 @@ export class AppMainComponent implements OnInit {
         this.getAutoscaling(params['app_guid']);
       } else {
         setTimeout(() => this.showLoading(), 0);
+
+        $(".alertLayer .in").html("Application Fail.");
+        $(".alertLayer").css('border-left','4px solid #cb3d4a');
+        $(".alertLayer").addClass("moveAlert");
+
         this.router.navigate(['dashboard']);
       }
 
@@ -587,12 +592,12 @@ export class AppMainComponent implements OnInit {
     this.appMainService.restageApp(params).subscribe(data => {
       //TODO 재시작 후 시간 텀을주어 init 할 것인가??
       if(data.result) {
-        this.ngOnInit();
-
         this.common.isLoading = false;
         $(".alertLayer .in").text(this.translateEntities.alertLayer.appRestartSuccess);
         $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
+
+        this.ngOnInit();
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").html(this.translateEntities.alertLayer.appRestartFail+"<br><br>"+data.msg.description);
@@ -738,7 +743,7 @@ export class AppMainComponent implements OnInit {
         $(".alertLayer").css('border-left','4px solid #3d10ef');
         $(".alertLayer").addClass("moveAlert");
 
-        this.router.navigate(['dashMain']);
+        this.router.navigate(['dashboard']);
       } else {
         this.common.isLoading = false;
         $(".alertLayer .in").html(this.translateEntities.alertLayer.appDelFail+"<br><br>"+data.msg.description);
@@ -1236,16 +1241,12 @@ export class AppMainComponent implements OnInit {
     $.each(this.servicepacksEntitiesRe, function (key, dataobj) {
       if(dataobj.guid == val) {
         var str = dataobj.appBindParameter.replace("}", "").replace("{", "");
-
-        // 2. parameter 를 (,)기준으로 자른 다음 쌍따옴표 제거.
         var split = str.split(",");
 
         for (var i = 0; i < split.length; i++) {
           var deleteSign = split[i].replace(/"/g, "");
-
-          // 3. : 을 기준으로 value 부분을 넣어주기로 한다.
           var splitSign = deleteSign.split(":");
-          // 4. 들어오는 parameter 의 변수 타입에 따라 동적인 input box 생성.
+
           if (splitSign != null && splitSign != "undefined" && splitSign != "") {
             var type = splitSign[1];
             var value = "";
@@ -1473,7 +1474,7 @@ export class AppMainComponent implements OnInit {
       if(key == label) {
         $.each(dataobj, function (key2, dataobj2) {
           if(dataobj2.name == name) {
-            console.log(dataobj2.credentials);
+            // console.log(dataobj2.credentials);
             if(dataobj2.credentials.hostname != null) {
               hostname = dataobj2.credentials.hostname;
             }
