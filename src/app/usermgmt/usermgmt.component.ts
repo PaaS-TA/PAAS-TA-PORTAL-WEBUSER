@@ -8,6 +8,8 @@ import {Organization} from '../model/organization';
 import {OrgService} from '../org/common/org.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../auth/security.service";
+import {AppConfig} from "../app.config";
+
 import {FormControl} from '@angular/forms';
 import {viewWrappedDebugError} from '@angular/core/src/view/errors';
 import {validate} from 'codelyzer/walkerFactory/walkerFn';
@@ -51,7 +53,7 @@ export class UsermgmtComponent implements OnInit {
   public fileToUpload: File = null;
 
   constructor(private httpClient: HttpClient, private common: CommonService, private userMgmtService: UsermgmtService, private orgService: OrgService,
-              private router: Router, private route: ActivatedRoute, private sec: SecurityService, private log: NGXLogger) {
+              private router: Router, private activeRoute: ActivatedRoute, private sec: SecurityService, private log: NGXLogger) {
 
     this.userInfo();
     this.user = new Observable<User>();
@@ -59,10 +61,13 @@ export class UsermgmtComponent implements OnInit {
     this.token = '';
     this.orgName = '';
     this.password = '';
+    this.isTellPhone= true;
+    this.isZipCode = true;
+
     this.isOrignPassword = true;
     this.isPassword = false;
     this.isRePassword = true;
-    this.isChPassword = true;
+    this.isChPassword = false;
   }
 
   userInfo() {
@@ -76,7 +81,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   userSave() {
-    if(this.isTellPhone || this.isZipCode){
       let params = {
       userName: this.user['userName'],
       tellPhone: this.tellPhone,
@@ -85,22 +89,25 @@ export class UsermgmtComponent implements OnInit {
     };
       this.common.isLoading = true;
       this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-        if (data== 1) {
+        if (data== 1 && this.isTellPhone && this.isZipCode) {
+          alert('성공적으로 변경되었습니다.');
           this.common.isLoading = false;
-          alert('성공적으로 생성');
           console.log(data);
+          return data;
         }else{
           this.common.isLoading = false;
-          return data;
         }
+        return data;
+      },error=>{
+        alert('다시 입력하세요.');
+        this.common.isLoading = false;
       });
-    }
   }
 
   checkOriginalPassword(event: any) {
     this.log.debug('password_now :: ' + this.password_now);
-    var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
-    //TODO  로그인시 사용되는 비밀번호 비교 필수!
+    var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
+    //TODO  로그인시 사용되는 비밀번호 비교
     if (!reg_pwd.test(this.password_now)) {
       this.isOrignPassword = false;
     } else {
@@ -110,7 +117,8 @@ export class UsermgmtComponent implements OnInit {
 
   checkPassword(event: any) {
     this.log.debug('password_new :: ' + this.password_new);
-    var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
+    // var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
+    var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
     if (!reg_pwd.test(this.password_new)) {
       this.isPassword = false;
       return;
@@ -129,11 +137,13 @@ export class UsermgmtComponent implements OnInit {
 
   checkChPassword(event: any) {
     this.log.debug('password_check :: ' + this.password_check);
-    if (this.password_now == this.password_check) {
-      this.isChPassword = true;
-    } else {
+    // var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
+    var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
+    if (!reg_pwd.test(this.password_check)) {
       this.isChPassword = false;
+      return;
     }
+    this.isChPassword = true;
   }
 
   updateUserPassword() {
@@ -141,12 +151,17 @@ export class UsermgmtComponent implements OnInit {
       oldPassword: this.password_now,
       password: this.password_new
     };
+    this.common.isLoading = true;
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.debug(this.common.getUserGuid());
-      if(!data.oldPassword){
-        alert("비밀번호가 변경되었습니다.");
+      //TODO : 패스워드 확인 작업 (1) 현재 비밀번호와 새 비밀번호 동일 시 F, (2) 현재 비밀번호가 맞지 않을 때 F (3) 정규식 맞지 않을 때 F
+      if (data == 1 && this.isPassword && this.isRePassword) {
+        alert('성공적으로 생성되었습니다.');
+        this.common.isLoading = false;
+        return data;
       }else{
-        alert("비밀번호를 다시 입력하세요.");
+        alert('새 비밀번호를 다시 입력하세요.');
+        this.common.isLoading = false;
       }
     });
   }
@@ -160,7 +175,12 @@ export class UsermgmtComponent implements OnInit {
   }
 
   checkTellPhone(event: any) {
-    if (this.isNumber(this.tellPhone)) {
+    //TODO: 전화번호 한 글자는 그대로 저장됨, 하지만 특정 숫자 이상 넘어가면 저장 불가능함(이하 동일 우편번호)
+    var reg_alpha = /^[A-Za-z]*$/ ;
+    var reg_hangeul = /^[가-힣]+$/;
+    var reg_hangeul2 = /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
+    if (!reg_alpha.test(this.tellPhone) && !reg_hangeul.test(this.tellPhone)
+        && !reg_hangeul2.test(this.tellPhone) && this.isNumber(this.tellPhone)) {
       this.isTellPhone = true;
     } else{
       this.isTellPhone = false;
@@ -183,9 +203,8 @@ export class UsermgmtComponent implements OnInit {
   }
 
   cancelOrg(orgId: string) {
-    this.common.isLoading = true;
     this.orgService.cancelOrg(orgId, this.common.getUserGuid());
-    this.common.isLoading = false;
+    this.orgs = this.orgService.getOrgList();
   }
 
   userAllDelete(){
@@ -195,17 +214,17 @@ export class UsermgmtComponent implements OnInit {
       this.log.debug(data['user_name']);
       if(data['user_name'] == this.user['userId']){
         this.common.isLoading = false;
-        console.log('success');
-        alert("delete success:)");
         // 계정삭제:cf,db
         this.userMgmtService.userAllDelete(this.common.getUserGuid(),'').subscribe();
+        alert('계정삭제가 완료되었습니다.');
+        this.goLogout();
       }else{
         this.common.isLoading = false;
-        console.log('delete does not exist');
       }
       return data;
     }, error => {
       this.common.isLoading = false;
+      alert('비밀번호를 다시 입력하세요.');
     });
   }
 
@@ -216,9 +235,24 @@ export class UsermgmtComponent implements OnInit {
       id: this.user['userId'],
       password: this.password_check
     };
-    return this.common.doPost('/portalapi/login', params, '').map(data => {
-      return data;
-    });
+    if(this.password_now == this.password){
+      return this.common.doPost('/portalapi/login', params, '').map(data => {
+        return data;
+      });
+    }
+  }
+
+  goLogout(){
+    this.log.debug('doLogout()');
+    this.common.signOut();
+
+    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
+    window.location.href = AppConfig.logoutUrl +
+      '?response_type=' + AppConfig.code +
+      '&client_id=' + AppConfig.clientId +
+      '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&scope=' + AppConfig.scope +
+      '&state=';
   }
 
   ngOnInit() {
