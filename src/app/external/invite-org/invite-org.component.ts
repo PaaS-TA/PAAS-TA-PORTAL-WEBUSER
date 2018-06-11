@@ -60,6 +60,8 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
     this.orgService.userInviteAccept(params).subscribe(data => {
       console.log(data);
 
+      //TODO 실패처리
+
       if(data != null) {
         $("[id^='layerpop']").modal("hide");
         this.common.isLoading = false;

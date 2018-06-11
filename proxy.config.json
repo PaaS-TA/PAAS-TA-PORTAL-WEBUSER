@@ -9,7 +9,7 @@
     }
   },
   "/ws/*": {
-    "target": "http://localhost:5555/socket.io",
+    "target": "http://localhost:5555",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",

@@ -157,7 +157,7 @@
                 <span class="pull-right rights"></span>
               </dt>
               <dd>
-                <span class="memS" id="memS1">{{ (appSummaryMemory >= 1024) ? ((appSummaryMemory%1024 == 0) ? (appSummaryMemory/1024) : (appSummaryMemory/1024).toFixed(2)) : (appSummaryMemory) }}</span>
+                <span class="memS" id="memS1">{{ (appSummaryMemory >= 1024) ? ((appSummaryMemory%1024 == 0 || appSummaryMemory%1024 < 11) ? (appSummaryMemory/1024).toFixed(0) : (appSummaryMemory/1024).toFixed(2)) : (appSummaryMemory) }}</span>
                 <span class="memS" id="memS2" style="display:none;"><input class="instance_in" id="mem_in" type="text" style="font-size: 40px;" value="{{appSummaryMemory}}" /></span>
                 <i>{{ (appSummaryMemory >= 1024) ? 'G' : 'M' }}</i><small> / {{ 'appMain.app.maximum' | translate }} {{appSummaryMemoryMax}}G</small>
                 <div class="pull-right">
@@ -192,7 +192,7 @@
                 <span class="pull-right rights"></span>
               </dt>
               <dd>
-                <span class="diskS" id="diskS1">{{ (appSummaryDisk >= 1024) ? ((appSummaryDisk%1024 == 0) ? (appSummaryDisk/1024) : (appSummaryDisk/1024).toFixed(2)) : (appSummaryDisk) }}</span>
+                <span class="diskS" id="diskS1">{{ (appSummaryDisk >= 1024) ? ((appSummaryDisk%1024 == 0 || appSummaryDisk%1024 < 11) ? (appSummaryDisk/1024).toFixed(0) : (appSummaryDisk/1024).toFixed(2)) : (appSummaryDisk) }}</span>
                 <span class="diskS" id="diskS2" style="display:none;"><input class="instance_in" id="disk_in" type="text" style="font-size: 40px;" value="{{appSummaryDisk}}" /></span>
                 <i>{{ (appSummaryDisk >= 1024) ? 'G' : 'M' }}</i><small> / {{ 'appMain.app.maximum' | translate }} {{appSummaryDiskMax}}G</small>
                 <div class="pull-right">
@@ -376,7 +376,7 @@
                   <li (click)="tabShowClick('tabContent_service')"><i class="fas fa-expand"></i></li>
                 </ul>
               </div>
-              <div class="table_wrap table_wraps" *ngIf="appServicesEntities == ''">
+              <div class="table_wrap table_wraps" *ngIf="appServicesEntitiesRe2 == ''">
                 <div>
                   <p class="service_p" [innerHTML]="'appMain.service.noneText' | translate"></p>
                   <button class="btns2 colors4" (click)="tabShowClick('tabContent_service')">
@@ -384,7 +384,7 @@
                   </button>
                 </div>
               </div>
-              <div class="table_wrap table_wraps" *ngIf="appServicesEntities != ''">
+              <div class="table_wrap table_wraps" *ngIf="appServicesEntitiesRe2 != ''">
                 <div>
                   <table class="condition">
                     <colgroup>
@@ -401,7 +401,7 @@
                         <td>{{ 'appMain.service.serviceName' | translate }}</td>
                       </tr>
                     </thead>
-                    <tbody *ngFor="let item of appServicesEntities; let i = index">
+                    <tbody *ngFor="let item of appServicesEntitiesRe2; let i = index">
                       <tr>
                         <td>{{i+1}}</td>
                         <td>{{item.name}}</td>
@@ -604,12 +604,12 @@
                       <td>{{ 'appMain.service.credentials' | translate }}</td>
                     </tr>
                   </thead>
-                  <tbody *ngFor="let item of appServicesEntities; let i = index">
+                  <tbody *ngFor="let item of appServicesEntitiesRe2; let i = index">
                     <tr>
                       <td>{{item.name}}</td>
                       <td>{{item.service_plan.name}}</td>
                       <td>{{item.service_plan.service.label}}</td>
-                      <td><a href="{{item.dashboard_url}}" target="_blank"><i class="far fa-lightbulb on"></i></a></td>
+                      <td><a href="{{item.dashboard_url}}" target="_blank" *ngIf="item.useYn == 'Y'"><i class="far fa-lightbulb on"></i></a></td>
                       <th (click)="showPopServiceUnbindClick(item.name, item.guid)"><span class="BGcolors6 btn_bg_change1">{{ 'appMain.service.disconnect' | translate }}</span></th>
                       <td (click)="showPopServiceCredentialsClick(item.name, item.service_plan.service.label)"><i class="fas fa-edit"></i></td>
                     </tr>
