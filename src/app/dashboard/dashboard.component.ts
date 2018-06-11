@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
   public isEmpty: boolean;
   public isSpace: boolean = false;
   public isMessage: boolean;
-  public isPatten : boolean;
+  public isPatten: boolean;
   private isLoadingSpaces = false;
 
   public token: string;
@@ -67,30 +67,32 @@ export class DashboardComponent implements OnInit {
   public starterpacks: Array<StarterPack>;
 
   public appEntities: Observable<any[]>;
-  public appStatsEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
-  public ReServicepacksEntities: Observable<any[]>;
 
   public currentOrg: string;
   public currentSpace: string;
-
-  public servicepackthumbImgPath: string;
 
   constructor(private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService,
               private spaceService: SpaceService, private log: NGXLogger, private appMainService: AppMainService, private catalogService: CatalogService,
               private route: ActivatedRoute, private router: Router, private http: HttpClient) {
 
-    if (commonService.getToken() == null) {router.navigate(['/']);}
+    if (commonService.getToken() == null) {
+      router.navigate(['/']);
+    }
 
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
+
+    console.log(this.token);
+
     this.userGuid = this.commonService.getUserGuid();
 
-    this.orgs = orgService.getOrgList();
+    this.orgs = this.getOrgList();
     this.service = new Observable<Service>();
 
     this.org = null;
+    this.orgs = [];
     this.space = null;
     this.spaces = [];
     this.servicepacks = [];
@@ -115,16 +117,14 @@ export class DashboardComponent implements OnInit {
 
     this.currentSpace = '';
     this.currentOrg = '';
+
     if (this.commonService.getCurrentOrgName() != null) {
       this.currentOrg = this.commonService.getCurrentOrgName();
-      this.currentSpace = this.commonService.getCurrentSpaceGuid();
-
-      //TODO 수정이 필요함...Space 안불러옴
-      console.log("currentOrg : " + this.commonService.getCurrentOrgName());
-      console.log("currentSpace : " + this.commonService.getCurrentSpaceGuid());
-      // this.commonService.isLoading = true;
-      // this.currentSpaceBox();
+      this.currentSpace = this.commonService.getCurrentSpaceName();
     }
+
+    console.log("=======================");
+    console.log(this.orgs);
   }
 
   currentSpaceBox() {
@@ -141,8 +141,45 @@ export class DashboardComponent implements OnInit {
     $("[id^='layerpop']").modal("hide");
   }
 
+  getOrgList() {
+    this.dashboardService.getOrgList().subscribe(data => {
+      (data['resources'] as Array<Object>).forEach(orgData => {
+        const index =
+          this.orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
+        this.orgs[index].indexOfOrgs = index;
+      });
+
+      return data;
+    }, error => {
+    }, () => {
+      if (this.currentOrg != null) {
+        this.getOrg(this.currentOrg);
+      }
+    });
+    return this.orgs;
+  }
+
+  getOrgSpaceList(orgId:string){
+    this.dashboardService.getOrgSpaceList(orgId).subscribe(data => {
+      (data['resources'] as Array<Object>).forEach(spaceData => {
+          const index =
+            this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId)) - 1;
+        });
+
+      return data;
+    }, error => {
+      }, () => {
+      // this.currentSpace = '1799ffc2-0e83-44b7-adae-583aca80ebeb'; //spaceguid
+        this.log.debug(":::::::::::: " + this.currentSpace);
+        if (this.currentSpace != null) {
+          this.getSpaces(this.currentSpace);
+        }
+      });
+    return this.spaces;
+  }
+
   getOrg(value: string) {
-    this.log.debug("::::1 " + value);
+    this.log.debug("::::1.getOrg:::: " +"  "+ value);
     if (value != '') {
 
       this.spaces = [];
@@ -155,15 +192,14 @@ export class DashboardComponent implements OnInit {
       if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
 
         this.isLoadingSpaces = false;
-        this.spaces = this.spaceService.getOrgSpaceList(this.org.guid);
-        // this.log.debug(this.spaces);
+        this.spaces = this.getOrgSpaceList(this.org.guid);
 
         /*
          * 세이브 ORG 정보
          */
         this.commonService.setCurrentOrgGuid(this.org.guid);
         this.commonService.setCurrentOrgName(this.org.name);
-        this.commonService.setCurrentLocation(this.space.guid);
+        // this.commonService.setCurrentLocation(this.space.guid);
       }
     } else {
       //초기화
@@ -174,6 +210,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getSpaces(value: string) {
+    this.log.debug("::::2.getSpaces:::: " +"  "+ value);
     if (value != '') {
 
       this.isEmpty = false;
@@ -181,6 +218,9 @@ export class DashboardComponent implements OnInit {
       this.isMessage = false;
       this.selectedSpaceId = value;
       this.space = this.spaces.find(Space => Space['_metadata']['guid'] === value);
+
+      this.log.debug('getSpaces value');
+      this.log.debug(this.spaces);
 
       /*
        * 세이브 ORG 정보
@@ -219,33 +259,17 @@ export class DashboardComponent implements OnInit {
       this.appEntities = data.apps;
       this.thumnailApp();
 
-      this.servicesEntities = data.services.sort((serA, serB) => {
-        const guidA = serA.guid;
-        const guidB = serB.guid;
-        if (guidA === guidB)
-          return 0;
-        else if (guidA > guidB)
-          return -1;
-        else
-          return 1;
-      });
-      return data;
-    }, error => {
-    }, () => {
+      this.servicesEntities = data.services;
       this.thumnail();
     });
-
   }
 
   thumnail(): void {
-    // this.log.debug("Start");
-    // this.log.debug(this.servicesEntities);
     this.dashboardService.getServicePacks().subscribe(data => {
       $.each(this.servicesEntities, function (skey, servicesEntitie) {
         let cnt = 0;
         $.each(data['list'], function (dkey, servicepack) {
           if (servicesEntitie['service_plan'] != null) {
-            // console.log(servicesEntitie['service_plan']['service']['label'] + ' == ' + servicepack['servicePackName'] + ' = ' + (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']));
 
             if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
               servicesEntitie['thumbImgPath'] = servicepack['thumbImgPath'];
@@ -260,8 +284,6 @@ export class DashboardComponent implements OnInit {
       return data;
     }, error => {
     }, () => {
-      // this.log.debug('END');
-      // this.log.debug(this.servicesEntities);
     });
   }
 
@@ -300,10 +322,10 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
-      if(data && this.isPatten){
+      if (data && this.isPatten) {
         this.commonService.isLoading = false;
         console.log("성공");
-      }else{
+      } else {
         this.commonService.isLoading = false;
         console.log("실패");
       }
@@ -424,7 +446,7 @@ export class DashboardComponent implements OnInit {
     return (this.getAppSummary(this.selectedSpaceId));
   }
 
-  patten(value){
+  patten(value) {
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
@@ -433,7 +455,7 @@ export class DashboardComponent implements OnInit {
 
   checkPatten(event: any) {
     var reg_patten = /^[A-Za-z0-9+]*$/;
-    if (!reg_patten.test(this.selectedName)){
+    if (!reg_patten.test(this.selectedName)) {
       this.isPatten = false;
       return;
     }

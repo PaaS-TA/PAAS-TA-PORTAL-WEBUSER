@@ -85,6 +85,20 @@ export class DashboardService {
     })
   }
 
+  // @GetMapping(V2_URL + "/orgs")
+  getOrgList(){
+    return this.commonService.doGet('/portalapi/v2/orgs',this.commonService.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  // @GetMapping(V2_URL + "/orgs/{orgId}/spaces")
+  getOrgSpaceList(orgId: string){
+    return this.commonService.doGet('/portalapi/v2/orgs/'+ orgId + '/spaces', this.commonService.getToken()).map((res: Response) => {
+      return res['spaceList'];
+    }).do(console.log);
+  }
+
   RecentInit(data: any) {
     this.catalogService.recentpacks = [];
     this.catalogService.recentpacks = data['list'];
