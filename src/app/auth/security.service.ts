@@ -5,13 +5,7 @@ import {NGXLogger} from 'ngx-logger';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {CommonService} from '../common/common.service';
-import {appendChild} from '@angular/core/src/render3/node_manipulation';
-import {toBase64String} from '@angular/compiler/src/output/source_map';
-import {UsermgmtService} from "../usermgmt/usermgmt.service";
-import {LoginComponent} from "../index/login/login.component";
 import {AppConfig} from "../app.config"
-import {AuthConfig, JwksValidationHandler, OAuthService} from "angular-oauth2-oidc";
-import {App} from "../model/app";
 
 
 @Injectable()
