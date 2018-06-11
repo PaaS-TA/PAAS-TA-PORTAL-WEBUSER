@@ -12,7 +12,7 @@ import {AppConfig} from "../app.config"
 export class SecurityService {
   url: string;
 
-  constructor(private common: CommonService, private http: HttpClient, private router: Router, private activeRoute: ActivatedRoute, private log: NGXLogger, private oauth: OAuthService) {
+  constructor(private common: CommonService, private http: HttpClient, private router: Router, private activeRoute: ActivatedRoute, private log: NGXLogger) {
   }
 
   /*
