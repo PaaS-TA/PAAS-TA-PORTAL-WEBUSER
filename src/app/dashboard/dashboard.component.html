@@ -264,8 +264,8 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" placeholder="변경할 앱 이름을 입력하세요." class="space_input" [(ngModel)]="selectedName" name="selectedName" (ngModelChange)="pattenCheck()" [disabled]="disableappinput"/>
-          <span class="red" use-form-error="isNotSame" *ngIf="!isPattenTest">
+          <input type="text" placeholder="변경할 앱 이름을 입력하세요." class="space_input" [(ngModel)]="selectedName" name="selectedName" (ngModelChange)="checkPatten($event)"(keydown)="checkPatten($event)" (keyup)="checkPatten($event)"/>
+          <span class="red" use-form-error="isNotSame" *ngIf="!isPatten">
             <i class="fas fa-exclamation-circle"></i>영문과 숫자 입력만 가능합니다.
           </span>
         </div>
@@ -408,7 +408,7 @@
             </li>
             <li>
               <div>Credentials</div>
-              <div><input type="text" placeholder="credentialsStr:{'username':'admin','password':'password';}" name="userProvidedCredentials" [(ngModel)]="service['credentialsStr']" class="space_input"/></div>
+              <div><input type="text" name="userProvidedCredentials" [(ngModel)]="service['credentialsStr']" class="space_input"  placeholder="credentialsStr:{'username':'admin','password':'password';}"/></div>
             </li>
             <li>
               <div>Syslog Drain Url</div>

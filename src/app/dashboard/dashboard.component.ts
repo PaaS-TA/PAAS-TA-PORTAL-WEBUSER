@@ -28,9 +28,7 @@ export class DashboardComponent implements OnInit {
   public isEmpty: boolean;
   public isSpace: boolean = false;
   public isMessage: boolean;
-  public isPattenTest : boolean;
-  public disablebutton : boolean;
-  public disableappinput : boolean;
+  public isPatten : boolean;
   private isLoadingSpaces = false;
 
   public token: string;
@@ -38,7 +36,6 @@ export class DashboardComponent implements OnInit {
   public userGuid: string;
   public spaceGuid: string;
   public selectedSpaceId: string;
-  public appplaceholder : string;
 
   public current_popmenu_id: string;
   public instanceName: string;
@@ -81,11 +78,10 @@ export class DashboardComponent implements OnInit {
   public servicepackthumbImgPath: string;
 
   constructor(private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService,
-              private spaceService: SpaceService, private log: NGXLogger, private appMainService: AppMainService,
-              private route: ActivatedRoute, private catalogService: CatalogService, private router: Router, private http: HttpClient) {
-    if (commonService.getToken() == null) {
-      router.navigate(['/']);
-    }
+              private spaceService: SpaceService, private log: NGXLogger, private appMainService: AppMainService, private catalogService: CatalogService,
+              private route: ActivatedRoute, private router: Router, private http: HttpClient) {
+
+    if (commonService.getToken() == null) {router.navigate(['/']);}
 
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
@@ -104,6 +100,7 @@ export class DashboardComponent implements OnInit {
     this.isEmpty = true;
     this.isSpace = false;
     this.isMessage = true;
+    this.isPatten = false;
 
     this.current_popmenu_id = '';
     this.appName = '';
@@ -121,8 +118,10 @@ export class DashboardComponent implements OnInit {
     if (this.commonService.getCurrentOrgName() != null) {
       this.currentOrg = this.commonService.getCurrentOrgName();
       this.currentSpace = this.commonService.getCurrentSpaceGuid();
-      //console.log("currentSpace : " + this.commonService.getCurrentSpaceGuid());
+
       //TODO 수정이 필요함...Space 안불러옴
+      console.log("currentOrg : " + this.commonService.getCurrentOrgName());
+      console.log("currentSpace : " + this.commonService.getCurrentSpaceGuid());
       // this.commonService.isLoading = true;
       // this.currentSpaceBox();
     }
@@ -135,17 +134,6 @@ export class DashboardComponent implements OnInit {
     } else {
       setTimeout(this.currentSpaceBox(), 3000);
     }
-  }
-
-  disableInput(value : boolean){
-    this.disableappinput = value;
-  }
-  disableButton(value : boolean){
-    this.disablebutton = value;
-  }
-  placeholderSetting(value : boolean){
-    this.disableappinput = value;
-    this.disablebutton = value;
   }
 
   ngOnInit() {
@@ -264,7 +252,6 @@ export class DashboardComponent implements OnInit {
               cnt++
             }
           }
-
         })
         if (cnt == 0) {
           servicesEntitie['thumbImgPath'] = 'DEFALUT';
@@ -279,21 +266,20 @@ export class DashboardComponent implements OnInit {
   }
 
   thumnailApp(): void {
-    this.log.debug("Start");
-    this.log.debug(this.appEntities);
+    // this.log.debug("Start");
+    // this.log.debug(this.appEntities);
     this.dashboardService.getBuildPacks().subscribe(data => {
       $.each(this.appEntities, function (skey, appEntitie) {
         let cnt = 0;
         $.each(data['list'], function (dkey, buildpack) {
           if (appEntitie['buildpack'] != null) {
-            console.log(appEntitie['buildpack'] + ' == ' + buildpack['buildPackName'] + ' = ' + (appEntitie['buildpack'] === buildpack['buildPackName']));
+            // console.log(appEntitie['buildpack'] + ' == ' + buildpack['buildPackName'] + ' = ' + (appEntitie['buildpack'] === buildpack['buildPackName']));
 
             if (appEntitie['buildpack'] === buildpack['buildPackName']) {
               appEntitie['thumbImgPath'] = buildpack['thumbImgPath'];
               cnt++
             }
           }
-
         })
         if (cnt == 0) {
           appEntitie['thumbImgPath'] = 'DEFALUT';
@@ -302,8 +288,8 @@ export class DashboardComponent implements OnInit {
       return data;
     }, error => {
     }, () => {
-      this.log.debug('END');
-      this.log.debug(this.appEntities);
+      // this.log.debug('END');
+      // this.log.debug(this.appEntities);
     });
   }
 
@@ -312,9 +298,17 @@ export class DashboardComponent implements OnInit {
       guid: this.selectedGuid,
       newName: this.selectedName,
     };
+    this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
-        return data; //
-    }); //
+      if(data && this.isPatten){
+        this.commonService.isLoading = false;
+        console.log("성공");
+      }else{
+        this.commonService.isLoading = false;
+        console.log("실패");
+      }
+      return data['result'];
+    });
     return this.getAppSummary(this.selectedSpaceId);
   }
 
@@ -397,7 +391,7 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.updateUserProvided(params).subscribe(data => {
-        //console.log(params, data);
+        console.log(params, data);
         this.getAppSummary(this.selectedSpaceId);
         this.commonService.isLoading = false;
         return data;
@@ -437,17 +431,13 @@ export class DashboardComponent implements OnInit {
     return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
   }
 
-  pattenCheck(value) {
-    if (this.patten(this.selectedName)) {
-      this.isPattenTest = false;
-      this.disableButton(false);
-      console.log(this.placeholderSetting);
-      alert("다시입력해라");
+  checkPatten(event: any) {
+    var reg_patten = /^[A-Za-z0-9+]*$/;
+    if (!reg_patten.test(this.selectedName)){
+      this.isPatten = false;
+      return;
     }
-    this.disableInput(value);
-    this.isPattenTest = true;
-    this.disableButton(true);
-    return;
+    this.isPatten = true;
   }
 
   //move catalogDevelopment
