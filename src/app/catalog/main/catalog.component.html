@@ -15,7 +15,7 @@
         <div class="">
           <p class="tit">{{ 'catalog.main.recentWork' | translate }}</p>
           <ul>
-            <li (click)="goHistory(recent)" *ngFor="let recent of recentpacks">
+            <li (click)="goHistory(recent)" *ngFor="let recent of catalogService.recentpacks">
               <dl>
                 <dt>
                 <div id="1">
@@ -28,9 +28,10 @@
                     </li>
                     <li><p>{{recent.summary}}</p>
                     </li>
-                    <li >
-                      <button *ngIf="recent.classification==='buildpack_system'" class="btns3 colors6">{{ 'catalog.main.paasta' | translate }}</button>
-                      <button *ngIf="recent.classification==='buildpack_custom'" class="btns3 colors7">{{ 'catalog.main.community' | translate }}</button>
+                    <li>
+                      <ng-container *ngFor="let class of recent.buttonclass">
+                        <button style="margin-left: 5px" class="{{class.buttonclass}}">{{class.buttonvalue}}</button>
+                      </ng-container>
                     </li>
                   </ul>
                 </dd>
@@ -56,8 +57,9 @@
                     <li><p>{{stater.summary}}</p>
                     </li>
                     <li>
-                      <button *ngIf="stater.useYn==='Y'" class="btns3 colors6">{{ 'catalog.main.paasta' | translate }}</button>
-                      <button *ngIf="stater.useYn==='N'" class="btns3 colors7">{{ 'catalog.main.community' | translate }}</button>
+                      <ng-container *ngFor="let class of stater.buttonclass">
+                        <button style="margin-left: 5px" class="{{class.buttonclass}}">{{class.buttonvalue}}</button>
+                      </ng-container>
                     </li>
                   </ul>
                 </dd>
@@ -115,6 +117,9 @@
                     </p>
                     </li>
                     <li>
+                    <ng-container *ngFor="let class of service.buttonclass">
+                      <button style="margin-left: 5px" class="{{class.buttonclass}}">{{class.buttonvalue}}</button>
+                    </ng-container>
                     </li>
                   </ul>
                 </dd>

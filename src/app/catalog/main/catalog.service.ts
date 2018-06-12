@@ -7,26 +7,26 @@ declare var $: any;
 export class CatalogService {
 
   buildpacks : Array<any>;
-  starterpacks : Array<StarterPack>;
+  starterpacks : Array<any>;
   recentpacks : Array<any>;
-  servicepacks : Array<ServicePack>;
+  servicepacks : Array<any>;
   lasttime : number;
   check : boolean = true;
   viewstartpack : boolean = true;
   viewbuildpack : boolean = true;
   viewservicepack : boolean = true;
 
-  viewstarterpacks : Array<StarterPack>;
+  viewstarterpacks : Array<any>;
   viewbuildpacks  : Array<any>;
-  viewservicepacks  : Array<ServicePack>;
+  viewservicepacks  : Array<any>;
 
 
   buildPackfilter : string = '';
   servicePackfilter : string = '';
   constructor(private common: CommonService, private log: NGXLogger) {
-    this.viewstarterpacks  = new Array<StarterPack>();
+    this.viewstarterpacks  = new Array<any>();
     this.viewbuildpacks  = new Array<any>();
-    this.viewservicepacks  = new Array<ServicePack>();
+    this.viewservicepacks  = new Array<any>();
   }
 
   viewPacks(value, value2, value3){
