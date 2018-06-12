@@ -35,6 +35,13 @@ export class UsermgmtService {
     return this.common.doDelete('/commonapi/v2/user/' + guid+ '/all', '', this.common.getToken()).map((res: Response) => {this.log.debug(res); return res;});
   }
 
+  // storageApiUrl + "/v2/" + storageApiType + '/';
+  photoRegistration(params: any) {
+    return this.common.doFilePost('/storageapi/v2/swift/', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
 }
 
 export class User {

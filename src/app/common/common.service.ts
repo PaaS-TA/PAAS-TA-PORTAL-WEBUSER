@@ -59,6 +59,13 @@ export class CommonService {
     });
   }
 
+
+  doFilePost(url: string, body: any, token: string) {
+    return this.http.post(this.gateway + url, body, {
+      headers: this.headers.set('cf-Authorization', token).set('Content-Type','multipart/form-data')
+    });
+  }
+
   doCommonPost(url: string, body: any) {
     return this.http.post(this.gateway + url, body, {
       headers: this.headers

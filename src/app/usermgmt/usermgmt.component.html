@@ -79,11 +79,12 @@
         <div class="col-md-2">
           <div class="account_left">
             <dl>
-              <dt><img
-                src="https://post-phinf.pstatic.net/MjAxODAzMDVfMTgw/MDAxNTIwMjE2NDY0OTk4.cN9D63H7CpldxOjK4TEUs_knaak89GFsupYLzdW7Khgg.K8RPI6Ej247n0NX7DB47lZaosASz_iAJ2j9I023r33sg.JPEG/ALP_6823.jpg"/>
+              <dt (click)="onFileChanged()">
+                <img id="photo" src="https://post-phinf.pstatic.net/MjAxODAzMDVfMTgw/MDAxNTIwMjE2NDY0OTk4.cN9D63H7CpldxOjK4TEUs_knaak89GFsupYLzdW7Khgg.K8RPI6Ej247n0NX7DB47lZaosASz_iAJ2j9I023r33sg.JPEG/ALP_6823.jpg"/>
+                <input type="file" id="photoFile" (change)="onFileChanged2($event)">
               </dt>
               <dd>
-                <button class="btns colors4">사진등록</button>
+                <button class="btns colors4" (click)="onUpload()">사진등록</button>
               </dd>
             </dl>
           </div>
@@ -190,7 +191,7 @@
                     <div class="account_table_in">
                       <span>변경할 이름
                       </span>
-                      <input type="text" name="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }"/>
+                      <input type="text" name="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }" ng-minlength="0"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
@@ -210,7 +211,7 @@
                     <div class="account_table_in" >
                       <span>새 전화번호
                       </span>
-                      <input type="text" name="tellPhone" [(ngModel)]="tellPhone" (ngModelChange)="tellPhone_pattenTest()" ng-minlength="0" ng-maxlength="15"/>
+                      <input type="text" class="input_tellphone" id="tellPhone" name="tellPhone" [(ngModel)]="tellPhone" (ngModelChange)="tellPhone_pattenTest()" ng-maxlength="15"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="checkTellPhone()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
@@ -234,7 +235,7 @@
                     <div class="account_table_in">
                       <span>새 우편번호
                       </span>
-                      <input type="text" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()"  ng-minlength="0" ng-maxlength="15"/>
+                      <input type="text" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()" ng-maxlength="15"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="checkZipCode()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>

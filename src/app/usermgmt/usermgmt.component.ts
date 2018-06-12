@@ -33,6 +33,7 @@ export class UsermgmtComponent implements OnInit {
   public username: string = '';
   public password: string = '';
   public tellPhone: string;
+  public tellPhone2 : string;
   public zipCode: string;
   public address: string;
 
@@ -74,7 +75,28 @@ export class UsermgmtComponent implements OnInit {
     this.isRePassword = true;
     this.isChPassword = false;
 
+  }
 
+  onFileChanged(){
+    // alert('이제시작이야');
+    $("#photoFile").trigger("click");
+  }
+
+  onFileChanged2(event) {
+    const file = event.target.files[0]
+    var tmppath = URL.createObjectURL(event.target.files[0]);
+    $("#photo").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+  }
+
+  onUpload(){
+    // upload code goes here
+    let formData = new FormData();
+    console.log($('#photoFile')[0].files[0].name);
+    formData.append('file', $('#photoFile')[0].files[0], $('#photoFile')[0].files[0].name);
+    this.userMgmtService.photoRegistration(formData).subscribe(data => {
+      console.log(formData);
+      return data;
+    });
   }
 
   userInfo() {
@@ -120,7 +142,7 @@ export class UsermgmtComponent implements OnInit {
     } else {
       this.isTellPhone == false;
       alert("다시 입력하세요");
-      //TODO:focus
+      return this.userInfo();
     }
   }
 
@@ -147,6 +169,12 @@ export class UsermgmtComponent implements OnInit {
       //TODO:focus
     }
   }
+
+  // focusOn(){
+  //   var text = $('.tellPhone');
+  //   test.focus(function () {
+  //   })
+  // }
 
   /* 현재비밀번호
    checkOriginalPassword(event: any) {
