@@ -20,20 +20,19 @@ export class CatalogComponent implements OnInit {
   translateEntities : any;
   constructor(private translate: TranslateService, private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
     this.userid = catalogService.getUserid();
-
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.catalog;
+    });
   }
 
 
   ngOnInit() {
-    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.translateEntities = event.translations.catalog;
-
     if(this.catalogService.check){
     this.catalogService.viewPacks(true, true, true);
     }
-    console.log("init 실행");
     this.catalogService.check = true;
-    this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
+
+      this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
       this.StarterInit(data['list']);
     });
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS).subscribe(data => {
@@ -108,24 +107,16 @@ export class CatalogComponent implements OnInit {
   }
 
   private jsonParse(value) : any{
-
     let result = '';
     let json = JSON.parse(value.tagsParam);
     value.buttonclass = new Array<any>();
     const keys = Object.keys(json);
     keys.forEach(key => {
       const buttonclass = 'btns3 ' + json[key];
-      const buttonvalue = this.translateEntities.main[key];
+      const buttonvalue = key;
       let array = {buttonclass, buttonvalue};
       value.buttonclass.push(array);
-      //value.buttonvalue.push(this.translateEntities.main[key]);
-         // result += '<button class="btns3 ' + json[key]+'">' + +'</button>'
     })
-    console.log(value);
-
-    //<button *ngIf="recent.classification==='buildpack_system'" class="btns3 colors6">{{ 'catalog.main.paasta' | translate }}</button>
-    //console.log(Object.keys(json));
-    //console.log(json.getKey());
     return value;
 }
 
