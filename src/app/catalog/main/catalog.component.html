@@ -28,7 +28,7 @@
                     </li>
                     <li><p>{{recent.summary}}</p>
                     </li>
-                    <li>
+                    <li >
                       <button *ngIf="recent.classification==='buildpack_system'" class="btns3 colors6">{{ 'catalog.main.paasta' | translate }}</button>
                       <button *ngIf="recent.classification==='buildpack_custom'" class="btns3 colors7">{{ 'catalog.main.community' | translate }}</button>
                     </li>
@@ -85,8 +85,9 @@
                     </p>
                     </li>
                     <li>
-                      <button *ngIf="build.classification==='buildpack_system'" class="btns3 colors6">{{ 'catalog.main.paasta' | translate }}</button>
-                      <button *ngIf="build.classification==='buildpack_custom'" class="btns3 colors7">{{ 'catalog.main.community' | translate }}</button>
+                      <ng-container *ngFor="let class of build.buttonclass">
+                      <button style="margin-left: 5px" class="{{class.buttonclass}}">{{class.buttonvalue}}</button>
+                      </ng-container>
                     </li>
                   </ul>
                 </dd>

@@ -6,7 +6,7 @@ declare var $: any;
 @Injectable()
 export class CatalogService {
 
-  buildpacks : Array<BuildPack>;
+  buildpacks : Array<any>;
   starterpacks : Array<StarterPack>;
   recentpacks : Array<any>;
   servicepacks : Array<ServicePack>;
@@ -17,7 +17,7 @@ export class CatalogService {
   viewservicepack : boolean = true;
 
   viewstarterpacks : Array<StarterPack>;
-  viewbuildpacks  : Array<BuildPack>;
+  viewbuildpacks  : Array<any>;
   viewservicepacks  : Array<ServicePack>;
 
 
@@ -25,7 +25,7 @@ export class CatalogService {
   servicePackfilter : string = '';
   constructor(private common: CommonService, private log: NGXLogger) {
     this.viewstarterpacks  = new Array<StarterPack>();
-    this.viewbuildpacks  = new Array<BuildPack>();
+    this.viewbuildpacks  = new Array<any>();
     this.viewservicepacks  = new Array<ServicePack>();
   }
 
@@ -56,7 +56,6 @@ export class CatalogService {
   }
 
   servicePackFilter(){
-
     if(this.servicePackfilter !== ''){
     this.viewservicepacks = this.servicepacks.filter(data => { if(data.classification === this.servicePackfilter){
       return data;
@@ -105,6 +104,7 @@ export class CatalogService {
   }
 
   getCurrentCatalogNumber(){
+    console.log(this.common.getCurrentCatalogNumber());
     return this.common.getCurrentCatalogNumber();
   }
 

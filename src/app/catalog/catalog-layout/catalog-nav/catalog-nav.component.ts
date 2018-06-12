@@ -11,7 +11,7 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class CatalogNavComponent implements OnInit {
 
-  constructor(private translate: TranslateService,private catalogService: CatalogService, private router: Router) {
+  constructor(private catalogService: CatalogService, private router: Router) {
   }
 
   ngOnInit() {

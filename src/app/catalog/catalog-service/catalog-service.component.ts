@@ -148,12 +148,14 @@ export class CatalogServiceComponent implements OnInit {
         this.plan = this.serviceplan[0];
       }, error => {
         alert("서비스 플랜이 없습니다.");
+        this.router.navigate(['catalog']);
       });
+    },error => {
+      this.router.navigate(['catalog']);
     });
   }
 
   serviceAmountSetting(value){
-    console.log(value);
     try{
     value = JSON.parse(value);
     let amount;
@@ -296,13 +298,6 @@ export class CatalogServiceComponent implements OnInit {
         this.hiddenappparameter = hiddenparam;
       }
     }
-  }
-
-
-
-  insertHistroy() {
-
-    this.catalogService.postHistroy(CATALOGURLConstant.INSERTHISTROY, new cataloghistroy(this.servicepack.no, CATALOGURLConstant.SERVICEPACK, this.catalogService.getUserid())).subscribe(data => data);
   }
 
   createService() {
