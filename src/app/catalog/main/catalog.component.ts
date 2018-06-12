@@ -71,9 +71,6 @@ export class CatalogComponent implements OnInit {
       this.RecentInit(data['list']);
     });
 
-
-console.log("타요타요타요");
-
   }
 
   Search()  {
