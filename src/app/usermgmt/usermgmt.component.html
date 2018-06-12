@@ -207,12 +207,12 @@
               <tr class="on">
                 <td colspan="3">
                   <div class="">
-                    <div class="account_table_in">
+                    <div class="account_table_in" >
                       <span>새 전화번호
                       </span>
-                      <input type="text" name="tellPhone" [(ngModel)]="tellPhone" (change)="checkTellPhone($event)" (keydown)="checkTellPhone($event)" (keyup)="checkTellPhone($event)"/>
+                      <input type="text" name="tellPhone" [(ngModel)]="tellPhone" (ngModelChange)="tellPhone_pattenTest()" ng-minlength="0" ng-maxlength="15"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="checkTellPhone()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
@@ -234,9 +234,9 @@
                     <div class="account_table_in">
                       <span>새 우편번호
                       </span>
-                      <input type="text" name="zipCode" [(ngModel)]="zipCode" (change)="checkZipCode($event)" (keydown)="checkZipCode($event)" (keyup)="checkZipCode($event)"/>
+                      <input type="text" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()"  ng-minlength="0" ng-maxlength="15"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="checkZipCode()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>
@@ -258,9 +258,9 @@
                     <div class="account_table_in">
                       <span>새 주소
                       </span>
-                      <input type="text" name="address" [(ngModel)]="address" ng-model-options="{ getterSetter: true }" (change)="checkAddress($event)" (keydown)="checkAddress($event)" (keyup)="checkAddress($event)" />
+                      <input type="text" name="address" [(ngModel)]="address" ng-model-options="{ getterSetter: true }" (ngModelChange)="address_pattenTest()"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
+                        <button class="btns6 colors4 btns_sw" (click)="checkAddress()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
                       <span></span>

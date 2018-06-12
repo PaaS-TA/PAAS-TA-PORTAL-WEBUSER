@@ -34,7 +34,7 @@ export class UsermgmtComponent implements OnInit {
   public password: string = '';
   public tellPhone: string;
   public zipCode: string;
-  public address : string;
+  public address: string;
 
   public isPassword: boolean;
   public isRePassword: boolean;
@@ -42,8 +42,8 @@ export class UsermgmtComponent implements OnInit {
   /*현재비밀번호 public isOrignPassword: boolean; */
 
   public isTellPhone: boolean;
-  public isZipCode : boolean;
-  public isAddress : boolean;
+  public isZipCode: boolean;
+  public isAddress: boolean;
 
   public password_now: string = '';
   public password_new: string = '';
@@ -51,6 +51,8 @@ export class UsermgmtComponent implements OnInit {
   public password_check: string = '';
   public selectedOrgGuid: string = '';
   public selectedOrgName: string = '';
+
+  public check: number = 0;
 
   public fileToUpload: File = null;
 
@@ -63,7 +65,7 @@ export class UsermgmtComponent implements OnInit {
     this.token = '';
     this.orgName = '';
     this.password = '';
-    this.isTellPhone= false;
+    this.isTellPhone = false;
     this.isZipCode = false;
     this.isAddress = false;
 
@@ -71,6 +73,8 @@ export class UsermgmtComponent implements OnInit {
     this.isPassword = false;
     this.isRePassword = true;
     this.isChPassword = false;
+
+
   }
 
   userInfo() {
@@ -79,7 +83,7 @@ export class UsermgmtComponent implements OnInit {
       this.user = data;
       this.tellPhone = data['tellPhone'];
       this.zipCode = data['zipCode'];
-      this.address= data['address'];
+      this.address = data['address'];
       return data;
 
     });
@@ -94,27 +98,53 @@ export class UsermgmtComponent implements OnInit {
     };
     this.common.isLoading = true;
 
-    if(this.isTellPhone || this.isZipCode || this.isAddress){
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-      if (this.isTellPhone || this.isZipCode || this.isAddress) {
-        alert('성공적으로 변경되었습니다.');
-        this.common.isLoading = false;
-        console.log(data);
-        return data;
-      } else {
-        this.common.isLoading = false;
-      }
+      alert('성공적으로 변경되었습니다.');
+      this.common.isLoading = false;
+      console.log(data);
       return data;
-      }, error => {
-      alert('다시 입력하세요.');
+    }, error => {
+      alert('재 입력하세요.');
       this.common.isLoading = false;
       this.userInfo();
     });
+  }
+
+  //TODO : (1)정규식 체크하는 메소드구성 (2)밸리데이션 다시 체크 T: Usersave(); / F: checkMethod(); => focus
+  //TODO : 사용자 정보 변수값 서로 다르게 구성 할 것
+  checkTellPhone() {
+    this.log.debug(this.tellPhone + ' :::: ' + this.tellPhone_pattenTest());
+    if (this.tellPhone_pattenTest()){
+      this.isTellPhone == true;
+      this.userSave();
+    } else {
+      this.isTellPhone == false;
+      alert("다시 입력하세요");
+      //TODO:focus
     }
-    else{
-      alert('다시 입력하세요.');
-      this.common.isLoading = false;
-      this.userInfo();
+  }
+
+  checkZipCode() {
+    this.log.debug(this.zipCode + ' :::: ' + this.zipCode_pattenTest());
+    if (this.zipCode_pattenTest()){
+      this.isZipCode == true;
+      this.userSave();
+    }else{
+      this.isZipCode == false;
+      alert("다시 입력하세요");
+      //TODO:focus
+    }
+  }
+
+  checkAddress() {
+    this.log.debug(this.address + ' :::: ' + this.address_pattenTest());
+    if (this.address_pattenTest()){
+      this.isAddress == true;
+      this.userSave();
+    }else{
+      this.isAddress == false;
+      alert("다시 입력하세요");
+      //TODO:focus
     }
   }
 
@@ -173,7 +203,7 @@ export class UsermgmtComponent implements OnInit {
         alert('성공적으로 생성되었습니다.');
         this.common.isLoading = false;
         return data;
-      }else{
+      } else {
         alert('새 비밀번호를 다시 입력하세요.');
         this.common.isLoading = false;
       }
@@ -188,36 +218,47 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
-  checkTellPhone(event: any) {
-    //TODO: 전화번호 한 글자는 그대로 저장됨, 하지만 특정 숫자 이상 넘어가면 저장 불가능함(이하 동일 우편번호)
-    var reg_alpha = /^[A-Za-z]*$/ ;
-    var reg_hangeul = /^[가-힣]+$/;
-    var reg_hangeul2= /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
-    if (!reg_alpha.test(this.tellPhone) && !reg_hangeul.test(this.tellPhone)&&!reg_hangeul2.test(this.tellPhone) && this.isNumber(this.tellPhone)) {
+  tellPhone_pattenTest() {
+    let value = this.tellPhone;
+
+    var reg_alpha = /^[A-Za-z]*$/;
+    var reg_koreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+    // var reg_koreanPatten2 = /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
+    if (!reg_alpha.test(value) && !reg_koreanPatten.test(value) && this.isNumber(value)) {
       this.isTellPhone = true;
-    } else{
+      return true;
+    } else {
       this.isTellPhone = false;
+      return false;
     }
   }
 
-  checkZipCode(event: any) {
-    var reg_hangeul = /^[가-힣]+$/;
-    var reg_hangeul2= /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
-    var reg_zip =  /^[A-Za-z0-9]{0,15}$/;
-    if (reg_zip.test(this.zipCode)&& !reg_hangeul.test(this.tellPhone)&&!reg_hangeul2.test(this.tellPhone) ) {
+  zipCode_pattenTest() {
+    let value = this.zipCode;
+
+    const reg_koreanPatten = /^[가-힣]+$/;
+    // var reg_koreanPatten =  /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
+    var reg_zip = /^[A-Za-z0-9]{0,15}$/;
+    if (reg_zip.test(value) && !reg_koreanPatten.test(value)) {
       this.isZipCode = true;
+      return true;
     } else {
       this.isZipCode = false;
+      return false;
     }
   }
 
-  checkAddress(event: any) {
+  address_pattenTest() {
+    let value = this.address;
+
     this.log.debug('address :: ' + this.address);
     if (this.address.length < 256) {
       console.log(this.address.length);
       this.isAddress = true;
+      return true;
     } else {
       this.isAddress = false;
+      return false;
     }
   }
 
@@ -229,27 +270,27 @@ export class UsermgmtComponent implements OnInit {
 
   cancelOrg(orgId: string) {
     this.common.isLoading = true;
-    if(orgId != ''){
+    if (orgId != '') {
       this.orgService.cancelOrg(orgId, this.common.getUserGuid());
       this.common.isLoading = false;
-    }else{
+    } else {
       this.common.isLoading = false;
     }
     this.orgs = this.orgService.getOrgList();
   }
 
-  userAllDelete(){
-    console.log(":: delete start ::" + " username : " +this.user['userId'] +"  "+ "password :" + this.password_check +"  "+"userGuid :" + this.common.getUserGuid()+"  "+"Guid :" + this.common.getUserid());
+  userAllDelete() {
+    console.log(":: delete start ::" + " username : " + this.user['userId'] + "  " + "password :" + this.password_check + "  " + "userGuid :" + this.common.getUserGuid() + "  " + "Guid :" + this.common.getUserid());
     this.common.isLoading = true;
-    this.apiLogin(this.username,this.password).subscribe(data => {
+    this.apiLogin(this.username, this.password).subscribe(data => {
       this.log.debug(data['user_name']);
-      if(data['user_name'] == this.user['userId']){
+      if (data['user_name'] == this.user['userId']) {
         this.common.isLoading = false;
         // 계정삭제:cf,db
-        this.userMgmtService.userAllDelete(this.common.getUserGuid(),'').subscribe();
+        this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe();
         alert('계정삭제가 완료되었습니다.');
         this.goLogout();
-      }else{
+      } else {
         this.common.isLoading = false;
       }
       return data;
@@ -261,19 +302,19 @@ export class UsermgmtComponent implements OnInit {
 
   apiLogin(username: string, password: string) {
     this.common.isLoading = true;
-    console.log(":: api Login ::" + " username : " +this.user['userId'] +"  "+ "password :" + this.password_check +"  "+"userGuid :" + this.common.getUserGuid()+"  "+"Guid :" + this.common.getUserid());
+    console.log(":: api Login ::" + " username : " + this.user['userId'] + "  " + "password :" + this.password_check + "  " + "userGuid :" + this.common.getUserGuid() + "  " + "Guid :" + this.common.getUserid());
     let params = {
       id: this.user['userId'],
       password: this.password_check
     };
-    if(this.password_now == this.password){
+    if (this.password_now == this.password) {
       return this.common.doPost('/portalapi/login', params, '').map(data => {
         return data;
       });
     }
   }
 
-  goLogout(){
+  goLogout() {
     this.log.debug('doLogout()');
     this.common.signOut();
 
