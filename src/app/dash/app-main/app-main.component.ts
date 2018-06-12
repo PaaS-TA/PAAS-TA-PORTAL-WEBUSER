@@ -189,9 +189,7 @@ export class AppMainComponent implements OnInit {
       } else {
         setTimeout(() => this.showLoading(), 0);
 
-        $(".alertLayer .in").html("Application Fail.");
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage("Application Fail.", false);
 
         this.router.navigate(['dashboard']);
       }
@@ -535,16 +533,12 @@ export class AppMainComponent implements OnInit {
     this.appMainService.startApp(params).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.appstartSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appstartSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.appstartFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appstartFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -563,16 +557,12 @@ export class AppMainComponent implements OnInit {
     this.appMainService.stopApp(params).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.appstopSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appstopSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.appstopFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appstopFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -593,16 +583,12 @@ export class AppMainComponent implements OnInit {
       //TODO 재시작 후 시간 텀을주어 init 할 것인가??
       if(data.result) {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.appRestartSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appRestartSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.appRestartFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appRestartFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -739,16 +725,12 @@ export class AppMainComponent implements OnInit {
     this.appMainService.delApp(this.appGuid).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.appDelSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appDelSuccess, true);
 
         this.router.navigate(['dashboard']);
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.appDelFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appDelFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -833,16 +815,12 @@ export class AppMainComponent implements OnInit {
         }
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.appUpdateSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appUpdateSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.appUpdateFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.appUpdateFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -902,16 +880,12 @@ export class AppMainComponent implements OnInit {
         $("#add_env").hide();
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text(alertLayerSuccessText);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(alertLayerSuccessText, true);
 
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(alertLayerFailText+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(alertLayerFailText+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -1199,16 +1173,12 @@ export class AppMainComponent implements OnInit {
         $(".lauth_dl").toggleClass("on");
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.routeAddSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.routeAddSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.routeAddFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.routeAddFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -1221,16 +1191,12 @@ export class AppMainComponent implements OnInit {
     this.appMainService.delAppRoute(this.appGuid, this.sltRouteDelGuid, params).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.routeDelSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.routeDelSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.routeDelFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.routeDelFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -1323,14 +1289,10 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.instanceRestartSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.instanceRestartSuccess, true);
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.instanceRestartFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.instanceRestartFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -1447,16 +1409,12 @@ export class AppMainComponent implements OnInit {
         this.sltServiceParam = [];
 
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.bindServiceSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.bindServiceSuccess, true);
 
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.bindServiceFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.bindServiceFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -1525,16 +1483,12 @@ export class AppMainComponent implements OnInit {
     this.appMainService.unbindService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        $(".alertLayer .in").text(this.translateEntities.alertLayer.unbindServiceSuccess);
-        $(".alertLayer").css('border-left','4px solid #3d10ef');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceSuccess, true);
 
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
-        $(".alertLayer .in").html(this.translateEntities.alertLayer.unbindServiceFail+"<br><br>"+data.msg.description);
-        $(".alertLayer").css('border-left','4px solid #cb3d4a');
-        $(".alertLayer").addClass("moveAlert");
+        this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
