@@ -30,7 +30,7 @@
                     </li>
                     <li>
                       <ng-container *ngFor="let class of recent.buttonclass">
-                        <button style="margin-left: 5px" class="{{class.buttonclass}}">{{class.buttonvalue}}</button>
+                        <button style="margin-left: 5px" class="{{class.buttonclass}}">{{ 'catalog.main.'+ class.buttonvalue | translate }}</button>
                       </ng-container>
                     </li>
                   </ul>
@@ -58,7 +58,7 @@
                     </li>
                     <li>
                       <ng-container *ngFor="let class of stater.buttonclass">
-                        <button style="margin-left: 5px" class="{{class.buttonclass}}">{{class.buttonvalue}}</button>
+                        <button style="margin-left: 5px" class="{{class.buttonclass}}">{{ 'catalog.main.'+ class.buttonvalue | translate }}</button>
                       </ng-container>
                     </li>
                   </ul>
@@ -88,7 +88,7 @@
                     </li>
                     <li>
                       <ng-container *ngFor="let class of build.buttonclass">
-                      <button style="margin-left: 5px" class="{{class.buttonclass}}">{{class.buttonvalue}}</button>
+                      <button style="margin-left: 5px" class="{{class.buttonclass}}">{{ 'catalog.main.'+ class.buttonvalue | translate }}</button>
                       </ng-container>
                     </li>
                   </ul>
@@ -118,7 +118,7 @@
                     </li>
                     <li>
                     <ng-container *ngFor="let class of service.buttonclass">
-                      <button style="margin-left: 5px" class="{{class.buttonclass}}">{{class.buttonvalue}}</button>
+                      <button style="margin-left: 5px" class="{{class.buttonclass}}">{{ 'catalog.main.'+ class.buttonvalue | translate }}</button>
                     </ng-container>
                     </li>
                   </ul>
