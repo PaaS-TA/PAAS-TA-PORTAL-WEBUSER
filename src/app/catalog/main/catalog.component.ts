@@ -3,7 +3,7 @@ import {BuildPack, CatalogService, ServicePack, StarterPack} from "./catalog.ser
 import {NGXLogger} from 'ngx-logger';
 import {Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
-import {TranslateService} from "@ngx-translate/core";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -17,8 +17,12 @@ export class CatalogComponent implements OnInit {
   searchKeyword : string='';
   userid : string;
   recentpacks : Array<any> = Array<any>();
+  translateEntities : any;
   constructor(private translate: TranslateService, private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
     this.userid = catalogService.getUserid();
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.catalog;
+    });
   }
 
 
@@ -26,9 +30,9 @@ export class CatalogComponent implements OnInit {
     if(this.catalogService.check){
     this.catalogService.viewPacks(true, true, true);
     }
-    console.log("init 실행");
     this.catalogService.check = true;
-    this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
+
+      this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
       this.StarterInit(data['list']);
     });
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS).subscribe(data => {
@@ -38,7 +42,7 @@ export class CatalogComponent implements OnInit {
       this.ServiceInit(data['list']);
     });
     this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid).subscribe(data => {
-      this.RecentInit(data);
+      this.RecentInit(data['list']);
     });
 
     $(document).ready(() => {
@@ -51,6 +55,7 @@ export class CatalogComponent implements OnInit {
           console.log(exception);
         });
     });
+
   }
 
   Search()  {
@@ -91,33 +96,56 @@ export class CatalogComponent implements OnInit {
     }
   }
 
+  private jsonParse(value) : any{
+    let result = '';
+    let json = JSON.parse(value.tagsParam);
+    value.buttonclass = new Array<any>();
+    const keys = Object.keys(json);
+    keys.forEach(key => {
+      const buttonclass = 'btns3 ' + json[key];
+      const buttonvalue = key;
+      let array = {buttonclass, buttonvalue};
+      value.buttonclass.push(array);
+    })
+    return value;
+}
 
   RecentInit(data : any) {
-    this.recentpacks = [];
-    this.recentpacks = data['list'];
-  }
+    this.catalogService.recentpacks = new Array<any>();
+    data.forEach(a => {
+      a = this.jsonParse(a);
+    });
+    this.catalogService.recentpacks = data;
 
+  }
 
   StarterInit(data : any) {
     this.catalogService.starterpacks = new Array<StarterPack>();
     this.catalogService.starterpacks = data;
-    this.catalogService.starterpacks = this.catalogService.starterpacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }})
+    this.catalogService.starterpacks = this.catalogService.starterpacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
+    this.catalogService.starterpacks.forEach(a => {
+      a = this.jsonParse(a);
+    });
     this.catalogService.viewstarterpacks = this.catalogService.starterpacks;
   }
 
   BuildInit(data : any) {
-    this.catalogService.buildpacks = new Array<BuildPack>();
+    this.catalogService.buildpacks = new Array<any>();
     this.catalogService.buildpacks = data;
-
-    this.catalogService.buildpacks = this.catalogService.buildpacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }})
+    this.catalogService.buildpacks = this.catalogService.buildpacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
+    this.catalogService.buildpacks.forEach(a => {
+      a = this.jsonParse(a);
+    });
     this.catalogService.viewbuildpacks = this.catalogService.buildpacks;
-    console.log( this.catalogService.viewbuildpacks.length);
   }
 
   ServiceInit(data : any) {
     this.catalogService.servicepacks = new Array<ServicePack>();
     this.catalogService.servicepacks = data;
-    this.catalogService.servicepacks = this.catalogService.servicepacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }})
+    this.catalogService.servicepacks = this.catalogService.servicepacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
+    this.catalogService.servicepacks.forEach(a => {
+      a = this.jsonParse(a);
+    });
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;
   }
 

@@ -95,6 +95,8 @@ export class CatalogDevelopmentComponent implements OnInit {
   buildInit() {
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
       this.buildpack =  data['list'][0];
+    },error => {
+      this.router.navigate(['catalog']);
     });
   }
 

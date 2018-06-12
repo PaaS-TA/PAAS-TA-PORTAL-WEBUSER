@@ -5,7 +5,8 @@ import {NGXLogger} from "ngx-logger";
 import {Organization} from "../../model/organization";
 import {Space} from "../../model/space";
 import {CATALOGURLConstant} from "../common/catalog.constant";
-import {TranslateService} from "@ngx-translate/core";
+import {TranslateService, LangChangeEvent} from "@ngx-translate/core";
+
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -17,7 +18,7 @@ export class CatalogDetailComponent implements OnInit {
   catalogcontans = CATALOGURLConstant;
 
   template: StarterPack;
-  translateEntities : any;
+  public translateEntities: any = [];
   trans : string;
 
 
@@ -52,6 +53,9 @@ export class CatalogDetailComponent implements OnInit {
   buttonid : number = 0;
   switchid : number = 3;
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.catalog;
+    });
   }
 
   ngOnInit() {
@@ -63,9 +67,9 @@ export class CatalogDetailComponent implements OnInit {
     this.spacesFrist();
     this.orgsInit();
     this.doLayout();
-    this.translate.get('catalog').subscribe(data => {
-      this.translateEntities = data;
-    });
+    // this.translate.get('catalog').subscribe(data => {
+    //   this.translateEntities = data;
+    // });
   }
 
   domainInit(){
@@ -94,7 +98,6 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   placeholderSetting(value : boolean){
-    console.log("통과");
     this.disableInput(value);
     this.disableButton(true);
     // if(value){
@@ -149,6 +152,8 @@ export class CatalogDetailComponent implements OnInit {
           alert("서비스 플랜이 없습니다.");
         });
       });
+    },error => {
+        this.router.navigate(['catalog']);
     });
     this.disk = 512;
     this.memory = 512;
@@ -436,7 +441,10 @@ export class CatalogDetailComponent implements OnInit {
   }
 
 
-  createApp() {
+  createApp(values : TranslateService) {
+    this.translate.get('catalog').subscribe(data => {
+      console.log(data);
+    });
     console.log(this.translateEntities);
     this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
     //

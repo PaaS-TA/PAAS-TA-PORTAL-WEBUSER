@@ -639,9 +639,9 @@
     // $(".alertOn").click(function(){
     //     $(".alertLayer").addClass("moveAlert");
     // }),
-    setInterval(function(){
-        $(".alertLayer").removeClass("moveAlert");
-    }, 5000);
+    // setInterval(function(){
+    //     $(".alertLayer").removeClass("moveAlert");
+    // }, 5000);
     //
     // $(".alertClose").click(function(){
     //     $(this).parents(".alertLayer").removeClass("moveAlert");

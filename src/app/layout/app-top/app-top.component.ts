@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import {NGXLogger} from "ngx-logger";
 import {CommonService} from "../../common/common.service";
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
@@ -18,7 +18,7 @@ export class AppTopComponent implements OnInit {
   @Input('catalog-view') isCatalogView: Boolean;
 
   catalogName: number;
-
+  translateEntities : any;
   allMenuCursorIds: string[] = [
     'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc',
     'cur_usermgmt', 'cur_org', 'cur_quantity', 'cur_login',
@@ -34,27 +34,29 @@ export class AppTopComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
-    $('#' + this.cursorId).addClass('cur');
-
-    // related to catalog current menu
-    const url = this.router['url'].split("/")[1];
-    if(url.indexOf('detail') > 0){
-      this.catalogName = 0;
-    }
-    else if(url.indexOf('development') > 0){
-      this.catalogName = 1;
-    }
-    else if(url.indexOf('service') > 0){
-      this.catalogName = 2;
-    }
-    else{
-      this.catalogName = 3;//"<p> 'catalog.nav.viewAll' | translate </p>";
-    }
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.catalog;
+      this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
+      $('#' + this.cursorId).addClass('cur');
+      const url = this.router['url'].split("/")[1];
+      if(url.indexOf('detail') > 0){
+        this.catalogName = this.translateEntities.nav.appTemplate;
+      }
+      else if(url.indexOf('development') > 0){
+        this.catalogName = this.translateEntities.nav.appDevelopment;
+      }
+      else if(url.indexOf('service') > 0){
+        this.catalogName = this.translateEntities.nav.service;
+      }
+      else{
+        this.catalogName = this.translateEntities.nav.viewAll;
+      }
+    })
   }
 
   changeLangClick(lang: string) {
     this.translate.use(lang);
+    this.common.useLang = lang;
 
     $("li[id^='lang_']").removeClass("cur");
     $("#lang_"+lang+"").addClass("cur");
