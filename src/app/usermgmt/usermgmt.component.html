@@ -140,11 +140,7 @@
                     <div class="account_table_in">
                       <p>
                         <span>현재비밀번호</span>
-                        <input type="password" name="password_now" [(ngModel)]="password_now" (change)="checkOriginalPassword($event)" (keydown)="checkOriginalPassword($event)" (keyup)="checkOriginalPassword($event)"/>
-                        <span class="red passred" use-form-error="isNotSame" *ngIf="!isOrignPassword">
-                          <span></span>
-                          <i class="fas fa-exclamation-circle"></i>비밀 번호가 맞지 않습니다.
-                        </span>
+                        <input type="password" name="password_now" [(ngModel)]="password_now"/>
                       </p>
                       <p>
                         <span>새 비밀번호
@@ -245,7 +241,7 @@
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isZipCode" >
-                        <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
+                        <i class="fas fa-exclamation-circle"></i>숫자와 영문 입력만 가능합니다.
                       </span>
                     </div>
                   </div>
@@ -253,7 +249,7 @@
               </tr>
               <tr>
                 <td>주소</td>
-                <th>{{user['address']}}</th>
+                <th>{{address}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
                         </tr>
               <tr class="on">
@@ -262,11 +258,15 @@
                     <div class="account_table_in">
                       <span>새 주소
                       </span>
-                      <input type="text" name="address" [(ngModel)]="user['address']" ng-model-options="{ getterSetter: true }"/>
+                      <input type="text" name="address" [(ngModel)]="address" ng-model-options="{ getterSetter: true }" (change)="checkAddress($event)" (keydown)="checkAddress($event)" (keyup)="checkAddress($event)" />
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
                       </div>
+                      <span></span>
+                      <span class="red" use-form-error="isNotSame" *ngIf="!isAddress" >
+                        <i class="fas fa-exclamation-circle"></i>256 자 이하만 가능합니다.
+                      </span>
                     </div>
                   </div>
                 </td>
@@ -296,9 +296,6 @@
               </tr>
               </tfoot>
             </table>
-            <!--<div class="text-right">-->
-              <!--<button class="btns colors4"><i class="fas fa-angle-down"></i> 더 보기</button>-->
-            <!--</div>-->
           </div>
           <div class="account_btn">
             <button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>
