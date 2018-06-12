@@ -9,7 +9,7 @@
           </dt>
           <dd>
             <p>
-              전체보기
+              {{ 'catalog.nav.viewAll' | translate }}
             </p>
           </dd>
         </dl>
@@ -23,7 +23,7 @@
           </dt>
           <dd>
             <p>
-              앱 템플릿
+              {{ 'catalog.nav.appTemplate' | translate }}
             </p>
           </dd>
         </dl>
@@ -37,7 +37,7 @@
           </dt>
           <dd>
             <p>
-              앱 개발환경
+              {{ 'catalog.nav.appDevelopment' | translate }}
             </p>
           </dd>
         </dl>
@@ -51,7 +51,7 @@
           </dt>
           <dd>
             <p>
-              서비스
+              {{ 'catalog.nav.service' | translate }}
             </p>
           </dd>
         </dl>
@@ -62,21 +62,21 @@
     <div class="">
       <div>
         <ul>
-          <li (click)="viewMain()">전체보기
+          <li (click)="viewMain()">  {{ 'catalog.nav.viewAll' | translate }}
           </li>
-          <li class="titles" (click)="viewStarterPack()">앱 템플릿
+          <li class="titles" (click)="viewStarterPack()">  {{ 'catalog.nav.appTemplate' | translate }}
           </li>
-          <li><i class="far fa-window-maximize" (click)="viewStarterPack($event)"></i > 기본유형</li>
-          <li class="titles" (click)="viewBuildPack()">앱 개발환경</li>
-          <li (click)="viewBuildPack('buildpack_system')"><i class="fas fa-cog" ></i> 시스템 앱 개발환경</li>
-          <li (click)="viewBuildPack('buildpack_custom')"><i class="fas fa-user"></i> 사용자 앱 개발환경</li>
-          <li class="titles" (click)="viewServicePack()">서비스</li>
-          <li (click)="viewServicePack('service_storage')"><i class="far fa-hdd" ></i> 데이터저장소</li>
-          <li (click)="viewServicePack('service_message')"><i class="fas fa-comments" ></i> 메시징</li>
-          <li (click)="viewServicePack('service_nosql')"><i class="fas fa-database" ></i> NoSQL 데이터베이스</li>
-          <li (click)="viewServicePack('service_rdbms')"><i class="fas fa-cubes" ></i> 관계형 데이터베이스</li>
-          <li (click)="viewServicePack('service_monitoring')"><i class="fas fa-mobile-alt" ></i> 어플리케이션 모니터링</li>
-          <li (click)="viewServicePack('dev_ops')"><i class="fas fa-wrench" ></i> 개발 지원 도구</li>
+          <li><i class="far fa-window-maximize" (click)="viewStarterPack($event)"></i >   {{ 'catalog.nav.basicType' | translate }}</li>
+          <li class="titles" (click)="viewBuildPack()">{{ 'catalog.nav.appDevelopment' | translate }}</li>
+          <li (click)="viewBuildPack('buildpack_system')"><i class="fas fa-cog" ></i> {{ 'catalog.nav.systemAppDevelopment' | translate }}</li>
+          <li (click)="viewBuildPack('buildpack_custom')"><i class="fas fa-user"></i> {{ 'catalog.nav.userAppDevelopment' | translate }}</li>
+          <li class="titles" (click)="viewServicePack()">{{ 'catalog.nav.service' | translate }}</li>
+          <li (click)="viewServicePack('service_storage')"><i class="far fa-hdd" ></i>{{ 'catalog.nav.dataStore' | translate }}</li>
+          <li (click)="viewServicePack('service_message')"><i class="fas fa-comments" ></i>{{ 'catalog.nav.messaging' | translate }}</li>
+          <li (click)="viewServicePack('service_nosql')"><i class="fas fa-database" ></i> {{ 'catalog.nav.nosqlDatabase' | translate }}</li>
+          <li (click)="viewServicePack('service_rdbms')"><i class="fas fa-cubes" ></i> {{ 'catalog.nav.relationalDatabase' | translate }}</li>
+          <li (click)="viewServicePack('service_monitoring')"><i class="fas fa-mobile-alt" ></i> {{ 'catalog.nav.appMonitoring' | translate }}</li>
+          <li (click)="viewServicePack('dev_ops')"><i class="fas fa-wrench" ></i>{{ 'catalog.nav.devSupportTools' | translate }}</li>
         </ul>
       </div>
     </div>

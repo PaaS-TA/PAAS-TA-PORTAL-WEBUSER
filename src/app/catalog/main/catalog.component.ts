@@ -2,10 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {BuildPack, CatalogService, ServicePack, StarterPack} from "./catalog.service";
 import {NGXLogger} from 'ngx-logger';
 import {Router} from "@angular/router";
-import {Organization} from "../../model/organization";
-import {FormGroup} from "@angular/forms";
 import {CATALOGURLConstant} from "../common/catalog.constant";
-import {forEach} from "@angular/router/src/utils/collection";
+import {TranslateService} from "@ngx-translate/core";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -19,12 +17,17 @@ export class CatalogComponent implements OnInit {
   searchKeyword : string='';
   userid : string;
   recentpacks : Array<any> = Array<any>();
-  constructor(private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
+  constructor(private translate: TranslateService, private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
     this.userid = catalogService.getUserid();
   }
 
 
   ngOnInit() {
+    if(this.catalogService.check){
+    this.catalogService.viewPacks(true, true, true);
+    }
+    console.log("init 실행");
+    this.catalogService.check = true;
     this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
       this.StarterInit(data['list']);
     });
@@ -35,9 +38,7 @@ export class CatalogComponent implements OnInit {
       this.ServiceInit(data['list']);
     });
     this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid).subscribe(data => {
-      console.log(data);
       this.RecentInit(data);
-
     });
 
     $(document).ready(() => {

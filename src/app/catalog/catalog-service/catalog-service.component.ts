@@ -8,12 +8,14 @@ import {Organization} from "../../model/organization";
 import {cataloghistroy} from "../model/cataloghistory";
 import {App} from "../../model/app";
 import {ServicePlan} from "../model/Serviceplan";
-
+declare var $: any;
+declare var jQuery: any;
 @Component({
   selector: 'app-catalog-service',
   templateUrl: './catalog-service.component.html',
   styleUrls: ['./catalog-service.component.css']
 })
+
 export class CatalogServiceComponent implements OnInit {
   catalogcontans = CATALOGURLConstant;
   namecheck:number = 0;
@@ -58,6 +60,19 @@ export class CatalogServiceComponent implements OnInit {
     this.appsFirst();
     this.ServiceInit();
     this.OrgsInit();
+    this.doLayout();
+  }
+  doLayout() {
+    $(document).ready(() => {
+      //TODO 임시로...
+      $.getScript("../../assets/resources/js/common2.js")
+        .done(function (script, textStatus) {
+          //console.log( textStatus );
+        })
+        .fail(function (jqxhr, settings, exception) {
+          console.log(exception);
+        });
+    });
   }
 
   activatedRouteInit() {
@@ -138,15 +153,18 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   serviceAmountSetting(value){
+    console.log(value);
+    try{
     value = JSON.parse(value);
     let amount;
     if(value.costs){
       amount = value.costs[0]['amount'].usd;
-
-      if(amount == 0){
-        return '무료';
-      }return amount + '/' + value.costs[0]['unit'];
-    } return '무료';
+      }
+    return amount + '/' + value.costs[0]['unit'];
+    }
+    catch(error){
+      return '0/MONTHLY';
+    }
   }
 
   serviceBulletSetting(value){
@@ -302,7 +320,8 @@ export class CatalogServiceComponent implements OnInit {
     this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
     {
       alert("서비스생성 완료");
-      this.router.navigate(['dashboard']);
+      console.log(data);
+      //this.router.navigate(['dashboard']);
     }, error => {
       alert("서비스생성 실패");
     });

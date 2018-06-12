@@ -94,7 +94,10 @@
       <div class="header_bottom">
         <p class="tit">Catalog</p>
         <ul class="content_dev">
-          <li>{{catalogName}}</li>
+          <li *ngIf="catalogName===0">{{ 'catalog.nav.appTemplate' | translate }}</li>
+          <li *ngIf="catalogName===1">{{ 'catalog.nav.appDevelopment' | translate }}</li>
+          <li *ngIf="catalogName===2">{{ 'catalog.nav.service' | translate }}</li>
+          <li *ngIf="catalogName===3">{{ 'catalog.nav.viewAll' | translate }}</li>
         </ul>
       </div>
     </ng-container>

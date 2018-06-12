@@ -1,6 +1,7 @@
 /**
  * Created by 박철한 on 2018-05-03.
  */
+
 export enum CATALOGURLConstant {
 
   NAMECHECK = '/portalapi/v2/catalogs/apps/',
