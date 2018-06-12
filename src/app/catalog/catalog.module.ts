@@ -10,12 +10,14 @@ import { CatalogDevelopmentComponent } from './catalog-development/catalog-devel
 import { CatalogServiceComponent } from './catalog-service/catalog-service.component';
 import {DashModule} from "../dash/dash.module";
 
+import { SharedModule } from '../shared/shared.module';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     RoutingModule,
-    DashModule,    // included TranslateModule
+    SharedModule,    // included TranslateModule
   ],
   declarations: [
     CatalogNavComponent,
@@ -25,6 +27,6 @@ import {DashModule} from "../dash/dash.module";
     CatalogServiceComponent,
   ],
   providers: [CatalogService],
-  exports: []
+  exports: [SharedModule]
 })
 export class CatalogModule { }

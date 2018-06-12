@@ -11,6 +11,7 @@ import {Param} from "../index/login/login.component";
 import {Router} from "@angular/router";
 import {AppConfig} from "../app.config"
 
+declare var $: any;
 
 @Injectable()
 export class CommonService {
@@ -431,5 +432,22 @@ export class CommonService {
   }
   getCurrentCatalogNumber(): any{
     return window.sessionStorage.getItem('catalog_number');
+  }
+
+  alertMessage(value, result){
+    $(".alertLayer .in").html(value);
+    if(result){
+      $(".alertLayer").css('border-left','4px solid #3d10ef');
+    }
+    else{
+      $(".alertLayer").css('border-left','4px solid #cb3d4a');
+    }
+    $(".alertLayer").addClass("moveAlert");
+
+    setTimeout(() => $(".alertLayer").removeClass("moveAlert"), 3000);
+
+    // setInterval(function(){
+    //   $(".alertLayer").removeClass("moveAlert");
+    // }, 5000);
   }
 }

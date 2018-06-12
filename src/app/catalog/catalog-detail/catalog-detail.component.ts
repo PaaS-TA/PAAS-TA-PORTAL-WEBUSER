@@ -5,7 +5,8 @@ import {NGXLogger} from "ngx-logger";
 import {Organization} from "../../model/organization";
 import {Space} from "../../model/space";
 import {CATALOGURLConstant} from "../common/catalog.constant";
-import {TranslateService} from "@ngx-translate/core";
+import {TranslateService, LangChangeEvent} from "@ngx-translate/core";
+
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -52,6 +53,9 @@ export class CatalogDetailComponent implements OnInit {
   buttonid : number = 0;
   switchid : number = 3;
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.catalog;
+    });
   }
 
   ngOnInit() {
@@ -63,9 +67,9 @@ export class CatalogDetailComponent implements OnInit {
     this.spacesFrist();
     this.orgsInit();
     this.doLayout();
-    this.translate.get('catalog').subscribe(data => {
-      this.translateEntities = data;
-    });
+    // this.translate.get('catalog').subscribe(data => {
+    //   this.translateEntities = data;
+    // });
   }
 
   domainInit(){

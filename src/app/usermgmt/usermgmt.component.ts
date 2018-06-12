@@ -13,7 +13,7 @@ import {AppConfig} from "../app.config";
 import {FormControl} from '@angular/forms';
 import {viewWrappedDebugError} from '@angular/core/src/view/errors';
 import {validate} from 'codelyzer/walkerFactory/walkerFn';
-import {isNumber} from "util";
+import {error, isNumber} from "util";
 import {userInfo} from "os";
 
 declare var $: any;
@@ -34,14 +34,16 @@ export class UsermgmtComponent implements OnInit {
   public password: string = '';
   public tellPhone: string;
   public zipCode: string;
+  public address : string;
 
   public isPassword: boolean;
   public isRePassword: boolean;
   public isChPassword: boolean;
-  public isOrignPassword: boolean;
+  /*현재비밀번호 public isOrignPassword: boolean; */
 
   public isTellPhone: boolean;
   public isZipCode : boolean;
+  public isAddress : boolean;
 
   public password_now: string = '';
   public password_new: string = '';
@@ -61,10 +63,11 @@ export class UsermgmtComponent implements OnInit {
     this.token = '';
     this.orgName = '';
     this.password = '';
-    this.isTellPhone= true;
-    this.isZipCode = true;
+    this.isTellPhone= false;
+    this.isZipCode = false;
+    this.isAddress = false;
 
-    this.isOrignPassword = true;
+    /*현재비밀번호 this.isOrignPassword = true; */
     this.isPassword = false;
     this.isRePassword = true;
     this.isChPassword = false;
@@ -76,44 +79,55 @@ export class UsermgmtComponent implements OnInit {
       this.user = data;
       this.tellPhone = data['tellPhone'];
       this.zipCode = data['zipCode'];
+      this.address= data['address'];
       return data;
+
     });
   }
 
   userSave() {
-      let params = {
+    let params = {
       userName: this.user['userName'],
       tellPhone: this.tellPhone,
       zipCode: this.zipCode,
-      address: this.user['address']
+      address: this.address
     };
-      this.common.isLoading = true;
-      this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-        if (data== 1 && this.isTellPhone && this.isZipCode) {
-          alert('성공적으로 변경되었습니다.');
-          this.common.isLoading = false;
-          console.log(data);
-          return data;
-        }else{
-          this.common.isLoading = false;
-        }
-        return data;
-      },error=>{
-        alert('다시 입력하세요.');
-        this.common.isLoading = false;
-      });
-  }
+    this.common.isLoading = true;
 
-  checkOriginalPassword(event: any) {
-    this.log.debug('password_now :: ' + this.password_now);
-    var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
-    //TODO  로그인시 사용되는 비밀번호 비교
-    if (!reg_pwd.test(this.password_now)) {
-      this.isOrignPassword = false;
-    } else {
-      this.isOrignPassword = true;
+    if(this.isTellPhone || this.isZipCode || this.isAddress){
+    this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
+      if (this.isTellPhone || this.isZipCode || this.isAddress) {
+        alert('성공적으로 변경되었습니다.');
+        this.common.isLoading = false;
+        console.log(data);
+        return data;
+      } else {
+        this.common.isLoading = false;
+      }
+      return data;
+      }, error => {
+      alert('다시 입력하세요.');
+      this.common.isLoading = false;
+      this.userInfo();
+    });
+    }
+    else{
+      alert('다시 입력하세요.');
+      this.common.isLoading = false;
+      this.userInfo();
     }
   }
+
+  /* 현재비밀번호
+   checkOriginalPassword(event: any) {
+   this.log.debug('password_now :: ' + this.password_now);
+   var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
+   if (!reg_pwd.test(this.password_now)) {
+   this.isOrignPassword = false;
+   } else {
+   this.isOrignPassword = true;
+   }}
+   */
 
   checkPassword(event: any) {
     this.log.debug('password_new :: ' + this.password_new);
@@ -178,9 +192,8 @@ export class UsermgmtComponent implements OnInit {
     //TODO: 전화번호 한 글자는 그대로 저장됨, 하지만 특정 숫자 이상 넘어가면 저장 불가능함(이하 동일 우편번호)
     var reg_alpha = /^[A-Za-z]*$/ ;
     var reg_hangeul = /^[가-힣]+$/;
-    var reg_hangeul2 = /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
-    if (!reg_alpha.test(this.tellPhone) && !reg_hangeul.test(this.tellPhone)
-        && !reg_hangeul2.test(this.tellPhone) && this.isNumber(this.tellPhone)) {
+    var reg_hangeul2= /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
+    if (!reg_alpha.test(this.tellPhone) && !reg_hangeul.test(this.tellPhone)&&!reg_hangeul2.test(this.tellPhone) && this.isNumber(this.tellPhone)) {
       this.isTellPhone = true;
     } else{
       this.isTellPhone = false;
@@ -188,11 +201,23 @@ export class UsermgmtComponent implements OnInit {
   }
 
   checkZipCode(event: any) {
-    // var reg_zip = /^[a-z0-9_-]{3,6}$/;
-    if (this.isNumber(this.zipCode)) {
+    var reg_hangeul = /^[가-힣]+$/;
+    var reg_hangeul2= /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
+    var reg_zip =  /^[A-Za-z0-9]{0,15}$/;
+    if (reg_zip.test(this.zipCode)&& !reg_hangeul.test(this.tellPhone)&&!reg_hangeul2.test(this.tellPhone) ) {
       this.isZipCode = true;
     } else {
       this.isZipCode = false;
+    }
+  }
+
+  checkAddress(event: any) {
+    this.log.debug('address :: ' + this.address);
+    if (this.address.length < 256) {
+      console.log(this.address.length);
+      this.isAddress = true;
+    } else {
+      this.isAddress = false;
     }
   }
 
@@ -203,7 +228,13 @@ export class UsermgmtComponent implements OnInit {
   }
 
   cancelOrg(orgId: string) {
-    this.orgService.cancelOrg(orgId, this.common.getUserGuid());
+    this.common.isLoading = true;
+    if(orgId != ''){
+      this.orgService.cancelOrg(orgId, this.common.getUserGuid());
+      this.common.isLoading = false;
+    }else{
+      this.common.isLoading = false;
+    }
     this.orgs = this.orgService.getOrgList();
   }
 

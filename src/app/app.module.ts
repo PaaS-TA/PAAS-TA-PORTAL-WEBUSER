@@ -54,6 +54,8 @@ import {OrgQuotaService} from "./org/common/org-quota.service";
 import {OrgService} from "./org/common/org.service";
 import {QuantityModule} from "./quantity/quantity.module";
 
+import {SharedModule} from './shared/shared.module';
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }
@@ -109,6 +111,7 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    SharedModule.forRoot(),
     LoggerModule.forRoot({
       //serverLoggingUrl: '/ps/logs',
       level: NgxLoggerLevel.DEBUG,

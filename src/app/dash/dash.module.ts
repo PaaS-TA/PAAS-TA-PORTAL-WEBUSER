@@ -14,6 +14,8 @@ import { TailLogsComponent } from './tail-logs/tail-logs.component';
 import { TailLogsService } from './tail-logs/tail-logs.service';
 import { WebsocketService } from './tail-logs/websocket.service';
 
+import { SharedModule } from '../shared/shared.module';
+
 // export function createTranslateLoader(http: HttpClient) {
 //   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
 // }
@@ -22,17 +24,16 @@ import { WebsocketService } from './tail-logs/websocket.service';
   imports: [
     RoutingModule,
     FormsModule,
-    TranslateModule,
+    SharedModule,
     CommonModule
   ],
   declarations: [
     AppMainComponent,
     DashMainComponent,
-    AppTopComponent,
     AppNavComponent,
     TailLogsComponent
   ],
   providers: [AppMainService, TailLogsService, WebsocketService],
-  exports: [AppTopComponent, TranslateModule]
+  exports: [ SharedModule]
 })
 export class DashModule { }
