@@ -7,6 +7,7 @@ import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
 import {cataloghistroy} from "../model/cataloghistory";
 import {CatalogComponent} from "../main/catalog.component";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -16,7 +17,7 @@ declare var jQuery: any;
 })
 export class CatalogDevelopmentComponent implements OnInit {
   catalogcontans = CATALOGURLConstant;
-
+  translateEntities : any;
   namecheck : number = 0;
   routecheck : number = 0;
 
@@ -47,11 +48,18 @@ export class CatalogDevelopmentComponent implements OnInit {
   disk: number; // 디스크
   appStart : boolean = true; // 앱 시작 여부
 
-  constructor(private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+  constructor(private translate: TranslateService,private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
     this.catalogService.isLoading(false);
   }
 
   ngOnInit() {
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.catalog;
+    });
+    $('#nav_first').attr('class','');
+    $('#nav_second').attr('class','');
+    $('#nav_third ').attr('class','cur');
+    $('#nav_fourth').attr('class','');
     this.activatedRouteInit();
     this.domainInit();
     this.buildInit();
@@ -278,35 +286,35 @@ export class CatalogDevelopmentComponent implements OnInit {
             userId : this.catalogService.getUserid()
           };
           this.catalogService.postApp(CATALOGURLConstant.CREATEAPP, params).subscribe(data => {
-            this.log.debug(data);
+            this.catalogService.alertMessage(this.translateEntities.result.buildPackSusses, true);
              this.catalogService.isLoading(false);
              this.router.navigate(['dashboard']);
           }, error =>{
-            alert("Time out Error");
+            this.catalogService.alertMessage(this.translateEntities.result.buildPackError, false);
             this.log.debug(error);
             this.catalogService.isLoading(false);
-            this.router.navigate(['dashboard']);
           });
         }
         else if (data['RESULT']===CATALOGURLConstant.FAIL){
-          alert("앱생성 실패");
+          this.catalogService.alertMessage(this.translateEntities.result.buildPackError, false);
           this.getRoutes();
           this.routecheck = CATALOGURLConstant.NO;
           this.disableButton(true);
           return false;
         }
       }, error => {
-        alert("라우트 증복 오류");
+        this.catalogService.alertMessage(this.translateEntities.result.routeNameError, false);
         this.getRoutes();
         this.routecheck = CATALOGURLConstant.NO;
         this.disableButton(true);
         return false;
       });
     }, error => {
-      alert("앱 이름중복 오류");
+      this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
       this.getAppNames();
       this.namecheck = CATALOGURLConstant.NO;
       this.disableButton(true);
+
     });;
 
   }

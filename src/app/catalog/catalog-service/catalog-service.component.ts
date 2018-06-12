@@ -52,6 +52,8 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.activatedRouteInit();
     this.catalogService.isLoading(false);
     this.activatedRouteInit();
     this.DomainInit();
@@ -61,6 +63,10 @@ export class CatalogServiceComponent implements OnInit {
     this.ServiceInit();
     this.OrgsInit();
     this.doLayout();
+    $('#nav_first').attr('class','');
+    $('#nav_second').attr('class','');
+    $('#nav_third ').attr('class','');
+    $('#nav_fourth').attr('class','cur');
   }
   doLayout() {
     $(document).ready(() => {

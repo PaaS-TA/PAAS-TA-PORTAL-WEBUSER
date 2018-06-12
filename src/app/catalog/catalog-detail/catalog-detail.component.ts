@@ -53,12 +53,17 @@ export class CatalogDetailComponent implements OnInit {
   buttonid : number = 0;
   switchid : number = 3;
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
     });
   }
 
   ngOnInit() {
+    $('#nav_first').attr('class','');
+    $('#nav_second').attr('class','cur');
+    $('#nav_third ').attr('class','');
+    $('#nav_fourth').attr('class','');
     this.domainInit();
     this.activatedRouteInit();
     this.buildAndServiceInit();
@@ -67,9 +72,6 @@ export class CatalogDetailComponent implements OnInit {
     this.spacesFrist();
     this.orgsInit();
     this.doLayout();
-    // this.translate.get('catalog').subscribe(data => {
-    //   this.translateEntities = data;
-    // });
   }
 
   domainInit(){
@@ -442,71 +444,66 @@ export class CatalogDetailComponent implements OnInit {
 
 
   createApp(values : TranslateService) {
-    this.translate.get('catalog').subscribe(data => {
-      console.log(data);
-    });
+    this.catalogService.isLoading(true);
     console.log(this.translateEntities);
-    this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
-    //
-    // this.catalogService.isLoading(true);
-    // this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-    //   this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
-    //     if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
-    //       const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
-    //       let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];
-    //       if(appSampleFilePath ==='' || appSampleFilePath === null)
-    //         appSampleFilePath = 'N';
-    //       let paramlist = new Array<any>();
-    //       this.serviceplanlist.forEach(list => {
-    //         let serviceparam = {
-    //           name: list.servicename,
-    //           servicePlan: list.plan.metadata.guid,
-    //           parameter: this.setParmeterData(list.serviceparameter, list.hiddenserviceparameter),
-    //           app_bind_parameter: this.setParmeterData(list.appparameter, list.hiddenappparameter),
-    //           appGuid : list.appbind ? '' : '(id_dummy)',
-    //         };
-    //         paramlist.push(serviceparam);
-    //       });
-    //       let param ={
-    //         appSampleStartYn : this.appStart ? 'Y' : 'N',
-    //         appSampleFileName: this.apptemplate[0]['appSampleFileName'],
-    //         spaceId: this.space.guid,
-    //         spaceName: this.space.name,
-    //         orgName: this.org.name,
-    //         appName: this.appname,
-    //         name : this.appname,
-    //         hostName: this.appurl,
-    //         domainId: this.domainid,
-    //         memorySize : this.memory,
-    //         diskSize : this.disk,
-    //         buildPackName: this.apptemplate[0]['buildPackName'],
-    //         appSampleFilePath : appSampleFilePath,
-    //         servicePlanList : paramlist,
-    //         catalogType : CATALOGURLConstant.STARTERPACK,
-    //         catalogNo : this.template.no,
-    //         userId : this.catalogService.getUserid()
-    //       };
-    //       this.catalogService.postApp(url, param).subscribe(data => {
-    //         this.catalogService.isLoading(false);
-    //         alert("앱 템플릿 생성 완료");
-    //         this.router.navigate(['dashboard']);
-    //       }, error => {
-    //         this.catalogService.isLoading(false);
-    //         alert("앱 템플릿 생성 실패");
-    //       });
-    //     }
-    //   }, error => {
-    //     alert("라우트 증복 오류");
-    //     this.getRoutes();
-    //     this.routecheck = CATALOGURLConstant.NO;
-    //     this.disableButton(true);
-    //     return false;
-    //   });
-    // }, error => {
-    //   this.catalogService.alertMessage(this.translateEntities['result']['appNameError'], false);
-    //   this.getAppNames();
-    //   this.namecheck = CATALOGURLConstant.NO;
-    //   this.disableButton(true);
-    // });
+    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
+      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
+        if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
+          const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
+          let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];
+          if(appSampleFilePath ==='' || appSampleFilePath === null)
+            appSampleFilePath = 'N';
+          let paramlist = new Array<any>();
+          this.serviceplanlist.forEach(list => {
+            let serviceparam = {
+              name: list.servicename,
+              servicePlan: list.plan.metadata.guid,
+              parameter: this.setParmeterData(list.serviceparameter, list.hiddenserviceparameter),
+              app_bind_parameter: this.setParmeterData(list.appparameter, list.hiddenappparameter),
+              appGuid : list.appbind ? '' : '(id_dummy)',
+            };
+            paramlist.push(serviceparam);
+          });
+          let param ={
+            appSampleStartYn : this.appStart ? 'Y' : 'N',
+            appSampleFileName: this.apptemplate[0]['appSampleFileName'],
+            spaceId: this.space.guid,
+            spaceName: this.space.name,
+            orgName: this.org.name,
+            appName: this.appname,
+            name : this.appname,
+            hostName: this.appurl,
+            domainId: this.domainid,
+            memorySize : this.memory,
+            diskSize : this.disk,
+            buildPackName: this.apptemplate[0]['buildPackName'],
+            appSampleFilePath : appSampleFilePath,
+            servicePlanList : paramlist,
+            catalogType : CATALOGURLConstant.STARTERPACK,
+            catalogNo : this.template.no,
+            userId : this.catalogService.getUserid()
+          };
+          this.catalogService.postApp(url, param).subscribe(data => {
+            this.catalogService.isLoading(false);
+            this.catalogService.alertMessage(this.translateEntities.result.appTemplateSusses, true);
+            this.router.navigate(['dashboard']);
+          }, error => {
+            this.catalogService.isLoading(false);
+            this.catalogService.alertMessage(this.translateEntities.result.appTemplateError, false);
+          });
+        }
+      }, error => {
+        this.catalogService.alertMessage(this.translateEntities.result.routeNameError, false);
+        this.getRoutes();
+        this.routecheck = CATALOGURLConstant.NO;
+        this.disableButton(true);
+        return false;
+      });
+    }, error => {
+      this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
+      this.getAppNames();
+      this.namecheck = CATALOGURLConstant.NO;
+      this.disableButton(true);
+    });
   }
 }

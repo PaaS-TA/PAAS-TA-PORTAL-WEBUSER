@@ -23,6 +23,10 @@ export class CatalogService {
 
   buildPackfilter : string = '';
   servicePackfilter : string = '';
+  first : string = 'cur';
+  classname : string;
+
+
   constructor(private common: CommonService, private log: NGXLogger) {
     this.viewstarterpacks  = new Array<any>();
     this.viewbuildpacks  = new Array<any>();
@@ -71,14 +75,7 @@ export class CatalogService {
   }
 
   alertMessage(value, result){
-    $(".alertLayer .in").text(value);
-    if(result){
-      $(".alertLayer").css('border-left','4px solid #3d10ef');
-    }
-    else{
-      $(".alertLayer").css('border-left','4px solid #cb3d4a');
-    }
-    $(".alertLayer").addClass("moveAlert");
+    this.common.alertMessage(value, result);
   }
 
   getOrgName(){

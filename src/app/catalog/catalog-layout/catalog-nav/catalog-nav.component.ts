@@ -23,15 +23,20 @@ export class CatalogNavComponent implements OnInit {
   }
 
   viewStarterPack(value){
-    console.log(value);
+    if(this.router.url !== '/catalog'){
+      this.catalogService.check = false;
+      this.catalogService.classname = '#nav_second';
+    }
     this.router.navigate(['catalog']);
-    this.catalogService.check = false;
     this.catalogService.viewPacks(true, false, false);
   }
 
   viewBuildPack(value){
+    if(this.router.url !== '/catalog'){
+      this.catalogService.check = false;
+      this.catalogService.classname = '#nav_third';
+    }
     this.router.navigate(['catalog']);
-    this.catalogService.check = false;
     this.catalogService.viewPacks(false, true, false);
 
     if(!isUndefined(value)) {
@@ -44,8 +49,11 @@ export class CatalogNavComponent implements OnInit {
   }
 
   viewServicePack(value){
+    if(this.router.url !== '/catalog'){
+      this.catalogService.check = false;
+      this.catalogService.classname = '#nav_fourth';
+    }
     this.router.navigate(['catalog']);
-    this.catalogService.check = false;
     this.catalogService.viewPacks(false, false, true);
     if(!isUndefined(value)) {
       this.catalogService.servicePackfilter = value;
@@ -55,5 +63,4 @@ export class CatalogNavComponent implements OnInit {
       this.catalogService.servicePackfilter = '';
     }
   }
-
-}
+  }
