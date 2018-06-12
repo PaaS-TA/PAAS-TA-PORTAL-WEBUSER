@@ -10,8 +10,8 @@
               <dt>
               <h1>{{template.name}}</h1>
               <p class="copy">{{template.description}}</p>
-              <button class="btn" onclick="history.back()">
-                <img src="" alt=""/>Back
+              <button class="btn"  onclick="history.back()">
+                <img src="../../assets/resources/images/catalog/back.svg"  alt=""/>Back
               </button>
               </dt>
               <dd>
@@ -20,7 +20,7 @@
                   <ul class="icon">
                     <li *ngFor="let app of apptemplate">
                       <div>
-                        <img title="{{app.description}}" src="{{app.thumbImgPath}}" alt="{{app.name}}" onError="this.src='../../../assets/resources/images/catalog/자바8.png'"/>
+                        <img title="{{app.description}}" src="{{app.thumbImgPath}}" alt="{{app.name}}" onError="this.src='../../assets/resources/images/catalog/자바8.png'"/>
                       </div>
                     </li>
                   </ul>
@@ -208,9 +208,9 @@
                     </tr>
                     <tr>
                       <td><input type="text" placeholder="{{ 'catalog.contants.inputService' | translate }}" [(ngModel)]="serviceplan.servicename" (ngModelChange)="serviceNameCheck(serviceplan)" [disabled]="disablerouteinput"/>
-                        <div *ngIf="(serviceplan.servicenamecheck === 1 && serviceplan.servicename.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.appTemplate.createSuccessService' | translate }}</p></div>
-                        <div *ngIf="(serviceplan.servicenamecheck === -1 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.appTemplate.createFalseService' | translate }}</p></div>
-                        <div *ngIf="(serviceplan.servicenamecheck === 2 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.appTemplate.overLapService' | translate }}</p></div>
+                        <div *ngIf="(serviceplan.servicenamecheck === 1 && serviceplan.servicename.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
+                        <div *ngIf="(serviceplan.servicenamecheck === -1 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseService' | translate }}</p></div>
+                        <div *ngIf="(serviceplan.servicenamecheck === 2 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.overLapService' | translate }}</p></div>
                       </td>
                     </tr>
                     <tr>

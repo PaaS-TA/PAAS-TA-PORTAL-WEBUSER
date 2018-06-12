@@ -364,6 +364,7 @@
       "routeNameError" : "It can not be created as the currently entered host.",
       "appTemplateError" : "Failed to create app template.",
       "appTemplateSusses" : "App template creation succeeded.",
+      "buildPackError" : "Failed to create build pack.",
       "buildPackSusses" : "Build pack creation succeeded.",
       "serviceSusses" : "Service creation succeeded."
     }

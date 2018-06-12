@@ -218,6 +218,9 @@
         nav_2dOut();
     });
 
+    $(".nav_2d").on("mouseenter" , function(){
+      $(".nav_2d").stop().fadeIn();
+    });
 
     $(".nav_2d").on("click" , function(){
       nav_2dOut();
