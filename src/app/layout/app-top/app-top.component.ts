@@ -55,6 +55,7 @@ export class AppTopComponent implements OnInit {
 
   changeLangClick(lang: string) {
     this.translate.use(lang);
+    this.common.useLang = lang;
 
     $("li[id^='lang_']").removeClass("cur");
     $("#lang_"+lang+"").addClass("cur");

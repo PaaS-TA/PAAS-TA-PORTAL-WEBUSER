@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppMainService } from './app-main.service';
 import { Observable } from 'rxjs/Observable';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { CommonService } from "../../common/common.service";
 
 
@@ -132,6 +132,10 @@ export class AppMainComponent implements OnInit {
     this.common.isLoading = false;
 
     setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.appMain;
+    });
   }
 
   ngOnInit() {
@@ -191,10 +195,6 @@ export class AppMainComponent implements OnInit {
 
         this.router.navigate(['dashboard']);
       }
-
-      this.translate.get('appMain').subscribe(data => {
-        this.translateEntities = data;
-      });
     });
   }
 
