@@ -24,9 +24,7 @@ export class CatalogService {
   buildPackfilter : string = '';
   servicePackfilter : string = '';
   first : string = 'cur';
-  second : string = '';
-  third : string = '';
-  fourth : string = '';
+  classname : string;
 
 
   constructor(private common: CommonService, private log: NGXLogger) {

@@ -27,27 +27,22 @@ export class CatalogComponent implements OnInit {
 
 
   ngOnInit() {
-    var second = this.catalogService.second;
-    var third = this.catalogService.third;
-    var fourth = this.catalogService.fourth;
+    var name = this.catalogService.classname;
     var check = this.catalogService.check;
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
         .done(function (script, textStatus) {
           //console.log( textStatus );
-
+          $('#nav_first').attr('class','');
+          $('#nav_second').attr('class','');
+          $('#nav_third ').attr('class','');
+          $('#nav_fourth').attr('class','');
           if(check){
             $('#nav_first').attr('class','cur');
-            $('#nav_second').attr('class','');
-            $('#nav_third ').attr('class','');
-            $('#nav_fourth').attr('class','');
           }
           else{
-            $('#nav_first').attr('class','');
-            $('#nav_second').attr('class', second);
-            $('#nav_third ').attr('class',third);
-            $('#nav_fourth').attr('class',fourth);
+            $(name).attr('class','cur');
           }
         })
         .fail(function (jqxhr, settings, exception) {

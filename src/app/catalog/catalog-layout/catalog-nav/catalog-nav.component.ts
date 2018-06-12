@@ -25,8 +25,7 @@ export class CatalogNavComponent implements OnInit {
   viewStarterPack(value){
     if(this.router.url !== '/catalog'){
       this.catalogService.check = false;
-      this.classClear();
-      this.catalogService.second = 'cur';
+      this.catalogService.classname = '#nav_second';
     }
     this.router.navigate(['catalog']);
     this.catalogService.viewPacks(true, false, false);
@@ -35,8 +34,7 @@ export class CatalogNavComponent implements OnInit {
   viewBuildPack(value){
     if(this.router.url !== '/catalog'){
       this.catalogService.check = false;
-      this.classClear();
-      this.catalogService.third = 'cur';
+      this.catalogService.classname = '#nav_third';
     }
     this.router.navigate(['catalog']);
     this.catalogService.viewPacks(false, true, false);
@@ -53,8 +51,7 @@ export class CatalogNavComponent implements OnInit {
   viewServicePack(value){
     if(this.router.url !== '/catalog'){
       this.catalogService.check = false;
-      this.classClear();
-      this.catalogService.fourth = 'cur';
+      this.catalogService.classname = '#nav_fourth';
     }
     this.router.navigate(['catalog']);
     this.catalogService.viewPacks(false, false, true);
@@ -66,11 +63,4 @@ export class CatalogNavComponent implements OnInit {
       this.catalogService.servicePackfilter = '';
     }
   }
-
-  classClear(){
-    this.catalogService.second = '';
-    this.catalogService.third = '';
-    this.catalogService.fourth = '';
   }
-
-}
