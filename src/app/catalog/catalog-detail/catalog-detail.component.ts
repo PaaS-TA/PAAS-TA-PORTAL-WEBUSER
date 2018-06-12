@@ -53,12 +53,17 @@ export class CatalogDetailComponent implements OnInit {
   buttonid : number = 0;
   switchid : number = 3;
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
     });
   }
 
   ngOnInit() {
+    $('#nav_first').attr('class','');
+    $('#nav_second').attr('class','cur');
+    $('#nav_third ').attr('class','');
+    $('#nav_fourth').attr('class','');
     this.domainInit();
     this.activatedRouteInit();
     this.buildAndServiceInit();
@@ -67,9 +72,6 @@ export class CatalogDetailComponent implements OnInit {
     this.spacesFrist();
     this.orgsInit();
     this.doLayout();
-    // this.translate.get('catalog').subscribe(data => {
-    //   this.translateEntities = data;
-    // });
   }
 
   domainInit(){

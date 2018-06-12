@@ -23,6 +23,12 @@ export class CatalogService {
 
   buildPackfilter : string = '';
   servicePackfilter : string = '';
+  first : string = 'cur';
+  second : string = '';
+  third : string = '';
+  fourth : string = '';
+
+
   constructor(private common: CommonService, private log: NGXLogger) {
     this.viewstarterpacks  = new Array<any>();
     this.viewbuildpacks  = new Array<any>();

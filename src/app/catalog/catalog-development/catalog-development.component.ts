@@ -52,6 +52,10 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   ngOnInit() {
+    $('#nav_first').attr('class','');
+    $('#nav_second').attr('class','');
+    $('#nav_third ').attr('class','cur');
+    $('#nav_fourth').attr('class','');
     this.activatedRouteInit();
     this.domainInit();
     this.buildInit();

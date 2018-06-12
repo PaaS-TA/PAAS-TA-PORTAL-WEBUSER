@@ -27,11 +27,37 @@ export class CatalogComponent implements OnInit {
 
 
   ngOnInit() {
-    if(this.catalogService.check){
+    var second = this.catalogService.second;
+    var third = this.catalogService.third;
+    var fourth = this.catalogService.fourth;
+    var check = this.catalogService.check;
+    $(document).ready(() => {
+      //TODO 임시로...
+      $.getScript("../../assets/resources/js/common2.js")
+        .done(function (script, textStatus) {
+          //console.log( textStatus );
+
+          if(check){
+            $('#nav_first').attr('class','cur');
+            $('#nav_second').attr('class','');
+            $('#nav_third ').attr('class','');
+            $('#nav_fourth').attr('class','');
+          }
+          else{
+            $('#nav_first').attr('class','');
+            $('#nav_second').attr('class', second);
+            $('#nav_third ').attr('class',third);
+            $('#nav_fourth').attr('class',fourth);
+          }
+        })
+        .fail(function (jqxhr, settings, exception) {
+          console.log(exception);
+        });
+    });
+    if(check){
     this.catalogService.viewPacks(true, true, true);
     }
     this.catalogService.check = true;
-
       this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
       this.StarterInit(data['list']);
     });
@@ -45,16 +71,8 @@ export class CatalogComponent implements OnInit {
       this.RecentInit(data['list']);
     });
 
-    $(document).ready(() => {
-      //TODO 임시로...
-      $.getScript("../../assets/resources/js/common2.js")
-        .done(function (script, textStatus) {
-          //console.log( textStatus );
-        })
-        .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
-        });
-    });
+
+console.log("타요타요타요");
 
   }
 

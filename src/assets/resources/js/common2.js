@@ -218,6 +218,15 @@
         nav_2dOut();
     });
 
+
+    $(".nav_2d").on("click" , function(){
+      nav_2dOut();
+    });
+
+    $("#nav_first").on("mouseleave" , function(){
+      nav_2dOut();
+    });
+
     $(".btns4").on("mouseenter" , function(){
         $(this).children('div').css("display","block");
     });
