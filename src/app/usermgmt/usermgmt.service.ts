@@ -22,7 +22,7 @@ export class UsermgmtService {
   }
 
   userSave(userId: string, param:any) {
-    return this.common.doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {return res['result'];});
+    return this.common.doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {return res['result'];})
   }
 
   updateUserPassword(userId:string ,param:any){
