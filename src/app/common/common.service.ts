@@ -17,6 +17,7 @@ declare var $: any;
 export class CommonService {
   isLoading = false;
   headers: HttpHeaders;
+  fileheaders: HttpHeaders;
   private gateway = '';
   defaultLang = 'ko';
   useLang = 'ko';
@@ -31,9 +32,6 @@ export class CommonService {
       .set('X-Requested-With', 'XMLHttpRequest');
   }
 
-  doGetConfig() {
-    this.http.get('http://localhost/proxy.config.json').map(this.extractData).subscribe();
-  }
 
   extractData(res: Response) {
     let body = res.json();
@@ -61,8 +59,10 @@ export class CommonService {
 
 
   doFilePost(url: string, body: any, token: string) {
+    this.fileheaders = new HttpHeaders();
+    this.fileheaders.set('Content-Type','multipart/form-data').set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==');
     return this.http.post(this.gateway + url, body, {
-      headers: this.headers.set('cf-Authorization', token).set('Content-Type','multipart/form-data')
+      headers: this.fileheaders.set('cf-Authorization', token)
     });
   }
 
