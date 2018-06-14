@@ -21,7 +21,7 @@ export class AppTopComponent implements OnInit {
   translateEntities : any;
   allMenuCursorIds: string[] = [
     'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc',
-    'cur_usermgmt', 'cur_org', 'cur_quantity', 'cur_login',
+    'cur_usermgmt', 'cur_org', 'cur_org2', 'cur_quantity', 'cur_login',
   ];
 
   constructor(private translate: TranslateService, private common: CommonService,
@@ -69,6 +69,7 @@ export class AppTopComponent implements OnInit {
       case 'cur_dashboard':
       case 'cur_usermgmt':
       case 'cur_org':
+      case 'cur_org2':
       case 'cur_quantity':
       case 'cur_login' :
         short = true;

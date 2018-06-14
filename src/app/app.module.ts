@@ -38,6 +38,7 @@ import {UsermgmtService} from './usermgmt/usermgmt.service';
 import {SpaceService} from './space/space.service';
 import {AuthGuard} from './auth/auth.guard';
 import {OrgModule} from './org/org.module';
+import {Org2Module} from './org2/org2.module';
 import {CatalogModule} from "./catalog/catalog.module";
 
 import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
@@ -88,6 +89,7 @@ export function createTranslateLoader(http: HttpClient) {
     IndexModule,
     DashModule,
     OrgModule,
+    Org2Module,
     CatalogModule,
     QuantityModule,
     FormsModule,

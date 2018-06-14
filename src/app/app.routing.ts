@@ -10,6 +10,7 @@ import {UsageComponent} from './usage/usage.component';
 import {SpaceComponent} from './space/space.component';
 import {ServiceComponent} from './service/service.component';
 import {OrgMainComponent} from './org/org-main/org-main.component';
+import {Org2MainComponent} from './org2/org2-main/org2-main.component';
 import {MenuComponent} from './menu/menu.component';
 import {LogComponent} from './log/log.component';
 import {ModuleWithProviders} from '@angular/core';
@@ -49,6 +50,7 @@ const routes: Routes = [
   {path: 'log', component: LogComponent, canActivate: [AuthGuard]},
   {path: 'menu', component: MenuComponent, canActivate: [AuthGuard]},
   {path: 'org', component: OrgMainComponent, canActivate: [AuthGuard]},
+  {path: 'org2', component: Org2MainComponent, canActivate: [AuthGuard]},
   {path: 'service', component: ServiceComponent, canActivate: [AuthGuard]},
   {path: 'space', component: SpaceComponent, canActivate: [AuthGuard]},
   {path: 'usage', component: UsageComponent, canActivate: [AuthGuard]},
