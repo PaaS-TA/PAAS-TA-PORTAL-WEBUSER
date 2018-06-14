@@ -33,9 +33,10 @@ export class UsermgmtComponent implements OnInit {
   public username: string = '';
   public password: string = '';
   public tellPhone: string;
-  public tellPhone2 : string;
   public zipCode: string;
   public address: string;
+  public photoFile : string;
+  public imgPath : string;
 
   public isPassword: boolean;
   public isRePassword: boolean;
@@ -69,6 +70,7 @@ export class UsermgmtComponent implements OnInit {
     this.isTellPhone = false;
     this.isZipCode = false;
     this.isAddress = false;
+    this.photoFile = '';
 
     /*현재비밀번호 this.isOrignPassword = true; */
     this.isPassword = false;
@@ -82,7 +84,7 @@ export class UsermgmtComponent implements OnInit {
     $("#photoFile").trigger("click");
   }
 
-  onFileChanged2(event) {
+  onFileChanged_click(event) {
     const file = event.target.files[0]
     var tmppath = URL.createObjectURL(event.target.files[0]);
     $("#photo").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
@@ -92,10 +94,15 @@ export class UsermgmtComponent implements OnInit {
     // upload code goes here
     let formData = new FormData();
     console.log($('#photoFile')[0].files[0].name);
+    //uploadData.append('myFile', this.selectedFile, this.selectedFile.name);
     formData.append('file', $('#photoFile')[0].files[0], $('#photoFile')[0].files[0].name);
     this.userMgmtService.photoRegistration(formData).subscribe(data => {
-      console.log(formData);
-      return data;
+      console.log(data);
+     this.imgPath = data.fileURL;
+      console.log(this.imgPath);
+      this.userSave();
+    },error => {
+      console.debug(error);
     });
   }
 
@@ -106,8 +113,8 @@ export class UsermgmtComponent implements OnInit {
       this.tellPhone = data['tellPhone'];
       this.zipCode = data['zipCode'];
       this.address = data['address'];
+      this.photoFile = data['imgPath'];
       return data;
-
     });
   }
 
@@ -116,10 +123,11 @@ export class UsermgmtComponent implements OnInit {
       userName: this.user['userName'],
       tellPhone: this.tellPhone,
       zipCode: this.zipCode,
-      address: this.address
+      address: this.address,
+      imgPath : this.imgPath
     };
     this.common.isLoading = true;
-
+    console.log(params);
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
       alert('성공적으로 변경되었습니다.');
       this.common.isLoading = false;
@@ -142,7 +150,7 @@ export class UsermgmtComponent implements OnInit {
     } else {
       this.isTellPhone == false;
       alert("다시 입력하세요");
-      return this.userInfo();
+      return this.userInfo;
     }
   }
 
@@ -169,12 +177,6 @@ export class UsermgmtComponent implements OnInit {
       //TODO:focus
     }
   }
-
-  // focusOn(){
-  //   var text = $('.tellPhone');
-  //   test.focus(function () {
-  //   })
-  // }
 
   /* 현재비밀번호
    checkOriginalPassword(event: any) {
@@ -226,7 +228,6 @@ export class UsermgmtComponent implements OnInit {
     this.common.isLoading = true;
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.debug(this.common.getUserGuid());
-      //TODO : 패스워드 확인 작업 (1) 현재 비밀번호와 새 비밀번호 동일 시 F, (2) 현재 비밀번호가 맞지 않을 때 F (3) 정규식 맞지 않을 때 F
       if (data == 1 && this.isPassword && this.isRePassword) {
         alert('성공적으로 생성되었습니다.');
         this.common.isLoading = false;
