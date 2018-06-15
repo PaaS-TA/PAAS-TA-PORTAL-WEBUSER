@@ -33,7 +33,7 @@
       "outDir": "dist-server",
       "assets": [
         "assets",
-        "resources/images/favicon.ico"
+        "resources/images/favicon.png"
       ],
       "index": "index.html",
       "main": "main.server.ts",
