@@ -80,14 +80,11 @@ export class DashboardComponent implements OnInit {
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
+    this.log.debug("Token ::: " + this.commonService.getToken());
 
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
-
-    console.log(this.token);
-
     this.userGuid = this.commonService.getUserGuid();
-
     this.orgs = this.getOrgList();
     this.service = new Observable<Service>();
 
