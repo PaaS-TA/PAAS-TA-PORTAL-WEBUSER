@@ -81,7 +81,7 @@
             <dl>
               <dt (click)="onFileChanged()">
                 <img id="photo" src={{photoFile}}/>
-                <input style="display: none" type="file" id="photoFile" name="photoFile" [(ngModel)]="photoFile" (change)="onFileChanged_click($event)">
+                <input style="display: none" type="file" id="photoFile" name="photoFile" (change)="onFileChanged_click($event)">
               </dt>
               <dd>
                 <button class="btns colors4" (click)="onUpload()">사진등록</button>

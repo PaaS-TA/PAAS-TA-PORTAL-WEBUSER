@@ -40,11 +40,6 @@ export class CommonService {
   }
 
   doGet(url: string, token: string) {
-    if (token == null) {
-      return this.http.get(this.gateway + url, {
-        headers: this.headers
-      });
-    }
     return this.http.get(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token)
     });
