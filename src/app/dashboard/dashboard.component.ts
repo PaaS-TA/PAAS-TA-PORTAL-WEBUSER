@@ -378,18 +378,35 @@ export class DashboardComponent implements OnInit {
   // startAppClick() {
   //   return this.appMainService.getAppStats(this.selectedGuid);
   // }
+  userProvidedList(){
+    this.dashboardService.userProvidedList(this.servicesEntities['guid']).subscribe(data => {
+      console.log(data);
+
+      this.getAppSummary(this.selectedSpaceId);
+      this.commonService.isLoading = false;
+      return data;
+    }, error => {
+      this.commonService.isLoading = false;
+      this.getAppSummary(this.selectedSpaceId);
+    });
+  }
+
 
   createUserProvided() {
+
+    var str = JSON.stringify(this.service['credentialsStr']);
+    console.log(str);
+
     let params = {
       orgName: this.org.name,
       spaceGuid: this.selectedSpaceId,
       serviceInstanceName: this.service['serviceInstanceName'],
-      credentialsStr: this.service['credentialsStr'],
+      credentials: this.service['credentialsStr'],
       syslogDrainUrl: this.service['syslogDrainUrl']
     };
+
     this.commonService.isLoading = true;
     this.dashboardService.createUserProvided(params).subscribe(data => {
-      //console.log(params, data);
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
       this.commonService.isLoading = false;
@@ -401,11 +418,15 @@ export class DashboardComponent implements OnInit {
   }
 
   updateUserProvided() {
+    //username':'admin','password':'password';
+    var str = JSON.stringify(this.service['credentialsStr']);
+    console.log(str);
+
     let params = {
       orgName: this.org.name,
       guid: this.selectedGuid,
       serviceInstanceName: this.selectedName,
-      credentialsStr: this.service['credentialsStr'],
+      credentials: this.service['credentialsStr'],
       syslogDrainUrl: this.service['syslogDrainUrl']
     };
     this.commonService.isLoading = true;
