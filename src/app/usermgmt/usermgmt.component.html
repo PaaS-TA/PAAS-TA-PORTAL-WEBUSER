@@ -80,8 +80,8 @@
           <div class="account_left">
             <dl>
               <dt (click)="onFileChanged()">
-                <img id="photo" src="https://post-phinf.pstatic.net/MjAxODAzMDVfMTgw/MDAxNTIwMjE2NDY0OTk4.cN9D63H7CpldxOjK4TEUs_knaak89GFsupYLzdW7Khgg.K8RPI6Ej247n0NX7DB47lZaosASz_iAJ2j9I023r33sg.JPEG/ALP_6823.jpg"/>
-                <input type="file" id="photoFile" (change)="onFileChanged2($event)">
+                <img id="photo" src={{photoFile}}/>
+                <input style="display: none" type="file" id="photoFile" name="photoFile" (change)="onFileChanged_click($event)">
               </dt>
               <dd>
                 <button class="btns colors4" (click)="onUpload()">사진등록</button>

@@ -168,6 +168,12 @@ export class CatalogService {
       });
     }
 
+  getSecretDomain(){
+    return this.common.doGet('/portalapi/v2/domains/private', this.common.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+
   getRouteCheck(url : string){
     return this.common.doGet(url, null).map((res: Response) => {
       return res;

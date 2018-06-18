@@ -47,6 +47,7 @@ export class SpaceService {
     const requestBody = {
       orgGuid: orgId,  // organization's guid
       spaceName: wantedName,  // wanted new space's name
+      userId : this.common.getUserGuid()
     };
 
     this.common.isLoading = true;

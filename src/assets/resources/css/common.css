@@ -720,12 +720,14 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 .organization_table2 table{border: 1px solid #e7eaec;}
 .organization_table2 table caption{line-height:2.6; color:#333440; font-weight: bold; position: relative;}
 .organization_table2 table caption span{background:#f26f18; font-size:15px; color:#fff; width:20px; height:20px; line-height:20px; text-align: center; display: inline-block; border-radius:50%; vertical-align: text-bottom; margin-left:5px;}
+.organization_table2 table{text-align: center; width: 100%;}
 .organization_table2 thead{color:#505254;height:47px;}
 .organization_table2 thead tr{height:47px;}
 .organization_table2 tbody{border-top: 1px solid #e7eaec;}
 .organization_table2 tbody tr{height:47px; border-bottom: 1px solid #e7eaec;}
 .organization_table2 tbody td{}
 .organization_table2 tbody tr:nth-child(odd){background:#f9f9f9;}
+
 .organization_table2 span {text-overflow:ellipsis; white-space: nowrap;}
 .account_modal_a{margin-bottom:30px; text-decoration: underline;}
 .line_tables tbody tr.cur{border: 1px solid #00aacc; }

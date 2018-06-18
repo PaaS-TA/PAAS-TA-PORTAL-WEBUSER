@@ -34,6 +34,7 @@ import {CreateComponent} from "./external/create/create.component";
 import {ResetComponent} from "./external/reset/reset.component";
 import {InviteOrgComponent} from "./external/invite-org/invite-org.component";
 import {QuantityMainComponent} from "./quantity/quantity-main/quantity-main.component";
+import {Org2ProduceComponent} from "./org2/org2-produce/org2-produce.component";
 
 /*
 * Route 모듈 설정
@@ -51,6 +52,7 @@ const routes: Routes = [
   {path: 'menu', component: MenuComponent, canActivate: [AuthGuard]},
   {path: 'org', component: OrgMainComponent, canActivate: [AuthGuard]},
   {path: 'org2', component: Org2MainComponent, canActivate: [AuthGuard]},
+  {path: 'org2produce', component: Org2ProduceComponent, canActivate: [AuthGuard]},
   {path: 'service', component: ServiceComponent, canActivate: [AuthGuard]},
   {path: 'space', component: SpaceComponent, canActivate: [AuthGuard]},
   {path: 'usage', component: UsageComponent, canActivate: [AuthGuard]},

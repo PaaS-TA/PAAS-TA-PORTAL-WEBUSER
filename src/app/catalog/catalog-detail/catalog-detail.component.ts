@@ -52,6 +52,10 @@ export class CatalogDetailComponent implements OnInit {
   appbind : boolean = true;
   buttonid : number = 0;
   switchid : number = 3;
+
+
+
+  privatedomain : any;
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -79,6 +83,9 @@ export class CatalogDetailComponent implements OnInit {
       this.domain = data['resources'][0]['entity']['name'];
       this.domainid = data['resources'][0]['metadata']['guid'];
     });
+    this.catalogService.getSecretDomain().subscribe(data => {
+      console.log(data);
+    })
   }
   activatedRouteInit(){
     const orgname = this.catalogService.getOrgName();

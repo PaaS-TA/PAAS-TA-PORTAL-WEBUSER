@@ -295,8 +295,8 @@
                         <label for="ra1"></label>
                       </td>
                       <td *ngIf="serviceplan.plan!==plan">
-                        <input id="ra2" type="radio" name="{{serviceplan.id}}" (click)="changePlan(serviceplan, plan)">
-                        <label for="ra2"></label>
+                        <input id="{{serviceplan.id}}" type="radio" name="{{serviceplan.id}}" (click)="changePlan(serviceplan, plan)">
+                        <label for="{{serviceplan.id}}"></label>
                       </td>
                       <td *ngIf="plan.entity.free">
                         {{ 'catalog.appTemplate.free' | translate }}

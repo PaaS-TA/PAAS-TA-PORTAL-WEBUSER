@@ -8,6 +8,7 @@ import {Organization} from "../../model/organization";
 import {cataloghistroy} from "../model/cataloghistory";
 import {App} from "../../model/app";
 import {ServicePlan} from "../model/Serviceplan";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -19,7 +20,7 @@ declare var jQuery: any;
 export class CatalogServiceComponent implements OnInit {
   catalogcontans = CATALOGURLConstant;
   namecheck:number = 0;
-
+  translateEntities : string;
   disableserviceinput:boolean;
   disablebutton:boolean;
   serviceplaceholder:string;
@@ -47,12 +48,14 @@ export class CatalogServiceComponent implements OnInit {
 
   radionumber:number;
 
-  constructor(private router : Router, private route:ActivatedRoute, private catalogService:CatalogService, private log:NGXLogger) {
+  constructor(private translate: TranslateService, private router : Router, private route:ActivatedRoute, private catalogService:CatalogService, private log:NGXLogger) {
 
   }
 
   ngOnInit() {
-
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.catalog;
+    });
     this.activatedRouteInit();
     this.catalogService.isLoading(false);
     this.activatedRouteInit();
@@ -307,6 +310,7 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   createService() {
+    this.catalogService.isLoading(true);
     let params = {
       name: this.servicename,
       spaceId: this.space.guid,
@@ -321,10 +325,11 @@ export class CatalogServiceComponent implements OnInit {
     this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
     {
       alert("서비스생성 완료");
-      console.log(data);
-      //this.router.navigate(['dashboard']);
+      this.catalogService.isLoading(false);
+      this.router.navigate(['dashboard']);
     }, error => {
       alert("서비스생성 실패");
+      this.catalogService.isLoading(false);
     });
   }
 
