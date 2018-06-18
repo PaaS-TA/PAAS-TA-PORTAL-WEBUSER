@@ -33,7 +33,7 @@ export class Org2ProduceService {
     this.common.alertMessage(msg, result);
   }
   public back(){
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['org2']);
   }
 
   public isLoding(value : boolean){

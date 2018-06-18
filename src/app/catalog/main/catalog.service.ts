@@ -7,9 +7,9 @@ declare var $: any;
 export class CatalogService {
 
   buildpacks : Array<any>;
-  starterpacks : Array<any>;
-  recentpacks : Array<any>;
-  servicepacks : Array<any>;
+  starterpacks : Array<any> = [];
+  recentpacks : Array<any> = [];
+  servicepacks : Array<any> = [];
   lasttime : number;
   check : boolean = true;
   viewstartpack : boolean = true;
@@ -110,43 +110,43 @@ export class CatalogService {
   }
 
   getRecentPacks(url : string) {
-    return this.common.doGet(url, null).map((res: Response) => {
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
 
   getRoutes(url : string) {
-    return this.common.doGet(url, null).map((res: Array<string>) => {
+    return this.common.doGet(url, this.common.getToken()).map((res: Array<string>) => {
       return res;
     });
   }
 
   getStarterPacks(url : string) {
-    return this.common.doGet(url, null).map((res: Response) => {
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
 
   getBuildPacks(url : string) {
-    return this.common.doGet(url, null).map((res: Response) => {
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
 
   getServicePacks(url : string) {
-    return this.common.doGet(url, null).map((res: Response) => {
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
 
   getSearchPack(url : string) {
-    return this.common.doGet(url, null).map((res: Response) => {
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
 
   CatalogDetailInit(no : number){
-    return this.common.doGet(CATALOGURLConstant.GETSTARTERRELATION +no ,null).map((res: Response) => {
+    return this.common.doGet(CATALOGURLConstant.GETSTARTERRELATION +no ,this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
@@ -175,7 +175,7 @@ export class CatalogService {
   }
 
   getRouteCheck(url : string){
-    return this.common.doGet(url, null).map((res: Response) => {
+    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
@@ -228,7 +228,7 @@ export class CatalogService {
   }
 
   upload(){
-    return this.common.doGet('/commonapi/v2/app/uploadsfile', null).map((res: Response) => {
+    return this.common.doGet('/commonapi/v2/app/uploadsfile', this.common.getToken()).map((res: Response) => {
       return res;
     });
   }

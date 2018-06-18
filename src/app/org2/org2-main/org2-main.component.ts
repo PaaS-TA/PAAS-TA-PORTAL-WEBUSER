@@ -292,4 +292,8 @@ export class Org2MainComponent implements OnInit {
     $("[name='quota_radio_"+this.sltIndex+"']").parent().parent().filter('.cur').children().eq(0).find('input').trigger('click');
   }
 
+  goOrgCreate(){
+    this.router.navigate(['org2produce']);
+  }
+
 }

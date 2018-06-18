@@ -300,13 +300,27 @@ export class UsermgmtComponent implements OnInit {
   cancelOrg(orgId: string) {
     this.common.isLoading = true;
     if (orgId != '') {
-      this.orgService.cancelOrg(orgId, this.common.getUserGuid());
-      this.common.isLoading = false;
+      let body = this.orgService.cancelOrg(orgId, this.common.getUserGuid());
+      this.deleteOrg(body.url, body.params).subscribe(data => {
+        this.common.alertMessage('조직탈퇴에 성공하셨습니다.' , true);
+        this.orgs = this.orgService.getOrgList();
+      }, error=> {
+        this.common.alertMessage('조직탈퇴에 실패하셨습니다. 재 로그인 바랍니다.' , false);
+      },() => {
+        this.common.isLoading= false;
+      });
     } else {
       this.common.isLoading = false;
     }
-    this.orgs = this.orgService.getOrgList();
   }
+
+
+  deleteOrg(url : string, body : any){
+    return this.common.doDelete(url, body, this.common.getToken()).map((res : any) => {
+      return res;
+    });
+  }
+
 
   userAllDelete() {
     console.log(":: delete start ::" + " username : " + this.user['userId'] + "  " + "password :" + this.password_check + "  " + "userGuid :" + this.common.getUserGuid() + "  " + "Guid :" + this.common.getUserid());

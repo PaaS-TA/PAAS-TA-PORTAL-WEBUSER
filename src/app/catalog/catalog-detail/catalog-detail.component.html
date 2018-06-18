@@ -290,13 +290,9 @@
                     <tbody>
                     <ng-container *ngFor="let plan of serviceplan.plans">
                     <tr>
-                      <td *ngIf="serviceplan.plan===plan">
-                        <input id="ra1" type="radio" name="{{serviceplan.id}}" checked="checked" (click)="changePlan(serviceplan, plan)">
-                        <label for="ra1"></label>
-                      </td>
-                      <td *ngIf="serviceplan.plan!==plan">
-                        <input id="{{serviceplan.id}}" type="radio" name="{{serviceplan.id}}" (click)="changePlan(serviceplan, plan)">
-                        <label for="{{serviceplan.id}}"></label>
+                      <td>
+                        <input [id]="'plan-' + plan.radioid" type="radio" name="{{serviceplan.id}}" [checked]="serviceplan.plan===plan ? 'checked' : ''" (click)="changePlan(serviceplan, plan)">
+                        <label [for]="'plan-' + plan.radioid"></label>
                       </td>
                       <td *ngIf="plan.entity.free">
                         {{ 'catalog.appTemplate.free' | translate }}

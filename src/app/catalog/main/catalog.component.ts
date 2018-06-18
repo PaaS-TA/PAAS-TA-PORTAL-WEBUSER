@@ -52,7 +52,6 @@ export class CatalogComponent implements OnInit {
     if(check){
     this.catalogService.viewPacks(true, true, true);
     }
-    this.catalogService.check = true;
       this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
       this.StarterInit(data['list']);
     });
@@ -130,13 +129,14 @@ export class CatalogComponent implements OnInit {
   }
 
   StarterInit(data : any) {
-    this.catalogService.starterpacks = new Array<StarterPack>();
+    this.catalogService.starterpacks = new Array<any>();
     this.catalogService.starterpacks = data;
     this.catalogService.starterpacks = this.catalogService.starterpacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
     this.catalogService.starterpacks.forEach(a => {
       a = this.jsonParse(a);
     });
     this.catalogService.viewstarterpacks = this.catalogService.starterpacks;
+
   }
 
   BuildInit(data : any) {
@@ -150,7 +150,7 @@ export class CatalogComponent implements OnInit {
   }
 
   ServiceInit(data : any) {
-    this.catalogService.servicepacks = new Array<ServicePack>();
+    this.catalogService.servicepacks = new Array<any>();
     this.catalogService.servicepacks = data;
     this.catalogService.servicepacks = this.catalogService.servicepacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
     this.catalogService.servicepacks.forEach(a => {
@@ -158,14 +158,8 @@ export class CatalogComponent implements OnInit {
     });
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;
   }
-
-  getCount(value){
-    console.log(value);
-    return value.length;
-  }
-
   SearchStarterPack() {
-    this.catalogService.viewstarterpacks = new Array<StarterPack>();
+    this.catalogService.viewstarterpacks = new Array<any>();
     let view = this.catalogService.viewstarterpacks;
     const keyword = this.searchKeyword.toLocaleLowerCase();
     this.catalogService.starterpacks.forEach(function (starterpack) {
