@@ -59,6 +59,13 @@ export class DashboardService {
     }).do(console.log);
   }
 
+// @RequestMapping(value = {Constants.V2_URL + "/service/userprovidedserviceinstances/{guid}"}, method = RequestMethod.GET)
+  userProvidedList(guid: string) {
+    return this.commonService.doGet('/portalapi/v2/service/userprovidedserviceinstances' + guid, this.commonService.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
   // @RequestMapping(value = {Constants.V2_URL + "/service/userprovidedserviceinstances"}, method = RequestMethod.POST)
   createUserProvided(params: any) {
     return this.commonService.doPost('/portalapi/v2/service/userprovidedserviceinstances', params, this.commonService.getToken()).map((res: Response) => {
