@@ -1,3 +1,389 @@
-<p>
-  org2-main works!
-</p>
+<div class="wrap account">
+  <app-app-top [cursorId]="'cur_org2'"></app-app-top>
+  <app-org-nav></app-org-nav>
+
+  <div class="contain">
+    <div class="content">
+      <div class="row one_line">
+        <h1>조직관리
+          <div class="pull-right btns_top_ww">
+            <button class="btns6 colors4 btns_top">
+              새 조직 추가
+            </button>
+          </div>
+        </h1>
+        <div class="col-md-12 organization_wrap on maT30" *ngFor="let item of orgsEntities; let i = index">
+          <div class="organization_title_wrap">
+            <div class="organization_btn">
+              <div class="organization_btnin">
+                <input class="tempTitle" type="text" />
+                <button class="btns6 colors4 yess2">변경하기</button>
+                <button class="btns6 colors5 nos2">취소</button>
+              </div>
+            </div>
+            <div class="pull-right">
+              <div class="ri_up">
+                <button class="btns6 colors4 organization_sw">
+                  <i class="fas fa-chevron-down"></i> 세부사항보기
+                </button>
+              </div>
+              <div class="organization_dot">
+                <i class="fas fa-ellipsis-v"></i>
+                <ul>
+                  <li class="name_inputTitle2">
+                    <p><i class="fas fa-edit"></i>&nbsp;&nbsp;이름변경</p>
+                  </li>
+                  <li data-target="#layerpop" data-toggle="modal">
+                    <p>
+                      <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;삭제
+                    </p>
+                  </li>
+                  <li data-target="#layerpop8" data-toggle="modal"><p><img src="../../assets/resources/images/web.png" alt=""/>&nbsp;&nbsp;WEB IDE 신청</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p class="tit">{{item.org.entity.name}}</p>
+          </div><!-- organization_title_wrap -->
+          <div class="organization_table_wrap">
+            <div class="organization_table">
+              <table>
+                <caption>
+                  공간<span>{{item.space.resources.length}}</span>
+                  <div class="pull-right">
+                    <button class="btns6 colors4" data-toggle="modal" (click)="showPopSpaceCreateClick(item.org.metadata.guid)">
+                      <i class="fas fa-plus"></i> 공간 생성
+                    </button>
+                  </div>
+                </caption>
+                <colgroup>
+                  <col style='*'>
+                  <col style='width: 30px;'>
+                  <col style='width: 30px;'>
+                </colgroup>
+                <tbody>
+                  <ng-container *ngFor='let space of item.space.resources'>
+                    <tr>
+                      <td><p>{{space.entity.name}}</p></td>
+                      <th>
+                        <i class="fas fa-edit"></i>
+                      </th>
+                      <th data-toggle="modal" (click)="showPopDeleteSpaceClick(space.metadata.guid, space.entity.name)"><i class="fas fa-trash-alt"></i></th>
+                    </tr>
+                    <tr class="on">
+                      <td colspan="3">
+                        <div class="">
+                          <div class="account_table_in">
+                            <span>변경할 이름</span>
+                            <input type="text" value="{{space.entity.name}}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)"
+                                   (keyup.enter)="showPopModifySpaceNameClick(space.metadata.guid)" [id]="'modifySpaceName_'+space.metadata.guid" />
+                            <div class="">
+                              <button class="btns6 colors4" (click)="showPopModifySpaceNameClick(space.metadata.guid)">변경하기</button>
+                              <button class="btns6 colors5 btns_sw">취소</button>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div><!-- organization_table -->
+            <div class="organization_table">
+              <table id="domain_{{i}}">
+                <caption>
+                  도메인<span>0</span>
+                  <div class="pull-right">
+                    <button class="btns6 colors4" (click)="showPopAddDomainClick(item.org.metadata.guid)">
+                      <i class="fas fa-plus"></i> 도메인 추가
+                    </button>
+                  </div>
+                </caption>
+                <colgroup>
+                  <col style='*'>
+                  <col style='width: 30px;'>
+                </colgroup>
+                <tbody>
+                  <ng-container *ngFor='let domain of domainsEntities'>
+                    <tr *ngIf="domain.metadata.url.indexOf('shared_domains') > -1">
+                      <td><p>{{domain.entity.name}}</p></td>
+                      <th><i class="fas fa-link"></i></th>
+                    </tr>
+                    <tr *ngIf="(domain.metadata.url.indexOf('shared_domains') < 0) && (item.org.metadata.guid == domain.entity.owning_organization_guid)">
+                      <td><p>{{domain.entity.name}}</p></td>
+                      <th>
+                        <i class="fas fa-trash-alt" (click)="showPopDelDomainClick(item.org.metadata.guid, domain.entity.name)"></i>
+                      </th>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div><!-- organization_table -->
+            <div class="organization_table2 paT30">
+              <table>
+                <caption>
+                  사용자<span>{{item.userRoles.user_roles.length}}</span>
+                  <div class="pull-right">
+                    <button class="btns6 colors4" data-target="#layerpop4" data-toggle="modal">
+                      <i class="fas fa-plus"></i> 사용자 초대
+                    </button>
+                  </div>
+                </caption>
+                <colgroup>
+                  <col style='width: 250px;'>
+                  <col style='*'>
+                  <col style='*'>
+                  <col style='*'>
+                  <col style='*'>
+                </colgroup>
+                <thead>
+                  <tr>
+                    <td>사용자</td>
+                    <td colspan="4">역할설정</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor='let userRole of item.userRoles.user_roles'>
+                    <tr>
+                      <td>{{userRole.user_email}}</td>
+                      <td>
+                        <input id="check1" type="checkbox" [checked]="userRole.roles.indexOf('OrgManager') > -1"/>
+                        <label for="check1">OrgManager(조직 관리자)</label>
+                      </td>
+                      <td>
+                        <input id="check2" type="checkbox" [checked]="userRole.roles.indexOf('BillingManager') > -1"/>
+                        <label for="check2">BillingManager(조직 결제 관리자)</label>
+                      </td>
+                      <td>
+                        <input id="check3" type="checkbox" [checked]="userRole.roles.indexOf('OrgAuditor') > -1"/>
+                        <label for="check3">OrgAuditor(조직 참관인)</label>
+                      </td>
+                      <th><button class="btns4 colors8" data-target="#layerpop12" data-toggle="modal">맴버 취소</button></th>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div><!-- organization_table2 -->
+            <div class="organization_table2 maT30 paB40">
+              <table class="line_tables">
+                <caption>
+                  할당량
+                </caption>
+                <colgroup>
+                  <col style='*'>
+                  <col style='*'>
+                  <col style='*'>
+                  <col style='*'>
+                  <col style='*'>
+                  <col style='*'>
+                  <col style='*'>
+                  <col style='*'>
+                  <col style='*'>
+                </colgroup>
+                <thead>
+                  <tr>
+                    <td>선택</td>
+                    <td>서비스명</td>
+                    <td>메모리</td>
+                    <td>인스턴트 메모리</td>
+                    <td>라우트</td>
+                    <td>서비스 인스턴트</td>
+                    <td>가격</td>
+                    <td>인스턴트</td>
+                    <td>인스턴트</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor='let quotaDefinition of quotaDefinitionsEntities; let j = index'>
+                    <tr class="org_quota" [ngClass]="{'cur': quotaDefinition.metadata.guid == item.quota.metadata.guid}">
+                      <td>
+                        <input id="quota_radio_{{i}}_{{j}}" type="radio" name="quota_radio_{{i}}" [checked]="quotaDefinition.metadata.guid == item.quota.metadata.guid"
+                               (click)="showPopChangeQuotaClick(item.org.metadata.guid, item.quota.metadata.guid, quotaDefinition.metadata.guid, i)">
+                        <label for="quota_radio_{{i}}_{{j}}"></label>
+                      </td>
+                      <td>{{quotaDefinition.entity.name}}</td>
+                      <td>{{quotaDefinition.entity.memory_limit}}</td>
+                      <td>{{instanceMemoryLimit(quotaDefinition.entity.instance_memory_limit)}}</td>
+                      <td>{{quotaDefinition.entity.total_routes}}</td>
+                      <td>{{quotaDefinition.entity.total_services}}</td>
+                      <td>{{priceKorean(quotaDefinition.entity.name)}}</td>
+                      <td>{{applicationInstanceLimit(quotaDefinition.entity.app_instance_limit)}}</td>
+                      <td>{{quotaDefinition.entity.total_reserved_route_ports}}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div><!-- organization_table2 -->
+          </div>
+        </div>
+      </div><!-- row one_line -->
+    </div>
+    <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="layerpop_space_create">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">공간 생성</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <input type="text" placeholder="공간 이름을 입력하세요" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="createSpace()" id="createSpaceName" />
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="createSpace()">생성</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_space_rename">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">공간명 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>공간명을 {{sltSpaceRename}}로 변경 하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="renameSpace()">변경</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_space_delete">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">공간 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p">
+              공간 삭제를 하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br/>
+              <span>{{sltSpaceDelname}}</span>을 삭제하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="deleteSpace()">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_domain_add">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">도메인추가</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <input type="text" placeholder="도메인 명을 입력하세요" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="addDmaoin()" id="addDmaoinName" />
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="addDmaoin()">추가</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_domain_del">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">도메인 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>{{sltDomainName}}</span> 도메인을 삭제하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="delDmaoin()">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_quota_change">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" (click)="changeQuotaCancel()">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">할당량 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>할당량</span>을 변경하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="changeQuota()">추가</button>
+          <button type="button" class="btns2 colors5" (click)="changeQuotaCancel()">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

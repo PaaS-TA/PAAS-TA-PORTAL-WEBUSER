@@ -373,6 +373,7 @@
         $(this).parents("tr").toggleClass("on");
     });
 
+    //TODO 주석
     // 20180313 세부사항 보기,닫기
     $(".organization_sw").on("click" , function(){
         var wrap_line = $(".organization_wrap");

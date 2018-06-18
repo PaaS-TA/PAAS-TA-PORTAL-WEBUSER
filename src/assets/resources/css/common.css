@@ -681,6 +681,35 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 .modal-body > div > input{margin-bottom:10px;}
 .modal-body > div > input:last-child{margin-bottom:5px;}
 
+/* 조직관리 */
+.organization_wrap{width: 97.8%; margin-left:1.2%; background:#fff; border-radius: 3px; border:2px solid #309dab; position: relative;}
+.organization_wrap{margin-left:0; width: 100%;}
+.organization_wrap > div{width:96%; margin: 0 auto;}
+.organization_wrap > div > .tit{color:#2e6e80; font-size: 20px; font-weight: 700;}
+.organization_wrap .organization_title_wrap{padding:40px 0 19px; border-bottom: 2px solid #cccccc; margin-bottom:20px;}
+.organization_wrap.on .organization_title_wrap{margin-bottom:0px;}
+.organization_table{width:49%; float:left;}
+.organization_table:nth-child(2){float:left; margin-left:2%;}
+.organization_table > div{display: inline-block;}
+.organization_table table{width:100%; position:relative;}
+.organization_table > table tr.on{display: none;}
+.organization_table table caption{line-height:2.6; border-bottom: 1px solid #e7eaec; color:#333440; font-weight: bold; position: relative;}
+.organization_table table caption span{background:#f26f18; font-size:15px; color:#fff; width:20px; height:20px; line-height:20px; text-align: center; display: inline-block; border-radius:50%; vertical-align: text-bottom; margin-left:5px;}
+.organization_table table:after{content:""; float:none; clear:both; display:block;}
+.organization_table tr{line-height:46px; border-bottom: 1px solid #e7eaec; padding-left:20px;}
+.organization_table tr:nth-child(4n+1){background:#f9f9f9;}
+.organization_table tr i{cursor: pointer;}
+.organization_table td{}
+.organization_table td p{padding-left:20px; }
+.organization_table th{position: relative;}
+.organization_table th > div{position: absolute; left:-40%; top:46px;  z-index: 2;}
+.organization_wrap:last-child{margin-bottom:50px;}
+.organization_wrap.on{border:none;}
+.organization_wrap.on .organization_title_wrap{padding:40px 0; border-bottom:none;}
+.organization_wrap.on .organization_table_wrap{display: none;}
+
+.organization_table2 table{text-align: center; width: 100%;}
+.organization_sw{margin-top:-8px;}
 
 
 .btns_top_ww{margin-right:1%;}
