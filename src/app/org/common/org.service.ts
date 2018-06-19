@@ -124,17 +124,11 @@ export class OrgService {
     });
   }
 
-  public cancelOrg(orgId: string, userId: string) {
+  public cancelOrg(orgId: string, userId: string) : any{
     if (orgId === null && orgId === undefined) { return; }
     if (userId === null && userId === undefined) { return; }
-
     this.logger.debug('call cancel org :', orgId, ' / ', userId);
-    // redirect cancel org to OrgUserRoleService.cancelOrgMemberUsingOrgIdAndUserId
-    return (async() =>{
-      let data = await this.orgUserRoleService.cancelOrgMemberByGuid(orgId, userId);
-      this.logger.debug('Cancel member(' + userId + ') of org(' + orgId + ').');
-      return data;
-    })();
+    return this.orgUserRoleService.cancelOrgMemberByGuid(orgId, userId);
   }
 
   private getSampleOrgList() {

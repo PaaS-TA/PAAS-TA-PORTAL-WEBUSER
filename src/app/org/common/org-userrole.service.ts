@@ -175,19 +175,19 @@ export class OrgUserRoleService {
     // TODO
   }
 
-  public cancelOrgMemberByGuid(orgId: string, userId: string) {
+  public cancelOrgMemberByGuid(orgId: string, userId: string) : any{
     const url = this.URLOrgUserCanceling(orgId);
     const params = {
       userId: userId
-    };
-
-    return (async() => {
-      this.logger.debug('cancel org member : before await');
-      const data = await this.common.doDelete(url, params, this.getToken()).toPromise();
-      this.logger.debug('cancel org member : after await');
-
-      return data;
-    })();
+     };
+    return  {url, params};
+    // this.deleteOrg(url, params).subscribe(data => {
+    //
+    // },error => {
+    //   this.common.alertMessage('api 오류', false);
+    // },() => {
+    //
+    // });
   }
 
   public cancelOrgMemberByUserRole(userRoles: Array<OrgUserRole>, cancelingUser: OrgUserRole) {
@@ -195,7 +195,6 @@ export class OrgUserRoleService {
     const params = {
       userId: cancelingUser.userId
     };
-
     return (async() => {
       this.logger.debug('cancel org member from org-inner : before await');
       const data = await this.common.doDelete(url, params, this.getToken()).toPromise();

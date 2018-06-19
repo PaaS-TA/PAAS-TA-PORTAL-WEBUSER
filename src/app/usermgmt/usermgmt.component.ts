@@ -80,7 +80,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   onFileChanged(){
-    // alert('이제시작이야');
     $("#photoFile").trigger("click");
   }
 
@@ -129,12 +128,12 @@ export class UsermgmtComponent implements OnInit {
     this.common.isLoading = true;
     console.log(params);
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-      alert('성공적으로 변경되었습니다.');
+      this.common.alertMessage('성공적으로 변경되었습니다.' , true);
       this.common.isLoading = false;
       console.log(data);
       return data;
     }, error => {
-      alert('재 입력하세요.');
+      this.common.alertMessage('재 입력하세요.' , false);
       this.common.isLoading = false;
       this.userInfo();
     });
@@ -149,7 +148,7 @@ export class UsermgmtComponent implements OnInit {
       this.userSave();
     } else {
       this.isTellPhone == false;
-      alert("다시 입력하세요");
+      this.common.alertMessage('재 입력하세요.' , false);
       return this.userInfo;
     }
   }
@@ -161,8 +160,9 @@ export class UsermgmtComponent implements OnInit {
       this.userSave();
     }else{
       this.isZipCode == false;
-      alert("다시 입력하세요");
+      this.common.alertMessage('재 입력하세요.' , false);
       //TODO:focus
+      return this.userInfo;
     }
   }
 
@@ -173,8 +173,9 @@ export class UsermgmtComponent implements OnInit {
       this.userSave();
     }else{
       this.isAddress == false;
-      alert("다시 입력하세요");
+      this.common.alertMessage('재 입력하세요.' , false);
       //TODO:focus
+      return this.userInfo;
     }
   }
 
@@ -229,11 +230,11 @@ export class UsermgmtComponent implements OnInit {
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.debug(this.common.getUserGuid());
       if (data == 1 && this.isPassword && this.isRePassword) {
-        alert('성공적으로 생성되었습니다.');
+        this.common.alertMessage('성공적으로 생성되었습니다.' , true);
         this.common.isLoading = false;
         return data;
       } else {
-        alert('새 비밀번호를 다시 입력하세요.');
+        this.common.alertMessage('새 비밀번호를 다시 입력하세요.' , false);
         this.common.isLoading = false;
       }
     });
@@ -300,12 +301,24 @@ export class UsermgmtComponent implements OnInit {
   cancelOrg(orgId: string) {
     this.common.isLoading = true;
     if (orgId != '') {
-      this.orgService.cancelOrg(orgId, this.common.getUserGuid());
-      this.common.isLoading = false;
+      let body = this.orgService.cancelOrg(orgId, this.common.getUserGuid());
+      this.deleteOrg(body.url, body.params).subscribe(data => {
+        this.common.alertMessage('조직탈퇴에 성공하셨습니다.' , true);
+        this.orgs = this.orgService.getOrgList();
+      }, error=> {
+        this.common.alertMessage('조직탈퇴에 실패하셨습니다. 재 로그인 바랍니다.' , false);
+      },() => {
+        this.common.isLoading= false;
+      });
     } else {
       this.common.isLoading = false;
     }
-    this.orgs = this.orgService.getOrgList();
+  }
+
+  deleteOrg(url : string, body : any){
+    return this.common.doDelete(url, body, this.common.getToken()).map((res : any) => {
+      return res;
+    });
   }
 
   userAllDelete() {
@@ -317,7 +330,7 @@ export class UsermgmtComponent implements OnInit {
         this.common.isLoading = false;
         // 계정삭제:cf,db
         this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe();
-        alert('계정삭제가 완료되었습니다.');
+        this.common.alertMessage('계정삭제가 완료되었습니다.' , true);
         this.goLogout();
       } else {
         this.common.isLoading = false;
@@ -325,7 +338,7 @@ export class UsermgmtComponent implements OnInit {
       return data;
     }, error => {
       this.common.isLoading = false;
-      alert('비밀번호를 다시 입력하세요.');
+      this.common.alertMessage('비밀번호를 다시 입력하세요.' , false);
     });
   }
 

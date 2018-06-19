@@ -52,7 +52,7 @@ export class CatalogDetailComponent implements OnInit {
   appbind : boolean = true;
   buttonid : number = 0;
   switchid : number = 3;
-
+  radioid : number = 0;
 
 
   privatedomain : any;
@@ -142,6 +142,7 @@ export class CatalogDetailComponent implements OnInit {
             list.bullet = this.serviceBulletSetting(list.entity.extra);
             list.subbullet = this.serviceSubBulletSetting(list.entity.extra);
             list.amount = this.serviceAmountSetting(list.entity.extra);
+            list.radioid = this.radioid++;
           });
           planlist.id = 'ra' + ++this.buttonid;
           planlist.switchid = 'switch' + ++this.switchid;
