@@ -131,14 +131,6 @@ export class OrgService {
     return this.orgUserRoleService.cancelOrgMemberByGuid(orgId, userId);
   }
 
-  deleteOrg(url : string, body : any){
-    return this.common.doDelete(url, body, this.getToken()).map((res : any) => {
-      return res;
-    });
-  }
-
-
-
   private getSampleOrgList() {
     return {
       'description': 'This is CF organization sample files, PORTAL-API:2222, /v2/orgs (using admin token)',
