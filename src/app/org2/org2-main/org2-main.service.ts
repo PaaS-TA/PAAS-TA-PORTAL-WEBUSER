@@ -67,4 +67,16 @@ export class Org2MainService {
       return res;
     }).do(console.log);
   }
+
+  renameOrg(params: any) {
+    return this.commonService.doPut('/portalapi/v2/orgs', params, this.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
+  deleteOrg(guid: string, recursive: boolean) {
+    return this.commonService.doDelete('/portalapi/v2/orgs/'+guid+'?recursive='+recursive, '', this.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 }

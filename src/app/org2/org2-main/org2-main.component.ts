@@ -20,6 +20,8 @@ export class Org2MainComponent implements OnInit {
 
   public sltIndex: number;
   public sltOrgGuid: string;
+  public sltOrgRename: string;
+  public sltOrgDelname: string;
   public sltSpaceGuid: string;
   public sltSpaceRename: string;
   public sltSpaceDelname: string;
@@ -70,6 +72,10 @@ export class Org2MainComponent implements OnInit {
 
       setTimeout(() => this.buttonEvent(), 100);
       this.common.isLoading = false;
+
+      // if(this.sltIndex != undefined) {
+      //   $(".btns6.colors4.organization_sw:eq("+this.sltIndex+")").trigger("click");
+      // }
     });
   }
 
@@ -104,6 +110,28 @@ export class Org2MainComponent implements OnInit {
     for(var i=0; $("[id^='domain_'] tbody").length > i; i++) {
       $("[id^='domain_']:eq("+i+") caption span").text($("[id^='domain_']:eq("+i+") tbody tr").length);
     }
+
+    $(".organization_wrap").on("mouseenter" , function(){
+      $(this).find(".organization_dot").addClass('on');
+    });
+
+    $(".organization_wrap").on("mouseleave" , function(){
+      $(this).find(".organization_dot").removeClass('on');
+      $(this).find(".organization_dot").children("ul").removeClass("on");
+    });
+
+    $(".organization_dot").on("click" , function(){
+      $(this).children("ul").toggleClass("on");
+
+      $(this).children("ul").children("li").eq(0).on("click" , function(){
+        var ttt = $(this).find("div.organization_btn")
+        $(this).parents(".pull-right").siblings(ttt).toggleClass("on");
+      });
+    });
+
+    $(".yess2,.nos2").on("click" , function(){
+      $(this).closest("div.organization_btn").removeClass("on");
+    });
   }
 
   instanceMemoryLimit(instance_memory_limit) {
@@ -141,6 +169,57 @@ export class Org2MainComponent implements OnInit {
       .replace(regKoreanPattern, '').substring(0, 64);
 
     $event.target.value = typingStr;
+  }
+
+  showPopModifyOrgNameClick(orgGuid: string) {
+    this.sltOrgGuid = orgGuid;
+    this.sltOrgRename = $("#modifyOrgName_"+this.sltOrgGuid).val();
+    $("#layerpop_org_rename").modal("show");
+  }
+
+  renameOrg() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
+    let params = {
+      guid: this.sltOrgGuid,
+      newOrgName: this.sltOrgRename
+    };
+
+    this.orgMainService.renameOrg(params).subscribe(data => {
+      if(data.result) {
+        this.common.isLoading = false;
+        this.common.alertMessage("성공", true);
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+      }
+    });
+  }
+
+  showPopDeleteOrgClick(orgGuid: string, orgName: string) {
+    this.sltOrgGuid = orgGuid;
+    this.sltOrgDelname = orgName;
+    $("#layerpop_org_delete").modal("show");
+  }
+
+  deleteOrg() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
+    this.orgMainService.deleteOrg(this.sltOrgGuid, true).subscribe(data => {
+      if(data.result) {
+        this.common.isLoading = false;
+        this.common.alertMessage("성공", true);
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+      }
+    });
   }
 
   showPopSpaceCreateClick(sltOrgGuid: string) {
@@ -285,11 +364,28 @@ export class Org2MainComponent implements OnInit {
   changeQuota() {
     $("[id^='layerpop']").modal("hide");
     this.common.isLoading = true;
+
+    let params = {
+      quotaGuid: this.sltQuotaGuid
+    };
+
+    this.orgMainService.changeQuota(this.sltOrgGuid, params).subscribe(data => {
+      if(data.result) {
+        this.common.isLoading = false;
+        this.common.alertMessage("성공", true);
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+      }
+    });
   }
 
   changeQuotaCancel() {
     $("[id^='layerpop']").modal("hide");
-    $("[name='quota_radio_"+this.sltIndex+"']").parent().parent().filter('.cur').children().eq(0).find('input').trigger('click');
+    // $("[name='quota_radio_"+this.sltIndex+"']").parent().parent().filter('.cur').children().eq(0).find('input').trigger("click");
+    $("[name='quota_radio_"+this.sltIndex+"'][data-default='true']").trigger("click");
   }
 
 }
