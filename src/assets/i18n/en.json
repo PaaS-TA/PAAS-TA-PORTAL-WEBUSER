@@ -368,5 +368,48 @@
       "buildPackSusses" : "Build pack creation succeeded.",
       "serviceSusses" : "Service creation succeeded."
     }
+  },
+  "orgProduce" : {
+    "explan" : {
+      "title1" : "Start developing, deploying and managing applications on open platforms!",
+      "title2" : "Create an organization"
+    },
+    "org" : {
+      "title" : "Organization name",
+      "explan" : "An organization is a development account that spans computing resources, applications, and services.<br>It can be owned or used by an individual or a large number of collaborators.<br>Set the name of your organization for the name of your project or the name of your team."
+    },
+    "quota" : {
+      "title" : "Quota",
+      "select" : "Select",
+      "serviceName" : "Service name",
+      "memory" : "Memory",
+      "instantMemory" : "Instant Memory",
+      "route" : "Route",
+      "serviceInstant" : "Service Instant",
+      "price" : "Price",
+      "instant" : "Instant"
+    },
+    "button" : {
+      "orgCreate" : "Create organization",
+      "cancel" : "cancel"
+    },
+    "layerpop": {
+      "create": {
+        "title": "Organization creation completed",
+        "bodyText": "<span>{{orgname}}</span> You have successfully created your organization.<br/>Press the Go button to go to Organization Management.",
+        "btn1": "move",
+        "btn2": "cancel"
+      }
+    },
+    "alertLayer": {
+      "serverError": "The server is unstable. Please contact your administrator.",
+      "orgNameCheck1": "Organization name is empty.",
+      "orgNameCheck2": "An organization with the name you entered already exists.",
+      "orgNameCheck3": "It is possible to create.",
+      "orgNameCheck4": "Invalid request. Please contact your administrator."
+    },
+    "etc": {
+      "unlimited": "unlimited"
+    }
   }
 }

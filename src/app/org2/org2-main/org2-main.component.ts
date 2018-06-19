@@ -20,12 +20,18 @@ export class Org2MainComponent implements OnInit {
 
   public sltIndex: number;
   public sltOrgGuid: string;
+  public sltOrgRename: string;
+  public sltOrgDelname: string;
   public sltSpaceGuid: string;
   public sltSpaceRename: string;
   public sltSpaceDelname: string;
   public sltDomainName: string;
   public sltQuotaGuid: string;
-
+  public sltMemberName: string;
+  public sltUserGuid: string;
+  public sltOrgRole : string;
+  public sltOrgRoleId : string;
+  public sltDelete : boolean;
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private orgMainService: Org2MainService, private common: CommonService) {
     this.common.isLoading = false;
 
@@ -70,6 +76,10 @@ export class Org2MainComponent implements OnInit {
 
       setTimeout(() => this.buttonEvent(), 100);
       this.common.isLoading = false;
+
+      // if(this.sltIndex != undefined) {
+      //   $(".btns6.colors4.organization_sw:eq("+this.sltIndex+")").trigger("click");
+      // }
     });
   }
 
@@ -104,6 +114,28 @@ export class Org2MainComponent implements OnInit {
     for(var i=0; $("[id^='domain_'] tbody").length > i; i++) {
       $("[id^='domain_']:eq("+i+") caption span").text($("[id^='domain_']:eq("+i+") tbody tr").length);
     }
+
+    $(".organization_wrap").on("mouseenter" , function(){
+      $(this).find(".organization_dot").addClass('on');
+    });
+
+    $(".organization_wrap").on("mouseleave" , function(){
+      $(this).find(".organization_dot").removeClass('on');
+      $(this).find(".organization_dot").children("ul").removeClass("on");
+    });
+
+    $(".organization_dot").on("click" , function(){
+      $(this).children("ul").toggleClass("on");
+
+      $(this).children("ul").children("li").eq(0).on("click" , function(){
+        var ttt = $(this).find("div.organization_btn")
+        $(this).parents(".pull-right").siblings(ttt).toggleClass("on");
+      });
+    });
+
+    $(".yess2,.nos2").on("click" , function(){
+      $(this).closest("div.organization_btn").removeClass("on");
+    });
   }
 
   instanceMemoryLimit(instance_memory_limit) {
@@ -141,6 +173,57 @@ export class Org2MainComponent implements OnInit {
       .replace(regKoreanPattern, '').substring(0, 64);
 
     $event.target.value = typingStr;
+  }
+
+  showPopModifyOrgNameClick(orgGuid: string) {
+    this.sltOrgGuid = orgGuid;
+    this.sltOrgRename = $("#modifyOrgName_"+this.sltOrgGuid).val();
+    $("#layerpop_org_rename").modal("show");
+  }
+
+  renameOrg() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
+    let params = {
+      guid: this.sltOrgGuid,
+      newOrgName: this.sltOrgRename
+    };
+
+    this.orgMainService.renameOrg(params).subscribe(data => {
+      if(data.result) {
+        this.common.isLoading = false;
+        this.common.alertMessage("성공", true);
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+      }
+    });
+  }
+
+  showPopDeleteOrgClick(orgGuid: string, orgName: string) {
+    this.sltOrgGuid = orgGuid;
+    this.sltOrgDelname = orgName;
+    $("#layerpop_org_delete").modal("show");
+  }
+
+  deleteOrg() {
+    $("[id^='layerpop']").modal("hide");
+    this.common.isLoading = true;
+
+    this.orgMainService.deleteOrg(this.sltOrgGuid, true).subscribe(data => {
+      if(data.result) {
+        this.common.isLoading = false;
+        this.common.alertMessage("성공", true);
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+      }
+    });
   }
 
   showPopSpaceCreateClick(sltOrgGuid: string) {
@@ -285,15 +368,131 @@ export class Org2MainComponent implements OnInit {
   changeQuota() {
     $("[id^='layerpop']").modal("hide");
     this.common.isLoading = true;
+
+    let params = {
+      quotaGuid: this.sltQuotaGuid
+    };
+
+    this.orgMainService.changeQuota(this.sltOrgGuid, params).subscribe(data => {
+      if(data.result) {
+        this.common.isLoading = false;
+        this.common.alertMessage("성공", true);
+
+        this.ngOnInit();
+      } else {
+        this.common.isLoading = false;
+        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+      }
+    });
   }
 
   changeQuotaCancel() {
     $("[id^='layerpop']").modal("hide");
-    $("[name='quota_radio_"+this.sltIndex+"']").parent().parent().filter('.cur').children().eq(0).find('input').trigger('click');
+    // $("[name='quota_radio_"+this.sltIndex+"']").parent().parent().filter('.cur').children().eq(0).find('input').trigger("click");
+    $("[name='quota_radio_"+this.sltIndex+"'][data-default='true']").trigger("click");
   }
 
   goOrgCreate(){
     this.router.navigate(['org2produce']);
+  }
+
+  showMemberSetOrgRole(user, role, org, orgrole, value){
+    this.sltDelete = $("#"+value+"").is(":checked");
+    if(!this.authorityCheck(role)){
+      this.common.alertMessage("조직 권한이 없습니다.",false);
+        $("#"+value+"").prop("checked", !this.sltDelete);
+      return;
+    }
+    this.sltOrgRoleId = value;
+    this.sltUserGuid = user.user_id;
+    this.sltMemberName = user.user_email;
+    this.sltOrgGuid = org;
+    this.sltOrgRole=orgrole;
+    console.log(this.sltOrgRole);
+    console.log(this.SltOrgRoleName);
+    $("#layerpop_org_set_role").modal("show");
+  }
+
+  memberSetOrgRole(){
+    let body ={
+      userId : this.sltUserGuid,
+      role : this.sltOrgRole
+    }
+    this.common.isLoading=true;
+    if(this.sltDelete){
+      this.orgMainService.changeOrgUserRole(this.sltOrgGuid,body).subscribe(data => {
+        console.log(data);
+        this.common.alertMessage("권한 수정 성공", true);
+      },error=>{
+        this.common.alertMessage("권한 수정 오류", false);
+        this.cancelMemberSetOrgRole();
+        this.common.isLoading=false;
+      },()=>{
+        this.common.isLoading=false;
+      });
+    }else{
+      this.orgMainService.delOrgUserRole(this.sltOrgGuid,body).subscribe(data => {
+        console.log(data);
+        this.common.alertMessage("권한 수정 성공", true);
+      },error=>{
+        this.common.alertMessage("권한 수정 오류", false);
+        this.cancelMemberSetOrgRole();
+        this.common.isLoading=false;
+      },()=>{
+        this.common.isLoading=false;
+      });
+    }
+  }
+
+  cancelMemberSetOrgRole(){
+    $("#"+this.sltOrgRoleId+"").prop("checked", !this.sltDelete);
+  }
+
+
+  showMemberCancel(user, role, org){
+    if(!this.authorityCheck(role)){
+      this.common.alertMessage("조직 권한이 없습니다.",false);
+      return;
+    }
+    this.sltUserGuid = user.user_id;
+    this.sltMemberName = user.user_email;
+    this.sltOrgGuid = org;
+    $("#layerpop_member_cancel").modal("show");
+
+  }
+
+  memberCancel(){
+    this.common.isLoading = true;
+    this.orgMainService.delMemberCancel(this.sltOrgGuid,this.sltUserGuid).subscribe(data => {
+      this.common.alertMessage("맴버 취소가 완료되었습니다.", true);
+      this.getOrgList();
+    },error => {
+      this.common.alertMessage("맴버 취소를 실패했습니다.", true);
+    },()=>{
+      this.common.isLoading = false;
+    });
+  }
+
+  get SltOrgRoleName() : string{
+    switch(this.sltOrgRole){
+      case 'OrgManager' : return '조직관리자';
+      case 'BillingManager' : return '조직 결제 관리자';
+      case 'OrgAuditor' : return '조직관리자';
+    }
+  }
+
+  showUserInvite(){
+  $("#layerpop4").modal("show");
+
+  }
+
+
+  //OrgManager 체크
+  authorityCheck(role) : boolean {
+    return role.some(myrole => {
+      if(myrole.user_email === this.common.getUserid()){
+        return myrole.roles.some(value => {if(value === 'OrgManager'){ return true; } });
+      }});
   }
 
 }

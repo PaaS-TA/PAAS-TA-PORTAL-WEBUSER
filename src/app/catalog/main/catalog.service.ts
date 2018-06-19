@@ -110,7 +110,7 @@ export class CatalogService {
   }
 
   getRecentPacks(url : string) {
-    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
+    return this.common.doGet(url, "token").map((res: Response) => {
       return res;
     });
   }
@@ -122,25 +122,25 @@ export class CatalogService {
   }
 
   getStarterPacks(url : string) {
-    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
+    return this.common.doGet(url, "token").map((res: Response) => {
       return res;
     });
   }
 
   getBuildPacks(url : string) {
-    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
+    return this.common.doGet(url, "token").map((res: Response) => {
       return res;
     });
   }
 
   getServicePacks(url : string) {
-    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
+    return this.common.doGet(url, "token").map((res: Response) => {
       return res;
     });
   }
 
   getSearchPack(url : string) {
-    return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
+    return this.common.doGet(url, "token").map((res: Response) => {
       return res;
     });
   }
