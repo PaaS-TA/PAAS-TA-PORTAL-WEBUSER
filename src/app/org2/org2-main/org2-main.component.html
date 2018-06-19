@@ -16,8 +16,9 @@
           <div class="organization_title_wrap">
             <div class="organization_btn">
               <div class="organization_btnin">
-                <input class="tempTitle" type="text" />
-                <button class="btns6 colors4 yess2">변경하기</button>
+                <input class="tempTitle" type="text" [id]="'modifyOrgName_'+item.org.metadata.guid" value="{{item.org.entity.name}}"
+                       (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (focusout)="replaceInvalidateString($event)" />
+                <button class="btns6 colors4 yess2" (click)="showPopModifyOrgNameClick(item.org.metadata.guid)">변경하기</button>
                 <button class="btns6 colors5 nos2">취소</button>
               </div>
             </div>
@@ -33,12 +34,10 @@
                   <li class="name_inputTitle2">
                     <p><i class="fas fa-edit"></i>&nbsp;&nbsp;이름변경</p>
                   </li>
-                  <li data-target="#layerpop" data-toggle="modal">
+                  <li data-toggle="modal" (click)="showPopDeleteOrgClick(item.org.metadata.guid, item.org.entity.name)">
                     <p>
                       <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;삭제
                     </p>
-                  </li>
-                  <li data-target="#layerpop8" data-toggle="modal"><p><img src="../../assets/resources/images/web.png" alt=""/>&nbsp;&nbsp;WEB IDE 신청</p>
                   </li>
                 </ul>
               </div>
@@ -197,8 +196,13 @@
                   <ng-container *ngFor='let quotaDefinition of quotaDefinitionsEntities; let j = index'>
                     <tr class="org_quota" [ngClass]="{'cur': quotaDefinition.metadata.guid == item.quota.metadata.guid}">
                       <td>
-                        <input id="quota_radio_{{i}}_{{j}}" type="radio" name="quota_radio_{{i}}" [checked]="quotaDefinition.metadata.guid == item.quota.metadata.guid"
-                               (click)="showPopChangeQuotaClick(item.org.metadata.guid, item.quota.metadata.guid, quotaDefinition.metadata.guid, i)">
+                        <ng-container *ngIf="quotaDefinition.metadata.guid == item.quota.metadata.guid; else elseQuota">
+                          <input id="quota_radio_{{i}}_{{j}}" type="radio" name="quota_radio_{{i}}" checked="checked" data-default="true">
+                        </ng-container>
+                        <ng-template #elseQuota>
+                          <input id="quota_radio_{{i}}_{{j}}" type="radio" name="quota_radio_{{i}}"
+                                 (click)="showPopChangeQuotaClick(item.org.metadata.guid, item.quota.metadata.guid, quotaDefinition.metadata.guid, i)" data-default="false">
+                        </ng-template>
                         <label for="quota_radio_{{i}}_{{j}}"></label>
                       </td>
                       <td>{{quotaDefinition.entity.name}}</td>
@@ -222,6 +226,60 @@
   </div>
 </div>
 
+<div class="modal fade" id="layerpop_org_rename">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">조직명 변경</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <p>조직명을 {{sltOrgRename}}로 변경 하시겠습니까?</p>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="renameOrg()">변경</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_org_delete">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">조직 삭제</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p">
+              조직을 삭제하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br/>
+              <span>{{sltOrgDelname}}</span>을 삭제하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" (click)="deleteOrg()">삭제</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="layerpop_space_create">
   <div class="vertical-alignment-helper">
@@ -380,7 +438,7 @@
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="changeQuota()">추가</button>
+          <button type="button" class="btns2 colors4" (click)="changeQuota()">변경</button>
           <button type="button" class="btns2 colors5" (click)="changeQuotaCancel()">취소</button>
         </div>
       </div>

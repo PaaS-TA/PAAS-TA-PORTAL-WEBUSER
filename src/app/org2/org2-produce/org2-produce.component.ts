@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {OrgURLConstant} from "../../org/common/org.constant";
 import {Parser} from "@angular/compiler";
 import {_finally} from "rxjs/operator/finally";
+import { TranslateService, LangChangeEvent, TranslationChangeEvent } from '@ngx-translate/core';
 
 
 declare var $: any;
@@ -21,14 +22,22 @@ export class Org2ProduceComponent implements OnInit {
   private orgquotalist : any = [];
   private isError : boolean;
   private aquota : any;
-  constructor(private orgService : Org2ProduceService) { }
+
+  public translateEntities: any = [];
+
+  constructor(private orgService : Org2ProduceService, private translate: TranslateService) {
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.orgProduce;
+      this.orgNameCheck();
+    });
+  }
 
   ngOnInit() {
     this.orgService.isLoding(true);
     this.doLayout();
     this.getOrgNameList();
     this.getOrgQuota();
-    this.orgNameCheck();
+    setTimeout(() => this.orgNameCheck(), 100);
   }
 
   doLayout() {
@@ -85,7 +94,7 @@ export class Org2ProduceComponent implements OnInit {
   }
 
   serverError(){
-    this.orgService.alertSetting('서버가 불안정합니다. 관리자에게 문의하십시오.', false);
+    this.orgService.alertSetting(this.translateEntities.alertLayer.serverError, false);
     this.orgService.back();
     this.orgService.isLoding(false);
   }
@@ -93,14 +102,14 @@ export class Org2ProduceComponent implements OnInit {
   orgNameCheck(){
     this.pattenTest();
     if (this.orgname == null || (this.orgname != null && "" === this.orgname.trim())) {
-      this.msgSetting('blue','red',true,'조직 이름이 비어있습니다.');
+      this.msgSetting('blue','red',true,this.translateEntities.alertLayer.orgNameCheck1);
       return;
     }
     if(this.orgnamelist.some(a=>{if(a === this.orgname){return true;} })){
-      this.msgSetting('blue','red',true,'입력한 이름을 가진 조직이 이미 존재합니다.');
+      this.msgSetting('blue','red',true,this.translateEntities.alertLayer.orgNameCheck2);
       return;
     }
-    this.msgSetting('red','blue',false,'생성이 가능합니다.');
+    this.msgSetting('red','blue',false,this.translateEntities.alertLayer.orgNameCheck3);
   }
 
   msgSetting(removeClass : string, addClass : string, isError : boolean, errorMessage : string){
@@ -141,14 +150,14 @@ export class Org2ProduceComponent implements OnInit {
         });
       } else if (data === true || data === 'true') {
         this.isError = true;
-        this.errorMessage = '입력한 이름을 가진 조직이 이미 존재합니다.';
+        this.errorMessage = this.translateEntities.alertLayer.orgNameCheck2;
       } else {
         this.isError = true;
-        this.errorMessage = '잘못된 요청입니다. 관리자에게 문의하십시오.';
+        this.errorMessage = this.translateEntities.alertLayer.orgNameCheck4;
       }
     },error => {
       this.isError = true;
-      this.errorMessage = '서버가 불안정합니다. 관리자에게 문의하십시오.';
+      this.errorMessage = this.translateEntities.alertLayer.serverError;
     },()=>{
       this.showPopAppStartClick();
       this.orgService.isLoding(false);
