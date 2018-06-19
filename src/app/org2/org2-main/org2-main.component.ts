@@ -425,6 +425,7 @@ export class Org2MainComponent implements OnInit {
         this.common.alertMessage("권한 수정 성공", true);
       },error=>{
         this.common.alertMessage("권한 수정 오류", false);
+        this.cancelMemberSetOrgRole();
         this.common.isLoading=false;
       },()=>{
         this.common.isLoading=false;
@@ -435,6 +436,7 @@ export class Org2MainComponent implements OnInit {
         this.common.alertMessage("권한 수정 성공", true);
       },error=>{
         this.common.alertMessage("권한 수정 오류", false);
+        this.cancelMemberSetOrgRole();
         this.common.isLoading=false;
       },()=>{
         this.common.isLoading=false;
@@ -443,7 +445,7 @@ export class Org2MainComponent implements OnInit {
   }
 
   cancelMemberSetOrgRole(){
-    $("[name='quota_radio_"+this.sltIndex+"']").parent().parent().filter('.cur').children().eq(0).find('input').trigger('click');
+    $("#"+this.sltOrgRoleId+"").prop("checked", !this.sltDelete);
   }
 
 
@@ -478,6 +480,12 @@ export class Org2MainComponent implements OnInit {
       case 'OrgAuditor' : return '조직관리자';
     }
   }
+
+  showUserInvite(){
+  $("#layerpop4").modal("show");
+
+  }
+
 
   //OrgManager 체크
   authorityCheck(role) : boolean {

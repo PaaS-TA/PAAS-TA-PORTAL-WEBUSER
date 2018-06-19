@@ -123,7 +123,7 @@
                 <caption>
                   사용자<span>{{item.userRoles.user_roles.length}}</span>
                   <div class="pull-right">
-                    <button class="btns6 colors4" data-target="#layerpop4" data-toggle="modal">
+                    <button class="btns6 colors4" (click)="showUserInvite()">
                       <i class="fas fa-plus"></i> 사용자 초대
                     </button>
                   </div>
@@ -496,6 +496,117 @@
         <div class="modal-footer">
           <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="memberSetOrgRole()">확인</button>
           <button type="button" class="btns2 colors5" data-dismiss="modal" (click)="cancelMemberSetOrgRole()">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop4">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">사용자 초대</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <input class="w100" placeholder="sample@test.com"/>
+          <span class="red">* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.</span>
+          <table class="maT30">
+            <colgroup>
+              <col style=''>
+              <col style=''>
+              <col style=''>
+              <col style=''>
+            </colgroup>
+            <thead>
+            <tr>
+              <td>조직
+              </td>
+              <td colspan="3">할당된 조직
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>test</td>
+              <td>
+                <input class="checkSel" id="modal1" type="checkbox"/>
+                <label for="modal1">OrgManager(조직 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel" id="modal2" type="checkbox" checked="checked"/>
+                <label for="modal2">BillingManager(조직 결제 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel" id="modal3" type="checkbox" checked="checked"/>
+                <label for="modal3">OrgAuditor(조직 참관인)</label>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <input class="checkAll" id="checkAll" type="checkbox"/>
+          <label class="maT10" for="checkAll">전체선택</label>
+          <table class="maT30">
+            <colgroup>
+              <col style=''>
+              <col style=''>
+              <col style=''>
+              <col style=''>
+            </colgroup>
+            <thead>
+            <tr>
+              <td>사용자
+              </td>
+              <td colspan="3">부여할 공간 역할
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>test</td>
+              <td>
+                <input class="checkSel2" id="modal4" type="checkbox"/>
+                <label for="modal4">SpaceManager</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal5" type="checkbox" checked="checked"/>
+                <label for="modal5">SpaceDeveloper</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal6" type="checkbox" checked="checked"/>
+                <label for="modal6">SpaceAuditor</label>
+              </td>
+            </tr>
+            <tr>
+              <td>공간명</td>
+              <td>
+                <input class="checkSel2" id="modal7" type="checkbox"/>
+                <label for="modal7">SpaceManager</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal8" type="checkbox" checked="checked"/>
+                <label for="modal8">SpaceDeveloper</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal9" type="checkbox" checked="checked"/>
+                <label for="modal9">SpaceAuditor</label>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <input class="checkAll2" id="checkAll2" type="checkbox"/>
+          <label class="maT10" for="checkAll2">전체선택</label>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">초대</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
     </div>
