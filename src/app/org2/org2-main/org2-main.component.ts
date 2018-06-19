@@ -25,7 +25,11 @@ export class Org2MainComponent implements OnInit {
   public sltSpaceDelname: string;
   public sltDomainName: string;
   public sltQuotaGuid: string;
-
+  public sltMemberName: string;
+  public sltUserGuid: string;
+  public sltOrgRole : string;
+  public sltOrgRoleId : string;
+  public sltDelete : boolean;
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private orgMainService: Org2MainService, private common: CommonService) {
     this.common.isLoading = false;
 
@@ -294,6 +298,97 @@ export class Org2MainComponent implements OnInit {
 
   goOrgCreate(){
     this.router.navigate(['org2produce']);
+  }
+
+  showMemberSetOrgRole(user, role, org, orgrole, value){
+    this.sltDelete = $("#"+value+"").is(":checked");
+    if(!this.authorityCheck(role)){
+      this.common.alertMessage("조직 권한이 없습니다.",false);
+        $("#"+value+"").prop("checked", !this.sltDelete);
+      return;
+    }
+    this.sltOrgRoleId = value;
+    this.sltUserGuid = user.user_id;
+    this.sltMemberName = user.user_email;
+    this.sltOrgGuid = org;
+    this.sltOrgRole=orgrole;
+    console.log(this.sltOrgRole);
+    console.log(this.SltOrgRoleName);
+    $("#layerpop_org_set_role").modal("show");
+  }
+
+  memberSetOrgRole(){
+    let body ={
+      userId : this.sltUserGuid,
+      role : this.sltOrgRole
+    }
+    this.common.isLoading=true;
+    if(this.sltDelete){
+      this.orgMainService.changeOrgUserRole(this.sltOrgGuid,body).subscribe(data => {
+        console.log(data);
+        this.common.alertMessage("권한 수정 성공", true);
+      },error=>{
+        this.common.alertMessage("권한 수정 오류", false);
+        this.common.isLoading=false;
+      },()=>{
+        this.common.isLoading=false;
+      });
+    }else{
+      this.orgMainService.delOrgUserRole(this.sltOrgGuid,body).subscribe(data => {
+        console.log(data);
+        this.common.alertMessage("권한 수정 성공", true);
+      },error=>{
+        this.common.alertMessage("권한 수정 오류", false);
+        this.common.isLoading=false;
+      },()=>{
+        this.common.isLoading=false;
+      });
+    }
+  }
+
+  cancelMemberSetOrgRole(){
+    $("[name='quota_radio_"+this.sltIndex+"']").parent().parent().filter('.cur').children().eq(0).find('input').trigger('click');
+  }
+
+
+  showMemberCancel(user, role, org){
+    if(!this.authorityCheck(role)){
+      this.common.alertMessage("조직 권한이 없습니다.",false);
+      return;
+    }
+    this.sltUserGuid = user.user_id;
+    this.sltMemberName = user.user_email;
+    this.sltOrgGuid = org;
+    $("#layerpop_member_cancel").modal("show");
+
+  }
+
+  memberCancel(){
+    this.common.isLoading = true;
+    this.orgMainService.delMemberCancel(this.sltOrgGuid,this.sltUserGuid).subscribe(data => {
+      this.common.alertMessage("맴버 취소가 완료되었습니다.", true);
+      this.getOrgList();
+    },error => {
+      this.common.alertMessage("맴버 취소를 실패했습니다.", true);
+    },()=>{
+      this.common.isLoading = false;
+    });
+  }
+
+  get SltOrgRoleName() : string{
+    switch(this.sltOrgRole){
+      case 'OrgManager' : return '조직관리자';
+      case 'BillingManager' : return '조직 결제 관리자';
+      case 'OrgAuditor' : return '조직관리자';
+    }
+  }
+
+  //OrgManager 체크
+  authorityCheck(role) : boolean {
+    return role.some(myrole => {
+      if(myrole.user_email === this.common.getUserid()){
+        return myrole.roles.some(value => {if(value === 'OrgManager'){ return true; } });
+      }});
   }
 
 }
