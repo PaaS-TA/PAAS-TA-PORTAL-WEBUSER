@@ -370,5 +370,48 @@
       "buildPackError" : "빌드팩 생성을 실패했습니다.",
       "serviceSusses" : "서비스 생성을 성공했습니다."
     }
+  },
+  "orgProduce" : {
+    "explan" : {
+      "title1" : "개방형 플랫폼에서 애플리케이션 개발과 배포, 관리를 시작하세요!",
+      "title2" : "조직을 생성하세요"
+    },
+    "org" : {
+      "title" : "조직명",
+      "explan" : "조직은 컴퓨팅 리소스, 애플리케이션 및 서비스를 포괄하는 개발 계정입니다.<br>개인이나 다수의 공동 작업자가 소유 하거나 사용 할 수 있습니다.<br>프로젝트의 이름이나 팀의 이름으로 조직의 조직의 이름을 설정하세요."
+    },
+    "quota" : {
+      "title" : "할당량",
+      "select" : "선택",
+      "serviceName" : "서비스명",
+      "memory" : "메모리",
+      "instantMemory" : "인스턴트 메모리",
+      "route" : "라우트",
+      "serviceInstant" : "서비스 인스턴트",
+      "price" : "가격",
+      "instant" : "인스턴트"
+    },
+    "button" : {
+      "orgCreate" : "조직생성",
+      "cancel" : "취소"
+    },
+    "layerpop": {
+      "create": {
+        "title": "조직 생성 완료",
+        "bodyText": "<span>{{orgname}}</span> 조직 생성을 완료했습니다. <br/>이동 버튼을 누르면 조직관리로 이동합니다.",
+        "btn1": "이동",
+        "btn2": "취소"
+      }
+    },
+    "alertLayer": {
+      "serverError": "서버가 불안정합니다. 관리자에게 문의하십시오.",
+      "orgNameCheck1": "조직 이름이 비어있습니다.",
+      "orgNameCheck2": "입력한 이름을 가진 조직이 이미 존재합니다.",
+      "orgNameCheck3": "생성이 가능합니다.",
+      "orgNameCheck4": "잘못된 요청입니다. 관리자에게 문의하십시오."
+    },
+    "etc": {
+      "unlimited": "무제한"
+    }
   }
 }
