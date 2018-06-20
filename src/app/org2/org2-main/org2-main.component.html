@@ -99,7 +99,7 @@
                   </div>
                 </caption>
                 <colgroup>
-                  <col style='*'>
+                  <col style=''>
                   <col style='width: 30px;'>
                 </colgroup>
                 <tbody>
@@ -123,17 +123,17 @@
                 <caption>
                   사용자<span>{{item.userRoles.user_roles.length}}</span>
                   <div class="pull-right">
-                    <button class="btns6 colors4" data-target="#layerpop4" data-toggle="modal">
+                    <button class="btns6 colors4" (click)="showUserInvite()">
                       <i class="fas fa-plus"></i> 사용자 초대
                     </button>
                   </div>
                 </caption>
                 <colgroup>
                   <col style='width: 250px;'>
-                  <col style='*'>
-                  <col style='*'>
-                  <col style='*'>
-                  <col style='*'>
+                  <col style=''>
+                  <col style=''>
+                  <col style=''>
+                  <col style=''>
                 </colgroup>
                 <thead>
                   <tr>
@@ -142,22 +142,22 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <ng-container *ngFor='let userRole of item.userRoles.user_roles'>
+                  <ng-container *ngFor='let userRole of item.userRoles.user_roles; let j = index'>
                     <tr>
                       <td>{{userRole.user_email}}</td>
                       <td>
-                        <input id="check1" type="checkbox" [checked]="userRole.roles.indexOf('OrgManager') > -1"/>
-                        <label for="check1">OrgManager(조직 관리자)</label>
+                        <input id="check1_{{i}}_{{j}}" type="checkbox" [checked]="userRole.roles.indexOf('OrgManager') > -1" (click)="showMemberSetOrgRole(userRole, item.userRoles.user_roles,item.org.metadata.guid, 'OrgManager', 'check1_'+i+'_'+j)"/>
+                        <label for="check1_{{i}}_{{j}}">OrgManager(조직 관리자)</label>
                       </td>
                       <td>
-                        <input id="check2" type="checkbox" [checked]="userRole.roles.indexOf('BillingManager') > -1"/>
-                        <label for="check2">BillingManager(조직 결제 관리자)</label>
+                        <input id="check2_{{i}}_{{j}}" type="checkbox" [checked]="userRole.roles.indexOf('BillingManager') > -1" (click)="showMemberSetOrgRole(userRole, item.userRoles.user_roles,item.org.metadata.guid, 'BillingManager', 'check2_'+i+'_'+j)"/>
+                        <label for="check2_{{i}}_{{j}}">BillingManager(조직 결제 관리자)</label>
                       </td>
                       <td>
-                        <input id="check3" type="checkbox" [checked]="userRole.roles.indexOf('OrgAuditor') > -1"/>
-                        <label for="check3">OrgAuditor(조직 참관인)</label>
+                        <input id="check3_{{i}}_{{j}}" type="checkbox" [checked]="userRole.roles.indexOf('OrgAuditor') > -1" (click)="showMemberSetOrgRole(userRole, item.userRoles.user_roles,item.org.metadata.guid, 'OrgAuditor','check3_'+i+'_'+j)"/>
+                        <label for="check3_{{i}}_{{j}}">OrgAuditor(조직 참관인)</label>
                       </td>
-                      <th><button class="btns4 colors8" data-target="#layerpop12" data-toggle="modal">맴버 취소</button></th>
+                      <th><button class="btns4 colors8" (click)="showMemberCancel(userRole,item.userRoles.user_roles, item.org.metadata.guid)">맴버 취소</button></th>
                     </tr>
                   </ng-container>
                 </tbody>
@@ -440,6 +440,173 @@
         <div class="modal-footer">
           <button type="button" class="btns2 colors4" (click)="changeQuota()">변경</button>
           <button type="button" class="btns2 colors5" (click)="changeQuotaCancel()">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_member_cancel">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">멤버 취소</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>{{sltMemberName}}</span>님을 멤버 취소 하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="memberCancel()">확인</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop_org_set_role">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal" (click)="cancelMemberSetOrgRole()">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">조직 권한 수정</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>{{sltMemberName}}</span>님의 <span>{{SltOrgRoleName}}</span>권한을 수정하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="memberSetOrgRole()">확인</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal" (click)="cancelMemberSetOrgRole()">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="layerpop4">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">사용자 초대</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <input class="w100" placeholder="sample@test.com"/>
+          <span class="red">* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.</span>
+          <table class="maT30">
+            <colgroup>
+              <col style=''>
+              <col style=''>
+              <col style=''>
+              <col style=''>
+            </colgroup>
+            <thead>
+            <tr>
+              <td>조직
+              </td>
+              <td colspan="3">할당된 조직
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>test</td>
+              <td>
+                <input class="checkSel" id="modal1" type="checkbox"/>
+                <label for="modal1">OrgManager(조직 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel" id="modal2" type="checkbox" checked="checked"/>
+                <label for="modal2">BillingManager(조직 결제 관리자)</label>
+              </td>
+              <td>
+                <input class="checkSel" id="modal3" type="checkbox" checked="checked"/>
+                <label for="modal3">OrgAuditor(조직 참관인)</label>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <input class="checkAll" id="checkAll" type="checkbox"/>
+          <label class="maT10" for="checkAll">전체선택</label>
+          <table class="maT30">
+            <colgroup>
+              <col style=''>
+              <col style=''>
+              <col style=''>
+              <col style=''>
+            </colgroup>
+            <thead>
+            <tr>
+              <td>사용자
+              </td>
+              <td colspan="3">부여할 공간 역할
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>test</td>
+              <td>
+                <input class="checkSel2" id="modal4" type="checkbox"/>
+                <label for="modal4">SpaceManager</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal5" type="checkbox" checked="checked"/>
+                <label for="modal5">SpaceDeveloper</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal6" type="checkbox" checked="checked"/>
+                <label for="modal6">SpaceAuditor</label>
+              </td>
+            </tr>
+            <tr>
+              <td>공간명</td>
+              <td>
+                <input class="checkSel2" id="modal7" type="checkbox"/>
+                <label for="modal7">SpaceManager</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal8" type="checkbox" checked="checked"/>
+                <label for="modal8">SpaceDeveloper</label>
+              </td>
+              <td>
+                <input class="checkSel2" id="modal9" type="checkbox" checked="checked"/>
+                <label for="modal9">SpaceAuditor</label>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <input class="checkAll2" id="checkAll2" type="checkbox"/>
+          <label class="maT10" for="checkAll2">전체선택</label>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal">초대</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
         </div>
       </div>
     </div>

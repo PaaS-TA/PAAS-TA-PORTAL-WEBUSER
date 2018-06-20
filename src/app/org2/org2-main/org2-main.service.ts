@@ -61,6 +61,11 @@ export class Org2MainService {
       return res;
     }).do(console.log);
   }
+  delMemberCancel(guid : string, userId : string){
+    return this.commonService.doDelete('/portalapi/v2/orgs/'+guid+'/member?userId='+userId, '', this.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
 
   changeQuota(orgGuid: string, params: any) {
     return this.commonService.doPut('/portalapi/v2/orgs/'+orgGuid+'/quota', params, this.getToken()).map((res: Response) => {
@@ -78,5 +83,17 @@ export class Org2MainService {
     return this.commonService.doDelete('/portalapi/v2/orgs/'+guid+'?recursive='+recursive, '', this.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
+  }
+
+  changeOrgUserRole(orgGuid: string, params: any) {
+  return this.commonService.doPut('/portalapi/v2/orgs/'+orgGuid+'/user-roles', params, this.getToken()).map((res: Response) => {
+    return res;
+  });
+  }
+
+  delOrgUserRole(orgGuid: string, params: any) {
+    return this.commonService.doDelete('/portalapi/v2/orgs/'+orgGuid+'/user-roles', params, this.getToken()).map((res: Response) => {
+      return res;
+    })
   }
 }

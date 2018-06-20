@@ -29,6 +29,7 @@ export class CatalogComponent implements OnInit {
   ngOnInit() {
     var name = this.catalogService.classname;
     var check = this.catalogService.check;
+    console.log(check);
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
@@ -64,7 +65,7 @@ export class CatalogComponent implements OnInit {
     this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid).subscribe(data => {
       this.RecentInit(data['list']);
     });
-
+    this.catalogService.check = true;
   }
 
   Search()  {
@@ -76,7 +77,6 @@ export class CatalogComponent implements OnInit {
   goStarter(starter : StarterPack) {
     this.catalogService.setCurrentCatalogNumber(starter.no);
     this.router.navigate(['catalogdetail']);
-    //alert("화면 구성중입니다.");
   }
 
   goDevelopMent(build : BuildPack) {

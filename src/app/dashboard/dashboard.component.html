@@ -180,11 +180,12 @@
                 <div class="space_pop_container space_list_small" >
                   <div class="space_pop_menu">
                     <!--<button _ngcontent-c4="" class="btns colors4" (click)="moveDashboardS()">대시보드</button>-->
-                    <i class="fas fa-ellipsis-v" (click)="popclick('spopmenu_'+i,'service',item.guid,item.name)"></i>
+                    <i class="fas fa-ellipsis-v" *ngIf="item.service_plan !== null" (click)="popclick('spopmenu_'+i,'service',item.guid,item.name)"></i>
+                    <i class="fas fa-ellipsis-v" *ngIf="item.service_plan == null" (click)="popclick('spopmenu_'+i,'provided',item.guid,item.name)"></i>
                     <ol class="space_pop_submenu" id ="spopmenu_{{i}}">
                       <li data-target="#layerpop3" data-toggle="modal" *ngIf="item.service_plan !== null"><a class="fas fa-edit"> 서비스 이름변경</a></li>
-                      <li data-target="#layerpop7" data-toggle="modal" *ngIf="item.service_plan == null"><a class="fas fa-edit"> 서비스 이름변경</a></li>
-                      <li data-target="#layerpop6" data-toggle="modal" *ngIf="item.service_plan == null"><a class="fas fa-wrench"> 서비스 수정</a></li>
+                      <!--<li data-target="#layerpop7" data-toggle="modal" *ngIf="item.service_plan == null"><a class="fas fa-edit"> 서비스 이름변경</a></li>-->
+                      <li data-target="#layerpop6" data-toggle="modal" *ngIf="item.service_plan == null" ><a class="fas fa-wrench"> 서비스 수정</a></li>
                       <li data-target="#layerpop5" data-toggle="modal"><a class="fas fa-trash-alt"> 삭제</a></li>
                     </ol>
                   </div>
@@ -327,30 +328,30 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="layerpop7">
-  <div class="vertical-alignment-helper">
-    <div class="modal-dialog vertical-align-center">
-      <div class="modal-content">
-        <!-- header -->
-        <div class="modal-header">
-          <!-- 닫기(x) 버튼 -->
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <!-- header title -->
-          <h4 class="modal-title">서비스 이름 변경</h4>
-        </div>
-        <!-- body -->
-        <div class="modal-body">
-          <input type="text" placeholder="변경할 서비스 이름을 입력하세요." class="space_input" [(ngModel)]="selectedName" name="selectedName"/>
-        </div>
-        <!-- Footer -->
-        <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="updateUserProvided()">변경</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<!--<div class="modal fade" id="layerpop7">-->
+  <!--<div class="vertical-alignment-helper">-->
+    <!--<div class="modal-dialog vertical-align-center">-->
+      <!--<div class="modal-content">-->
+        <!--&lt;!&ndash; header &ndash;&gt;-->
+        <!--<div class="modal-header">-->
+          <!--&lt;!&ndash; 닫기(x) 버튼 &ndash;&gt;-->
+          <!--<button type="button" class="close" data-dismiss="modal">×</button>-->
+          <!--&lt;!&ndash; header title &ndash;&gt;-->
+          <!--<h4 class="modal-title">서비스 이름 변경</h4>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; body &ndash;&gt;-->
+        <!--<div class="modal-body">-->
+          <!--<input type="text" placeholder="변경할 서비스 이름을 입력하세요." class="space_input" [(ngModel)]="selectedName" name="selectedName"/>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; Footer &ndash;&gt;-->
+        <!--<div class="modal-footer">-->
+          <!--<button type="button" class="btns2 colors4" data-dismiss="modal" (click)="updateUserProvided()">변경</button>-->
+          <!--<button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
 <div class="modal fade" id="layerpop4">
   <div class="vertical-alignment-helper">
     <div class="modal-dialog vertical-align-center">
@@ -367,15 +368,15 @@
           <ul>
             <li>
               <div>서비스 이름</div>
-              <div><input type="text" name="userProvidedServiceName" [(ngModel)]="service['serviceInstanceName']" class="space_input"/></div>
+              <div><input type="text" name="userProvideName" [(ngModel)]="service['serviceInstanceName']" class="space_input"/></div>
             </li>
             <li>
               <div>Credentials</div>
-              <div><input type="text" placeholder="credentialsStr:{'username':'admin','password':'password';}" name="userProvidedCredentials" [(ngModel)]="service['credentialsStr']" class="space_input"/></div>
+              <div><input type="text" name="userProvideCredentials" [(ngModel)]="service['credentialsStr']" class="space_input"  placeholder="{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;0000&quot;}"/></div>
             </li>
             <li>
               <div>Syslog Drain Url</div>
-              <div><input type="text" name="userProvidedSyslogDrainUrl" [(ngModel)]="service['syslogDrainUrl']" class="space_input"/></div>
+              <div><input type="text" name="userProvideSyslogDrainUrl" [(ngModel)]="service['syslogDrainUrl']" class="space_input"/></div>
             </li>
           </ul>
         </div>
@@ -404,15 +405,15 @@
           <ul>
             <li>
               <div>서비스 이름</div>
-              <div><input type="text" name="selectedName" [(ngModel)]="selectedName" class="space_input"/></div>
+              <div><input type="text" name="userProvideName" [(ngModel)]="userProvideName" class="space_input"/></div>
             </li>
-            <li>
+            <li >
               <div>Credentials</div>
-              <div><input type="text" name="userProvidedCredentials" [(ngModel)]="service['credentialsStr']" class="space_input"  placeholder="credentialsStr:{'username':'admin','password':'password';}"/></div>
+              <div><input type="text" name="userProvideCredentials" [(ngModel)]="userProvideCredentials" class="space_input"  placeholder="{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;0000&quot;}"/></div>
             </li>
             <li>
               <div>Syslog Drain Url</div>
-              <div><input type="text" name="userProvidedSyslogDrainUrl" [(ngModel)]="service['syslogDrainUrl']" class="space_input"/></div>
+              <div><input type="text" name="userProvideSyslogDrainUrl" [(ngModel)]="userProvideSyslogDrainUrl" class="space_input"/></div>
             </li>
           </ul>
         </div>
@@ -501,5 +502,5 @@
   </div>
 </div>
 </body>
-<div class="footer_n">Copyright © 2018 PaaS-TA. All rights reserved</div>
+<!--<div class="footer_n">Copyright © 2018 PaaS-TA. All rights reserved</div>-->
 </html>

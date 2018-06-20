@@ -60,8 +60,8 @@ export class DashboardService {
   }
 
 // @RequestMapping(value = {Constants.V2_URL + "/service/userprovidedserviceinstances/{guid}"}, method = RequestMethod.GET)
-  userProvidedList(guid: string) {
-    return this.commonService.doGet('/portalapi/v2/service/userprovidedserviceinstances' + guid, this.commonService.getToken()).map((res: Response) => {
+  userProvidedInfo(guid: string) {
+    return this.commonService.doGet('/portalapi/v2/service/userprovidedserviceinstances/' + guid, this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }

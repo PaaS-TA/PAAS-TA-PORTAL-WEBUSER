@@ -34,7 +34,6 @@ export class DashboardComponent implements OnInit {
   public token: string;
   public userid: string;
   public userGuid: string;
-  public spaceGuid: string;
   public selectedSpaceId: string;
 
   public current_popmenu_id: string;
@@ -43,19 +42,11 @@ export class DashboardComponent implements OnInit {
   public appName: string;
   public appNewName: string;
   public appDelName: string;
-  public appSummaryGuid: string; // app guid value
+  public appSummaryGuid: string; /*app guid value*/
 
   public selectedGuid: string;
   public selectedType: string;
   public selectedName: string;
-
-  public userProvidedServiceName: string;
-  public userProvidedCredentials: string;
-  public userProvidedSyslogDrainUrl: string;
-
-  private appStatsCpuPer: number;
-  private appStatsMemoryPer: number;
-  private appStatsDiskPer: number;
 
   public orgs: Array<Organization>;
   public org: Organization;
@@ -68,10 +59,17 @@ export class DashboardComponent implements OnInit {
 
   public appEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
+  public userProvidedEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
 
   public currentOrg: string;
   public currentSpace: string;
+
+  public userProvideName : string;
+  public userProvideCredentials : string;
+  public userProvideSyslogDrainUrl: string;
+
+  public placeholder="credentialsStr:{'username':'admin','password':'password';}";
 
   constructor(private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService,
               private spaceService: SpaceService, private log: NGXLogger, private appMainService: AppMainService, private catalogService: CatalogService,
@@ -90,8 +88,10 @@ export class DashboardComponent implements OnInit {
 
     this.org = null;
     this.orgs = [];
+
     this.space = null;
     this.spaces = [];
+
     this.servicepacks = [];
     this.buildpacks = [];
     this.starterpacks = [];
@@ -106,14 +106,16 @@ export class DashboardComponent implements OnInit {
     this.instanceName = '';
     this.appNewName = null;
     this.appDelName = '';
+
     this.selectedName = '';
     this.selectedGuid = '';
-    this.userProvidedServiceName = '';
-    this.userProvidedCredentials = '';
-    this.userProvidedSyslogDrainUrl = '';
 
     this.currentSpace = '';
     this.currentOrg = '';
+
+    this.userProvideName = '';
+    this.userProvideCredentials = '';
+    this.userProvideSyslogDrainUrl = '';
 
     if (this.commonService.getCurrentOrgName() != null) {
       this.currentOrg = this.commonService.getCurrentOrgName();
@@ -121,7 +123,6 @@ export class DashboardComponent implements OnInit {
     }
 
     console.log("=======================");
-    console.log(this.orgs);
   }
 
   currentSpaceBox() {
@@ -166,8 +167,6 @@ export class DashboardComponent implements OnInit {
       return data;
     }, error => {
       }, () => {
-      // this.currentSpace = '1799ffc2-0e83-44b7-adae-583aca80ebeb'; //spaceguid
-        this.log.debug(":::::::::::: " + this.currentSpace);
         if (this.currentSpace != null) {
           this.getSpaces(this.currentSpace);
         }
@@ -196,7 +195,6 @@ export class DashboardComponent implements OnInit {
          */
         this.commonService.setCurrentOrgGuid(this.org.guid);
         this.commonService.setCurrentOrgName(this.org.name);
-        // this.commonService.setCurrentLocation(this.space.guid);
       }
     } else {
       //초기화
@@ -378,19 +376,17 @@ export class DashboardComponent implements OnInit {
   // startAppClick() {
   //   return this.appMainService.getAppStats(this.selectedGuid);
   // }
-  userProvidedList(){
-    this.dashboardService.userProvidedList(this.servicesEntities['guid']).subscribe(data => {
-      console.log(data);
 
-      this.getAppSummary(this.selectedSpaceId);
-      this.commonService.isLoading = false;
+  userProvidedInfo(){
+
+    this.dashboardService.userProvidedInfo(this.selectedGuid).subscribe(data => {
+
+      this.userProvideName = data.entity["name"];
+      this.userProvideCredentials = JSON.stringify(data.entity["credentials"]);
+      this.userProvideSyslogDrainUrl = data.entity["syslog_drain_url"];
       return data;
-    }, error => {
-      this.commonService.isLoading = false;
-      this.getAppSummary(this.selectedSpaceId);
     });
   }
-
 
   createUserProvided() {
 
@@ -407,6 +403,7 @@ export class DashboardComponent implements OnInit {
 
     this.commonService.isLoading = true;
     this.dashboardService.createUserProvided(params).subscribe(data => {
+      console.log(params, data);
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
       this.commonService.isLoading = false;
@@ -419,16 +416,17 @@ export class DashboardComponent implements OnInit {
 
   updateUserProvided() {
     //username':'admin','password':'password';
-    var str = JSON.stringify(this.service['credentialsStr']);
+    var str = JSON.stringify(this.userProvideCredentials);
     console.log(str);
 
     let params = {
       orgName: this.org.name,
       guid: this.selectedGuid,
-      serviceInstanceName: this.selectedName,
-      credentials: this.service['credentialsStr'],
-      syslogDrainUrl: this.service['syslogDrainUrl']
+      serviceInstanceName: this.userProvideName,
+      credentials: this.userProvideCredentials,
+      syslogDrainUrl: this.userProvideSyslogDrainUrl
     };
+
     this.commonService.isLoading = true;
     this.dashboardService.updateUserProvided(params).subscribe(data => {
         console.log(params, data);
@@ -530,7 +528,9 @@ export class DashboardComponent implements OnInit {
   }
 
   popclick(id: string, type: string, guid: string, name: string) {
+
     $('.space_pop_submenu').hide();
+
     if (this.current_popmenu_id != id) {
       $("#" + id).show();
       this.current_popmenu_id = id;
@@ -543,7 +543,11 @@ export class DashboardComponent implements OnInit {
       this.selectedGuid = '';
       this.selectedName = '';
     }
-    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid) + ' NAME :: ' + name;
+
+    if(type == "provided"){
+      this.userProvidedInfo();
+    }
+    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid + ' NAME :: ' + name);
   }
 
 
