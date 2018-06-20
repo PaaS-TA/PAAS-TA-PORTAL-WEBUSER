@@ -118,6 +118,7 @@ export class UsermgmtComponent implements OnInit {
   }
 
   userSave() {
+
     let params = {
       userName: this.user['userName'],
       tellPhone: this.tellPhone,
@@ -125,56 +126,69 @@ export class UsermgmtComponent implements OnInit {
       address: this.address,
       imgPath : this.imgPath
     };
+
     this.common.isLoading = true;
     console.log(params);
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-      this.common.alertMessage('성공적으로 변경되었습니다.' , true);
+      this.common.alertMessage('변경되었습니다.' , true);
       this.common.isLoading = false;
       console.log(data);
-      return data;
+      return this.userInfo();
     }, error => {
       this.common.alertMessage('재 입력하세요.' , false);
       this.common.isLoading = false;
-      this.userInfo();
     });
+    /*reset*/
+    $('#tellPhone').val('');
+    $('#zipCode').val('');
+    $('#address').val('');
   }
 
-  //TODO : (1)정규식 체크하는 메소드구성 (2)밸리데이션 다시 체크 T: Usersave(); / F: checkMethod(); => focus
-  //TODO : 사용자 정보 변수값 서로 다르게 구성 할 것
+  cancelButton(){
+    $('#userName').val('');
+    $('#tellPhone').val('');
+    $('#zipCode').val('');
+    $('#address').val('');
+  }
+
   checkTellPhone() {
-    this.log.debug(this.tellPhone + ' :::: ' + this.tellPhone_pattenTest());
+    // this.log.debug(this.tellPhone + ' :::: ' + this.tellPhone_pattenTest());
     if (this.tellPhone_pattenTest()){
       this.isTellPhone == true;
+      $('#tellPhone').val(this.user['tellPhone']);
       this.userSave();
     } else {
       this.isTellPhone == false;
       this.common.alertMessage('재 입력하세요.' , false);
+      $('#tellPhone').val('');
       return this.userInfo;
     }
   }
 
   checkZipCode() {
-    this.log.debug(this.zipCode + ' :::: ' + this.zipCode_pattenTest());
+    // this.log.debug(this.zipCode + ' :::: ' + this.zipCode_pattenTest());
     if (this.zipCode_pattenTest()){
       this.isZipCode == true;
+      $('#zipCode').val(this.user['zipCode']);
       this.userSave();
     }else{
       this.isZipCode == false;
       this.common.alertMessage('재 입력하세요.' , false);
-      //TODO:focus
+      $('#zipCode').val('');
       return this.userInfo;
     }
   }
 
   checkAddress() {
-    this.log.debug(this.address + ' :::: ' + this.address_pattenTest());
+    // this.log.debug(this.address + ' :::: ' + this.address_pattenTest());
     if (this.address_pattenTest()){
       this.isAddress == true;
+      $('#address').val(this.user['address']);
       this.userSave();
     }else{
       this.isAddress == false;
       this.common.alertMessage('재 입력하세요.' , false);
-      //TODO:focus
+      $('#address').val('');
       return this.userInfo;
     }
   }
@@ -191,7 +205,7 @@ export class UsermgmtComponent implements OnInit {
    */
 
   checkPassword(event: any) {
-    this.log.debug('password_new :: ' + this.password_new);
+    // this.log.debug('password_new :: ' + this.password_new);
     // var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
     var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
     if (!reg_pwd.test(this.password_new)) {
@@ -202,7 +216,7 @@ export class UsermgmtComponent implements OnInit {
   }
 
   checkRePassword(event: any) {
-    this.log.debug('password_confirm :: ' + this.password_confirm);
+    // this.log.debug('password_confirm :: ' + this.password_confirm);
     if (this.password_new == this.password_confirm) {
       this.isRePassword = true;
     } else {
@@ -211,7 +225,7 @@ export class UsermgmtComponent implements OnInit {
   }
 
   checkChPassword(event: any) {
-    this.log.debug('password_check :: ' + this.password_check);
+    // this.log.debug('password_check :: ' + this.password_check);
     // var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
     var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
     if (!reg_pwd.test(this.password_check)) {
@@ -230,13 +244,16 @@ export class UsermgmtComponent implements OnInit {
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.debug(this.common.getUserGuid());
       if (data == 1 && this.isPassword && this.isRePassword) {
-        this.common.alertMessage('성공적으로 생성되었습니다.' , true);
+        this.common.alertMessage('성공적으로 변경되었습니다.' , true);
         this.common.isLoading = false;
-        return data;
       } else {
         this.common.alertMessage('새 비밀번호를 다시 입력하세요.' , false);
         this.common.isLoading = false;
       }
+      /*reset*/
+      $('#password_now').val('');
+      $('#password_new').val('');
+      $('#password_confirm').val('');
     });
   }
 
@@ -281,7 +298,6 @@ export class UsermgmtComponent implements OnInit {
   address_pattenTest() {
     let value = this.address;
 
-    this.log.debug('address :: ' + this.address);
     if (this.address.length < 256) {
       console.log(this.address.length);
       this.isAddress = true;
