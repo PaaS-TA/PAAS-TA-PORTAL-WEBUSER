@@ -17,7 +17,6 @@ import {HttpClientModule, HttpClient} from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {TopComponent} from './layout/top/top.component';
-import {NavComponent} from './layout/nav/nav.component';
 import {BottonComponent} from './layout/botton/botton.component';
 import {LeftComponent} from './layout/left/left.component';
 import {FormsModule} from '@angular/forms';
@@ -75,7 +74,6 @@ export function createTranslateLoader(http: HttpClient) {
     UserComponent,
     WebIdeUserComponent,
     TopComponent,
-    NavComponent,
     BottonComponent,
     LeftComponent,
     CallbackComponent,

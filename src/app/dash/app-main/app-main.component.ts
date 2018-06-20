@@ -127,15 +127,31 @@ export class AppMainComponent implements OnInit {
   public sltChartDefaultTimeRange: number;
   public sltChartGroupBy: number;
 
+  alive = true;
+
 
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
 
-    setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
+    Observable.timer(0,1000 * 60 * 2)
+      .takeWhile(() => this.alive) // only fires when component is alive
+      .subscribe(() => {
+        this.ngOnInit();
+      });
+
+    // setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
+
+    this.translate.get('appMain').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.appMain;
     });
+  }
+
+  ngOnDestroy(){
+    this.alive = false; // switches your IntervalObservable off
   }
 
   ngOnInit() {

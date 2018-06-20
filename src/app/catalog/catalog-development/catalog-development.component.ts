@@ -50,12 +50,17 @@ export class CatalogDevelopmentComponent implements OnInit {
 
   constructor(private translate: TranslateService,private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
     this.catalogService.isLoading(false);
-  }
-
-  ngOnInit() {
+    this.translate.get('catalog').subscribe((res: string) => {
+      this.translateEntities = res;
+      console.log(this.translateEntities);
+    });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
     });
+  }
+
+  ngOnInit() {
+
     $('#nav_first').attr('class','');
     $('#nav_second').attr('class','');
     $('#nav_third ').attr('class','cur');

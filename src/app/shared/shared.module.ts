@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
 import { TranslateModule } from '@ngx-translate/core';
 import { AppTopComponent } from '../layout/app-top/app-top.component';
+import { NavComponent } from '../layout/nav/nav.component';
 import { RoutingModule } from "../app.routing";
 
 @NgModule({
@@ -13,12 +14,14 @@ import { RoutingModule } from "../app.routing";
     RoutingModule
   ],
   declarations: [
-    AppTopComponent
+    AppTopComponent,
+    NavComponent
   ],
   exports: [
     CommonModule,
     TranslateModule,
-    AppTopComponent
+    AppTopComponent,
+    NavComponent
   ]
 })
 export class SharedModule {

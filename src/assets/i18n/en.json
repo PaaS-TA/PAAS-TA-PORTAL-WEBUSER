@@ -246,6 +246,12 @@
         "linkTextViewUsage": "View usage",
         "linkTextLogOut": "Log Out"
       }
+    },
+    "nav": {
+      "myAccount": "My Account",
+      "orgManage": "Org Manage",
+      "viewUsage": "View usage",
+      "logOut": "Log out"
     }
   },
   "catalog" : {

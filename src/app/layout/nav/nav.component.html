@@ -1,131 +1,58 @@
 <nav>
-    <div class="scroll_style">
-        <ul class="nav_1d">
-            <li class="cur" onclick="location.href='dashboard.html'">
-                <dl>
-                    <dt>
-                        <div id="lnbimg1" class="lefticos">
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            개요
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-            <li onclick="location.href='dashboard_event.html'">
-                <dl>
-                    <dt>
-                        <div id="lnbimg2" class="">
-
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            이벤트
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-            <li onclick="location.href='dashboard_state.html'">
-                <dl>
-                    <dt>
-                        <div id="lnbimg3" class="">
-
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            상태
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-            <li onclick="location.href='dashboard_service.html'">
-                <dl>
-                    <dt>
-                        <div id="lnbimg4" class="">
-
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            서비스
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-            <li onclick="location.href='dashboard_variable.html'">
-                <dl>
-                    <dt>
-                        <div id="lnbimg5" class="">
-
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            환경변수
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-            <li onclick="location.href='dashboard_lauth.html'">
-                <dl>
-                    <dt>
-                        <div id="lnbimg6" class="">
-
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            라우트
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-            <li onclick="location.href='dashboard_log.html'">
-                <dl>
-                    <dt>
-                        <div id="lnbimg7" class="">
-
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            로그
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-            <li onclick="location.href='dashboard_ssh.html'">
-                <dl>
-                    <dt>
-                        <div id="lnbimg14" class="">
-
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            SSH
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-            <li onclick="location.href='dashboard_monitor.html'">
-                <dl>
-                    <dt>
-                        <div id="lnbimg15" class="">
-
-                        </div>
-                    </dt>
-                    <dd>
-                        <p>
-                            모니터링
-                        </p>
-                    </dd>
-                </dl>
-            </li>
-        </ul>
-    </div>
+  <div class="scroll_style">
+    <ul class="nav_1d">
+      <li id="cur_usermgmt_nav" [routerLink]="['/usermgmt']">
+        <dl>
+          <dt>
+          <div id="lnbimg10">
+          </div>
+          </dt>
+          <dd>
+            <p>
+              {{ 'common.nav.myAccount' | translate }}
+            </p>
+          </dd>
+        </dl>
+      </li>
+      <li id="cur_org2_nav" [routerLink]="['/org2']">
+        <dl>
+          <dt>
+          <div id="lnbimg11">
+          </div>
+          </dt>
+          <dd>
+            <p>
+              {{ 'common.nav.orgManage' | translate }}
+            </p>
+          </dd>
+        </dl>
+      </li>
+      <li id="cur_quantity_nav" [routerLink]="['/quantity']">
+        <dl>
+          <dt>
+          <div id="lnbimg12" class="">
+          </div>
+          </dt>
+          <dd>
+            <p>
+              {{ 'common.nav.viewUsage' | translate }}
+            </p>
+          </dd>
+        </dl>
+      </li>
+      <li [routerLink]="['/logout']">
+        <dl>
+          <dt>
+          <div id="lnbimg13" class="">
+          </div>
+          </dt>
+          <dd>
+            <p>
+              {{ 'common.nav.logOut' | translate }}
+            </p>
+          </dd>
+        </dl>
+      </li>
+    </ul>
+  </div>
 </nav>
