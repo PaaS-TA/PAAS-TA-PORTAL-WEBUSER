@@ -95,4 +95,7 @@ export class IndexCommonService {
     });
   }
 
+  alertMessage(msg : string, result : boolean){
+    this.commonService.alertMessage(msg,result);
+  }
 }

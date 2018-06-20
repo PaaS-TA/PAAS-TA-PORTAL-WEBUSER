@@ -23,7 +23,6 @@ export class CommonService {
   useLang = 'ko';
 
 
-
   constructor(public http: HttpClient, public router: Router, public log: NGXLogger) {
     this.headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -40,6 +39,9 @@ export class CommonService {
   }
 
   doGet(url: string, token: string) {
+    if (token == null) {
+      token = '';
+    }
     return this.http.get(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token)
     });
@@ -47,6 +49,9 @@ export class CommonService {
 
 
   doPost(url: string, body: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
     return this.http.post(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token)
     });
@@ -54,8 +59,11 @@ export class CommonService {
 
 
   doFilePost(url: string, body: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
     this.fileheaders = new HttpHeaders();
-    this.fileheaders.set('Content-Type','multipart/form-data').set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==');
+    this.fileheaders.set('Content-Type', 'multipart/form-data').set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==');
     return this.http.post(this.gateway + url, body, {
       headers: this.fileheaders.set('cf-Authorization', token)
     });
@@ -68,12 +76,18 @@ export class CommonService {
   }
 
   doPut(url: string, body: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
     return this.http.put(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
 
   doDelete(url: string, params: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
     return this.http.delete(this.gateway + url, {
       params: params,
       headers: this.headers.set('cf-Authorization', token)
@@ -81,6 +95,9 @@ export class CommonService {
   }
 
   doDeleteNoParams(url: string, token: string) {
+    if (token == null) {
+      token = '';
+    }
     return this.http.delete(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token)
     });
@@ -156,14 +173,14 @@ export class CommonService {
                         cf_user_email: string, cf_phone_number: string, cf_expires: string, cf_previous_logon_time: string) {
     let now = new Date();
     /*
-    * 필수 정보
-    */
+     * 필수 정보
+     */
     window.sessionStorage.setItem('cf_user_guid', cf_user_guid);
     window.sessionStorage.setItem('cf_user_id', cf_user_id);
 
     /*
-    * 옵션 정보
-    */
+     * 옵션 정보
+     */
     if (cf_user_name == null) {
       cf_user_name = '';
     }
@@ -195,16 +212,16 @@ export class CommonService {
                       address: string, admin_yn: string, img_path: string) {
 
     /*
-    * 필수 정보
-    */
+     * 필수 정보
+     */
     window.sessionStorage.setItem('cf_user_id', user_id);
     window.sessionStorage.setItem('status', status);
     window.sessionStorage.setItem('admin_yn', admin_yn);
 
 
     /*
-    * 옵션 정보
-    */
+     * 옵션 정보
+     */
     if (user_name == null) {
       user_name = '';
     }
@@ -409,7 +426,8 @@ export class CommonService {
   setCurrentSpaceGuid(value: any) {
     window.sessionStorage.setItem('_currentSpaceGuid', value);
   }
-  setCurrentCatalogNumber(value : any){
+
+  setCurrentCatalogNumber(value: any) {
     window.sessionStorage.setItem('catalog_number', value);
   }
 
@@ -432,17 +450,18 @@ export class CommonService {
   getCurrentSpaceGuid(): any {
     return window.sessionStorage.getItem('_currentSpaceGuid');
   }
-  getCurrentCatalogNumber(): any{
+
+  getCurrentCatalogNumber(): any {
     return window.sessionStorage.getItem('catalog_number');
   }
 
-  alertMessage(value, result){
+  alertMessage(value, result) {
     $(".alertLayer .in").html(value);
-    if(result){
-      $(".alertLayer").css('border-left','4px solid #3d10ef');
+    if (result) {
+      $(".alertLayer").css('border-left', '4px solid #3d10ef');
     }
-    else{
-      $(".alertLayer").css('border-left','4px solid #cb3d4a');
+    else {
+      $(".alertLayer").css('border-left', '4px solid #cb3d4a');
     }
     $(".alertLayer").addClass("moveAlert");
 
