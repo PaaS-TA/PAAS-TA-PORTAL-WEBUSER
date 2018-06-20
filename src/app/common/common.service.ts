@@ -49,6 +49,9 @@ export class CommonService {
 
 
   doPost(url: string, body: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
     return this.http.post(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token)
     });
@@ -56,6 +59,9 @@ export class CommonService {
 
 
   doFilePost(url: string, body: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
     this.fileheaders = new HttpHeaders();
     this.fileheaders.set('Content-Type', 'multipart/form-data').set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==');
     return this.http.post(this.gateway + url, body, {
@@ -70,12 +76,18 @@ export class CommonService {
   }
 
   doPut(url: string, body: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
     return this.http.put(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
 
   doDelete(url: string, params: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
     return this.http.delete(this.gateway + url, {
       params: params,
       headers: this.headers.set('cf-Authorization', token)
@@ -83,6 +95,9 @@ export class CommonService {
   }
 
   doDeleteNoParams(url: string, token: string) {
+    if (token == null) {
+      token = '';
+    }
     return this.http.delete(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token)
     });
