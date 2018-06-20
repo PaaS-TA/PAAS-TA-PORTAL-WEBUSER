@@ -96,4 +96,10 @@ export class Org2MainService {
       return res;
     })
   }
+
+  userInviteEmailSend(params: any) {
+    return this.commonService.doPost('/commonapi/v2/email/inviteOrg', params, '').map((res: Response) => {
+      return res;
+    });
+  }
 }
