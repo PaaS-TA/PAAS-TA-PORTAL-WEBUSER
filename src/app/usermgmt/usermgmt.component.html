@@ -141,19 +141,19 @@
                     <div class="account_table_in">
                       <p>
                         <span>현재비밀번호</span>
-                        <input type="password" name="password_now" [(ngModel)]="password_now"/>
+                        <input type="password" name="password_now" id= "password_now" [(ngModel)]="password_now"/>
                       </p>
                       <p>
                         <span>새 비밀번호
                         </span>
-                        <input type="password" [(ngModel)]="password_new" name="password_new" required="" (change)="checkPassword($event)" (keydown)="checkPassword($event)" (keyup)="checkPassword($event)">
+                        <input type="password" [(ngModel)]="password_new" name="password_new" id= "password_new" required="" (change)="checkPassword($event)" (keydown)="checkPassword($event)" (keyup)="checkPassword($event)">
                         <br> <span></span>
                         <span class="red"  use-form-error="isNotSame" *ngIf="!isPassword">
                         <i class="fas fa-exclamation-circle"></i>영문,숫자를 혼합하여 6~20자 이내 공백 미포함 입력만 가능합니다.</span>
                       </p>
                       <span>새 비밀번호 확인
                       </span>
-                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" required="" (change)="checkRePassword($event)" (keydown)="checkRePassword($event)" (keyup)="checkRePassword($event)"/>
+                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" id= "password_confirm" required="" (change)="checkRePassword($event)" (keydown)="checkRePassword($event)" (keyup)="checkRePassword($event)"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="updateUserPassword()">변경하기</button>
                         <button class="btns6 colors5 btns_sw">취소</button>
@@ -191,10 +191,10 @@
                     <div class="account_table_in">
                       <span>변경할 이름
                       </span>
-                      <input type="text" name="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }" ng-minlength="0"/>
+                      <input type="text" name="userName" id="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }" ng-minlength="0"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
-                        <button class="btns6 colors5 btns_sw">취소</button>
+                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">취소</button>
                       </div>
                     </div>
                   </div>
@@ -202,7 +202,7 @@
               </tr>
               <tr>
                 <td>전화번호</td>
-                <th>{{tellPhone}}</th>
+                <th>{{user['tellPhone']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
               </tr>
               <tr class="on">
@@ -214,7 +214,7 @@
                       <input type="text" class="input_tellphone" id="tellPhone" name="tellPhone" [(ngModel)]="tellPhone" (ngModelChange)="tellPhone_pattenTest()" ng-maxlength="15"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="checkTellPhone()">변경하기</button>
-                        <button class="btns6 colors5 btns_sw">취소</button>
+                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">취소</button>
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isTellPhone">
@@ -226,7 +226,7 @@
               </tr>
               <tr>
                 <td>우편번호</td>
-                <th>{{zipCode}}</th>
+                <th>{{user['zipCode']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
                     </tr>
               <tr class="on">
@@ -235,10 +235,10 @@
                     <div class="account_table_in">
                       <span>새 우편번호
                       </span>
-                      <input type="text" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()" ng-maxlength="15"/>
+                      <input type="text" class="input_zipCode" id="zipCode" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()" ng-maxlength="15"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="checkZipCode()">변경하기</button>
-                        <button class="btns6 colors5 btns_sw">취소</button>
+                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">취소</button>
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isZipCode" >
@@ -250,7 +250,7 @@
               </tr>
               <tr>
                 <td>주소</td>
-                <th>{{address}}</th>
+                <th>{{user['address']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
                         </tr>
               <tr class="on">
@@ -259,10 +259,10 @@
                     <div class="account_table_in">
                       <span>새 주소
                       </span>
-                      <input type="text" name="address" [(ngModel)]="address" ng-model-options="{ getterSetter: true }" (ngModelChange)="address_pattenTest()"/>
+                      <input type="text" class="input_address" id="address" name="address" [(ngModel)]="address" (ngModelChange)="address_pattenTest()"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" (click)="checkAddress()">변경하기</button>
-                        <button class="btns6 colors5 btns_sw">취소</button>
+                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">취소</button>
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isAddress" >
