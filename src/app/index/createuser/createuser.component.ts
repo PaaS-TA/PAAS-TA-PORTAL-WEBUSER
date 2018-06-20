@@ -35,7 +35,7 @@ export class CreateuserComponent implements OnInit, DoCheck {
 
     if (this.isSendEmail) {
       this.isSendEmail = false;
-      alert("성공적으로 메일 발송");
+      this.indexCommonService.alertMessage("성공적으로 메일 발송", true);
       this.router.navigate(['/']);
     }
   }
