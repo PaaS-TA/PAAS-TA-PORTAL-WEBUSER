@@ -1,7 +1,7 @@
 <nav>
   <div class="scroll_style">
     <ul class="nav_1d">
-      <li>
+      <li [routerLink]="['/usermgmt']">
         <dl>
           <dt>
             <div id="lnbimg10">
@@ -14,7 +14,7 @@
           </dd>
         </dl>
       </li>
-      <li class="cur">
+      <li class="cur" [routerLink]="['/org2']" (click)="reloadEvent.emit(true)">
         <dl>
           <dt>
             <div id="lnbimg11">
@@ -27,7 +27,7 @@
           </dd>
         </dl>
       </li>
-      <li>
+      <li [routerLink]="['/quantity']">
         <dl>
           <dt>
             <div id="lnbimg12" class="">
@@ -40,7 +40,7 @@
           </dd>
         </dl>
       </li>
-      <li>
+      <li [routerLink]="['/logout']">
         <dl>
           <dt>
             <div id="lnbimg13" class="">

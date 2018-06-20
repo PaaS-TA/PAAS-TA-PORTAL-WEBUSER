@@ -26,9 +26,12 @@ export class Org2ProduceComponent implements OnInit {
   public translateEntities: any = [];
 
   constructor(private orgService : Org2ProduceService, private translate: TranslateService) {
+    this.translate.get('orgProduce').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.orgProduce;
-      this.orgNameCheck();
     });
   }
 
@@ -37,7 +40,7 @@ export class Org2ProduceComponent implements OnInit {
     this.doLayout();
     this.getOrgNameList();
     this.getOrgQuota();
-    setTimeout(() => this.orgNameCheck(), 100);
+    setTimeout(() => this.orgNameCheck(), 1000);
   }
 
   doLayout() {
