@@ -133,6 +133,10 @@ export class AppMainComponent implements OnInit {
 
     setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
 
+    this.translate.get('appMain').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.appMain;
     });
