@@ -58,8 +58,12 @@ export class CatalogDetailComponent implements OnInit {
   privatedomain : any;
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
 
+    this.translate.get('catalog').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
+      console.log(this.translateEntities.result.appTemplateSusses);
     });
   }
 
