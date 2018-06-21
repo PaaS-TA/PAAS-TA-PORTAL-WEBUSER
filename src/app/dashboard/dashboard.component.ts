@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
   public userProvideName : string;
   public userProvideCredentials : string;
   public userProvideSyslogDrainUrl: string;
-  public userProvideType : string
+  public userProvideType : string;
 
   public placeholder="credentialsStr:{'username':'admin','password':'password';}";
 
@@ -78,7 +78,6 @@ export class DashboardComponent implements OnInit {
     if (commonService.getToken() == null) {router.navigate(['/']);}
 
     this.log.debug("Token ::: " + this.commonService.getToken());
-
 
     this.service = new Observable<Service>();
 
@@ -409,9 +408,10 @@ export class DashboardComponent implements OnInit {
       this.commonService.alertMessage('UserProvided 생성 완료되었습니다.' , true);
       return data;
     }, error => {
+      this.commonService.alertMessage('UserProvided 생성 실패하였습니다.' , false);
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
-      this.commonService.alertMessage('UserProvided 생성 실패하였습니다..' , false);
+
     });
     this.userProvideName = '';
     this.userProvideCredentials = '';
@@ -424,20 +424,24 @@ export class DashboardComponent implements OnInit {
       /*createUserProvided*/
       this.createUserProvided();
     }else{
-      this.isLength == false;
       return false;
     }
   }
 
   isUserProvideValidation() {
-    if (this.userProvideName.length &&  this.userProvideCredentials.length && this.userProvideSyslogDrainUrl.length > 0) {
-      this.isLength = true;
+  if (this.userProvideName.length &&  this.userProvideCredentials.length && this.userProvideSyslogDrainUrl.length > 0) {
+    this.isLength = true;
+    try {
+      JSON.parse(this.userProvideCredentials);
       return true;
-    } else {
-      this.isLength = false;
+    } catch (e) {
       return false;
     }
+  } else {
+    this.isLength = false;
+    return false;
   }
+}
 
   updateUserProvided() {
     //username':'admin','password':'password';
@@ -456,10 +460,12 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.updateUserProvided(params).subscribe(data => {
         console.log(params, data);
         this.getAppSummary(this.selectedSpaceId);
+        this.commonService.alertMessage('UserProvided 수정 완료되었습니다.' , true);
         this.commonService.isLoading = false;
         return data;
       }
       , error => {
+        this.commonService.alertMessage('UserProvided 수정 실패되었습니다.' , false);
         this.commonService.isLoading = false;
         this.getAppSummary(this.selectedSpaceId);
       });

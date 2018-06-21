@@ -233,7 +233,7 @@
                       <li>
                         <div>제공서비스</div>
                         <div>:</div>
-                        <div class="serviceTitle">{{userProvideType}}</div>
+                        <div class="serviceTitle">{{item.service_plan.name}}</div>
                       </li>
                       <li *ngIf="item.dashboard_url != null">
                         <div>대시보드</div>
@@ -253,7 +253,7 @@
                       <li>
                         <div>제공서비스</div>
                         <div>:</div>
-                        <div class="serviceTitle">{{item.service_plan}}</div>
+                        <div class="serviceTitle">user-provided</div>
                       </li>
                     </ul>
                   </div>
