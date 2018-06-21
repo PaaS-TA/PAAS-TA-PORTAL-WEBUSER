@@ -132,5 +132,6 @@ export class Service {
   classification: string;
   syslogDrainUrl: string;
   docFileUrl: string;
+  type: string;
 }
 

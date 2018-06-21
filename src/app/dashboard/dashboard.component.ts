@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
   public isMessage: boolean;
   public isPatten: boolean;
   private isLoadingSpaces = false;
-  public isLength: boolean;
+  public isLength: boolean = true;
 
   public token: string;
   public userid: string;
@@ -69,6 +69,7 @@ export class DashboardComponent implements OnInit {
   public userProvideName : string;
   public userProvideCredentials : string;
   public userProvideSyslogDrainUrl: string;
+  public userProvideType : string
 
   public placeholder="credentialsStr:{'username':'admin','password':'password';}";
 
@@ -77,18 +78,7 @@ export class DashboardComponent implements OnInit {
     if (commonService.getToken() == null) {router.navigate(['/']);}
 
     this.log.debug("Token ::: " + this.commonService.getToken());
-  }
 
-  currentSpaceBox() {
-    this.log.debug("currentSpaceBox");
-    if (this.orgs.length > 0) {
-      this.getOrg(this.currentOrg);
-    } else {
-      setTimeout(this.currentSpaceBox(), 3000);
-    }
-  }
-
-  ngOnInit() {
 
     this.service = new Observable<Service>();
 
@@ -122,6 +112,7 @@ export class DashboardComponent implements OnInit {
     this.userProvideName = '';
     this.userProvideCredentials = '';
     this.userProvideSyslogDrainUrl = '';
+    this.userProvideType = '';
 
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
@@ -132,6 +123,20 @@ export class DashboardComponent implements OnInit {
       this.currentOrg = this.commonService.getCurrentOrgName();
       this.currentSpace = this.commonService.getCurrentSpaceName();
     }
+
+  }
+
+
+  currentSpaceBox() {
+    this.log.debug("currentSpaceBox");
+    if (this.orgs.length > 0) {
+      this.getOrg(this.currentOrg);
+    } else {
+      setTimeout(this.currentSpaceBox(), 3000);
+    }
+  }
+
+  ngOnInit() {
 
     $("[id^='apopmenu_']").hide();
     $("[id^='layerpop']").modal("hide");
@@ -377,6 +382,7 @@ export class DashboardComponent implements OnInit {
       this.userProvideName = data.entity["name"];
       this.userProvideCredentials = JSON.stringify(data.entity["credentials"]);
       this.userProvideSyslogDrainUrl = data.entity["syslog_drain_url"];
+      this.userProvideType = data.entity["type"];
       return data;
     });
   }
@@ -389,9 +395,9 @@ export class DashboardComponent implements OnInit {
     let params = {
       orgName: this.org.name,
       spaceGuid: this.selectedSpaceId,
-      serviceInstanceName: this.service['serviceInstanceName'],
-      credentials: this.service['credentialsStr'],
-      syslogDrainUrl: this.service['syslogDrainUrl']
+      serviceInstanceName: this.userProvideName,
+      credentials: this.userProvideCredentials,
+      syslogDrainUrl: this.userProvideSyslogDrainUrl
     };
 
     this.commonService.isLoading = true;
@@ -400,16 +406,37 @@ export class DashboardComponent implements OnInit {
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
       this.commonService.isLoading = false;
+      this.commonService.alertMessage('UserProvided 생성 완료되었습니다.' , true);
       return data;
     }, error => {
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
+      this.commonService.alertMessage('UserProvided 생성 실패하였습니다..' , false);
     });
+    this.userProvideName = '';
+    this.userProvideCredentials = '';
+    this.userProvideSyslogDrainUrl = '';
+  }
 
-    $('#userProvideName').val('');
-    $('#userProvideCredentials').val('');
-    $('#userProvideSyslogDrainUrl').val('');
+  checkLength() {
+    if (this.isUserProvideValidation()){
+      this.isLength == true;
+      /*createUserProvided*/
+      this.createUserProvided();
+    }else{
+      this.isLength == false;
+      return false;
+    }
+  }
 
+  isUserProvideValidation() {
+    if (this.userProvideName.length &&  this.userProvideCredentials.length && this.userProvideSyslogDrainUrl.length > 0) {
+      this.isLength = true;
+      return true;
+    } else {
+      this.isLength = false;
+      return false;
+    }
   }
 
   updateUserProvided() {
@@ -460,30 +487,6 @@ export class DashboardComponent implements OnInit {
     return (this.getAppSummary(this.selectedSpaceId));
   }
 
-  patten(value) {
-    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
-    const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-    return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
-  }
-
-  checkPatten(event: any) {
-    var reg_patten = /^[A-Za-z0-9+]*$/;
-    if (!reg_patten.test(this.selectedName)) {
-      this.isPatten = false;
-      return;
-    }
-    this.isPatten = true;
-  }
-
-  checkLength(){
-    this.log.debug('userProvideName :: ' +  this.service['serviceInstanceName']);
-    if(this.service['serviceInstanceName'].length == 0) {
-      this.isLength = false;
-    } else {
-      this.isLength = true;
-    }
-  }
 
   //move catalogDevelopment
   moveDevelopMent() {
@@ -513,6 +516,12 @@ export class DashboardComponent implements OnInit {
   //move moveDashboard_SourceController
   moveDashboardS() {
     // this.router.navigate();
+  }
+
+  cancelButton(){
+    $('#userProvideName').val('');
+    $('#userProvideCredentials').val('');
+    $('#userProvideSyslogDrainUrl').val('');
   }
 
   showLoading() {
