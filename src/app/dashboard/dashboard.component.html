@@ -215,7 +215,6 @@
                   <div class="app_per clearfix" *ngIf="item.service_plan != null">
                     <ul>
                       <li>
-
                         <div>연결 앱</div>
                         <div>:</div>
                         <ng-container *ngFor="let app of appEntities;">
@@ -234,7 +233,7 @@
                       <li>
                         <div>제공서비스</div>
                         <div>:</div>
-                        <div class="serviceTitle">{{item.service_plan.name}}</div>
+                        <div class="serviceTitle">{{userProvideType}}</div>
                       </li>
                       <li *ngIf="item.dashboard_url != null">
                         <div>대시보드</div>
@@ -243,6 +242,7 @@
                       </li>
                     </ul>
                   </div>
+
                   <div class="app_per clearfix" *ngIf="item.service_plan == null">
                     <ul>
                       <li>
@@ -250,15 +250,10 @@
                         <div>:</div>
                         <div class="serviceTitle">{{item.name}}</div>
                       </li>
-                      <!--<li>-->
-                      <!--<div>Credentials</div>-->
-                      <!--<div>:</div>-->
-                      <!--<div class="serviceTitle">{{item.service.label}}</div>-->
-                      <!--</li>-->
                       <li>
                         <div>제공서비스</div>
                         <div>:</div>
-                        <div class="serviceTitle">Default</div>
+                        <div class="serviceTitle">{{item.service_plan}}</div>
                       </li>
                     </ul>
                   </div>
@@ -398,30 +393,25 @@
           <ul>
             <li>
               <div>서비스 이름</div>
-              <div>
-                <input type="text" name="userProvideName" [(ngModel)]="service['serviceInstanceName']"
-                       (change)="checkLength()" class="space_input"/></div>
-              <!--<span class="red" use-form-error="isNotSame" *ngIf="!isLength" ><i class="fas fa-exclamation-circle"></i>256 자 이하만 가능합니다.</span>-->
+              <div><input type="text" id="userProvideName" [(ngModel)]="userProvideName" class="space_input"/></div>
             </li>
             <li>
               <div>Credentials</div>
-              <div><input type="text" name="userProvideCredentials" [(ngModel)]="service['credentialsStr']"
-                          class="space_input"
-                          placeholder="{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;0000&quot;}"/>
-              </div>
+              <div><input type="text" id="userProvideCredentials" [(ngModel)]="userProvideCredentials" class="space_input" placeholder="EXAMPLE:{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;0000&quot;}"/></div>
             </li>
             <li>
               <div>Syslog Drain Url</div>
-              <div><input type="text" name="userProvideSyslogDrainUrl" [(ngModel)]="service['syslogDrainUrl']"
-                          class="space_input"/></div>
+              <div><input type="text" id="userProvideSyslogDrainUrl" [(ngModel)]="userProvideSyslogDrainUrl" class="space_input"/></div>
             </li>
           </ul>
+          <span class="red" use-form-error="isNotSame" *ngIf="!isLength" style="padding-left: 100px" ><i class="fas fa-exclamation-circle"></i>모든 값을 입력하세요.</span>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4 " data-dismiss="modal" (click)="createUserProvided()">생성</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4 " (click)="checkLength()">생성</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal" (click)="cancelButton()">취소</button>
         </div>
+
       </div>
     </div>
   </div>
@@ -453,7 +443,7 @@
             </li>
             <li>
               <div>Syslog Drain Url</div>
-              <div><input type="text" name="userProvideSyslogDrainUrl" [(ngModel)]="userProvideSyslogDrainUrl"
+              <div><input type="text" name="userProvideSyslogDrainUrl"[(ngModel)]="userProvideSyslogDrainUrl"
                           class="space_input"/></div>
             </li>
           </ul>
@@ -461,7 +451,7 @@
         <!-- Footer -->
         <div class="modal-footer">
           <button type="button" class="btns2 colors4 " data-dismiss="modal" (click)="updateUserProvided()">수정</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal" >취소</button>
         </div>
       </div>
     </div>
