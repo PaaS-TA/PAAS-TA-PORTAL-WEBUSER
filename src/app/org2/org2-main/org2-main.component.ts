@@ -34,9 +34,19 @@ export class Org2MainComponent implements OnInit {
   public sltOrgRoleId : string;
   public sltDelete : boolean;
   public pppp : string;
+
+  public translateEntities: any = [];
+
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private orgMainService: Org2MainService, private common: CommonService) {
     this.common.isLoading = false;
 
+    this.translate.get('orgMain').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.orgMain;
+    });
   }
 
   ngOnInit() {
@@ -85,19 +95,34 @@ export class Org2MainComponent implements OnInit {
     });
   }
 
-  buttonEvent() {
-    $(".organization_sw").on("click" , function(){
+  detailClick(id) {
       var wrap_line = $(".organization_wrap");
-      $(this).parents(wrap_line).toggleClass("on");
-      var updown = $(this).children("i").attr('class');
+      $("#"+id).parents(wrap_line).toggleClass("on");
+      var updown = $("#"+id).children("i").attr('class');
       if( updown == 'fas fa-chevron-down' ){
-        $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-        $(this).html("<i class='fas fa-chevron-up'></i> 세부사항 닫기");
+        $("#"+id).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+        $("#"+id).html("<i class='fas fa-chevron-up'></i> "+this.translateEntities.closeDetail+"");
       } else {
-        $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-        $(this).html("<i class='fas fa-chevron-down'></i> 세부사항 보기");
+        $("#"+id).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+        $("#"+id).html("<i class='fas fa-chevron-down'></i> "+this.translateEntities.viewDetail+"");
       }
-    });
+  }
+
+  buttonEvent() {
+    // $(".organization_sw").on("click" , function(){
+    //   var wrap_line = $(".organization_wrap");
+    //   $(this).parents(wrap_line).toggleClass("on");
+    //   var updown = $(this).children("i").attr('class');
+    //   if( updown == 'fas fa-chevron-down' ){
+    //     $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+    //     console.log("=1=");
+    //     console.log(this.translateEntities);
+    //     $(this).html("<i class='fas fa-chevron-up'></i> "+this.translateEntities.closeDetail+"");
+    //   } else {
+    //     $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+    //     $(this).html("<i class='fas fa-chevron-down'></i> "+this.translateEntities.viewDetail+"");
+    //   }
+    // });
 
     //TODO 추후 변경??
     $("th .fa-edit,.table_edit .fa-edit").on("click" , function(){
@@ -195,12 +220,12 @@ export class Org2MainComponent implements OnInit {
     this.orgMainService.renameOrg(params).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        this.common.alertMessage("성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgRenameSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgRenameFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -218,12 +243,12 @@ export class Org2MainComponent implements OnInit {
     this.orgMainService.deleteOrg(this.sltOrgGuid, true).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        this.common.alertMessage("성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -245,12 +270,12 @@ export class Org2MainComponent implements OnInit {
     this.orgMainService.createSpace(params).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        this.common.alertMessage("성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.createSpaceSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.createSpaceFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -273,12 +298,12 @@ export class Org2MainComponent implements OnInit {
     this.orgMainService.renameSpace(params).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        this.common.alertMessage("성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.renameSpaceSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.renameSpaceFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -296,12 +321,12 @@ export class Org2MainComponent implements OnInit {
     this.orgMainService.deleteSpace(this.sltSpaceGuid, true).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        this.common.alertMessage("성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.deleteSpaceSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.deleteSpaceFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -323,12 +348,12 @@ export class Org2MainComponent implements OnInit {
     this.orgMainService.addDmaoin(params).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        this.common.alertMessage("성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.addDomainSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.addDomainFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -336,22 +361,22 @@ export class Org2MainComponent implements OnInit {
   showPopDelDomainClick(orgGuid: string, domainName: string) {
     this.sltOrgGuid = orgGuid;
     this.sltDomainName = domainName;
-    $("#layerpop_domain_del").modal("show");
+    $("#layerpop_domain_delete").modal("show");
   }
 
-  delDmaoin() {
+  deleteDmaoin() {
     $("[id^='layerpop']").modal("hide");
     this.common.isLoading = true;
 
-    this.orgMainService.delDmaoin(this.sltOrgGuid, this.sltDomainName).subscribe(data => {
+    this.orgMainService.deleteDmaoin(this.sltOrgGuid, this.sltDomainName).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        this.common.alertMessage("성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.deleteDomainSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.deleteDomainFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -378,12 +403,12 @@ export class Org2MainComponent implements OnInit {
     this.orgMainService.changeQuota(this.sltOrgGuid, params).subscribe(data => {
       if(data.result) {
         this.common.isLoading = false;
-        this.common.alertMessage("성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.changeQuotaSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage("실패"+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.changeQuotaFail+"<br><br>"+data.msg.description, false);
       }
     });
   }
@@ -401,7 +426,7 @@ export class Org2MainComponent implements OnInit {
   showMemberSetOrgRole(user, role, org, orgrole, value){
     this.sltDelete = $("#"+value+"").is(":checked");
     if(!this.authorityCheck(role)){
-      this.common.alertMessage("조직 권한이 없습니다.",false);
+      this.common.alertMessage(this.translateEntities.alertLayer.orgRoleError,false);
         $("#"+value+"").prop("checked", !this.sltDelete);
       return;
     }
@@ -424,9 +449,9 @@ export class Org2MainComponent implements OnInit {
     if(this.sltDelete){
       this.orgMainService.changeOrgUserRole(this.sltOrgGuid,body).subscribe(data => {
         console.log(data);
-        this.common.alertMessage("권한 수정 성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgRoleChangeSuccess, true);
       },error=>{
-        this.common.alertMessage("권한 수정 오류", false);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgRoleChangeFail, false);
         this.cancelMemberSetOrgRole();
         this.common.isLoading=false;
       },()=>{
@@ -435,9 +460,9 @@ export class Org2MainComponent implements OnInit {
     }else{
       this.orgMainService.delOrgUserRole(this.sltOrgGuid,body).subscribe(data => {
         console.log(data);
-        this.common.alertMessage("권한 수정 성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgRoleChangeSuccess, true);
       },error=>{
-        this.common.alertMessage("권한 수정 오류", false);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgRoleChangeFail, false);
         this.cancelMemberSetOrgRole();
         this.common.isLoading=false;
       },()=>{
@@ -453,7 +478,7 @@ export class Org2MainComponent implements OnInit {
 
   showMemberCancel(user, role, org){
     if(!this.authorityCheck(role)){
-      this.common.alertMessage("조직 권한이 없습니다.",false);
+      this.common.alertMessage(this.translateEntities.alertLayer.orgRoleError,false);
       return;
     }
     this.sltUserGuid = user.user_id;
@@ -466,10 +491,10 @@ export class Org2MainComponent implements OnInit {
   memberCancel(){
     this.common.isLoading = true;
     this.orgMainService.delMemberCancel(this.sltOrgGuid,this.sltUserGuid).subscribe(data => {
-      this.common.alertMessage("맴버 취소가 완료되었습니다.", true);
+      this.common.alertMessage(this.translateEntities.alertLayer.memberCancelSuccess, true);
       this.getOrgList();
     },error => {
-      this.common.alertMessage("맴버 취소를 실패했습니다.", true);
+      this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail, true);
     },()=>{
       this.common.isLoading = false;
     });
@@ -477,9 +502,9 @@ export class Org2MainComponent implements OnInit {
 
   get SltOrgRoleName() : string{
     switch(this.sltOrgRole){
-      case 'OrgManager' : return '조직관리자';
-      case 'BillingManager' : return '조직 결제 관리자';
-      case 'OrgAuditor' : return '조직관리자';
+      case 'OrgManager' : return ''+this.translateEntities.orgAdmin+'';
+      case 'BillingManager' : return ''+this.translateEntities.orgBillingManager+'';
+      case 'OrgAuditor' : return ''+this.translateEntities.orgObserver+'';
     }
   }
 
@@ -560,10 +585,10 @@ export class Org2MainComponent implements OnInit {
     this.orgMainService.userInviteEmailSend(params).subscribe(data => {
       if(data) {
         this.common.isLoading = false;
-        this.common.alertMessage("사용자를 초대완료했습니다.", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.sendEmailSuccess, true);
       }
     }, error => {
-      this.common.alertMessage("오류 : " + error, false);
+      this.common.alertMessage(this.translateEntities.alertLayer.sendEmailFail+"<br><br>"+error, false);
     });
   }
 

@@ -5,10 +5,10 @@
   <div class="contain">
     <div class="content">
       <div class="row one_line">
-        <h1>조직관리
+        <h1>{{ 'orgMain.title' | translate }}
           <div class="pull-right btns_top_ww">
             <button class="btns6 colors4 btns_top" (click)="goOrgCreate()">
-              새 조직 추가
+              {{ 'orgMain.addNewOrg' | translate }}
             </button>
           </div>
         </h1>
@@ -18,25 +18,25 @@
               <div class="organization_btnin">
                 <input class="tempTitle" type="text" [id]="'modifyOrgName_'+item.org.metadata.guid" value="{{item.org.entity.name}}"
                        (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (focusout)="replaceInvalidateString($event)" />
-                <button class="btns6 colors4 yess2" (click)="showPopModifyOrgNameClick(item.org.metadata.guid)">변경하기</button>
-                <button class="btns6 colors5 nos2">취소</button>
+                <button class="btns6 colors4 yess2" (click)="showPopModifyOrgNameClick(item.org.metadata.guid)">{{ 'orgMain.change' | translate }}</button>
+                <button class="btns6 colors5 nos2">{{ 'orgMain.cancel' | translate }}</button>
               </div>
             </div>
             <div class="pull-right">
               <div class="ri_up">
-                <button class="btns6 colors4 organization_sw">
-                  <i class="fas fa-chevron-down"></i> 세부사항보기
+                <button class="btns6 colors4 organization_sw" id="detailBtn_{{i}}" (click)="detailClick('detailBtn_'+i)">
+                  <i class="fas fa-chevron-down"></i> {{ 'orgMain.viewDetail' | translate }}
                 </button>
               </div>
               <div class="organization_dot">
                 <i class="fas fa-ellipsis-v"></i>
                 <ul>
                   <li class="name_inputTitle2">
-                    <p><i class="fas fa-edit"></i>&nbsp;&nbsp;이름변경</p>
+                    <p><i class="fas fa-edit"></i>&nbsp;&nbsp;{{ 'orgMain.reName' | translate }}</p>
                   </li>
                   <li data-toggle="modal" (click)="showPopDeleteOrgClick(item.org.metadata.guid, item.org.entity.name)">
                     <p>
-                      <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;삭제
+                      <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;{{ 'orgMain.delete' | translate }}
                     </p>
                   </li>
                 </ul>
@@ -48,10 +48,10 @@
             <div class="organization_table">
               <table>
                 <caption>
-                  공간<span>{{item.space.resources.length}}</span>
+                  {{ 'orgMain.space' | translate }}<span>{{item.space.resources.length}}</span>
                   <div class="pull-right">
                     <button class="btns6 colors4" data-toggle="modal" (click)="showPopSpaceCreateClick(item.org.metadata.guid)">
-                      <i class="fas fa-plus"></i> 공간 생성
+                      <i class="fas fa-plus"></i> {{ 'orgMain.createSpace' | translate }}
                     </button>
                   </div>
                 </caption>
@@ -73,12 +73,12 @@
                       <td colspan="3">
                         <div class="">
                           <div class="account_table_in">
-                            <span>변경할 이름</span>
+                            <span>{{ 'orgMain.changeName' | translate }}</span>
                             <input type="text" value="{{space.entity.name}}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)"
                                    (keyup.enter)="showPopModifySpaceNameClick(space.metadata.guid)" [id]="'modifySpaceName_'+space.metadata.guid" />
                             <div class="">
-                              <button class="btns6 colors4" (click)="showPopModifySpaceNameClick(space.metadata.guid)">변경하기</button>
-                              <button class="btns6 colors5 btns_sw">취소</button>
+                              <button class="btns6 colors4" (click)="showPopModifySpaceNameClick(space.metadata.guid)">{{ 'orgMain.change' | translate }}</button>
+                              <button class="btns6 colors5 btns_sw">{{ 'orgMain.cancel' | translate }}</button>
                             </div>
                           </div>
                         </div>
@@ -91,10 +91,10 @@
             <div class="organization_table">
               <table id="domain_{{i}}">
                 <caption>
-                  도메인<span>0</span>
+                  {{ 'orgMain.domain' | translate }}<span>0</span>
                   <div class="pull-right">
                     <button class="btns6 colors4" (click)="showPopAddDomainClick(item.org.metadata.guid)">
-                      <i class="fas fa-plus"></i> 도메인 추가
+                      <i class="fas fa-plus"></i> {{ 'orgMain.addDomain' | translate }}
                     </button>
                   </div>
                 </caption>
@@ -121,10 +121,10 @@
             <div class="organization_table2 paT30">
               <table>
                 <caption>
-                  사용자<span>{{item.userRoles.user_roles.length}}</span>
+                  {{ 'orgMain.user' | translate }}<span>{{item.userRoles.user_roles.length}}</span>
                   <div class="pull-right">
                     <button class="btns6 colors4" (click)="showUserInvite(item)">
-                      <i class="fas fa-plus"></i> 사용자 초대
+                      <i class="fas fa-plus"></i> {{ 'orgMain.inviteUser' | translate }}
                     </button>
                   </div>
                 </caption>
@@ -137,8 +137,8 @@
                 </colgroup>
                 <thead>
                   <tr>
-                    <td>사용자</td>
-                    <td colspan="4">역할설정</td>
+                    <td>{{ 'orgMain.user' | translate }}</td>
+                    <td colspan="4">{{ 'orgMain.setRoles' | translate }}</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -147,17 +147,17 @@
                       <td>{{userRole.user_email}}</td>
                       <td>
                         <input id="check1_{{i}}_{{j}}" type="checkbox" [checked]="userRole.roles.indexOf('OrgManager') > -1" (click)="showMemberSetOrgRole(userRole, item.userRoles.user_roles,item.org.metadata.guid, 'OrgManager', 'check1_'+i+'_'+j)"/>
-                        <label for="check1_{{i}}_{{j}}">OrgManager(조직 관리자)</label>
+                        <label for="check1_{{i}}_{{j}}">OrgManager({{ 'orgMain.orgAdmin' | translate }})</label>
                       </td>
                       <td>
                         <input id="check2_{{i}}_{{j}}" type="checkbox" [checked]="userRole.roles.indexOf('BillingManager') > -1" (click)="showMemberSetOrgRole(userRole, item.userRoles.user_roles,item.org.metadata.guid, 'BillingManager', 'check2_'+i+'_'+j)"/>
-                        <label for="check2_{{i}}_{{j}}">BillingManager(조직 결제 관리자)</label>
+                        <label for="check2_{{i}}_{{j}}">BillingManager({{ 'orgMain.orgBillingManager' | translate }})</label>
                       </td>
                       <td>
                         <input id="check3_{{i}}_{{j}}" type="checkbox" [checked]="userRole.roles.indexOf('OrgAuditor') > -1" (click)="showMemberSetOrgRole(userRole, item.userRoles.user_roles,item.org.metadata.guid, 'OrgAuditor','check3_'+i+'_'+j)"/>
-                        <label for="check3_{{i}}_{{j}}">OrgAuditor(조직 참관인)</label>
+                        <label for="check3_{{i}}_{{j}}">OrgAuditor({{ 'orgMain.orgObserver' | translate }})</label>
                       </td>
-                      <th><button class="btns4 colors8" (click)="showMemberCancel(userRole,item.userRoles.user_roles, item.org.metadata.guid)">맴버 취소</button></th>
+                      <th><button class="btns4 colors8" (click)="showMemberCancel(userRole,item.userRoles.user_roles, item.org.metadata.guid)">{{ 'orgMain.cancelMember' | translate }}</button></th>
                     </tr>
                   </ng-container>
                 </tbody>
@@ -166,7 +166,7 @@
             <div class="organization_table2 maT30 paB40">
               <table class="line_tables">
                 <caption>
-                  할당량
+                  {{ 'orgMain.quota' | translate }}
                 </caption>
                 <colgroup>
                   <col style=''>
@@ -181,15 +181,15 @@
                 </colgroup>
                 <thead>
                   <tr>
-                    <td>선택</td>
-                    <td>서비스명</td>
-                    <td>메모리</td>
-                    <td>인스턴트 메모리</td>
-                    <td>라우트</td>
-                    <td>서비스 인스턴트</td>
-                    <td>가격</td>
-                    <td>인스턴트</td>
-                    <td>인스턴트</td>
+                    <td>{{ 'orgMain.select' | translate }}</td>
+                    <td>{{ 'orgMain.serviceName' | translate }}</td>
+                    <td>{{ 'orgMain.memory' | translate }}</td>
+                    <td>{{ 'orgMain.instantMemory' | translate }}</td>
+                    <td>{{ 'orgMain.route' | translate }}</td>
+                    <td>{{ 'orgMain.serviceInstant' | translate }}</td>
+                    <td>{{ 'orgMain.price' | translate }}</td>
+                    <td>{{ 'orgMain.instant' | translate }}</td>
+                    <td>{{ 'orgMain.instant' | translate }}</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -235,16 +235,16 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">조직명 변경</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.orgRename.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>조직명을 {{sltOrgRename}}로 변경 하시겠습니까?</p>
+          <p>{{ 'orgMain.layerpop.orgRename.bodyText' | translate : {sltOrgRename: sltOrgRename} }}</p>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="renameOrg()">변경</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" (click)="renameOrg()">{{ 'orgMain.layerpop.orgRename.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.orgRename.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -260,21 +260,19 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">조직 삭제</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.orgDelete.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p">
-              조직을 삭제하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br/>
-              <span>{{sltOrgDelname}}</span>을 삭제하시겠습니까?
+            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.orgDelete.bodyText' | translate  : {sltOrgDelname: sltOrgDelname}">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="deleteOrg()">삭제</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" (click)="deleteOrg()">{{ 'orgMain.layerpop.orgDelete.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.orgDelete.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -290,18 +288,18 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">공간 생성</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.spaceCreate.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <input type="text" placeholder="공간 이름을 입력하세요" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="createSpace()" id="createSpaceName" />
+            <input type="text" placeholder="{{ 'orgMain.layerpop.spaceCreate.placeholder' | translate }}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="createSpace()" id="createSpaceName" />
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="createSpace()">생성</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" (click)="createSpace()">{{ 'orgMain.layerpop.spaceCreate.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.spaceCreate.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -317,16 +315,16 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">공간명 변경</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.spaceRename.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>공간명을 {{sltSpaceRename}}로 변경 하시겠습니까?</p>
+          <p>{{ 'orgMain.layerpop.spaceRename.bodyText' | translate : {sltSpaceRename: sltSpaceRename} }}</p>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="renameSpace()">변경</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" (click)="renameSpace()">{{ 'orgMain.layerpop.spaceRename.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.spaceRename.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -342,21 +340,19 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">공간 삭제</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.spaceDelete.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p">
-              공간 삭제를 하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br/>
-              <span>{{sltSpaceDelname}}</span>을 삭제하시겠습니까?
+            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.spaceDelete.bodyText' | translate  : {sltSpaceDelname: sltSpaceDelname}">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="deleteSpace()">삭제</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" (click)="deleteSpace()">{{ 'orgMain.layerpop.spaceDelete.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.spaceDelete.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -372,25 +368,25 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">도메인추가</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.domainAdd.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <input type="text" placeholder="도메인 명을 입력하세요" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="addDmaoin()" id="addDmaoinName" />
+            <input type="text" placeholder="{{ 'orgMain.layerpop.domainAdd.placeholder' | translate }}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="addDmaoin()" id="addDmaoinName" />
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="addDmaoin()">추가</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" (click)="addDmaoin()">{{ 'orgMain.layerpop.domainAdd.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.domainAdd.btn2' | translate }}</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="layerpop_domain_del">
+<div class="modal fade" id="layerpop_domain_delete">
   <div class="vertical-alignment-helper">
     <div class="modal-dialog vertical-align-center">
       <div class="modal-content">
@@ -399,19 +395,19 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">도메인 삭제</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.domainDelete.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p"><span>{{sltDomainName}}</span> 도메인을 삭제하시겠습니까?
+            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.domainDelete.bodyText' | translate  : {sltDomainName: sltDomainName}">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="delDmaoin()">삭제</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" (click)="deleteDmaoin()">{{ 'orgMain.layerpop.domainDelete.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.domainDelete.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -427,19 +423,19 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" (click)="changeQuotaCancel()">×</button>
           <!-- header title -->
-          <h4 class="modal-title">할당량 변경</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.quotaChange.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p"><span>할당량</span>을 변경하시겠습니까?
+            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.quotaChange.bodyText' | translate">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="changeQuota()">변경</button>
-          <button type="button" class="btns2 colors5" (click)="changeQuotaCancel()">취소</button>
+          <button type="button" class="btns2 colors4" (click)="changeQuota()">{{ 'orgMain.layerpop.quotaChange.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" (click)="changeQuotaCancel()">{{ 'orgMain.layerpop.quotaChange.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -455,19 +451,19 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">멤버 취소</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.memberCancel.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p"><span>{{sltMemberName}}</span>님을 멤버 취소 하시겠습니까?
+            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.memberCancel.bodyText' | translate  : {sltMemberName: sltMemberName}">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="memberCancel()">확인</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="memberCancel()">{{ 'orgMain.layerpop.memberCancel.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.memberCancel.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -483,19 +479,19 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal" (click)="cancelMemberSetOrgRole()">×</button>
           <!-- header title -->
-          <h4 class="modal-title">조직 권한 수정</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.orgSetRole.title' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p"><span>{{sltMemberName}}</span>님의 <span>{{SltOrgRoleName}}</span>권한을 수정하시겠습니까?
+            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.orgSetRole.bodyText' | translate  : {sltMemberName: sltMemberName, SltOrgRoleName: SltOrgRoleName}">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="memberSetOrgRole()">확인</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal" (click)="cancelMemberSetOrgRole()">취소</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="memberSetOrgRole()">{{ 'orgMain.layerpop.orgSetRole.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal" (click)="cancelMemberSetOrgRole()">{{ 'orgMain.layerpop.orgSetRole.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -511,13 +507,13 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">사용자 초대</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.layerpop4.title' | translate }}</h4>
         </div>
         <!-- body -->
         <ng-container *ngIf="sltEntity">
         <div class="modal-body">
           <input class="w100" placeholder="sample@test.com" id="userEmail"/>
-          <span class="red">* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.</span>
+          <span class="red">{{ 'orgMain.layerpop.layerpop4.explanation' | translate }}</span>
           <table class="maT30">
             <colgroup>
               <col style=''>
@@ -527,10 +523,8 @@
             </colgroup>
             <thead>
             <tr>
-              <td>조직
-              </td>
-              <td colspan="3">할당된 조직
-              </td>
+              <td>{{ 'orgMain.layerpop.layerpop4.org' | translate }}</td>
+              <td colspan="3">{{ 'orgMain.layerpop.layerpop4.assignedOrg' | translate }}</td>
             </tr>
             </thead>
             <tbody>
@@ -538,21 +532,21 @@
               <td>{{sltEntity.org.entity.name}}</td>
               <td>
                 <input class="checkSel" id="modal1" type="checkbox"/>
-                <label for="modal1">OrgManager(조직 관리자)</label>
+                <label for="modal1">OrgManager({{ 'orgMain.layerpop.layerpop4.orgAdmin' | translate }})</label>
               </td>
               <td>
                 <input class="checkSel" id="modal2" type="checkbox" checked="checked"/>
-                <label for="modal2">BillingManager(조직 결제 관리자)</label>
+                <label for="modal2">BillingManager({{ 'orgMain.layerpop.layerpop4.orgBillingManager' | translate }})</label>
               </td>
               <td>
                 <input class="checkSel" id="modal3" type="checkbox" checked="checked"/>
-                <label for="modal3">OrgAuditor(조직 참관인)</label>
+                <label for="modal3">OrgAuditor({{ 'orgMain.layerpop.layerpop4.orgObserver' | translate }})</label>
               </td>
             </tr>
             </tbody>
           </table>
           <input class="checkAll" id="checkAll" type="checkbox" (click)="allCheck()"/>
-          <label class="maT10" for="checkAll">전체선택</label>
+          <label class="maT10" for="checkAll">{{ 'orgMain.layerpop.layerpop4.selectAll' | translate }}</label>
           <table class="maT30" *ngIf="sltEntity.space.resources.length > 0">
             <colgroup>
               <col style=''>
@@ -562,9 +556,9 @@
             </colgroup>
             <thead>
             <tr>
-              <td>사용자
+              <td>{{ 'orgMain.layerpop.layerpop4.user' | translate }}
               </td>
-              <td colspan="3">부여할 공간 역할
+              <td colspan="3">{{ 'orgMain.layerpop.layerpop4.roleGiveSpace' | translate }}
               </td>
             </tr>
             </thead>
@@ -589,13 +583,13 @@
           </table>
 
           <input class="checkAll2" id="checkAll2" type="checkbox"/>
-          <label class="maT10" for="checkAll2">전체선택</label>
+          <label class="maT10" for="checkAll2">{{ 'orgMain.layerpop.layerpop4.selectAll' | translate }}</label>
 
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userInvite()">초대</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userInvite()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
         </div>
         </ng-container>
       </div>

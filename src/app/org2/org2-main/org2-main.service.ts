@@ -56,7 +56,7 @@ export class Org2MainService {
     }).do(console.log);
   }
 
-  delDmaoin(guid: string, domainName: string) {
+  deleteDmaoin(guid: string, domainName: string) {
     return this.commonService.doDelete('/portalapi/v2/domains/'+guid+'?domainName='+domainName, '', this.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
