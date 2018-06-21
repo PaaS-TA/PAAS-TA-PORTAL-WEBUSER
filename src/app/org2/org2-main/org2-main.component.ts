@@ -33,6 +33,7 @@ export class Org2MainComponent implements OnInit {
   public sltOrgRole : string;
   public sltOrgRoleId : string;
   public sltDelete : boolean;
+  public pppp : string;
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private orgMainService: Org2MainService, private common: CommonService) {
     this.common.isLoading = false;
 
@@ -511,6 +512,7 @@ export class Org2MainComponent implements OnInit {
   showUserInvite(value){
     this.sltEntity = value;
     console.log(this.sltEntity);
+    $("[id='userEmail']").val('');
   $("#layerpop4").modal("show");
     setTimeout(() => this.allCheck(), 500);
   }

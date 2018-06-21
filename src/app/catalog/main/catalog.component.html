@@ -9,7 +9,7 @@
             <div class="input-group-btn">
               <button name="button" class="btn" type="button"><i class="fas fa-search"></i></button>
             </div>
-            <input class="form-control" type="text" placeholder="Catalog Search" [(ngModel)]="searchKeyword" (ngModelChange)="Search()"/>
+            <input class="form-control" id="catalog-search" type="text" placeholder="Catalog Search" (keyup)="Search()"/>
           </div>
         </div>
         <div class="">

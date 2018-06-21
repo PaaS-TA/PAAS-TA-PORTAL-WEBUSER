@@ -69,6 +69,8 @@ export class CatalogComponent implements OnInit {
   }
 
   Search()  {
+    this.searchKeyword = $("#catalog-search").val();
+    console.log(this.searchKeyword);
     this.SearchStarterPack();
     this.SearchBuildPack();
     this.SearchServicePack();
