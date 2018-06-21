@@ -51,7 +51,7 @@ const routes: Routes = [
   {path: 'log', component: LogComponent, canActivate: [AuthGuard]},
   {path: 'menu', component: MenuComponent, canActivate: [AuthGuard]},
   {path: 'org', component: Org2MainComponent, canActivate: [AuthGuard]},
-  {path: 'org2produce', component: Org2ProduceComponent, canActivate: [AuthGuard]},
+  {path: 'orgproduce', component: Org2ProduceComponent, canActivate: [AuthGuard]},
   {path: 'service', component: ServiceComponent, canActivate: [AuthGuard]},
   {path: 'space', component: SpaceComponent, canActivate: [AuthGuard]},
   {path: 'usage', component: UsageComponent, canActivate: [AuthGuard]},

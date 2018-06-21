@@ -395,7 +395,7 @@ export class Org2MainComponent implements OnInit {
   }
 
   goOrgCreate(){
-    this.router.navigate(['org2produce']);
+    this.router.navigate(['orgproduce']);
   }
 
   showMemberSetOrgRole(user, role, org, orgrole, value){
