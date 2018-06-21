@@ -35,6 +35,8 @@ export class Org2MainComponent implements OnInit {
   public sltDelete : boolean;
   public pppp : string;
 
+  public showIndexArray: Array <number>;
+
   public translateEntities: any = [];
 
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private orgMainService: Org2MainService, private common: CommonService) {
@@ -62,6 +64,15 @@ export class Org2MainComponent implements OnInit {
         });
     });
     $("[id^='layerpop']").modal("hide");
+
+    if(this.orgsEntities != undefined) {
+      this.showIndexArray = new Array<number>();
+      for(var i = 0; i < this.orgsEntities.length; i++) {
+        if($("#detailBtn_close_"+i).css('display') == 'block') {
+          this.showIndexArray.push(i);
+        }
+      }
+    }
 
     this.getDomains();
     this.getQuotaDefinitions();
@@ -169,6 +180,15 @@ export class Org2MainComponent implements OnInit {
     $(".yess2,.nos2").on("click" , function(){
       $(this).closest("div.organization_btn").removeClass("on");
     });
+
+    if(this.showIndexArray != undefined) {
+      for(var i = 0; i < this.showIndexArray.length; i++) {
+        var wrap_line = $(".organization_wrap");
+        $("#detailBtn_view_"+this.showIndexArray[i]).parents(wrap_line).toggleClass("on");
+        $("#detailBtn_view_"+this.showIndexArray[i]).hide();
+        $("#detailBtn_close_"+this.showIndexArray[i]).show();
+      }
+    }
   }
 
   instanceMemoryLimit(instance_memory_limit) {
