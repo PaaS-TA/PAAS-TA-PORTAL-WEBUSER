@@ -1648,12 +1648,12 @@ export class AppMainComponent implements OnInit {
       });
 
       if(levelsArray2.length == 0)
-        levelsArray2 = [""];
+        levelsArray2 = ["0", "1"];
 
       if(datasetsArray.length == 0)
         datasetsArray = [{
-          label: "",
-          data: [0],
+          label: "0",
+          data: [0, 0],
           lineTension: 0,
           fill: false,
           borderWidth: 0,
@@ -1681,7 +1681,9 @@ export class AppMainComponent implements OnInit {
             boxHeight: 4,
             fontColor: '#cfd2d7'
           }
-        }
+        },
+        responsive: true,
+        maintainAspectRatio: false
       };
       var lineChart = null;
       lineChart = new Chart(speedCanvas, {
@@ -1827,12 +1829,12 @@ export class AppMainComponent implements OnInit {
       });
 
       if(levelsArray2.length == 0)
-        levelsArray2 = [""];
+        levelsArray2 = ["0", "1"];
 
       if(datasetsArray.length == 0)
         datasetsArray = [{
-          label: "",
-          data: [0],
+          label: "0",
+          data: [0, 0],
           lineTension: 0,
           fill: false,
           borderWidth: 0,
@@ -1860,7 +1862,9 @@ export class AppMainComponent implements OnInit {
             boxHeight: 4,
             fontColor: '#cfd2d7'
           }
-        }
+        },
+        responsive: true,
+        maintainAspectRatio: false
       };
       var lineChart = null;
       lineChart = new Chart(speedCanvas2, {
@@ -2006,12 +2010,12 @@ export class AppMainComponent implements OnInit {
       });
 
       if(levelsArray2.length == 0)
-        levelsArray2 = [""];
+        levelsArray2 = ["0", "1"];
 
       if(datasetsArray.length == 0)
         datasetsArray = [{
-          label: "",
-          data: [0],
+          label: "0",
+          data: [0, 0],
           lineTension: 0,
           fill: false,
           borderWidth: 0,
@@ -2039,7 +2043,9 @@ export class AppMainComponent implements OnInit {
             boxHeight: 4,
             fontColor: '#cfd2d7'
           }
-        }
+        },
+        responsive: true,
+        maintainAspectRatio: false
       };
       var lineChart = null;
       lineChart = new Chart(speedCanvas3, {

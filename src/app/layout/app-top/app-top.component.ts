@@ -34,11 +34,26 @@ export class AppTopComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
+    $('#' + this.cursorId).addClass('cur');
+    const url = this.router['url'].split("/")[1];
+    this.translate.get('catalog').subscribe((res: string) => {
+      this.translateEntities = res;
+      if(url.indexOf('detail') > 0){
+        this.catalogName = this.translateEntities.nav.appTemplate;
+      }
+      else if(url.indexOf('development') > 0){
+        this.catalogName = this.translateEntities.nav.appDevelopment;
+      }
+      else if(url.indexOf('service') > 0){
+        this.catalogName = this.translateEntities.nav.service;
+      }
+      else{
+        this.catalogName = this.translateEntities.nav.viewAll;
+      }
+    });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
-      this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
-      $('#' + this.cursorId).addClass('cur');
-      const url = this.router['url'].split("/")[1];
       if(url.indexOf('detail') > 0){
         this.catalogName = this.translateEntities.nav.appTemplate;
       }
