@@ -95,16 +95,22 @@ export class Org2MainComponent implements OnInit {
     });
   }
 
-  detailClick(id) {
+  detailClick(index, type) {
       var wrap_line = $(".organization_wrap");
-      $("#"+id).parents(wrap_line).toggleClass("on");
-      var updown = $("#"+id).children("i").attr('class');
+      $("#detailBtn_"+type+"_"+index).parents(wrap_line).toggleClass("on");
+      var updown = $("#detailBtn_"+type+"_"+index).children("i").attr('class');
       if( updown == 'fas fa-chevron-down' ){
-        $("#"+id).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-        $("#"+id).html("<i class='fas fa-chevron-up'></i> "+this.translateEntities.closeDetail+"");
+        // $("#detailBtn_view_"+index).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+        $("#detailBtn_view_"+index).hide();
+        $("#detailBtn_close_"+index).show();
+        // $("#detailBtn_view_"+index).addClass('fas fa-chevron-up');
+        // $("#"+id).html("<i class='fas fa-chevron-up'></i> "+this.translateEntities.closeDetail+"");
       } else {
-        $("#"+id).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-        $("#"+id).html("<i class='fas fa-chevron-down'></i> "+this.translateEntities.viewDetail+"");
+        // $("#detailBtn_close_"+index).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+        $("#detailBtn_close_"+index).hide();
+        $("#detailBtn_view_"+index).show();
+        // $("#detailBtn_close_"+index).addClass('fas fa-chevron-down');
+        // $("#"+id).html("<i class='fas fa-chevron-down'></i> "+this.translateEntities.viewDetail+"");
       }
   }
 

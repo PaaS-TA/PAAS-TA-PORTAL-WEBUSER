@@ -24,8 +24,11 @@
             </div>
             <div class="pull-right">
               <div class="ri_up">
-                <button class="btns6 colors4 organization_sw" id="detailBtn_{{i}}" (click)="detailClick('detailBtn_'+i)">
+                <button class="btns6 colors4 organization_sw" id="detailBtn_view_{{i}}" (click)="detailClick(i, 'view')">
                   <i class="fas fa-chevron-down"></i> {{ 'orgMain.viewDetail' | translate }}
+                </button>
+                <button class="btns6 colors4 colors5 organization_sw" id="detailBtn_close_{{i}}" (click)="detailClick(i, 'close')" style="display:none;">
+                  <i class="fas fa-chevron-up"></i> {{ 'orgMain.closeDetail' | translate }}
                 </button>
               </div>
               <div class="organization_dot">
