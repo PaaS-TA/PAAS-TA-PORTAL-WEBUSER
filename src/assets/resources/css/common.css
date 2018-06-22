@@ -1378,9 +1378,9 @@ body.email h4{color:#293133;}
 .space_list > li{width:calc(25% - 20px);height:410px;float:left;margin-right:20px;}
 .space_list > li > div{height:410px !important;background:#f9f9f9 url('../images/space/plus.gif')no-repeat;background-position:center;}
 .space_pop_container{position:relative;background:#fff;height:405px;box-sizing:border-box;padding:40px}
-.space_list_small > li{min-height:360px;height:auto;}/*180621 스타일 수정*/
-.space_list_small > li > div{min-height:360px !important;height:auto !important;}/*180621 스타일 수정*/
-.space_list_small{min-height:356px;height:auto;}/*180621 스타일 수정*/
+.space_list_small > li{min-height:347px;height:auto;}/*180621 스타일 수정*/
+.space_list_small > li > div{min-height:347px !important;height:auto !important;}/*180621 스타일 수정*/
+.space_list_small{min-height:342px;height:auto;}/*180621 스타일 수정*/
 .footer_n{width:100%;height:50px;color:#58666e;font-size:12px;text-align:left;padding:20px 40px;background:#f9f9f9;border-top:1px solid rgba(0,0,0,0.05);margin-top:30px}
 .progress-bar{position:relative;z-index:2}
 .progress-full{text-align:center;position:absolute;top:0;left:0;width:100%;z-index:1;font-size:12px;padding-top:2px}
