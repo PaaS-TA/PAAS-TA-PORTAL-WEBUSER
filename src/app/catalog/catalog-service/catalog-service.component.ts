@@ -21,10 +21,7 @@ declare var jQuery: any;
 export class CatalogServiceComponent implements OnInit {
   catalogcontans = CATALOGURLConstant;
   namecheck:number = 0;
-  translateEntities : string;
-  disableserviceinput:boolean;
-  disablebutton:boolean;
-  serviceplaceholder:string;
+  translateEntities : any;
   orgname:string;
   spacename:string;
 
@@ -47,7 +44,7 @@ export class CatalogServiceComponent implements OnInit {
   servicename:string = '';
 
 
-  radionumber:number;
+
 
   constructor(private translate: TranslateService, private router : Router, private route:ActivatedRoute, private catalogService:CatalogService, private log:NGXLogger) {
 
@@ -88,29 +85,21 @@ export class CatalogServiceComponent implements OnInit {
     });
   }
 
+  errorMsg(value : any){
+    this.catalogService.alertMessage(value, false);
+    this.catalogService.isLoading(false);
+  }
+
+  successMsg(value : any){
+    this.catalogService.alertMessage(value, true);
+    this.catalogService.isLoading(false);
+  }
+
   activatedRouteInit() {
     const orgname = this.catalogService.getOrgName();
     const spacename = this.catalogService.getSpaceName();
     orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
-    spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE, this.placeholderSetting(true)) : (this.spacename = spacename, this.placeholderSetting(false));
-  }
-
-  placeholderSetting(value:boolean) {
-    this.disableInput(value);
-    this.disableButton(true);
-    if (value) {
-      this.serviceplaceholder = CATALOGURLConstant.SELECTORGANDSPACE;
-    } else {
-      this.serviceplaceholder = CATALOGURLConstant.INPUTSERVICE;
-    }
-  }
-
-  disableInput(value:boolean) {
-    this.disableserviceinput = value;
-  }
-
-  disableButton(value:boolean) {
-    this.disablebutton = value;
+    spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE) : (this.spacename = spacename);
   }
 
   DomainInit() {
@@ -138,16 +127,18 @@ export class CatalogServiceComponent implements OnInit {
     this.apps.push(this.app);
   }
 
-  pattenTest(value){
+  pattenTest(){
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-    return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
+    $('#servicename').val($('#servicename').val().replace(regExpPattern, '')
+      .replace(regExpBlankPattern, '')
+      .replace(regKoreanPatten, ''));
+    this.servicename =$('#servicename').val();
   }
 
   ServiceInit() {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
-
       this.servicepack = data['list'][0];
       console.log(this.servicepack);
       this.serviceParameterSetting(this.servicepack.parameter, 'parameter');
@@ -160,7 +151,7 @@ export class CatalogServiceComponent implements OnInit {
         })
         this.plan = this.serviceplan[0];
       }, error => {
-        alert("서비스 플랜이 없습니다.");
+        this.errorMsg(this.translateEntities.service.notServicePlan);
         this.router.navigate(['catalog']);
       });
     },error => {
@@ -207,6 +198,8 @@ export class CatalogServiceComponent implements OnInit {
         if(_org.name === this.orgname){
           this.org = _org;
         }
+      }, error => {
+        this.errorMsg(error);
       });
       this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
         data['spaceList']['resources'].forEach(res => {
@@ -217,6 +210,8 @@ export class CatalogServiceComponent implements OnInit {
             this.appList();
           } });
         this.catalogService.isLoading(false);
+      }, error => {
+        this.errorMsg(error);
       });
     });
   }
@@ -226,7 +221,6 @@ export class CatalogServiceComponent implements OnInit {
     this.catalogService.setCurrentOrg(this.org.name, this.org.guid);
     this.space = null;
     this.spaces = new Array<Space>();
-    this.placeholderSetting(true);
     this.spacesFirst();
     this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {
@@ -234,12 +228,13 @@ export class CatalogServiceComponent implements OnInit {
       });
       if (this.spaces[0])this.space = this.spaces[0];
       this.catalogService.isLoading(false);
+    }, error => {
+      this.errorMsg(error);
     });
   }
 
   appList() {
     this.catalogService.setCurrentSpace(this.space.name, this.space.guid);
-
       this.catalogService.isLoading(true);
       this.apps = new Array<App>();
     this.appsFirst();
@@ -247,7 +242,8 @@ export class CatalogServiceComponent implements OnInit {
       data['resources'].forEach(app => {
         this.apps.push(new App(app['metadata'], app['entity']));
       })
-      this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE);
+    }, error => {
+      this.errorMsg(error);
     });
     this.serviceInstanceList();
   }
@@ -260,29 +256,20 @@ export class CatalogServiceComponent implements OnInit {
       })
       this.serviceNameCheck();
       this.catalogService.isLoading(false);
+    }, error => {
+      this.errorMsg(error);
     });
   }
 
   serviceNameCheck() {
-    this.disableButton(true);
-    if (this.servicename.length < 1 || this.servicename.trim() === '') {
-      this.namecheck = 0;
-      this.disableButton(true);
-      return;
-    }
-    if(this.pattenTest(this.servicename)){
-      this.namecheck = CATALOGURLConstant.NO;
-      this.disableButton(true);
-      return;
-    }
+    this.pattenTest();
     this.namecheck = CATALOGURLConstant.OK;
-    this.servicenamelist.forEach(name => {
+    this.servicenamelist.some(name => {
       if (name === this.servicename) {
         this.namecheck = CATALOGURLConstant.NO;
-        return;
+        return true;
       }
     });
-    this.disableButton(false);
   }
 
   serviceParameterSetting(value, key) {
@@ -329,21 +316,14 @@ export class CatalogServiceComponent implements OnInit {
     this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
     {
       if(!isUndefined(data.message)){
-        this.catalogService.alertMessage('서비스 생성 실패 : ' + data.message, false);
-        this.catalogService.isLoading(false);
+        this.errorMsg(this.translateEntities.result.serviceError+' : ' + + data.message);
         return;
       }
-      this.catalogService.alertMessage('서비스 생성에 성공하셨습니다.', true);
-      this.catalogService.isLoading(false);
+      this.successMsg(this.translateEntities.result.serviceSusses);
       this.router.navigate(['dashboard']);
     }, error => {
-      alert("서비스생성 실패");
-      this.catalogService.isLoading(false);
+      this.errorMsg(this.translateEntities.result.serviceError+ ' : ' + error);
     });
-  }
-
-  settingRadioId() {
-
   }
 
   changePlan(value) {
