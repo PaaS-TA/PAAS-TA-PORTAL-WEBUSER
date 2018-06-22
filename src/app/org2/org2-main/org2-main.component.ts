@@ -286,6 +286,7 @@ export class Org2MainComponent implements OnInit {
     this.common.isLoading = true;
 
     let params = {
+      userId : this.common.getUserGuid(),
       orgGuid: this.sltOrgGuid,
       spaceName: $("#createSpaceName").val()
     };
@@ -348,7 +349,7 @@ export class Org2MainComponent implements OnInit {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteSpaceSuccess, true);
 
-        this.ngOnInit();
+        setTimeout(() => this.ngOnInit(), 500);
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteSpaceFail+"<br><br>"+data.msg.description, false);
