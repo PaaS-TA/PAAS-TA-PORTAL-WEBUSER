@@ -269,7 +269,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   createApp() {
     this.catalogService.isLoading(true);
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
+      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appurl).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
           let appSampleFilePath = this.buildpack['appSampleFilePath'];
           if(appSampleFilePath ==='' || appSampleFilePath === null)
