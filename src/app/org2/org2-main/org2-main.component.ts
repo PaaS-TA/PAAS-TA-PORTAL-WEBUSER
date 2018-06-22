@@ -35,7 +35,7 @@ export class Org2MainComponent implements OnInit {
   public sltDelete : boolean;
   public pppp : string;
 
-  public showIndexArray: Array <number>;
+  private showIndexArray: Array<string> = [];
 
   public translateEntities: any = [];
 
@@ -66,19 +66,16 @@ export class Org2MainComponent implements OnInit {
     $("[id^='layerpop']").modal("hide");
 
     if(this.orgsEntities != undefined) {
-      this.showIndexArray = new Array<number>();
-      var i = 0;
+      this.showIndexArray = [];
+      let showArry: Array<string> = [];
+      
       $.each(this.orgsEntities, function (key, dataobj) {
-        if($("#detailBtn_close_"+i).css('display') == 'block') {
-          this.showIndexArray.push(i);
-          i++;
+        if($("#detailBtn_close_"+dataobj.org.metadata.guid).css('display') == 'block') {
+          showArry.push(dataobj.org.metadata.guid);
+          //TODO 끝나고나서 list불러야 하나
         }
       });
-      // for(var i = 0; i < this.orgsEntities.length; i++) {
-      //   if($("#detailBtn_close_"+i).css('display') == 'block') {
-      //     this.showIndexArray.push(i);
-      //   }
-      // }
+      this.showIndexArray = showArry;
     }
 
     this.getDomains();
@@ -113,22 +110,16 @@ export class Org2MainComponent implements OnInit {
     });
   }
 
-  detailClick(index, type) {
+  detailClick(orgGuid, type) {
       var wrap_line = $(".organization_wrap");
-      $("#detailBtn_"+type+"_"+index).parents(wrap_line).toggleClass("on");
-      var updown = $("#detailBtn_"+type+"_"+index).children("i").attr('class');
+      $("#detailBtn_"+type+"_"+orgGuid).parents(wrap_line).toggleClass("on");
+      var updown = $("#detailBtn_"+type+"_"+orgGuid).children("i").attr('class');
       if( updown == 'fas fa-chevron-down' ){
-        // $("#detailBtn_view_"+index).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-        $("#detailBtn_view_"+index).hide();
-        $("#detailBtn_close_"+index).show();
-        // $("#detailBtn_view_"+index).addClass('fas fa-chevron-up');
-        // $("#"+id).html("<i class='fas fa-chevron-up'></i> "+this.translateEntities.closeDetail+"");
+        $("#detailBtn_view_"+orgGuid).hide();
+        $("#detailBtn_close_"+orgGuid).show();
       } else {
-        // $("#detailBtn_close_"+index).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-        $("#detailBtn_close_"+index).hide();
-        $("#detailBtn_view_"+index).show();
-        // $("#detailBtn_close_"+index).addClass('fas fa-chevron-down');
-        // $("#"+id).html("<i class='fas fa-chevron-down'></i> "+this.translateEntities.viewDetail+"");
+        $("#detailBtn_close_"+orgGuid).hide();
+        $("#detailBtn_view_"+orgGuid).show();
       }
   }
 
@@ -485,8 +476,9 @@ export class Org2MainComponent implements OnInit {
     this.common.isLoading=true;
     if(this.sltDelete){
       this.orgMainService.changeOrgUserRole(this.sltOrgGuid,body).subscribe(data => {
-        console.log(data);
         this.common.alertMessage(this.translateEntities.alertLayer.orgRoleChangeSuccess, true);
+
+        this.ngOnInit();
       },error=>{
         this.common.alertMessage(this.translateEntities.alertLayer.orgRoleChangeFail, false);
         this.cancelMemberSetOrgRole();
@@ -496,8 +488,9 @@ export class Org2MainComponent implements OnInit {
       });
     }else{
       this.orgMainService.delOrgUserRole(this.sltOrgGuid,body).subscribe(data => {
-        console.log(data);
         this.common.alertMessage(this.translateEntities.alertLayer.orgRoleChangeSuccess, true);
+
+        this.ngOnInit();
       },error=>{
         this.common.alertMessage(this.translateEntities.alertLayer.orgRoleChangeFail, false);
         this.cancelMemberSetOrgRole();
