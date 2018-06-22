@@ -106,8 +106,8 @@
                   <div class="app_per clearfix">
                     <ul>
                       <li><div>인스턴스</div><div>:</div><div>{{item.instances}}</div></li>
-                      <li><div>디스크</div><div>:</div><div>{{item.disk_quota}}</div></li>
-                      <li><div>메모리</div><div>:</div><div>{{item.memory}}</div></li>
+                      <li><div>디스크</div><div>:</div><div>{{item.disk_quota}} {{ (item.disk_quota > 1024) ? 'GB' : 'MB' }}</div></li>
+                      <li><div>메모리</div><div>:</div><div>{{item.memory}}{{ (item.memory >= 1024) ? 'GB' : 'MB' }}</div></li>
                       <!--{{item.memory}}-->
                     </ul>
                   </div>
@@ -179,7 +179,8 @@
                       <li data-target="#layerpop5" data-toggle="modal"><a class="fas fa-trash-alt"> 삭제</a></li>
                     </ol>
                   </div>
-                  <div class="app_title"><div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 54px; height: 54px" onError="this.src='../../assets/resources/images/catalog/catalog_3.png'"/></div> {{item.name}}</div>
+                  <div class="app_title"><div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 54px; height: 54px" onError="this.src='../../assets/resources/images/catalog/catalog_3.png'"/></div>
+                    &nbsp;{{item.name}}</div>
                   <div class="app_per clearfix" *ngIf="item.service_plan != null">
                     <ul>
                       <li>
@@ -241,10 +242,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" placeholder="변경할 앱 이름을 입력하세요." class="space_input" [(ngModel)]="selectedName"/>
-          <!--<span class="red" use-form-error="isNotSame" *ngIf="!isPatten">-->
-          <!--<i class="fas fa-exclamation-circle"></i>영문과 숫자 입력만 가능합니다.-->
-          <!--</span>-->
+          <input type="text" placeholder="변경할 앱 이름을 입력하세요." class="space_input" id="appName" (keyup)="pattenTest('appName')"[(ngModel)]="selectedName"/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
@@ -293,8 +291,7 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <input type="text" placeholder="변경할 서비스 이름을 입력하세요." class="space_input" [(ngModel)]="selectedName"
-                 name="selectedName"/>
+          <input type="text" placeholder="변경할 서비스 이름을 입력하세요." class="space_input" id="selectedName" (keyup)="pattenTest('selectedName')" [(ngModel)]="selectedName"/>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
@@ -356,7 +353,7 @@
               <div><input type="text" id="userProvideSyslogDrainUrl" [(ngModel)]="userProvideSyslogDrainUrl" class="space_input"/></div>
             </li>
           </ul>
-          <span class="red" use-form-error="isNotSame" *ngIf="!isLength" style="padding-left: 100px" ><i class="fas fa-exclamation-circle"></i>모든 값을 입력하세요.</span>
+          <span class="red" use-form-error="isNotSame" *ngIf="!isLength" style="padding-left: 150px" ><i class="fas fa-exclamation-circle"></i>모든 값을 입력하세요.</span>
         </div>
         <!-- Footer -->
         <div class="modal-footer">

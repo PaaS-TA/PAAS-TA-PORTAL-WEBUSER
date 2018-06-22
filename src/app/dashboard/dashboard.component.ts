@@ -66,6 +66,7 @@ export class DashboardComponent implements OnInit {
   public currentSpace: string;
 
   public userProvideName : string;
+  public userProvideName_update : string;
   public userProvideCredentials : string;
   public userProvideSyslogDrainUrl: string;
   public userProvideType : string;
@@ -116,6 +117,7 @@ export class DashboardComponent implements OnInit {
     this.currentOrg = '';
 
     this.userProvideName = '';
+    this.userProvideName_update = '';
     this.userProvideCredentials = '';
     this.userProvideSyslogDrainUrl = '';
     this.userProvideType = '';
@@ -345,6 +347,17 @@ export class DashboardComponent implements OnInit {
       // this.log.debug(this.appEntities);
     });
   }
+
+  pattenTest(value : string){
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+    $('#'+value).val($('#'+value).val().replace(regExpPattern, '')
+      .replace(regExpBlankPattern, '')
+      .replace(regKoreanPatten, '').substring(0, 64));
+    this.selectedName =$('#'+value).val();
+  }
+
 
   renameApp() {
     let params = {
