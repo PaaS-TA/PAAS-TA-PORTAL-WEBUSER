@@ -48,6 +48,7 @@ export class AppMainComponent implements OnInit {
   public servicepacksEntities: Observable<any[]>;
   public servicepacksEntitiesRe: any = [];
 
+  private appThumbImgPath: string;
   private appSummarySpaceGuid: string;
   private appSummaryName: string;
   private appSummaryGuid: string;
@@ -55,6 +56,7 @@ export class AppMainComponent implements OnInit {
   private appSummaryRouteUri: string;
   private appSummaryPackageUpdatedAt: string;
   private appSummaryBuildpack: string;
+  private appSummaryBuildPackName: string;
   private appSummaryInstance: number;
   private appSummaryInstanceMax: number;
   private appSummaryInstancePer: number;
@@ -133,7 +135,8 @@ export class AppMainComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private appMainService: AppMainService, private common: CommonService) {
     this.common.isLoading = false;
 
-    Observable.timer(0,1000 * 60 * 2)
+    // Observable.timer(0,1000 * 60 * 2)
+    Observable.timer(1000 * 60 * 2)
       .takeWhile(() => this.alive) // only fires when component is alive
       .subscribe(() => {
         this.ngOnInit();
@@ -288,6 +291,8 @@ export class AppMainComponent implements OnInit {
         }
       }
 
+      this.appSummaryBuildPackName = data.buildpack;
+
       this.appSummaryInstance = data.instances;
       this.appSummaryInstanceMax = 7;
       this.appSummaryInstancePer = Math.round((this.appSummaryInstance * 100) / this.appSummaryInstanceMax);
@@ -324,6 +329,7 @@ export class AppMainComponent implements OnInit {
       // this.getSpaceSummary();
       this.getServicepacks();
       // this.getServicesInstances();
+      this.getBuildPacks();
     });
   }
 
@@ -397,6 +403,19 @@ export class AppMainComponent implements OnInit {
       this.appServicesEntitiesRe2 = appServices;
 
       this.getSpaceSummary();
+    });
+  }
+
+  getBuildPacks() {
+    this.appMainService.getBuildPacks().subscribe(data => {
+      var appBuildPackName = this.appSummaryBuildPackName;
+
+      $.each(data.list, function (dkey, buildpack) {
+        if(buildpack.buildPackName == appBuildPackName) {
+          this.appThumbImgPath = buildpack.thumbImgPath;
+          $("#col_in1").css({"background":"url("+this.appThumbImgPath+") 15px top no-repeat", "position":"relative", "background-size":"55px 55px"});
+        }
+      });
     });
   }
 

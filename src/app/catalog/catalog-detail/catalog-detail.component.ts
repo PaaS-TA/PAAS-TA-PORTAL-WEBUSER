@@ -257,6 +257,9 @@ export class CatalogDetailComponent implements OnInit {
     this.spaces = new Array<Space>();
     this.placeholderSetting(true);
     this.spacesFrist();
+    this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+this.org.guid+'/domains').subscribe(data =>{
+      console.log(data);
+    })
     this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {
         this.spaces.push(new Space(res['metadata'], res['entity'], null));
