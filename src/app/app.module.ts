@@ -32,8 +32,6 @@ import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CommonService} from './common/common.service';
 
 import {DashModule} from './dash/dash.module';
-import {UsermgmtComponent} from './usermgmt/usermgmt.component';
-import {UsermgmtService} from './usermgmt/usermgmt.service';
 import {SpaceService} from './space/space.service';
 import {AuthGuard} from './auth/auth.guard';
 import {OrgModule} from './org/org.module';
@@ -55,6 +53,8 @@ import {OrgService} from "./org/common/org.service";
 import {QuantityModule} from "./quantity/quantity.module";
 
 import {SharedModule} from './shared/shared.module';
+import {UsermgmtModule} from "./usermgmt/usermgmt.module";
+import {UsermgmtService} from "./usermgmt/usermgmt.service";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -78,7 +78,6 @@ export function createTranslateLoader(http: HttpClient) {
     LeftComponent,
     CallbackComponent,
     LogoutComponent,
-    UsermgmtComponent,
     DashboardSpaceComponent,
     DashboardProduceComponent,
     ErrorComponent
@@ -90,6 +89,7 @@ export function createTranslateLoader(http: HttpClient) {
     Org2Module,
     CatalogModule,
     QuantityModule,
+    UsermgmtModule,
     FormsModule,
     RoutingModule,
     HttpClientModule,

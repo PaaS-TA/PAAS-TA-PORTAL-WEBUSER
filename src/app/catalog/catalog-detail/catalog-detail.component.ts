@@ -462,7 +462,7 @@ export class CatalogDetailComponent implements OnInit {
     this.catalogService.isLoading(true);
     console.log(this.translateEntities);
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
+      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appurl).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
           const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
           let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];

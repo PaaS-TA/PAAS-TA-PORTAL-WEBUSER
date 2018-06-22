@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from '../common/common.service';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs/Observable';
 import { OrgService } from '../org/common/org.service';
-import { Organization } from '../model/organization';
-import { OrgURLConstant } from '../org/common/org.constant';
 import {SecurityService} from "../auth/security.service";
 
 @Injectable()
