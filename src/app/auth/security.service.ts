@@ -24,11 +24,7 @@ export class SecurityService {
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
     window.location.href = AppConfig.logoutUrl +
-      '?response_type=' + AppConfig.code +
-      '&client_id=' + AppConfig.clientId +
-      '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
-      '&scope=' + AppConfig.scope +
-      '&state=';
+      '?redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl);
   }
 
 
