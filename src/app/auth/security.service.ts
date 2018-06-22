@@ -24,9 +24,11 @@ export class SecurityService {
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
     this.log.debug(AppConfig.logoutUrl +
-      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl));
+      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&client_id=' + AppConfig.clientId);
     window.location.href = AppConfig.logoutUrl +
-      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl);
+      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&client_id=' + AppConfig.clientId ;
   }
 
 
