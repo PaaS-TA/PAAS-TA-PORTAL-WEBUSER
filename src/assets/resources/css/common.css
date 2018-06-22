@@ -1168,7 +1168,12 @@ body.email h4{color:#293133;}
 
   /* 서비스 */
   .services_wrap{margin-left:0; margin-right:0;}
+
+  /*180621 스타일 수정*/
+  .app_per .servName{max-width:calc(100% - 150px);}
 }
+
+
 
 @media all and (max-width: 1400px) {
   /* 조직관리 */
@@ -1177,6 +1182,8 @@ body.email h4{color:#293133;}
   .organization_table .btns6{min-width:172px;}
   /* 20180323 수정 */
   .organization_table .btns6{min-width:auto;}
+  /*180621 스타일 수정*/
+  .app_per .servName{max-width:calc(100% - 150px);}
 }
 
 
@@ -1256,18 +1263,26 @@ body.email h4{color:#293133;}
   .org_box > div:nth-child(2){display:none}
   .org_box > div:nth-child(3){clear:both;width:100%  !important;;line-height:26px;font-size:14px;padding-top:30px}
 
+  /*180621 스타일 수정*/
+  .app_per .servName{max-width:calc(100% - 150px);}
+
 }
 @media all and (max-width: 1650px) {
   .space_select_dv{width:calc(100% - 210px)}
   .space_select_dv li{float:left;box-sizing:border-box;width:calc(33.33333% - 15px);margin-right:0 !important;padding-right:10px}
   .space_select_dv li select{width:100% !important}
   .space_list > li{width:calc(50% - 20px) !important;margin-bottom:20px}
+
+  /*180621 스타일 수정*/
+  .app_per .servName{max-width:calc(100% - 150px);}
 }
 
 @media all and (max-width: 700px) {
   .space_list > li{width:calc(100% - 20px) !important;margin-bottom:20px}
-}
 
+  /*180621 스타일 수정*/
+  .app_per .servName{max-width:calc(100% - 150px);}
+}
 
 
 
@@ -1363,9 +1378,9 @@ body.email h4{color:#293133;}
 .space_list > li{width:calc(25% - 20px);height:410px;float:left;margin-right:20px;}
 .space_list > li > div{height:410px !important;background:#f9f9f9 url('../images/space/plus.gif')no-repeat;background-position:center;}
 .space_pop_container{position:relative;background:#fff;height:405px;box-sizing:border-box;padding:40px}
-.space_list_small > li{height:235px}
-.space_list_small > li > div{height:235px !important}
-.space_list_small{height:230px}
+.space_list_small > li{min-height:360px;height:auto;}/*180621 스타일 수정*/
+.space_list_small > li > div{min-height:360px !important;height:auto !important;}/*180621 스타일 수정*/
+.space_list_small{min-height:356px;height:auto;}/*180621 스타일 수정*/
 .footer_n{width:100%;height:50px;color:#58666e;font-size:12px;text-align:left;padding:20px 40px;background:#f9f9f9;border-top:1px solid rgba(0,0,0,0.05);margin-top:30px}
 .progress-bar{position:relative;z-index:2}
 .progress-full{text-align:center;position:absolute;top:0;left:0;width:100%;z-index:1;font-size:12px;padding-top:2px}
@@ -1383,15 +1398,17 @@ body.email h4{color:#293133;}
 .app_title{font-size:36px;font-weight:bold;border-bottom:1px solid #cccccc; padding-bottom:15px; color:#293133; }
 .app_title a{font-size:36px;font-weight:bold; color:#000; }
 .app_title a:hover{font-size:36px;font-weight:bold; color:#293133; text-decoration:underline;}
-.app_img{margin-top:30px;float:left}
-.app_per{margin-top:30px;float:left;margin-left:20px}
+.app_img{float:left}/*180621 스타일 수정*/
+.app_img > img {width:80%;}/*180621 스타일 수정*/
+.app_per{margin-top:15px;float:left;width:100%;}/*180621 스타일 수정*/
+.app_per ul{width:100%;}/*180621 스타일 수정*/
 .app_per div{float:left}
-.app_per li{line-height:25px;background:url('../images/space/dot.gif')no-repeat;background-position:left center}
+.app_per li{line-height:30px;background:url('../images/space/dot.gif')no-repeat;background-position:left 13px}/*180621 스타일 수정*/
 .app_per li:after{display:table;clear:both;content:'';overflow:hidden;visibility:hidden;height:0;width:0;}
 .app_per div:nth-child(1){padding-left:10px;width:105px}
 .app_per div:nth-child(2){width:20px}
-.app_per div:nth-child(3){width:auto;color:#737580}
-.app_btn{clear:both;margin:20px 0}
+.app_per div:nth-child(3){min-width:80px;color:#737580;width:auto;word-break:break-all;max-width:calc(100% - 150px);max-height:60px;}/*180621 스타일 수정*/
+.app_btn{clear:both;margin:15px 0}/*180621 스타일 수정*/
 .app_graph{background:#f0f2f2;box-sizing:border-box;padding:15px 25px 0px 25px;}
 .app_graph div:nth-child(1),.app_graph div:nth-child(4){clear:both;float:left;font-size:15px;font-weight:bold}
 .app_graph div:nth-child(2),.app_graph div:nth-child(5){float:right;font-size:15px}
@@ -1411,7 +1428,7 @@ body.email h4{color:#293133;}
 .btnspace img {margin-right: 6px;margin-top: -2px;}
 .new_view{width:100% !important}
 .space_empty{cursor:pointer;width:100%;height:410px}
-.space_empty2{cursor:pointer;width:100%;height:235px}
+.space_empty2{cursor:pointer;width:100%;height:342px}/*180621 스타일 수정*/
 .chart_title{text-align:left;font-weight:bold;color:#000}
 .chart_title{margin-top:50px}
 .chart_wrap{width:calc(100% - 60px);margin:0 auto}
