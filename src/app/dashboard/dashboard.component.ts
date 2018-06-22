@@ -314,14 +314,12 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
-      if (data && this.isPatten) {
-        this.commonService.isLoading = false;
-        console.log("성공");
-      } else {
-        this.commonService.isLoading = false;
-        console.log("실패");
-      }
+      this.commonService.isLoading = false;
+      this.commonService.alertMessage('변경 완료되었습니다' , true);
       return data['result'];
+    }, error => {
+      this.commonService.isLoading = false;
+      this.commonService.alertMessage('변경 실패되었습니다' , false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -330,9 +328,12 @@ export class DashboardComponent implements OnInit {
     let params = {
       guid: guidParam
     };
-
     this.dashboardService.delApp(params).subscribe(data => {
+      this.commonService.alertMessage('삭제 완료되었습니다' , true);
       return data;
+    }, error => {
+      this.commonService.isLoading = false;
+      this.commonService.alertMessage('삭제 실패하였습니다.' , false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -405,10 +406,10 @@ export class DashboardComponent implements OnInit {
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('UserProvided 생성 완료되었습니다.' , true);
+      this.commonService.alertMessage('생성 완료되었습니다' , true);
       return data;
     }, error => {
-      this.commonService.alertMessage('UserProvided 생성 실패하였습니다.' , false);
+      this.commonService.alertMessage('생성 실패되었습니다.' , false);
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
 
@@ -460,12 +461,12 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.updateUserProvided(params).subscribe(data => {
         console.log(params, data);
         this.getAppSummary(this.selectedSpaceId);
-        this.commonService.alertMessage('UserProvided 수정 완료되었습니다.' , true);
+        this.commonService.alertMessage('수정 완료되었습니다.' , true);
         this.commonService.isLoading = false;
         return data;
       }
       , error => {
-        this.commonService.alertMessage('UserProvided 수정 실패되었습니다.' , false);
+        this.commonService.alertMessage('수정 실패되었습니다.' , false);
         this.commonService.isLoading = false;
         this.getAppSummary(this.selectedSpaceId);
       });
@@ -477,7 +478,11 @@ export class DashboardComponent implements OnInit {
       newName: this.selectedName
     };
     this.dashboardService.renameInstance(params).subscribe(data => {
+      this.commonService.alertMessage('수정 완료되었습니다' , true);
       return data;
+    }, error => {
+      this.commonService.isLoading = false;
+      this.commonService.alertMessage('수정 실패되었습니다' , false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -488,7 +493,11 @@ export class DashboardComponent implements OnInit {
     };
 
     this.dashboardService.delInstance(params).subscribe(data => {
+      this.commonService.alertMessage('삭제 완료되었습니다.' , true);
       return data;
+    }, error => {
+      this.commonService.isLoading = false;
+      this.commonService.alertMessage('삭제 실패되었습니다.' , false);
     });
     return (this.getAppSummary(this.selectedSpaceId));
   }
