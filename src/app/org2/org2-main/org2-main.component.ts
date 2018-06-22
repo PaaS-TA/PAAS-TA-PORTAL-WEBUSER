@@ -68,11 +68,10 @@ export class Org2MainComponent implements OnInit {
     if(this.orgsEntities != undefined) {
       this.showIndexArray = [];
       let showArry: Array<string> = [];
-      
+
       $.each(this.orgsEntities, function (key, dataobj) {
         if($("#detailBtn_close_"+dataobj.org.metadata.guid).css('display') == 'block') {
           showArry.push(dataobj.org.metadata.guid);
-          //TODO 끝나고나서 list불러야 하나
         }
       });
       this.showIndexArray = showArry;
