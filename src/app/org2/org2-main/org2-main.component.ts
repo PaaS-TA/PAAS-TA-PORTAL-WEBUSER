@@ -67,11 +67,18 @@ export class Org2MainComponent implements OnInit {
 
     if(this.orgsEntities != undefined) {
       this.showIndexArray = new Array<number>();
-      for(var i = 0; i < this.orgsEntities.length; i++) {
+      var i = 0;
+      $.each(this.orgsEntities, function (key, dataobj) {
         if($("#detailBtn_close_"+i).css('display') == 'block') {
           this.showIndexArray.push(i);
+          i++;
         }
-      }
+      });
+      // for(var i = 0; i < this.orgsEntities.length; i++) {
+      //   if($("#detailBtn_close_"+i).css('display') == 'block') {
+      //     this.showIndexArray.push(i);
+      //   }
+      // }
     }
 
     this.getDomains();
@@ -294,6 +301,8 @@ export class Org2MainComponent implements OnInit {
     };
 
     this.orgMainService.createSpace(params).subscribe(data => {
+      $("#createSpaceName").val("");
+
       if(data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.createSpaceSuccess, true);
@@ -372,6 +381,8 @@ export class Org2MainComponent implements OnInit {
     };
 
     this.orgMainService.addDmaoin(params).subscribe(data => {
+      $("#addDmaoinName").val("");
+
       if(data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.addDomainSuccess, true);
