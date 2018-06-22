@@ -136,7 +136,7 @@ export class DashboardComponent implements OnInit {
 
     if (this.commonService.getCurrentOrgName() != null) {
       this.currentOrg = this.commonService.getCurrentOrgName();
-      this.currentSpace = this.commonService.getCurrentSpaceName();
+      this.currentSpace = this.commonService.getCurrentSpaceGuid();
     }
 
   }
@@ -240,8 +240,8 @@ export class DashboardComponent implements OnInit {
 
       /*세이브 ORG 정보*/
       if (this.space != null) {
-        this.commonService.setCurrentSpaceGuid(this.space.name);
-        this.commonService.setCurrentSpaceName(this.space.guid);
+        this.commonService.setCurrentSpaceGuid(this.space.guid);
+        this.commonService.setCurrentSpaceName(this.space.name);
       }
       this.getAppSummary(value);
       this.getOrgSummary();
