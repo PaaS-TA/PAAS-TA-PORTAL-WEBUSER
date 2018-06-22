@@ -24,10 +24,10 @@
             </div>
             <div class="pull-right">
               <div class="ri_up">
-                <button class="btns6 colors4 organization_sw" id="detailBtn_view_{{i}}" (click)="detailClick(i, 'view')">
+                <button class="btns6 colors4 organization_sw" id="detailBtn_view_{{item.org.metadata.guid}}" (click)="detailClick(item.org.metadata.guid, 'view')">
                   <i class="fas fa-chevron-down"></i> {{ 'orgMain.viewDetail' | translate }}
                 </button>
-                <button class="btns6 colors4 colors5 organization_sw" id="detailBtn_close_{{i}}" (click)="detailClick(i, 'close')" style="display:none;">
+                <button class="btns6 colors4 colors5 organization_sw" id="detailBtn_close_{{item.org.metadata.guid}}" (click)="detailClick(item.org.metadata.guid, 'close')" style="display:none;">
                   <i class="fas fa-chevron-up"></i> {{ 'orgMain.closeDetail' | translate }}
                 </button>
               </div>
