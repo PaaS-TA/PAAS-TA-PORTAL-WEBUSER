@@ -53,11 +53,10 @@
         <!-- 할당량 시작-->
         <div class="row two_line two_view ns">
           <div class="sortable_wrap space_box">
-            <div class="space_gb"><span>6</span><span>GB</span> / 할당량 10GB</div>
+            <div class="space_gb"><span>{{orgMemoryDevelopmentTotal}}</span><span>GB</span> / 할당량 {{ (orgQuotaMemoryLimit >= 1024) ? ((orgQuotaMemoryLimit%1024 == 0 || orgQuotaMemoryLimit%1024 < 11) ? (orgQuotaMemoryLimit/1024).toFixed(0) : (orgQuotaMemoryLimit/1024).toFixed(2)) : (orgQuotaMemoryLimit) }} {{ (orgQuotaMemoryLimit >= 1024) ? 'GB' : 'MB' }}</div>
             <div class="progress">
-              <div class="progress-bar" role="progressbar" aria-valuenow="1.5" aria-valuemin="0" aria-valuemax="10" style="width: 15%;">1.5GB
-              </div>
-              <div class="progress-full">10GB</div>
+              <div class="progress-bar" role="progressbar"  aria-valuenow="1.5" aria-valuemin="0" aria-valuemax="10" style="width: 15%;">{{orgMemoryDevelopmentTotal}}GB</div>
+              <div class="progress-full">{{orgQuotaMemoryLimit}}GB</div>
             </div>
           </div>
         </div>
@@ -97,10 +96,7 @@
                   </div>
                   <!--<a [routerLink]="['../appMain']">-->
                   <!--<div (click)="moveAppMain()">-->
-                  <div class="app_title">
-                  <div class="app_img" (click)="moveDashboard(item.name,item.guid)">
-                      <img src="{{item.thumbImgPath}}" alt="" style="width: 64px; height: 64px" onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div><a href="javascript:void(0);">{{item.name}}</a>
-                  </div>
+                  <div class="app_title" (click)="moveDashboard(item.name,item.guid)" ><div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 64px; height: 64px" onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div><a href="javascript:void(0);">{{item.name}}</a></div>
                   <div class="app_per clearfix">
                     <ul>
                       <li><div>인스턴스</div><div>:</div><div>{{item.instances}}</div></li>
