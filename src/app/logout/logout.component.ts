@@ -11,7 +11,7 @@ import {SecurityService} from '../auth/security.service';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private router: Router, private security: SecurityService,private log: NGXLogger) {
+  constructor(private router: Router, private security: SecurityService, private log: NGXLogger, private  common: CommonService) {
     this.LogOut();
   }
 
@@ -19,6 +19,7 @@ export class LogoutComponent implements OnInit {
   }
 
   LogOut() {
+    this.common.isLoading = true;
     this.security.doLogout();
   }
 

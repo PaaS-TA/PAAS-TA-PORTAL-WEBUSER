@@ -23,12 +23,12 @@ export class SecurityService {
     this.common.signOut();
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
+    this.log.debug(AppConfig.logoutUrl +
+      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&client_id=' + AppConfig.clientId);
     window.location.href = AppConfig.logoutUrl +
-      '?response_type=' + AppConfig.code +
-      '&client_id=' + AppConfig.clientId +
-      '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
-      '&scope=' + AppConfig.scope +
-      '&state=';
+      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&client_id=' + AppConfig.clientId ;
   }
 
 

@@ -53,12 +53,12 @@
         <!-- 할당량 시작-->
         <div class="row two_line two_view ns">
           <div class="sortable_wrap space_box">
-            <div class="space_gb"><span>6</span><span>GB</span> / 할당량 10GB</div>
+            <div class="space_gb"><span>{{ (orgMemoryDevelopmentTotal >= 1024) ? ((orgMemoryDevelopmentTotal%1024 == 0 || orgMemoryDevelopmentTotal%1024 < 11) ? (orgMemoryDevelopmentTotal/1024).toFixed(0) : (orgMemoryDevelopmentTotal/1024).toFixed(2)) : (orgMemoryDevelopmentTotal) }}</span>
+              <span>{{ (orgMemoryDevelopmentTotal >= 1024) ? 'GB' : 'MB' }}</span> / 할당량
+              {{ (orgQuotaMemoryLimit >= 1024) ? ((orgQuotaMemoryLimit%1024 == 0 || orgQuotaMemoryLimit%1024 < 11) ? (orgQuotaMemoryLimit/1024).toFixed(0) : (orgQuotaMemoryLimit/1024).toFixed(2)) : (orgQuotaMemoryLimit) }} {{ (orgQuotaMemoryLimit >= 1024) ? 'GB' : 'MB' }}</div>
             <div class="progress">
-              <div class="progress-bar" role="progressbar" aria-valuenow="1.5" aria-valuemin="0" aria-valuemax="10"
-                   style="width: 15%;">1.5GB
-              </div>
-              <div class="progress-full">10GB</div>
+              <div class="progress-bar" role="progressbar"  aria-valuenow="1.5" aria-valuemin="0" aria-valuemax="10" style="width: 15%;">{{ (orgMemoryDevelopmentTotal >= 1024) ? ((orgMemoryDevelopmentTotal%1024 == 0 || orgMemoryDevelopmentTotal%1024 < 11) ? (orgMemoryDevelopmentTotal/1024).toFixed(0) : (orgMemoryDevelopmentTotal/1024).toFixed(2)) : (orgMemoryDevelopmentTotal) }} {{ (orgMemoryDevelopmentTotal >= 1024) ? 'GB' : 'MB' }}</div>
+              <div class="progress-full">  {{ (orgQuotaMemoryLimit >= 1024) ? ((orgQuotaMemoryLimit%1024 == 0 || orgQuotaMemoryLimit%1024 < 11) ? (orgQuotaMemoryLimit/1024).toFixed(0) : (orgQuotaMemoryLimit/1024).toFixed(2)) : (orgQuotaMemoryLimit) }} {{ (orgQuotaMemoryLimit >= 1024) ? 'GB' : 'MB' }}</div>
             </div>
           </div>
         </div>
@@ -98,55 +98,28 @@
                   </div>
                   <!--<a [routerLink]="['../appMain']">-->
                   <!--<div (click)="moveAppMain()">-->
-                  <div class="app_title" style="cursor: pointer" (click)="moveDashboard(item.name,item.guid)"><a
-                    href="javascript:void(0);">{{item.name}}</a></div>
-                  <div class="app_img">
-                    <img src="{{item.thumbImgPath}}" alt="" style="width: 64px; height: 64px"
-                         onError="this.src='../../assets/resources/images/catalog/자바8.png'"/>
-                  </div>
+                  <div class="app_title" (click)="moveDashboard(item.name,item.guid)" ><div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 64px; height: 64px" onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div><a href="javascript:void(0);">{{item.name}}</a></div>
                   <div class="app_per clearfix">
                     <ul>
-                      <li>
-                        <div>인스턴스</div>
-                        <div>:</div>
-                        <div>{{item.instances}}</div>
-                      </li>
-                      <li>
-                        <div>디스크</div>
-                        <div>:</div>
-                        <div>{{item.disk_quota}}</div>
-                      </li>
-                      <!--{{item.cpu}}-->
-                      <li>
-                        <div>메모리</div>
-                        <div>:</div>
-                        <div>{{item.memory}}</div>
-                      </li>
+                      <li><div>인스턴스</div><div>:</div><div>{{item.instances}}</div></li>
+                      <li><div>디스크</div><div>:</div><div>{{item.disk_quota}}</div></li>
+                      <li><div>메모리</div><div>:</div><div>{{item.memory}}</div></li>
                       <!--{{item.memory}}-->
                     </ul>
                   </div>
                   <div class="clear"></div>
                   <div class="app_btn" [ngSwitch]="item.state">
-                    <button class="btns colors1" *ngSwitchCase="'STARTED'"><img
-                      src="../../../assets/resources/images/main/RUNNING.svg" alt=""/>STARTED
-                    </button>
-                    <button class="btns colors2" *ngSwitchCase="'DOWNED'"><img
-                      src="../../../assets/resources/images/main/energy.svg" alt=""/>DOWN
-                    </button>
-                    <button class="btns colors2" *ngSwitchCase="'CRASHED'"><img
-                      src="../../../assets/resources/images/main/energy.svg" alt=""/>CRASHED
-                    </button>
-                    <button class="btns colors3" *ngSwitchDefault><img
-                      src="../../../assets/resources/images/main/moon.svg" alt=""/>STOP
-                    </button>
+                    <button class="btns colors1" *ngSwitchCase="'STARTED'"><img src="../../../assets/resources/images/main/RUNNING.svg" alt=""/>STARTED</button>
+                    <button class="btns colors2" *ngSwitchCase="'DOWNED'"><img src="../../../assets/resources/images/main/energy.svg" alt=""/>DOWN</button>
+                    <button class="btns colors2" *ngSwitchCase="'CRASHED'"><img src="../../../assets/resources/images/main/energy.svg" alt=""/>CRASHED</button>
+                    <button class="btns colors3" *ngSwitchDefault><img src="../../../assets/resources/images/main/moon.svg" alt=""/>STOP</button>
                   </div>
                   <div class="app_graph clearfix">
                     <div>DISK</div>
                     <div><span>{{item.diskPer}}</span><i>%</i></div>
                     <div class="space_bar1">
                       <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                             aria-valuemax="100" [ngStyle]="{'width': '' + item.diskPer + '%'}"></div>
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': '' + item.diskPer + '%'}"></div>
                       </div>
                     </div>
                     <div>Memory</div>
@@ -164,10 +137,7 @@
             </li>
             <!-- 애플리케이션 영역 이동 -->
             <li>
-              <div class="sortable_wrap"><a [routerLink]="['../catalog']">
-                <!--<div class="sortable_wrap" (click)="moveDevelopMent()">-->
-                <div class="space_empty"></div>
-              </a></div>
+              <div class="sortable_wrap"><a [routerLink]="['../catalog']"><div class="space_empty"></div></a></div>
             </li>
             <!-- 애플리케이션 영역 이동 끝-->
           </ul>
@@ -176,8 +146,7 @@
           <ul class="maT30">
             <li *ngIf='isMessage'>
               <div class="sortable_wrap space_box2" *ngIf='isMessage'>
-                <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나 <em><a
-                  [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
+                <span class="space_txt"><i class="fas fa-exclamation-circle"></i> 생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나 <em><a [routerLink]="['../catalog']">카탈로그</a></em>를 찾아보십시오.</span>
               </div>
             </li>
           </ul>
@@ -206,12 +175,7 @@
                       <li data-target="#layerpop5" data-toggle="modal"><a class="fas fa-trash-alt"> 삭제</a></li>
                     </ol>
                   </div>
-                  <div class="app_title">{{item.name}}</div>
-                  <div class="app_img">
-                    <img src="{{item.thumbImgPath}}" alt="" style="width: 64px; height: 64px"
-                         onError="this.src='../../assets/resources/images/catalog/catalog_3.png'"/>
-                  </div>
-
+                  <div class="app_title"><div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 54px; height: 54px" onError="this.src='../../assets/resources/images/catalog/catalog_3.png'"/></div> {{item.name}}</div>
                   <div class="app_per clearfix" *ngIf="item.service_plan != null">
                     <ul>
                       <li>
@@ -225,39 +189,20 @@
                           </ng-container>
                         </ng-container>
                       </li>
-                      <li>
-                        <div>서비스 명</div>
-                        <div>:</div>
-                        <div class="serviceTitle">{{item.service_plan.service.label}}</div>
-                      </li>
-                      <li>
-                        <div>제공서비스</div>
-                        <div>:</div>
-                        <div class="serviceTitle">{{item.service_plan.name}}</div>
-                      </li>
+                      <li><div>서비스 명</div><div>:</div><div class="serviceTitle">{{item.service_plan.service.label}}</div></li>
+                      <li><div>제공서비스</div><div>:</div><div class="serviceTitle">{{item.service_plan.name}}</div></li>
                       <li *ngIf="item.dashboard_url != null">
-                        <div>대시보드</div>
-                        <div>:</div>
-                        <div class="serviceTitle">{{item.dashboard_url}}</div>
-                        <div>
-                          <button class="btns colors3"><a href="{{item.dashboard_url}}">대시보드</a></button>
+                        <div>대시보드</div><div>:</div>
+                        <div class="serviceTitle">
+                        <button class="btns colors3"><img src="../../../assets/resources/images/main/moon.svg" alt=""/><a href="{{item.dashboard_url}}" target="_blank">대시보드</a></button>
                         </div>
                       </li>
                     </ul>
                   </div>
-
                   <div class="app_per clearfix" *ngIf="item.service_plan == null">
                     <ul>
-                      <li>
-                        <div>서비스 명</div>
-                        <div>:</div>
-                        <div class="serviceTitle">{{item.name}}</div>
-                      </li>
-                      <li>
-                        <div>제공서비스</div>
-                        <div>:</div>
-                        <div class="serviceTitle">user-provided</div>
-                      </li>
+                      <li><div>서비스 명</div><div>:</div><div class="serviceTitle">{{item.name}}</div></li>
+                      <li><div>제공서비스</div><div>:</div><div class="serviceTitle">user-provided</div></li>
                     </ul>
                   </div>
                   <div class="clear"></div>

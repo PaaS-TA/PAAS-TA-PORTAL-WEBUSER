@@ -6,6 +6,7 @@ import {Organization} from "../../model/organization";
 import {Space} from "../../model/space";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {TranslateService, LangChangeEvent} from "@ngx-translate/core";
+import {isNullOrUndefined} from "util";
 
 declare var $: any;
 declare var jQuery: any;
@@ -27,11 +28,7 @@ export class CatalogDetailComponent implements OnInit {
   servicenamelist : Array<any>;
   namecheck : number = 0;
   routecheck : number = 0;
-  appplaceholder : string;
-  routeplaceholder : string;
-  disableappinput : boolean;
-  disablerouteinput : boolean;
-  disablebutton : boolean;
+
   appnames: Array<string>; //앱 이름
   hostnames : Array<string>;
   orgname : string;
@@ -40,6 +37,9 @@ export class CatalogDetailComponent implements OnInit {
   appname: string = ''; //앱 이름
   hostname : string;
   appurl: string; // 앱URL
+  sharedomain : any;
+  currentdomain : any;
+  domainList : Array<any>;
   domain: string =''; // 도메인
   domainid : string; // 도메인 guid
   memory: number; // 메모리
@@ -68,11 +68,13 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.domainList = new Array<any>();
+
     $('#nav_first').attr('class','');
     $('#nav_second').attr('class','cur');
     $('#nav_third ').attr('class','');
     $('#nav_fourth').attr('class','');
-    this.domainInit();
+    this.shareDomainInit();
     this.activatedRouteInit();
     this.buildAndServiceInit();
     this.getRoutes();
@@ -82,22 +84,51 @@ export class CatalogDetailComponent implements OnInit {
     this.doLayout();
   }
 
-  domainInit(){
+  errorMsg(value : any){
+    this.catalogService.alertMessage(value, false);
+    this.catalogService.isLoading(false);
+  }
+
+  successMsg(value : any){
+    this.catalogService.alertMessage(value, true);
+    this.catalogService.isLoading(false);
+  }
+
+  shareDomainInit(){
     this.catalogService.getDomain().subscribe(data => {
-      this.domain = data['resources'][0]['entity']['name'];
-      this.domainid = data['resources'][0]['metadata']['guid'];
+      this.sharedomain = data['resources'][0];
+      this.currentdomain = this.sharedomain;
+      this.domainList.unshift(this.sharedomain);
     });
-    this.catalogService.getSecretDomain().subscribe(data => {
-      console.log(data);
-    })
+  }
+
+  privateDomainInit(value){
+    this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+value+'/domains').subscribe(data =>{
+      this.domainList = new Array<any>();
+      this.domainList.unshift(this.sharedomain);
+      this.currentdomain = this.sharedomain;
+      data.resources.forEach(domain => {
+        this.domainList.push(domain);
+      });
+    },error => {
+      this.errorMsg(error);
+    });
   }
   activatedRouteInit(){
     const orgname = this.catalogService.getOrgName();
-    console.log(orgname);
+    if(orgname !== null){
+      this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+this.catalogService.getOrgGuid()+'/domains').subscribe(data =>{
+        data.resources.forEach(domain => {
+          this.domainList.push(domain);
+        });
+      },error => {
+        this.errorMsg(error);
+      });
+    }
     const spacename = this.catalogService.getSpaceName();
     console.log(orgname, spacename);
     orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
-    spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE, this.placeholderSetting(true)) : (this.spacename = spacename, this.placeholderSetting(false));
+    spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE) : (this.spacename = spacename);
   }
 
   getRoutes(){
@@ -108,26 +139,6 @@ export class CatalogDetailComponent implements OnInit {
       });
       this.catalogService.isLoading(false);
     });
-  }
-
-  placeholderSetting(value : boolean){
-    this.disableInput(value);
-    this.disableButton(true);
-    // if(value){
-    //   this.appplaceholder = "{{'catalog.contants.selectOrgAndSpace' | translate }} ";
-    //   this.routeplaceholder = "'catalog.contants.selectOrgAndSpace' | translate";
-    // }
-    // else{
-    //   this.appplaceholder = "'catalog.contants.inputAppName' | translate";
-    //   this.routeplaceholder = "'catalog.contants.inputHostName' | translate";
-    // }
-  }
-  disableInput(value : boolean){
-    this.disableappinput = value;
-    this.disablerouteinput = value;
-  }
-  disableButton(value : boolean){
-    this.disablebutton = value;
   }
 
   buildAndServiceInit(){
@@ -212,7 +223,6 @@ export class CatalogDetailComponent implements OnInit {
     this.catalogService.setCurrentSpace(this.space.name, this.space.guid);
     this.getAppNames();
     this.serviceInstanceList();
-    this.placeholderSetting(this.space.name === CATALOGURLConstant.OPTIONSPACE);
   }
 
 
@@ -254,9 +264,13 @@ export class CatalogDetailComponent implements OnInit {
   orgSelect() {
     this.catalogService.isLoading(true);
     this.catalogService.setCurrentOrg(this.org.name, this.org.guid);
+    this.catalogService.setCurrentSpace(null, null);
     this.spaces = new Array<Space>();
-    this.placeholderSetting(true);
     this.spacesFrist();
+    this.privateDomainInit(this.org.guid);
+    this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+this.org.guid+'/domains').subscribe(data =>{
+      console.log(data);
+    })
     this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {
         this.spaces.push(new Space(res['metadata'], res['entity'], null));
@@ -267,108 +281,97 @@ export class CatalogDetailComponent implements OnInit {
     console.log(this.trans);
   }
 
-  checkAppName() {
-    this.disableButton(true);
-    if (this.appname.length < 1 || this.appname.trim() === ''){
-      this.appurl = '';
-      return;
-    }
-    if(this.pattenTest(this.appname)){
-      this.namecheck = CATALOGURLConstant.NO;
-      return;
-    }
-    if(this.appname.length < 64){
-      this.appurl = this.appname + '.' + this.domain;
-      this.hostname = this.appname;
-    }
-    this.disableButton(false);
-    this.nameCheck();
-    this.checkHostName();
-  }
-
   nameCheck() {
     this.namecheck = CATALOGURLConstant.OK;
-    this.appnames.forEach(name => {
-      if(name === this.appname){
-        this.namecheck = CATALOGURLConstant.NO;
-        this.disableButton(true);
-        return;
-      }
-    });
+    if(!isNullOrUndefined(this.appnames)){
+      this.appnames.forEach(name => {
+        if(name === this.appname){
+          this.namecheck = CATALOGURLConstant.NO;
+          return;
+        }
+      });
+    }
+  }
+
+  checkAppName() {
+    this.pattenTest();
+    if(this.appname.length < 64){
+      this.appurl = this.appname;
+      $('#routename').val(this.appurl);
+    }
+    this.nameCheck();
+    this.routeCheck();
   }
 
   checkHostName(){
-    if(this.appurl.indexOf('.'+this.domain) == -1){
-      this.routecheck = CATALOGURLConstant.NO;
-      this.disableButton(true);
-      return;
-    }
-    const _hostname = this.appurl.split('.'+this.domain);
-    this.hostname = _hostname[0];
-    if(this.routepattenTest( this.hostname)){
-      this.routecheck = CATALOGURLConstant.NO;
-      this.disableButton(true);
-      return;
-    }
-    this.disableButton(false);
+    this.routepattenTest();
     this.routeCheck();
-
   }
+
+  pattenTest(){
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+    $('#orgname').val($('#orgname').val().replace(regExpPattern, '')
+      .replace(regExpBlankPattern, '')
+      .replace(regKoreanPatten, ''));
+    this.appname =$('#orgname').val();
+  }
+  routepattenTest(){
+    const regExpPattern = /[\@\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpBlankPattern = /[\s]/g;
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+    $('#routename').val($('#routename').val().replace(regExpPattern, '')
+      .replace(regExpBlankPattern, '')
+      .replace(regKoreanPatten, ''));
+    this.appurl =$('#routename').val();
+  }
+
+
+
+
 
   routeCheck(){
     this.routecheck = CATALOGURLConstant.OK;
     this.hostnames.forEach(host => {
       if(host === this.appname){
         this.routecheck = CATALOGURLConstant.NO;
-        this.disableButton(true);
         return;
       }
     });
   }
 
-  serviceNameCheck(service) {
-    this.disableButton(true);
-    if (service.servicename.length < 1 || service.servicename.trim() === '') {
-      service.servicenamecheck = 0;
-      this.disableButton(true);
-      return;
+  serviceNameCheck(id : any) {
+    this.servicepattenTest(id);
+    this.serviceplanlist[id].servicenamecheck = CATALOGURLConstant.OK;
+    if(!isNullOrUndefined(this.servicenamelist)) {
+      this.servicenamelist.some(name => {
+        if (name === this.serviceplanlist[id].servicename) {
+          this.serviceplanlist[id].servicenamecheck = CATALOGURLConstant.NO;
+          return true;
+        }
+      });
+      this.serviceplanlist.some(plan => {
+        plan.servicenamecheck = CATALOGURLConstant.OK;
+        if(plan !== this.serviceplanlist[id] && plan.servicename===this.serviceplanlist[id].servicename){
+          this.serviceplanlist[id].servicenamecheck = 2;
+          plan.servicenamecheck = 2;
+          return true;
+        }
+      });
     }
-    if(this.pattenTest(service.servicename)){
-      service.servicenamecheck = CATALOGURLConstant.NO;
-      this.disableButton(true);
-      return;
-    }
-    service.servicenamecheck = CATALOGURLConstant.OK;
-    if(this.servicenamelist.some(name => {
-      if (name === service.servicename) {
-        service.servicenamecheck = CATALOGURLConstant.NO;
-        return true;
-      }
-    })){
-      return;
-    }
-    this.serviceplanlist.some(plan => {
-      plan.servicenamecheck = CATALOGURLConstant.OK;
-      if(plan !== service && plan.servicename===service.servicename){
-        service.servicenamecheck = 2;
-        plan.servicenamecheck = 2;
-        return true;
-      }
-    });
-  }
 
-  pattenTest(value){
+  }
+  servicepattenTest(id : any){
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-    return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
+    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    $('#servicename_'+id).val($('#servicename_'+id).val().replace(regExpPattern, '')
+      .replace(regExpBlankPattern, '')
+      .replace(regKoreanPatten, ''));
+    this.serviceplanlist[id].servicename =$('#servicename_'+id).val();
   }
-  routepattenTest(value){
-    const regExpPattern = /[\@\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
-    const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-    return (regExpPattern.test(value) || regExpBlankPattern.test(value) || regKoreanPatten.test(value));
-  }
+
 
   changePlan(serviceplan ,plan) {
     serviceplan.plan = plan;
@@ -485,7 +488,7 @@ export class CatalogDetailComponent implements OnInit {
             appName: this.appname,
             name : this.appname,
             hostName: this.appurl,
-            domainId: this.domainid,
+            domainId: this.currentdomain.metadata.guid,
             memorySize : this.memory,
             diskSize : this.disk,
             buildPackName: this.apptemplate[0]['buildPackName'],
@@ -508,14 +511,12 @@ export class CatalogDetailComponent implements OnInit {
         this.catalogService.alertMessage(this.translateEntities.result.routeNameError, false);
         this.getRoutes();
         this.routecheck = CATALOGURLConstant.NO;
-        this.disableButton(true);
         return false;
       });
     }, error => {
       this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
       this.getAppNames();
       this.namecheck = CATALOGURLConstant.NO;
-      this.disableButton(true);
     });
   }
 }

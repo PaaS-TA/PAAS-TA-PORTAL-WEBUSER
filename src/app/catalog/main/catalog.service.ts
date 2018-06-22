@@ -86,6 +86,10 @@ export class CatalogService {
     return this.common.getCurrentSpaceName();
   }
 
+  getOrgGuid(){
+    return this.common.getCurrentOrgGuid();
+  }
+
   setCurrentOrg(name, guid){
     this.common.setCurrentOrgName(name);
     this.common.setCurrentOrgGuid(guid);
@@ -203,11 +207,18 @@ export class CatalogService {
     });
   }
 
+  getOrgPrivateDomain(url : string){
+    return this.common.doGet(url, this.common.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
   postApp(url : string, param : any){
     return this.common.doPost(url,param, this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
+
 
   postHistroy(url : string, param : any){
     return this.common.doCommonPost(url,param).map((res: Response) => {
@@ -216,7 +227,7 @@ export class CatalogService {
   }
 
   postCreateService(url : string, param : any){
-    return this.common.doPost(url,param, this.common.getToken()).map((res: Response) => {
+    return this.common.doPost(url,param, this.common.getToken()).map((res: any) => {
       return res;
     });
   }

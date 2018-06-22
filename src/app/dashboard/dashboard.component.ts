@@ -60,7 +60,6 @@ export class DashboardComponent implements OnInit {
 
   public appEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
-  public userProvidedEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
 
   public currentOrg: string;
@@ -70,6 +69,14 @@ export class DashboardComponent implements OnInit {
   public userProvideCredentials : string;
   public userProvideSyslogDrainUrl: string;
   public userProvideType : string;
+
+  public orgMemoryDevelopmentTotal : string;
+  public orgMemoryProductionTotal : string;
+  public orgServiceTotal : string;
+  public orgQuotaMemoryLimit : string;
+  public orgTotalRoutes : string;
+  public orgTotalServiceKeys : string;
+  public orgTotalServices : string;
 
   public placeholder="credentialsStr:{'username':'admin','password':'password';}";
 
@@ -113,6 +120,14 @@ export class DashboardComponent implements OnInit {
     this.userProvideSyslogDrainUrl = '';
     this.userProvideType = '';
 
+    this.orgMemoryDevelopmentTotal = '';
+    this.orgMemoryProductionTotal = '';
+    this.orgServiceTotal = '';
+    this.orgQuotaMemoryLimit = '';
+    this.orgTotalRoutes = '';
+    this.orgTotalServiceKeys = '';
+    this.orgTotalServices = '';
+
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
     this.userGuid = this.commonService.getUserGuid();
@@ -125,7 +140,6 @@ export class DashboardComponent implements OnInit {
 
   }
 
-
   currentSpaceBox() {
     this.log.debug("currentSpaceBox");
     if (this.orgs.length > 0) {
@@ -136,7 +150,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-
     $("[id^='apopmenu_']").hide();
     $("[id^='layerpop']").modal("hide");
   }
@@ -221,12 +234,28 @@ export class DashboardComponent implements OnInit {
         this.commonService.setCurrentSpaceName(this.space.guid);
       }
       this.getAppSummary(value);
+      this.getOrgSummary();
     } else {
       //초기화
       // this.spaces = [];
       this.isEmpty = true;
       this.isSpace = false;
     }
+  }
+
+  getOrgSummary() {
+    this.dashboardService.getOrgSummary(this.org.guid).subscribe(data => {
+
+      this.orgMemoryDevelopmentTotal = data["all_memoryDevelopmentTotal"];
+      this.orgMemoryProductionTotal = data["all_memoryProductionTotal"];
+      this.orgServiceTotal = data["all_serviceTotal"];
+      this.orgQuotaMemoryLimit = data.quota["memoryLimit"];
+      this.orgTotalRoutes = data.quota['totalRoutes'];
+      this.orgTotalServiceKeys = data.quota['totalServiceKeys'];
+      this.orgTotalServices = data.quota['totalServices'];
+
+      return data;
+    });
   }
 
   getAppSummary(value: string) {
@@ -307,6 +336,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+
   renameApp() {
     let params = {
       guid: this.selectedGuid,
@@ -347,7 +377,9 @@ export class DashboardComponent implements OnInit {
     let params = {
       guid: this.selectedGuid
     };
+    this.commonService.isLoading = true;
     this.appMainService.stopApp(params).subscribe(data => {
+      this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
     });
@@ -365,7 +397,9 @@ export class DashboardComponent implements OnInit {
       spaceName: this.space['name'],
       name: this.selectedName
     };
+    this.commonService.isLoading = true;
     this.appMainService.startApp(params).subscribe(data => {
+      this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
     });
