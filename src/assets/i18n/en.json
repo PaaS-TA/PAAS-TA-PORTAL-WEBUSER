@@ -375,6 +375,138 @@
       "serviceSusses" : "Service creation succeeded."
     }
   },
+  "orgMain" : {
+    "title" : "Organization management",
+    "addNewOrg" : "Add a new org",
+    "change" : "Change",
+    "cancel" : "cancel",
+    "viewDetail" : "View details",
+    "closeDetail" : "Close details",
+    "reName" : "Rename",
+    "delete" : "delete",
+    "space" : "space",
+    "createSpace" : "Create space",
+    "changeName" : "Change name",
+    "domain" : "domain",
+    "addDomain" : "Add a domain",
+    "user" : "user",
+    "inviteUser" : "Invite a user",
+    "setRoles" : "Set roles",
+    "orgAdmin" : "Org Administrator",
+    "orgBillingManager" : "Org Billing Manager",
+    "orgObserver" : "Org observer",
+    "cancelMember" : "Cancel member",
+    "quota" : "Quota",
+    "select" : "Select",
+    "serviceName" : "Service name",
+    "memory" : "Memory",
+    "instantMemory" : "Instant Memory",
+    "route" : "Route",
+    "serviceInstant" : "Service Instant",
+    "price" : "Price",
+    "instant" : "Instant",
+    "layerpop": {
+      "orgRename": {
+        "title": "Change organization name",
+        "bodyText": "Would you like to change your organization name to {{sltOrgRename}}?",
+        "btn1": "Change",
+        "btn2": "cancel"
+      },
+      "orgDelete": {
+        "title": "Delete organization",
+        "bodyText": "Deleting an organization also deletes the apps and services you've registered. <br/>Are you sure you want to delete <span>{{sltOrgDelname}}</span>?",
+        "btn1": "delete",
+        "btn2": "cancel"
+      },
+      "spaceCreate": {
+        "title": "Create space",
+        "placeholder": "Please enter a space name",
+        "btn1": "produce",
+        "btn2": "cancel"
+      },
+      "spaceRename": {
+        "title": "Change space name",
+        "bodyText": "Are you sure you want to change the space name to {{sltSpaceRename}}?",
+        "btn1": "change",
+        "btn2": "cancel"
+      },
+      "spaceDelete": {
+        "title": "Delete space",
+        "bodyText": "Deleting a space will also remove the apps and services you've registered, and you can not reverse it <br/>Are you sure you want to delete <span>{{sltSpaceDelname}}</ span>?",
+        "btn1": "delete",
+        "btn2": "cancel"
+      },
+      "domainAdd": {
+        "title": "Add a domain",
+        "placeholder": "Please enter your domain name",
+        "btn1": "Add",
+        "btn2": "cancel"
+      },
+      "domainDelete": {
+        "title": "Delete domain",
+        "bodyText": "Are you sure you want to delete the <span>{{sltDomainName}}</span> domain?",
+        "btn1": "delete",
+        "btn2": "cancel"
+      },
+      "quotaChange": {
+        "title": "Change quota",
+        "bodyText": "Are you sure you want to change the <span>quota</span>?",
+        "btn1": "change",
+        "btn2": "cancel"
+      },
+      "memberCancel": {
+        "title": "Cancel member",
+        "bodyText": "Are you sure you want to cancel the membership of <span>{{sltMemberName}}</span>?",
+        "btn1": "Confirm",
+        "btn2": "cancel"
+      },
+      "orgSetRole": {
+        "title": "Edit organization permissions",
+        "bodyText": "Are you sure you want to modify <span>{{SltOrgRoleName}}</span> permissions for <span>{{sltMemberName}}</span>?",
+        "btn1": "Confirm",
+        "btn2": "cancel"
+      },
+      "layerpop4": {
+        "title": "Invite a user",
+        "explanation": "* You can continue adding email addresses using a comma.",
+        "org": "Organization",
+        "assignedOrg": "Assigned Organization",
+        "orgAdmin" : "Org Administrator",
+        "orgBillingManager" : "Org Billing Manager",
+        "orgObserver" : "Org observer",
+        "selectAll" : "Select All",
+        "user" : "user",
+        "roleGiveSpace" : "Role to give space",
+        "btn1": "invite",
+        "btn2": "cancel"
+      }
+    },
+    "alertLayer": {
+      "orgRoleError": "You do not have organizational rights.",
+      "orgRoleChangeSuccess": "Organization permissions have been modified.",
+      "orgRoleChangeFail": "Modification of organizational rights failed.",
+      "orgRenameSuccess": "The organization name has been modified.",
+      "orgRenameFail": "Renaming organization failed.",
+      "orgDeleteSuccess": "Organization has been deleted.",
+      "orgDeleteFail": "Organization deletion failed.",
+      "createSpaceSuccess": "Space created.",
+      "createSpaceFail": "Space creation failed.",
+      "renameSpaceSuccess": "The space name has been modified.",
+      "renameSpaceFail": "Modification of space name failed.",
+      "deleteSpaceSuccess": "Space name has been deleted.",
+      "deleteSpaceFail": "Delete space name failed.",
+      "addDomainSuccess": "You have created a domain.",
+      "addDomainFail": "Domain creation failed.",
+      "deleteDomainSuccess": "You have deleted your domain.",
+      "deleteDomainFail": "Domain deletion failed.",
+      "changeQuotaSuccess": "You have modified your quota.",
+      "changeQuotaFail": "Quota modification failed.",
+      "memberCancelSuccess": "Unsubscribing is complete.",
+      "memberCancelFail": "Failed to cancel the member.",
+      "sendEmailSuccess": "You have successfully invited people.",
+      "sendEmailFail": "User invitation failed."
+    }
+  },
   "orgProduce" : {
     "explan" : {
       "title1" : "Start developing, deploying and managing applications on open platforms!",

@@ -377,6 +377,138 @@
       "serviceSusses" : "서비스 생성을 성공했습니다."
     }
   },
+  "orgMain" : {
+    "title" : "조직관리",
+    "addNewOrg" : "새 조직 추가",
+    "change" : "변경하기",
+    "cancel" : "취소",
+    "viewDetail" : "세부사항 보기",
+    "closeDetail" : "세부사항 닫기",
+    "reName" : "이름변경",
+    "delete" : "삭제",
+    "space" : "공간",
+    "createSpace" : "공간 생성",
+    "changeName" : "변경할 이름",
+    "domain" : "도메인",
+    "addDomain" : "도메인 추가",
+    "user" : "사용자",
+    "inviteUser" : "사용자 초대",
+    "setRoles" : "역할설정",
+    "orgAdmin" : "조직 관리자",
+    "orgBillingManager" : "조직 결제 관리자",
+    "orgObserver" : "조직 참관인",
+    "cancelMember" : "맴버 취소",
+    "quota" : "할당량",
+    "select" : "선택",
+    "serviceName" : "서비스명",
+    "memory" : "메모리",
+    "instantMemory" : "인스턴트 메모리",
+    "route" : "라우트",
+    "serviceInstant" : "서비스 인스턴트",
+    "price" : "가격",
+    "instant" : "인스턴트",
+    "layerpop": {
+      "orgRename": {
+        "title": "조직명 변경",
+        "bodyText": "조직명을 {{sltOrgRename}}로 변경 하시겠습니까?",
+        "btn1": "변경",
+        "btn2": "취소"
+      },
+      "orgDelete": {
+        "title": "조직 삭제",
+        "bodyText": "조직을 삭제하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br/><span>{{sltOrgDelname}}</span>을 삭제하시겠습니까?",
+        "btn1": "삭제",
+        "btn2": "취소"
+      },
+      "spaceCreate": {
+        "title": "공간 생성",
+        "placeholder": "공간 이름을 입력하세요",
+        "btn1": "생성",
+        "btn2": "취소"
+      },
+      "spaceRename": {
+        "title": "공간명 변경",
+        "bodyText": "공간명을 {{sltSpaceRename}}로 변경 하시겠습니까?",
+        "btn1": "변경",
+        "btn2": "취소"
+      },
+      "spaceDelete": {
+        "title": "공간 삭제",
+        "bodyText": "공간 삭제를 하면 등록한 앱과 서비스도 삭제되며 되돌릴 수 없습니다.<br/><span>{{sltSpaceDelname}}</span>을 삭제하시겠습니까?",
+        "btn1": "삭제",
+        "btn2": "취소"
+      },
+      "domainAdd": {
+        "title": "도메인 추가",
+        "placeholder": "도메인 명을 입력하세요",
+        "btn1": "추가",
+        "btn2": "취소"
+      },
+      "domainDelete": {
+        "title": "도메인 삭제",
+        "bodyText": "<span>{{sltDomainName}}</span> 도메인을 삭제하시겠습니까?",
+        "btn1": "삭제",
+        "btn2": "취소"
+      },
+      "quotaChange": {
+        "title": "할당량 변경",
+        "bodyText": "<span>할당량</span>을 변경하시겠습니까?",
+        "btn1": "변경",
+        "btn2": "취소"
+      },
+      "memberCancel": {
+        "title": "멤버 취소",
+        "bodyText": "<span>{{sltMemberName}}</span>님을 멤버 취소 하시겠습니까?",
+        "btn1": "확인",
+        "btn2": "취소"
+      },
+      "orgSetRole": {
+        "title": "조직 권한 수정",
+        "bodyText": "<span>{{sltMemberName}}</span>님의 <span>{{SltOrgRoleName}}</span>권한을 수정하시겠습니까?",
+        "btn1": "확인",
+        "btn2": "취소"
+      },
+      "layerpop4": {
+        "title": "사용자 초대",
+        "explanation": "* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.",
+        "org": "조직",
+        "assignedOrg": "할당된 조직",
+        "orgAdmin" : "조직 관리자",
+        "orgBillingManager" : "조직 결제 관리자",
+        "orgObserver" : "조직 참관인",
+        "selectAll" : "전체선택",
+        "user" : "사용자",
+        "roleGiveSpace" : "부여할 공간 역할",
+        "btn1": "초대",
+        "btn2": "취소"
+      }
+    },
+    "alertLayer": {
+      "orgRoleError": "조직 권한이 없습니다.",
+      "orgRoleChangeSuccess": "조직 권한을 수정 하였습니다.",
+      "orgRoleChangeFail": "조직 권한 수정이 실패 하였습니다.",
+      "orgRenameSuccess": "조직 이름을 수정 하였습니다.",
+      "orgRenameFail": "조직 이름 변경이 실패 하였습니다.",
+      "orgDeleteSuccess": "조직을 삭제 하였습니다.",
+      "orgDeleteFail": "조직 삭제가 실패 하였습니다.",
+      "createSpaceSuccess": "공간을 생성 하였습니다.",
+      "createSpaceFail": "공간 생성이 실패 하였습니다.",
+      "renameSpaceSuccess": "공간명을 수정 하였습니다.",
+      "renameSpaceFail": "공간명 수정이 실패 하였습니다.",
+      "deleteSpaceSuccess": "공간명을 삭제 하였습니다.",
+      "deleteSpaceFail": "공간명 삭제가 실패 하였습니다.",
+      "addDomainSuccess": "도메인을 생성 하였습니다.",
+      "addDomainFail": "도메인 생성이 실패 하였습니다.",
+      "deleteDomainSuccess": "도메인을 삭제 하였습니다.",
+      "deleteDomainFail": "도메인 삭제가 실패 하였습니다.",
+      "changeQuotaSuccess": "할당량을 수정 하였습니다.",
+      "changeQuotaFail": "할당량 수정이 실패 하였습니다.",
+      "memberCancelSuccess": "맴버 취소가 완료되었습니다.",
+      "memberCancelFail": "맴버 취소를 실패 하였습니다.",
+      "sendEmailSuccess": "사용자를 초대완료 하였습니다.",
+      "sendEmailFail": "사용자 초대가 실패 하였습니다."
+    }
+  },
   "orgProduce" : {
     "explan" : {
       "title1" : "개방형 플랫폼에서 애플리케이션 개발과 배포, 관리를 시작하세요!",
