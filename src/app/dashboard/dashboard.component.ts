@@ -131,6 +131,7 @@ export class DashboardComponent implements OnInit {
     this.userid = this.commonService.getUserid(); // 생성된 조직명
     this.token = this.commonService.getToken();
     this.userGuid = this.commonService.getUserGuid();
+
     this.orgs = this.getOrgList();
 
     if (this.commonService.getCurrentOrgName() != null) {
@@ -155,7 +156,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getOrgList() {
+    this.commonService.isLoading = true;
     this.dashboardService.getOrgList().subscribe(data => {
+      this.commonService.isLoading = false;
       (data['resources'] as Array<Object>).forEach(orgData => {
         const index =
           this.orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
@@ -165,6 +168,7 @@ export class DashboardComponent implements OnInit {
     }, error => {
     }, () => {
       if (this.currentOrg != null) {
+        this.commonService.isLoading = false;
         this.getOrg(this.currentOrg);
       }
     });
@@ -172,7 +176,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getOrgSpaceList(orgId:string){
+    this.commonService.isLoading = true;
     this.dashboardService.getOrgSpaceList(orgId).subscribe(data => {
+      this.commonService.isLoading = false;
       (data['resources'] as Array<Object>).forEach(spaceData => {
           const index =
             this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId)) - 1;
@@ -181,6 +187,7 @@ export class DashboardComponent implements OnInit {
     }, error => {
       }, () => {
         if (this.currentSpace != null) {
+          this.commonService.isLoading = false;
           this.getSpaces(this.currentSpace);
         }
       });
@@ -189,8 +196,9 @@ export class DashboardComponent implements OnInit {
 
   getOrg(value: string) {
     this.log.debug("::::1.getOrg:::: " +"  "+ value);
-    if (value != '') {
 
+    if (value != '') {
+      this.commonService.isLoading = false;
       this.spaces = [];
       this.org = this.orgs.find(org => org.name === value);
       this.isLoadingSpaces = true;
@@ -207,6 +215,7 @@ export class DashboardComponent implements OnInit {
         this.commonService.setCurrentOrgGuid(this.org.guid);
         this.commonService.setCurrentOrgName(this.org.name);
       }
+
     } else {
       /*초기화*/
       this.spaces = [];
@@ -216,9 +225,10 @@ export class DashboardComponent implements OnInit {
   }
 
   getSpaces(value: string) {
+
     this.log.debug("::::2.getSpaces:::: " +"  "+ value);
     if (value != '') {
-
+      this.commonService.isLoading = false;
       this.isEmpty = false;
       this.isSpace = true;
       this.isMessage = false;
@@ -335,7 +345,6 @@ export class DashboardComponent implements OnInit {
       // this.log.debug(this.appEntities);
     });
   }
-
 
   renameApp() {
     let params = {
