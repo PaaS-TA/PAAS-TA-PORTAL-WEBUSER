@@ -9,6 +9,7 @@ import {cataloghistroy} from "../model/cataloghistory";
 import {App} from "../../model/app";
 import {ServicePlan} from "../model/Serviceplan";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {isUndefined} from "util";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -327,7 +328,12 @@ export class CatalogServiceComponent implements OnInit {
     };
     this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
     {
-      alert("서비스생성 완료");
+      if(!isUndefined(data.message)){
+        this.catalogService.alertMessage('서비스 생성 실패 : ' + data.message, false);
+        this.catalogService.isLoading(false);
+        return;
+      }
+      this.catalogService.alertMessage('서비스 생성에 성공하셨습니다.', true);
       this.catalogService.isLoading(false);
       this.router.navigate(['dashboard']);
     }, error => {

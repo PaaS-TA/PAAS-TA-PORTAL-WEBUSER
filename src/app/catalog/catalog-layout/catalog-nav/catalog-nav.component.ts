@@ -22,7 +22,7 @@ export class CatalogNavComponent implements OnInit {
     this.catalogService.viewPacks(true, true, true);
   }
 
-  viewStarterPack(value){
+  viewStarterPack(){
     if(this.router.url !== '/catalog'){
       this.catalogService.check = false;
       this.catalogService.classname = '#nav_second';

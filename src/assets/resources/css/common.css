@@ -427,9 +427,9 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
   border-left: solid 1px #e7eaec; box-shadow:0px 1px 10px black; }
 .nav_2d div > ul > li{color:#808487; font-size:14px;  margin-bottom:20px; margin-bottom:20px; padding-left:20px; cursor: pointer;}
 .nav_2d div > ul > li i{width:24px;}
-.nav_2d div > ul > li.titles{ color:#293133; font-size:16px; margin-top:40px; cursor: default; }
-.nav_2d div > ul > li:first-child{ line-height:54px; color:#fff; background:#32798c; margin-bottom:0px; cursor: default; font-size:16px;}
-
+.nav_2d div > ul > li.titles{ color:#293133; font-size:16px; margin-top:40px; cursor: pointer; }
+.nav_2d div > ul > li:first-child{ line-height:54px; color:#fff; background:#32798c; margin-bottom:0px; cursor: pointer; font-size:16px;}
+.nav_2d div > ul{cursor: pointer;}
 /*.two_line{margin-left: 0.4%;}*/
 
 .two_line > ul#sortable{float:left;}

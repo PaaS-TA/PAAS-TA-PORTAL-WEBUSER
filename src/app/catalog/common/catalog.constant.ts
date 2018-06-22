@@ -14,6 +14,7 @@ export enum CATALOGURLConstant {
   GETSERVICEINSTANCE = '/portalapi/v2/catalogs/servicepack/',
 
 
+
   GETPACKRELATION = '/commonapi/v2/packrelation/',
   GETLISTROUTE = '/commonapi/v2/routes',
   ROUTECHECK = '/commonapi/v2/routes/',

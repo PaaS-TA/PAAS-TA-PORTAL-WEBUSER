@@ -1,7 +1,7 @@
 <nav style="min-height: 940px;">
   <div class="scroll_style">
     <ul class="nav_1d">
-      <li (click)="viewMain()" id="nav_first">
+      <li id="nav_first">
         <dl>
           <dt>
           <div id="lnbimg1" class="lefticos">
@@ -65,7 +65,7 @@
           </li>
           <li class="titles" (click)="viewStarterPack()">  {{ 'catalog.nav.appTemplate' | translate }}
           </li>
-          <li><i class="far fa-window-maximize" (click)="viewStarterPack($event)"></i >   {{ 'catalog.nav.basicType' | translate }}</li>
+          <li  (click)="viewStarterPack()"><i class="far fa-window-maximize"></i >   {{ 'catalog.nav.basicType' | translate }}</li>
           <li class="titles" (click)="viewBuildPack()">{{ 'catalog.nav.appDevelopment' | translate }}</li>
           <li (click)="viewBuildPack('buildpack_system')"><i class="fas fa-cog" ></i> {{ 'catalog.nav.systemAppDevelopment' | translate }}</li>
           <li (click)="viewBuildPack('buildpack_custom')"><i class="fas fa-user"></i> {{ 'catalog.nav.userAppDevelopment' | translate }}</li>
