@@ -254,9 +254,6 @@ export class DashboardComponent implements OnInit {
       this.orgTotalServiceKeys = data.quota['totalServiceKeys'];
       this.orgTotalServices = data.quota['totalServices'];
 
-      if(data != null){
-
-      }
       return data;
     });
   }
@@ -380,7 +377,9 @@ export class DashboardComponent implements OnInit {
     let params = {
       guid: this.selectedGuid
     };
+    this.commonService.isLoading = true;
     this.appMainService.stopApp(params).subscribe(data => {
+      this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
     });
@@ -398,7 +397,9 @@ export class DashboardComponent implements OnInit {
       spaceName: this.space['name'],
       name: this.selectedName
     };
+    this.commonService.isLoading = true;
     this.appMainService.startApp(params).subscribe(data => {
+      this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
     });
