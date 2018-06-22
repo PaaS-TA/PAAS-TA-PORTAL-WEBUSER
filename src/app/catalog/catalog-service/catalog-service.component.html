@@ -96,7 +96,7 @@
                   </select>
                 </th>
               </tr>
-              <tr>
+              <tr style="height: 10px">
               <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSpace' | translate }}</p></div>
                 <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSelectSpace' | translate }}</p></div></th>
               </tr>
@@ -117,10 +117,10 @@
                   <p>{{ 'catalog.service.serviceName' | translate }}</p>
                 </th>
               </tr>
-              <tr>
+              <tr style="height: 10px">
                 <th colspan="3">
-                  <input type="text" [(ngModel)]="servicename" placeholder="{{ 'catalog.contants.inputService' | translate }}" (ngModelChange)="serviceNameCheck()" [disabled]="disableserviceinput"/>
-                  <div *ngIf="(namecheck === 1 && servicename.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
+                  <input type="text" id="servicename" placeholder="{{ 'catalog.contants.inputService' | translate }}" (keyup)="serviceNameCheck()" />
+                  <div *ngIf="(namecheck === 1 && servicename.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
                   <div *ngIf="(namecheck === -1 && servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseService' | translate }}</p></div>
                 </th>
               </tr>
@@ -192,15 +192,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <ng-container *ngFor="let service of serviceplan">
+                <ng-container *ngFor="let service of serviceplan;let i = index">
                 <tr>
                   <td *ngIf="service===plan">
-                    <input id="ra1" type="radio" name="ra1" checked="checked" (click)="changePlan(service)">
-                    <label for="ra1"></label>
+                    <input [id]="'ra' + i" type="radio" name="ra1" checked="checked" (click)="changePlan(service)">
+                    <label [for]="'ra' + i"></label>
                   </td>
                   <td *ngIf="service!==plan">
-                    <input id="ra2" type="radio" name="ra1" (click)="changePlan(service)">
-                    <label for="ra2"></label>
+                    <input [id]="'ra' + i" type="radio" name="ra1" (click)="changePlan(service)">
+                    <label [for]="'ra' + i"></label>
                   </td>
                   <td *ngIf="service.free">
                     {{ 'catalog.appTemplate.free' | translate }}
@@ -220,7 +220,7 @@
             </div>
           </div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="createService()" [disabled]="disablebutton">{{ 'catalog.service.produce' | translate }}</button>
+            <button class="btns2 btns2_1 colors4" (click)="createService()">{{ 'catalog.service.produce' | translate }}</button>
             <button class="btns2 btns2_1 colors5" [routerLink]="['/catalog']">{{ 'catalog.service.cancel' | translate }}</button>
           </div>
         </div>

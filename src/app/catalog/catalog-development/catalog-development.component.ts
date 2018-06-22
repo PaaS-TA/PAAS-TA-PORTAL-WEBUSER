@@ -22,14 +22,8 @@ export class CatalogDevelopmentComponent implements OnInit {
   namecheck : number = 0;
   routecheck : number = 0;
 
-  appplaceholder : string;
-  routeplaceholder : string;
-
   orgname : string;
   spacename : string;
-  disableappinput : boolean;
-  disablerouteinput : boolean;
-  disablebutton : boolean;
 
   appnames : Array<string>;
   hostnames : Array<string>;
@@ -249,7 +243,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   checkHostName(){
-    this.routepattenTest( this.appurl);
+    this.routepattenTest();
     this.routeCheck();
   }
 
@@ -262,7 +256,7 @@ export class CatalogDevelopmentComponent implements OnInit {
       .replace(regKoreanPatten, ''));
     this.appname =$('#orgname').val();
   }
-  routepattenTest(value){
+  routepattenTest(){
     const regExpPattern = /[\@\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;

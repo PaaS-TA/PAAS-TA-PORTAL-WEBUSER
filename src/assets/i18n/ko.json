@@ -343,7 +343,8 @@
       "function" : "기능",
       "price" : "가격",
       "produce" : "생성",
-      "cancel" : "취소"
+      "cancel" : "취소",
+      "notServicePlan" : "서비스 플랜이 없습니다."
     },
     "region" :{
       "korea" : "대한민국",
@@ -374,7 +375,8 @@
       "appTemplateSusses" : "앱 템플릿 생성을 성공했습니다.",
       "buildPackSusses" : "빌드팩 생성을 성공했습니다.",
       "buildPackError" : "빌드팩 생성을 실패했습니다.",
-      "serviceSusses" : "서비스 생성을 성공했습니다."
+      "serviceSusses" : "서비스 생성을 성공했습니다.",
+      "serviceError" : "서비스 생성을 실패했습니다."
     }
   },
   "orgMain" : {

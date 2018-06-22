@@ -341,7 +341,8 @@
       "function" : "Function",
       "price" : "Price",
       "produce" : "Produce",
-      "cancel" : "Cancel"
+      "cancel" : "Cancel",
+      "notServicePlan" : "There is no service plan."
     },
     "region" :{
       "korea" : "KOREA",
@@ -372,7 +373,8 @@
       "appTemplateSusses" : "App template creation succeeded.",
       "buildPackError" : "Failed to create build pack.",
       "buildPackSusses" : "Build pack creation succeeded.",
-      "serviceSusses" : "Service creation succeeded."
+      "serviceSusses" : "Service creation succeeded.",
+      "serviceError" : "Service creation failed."
     }
   },
   "orgMain" : {

@@ -112,22 +112,35 @@
                     </tr>
                     <tr>
                       <td  colspan="2">
-                        <input type="text" placeholder="{{ 'catalog.contants.inputAppName' | translate }}"  [(ngModel)]="appname" (ngModelChange)="checkAppName()" [disabled]="disableappinput"/>
-                        <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
-                        <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>  {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
+                        <input type="text" id="orgname" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()"/>
+                        <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
+                        <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="2">
+                      <td colspan="1">
                         <p>{{ 'catalog.appTemplate.appURL' | translate }}</p>
                       </td>
+                      <td colspan="1">
+                        <p>{{ 'catalog.appTemplate.domain' | translate }}</p>
+                      </td>
                     </tr>
                     <tr>
-                      <td colspan="2">
-                        <input name="route" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}"   [(ngModel)]="appurl" (ngModelChange)="checkHostName()" [disabled]="disablerouteinput" [maxlength]="64 + domain.length"/>
-                        <div *ngIf="(routecheck === 1 && appurl.length > 0)"><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
-                        <div *ngIf="(routecheck === -1  && appurl.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
+                      <td colspan="1">
+                        <input name="route" id="routename" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}" (keyup)="checkHostName()" maxlength="64"/>
                       </td>
+                      <td colspan="1">
+                        <select [(ngModel)]="currentdomain">
+                          <option *ngFor="let domain of domainList" [ngValue]="domain">{{domain.entity.name}}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr style="height: 10px">
+                      <th colspan="2">
+                      <div *ngIf="(routecheck === 1 && appurl.length > 0)"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
+                      <div *ngIf="(routecheck === -1  && appurl.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
+                      </th>
                     </tr>
                     <tr>
                       <td><p>{{ 'catalog.appTemplate.memory' | translate }}</p>
@@ -167,16 +180,6 @@
                         </select>
                       </td>
                     </tr>
-                    <tr>
-                      <td colspan="2">
-                        <p>{{ 'catalog.appTemplate.domain' | translate }}</p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                        <input text="text" disabled value="au-syd.mybluemix.net" [(ngModel)]="domain"/>
-                      </td>
-                    </tr>
                     </tbody>
                   </table>
                 </div>
@@ -190,7 +193,7 @@
               <dt>
               <h4>{{ 'catalog.appTemplate.selectServiceUsageSpecification' | translate }}</h4>
               </dt>
-              <dd class="cWrap_table_wrap" *ngFor="let serviceplan of serviceplanlist">
+              <dd class="cWrap_table_wrap" *ngFor="let serviceplan of serviceplanlist;let i = index">
                 <div class="btnWrap" *ngIf="serviceplan.appBindYn === 'Y'">
                   <span class="cWraprightspan">{{ 'catalog.appTemplate.whetherTheAppIsConnected' | translate }}</span>
                   <input id="{{serviceplan.switchid}}" type="checkbox" [(ngModel)]="serviceplan.appbind"  switch2="none">
@@ -207,8 +210,8 @@
                       </td>
                     </tr>
                     <tr>
-                      <td><input type="text" placeholder="{{ 'catalog.contants.inputService' | translate }}" [(ngModel)]="serviceplan.servicename" (ngModelChange)="serviceNameCheck(serviceplan)" [disabled]="disablerouteinput"/>
-                        <div *ngIf="(serviceplan.servicenamecheck === 1 && serviceplan.servicename.length > 0)" ><p class=""><i class=""></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
+                      <td><input type="text" [id]="'servicename_'+i" placeholder="{{ 'catalog.contants.inputService' | translate }}" (keyup)="serviceNameCheck(i)"/>
+                        <div *ngIf="(serviceplan.servicenamecheck === 1 && serviceplan.servicename.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
                         <div *ngIf="(serviceplan.servicenamecheck === -1 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseService' | translate }}</p></div>
                         <div *ngIf="(serviceplan.servicenamecheck === 2 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.overLapService' | translate }}</p></div>
                       </td>
