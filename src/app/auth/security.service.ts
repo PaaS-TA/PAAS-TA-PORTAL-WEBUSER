@@ -23,8 +23,10 @@ export class SecurityService {
     this.common.signOut();
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
+    this.log.debug(AppConfig.logoutUrl +
+      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl));
     window.location.href = AppConfig.logoutUrl +
-      '?redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl);
+      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl);
   }
 
 
