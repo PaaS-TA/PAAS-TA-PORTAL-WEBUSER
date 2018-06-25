@@ -760,11 +760,15 @@ export class AppMainComponent implements OnInit {
   }
 
   appDelClick() {
+    $("[id^='layerpop']").modal("hide");
+    $("#layerpop_app_del").modal("hide");
+    this.common.isLoading = true;
+
     this.appMainService.delApp(this.appGuid).subscribe(data => {
       if(data.result) {
-        this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.appDelSuccess, true);
 
+        // this.common.isLoading = false;
         this.router.navigate(['dashboard']);
       } else {
         this.common.isLoading = false;

@@ -247,6 +247,8 @@ export class DashboardComponent implements OnInit {
       }
       this.getAppSummary(value);
       this.getOrgSummary();
+
+      this.commonService.isLoading = false;
     } else {
       //초기화
       // this.spaces = [];
@@ -294,6 +296,8 @@ export class DashboardComponent implements OnInit {
       this.servicesEntities = data.services;
       this.thumnail();
 
+    }, () => {
+      this.commonService.isLoading = false;
     });
   }
 
