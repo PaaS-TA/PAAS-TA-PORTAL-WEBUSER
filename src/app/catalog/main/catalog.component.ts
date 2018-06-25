@@ -23,6 +23,9 @@ export class CatalogComponent implements OnInit {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
     });
+    this.translate.get('catalog').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
   }
 
 
@@ -55,16 +58,24 @@ export class CatalogComponent implements OnInit {
     }
       this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
       this.StarterInit(data['list']);
-    });
+    },error=>{
+        this.catalogService.alertMessage("서버가 불안정합니다.",false);
+      });
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS).subscribe(data => {
       this.BuildInit(data['list']);
+    },error=>{
+      this.catalogService.alertMessage("서버가 불안정합니다.",false);
     });
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS).subscribe(data => {
       this.ServiceInit(data['list']);
+    },error=>{
+      this.catalogService.alertMessage("서버가 불안정합니다.",false);
     });
-    this.catalogService.getRecentPacks(CATALOGURLConstant.GETRECENTPACKS+this.userid).subscribe(data => {
+    this.catalogService.getRecentPacks('/commonapi/v2/'+this.userid+'/history').subscribe(data => {
       this.RecentInit(data['list']);
-    });
+    },error=>{
+      this.catalogService.alertMessage("서버가 불안정합니다.",false);
+    })
     this.catalogService.check = true;
   }
 
