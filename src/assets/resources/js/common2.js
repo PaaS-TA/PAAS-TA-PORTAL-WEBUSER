@@ -180,6 +180,7 @@
         $(".colright_btn li > ol").toggleClass('on');
         $(".headT").css("display","block");
         $(".tempTitle").val(MainTitle);
+        $(".tempTitle").focus();
     });
 
     // $(".yess").on("click" , function(){
@@ -400,6 +401,7 @@
     //$(".serviceOn,.lauthOn").on("click" ,function(){
     $(".lauthOn").on("click" ,function(){
         $(".lauth_dl").toggleClass("on");
+        $("#routeAddHostName").focus();
     });
 
     $(".variableSW").on("click" , function(){

@@ -50,7 +50,7 @@ export class AppMainComponent implements OnInit {
 
   private appThumbImgPath: string;
   private appSummarySpaceGuid: string;
-  private appSummaryName: string;
+  private appSummaryName: string = "";
   private appSummaryGuid: string;
   private appSummaryState: string;
   private appSummaryRouteUri: string;
@@ -647,6 +647,7 @@ export class AppMainComponent implements OnInit {
       this.appSummaryInstance = $("#instance_in").val();
       $("#instanceS1").hide();
       $("#instanceS2").show();
+      $("#instance_in").focus();
     } else {
       $("#instance_in").val(this.appSummaryInstance);
       $("#instanceS2").hide();
@@ -678,6 +679,7 @@ export class AppMainComponent implements OnInit {
       $("#memS2").next().text("M");
       $("#memS1").hide();
       $("#memS2").show();
+      $("#mem_in").focus();
     } else {
       this.appSummaryMemory = $("#mem_in").val();
       if(this.appSummaryMemory >= 1024) {
@@ -714,6 +716,7 @@ export class AppMainComponent implements OnInit {
       $("#diskS2").next().text("M");
       $("#diskS1").hide();
       $("#diskS2").show();
+      $("#disk_in").focus();
     } else {
       this.appSummaryDisk = $("#disk_in").val();
       if(this.appSummaryDisk >= 1024) {
@@ -745,7 +748,7 @@ export class AppMainComponent implements OnInit {
     $("body > div").addClass('account_modify');
     $(this).toggleClass("on");
     $(this).parents("tr").next("tr").toggleClass("on");
-    $(this).parents("tr").addClass("off");
+    $(this).parents("tr").addClass("off")
   }
 
   showPopRenameSaveClick() {
@@ -1267,6 +1270,14 @@ export class AppMainComponent implements OnInit {
       }
     });
     this.sltServiceParam = appBindParam;
+
+    setTimeout(() => this.serviceParamEvent(), 0);
+  }
+
+  serviceParamEvent() {
+    if($("[id^='serviceParamVal_']").size() > 0) {
+      $("[id^='serviceParamVal_']:eq(0)").focus();
+    }
   }
 
   tabShowClick(id: string) {
@@ -1334,6 +1345,7 @@ export class AppMainComponent implements OnInit {
 
   showEditEnvClick(index: string) {
     $("#DLid" + index).show();
+    $("#envEditData"+index).focus();
   }
 
   hideEditEnvClick(index: string) {
@@ -1351,6 +1363,7 @@ export class AppMainComponent implements OnInit {
 
   showAddEnvClick() {
     $("#add_env").show();
+    $("#envAddId").focus();
   }
 
   hideAddEnvClick() {
@@ -2105,7 +2118,7 @@ export class AppMainComponent implements OnInit {
   }
 
   showWindowAppLink(urlLink: string) {
-    window.open('http://'+urlLink+'', '_blank', 'location=no, directories=no width=1000, height=700');
+    window.open('http://'+urlLink+'', 'aaa');
   }
 
 }
