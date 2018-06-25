@@ -398,6 +398,7 @@
     "orgBillingManager" : "Org Billing Manager",
     "orgObserver" : "Org observer",
     "cancelMember" : "Cancel member",
+    "inviteReSend" : "Resend",
     "quota" : "Quota",
     "select" : "Select",
     "serviceName" : "Service name",
