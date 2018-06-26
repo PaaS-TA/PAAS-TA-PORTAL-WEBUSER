@@ -9,6 +9,7 @@ import {OrgService} from '../org/common/org.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../auth/security.service";
 import {AppConfig} from "../app.config";
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 import {FormControl} from '@angular/forms';
 import {viewWrappedDebugError} from '@angular/core/src/view/errors';
@@ -27,6 +28,7 @@ declare var jQuery: any;
 export class UsermgmtComponent implements OnInit {
   public user: Observable<User>;
   public orgs: Array<Organization> = [];
+  public translateEntities: any = [];
 
   public token: string = '';
   public orgName: string = '';
@@ -58,7 +60,7 @@ export class UsermgmtComponent implements OnInit {
 
   public fileToUpload: File = null;
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private userMgmtService: UsermgmtService, private orgService: OrgService,
+  constructor(private httpClient: HttpClient, private common: CommonService, private userMgmtService: UsermgmtService, private orgService: OrgService, private translate: TranslateService,
               private router: Router, private activeRoute: ActivatedRoute, private sec: SecurityService, private log: NGXLogger) {
 
     this.userInfo();
@@ -76,6 +78,14 @@ export class UsermgmtComponent implements OnInit {
     this.isPassword = false;
     this.isRePassword = true;
     this.isChPassword = false;
+
+    this.translate.get('usermgmt').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.usermgmt;
+    });
 
   }
 
@@ -130,12 +140,12 @@ export class UsermgmtComponent implements OnInit {
     this.common.isLoading = true;
     console.log(params);
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-      this.common.alertMessage('변경되었습니다.' , true);
+      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
       this.common.isLoading = false;
       console.log(data);
       return this.userInfo();
     }, error => {
-      this.common.alertMessage('재 입력하세요.' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
       this.common.isLoading = false;
     });
     /*reset*/
@@ -159,7 +169,7 @@ export class UsermgmtComponent implements OnInit {
       this.userSave();
     } else {
       this.isTellPhone == false;
-      this.common.alertMessage('재 입력하세요.' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
       $('#tellPhone').val('');
       return this.userInfo;
     }
@@ -173,7 +183,7 @@ export class UsermgmtComponent implements OnInit {
       this.userSave();
     }else{
       this.isZipCode == false;
-      this.common.alertMessage('재 입력하세요.' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
       $('#zipCode').val('');
       return this.userInfo;
     }
@@ -187,7 +197,7 @@ export class UsermgmtComponent implements OnInit {
       this.userSave();
     }else{
       this.isAddress == false;
-      this.common.alertMessage('재 입력하세요.' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
       $('#address').val('');
       return this.userInfo;
     }
@@ -244,10 +254,10 @@ export class UsermgmtComponent implements OnInit {
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.debug(this.common.getUserGuid());
       if (data == 1 && this.isPassword && this.isRePassword) {
-        this.common.alertMessage('성공적으로 변경되었습니다.' , true);
+        this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
         this.common.isLoading = false;
       } else {
-        this.common.alertMessage('새 비밀번호를 다시 입력하세요.' , false);
+        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail, false);
         this.common.isLoading = false;
       }
       /*reset*/
@@ -319,10 +329,10 @@ export class UsermgmtComponent implements OnInit {
     if (orgId != '') {
       let body = this.orgService.cancelOrg(orgId, this.common.getUserGuid());
       this.deleteOrg(body.url, body.params).subscribe(data => {
-        this.common.alertMessage('조직탈퇴에 성공하셨습니다.' , true);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
         this.orgs = this.orgService.getOrgList();
       }, error=> {
-        this.common.alertMessage('조직탈퇴에 실패하셨습니다. 재 로그인 바랍니다.' , false);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
       },() => {
         this.common.isLoading= false;
       });
@@ -346,7 +356,7 @@ export class UsermgmtComponent implements OnInit {
         this.common.isLoading = false;
         // 계정삭제:cf,db
         this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe();
-        this.common.alertMessage('계정삭제가 완료되었습니다.' , true);
+        this.common.alertMessage(this.translateEntities.alertLayer.accountDeleteSuccess, true);
         this.goLogout();
       } else {
         this.common.isLoading = false;
@@ -355,6 +365,7 @@ export class UsermgmtComponent implements OnInit {
     }, error => {
       this.common.isLoading = false;
       this.common.alertMessage('비밀번호를 다시 입력하세요.' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.passwordFail, false);
     });
   }
 

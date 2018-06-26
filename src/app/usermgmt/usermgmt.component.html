@@ -22,7 +22,7 @@
             </dt>
             <dd>
               <p>
-                내계정
+                {{'common.top.user.linkTextMyAccount' | translate}}
               </p>
             </dd>
           </dl>
@@ -36,7 +36,7 @@
             </dt>
             <dd>
               <p>
-                조직관리
+                {{'common.top.user.linkTextOrgManager' | translate}}
               </p>
             </dd>
           </dl>
@@ -50,7 +50,7 @@
             </dt>
             <dd>
               <p>
-                사용량조회
+                {{'common.top.user.linkTextViewUsage' | translate}}
               </p>
             </dd>
           </dl>
@@ -64,7 +64,7 @@
             </dt>
             <dd>
               <p>
-                로그아웃
+                {{'common.top.user.linkTextLogOut' | translate}}
               </p>
             </dd>
           </dl>
@@ -75,7 +75,7 @@
   <div class="contain">
     <div class="content">
       <div class="row one_line">
-        <h1>내 계정</h1>
+        <h1>{{'usermgmt.myAccount' | translate}}</h1>
         <div class="col-md-2">
           <div class="account_left">
             <dl>
@@ -84,7 +84,7 @@
                 <input style="display: none" type="file" id="photoFile" name="photoFile" (change)="onFileChanged_click($event)">
               </dt>
               <dd>
-                <button class="btns colors4" (click)="onUpload()">사진등록</button>
+                <button class="btns colors4" (click)="onUpload()">{{'usermgmt.button.photoRegistration' | translate}}</button>
               </dd>
             </dl>
           </div>
@@ -92,8 +92,7 @@
         <div class="col-md-9">
           <div class="account_table">
             <table>
-              <caption>로그인 정보
-              </caption>
+              <caption>{{'usermgmt.loginInfo.loginInfo' | translate}}</caption>
               <colgroup>
                 <col style='width: 123px;'>
                 <col style=''>
@@ -101,7 +100,7 @@
               </colgroup>
               <tbody>
               <tr>
-                <td>이메일</td>
+                <td>{{'usermgmt.loginInfo.email' | translate}}</td>
                 <th>{{user['userId']}}</th>
                 <!--<td class="table_edit"><i class="fas fa-edit"></i>-->
                 <!--<td>-->
@@ -130,7 +129,7 @@
                 </td>
               </tr>
               <tr>
-                <td>비밀번호 변경</td>
+                <td>{{'usermgmt.loginInfo.changePassword.changePassword' | translate}}</td>
                 <th></th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
                 <td>
@@ -140,28 +139,28 @@
                   <div class="">
                     <div class="account_table_in">
                       <p>
-                        <span>현재비밀번호</span>
+                        <span>{{'usermgmt.loginInfo.changePassword.currentPassword' | translate}}</span>
                         <input type="password" name="password_now" id= "password_now" [(ngModel)]="password_now"/>
                       </p>
                       <p>
-                        <span>새 비밀번호
+                        <span>{{'usermgmt.loginInfo.changePassword.newPassword' | translate}}
                         </span>
                         <input type="password" [(ngModel)]="password_new" name="password_new" id= "password_new" required="" (change)="checkPassword($event)" (keydown)="checkPassword($event)" (keyup)="checkPassword($event)">
                         <br> <span></span>
                         <span class="red"  use-form-error="isNotSame" *ngIf="!isPassword">
-                        <i class="fas fa-exclamation-circle"></i>영문,숫자를 혼합하여 6~20자 이내 공백 미포함 입력만 가능합니다.</span>
+                        <i class="fas fa-exclamation-circle"></i>{{'usermgmt.explan.check1' | translate}}</span>
                       </p>
-                      <span>새 비밀번호 확인
+                      <span>{{'usermgmt.loginInfo.changePassword.newPasswordConfirmation' | translate}}
                       </span>
                       <input type="password" name="password_confirm" [(ngModel)]="password_confirm" id= "password_confirm" required="" (change)="checkRePassword($event)" (keydown)="checkRePassword($event)" (keyup)="checkRePassword($event)"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="updateUserPassword()">변경하기</button>
-                        <button class="btns6 colors5 btns_sw">취소</button>
+                        <button class="btns6 colors4 btns_sw" (click)="updateUserPassword()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors5 btns_sw">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                       <span></span>
                       <span class="red"  use-form-error="isNotSame" *ngIf="!isRePassword">
                         <i class="fas fa-exclamation-circle"></i>
-                        입력한 비밀 번호와 다릅니다.
+                        {{'usermgmt.explan.check5' | translate}}
                       </span>
                     </div>
                   </div>
@@ -172,7 +171,7 @@
           </div>
           <div class="account_table maT30">
             <table>
-              <caption>사용자 정보
+              <caption>{{'usermgmt.userInfo.userInfo' | translate}}
               </caption>
               <colgroup>
                 <col style='width: 123px;'>
@@ -181,7 +180,7 @@
               </colgroup>
               <tbody>
               <tr>
-                <td>이름</td>
+                <td>{{'usermgmt.userInfo.name.name' | translate}}</td>
                 <th> {{user['userName']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
               </tr>
@@ -189,19 +188,19 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                      <span>변경할 이름
+                      <span>{{'usermgmt.userInfo.name.changeName' | translate}}
                       </span>
                       <input type="text" name="userName" id="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }" ng-minlength="0"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="userSave()">변경하기</button>
-                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">취소</button>
+                        <button class="btns6 colors4 btns_sw" (click)="userSave()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                     </div>
                   </div>
                 </td>
               </tr>
               <tr>
-                <td>전화번호</td>
+                <td>{{'usermgmt.userInfo.phoneNumber.phoneNumber' | translate}}</td>
                 <th>{{user['tellPhone']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
               </tr>
@@ -209,23 +208,23 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in" >
-                      <span>새 전화번호
+                      <span>{{'usermgmt.userInfo.phoneNumber.newPhoneNumber' | translate}}
                       </span>
                       <input type="text" class="input_tellphone" id="tellPhone" name="tellPhone" [(ngModel)]="tellPhone" (ngModelChange)="tellPhone_pattenTest()" ng-maxlength="15"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="checkTellPhone()">변경하기</button>
-                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">취소</button>
+                        <button class="btns6 colors4 btns_sw" (click)="checkTellPhone()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isTellPhone">
-                        <i class="fas fa-exclamation-circle"></i>숫자 입력만 가능합니다.
+                        <i class="fas fa-exclamation-circle"></i>{{'usermgmt.explan.check2' | translate}}
                       </span>
                     </div>
                   </div>
                 </td>
               </tr>
               <tr>
-                <td>우편번호</td>
+                <td>{{'usermgmt.userInfo.zipCode.zipCode' | translate}}</td>
                 <th>{{user['zipCode']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
                     </tr>
@@ -233,23 +232,23 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                      <span>새 우편번호
+                      <span>{{'usermgmt.userInfo.zipCode.newZipCode' | translate}}
                       </span>
                       <input type="text" class="input_zipCode" id="zipCode" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()" ng-maxlength="15"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="checkZipCode()">변경하기</button>
-                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">취소</button>
+                        <button class="btns6 colors4 btns_sw" (click)="checkZipCode()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isZipCode" >
-                        <i class="fas fa-exclamation-circle"></i>숫자와 영문 입력만 가능합니다.
+                        <i class="fas fa-exclamation-circle"></i>{{'usermgmt.explan.check3' | translate}}
                       </span>
                     </div>
                   </div>
                 </td>
               </tr>
               <tr>
-                <td>주소</td>
+                <td>{{'usermgmt.userInfo.address.address' | translate}}</td>
                 <th>{{user['address']}}</th>
                 <td class="table_edit"><i class="fas fa-edit"></i>
                         </tr>
@@ -257,16 +256,16 @@
                 <td colspan="3">
                   <div class="">
                     <div class="account_table_in">
-                      <span>새 주소
+                      <span>{{'usermgmt.userInfo.address.newAddress' | translate}}
                       </span>
                       <input type="text" class="input_address" id="address" name="address" [(ngModel)]="address" (ngModelChange)="address_pattenTest()"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="checkAddress()">변경하기</button>
-                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">취소</button>
+                        <button class="btns6 colors4 btns_sw" (click)="checkAddress()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isAddress" >
-                        <i class="fas fa-exclamation-circle"></i>256 자 이하만 가능합니다.
+                        <i class="fas fa-exclamation-circle"></i>{{'usermgmt.explan.check4' | translate}}
                       </span>
                     </div>
                   </div>
@@ -277,7 +276,7 @@
           </div>
           <div class="account_table maT30">
             <table>
-              <caption>나의 조직
+              <caption>{{'usermgmt.myOrg.myOrg' | translate}}
               </caption>
               <colgroup>
                 <col style=''>
@@ -292,14 +291,14 @@
               <tfoot>
               <tr>
                 <td class="text-center" colspan="2">
-                  해당 조직명이 없습니다.
+                  {{'usermgmt.myOrg.explan1' | translate}}
                 </td>
               </tr>
               </tfoot>
             </table>
           </div>
           <div class="account_btn">
-            <button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">계정삭제</button>
+            <button class="one btns colors5" data-target="#layerpop2" data-toggle="modal">{{'usermgmt.deleteAccount.deleteAccount' | translate }}</button>
           </div>
         </div>
       </div><!-- row one_line -->
@@ -317,18 +316,18 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">조직탈퇴</h4>
+          <h4 class="modal-title">{{'usermgmt.myOrg.orgWithdrawal' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p class="account_modal_p" >조직을 탈퇴하면 되돌릴 수 없습니다.<br/>
-            <span [attr.id]="selectedOrgGuid">{{selectedOrgName}}</span> 를 탈퇴하시겠습니까?
+          <p class="account_modal_p" >{{'usermgmt.myOrg.explan2' | translate }}<br/>
+            <span [attr.id]="selectedOrgGuid">{{selectedOrgName}}</span> {{'usermgmt.myOrg.explan2-2' | translate }}
           </p>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="cancelOrg(selectedOrgGuid)">삭제</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="cancelOrg(selectedOrgGuid)">{{'usermgmt.button.delete' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{'usermgmt.button.cancel' | translate }}</button>
         </div>
       </div>
     </div>
@@ -344,24 +343,24 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">계정삭제</h4>
+          <h4 class="modal-title">{{'usermgmt.deleteAccount.deleteAccount' | translate }}</h4>
         </div>
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p">계정 삭제를 선택 하면 모든 조직과 공간이 삭제 되며 되돌릴 수 없습니다.<br/>
-              <span>{{user['userId']}}</span>을 삭제하시겠습니까?
+            <p class="account_modal_p">{{'usermgmt.deleteAccount.explan' | translate }}<br/>
+              <span>{{user['userId']}}</span>{{'usermgmt.deleteAccount.explan-2' | translate }}
             </p>
-            <input type="text" placeholder="이메일 입력" [(ngModel)]="user['userId']"/>
-            <input type="password" placeholder="비밀번호 입력" name="password_check" [(ngModel)]="password_check" (click)="checkChPassword($event)" (keydown)="checkChPassword($event)" (keyup)="checkChPassword($event)"/>
-            <p class="red" use-form-error="isNotSame" *ngIf="!isChPassword">
-              <i class="fas fa-exclamation-circle"></i> 비밀 번호가 일치하지 않습니다.</p>
+            <input type="text" [(ngModel)]="user['userId']"/>
+            <input type="password" placeholder="{{'usermgmt.placeholder.password' | translate }}" name="password_check" [(ngModel)]="password_check" (click)="checkChPassword($event)" (keydown)="checkChPassword($event)" (keyup)="checkChPassword($event)"/>
+            <!--<p class="red" use-form-error="isNotSame" *ngIf="!isChPassword">-->
+              <!--<i class="fas fa-exclamation-circle"></i> 비밀 번호가 일치하지 않습니다.</p>-->
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userAllDelete()">삭제</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">취소</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userAllDelete()">{{'usermgmt.button.delete' | translate}}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{'usermgmt.button.cancel' | translate }}</button>
         </div>
       </div>
     </div>
