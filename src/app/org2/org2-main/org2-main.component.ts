@@ -16,7 +16,7 @@ export class Org2MainComponent implements OnInit {
 
   public domainsEntities: Observable<any[]>;
   public quotaDefinitionsEntities: Observable<any[]>;
-  public orgsEntities: Observable<any[]>;
+  public orgsEntities: any;
   public inviteOrgList : Observable<any[]>;
 
   public sltEntity : any;
@@ -34,7 +34,7 @@ export class Org2MainComponent implements OnInit {
   public sltOrgRole : string;
   public sltOrgRoleId : string;
   public sltDelete : boolean;
-
+  public sltInvite : any;
   private showIndexArray: Array<string> = [];
 
   public translateEntities: any = [];
@@ -52,7 +52,6 @@ export class Org2MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("ngOnInit in~");
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
@@ -100,7 +99,9 @@ export class Org2MainComponent implements OnInit {
 
     this.orgMainService.getOrgList().subscribe(data => {
       this.orgsEntities = data.result;
-
+      if(this.orgsEntities){
+      this.sltEntity = this.orgsEntities[0];
+      }
       setTimeout(() => this.buttonEvent(), 100);
       this.common.isLoading = false;
 
@@ -123,32 +124,7 @@ export class Org2MainComponent implements OnInit {
       }
   }
 
-  getInviteOrg(){
-    this.orgMainService.getInviteOrg().subscribe(data => {
-      this.inviteOrgList = data.result;
-    });
-  }
-
-  getinviteOrgRole(value : any){
-    return JSON.parse(value).org[0];
-  }
-
   buttonEvent() {
-    // $(".organization_sw").on("click" , function(){
-    //   var wrap_line = $(".organization_wrap");
-    //   $(this).parents(wrap_line).toggleClass("on");
-    //   var updown = $(this).children("i").attr('class');
-    //   if( updown == 'fas fa-chevron-down' ){
-    //     $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-    //     console.log("=1=");
-    //     console.log(this.translateEntities);
-    //     $(this).html("<i class='fas fa-chevron-up'></i> "+this.translateEntities.closeDetail+"");
-    //   } else {
-    //     $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-    //     $(this).html("<i class='fas fa-chevron-down'></i> "+this.translateEntities.viewDetail+"");
-    //   }
-    // });
-
     //TODO 추후 변경??
     $("th .fa-edit,.table_edit .fa-edit").on("click" , function(){
       $("body > div").addClass('account_modify');
@@ -474,8 +450,6 @@ export class Org2MainComponent implements OnInit {
     this.sltMemberName = user.user_email;
     this.sltOrgGuid = org;
     this.sltOrgRole=orgrole;
-    console.log(this.sltOrgRole);
-    console.log(this.SltOrgRoleName);
     $("#layerpop_org_set_role").modal("show");
   }
 
@@ -577,7 +551,6 @@ export class Org2MainComponent implements OnInit {
 
   showUserInvite(value){
     this.sltEntity = value;
-    console.log(this.sltEntity);
     $("[id='userEmail']").val('');
   $("#layerpop4").modal("show");
     setTimeout(() => this.allCheck(), 500);
@@ -599,20 +572,19 @@ export class Org2MainComponent implements OnInit {
     };
     inviteObjOrg.push(orgObj);
     inviteObj["org"] = inviteObjOrg;
-    console.log(inviteObj);
-    for(var i = 0; i < this.sltEntity.space.resources.length; i++ ) {
-      var spaceGuid = this.sltEntity.space.resources[i].metadata.guid;
+    this.sltEntity.space.resources.forEach(function (data, index) {
+      var spaceGuid = data.metadata.guid;
       var spaceRoleObj = {};
       var roleObjSpace = [];
 
       spaceRoleObj = {
-        "sm" : $("[id^='modal4_']").eq(i).is(":checked"),
-        "sd" : $("[id^='modal5_']").eq(i).is(":checked"),
-        "sa" : $("[id^='modal6_']").eq(i).is(":checked")
+        "sm" : $("[id^='modal4_']").eq(index).is(":checked"),
+        "sd" : $("[id^='modal5_']").eq(index).is(":checked"),
+        "sa" : $("[id^='modal6_']").eq(index).is(":checked")
       };
       roleObjSpace.push(spaceRoleObj);
       spaceObj[spaceGuid] = roleObjSpace;
-    }
+    });
     inviteObjSpace.push(spaceObj);
     inviteObj["space"] = inviteObjSpace;
 
@@ -621,7 +593,8 @@ export class Org2MainComponent implements OnInit {
       orgId: this.sltEntity.org.metadata.guid,
       refreshToken: this.common.getRefreshToken(),
       userEmail: $("[id='userEmail']").val(),
-      userRole: JSON.stringify(inviteObj)
+      userRole: JSON.stringify(inviteObj),
+      invitename: this.common.getUserid()
     };
     this.orgMainService.userInviteEmailSend(params).subscribe(data => {
       if(data) {
@@ -630,10 +603,10 @@ export class Org2MainComponent implements OnInit {
       }
     }, error => {
       this.common.alertMessage(this.translateEntities.alertLayer.sendEmailFail+"<br><br>"+error, false);
+    },() => {
+      this.getInviteOrg();
     });
   }
-
-
 
   //OrgManager 체크
   authorityCheck(role) : boolean {
@@ -643,4 +616,142 @@ export class Org2MainComponent implements OnInit {
       }});
   }
 
+
+  getInviteOrg(){
+    this.orgMainService.getInviteOrg().subscribe(data => {
+      console.log(data);
+      this.inviteOrgList = data.result;
+    });
+  }
+
+  getinviteOrgRole(value : any){
+    return JSON.parse(value).org[0];
+  }
+
+  showInviteCancel(value : any, entity : any){
+    this.sltEntity = entity;
+    this.sltInvite = value;
+    $("#layerpop_org_invite_cancle").modal("show");
+  }
+
+  inviteCancel(){
+    this.orgMainService.delInviteCancle(this.sltEntity.org.metadata.guid, this.sltInvite.userId).subscribe(data => {
+      if(data){
+        this.common.alertMessage("초대 취소 성공", true);
+      }
+      else{
+        this.common.alertMessage("초대 취소 실패", false);
+      }
+    },error=> {
+      this.common.alertMessage("서버 오류", false);
+    },() => {
+      this.getInviteOrg();
+    });
+  }
+
+  showUserReInvite(entity, invite){
+    this.sltEntity = entity;
+    this.sltInvite = invite;
+    let org = JSON.parse(this.sltInvite.role).org[0];
+    let space = JSON.parse(this.sltInvite.role).space[0];
+    $("#invitename").val(this.sltInvite.userId);
+    $("#modal4").prop('checked', org.om);
+    $("#modal5").prop('checked', org.bm);
+    $("#modal6").prop('checked', org.oa);
+    this.sltEntity.space.resources.forEach(function (data, index) {
+      if(space[data.metadata.guid]){
+        $("#modal7_"+index).prop('checked', space[data.metadata.guid][0].sm);
+        $("#modal8_"+index).prop('checked', space[data.metadata.guid][0].sd);
+        $("#modal9_"+index).prop('checked', space[data.metadata.guid][0].sa);
+      }
+      else{
+        $("#modal7_"+index).prop('checked', false);
+        $("#modal8_"+index).prop('checked', false);
+        $("#modal9_"+index).prop('checked', false);
+      }
+    });
+    $("#layerpop_ReInvite").modal("show");
+    setTimeout(() => this.allCheck2(), 500);
+  }
+
+
+  allCheck2(){
+    $(".checkAll3").change(function() {
+      $(".checkSel3").prop('checked', $(this).prop("checked"));
+    });
+
+    $(".checkSel3").change(function() {
+      var allcount = $(".checkSel3").length;
+      var ckcount = $(".checkSel3:checked").length;
+      $(".checkAll3").prop('checked', false);
+      if (allcount == ckcount) {
+        $(".checkAll3").prop('checked', true);
+      };
+    });
+
+    $(".checkAll4").change(function() {
+      $(".checkSel4").prop('checked', $(this).prop("checked"));
+    });
+
+    $(".checkSel4").change(function() {
+      var allcount = $(".checkSel4").length;
+      var ckcount = $(".checkSel4:checked").length;
+      $(".checkAll4").prop('checked', false);
+      if (allcount == ckcount) {
+        $(".checkAll4").prop('checked', true);
+      };
+    });
+  }
+
+  userReInvite(){
+    this.common.isLoading = true;
+
+    var inviteObj = {};
+    var inviteObjOrg = [];
+    var inviteObjSpace = [];
+    var orgObj = {};
+    var spaceObj = {};
+
+    orgObj = {
+      "om" : $("#modal4").is(":checked"),
+      "bm" : $("#modal5").is(":checked"),
+      "oa" : $("#modal6").is(":checked")
+    };
+    inviteObjOrg.push(orgObj);
+    inviteObj["org"] = inviteObjOrg;
+    this.sltEntity.space.resources.forEach(function (data, index) {
+      var spaceGuid = data.metadata.guid;
+      var spaceRoleObj = {};
+      var roleObjSpace = [];
+
+      spaceRoleObj = {
+        "sm" : $("[id^='modal7_']").eq(index).is(":checked"),
+        "sd" : $("[id^='modal8_']").eq(index).is(":checked"),
+        "sa" : $("[id^='modal9_']").eq(index).is(":checked")
+      };
+      roleObjSpace.push(spaceRoleObj);
+      spaceObj[spaceGuid] = roleObjSpace;
+    });
+    inviteObjSpace.push(spaceObj);
+    inviteObj["space"] = inviteObjSpace;
+
+    let params = {
+      orgName: this.sltEntity.org.entity.name,
+      orgId: this.sltEntity.org.metadata.guid,
+      refreshToken: this.common.getRefreshToken(),
+      userEmail: $("[id='invitename']").val(),
+      userRole: JSON.stringify(inviteObj),
+      invitename: this.common.getUserid()
+    };
+    this.orgMainService.userInviteEmailSend(params).subscribe(data => {
+      if(data) {
+        this.common.isLoading = false;
+        this.common.alertMessage(this.translateEntities.alertLayer.sendEmailSuccess, true);
+      }
+    }, error => {
+      this.common.alertMessage(this.translateEntities.alertLayer.sendEmailFail+"<br><br>"+error, false);
+    },() => {
+      this.getInviteOrg();
+    });
+  }
 }

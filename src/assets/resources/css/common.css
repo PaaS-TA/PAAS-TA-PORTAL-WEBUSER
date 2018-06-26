@@ -843,6 +843,12 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 #layerpop4 .modal-body{font-size: 14px;}
 #layerpop4 input{background:#fcfcfc; color:#808487; width: 100%; font-weight: 400;} /* border:1px solid #ced4d9; */
 #layerpop4 .red{padding-bottom:40px;}
+
+#layerpop_ReInvite .modal-dialog{width: 800px;}
+#layerpop_ReInvite .modal-body{font-size: 14px;}
+#layerpop_ReInvite input{background:#fcfcfc; color:#808487; width: 100%; font-weight: 400;} /* border:1px solid #ced4d9; */
+#layerpop_ReInvite .red{padding-bottom:40px;}
+
 .test{background: red; width: 100%; height:15px; }
 
 .log_dl{width: 97%; border:1px solid #e7eaec; margin:0 auto; }
