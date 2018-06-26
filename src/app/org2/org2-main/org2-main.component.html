@@ -162,8 +162,31 @@
                         <label for="check3_{{i}}_{{j}}">OrgAuditor({{ 'orgMain.orgObserver' | translate }})</label>
                       </td>
                       <th><button class="btns4 colors8" (click)="showMemberCancel(userRole,item.userRoles.user_roles, item.org.metadata.guid)">{{ 'orgMain.cancelMember' | translate }}</button></th>
-                      <th><button class="btns4 colors9" (click)="showMemberCancel(userRole,item.userRoles.user_roles, item.org.metadata.guid)">{{ 'orgMain.inviteReSend' | translate }}</button></th>
+                      <th></th>
                     </tr>
+                  </ng-container>
+                  <ng-container *ngFor='let inviteUser of inviteOrgList; let k = index'>
+                    <ng-container *ngIf="item.org.metadata.guid === inviteUser.orgGuid">
+
+                    <tr>
+                      <td>{{inviteUser.userId}}</td>
+                      <td>
+                        <input id="check4_{{i}}_{{k}}" type="checkbox" [checked]="getinviteOrgRole(inviteUser.role).om" />
+                        <label for="check4_{{i}}_{{k}}">OrgManager({{ 'orgMain.orgAdmin' | translate }})</label>
+                      </td>
+                      <td>
+                        <input id="check5_{{i}}_{{k}}" type="checkbox" [checked]="getinviteOrgRole(inviteUser.role).bm"/>
+                        <label for="check5_{{i}}_{{k}}">BillingManager({{ 'orgMain.orgBillingManager' | translate }})</label>
+                      </td>
+                      <td>
+                        <input id="check6_{{i}}_{{k}}" type="checkbox" [checked]="getinviteOrgRole(inviteUser.role).oa"/>
+                        <label for="check6_{{i}}_{{k}}">OrgAuditor({{ 'orgMain.orgObserver' | translate }})</label>
+                      </td>
+                      <th><button class="btns4 colors8" (click)="showInviteCancel(inviteUser,item )">{{ 'orgMain.inviteCancel' | translate }}</button></th>
+                      <th><button class="btns4 colors9" (click)="showUserReInvite(item,inviteUser)">{{ 'orgMain.inviteReSend' | translate }}</button></th>
+
+                    </tr>
+                  </ng-container>
                   </ng-container>
                 </tbody>
               </table>
@@ -503,6 +526,38 @@
   </div>
 </div>
 
+<div class="modal fade" id="layerpop_org_invite_cancle">
+  <ng-container *ngIf="sltEntity">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">초대 취소</h4>
+        </div>
+        <!-- body -->
+        <div class="modal-body">
+          <div class="">
+            <p class="account_modal_p"><span>{{sltMemberName}}</span>님의 <span>{{this.sltEntity.org.entity.name}}</span>조직의 초대를 취소하시겠습니까?
+            </p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="inviteCancel()">{{ 'orgMain.layerpop.orgSetRole.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.orgSetRole.btn2' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </ng-container>
+</div>
+
+
+
 <div class="modal fade" id="layerpop4">
   <div class="vertical-alignment-helper">
     <div class="modal-dialog vertical-align-center">
@@ -601,3 +656,104 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="layerpop_ReInvite">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">사용자 재초대</h4>
+        </div>
+        <!-- body -->
+        <ng-container *ngIf="sltEntity">
+          <div class="modal-body">
+            <input class="w100" id="invitename" placeholder="sample@test.com" disabled="disabled"/>
+            <span class="red">{{ 'orgMain.layerpop.layerpop4.explanation' | translate }}</span>
+            <table class="maT30">
+              <colgroup>
+                <col style=''>
+                <col style=''>
+                <col style=''>
+                <col style=''>
+              </colgroup>
+              <thead>
+              <tr>
+                <td>{{ 'orgMain.layerpop.layerpop4.org' | translate }}</td>
+                <td colspan="3">{{ 'orgMain.layerpop.layerpop4.assignedOrg' | translate }}</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>{{sltEntity.org.entity.name}}</td>
+                <td>
+                  <input class="checkSel3" id="modal4" type="checkbox"/>
+                  <label for="modal4">OrgManager({{ 'orgMain.layerpop.layerpop4.orgAdmin' | translate }})</label>
+                </td>
+                <td>
+                  <input class="checkSel3" id="modal5" type="checkbox" checked="checked"/>
+                  <label for="modal5">BillingManager({{ 'orgMain.layerpop.layerpop4.orgBillingManager' | translate }})</label>
+                </td>
+                <td>
+                  <input class="checkSel3" id="modal6" type="checkbox" checked="checked"/>
+                  <label for="modal6">OrgAuditor({{ 'orgMain.layerpop.layerpop4.orgObserver' | translate }})</label>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <input class="checkAll3" id="checkAll3" type="checkbox" (click)="allCheck()"/>
+            <label class="maT10" for="checkAll3">{{ 'orgMain.layerpop.layerpop4.selectAll' | translate }}</label>
+            <table class="maT30" *ngIf="sltEntity.space.resources.length > 0">
+              <colgroup>
+                <col style=''>
+                <col style=''>
+                <col style=''>
+                <col style=''>
+              </colgroup>
+              <thead>
+              <tr>
+                <td>{{ 'orgMain.layerpop.layerpop4.user' | translate }}
+                </td>
+                <td colspan="3">{{ 'orgMain.layerpop.layerpop4.roleGiveSpace' | translate }}
+                </td>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr *ngFor="let space of sltEntity.space.resources; let i = index">
+                <td>{{space.entity.name}}</td>
+                <td>
+                  <input class="checkSel4" id="modal7_{{i}}" type="checkbox"/>
+                  <label for="modal7_{{i}}">SpaceManager</label>
+                </td>
+                <td>
+                  <input class="checkSel4" id="modal8_{{i}}" type="checkbox" checked="checked"/>
+                  <label for="modal8_{{i}}">SpaceDeveloper</label>
+                </td>
+                <td>
+                  <input class="checkSel4" id="modal9_{{i}}" type="checkbox" checked="checked"/>
+                  <label for="modal9_{{i}}">SpaceAuditor</label>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <input class="checkAll4" id="checkAll4" type="checkbox"/>
+            <label class="maT10" for="checkAll4">{{ 'orgMain.layerpop.layerpop4.selectAll' | translate }}</label>
+
+          </div>
+          <!-- Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userReInvite()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
+            <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+

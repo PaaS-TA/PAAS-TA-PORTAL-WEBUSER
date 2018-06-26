@@ -235,11 +235,10 @@ export class CatalogDevelopmentComponent implements OnInit {
   checkAppName() {
     this.pattenTest();
     if(this.appname.length < 64){
-      this.appurl = this.appname;
-      $('#routename').val(this.appurl);
+      $('#routename').val(this.appname);
     }
     this.nameCheck();
-    this.routeCheck();
+    this.checkHostName();
   }
 
   checkHostName(){
@@ -257,7 +256,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.appname =$('#orgname').val();
   }
   routepattenTest(){
-    const regExpPattern = /[\@\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpPattern = /[\@\{\}\[\]\/?.,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
     $('#routename').val($('#routename').val().replace(regExpPattern, '')
@@ -268,7 +267,8 @@ export class CatalogDevelopmentComponent implements OnInit {
 
   createApp() {
     this.catalogService.isLoading(true);
-    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
+    var encodename = encodeURI(this.appname);
+    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appurl).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
           let appSampleFilePath = this.buildpack['appSampleFilePath'];
@@ -330,9 +330,10 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   routeCheck(){
+    console.log(this.appurl);
     this.routecheck = CATALOGURLConstant.OK;
     this.hostnames.forEach(host => {
-      if(host === this.appname){
+      if(host === this.appurl){
         this.routecheck = CATALOGURLConstant.NO;
         return;
       }

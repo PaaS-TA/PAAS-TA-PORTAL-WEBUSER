@@ -399,6 +399,7 @@
     "orgObserver" : "Org observer",
     "cancelMember" : "Cancel member",
     "inviteReSend" : "Resend",
+    "inviteCancel" : "Cancel invitation",
     "quota" : "Quota",
     "select" : "Select",
     "serviceName" : "Service name",

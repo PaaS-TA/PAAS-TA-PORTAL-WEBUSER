@@ -32,6 +32,12 @@ export class Org2MainService {
     }).do(console.log);
   }
 
+  getInviteOrg(){
+    return this.commonService.doGet('/commonapi/v2/invitations/userInfo/'+this.commonService.getUserid(), this.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
   createSpace(params: any) {
     return this.commonService.doPost('/portalapi/v2/spaces', params, this.getToken()).map((res: Response) => {
       return res;
@@ -101,5 +107,11 @@ export class Org2MainService {
     return this.commonService.doPost('/commonapi/v2/email/inviteOrg', params, '').map((res: Response) => {
       return res;
     });
+  }
+
+  delInviteCancle(orgGuid: string, userId: string) {
+    return this.commonService.doDelete('/commonapi/v2/orgs/'+orgGuid+'/invite?userId='+ userId,'', this.getToken()).map((res: Response) => {
+      return res;
+    })
   }
 }

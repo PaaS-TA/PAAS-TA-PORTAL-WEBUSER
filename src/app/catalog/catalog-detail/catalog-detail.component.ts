@@ -296,11 +296,10 @@ export class CatalogDetailComponent implements OnInit {
   checkAppName() {
     this.pattenTest();
     if(this.appname.length < 64){
-      this.appurl = this.appname;
-      $('#routename').val(this.appurl);
+      $('#routename').val(this.appname);
     }
     this.nameCheck();
-    this.routeCheck();
+    this.checkHostName();
   }
 
   checkHostName(){
@@ -318,7 +317,7 @@ export class CatalogDetailComponent implements OnInit {
     this.appname =$('#orgname').val();
   }
   routepattenTest(){
-    const regExpPattern = /[\@\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpPattern = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
     $('#routename').val($('#routename').val().replace(regExpPattern, '')
@@ -334,7 +333,7 @@ export class CatalogDetailComponent implements OnInit {
   routeCheck(){
     this.routecheck = CATALOGURLConstant.OK;
     this.hostnames.forEach(host => {
-      if(host === this.appname){
+      if(host === this.appurl){
         this.routecheck = CATALOGURLConstant.NO;
         return;
       }
