@@ -58,22 +58,26 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
     };
 
     this.orgService.userInviteAccept(params).subscribe(data => {
-      console.log(data);
-
-      //TODO 실패처리
-
-      if(data != null) {
-        $("[id^='layerpop']").modal("hide");
+      if(!data){
         this.common.isLoading = false;
-      }
+        this.router.navigate(['error']);
+      } else {
+        $("#html1").show();
+        $("#html2").show();
 
-      setTimeout(() => {
-        const current = new Date().getTime();
-        this.logger.debug('auto-navigate organization... ');
-        this.logger.debug('userId : ', this.userId, ' / orgName : ', this.orgName, ' / refreshToken : ', this.refreshToken);
-        this.logger.debug('start : ', this.timestamp, 'want to wait time : ', this.waitTime, 'real wait time : ', (current - this.timestamp), 'ms');
-        this.router.navigate(['/']);
-      }, this.waitTime);
+        if(data != null) {
+          $("[id^='layerpop']").modal("hide");
+          this.common.isLoading = false;
+        }
+
+        setTimeout(() => {
+          const current = new Date().getTime();
+          this.logger.debug('auto-navigate organization... ');
+          this.logger.debug('userId : ', this.userId, ' / orgName : ', this.orgName, ' / refreshToken : ', this.refreshToken);
+          this.logger.debug('start : ', this.timestamp, 'want to wait time : ', this.waitTime, 'real wait time : ', (current - this.timestamp), 'ms');
+          this.router.navigate(['/']);
+        }, this.waitTime);
+      }
     });
   }
 
