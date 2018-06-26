@@ -555,5 +555,78 @@
     "etc": {
       "unlimited": "무제한"
     }
+  },
+  "usermgmt": {
+    "myAccount" : "내 계정",
+    "explan" : {
+      "check1" : "영문,숫자를 혼합하여 6~20자 이내 공백 미포함 입력만 가능합니다.",
+      "check2" : "숫자 입력만 가능합니다.",
+      "check3" : "숫자와 영문 입력만 가능합니다.",
+      "check4" : "256 자 이하만 가능합니다.",
+      "check5" : "입력한 비밀 번호와 다릅니다."
+    },
+    "placeholder" : {
+      "password" : "비밀번호를 입력하세요."
+    },
+    "button" :{
+      "change" : "변경하기",
+      "delete" : "삭제",
+      "cancel" : "취소",
+      "photoRegistration" : "사진등록"
+    },
+    "loginInfo": {
+      "loginInfo": "로그인 정보",
+      "email": "이메일",
+      "changePassword": {
+        "changePassword" : "비밀번호 변경",
+        "currentPassword": "현재 비밀번호",
+        "newPassword": "새 비밀번호",
+        "newPasswordConfirmation": "새 비밀번호 확인"
+      }
+    },
+    "userInfo": {
+      "userInfo" : "사용자 정보",
+      "name" :{
+        "name" : "이름",
+        "changeName":"변경할 이름"
+      },
+      "phoneNumber": {
+        "phoneNumber": "전화번호",
+        "newPhoneNumber": "새 전화번호"
+      },
+      "zipCode": {
+        "zipCode": "우편번호",
+        "newZipCode": "새 우편번호"
+      },
+      "address": {
+        "address": "주소",
+        "newAddress": "새 주소"
+      }
+    },
+    "myOrg":{
+      "myOrg" : "나의 조직",
+      "orgWithdrawal":"조직 탈퇴",
+      "explan1": "해당 조직명이 없습니다.",
+      "explan2": "조직을 탈퇴하면 되돌릴 수 없습니다.",
+      "explan2-2": "를 탈퇴하시겠습니까?"
+
+    },
+    "deleteAccount": {
+      "deleteAccount":"계정 삭제",
+      "explan": "계정 삭제를 선택 하면 모든 조직과 공간이 삭제 되며 되돌릴 수 없습니다.",
+      "explan-2": "를 삭제하시겠습니까?"
+    },
+    "alertLayer": {
+      "ChangeSuccess": "변경 되었습니다.",
+      "ChangeSuccessFail": "재 입력 하세요.",
+      "passwordSuccess": "성공적으로 변경되었습니다.",
+      "newPasswordFail": "새 비밀번호를 다시 입력하세요.",
+      "passwordFail": "비밀번호를 다시 입력하세요.",
+      "orgDeleteSuccess": "조직탈퇴 완료 되었습니다.",
+      "orgDeleteFail": "조직 틸퇴 실패 하였습니다.",
+      "accountDeleteSuccess": "계정삭제가 완료 되었습니다.",
+      "accountDeleteFail": "조직 틸퇴 실패 하였습니다."
+    }
+
   }
 }

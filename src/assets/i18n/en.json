@@ -553,5 +553,76 @@
     "etc": {
       "unlimited": "unlimited"
     }
+  },
+  "usermgmt": {
+    "myAccount" : "My Account",
+    "explan" : {
+      "check1" : "Only enter without spaces within 6-20 characters by mixing English and numbers.",
+      "check2" : "Only enter numbers.",
+      "check3" : "Only numbers and English are allowed.",
+      "check4" : "Only 256 characters or less is allowed.",
+      "check5" : "It is different from the password you entered."
+    },
+    "placeholder" : {
+      "password" : "Please enter your password."
+    },
+    "button" :{
+      "change" : "Change",
+      "delete" : "Delete",
+      "cancel" : "Cancel",
+      "photoRegistration" : "Photo Registration"
+    },
+    "loginInfo": {
+      "loginInfo": "login Info",
+      "email": "Email",
+      "changePassword": {
+        "changePassword" : "Change Password",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "newPasswordConfirmation": "New Password Confirmation"
+      }
+    },
+    "userInfo": {
+      "userInfo" : "User Info",
+      "name" :{
+        "name" : "Name",
+        "changeName":"Change Name"
+      },
+      "phoneNumber": {
+        "phoneNumber": "Phone Number",
+        "newPhoneNumber": "New PhoneNumber"
+      },
+      "zipCode": {
+        "zipCode": "Zip Code",
+        "newZipCode": "New Zip Code"
+      },
+      "address": {
+        "address": "Address",
+        "newAddress": "New Address"
+      }
+    },
+    "myOrg":{
+      "myOrg" : "My Org",
+      "orgWithdrawal":"Org Withdrawal",
+      "explan1": "The organization name does not exist.",
+      "explan2": "lf you leave your organization, you can not revert it",
+      "explan2-2": "Are you sure you want to leave?"
+    },
+    "deleteAccount": {
+      "deleteAccount":"Delete Account",
+      "explan": "If you select Delete Account, all organizations and spaces are deleted and can not be reverted.",
+      "explan-2": "Are you sure you want to delete?"
+    },
+    "alertLayer": {
+      "ChangeSuccess": "The change is complete.",
+      "ChangeSuccessFail": "Please re-enter.",
+      "passwordSuccess": "Successfully changed.",
+      "newPasswordFail": "Please re-enter your new password.",
+      "passwordFail": "Please re-enter your password.",
+      "orgDeleteSuccess": "Organization withdrawal is complete.",
+      "orgDeleteFail": "Organization withdrawal is failed.",
+      "accountDeleteSuccess": "Account deletion is complete.",
+      "accountDeleteFail": "Account deletion is failed."
+    }
   }
 }
