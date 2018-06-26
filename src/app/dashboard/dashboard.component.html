@@ -175,7 +175,7 @@
                       <!--<li data-target="#layerpop7" data-toggle="modal" *ngIf="item.service_plan == null"><a class="fas fa-edit"> 서비스 이름변경</a></li>-->
                       <li data-target="#layerpop6" data-toggle="modal" *ngIf="item.service_plan == null"><a
                         class="fas fa-wrench">{{'dashboard.service.updateService' | translate}}</a></li>
-                      <li data-target="#layerpop5" data-toggle="modal"><a class="fas fa-trash-alt"> 삭제</a></li>
+                      <li data-target="#layerpop5" data-toggle="modal"><a class="fas fa-trash-alt">{{'dashboard.button.delete' | translate}}</a></li>
                     </ol>
                   </div>
                   <div class="app_title"><div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 54px; height: 54px" onError="this.src='../../assets/resources/images/catalog/catalog_3.png'"/></div>
@@ -334,13 +334,13 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">{{'dashboard.service.userProvidedCreate' | translate}}"</h4>
+          <h4 class="modal-title">{{'dashboard.service.userProvidedCreate' | translate}}</h4>
         </div>
         <!-- body -->
         <div class="modal-body space_pop_align clearfix">
           <ul>
             <li>
-              <div>{{'dashboard.service.serviceName' | translate}}"</div>
+              <div>{{'dashboard.service.serviceName' | translate}}</div>
               <div><input type="text" id="userProvideName" [(ngModel)]="userProvideName" class="space_input"/></div>
             </li>
             <li>
@@ -352,12 +352,12 @@
               <div><input type="text" id="userProvideSyslogDrainUrl" [(ngModel)]="userProvideSyslogDrainUrl" class="space_input"/></div>
             </li>
           </ul>
-          <span class="red" use-form-error="isNotSame" *ngIf="!isLength" style="padding-left: 150px" ><i class="fas fa-exclamation-circle"></i>{{'dashboard.service.isNotSame' | translate}}.</span>
+          <span class="red" use-form-error="isNotSame" *ngIf="!isLength" style="padding-left: 150px" ><i class="fas fa-exclamation-circle"></i>{{'dashboard.service.isNotSame' | translate}}</span>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4 " (click)="checkLength()">생성</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal" (click)="cancelButton()">취소</button>
+          <button type="button" class="btns2 colors4 " (click)="checkLength()">{{'dashboard.button.create' | translate}}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal" (click)="cancelButton()">{{'dashboard.button.cancel' | translate}}</button>
         </div>
 
       </div>
