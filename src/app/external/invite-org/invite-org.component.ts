@@ -4,7 +4,7 @@ import {OrgService} from "../../org/common/org.service";
 import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {Observable} from "rxjs/Observable";
-import Timer = NodeJS.Timer;
+
 
 declare var $: any;
 declare var jQuery: any;
