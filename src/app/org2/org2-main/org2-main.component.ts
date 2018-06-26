@@ -34,7 +34,6 @@ export class Org2MainComponent implements OnInit {
   public sltOrgRole : string;
   public sltOrgRoleId : string;
   public sltDelete : boolean;
-  public pppp : string;
 
   private showIndexArray: Array<string> = [];
 
