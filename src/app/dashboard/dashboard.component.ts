@@ -13,6 +13,7 @@ import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 import {CatalogService, ServicePack, BuildPack, StarterPack} from '../catalog/main/catalog.service';
 import {isBoolean} from "util";
+import {TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 declare var $: any;
 declare var jQuery: any;
@@ -61,6 +62,7 @@ export class DashboardComponent implements OnInit {
   public appEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
+  public translateEntities: any = [];
 
   public currentOrg: string;
   public currentSpace: string;
@@ -81,7 +83,7 @@ export class DashboardComponent implements OnInit {
 
   public placeholder="credentialsStr:{'username':'admin','password':'password';}";
 
-  constructor(private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService, private spaceService: SpaceService, private log: NGXLogger,
+  constructor(private translate: TranslateService,private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService, private spaceService: SpaceService, private log: NGXLogger,
               private appMainService: AppMainService, private catalogService: CatalogService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {router.navigate(['/']);}
 
@@ -135,6 +137,14 @@ export class DashboardComponent implements OnInit {
     this.userGuid = this.commonService.getUserGuid();
 
     this.orgs = this.getOrgList();
+
+    this.translate.get('dashboard').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.dashboard;
+    });
 
     if (this.commonService.getCurrentOrgName() != null) {
       this.currentOrg = this.commonService.getCurrentOrgName();
@@ -371,11 +381,13 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('변경 완료되었습니다' , true);
+      // this.commonService.alertMessage('변경 완료되었습니다' , true);
+      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
       return data['result'];
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('변경 실패되었습니다' , false);
+      // this.commonService.alertMessage('변경 실패되었습니다' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.ChangeFail, false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -385,11 +397,13 @@ export class DashboardComponent implements OnInit {
       guid: guidParam
     };
     this.dashboardService.delApp(params).subscribe(data => {
-      this.commonService.alertMessage('삭제 완료되었습니다' , true);
+      // this.commonService.alertMessage('삭제 완료되었습니다' , true);
+      this.common.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('삭제 실패하였습니다.' , false);
+      // this.commonService.alertMessage('삭제 실패하였습니다.' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -466,10 +480,12 @@ export class DashboardComponent implements OnInit {
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('생성 완료되었습니다' , true);
+      // this.commonService.alertMessage('생성 완료되었습니다' , true);
+      this.common.alertMessage(this.translateEntities.alertLayer.createSuccess, true);
       return data;
     }, error => {
-      this.commonService.alertMessage('생성 실패되었습니다.' , false);
+      // this.commonService.alertMessage('생성 실패되었습니다.' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.createFail, false);
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
 
@@ -521,12 +537,14 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.updateUserProvided(params).subscribe(data => {
         console.log(params, data);
         this.getAppSummary(this.selectedSpaceId);
-        this.commonService.alertMessage('수정 완료되었습니다.' , true);
+        // this.commonService.alertMessage('수정 완료되었습니다.' , true);
+        this.common.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
         this.commonService.isLoading = false;
         return data;
       }
       , error => {
-        this.commonService.alertMessage('수정 실패되었습니다.' , false);
+        // this.commonService.alertMessage('수정 실패되었습니다.' , false);
+        this.common.alertMessage(this.translateEntities.alertLayer.updateFail, false);
         this.commonService.isLoading = false;
         this.getAppSummary(this.selectedSpaceId);
       });
@@ -538,11 +556,13 @@ export class DashboardComponent implements OnInit {
       newName: this.selectedName
     };
     this.dashboardService.renameInstance(params).subscribe(data => {
-      this.commonService.alertMessage('수정 완료되었습니다' , true);
+      // this.commonService.alertMessage('수정 완료되었습니다' , true);
+      this.common.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('수정 실패되었습니다' , false);
+      // this.commonService.alertMessage('수정 실패되었습니다' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.updateFail, false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -553,11 +573,13 @@ export class DashboardComponent implements OnInit {
     };
 
     this.dashboardService.delInstance(params).subscribe(data => {
-      this.commonService.alertMessage('삭제 완료되었습니다.' , true);
+      // this.commonService.alertMessage('삭제 완료되었습니다.' , true);
+      this.common.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('삭제 실패되었습니다.' , false);
+      // this.commonService.alertMessage('삭제 실패되었습니다.' , false);
+      this.common.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
     });
     return (this.getAppSummary(this.selectedSpaceId));
   }
