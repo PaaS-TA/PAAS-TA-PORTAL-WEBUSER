@@ -17,6 +17,7 @@ export class Org2MainComponent implements OnInit {
   public domainsEntities: Observable<any[]>;
   public quotaDefinitionsEntities: Observable<any[]>;
   public orgsEntities: Observable<any[]>;
+  public inviteOrgList : Observable<any[]>;
 
   public sltEntity : any;
   public sltIndex: number;
@@ -80,6 +81,7 @@ export class Org2MainComponent implements OnInit {
     this.getDomains();
     this.getQuotaDefinitions();
     this.getOrgList();
+    this.getInviteOrg();
   }
 
   getDomains() {
@@ -120,6 +122,16 @@ export class Org2MainComponent implements OnInit {
         $("#detailBtn_close_"+orgGuid).hide();
         $("#detailBtn_view_"+orgGuid).show();
       }
+  }
+
+  getInviteOrg(){
+    this.orgMainService.getInviteOrg().subscribe(data => {
+      this.inviteOrgList = data.result;
+    });
+  }
+
+  getinviteOrgRole(value : any){
+    return JSON.parse(value).org[0];
   }
 
   buttonEvent() {

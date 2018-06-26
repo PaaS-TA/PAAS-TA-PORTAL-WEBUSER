@@ -163,6 +163,29 @@
                       <th><button class="btns4 colors8" (click)="showMemberCancel(userRole,item.userRoles.user_roles, item.org.metadata.guid)">{{ 'orgMain.cancelMember' | translate }}</button></th>
                     </tr>
                   </ng-container>
+                  <ng-container *ngFor='let inviteUser of inviteOrgList; let k = index'>
+                    <ng-container *ngIf="item.org.metadata.guid === inviteUser.orgGuid">
+
+                    <tr>
+                      <td>{{inviteUser.userId}}</td>
+                      <td>
+                        <input id="check4_{{i}}_{{k}}" type="checkbox" [checked]="getinviteOrgRole(inviteUser.role).om" />
+                        <label for="check4_{{i}}_{{k}}">OrgManager({{ 'orgMain.orgAdmin' | translate }})</label>
+                      </td>
+                      <td>
+                        <input id="check5_{{i}}_{{k}}" type="checkbox" [checked]="getinviteOrgRole(inviteUser.role).bm"/>
+                        <label for="check5_{{i}}_{{k}}">BillingManager({{ 'orgMain.orgBillingManager' | translate }})</label>
+                      </td>
+                      <td>
+                        <input id="check6_{{i}}_{{k}}" type="checkbox" [checked]="getinviteOrgRole(inviteUser.role).oa"/>
+                        <label for="check6_{{i}}_{{k}}">OrgAuditor({{ 'orgMain.orgObserver' | translate }})</label>
+                      </td>
+                      <th><button class="btns4 colors8" (click)="showMemberCancel(userRole,item.userRoles.user_roles, item.org.metadata.guid)">{{ 'orgMain.cancelMember' | translate }}</button>
+
+                      </th>
+                    </tr>
+                  </ng-container>
+                  </ng-container>
                 </tbody>
               </table>
             </div><!-- organization_table2 -->

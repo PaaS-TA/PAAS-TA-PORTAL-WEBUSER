@@ -32,6 +32,12 @@ export class Org2MainService {
     }).do(console.log);
   }
 
+  getInviteOrg(){
+    return this.commonService.doGet('/commonapi/v2/invitations/userInfo/'+this.commonService.getUserid(), this.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+
   createSpace(params: any) {
     return this.commonService.doPost('/portalapi/v2/spaces', params, this.getToken()).map((res: Response) => {
       return res;
