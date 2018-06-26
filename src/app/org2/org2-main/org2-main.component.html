@@ -137,11 +137,12 @@
                   <col style=''>
                   <col style=''>
                   <col style=''>
+                  <col style=''>
                 </colgroup>
                 <thead>
                   <tr>
                     <td>{{ 'orgMain.user' | translate }}</td>
-                    <td colspan="4">{{ 'orgMain.setRoles' | translate }}</td>
+                    <td colspan="5">{{ 'orgMain.setRoles' | translate }}</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -161,6 +162,7 @@
                         <label for="check3_{{i}}_{{j}}">OrgAuditor({{ 'orgMain.orgObserver' | translate }})</label>
                       </td>
                       <th><button class="btns4 colors8" (click)="showMemberCancel(userRole,item.userRoles.user_roles, item.org.metadata.guid)">{{ 'orgMain.cancelMember' | translate }}</button></th>
+                      <th><button class="btns4 colors9" (click)="showMemberCancel(userRole,item.userRoles.user_roles, item.org.metadata.guid)">{{ 'orgMain.inviteReSend' | translate }}</button></th>
                     </tr>
                   </ng-container>
                   <ng-container *ngFor='let inviteUser of inviteOrgList; let k = index'>

@@ -400,6 +400,7 @@
     "orgBillingManager" : "조직 결제 관리자",
     "orgObserver" : "조직 참관인",
     "cancelMember" : "맴버 취소",
+    "inviteReSend" : "초대 재전송",
     "quota" : "할당량",
     "select" : "선택",
     "serviceName" : "서비스명",
