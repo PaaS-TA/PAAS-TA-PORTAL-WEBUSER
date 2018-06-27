@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AppMainService } from './app-main.service';
-import { Observable } from 'rxjs/Observable';
-import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-import { CommonService } from "../../common/common.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AppMainService} from './app-main.service';
+import {Observable} from 'rxjs/Observable';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
+import {CommonService} from "../../common/common.service";
 
 
 declare var Chart: any;
@@ -153,7 +153,7 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.alive = false; // switches your IntervalObservable off
   }
 
@@ -184,27 +184,28 @@ export class AppMainComponent implements OnInit {
 
     $("[id^='layerpop']").modal("hide");
 
-    if($(".colright_btn li > ol").hasClass('on'))
+    if ($(".colright_btn li > ol").hasClass('on'))
       $(".colright_btn li > ol").toggleClass('on');
 
-    this.route.queryParams.subscribe(params => {
-      if(Object.keys(params).length > 0) {
+
+      if (this.common.getCurrentAppGuid != null) {
         setTimeout(() => this.showLoading(), 0);
 
-        this.orgName = params['org_name'];
-        this.orgGuid = params['org_guid'];
-        this.spaceName = params['space_name'];
-        this.spaceGuid = params['space_guid'];
-        this.appName = params['app_name'];
-        this.appGuid = params['app_guid'];
+        this.orgName = this.common.getCurrentOrgName();
+        this.orgGuid = this.common.getUserGuid();
+        this.spaceName = this.common.getCurrentSpaceName();
+        this.spaceGuid = this.common.getCurrentSpaceGuid();
+        this.appName = this.common.getCurrentAppName();
+        this.appGuid = this.common.getCurrentAppGuid();
+        console.log("여기 :::: " + this.common.getCurrentAppGuid());
 
-        this.getAppSummary(params['app_guid']);
-        this.getAppEvents(params['app_guid']);
-        this.getAppEnv(params['app_guid']);
-        this.getAppRecentLogs(params['app_guid']);
-        this.getAlarms(params['app_guid']);
-        this.getAlarm(params['app_guid']);
-        this.getAutoscaling(params['app_guid']);
+        this.getAppSummary(this.appGuid);
+        this.getAppEvents(this.appGuid);
+        this.getAppEnv(this.appGuid);
+        this.getAppRecentLogs(this.appGuid);
+        this.getAlarms(this.appGuid);
+        this.getAlarm(this.appGuid);
+        this.getAutoscaling(this.appGuid);
       } else {
         setTimeout(() => this.showLoading(), 0);
 
@@ -212,14 +213,13 @@ export class AppMainComponent implements OnInit {
 
         this.router.navigate(['dashboard']);
       }
-    });
   }
 
   showLoading() {
     this.common.isLoading = true;
   }
 
-  getAppSummary(guid: string) {
+  getAppSummary(guid: any) {
     this.isLoading = true;
     this.appMainService.getAppSummary(guid).subscribe(data => {
       this.appSummaryEntities = data;
@@ -232,8 +232,8 @@ export class AppMainComponent implements OnInit {
       var appServices = [];
       var appServiceDashboardUri = "";
       $.each(data.services, function (key, serviceObj) {
-        if(serviceObj.service_plan != undefined) {
-          if(serviceObj.service_plan.service != undefined && serviceObj.service_plan.service.label == "Pinpoint") {
+        if (serviceObj.service_plan != undefined) {
+          if (serviceObj.service_plan.service != undefined && serviceObj.service_plan.service.label == "Pinpoint") {
             // $("#apmBtn").attr("disabled", false);
             //
             // if (data.detected_start_command.indexOf("org.springframework.boot.loader.WarLauncher") > 0) {
@@ -270,21 +270,21 @@ export class AppMainComponent implements OnInit {
       this.appSummaryName = data.name;
       this.appSummaryGuid = data.guid;
       this.appSummaryState = data.state;
-      if(data.routes.length > 0) {
+      if (data.routes.length > 0) {
         this.appSummaryRouteUri = data.routes[0].host + "." + data.routes[0].domain.name;
       }
-      if(data.package_updated_at != null) {
+      if (data.package_updated_at != null) {
         this.appSummaryPackageUpdatedAt = data.package_updated_at.replace('T', '  ').replace('Z', ' ');
       }
 
-      if(data.detected_buildpack != null && data.detected_buildpack != "") {
-        if(data.detected_buildpack.length > 40) {
+      if (data.detected_buildpack != null && data.detected_buildpack != "") {
+        if (data.detected_buildpack.length > 40) {
           this.appSummaryBuildpack = data.detected_buildpack.substring(0, 40) + "..";
         } else {
           this.appSummaryBuildpack = data.detected_buildpack;
         }
-      } else if(data.buildpack != null) {
-        if(data.buildpack.length > 40) {
+      } else if (data.buildpack != null) {
+        if (data.buildpack.length > 40) {
           this.appSummaryBuildpack = data.buildpack.substring(0, 40) + "..";
         } else {
           this.appSummaryBuildpack = data.buildpack;
@@ -303,7 +303,7 @@ export class AppMainComponent implements OnInit {
 
       this.appSummaryDisk = data.disk_quota;
 
-      if(this.appSummaryState == "STARTED") {
+      if (this.appSummaryState == "STARTED") {
         this.getAppStats(guid);
         this.sltChartInstances = "All";
         this.getCpuChart();
@@ -359,9 +359,9 @@ export class AppMainComponent implements OnInit {
 
       $.each(data.services, function (key, dataobj) {
         $.each(servicepacks, function (key2, dataobj2) {
-          if((dataobj.service_plan.service.label == dataobj2.servicePackName) && (dataobj2.appBindYn == "Y") && (dataobj2.useYn == "Y")) {
+          if ((dataobj.service_plan.service.label == dataobj2.servicePackName) && (dataobj2.appBindYn == "Y") && (dataobj2.useYn == "Y")) {
 
-            if(JSON.stringify(useServices).indexOf("\"name\":\""+dataobj.name+"\"") < 0) {
+            if (JSON.stringify(useServices).indexOf("\"name\":\"" + dataobj.name + "\"") < 0) {
               var obj = {
                 name: dataobj.name,
                 guid: dataobj.guid,
@@ -387,7 +387,7 @@ export class AppMainComponent implements OnInit {
       var useYn = "N";
       $.each(this.appServicesEntitiesRe, function (key, serviceObj) {
         $.each(data.list, function (key2, dataobj2) {
-          if(serviceObj.service_plan.service.label == dataobj2.servicePackName) {
+          if (serviceObj.service_plan.service.label == dataobj2.servicePackName) {
             useYn = dataobj2.dashboardUseYn;
           }
         });
@@ -411,9 +411,13 @@ export class AppMainComponent implements OnInit {
       var appBuildPackName = this.appSummaryBuildPackName;
 
       $.each(data.list, function (dkey, buildpack) {
-        if(buildpack.buildPackName == appBuildPackName) {
+        if (buildpack.buildPackName == appBuildPackName) {
           this.appThumbImgPath = buildpack.thumbImgPath;
-          $("#col_in1").css({"background":"url("+this.appThumbImgPath+") 15px top no-repeat", "position":"relative", "background-size":"55px 55px"});
+          $("#col_in1").css({
+            "background": "url(" + this.appThumbImgPath + ") 15px top no-repeat",
+            "position": "relative",
+            "background-size": "55px 55px"
+          });
         }
       });
     });
@@ -436,7 +440,7 @@ export class AppMainComponent implements OnInit {
         var cnt = 0;
 
         $.each(data.instances, function (key, dataobj) {
-          if(dataobj.stats != null) {
+          if (dataobj.stats != null) {
             if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
             if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + dataobj.stats.usage.mem / dataobj.stats.mem_quota * 100;
             if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + dataobj.stats.usage.disk / dataobj.stats.disk_quota * 100;
@@ -444,8 +448,8 @@ export class AppMainComponent implements OnInit {
           }
         });
 
-        if(cpu > 0){
-          if(Number((cpu / cnt).toFixed(0)) > 100) {
+        if (cpu > 0) {
+          if (Number((cpu / cnt).toFixed(0)) > 100) {
             this.appStatsCpuPer = 100;
           } else {
             this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
@@ -454,13 +458,13 @@ export class AppMainComponent implements OnInit {
           this.appStatsCpuPer = 0;
         }
 
-        if(mem > 0) {
+        if (mem > 0) {
           this.appStatsMemoryPer = Math.round(mem / cnt);
         } else {
           this.appStatsMemoryPer = 0;
         }
 
-        if(mem > 0) {
+        if (mem > 0) {
           this.appStatsDiskPer = Math.round(disk / cnt);
         } else {
           this.appStatsDiskPer = 0;
@@ -498,7 +502,7 @@ export class AppMainComponent implements OnInit {
       }
       //RESTART statusClass = 4
 
-      if(statusText == "DOWN") {
+      if (statusText == "DOWN") {
         cpu = 0;
         memory = 0;
         disk = 0;
@@ -514,20 +518,20 @@ export class AppMainComponent implements OnInit {
 
       var memoryBytes = parseInt(memory);
       var s = ['Byets', 'KB', 'MB', 'GB', 'TB', 'PB'];
-      var e = Math.floor(Math.log(memoryBytes)/Math.log(1024));
-      if(e === Number.NEGATIVE_INFINITY){
-        memory = "0 "+s[0];
+      var e = Math.floor(Math.log(memoryBytes) / Math.log(1024));
+      if (e === Number.NEGATIVE_INFINITY) {
+        memory = "0 " + s[0];
       } else {
-        memory = (memoryBytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+        memory = (memoryBytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e];
       }
 
       var diskBytes = parseInt(disk);
       var s = ['Byets', 'KB', 'MB', 'GB', 'TB', 'PB'];
-      var e = Math.floor(Math.log(diskBytes)/Math.log(1024));
-      if(e === Number.NEGATIVE_INFINITY){
-        disk = "0 "+s[0];
+      var e = Math.floor(Math.log(diskBytes) / Math.log(1024));
+      if (e === Number.NEGATIVE_INFINITY) {
+        disk = "0 " + s[0];
       } else {
-        disk = (diskBytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+        disk = (diskBytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e];
       }
 
       var obj = {
@@ -566,14 +570,14 @@ export class AppMainComponent implements OnInit {
       name: this.appName
     };
     this.appMainService.startApp(params).subscribe(data => {
-      if(data.result) {
+      if (data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.appstartSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.appstartFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.appstartFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
@@ -590,14 +594,14 @@ export class AppMainComponent implements OnInit {
       guid: this.appSummaryGuid
     };
     this.appMainService.stopApp(params).subscribe(data => {
-      if(data.result) {
+      if (data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.appstopSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.appstopFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.appstopFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
@@ -616,34 +620,34 @@ export class AppMainComponent implements OnInit {
     };
     this.appMainService.restageApp(params).subscribe(data => {
       //TODO 재시작 후 시간 텀을주어 init 할 것인가??
-      if(data.result) {
+      if (data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.appRestartSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.appRestartFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.appRestartFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
 
   instanceUpClick() {
-    if(this.appSummaryInstanceMax >= (Number(this.appSummaryInstance) + 1)) {
+    if (this.appSummaryInstanceMax >= (Number(this.appSummaryInstance) + 1)) {
       this.appSummaryInstance = Number(this.appSummaryInstance) + 1;
       $("#instance_in").val(this.appSummaryInstance);
     }
   }
 
   instanceDownClick() {
-    if(1 <= (Number(this.appSummaryInstance) - 1)) {
+    if (1 <= (Number(this.appSummaryInstance) - 1)) {
       this.appSummaryInstance = Number(this.appSummaryInstance) - 1;
       $("#instance_in").val(this.appSummaryInstance);
     }
   }
 
   instanceDirectInputClick() {
-    if($("#instanceS2").css("display") == "none") {
+    if ($("#instanceS2").css("display") == "none") {
       this.appSummaryInstance = $("#instance_in").val();
       $("#instanceS1").hide();
       $("#instanceS2").show();
@@ -660,21 +664,21 @@ export class AppMainComponent implements OnInit {
   }
 
   memUpClick() {
-    if((this.appSummaryMemoryMax*1024) >= (Number(this.appSummaryMemory) + 1024)) {
+    if ((this.appSummaryMemoryMax * 1024) >= (Number(this.appSummaryMemory) + 1024)) {
       this.appSummaryMemory = Number(this.appSummaryMemory) + 1024;
       $("#mem_in").val(this.appSummaryMemory);
     }
   }
 
   memDownClick() {
-    if(1 <= (Number(this.appSummaryMemory) - 1024)) {
+    if (1 <= (Number(this.appSummaryMemory) - 1024)) {
       this.appSummaryMemory = Number(this.appSummaryMemory) - 1024;
       $("#mem_in").val(this.appSummaryMemory);
     }
   }
 
   memDirectInputClick() {
-    if($("#memS2").css("display") == "none") {
+    if ($("#memS2").css("display") == "none") {
       this.appSummaryMemory = $("#mem_in").val();
       $("#memS2").next().text("M");
       $("#memS1").hide();
@@ -682,7 +686,7 @@ export class AppMainComponent implements OnInit {
       $("#mem_in").focus();
     } else {
       this.appSummaryMemory = $("#mem_in").val();
-      if(this.appSummaryMemory >= 1024) {
+      if (this.appSummaryMemory >= 1024) {
         $("#memS2").next().text("G");
       } else {
         $("#memS2").next().text("M");
@@ -697,21 +701,21 @@ export class AppMainComponent implements OnInit {
   }
 
   diskUpClick() {
-    if((this.appSummaryDiskMax*1024) >= (Number(this.appSummaryDisk) + 1024)) {
+    if ((this.appSummaryDiskMax * 1024) >= (Number(this.appSummaryDisk) + 1024)) {
       this.appSummaryDisk = Number(this.appSummaryDisk) + 1024;
       $("#disk_in").val(this.appSummaryDisk);
     }
   }
 
   diskDownClick() {
-    if(1 <= (Number(this.appSummaryDisk) - 1024)) {
+    if (1 <= (Number(this.appSummaryDisk) - 1024)) {
       this.appSummaryDisk = Number(this.appSummaryDisk) - 1024;
       $("#disk_in").val(this.appSummaryDisk);
     }
   }
 
   diskDirectInputClick() {
-    if($("#diskS2").css("display") == "none") {
+    if ($("#diskS2").css("display") == "none") {
       this.appSummaryDisk = $("#disk_in").val();
       $("#diskS2").next().text("M");
       $("#diskS1").hide();
@@ -719,7 +723,7 @@ export class AppMainComponent implements OnInit {
       $("#disk_in").focus();
     } else {
       this.appSummaryDisk = $("#disk_in").val();
-      if(this.appSummaryDisk >= 1024) {
+      if (this.appSummaryDisk >= 1024) {
         $("#diskS2").next().text("G");
       } else {
         $("#diskS2").next().text("M");
@@ -765,14 +769,14 @@ export class AppMainComponent implements OnInit {
     this.common.isLoading = true;
 
     this.appMainService.delApp(this.appGuid).subscribe(data => {
-      if(data.result) {
+      if (data.result) {
         this.common.alertMessage(this.translateEntities.alertLayer.appDelSuccess, true);
 
         // this.common.isLoading = false;
         this.router.navigate(['dashboard']);
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.appDelFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.appDelFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
@@ -784,19 +788,19 @@ export class AppMainComponent implements OnInit {
     var diskChange = 0;
     var name = "";
 
-    if($("#instanceS2").css("display") == "inline") {
+    if ($("#instanceS2").css("display") == "inline") {
       instancesChange = $("#instance_in").val();
     } else {
       instancesChange = this.appSummaryInstance;
     }
 
-    if($("#memS2").css("display") == "inline") {
+    if ($("#memS2").css("display") == "inline") {
       memoryChange = $("#mem_in").val();
     } else {
       memoryChange = this.appSummaryMemory;
     }
 
-    if($("#diskS2").css("display") == "inline") {
+    if ($("#diskS2").css("display") == "inline") {
       diskChange = $("#disk_in").val();
     } else {
       diskChange = this.appSummaryDisk;
@@ -832,8 +836,8 @@ export class AppMainComponent implements OnInit {
       name: name
     };
     this.appMainService.updateApp(params).subscribe(data => {
-      if(data.result) {
-        $(".headT,.headT2").css("display","none");
+      if (data.result) {
+        $(".headT,.headT2").css("display", "none");
 
         $("#instanceS2").hide();
         $("#instanceS1").show();
@@ -844,13 +848,13 @@ export class AppMainComponent implements OnInit {
         $("#diskS2").hide();
         $("#diskS1").show();
 
-        if(memoryChange >= 1024) {
+        if (memoryChange >= 1024) {
           $("#memS2").next().text("G");
         } else {
           $("#memS2").next().text("M");
         }
 
-        if(diskChange >= 1024) {
+        if (diskChange >= 1024) {
           $("#diskS2").next().text("G");
         } else {
           $("#diskS2").next().text("M");
@@ -862,7 +866,7 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.appUpdateFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.appUpdateFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
@@ -918,7 +922,7 @@ export class AppMainComponent implements OnInit {
 
     };
     this.appMainService.updateApp(params).subscribe(data => {
-      if(data.result) {
+      if (data.result) {
         $("#add_env").hide();
 
         this.common.isLoading = false;
@@ -927,12 +931,12 @@ export class AppMainComponent implements OnInit {
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(alertLayerFailText+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(alertLayerFailText + "<br><br>" + data.msg.description, false);
       }
     });
   }
 
-  getAppEvents(guid: string) {
+  getAppEvents(guid: any) {
     this.appMainService.getAppEvents(guid).subscribe(data => {
       this.appEventsEntities = data.resources;
 
@@ -974,7 +978,7 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  getAppEnv(guid: string) {
+  getAppEnv(guid: any) {
     this.appMainService.getAppEnv(guid).subscribe(data => {
       this.appEnvEntities = data;
 
@@ -1000,7 +1004,7 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  getAppRecentLogs(guid: string) {
+  getAppRecentLogs(guid: any) {
     this.appMainService.getAppRecentLogs(guid).subscribe(data => {
       var str = "";
       $.each(data.log, function (key, dataobj) {
@@ -1013,7 +1017,7 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  getAlarms(guid: string) {
+  getAlarms(guid: any) {
     //TODO 임시
     guid = "9dac6e76-37cf-484f-8ebe-bdbaf99943e6";
 
@@ -1037,7 +1041,7 @@ export class AppMainComponent implements OnInit {
     this.getAlarms(this.appSummaryGuid);
   }
 
-  getAlarm(guid: string) {
+  getAlarm(guid: any) {
     //TODO 임시
     guid = "9dac6e76-37cf-484f-8ebe-bdbaf99943e6";
 
@@ -1053,13 +1057,13 @@ export class AppMainComponent implements OnInit {
       this.appAlarmEmailSendYn = data.emailSendYn;
       this.appAlarmAlarmUseYn = data.alarmUseYn;
 
-      if(this.appAlarmEmailSendYn == "Y") {
+      if (this.appAlarmEmailSendYn == "Y") {
         $("#switch12").attr("checked", true);
       } else {
         $("#switch12").attr("checked", false);
       }
 
-      if(this.appAlarmAlarmUseYn == "Y") {
+      if (this.appAlarmAlarmUseYn == "Y") {
         $("#switch13").attr("checked", true);
       } else {
         $("#switch13").attr("checked", false);
@@ -1068,7 +1072,7 @@ export class AppMainComponent implements OnInit {
   }
 
   showPopAlarmEditClick() {
-    if($('#appAlarmEmail').css("color") == "rgb(255, 0, 0)") {
+    if ($('#appAlarmEmail').css("color") == "rgb(255, 0, 0)") {
       alert("Email 형식이 잘못 되었습니다.");
       return false;
     }
@@ -1077,13 +1081,13 @@ export class AppMainComponent implements OnInit {
   }
 
   editAlarmClick() {
-    if($("#switch12").is(":checked") == true) {
+    if ($("#switch12").is(":checked") == true) {
       this.appAlarmEmailSendYn = "Y";
     } else {
       this.appAlarmEmailSendYn = "N";
     }
 
-    if($("#switch13").is(":checked") == true) {
+    if ($("#switch13").is(":checked") == true) {
       this.appAlarmAlarmUseYn = "Y";
     } else {
       this.appAlarmAlarmUseYn = "N";
@@ -1104,8 +1108,8 @@ export class AppMainComponent implements OnInit {
     };
 
     this.appMainService.updateAlarm(params).subscribe(data => {
-      if(data) {
-        if(data.status == "success") {
+      if (data) {
+        if (data.status == "success") {
           this.ngOnInit();
           $("[id^='layerpop']").modal("hide");
         } else {
@@ -1119,7 +1123,7 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  getAutoscaling(guid: string) {
+  getAutoscaling(guid: any) {
     // TODO 임시
     guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
 
@@ -1137,13 +1141,13 @@ export class AppMainComponent implements OnInit {
       this.appAutoscalingMemoryMaxThreshold = data.memoryMaxThreshold;
       this.appAutoscalingMemoryMinThreshold = data.memoryMinThreshold;
 
-      if(this.appAutoscalingOutYn == "Y") {
+      if (this.appAutoscalingOutYn == "Y") {
         $("#switch10").attr("checked", true);
       } else {
         $("#switch10").attr("checked", false);
       }
 
-      if(this.appAutoscalingInYn == "Y") {
+      if (this.appAutoscalingInYn == "Y") {
         $("#switch11").attr("checked", true);
       } else {
         $("#switch11").attr("checked", false);
@@ -1156,13 +1160,13 @@ export class AppMainComponent implements OnInit {
   }
 
   editAutoscalingClick() {
-    if($("#switch10").is(":checked") == true) {
+    if ($("#switch10").is(":checked") == true) {
       this.appAutoscalingOutYn = "Y";
     } else {
       this.appAutoscalingOutYn = "N";
     }
 
-    if($("#switch11").is(":checked") == true) {
+    if ($("#switch11").is(":checked") == true) {
       this.appAutoscalingInYn = "Y";
     } else {
       this.appAutoscalingInYn = "N";
@@ -1185,8 +1189,8 @@ export class AppMainComponent implements OnInit {
     };
 
     this.appMainService.updateAutoscaling(params).subscribe(data => {
-      if(data) {
-        if(data.status == "success") {
+      if (data) {
+        if (data.status == "success") {
           this.ngOnInit();
           $("[id^='layerpop']").modal("hide");
         } else {
@@ -1211,7 +1215,7 @@ export class AppMainComponent implements OnInit {
       spaceId: this.appSummarySpaceGuid
     };
     this.appMainService.addAppRoute(params).subscribe(data => {
-      if(data.result) {
+      if (data.result) {
         $(".lauth_dl").toggleClass("on");
 
         this.common.isLoading = false;
@@ -1220,7 +1224,7 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.routeAddFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.routeAddFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
@@ -1231,23 +1235,23 @@ export class AppMainComponent implements OnInit {
 
     let params = {};
     this.appMainService.delAppRoute(this.appGuid, this.sltRouteDelGuid, params).subscribe(data => {
-      if(data.result) {
+      if (data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.routeDelSuccess, true);
 
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.routeDelFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.routeDelFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
 
   selectBoxServiceChange(val: string) {
-     var appBindParam = [];
+    var appBindParam = [];
 
     $.each(this.servicepacksEntitiesRe, function (key, dataobj) {
-      if(dataobj.guid == val) {
+      if (dataobj.guid == val) {
         var str = dataobj.appBindParameter.replace("}", "").replace("{", "");
         var split = str.split(",");
 
@@ -1258,7 +1262,7 @@ export class AppMainComponent implements OnInit {
           if (splitSign != null && splitSign != "undefined" && splitSign != "") {
             var type = splitSign[1];
             var value = "";
-            if(type == "default") {
+            if (type == "default") {
               type = "hidden";
               value = "default";
             }
@@ -1279,36 +1283,36 @@ export class AppMainComponent implements OnInit {
   }
 
   serviceParamEvent() {
-    if($("[id^='serviceParamVal_']").size() > 0) {
+    if ($("[id^='serviceParamVal_']").size() > 0) {
       $("[id^='serviceParamVal_']:eq(0)").focus();
     }
   }
 
   tabShowClick(id: string) {
     $('.nav_1d li').removeClass('cur');
-    $("#nav_"+id).addClass('cur');
+    $("#nav_" + id).addClass('cur');
 
     $("[id^='tabContent_']").hide();
-    $("#"+id).show();
+    $("#" + id).show();
 
-    if(id == "tabContent_viewchart") {
-      $("#"+id+"_1").show();
+    if (id == "tabContent_viewchart") {
+      $("#" + id + "_1").show();
     }
   }
 
   tabShowViewchartClick(id: string) {
     $("[id^='tab_viewchart_']").hide();
-    $("#"+id).show();
+    $("#" + id).show();
 
-    if(id == "tab_viewchart_1") {
+    if (id == "tab_viewchart_1") {
       $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
       $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
       $('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
-    } else if(id == "tab_viewchart_2") {
+    } else if (id == "tab_viewchart_2") {
       $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
       $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
       $('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
-    } else if(id == "tab_viewchart_3") {
+    } else if (id == "tab_viewchart_3") {
       $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
       $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
       $('.monitor_tabs li:nth-child(3)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
@@ -1335,21 +1339,21 @@ export class AppMainComponent implements OnInit {
 
     let params = {};
     this.appMainService.terminateInstance(this.appGuid, this.sltStatsInstance, params).subscribe(data => {
-      if(data.result) {
+      if (data.result) {
         this.ngOnInit();
 
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.instanceRestartSuccess, true);
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.instanceRestartFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.instanceRestartFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
 
   showEditEnvClick(index: string) {
     $("#DLid" + index).show();
-    $("#envEditData"+index).focus();
+    $("#envEditData" + index).focus();
   }
 
   hideEditEnvClick(index: string) {
@@ -1416,7 +1420,7 @@ export class AppMainComponent implements OnInit {
   }
 
   showPopServiceBindClick() {
-    if($("#selectBoxService").val() == "") {
+    if ($("#selectBoxService").val() == "") {
       alert("서비스를 선택 하세요.");
       return false;
     }
@@ -1431,10 +1435,10 @@ export class AppMainComponent implements OnInit {
 
     var bindParam = "";
 
-    if($("input[id^='serviceParamKey_']").length > 0) {
+    if ($("input[id^='serviceParamKey_']").length > 0) {
       for (var i = 0; i < $("input[id^='serviceParamKey_']").length; i++) {
-        var key = $("input[id^='serviceParamKey_']:eq("+i+")").val();
-        var value = $("input[id^='serviceParamVal_']:eq("+i+")").val();
+        var key = $("input[id^='serviceParamKey_']:eq(" + i + ")").val();
+        var value = $("input[id^='serviceParamVal_']:eq(" + i + ")").val();
 
         if (value == undefined || value == null || value == 'null' || value == 'defalut') {
           value = "default";
@@ -1456,7 +1460,7 @@ export class AppMainComponent implements OnInit {
       parameter: bindParam
     };
     this.appMainService.bindService(params).subscribe(data => {
-      if(data.result) {
+      if (data.result) {
         $(".service_dl").toggleClass("on");
         this.sltServiceParam = [];
 
@@ -1466,7 +1470,7 @@ export class AppMainComponent implements OnInit {
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.bindServiceFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.bindServiceFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
@@ -1481,26 +1485,26 @@ export class AppMainComponent implements OnInit {
 
     var useSysEnvs = this.appEnvSystemEntities;
     $.each(useSysEnvs, function (key, dataobj) {
-      if(key == label) {
+      if (key == label) {
         $.each(dataobj, function (key2, dataobj2) {
-          if(dataobj2.name == name) {
+          if (dataobj2.name == name) {
             // console.log(dataobj2.credentials);
-            if(dataobj2.credentials.hostname != null) {
+            if (dataobj2.credentials.hostname != null) {
               hostname = dataobj2.credentials.hostname;
             }
-            if(dataobj2.credentials.name != null) {
+            if (dataobj2.credentials.name != null) {
               name2 = dataobj2.credentials.name;
             }
-            if(dataobj2.credentials.password != null) {
+            if (dataobj2.credentials.password != null) {
               password = dataobj2.credentials.password;
             }
-            if(dataobj2.credentials.port != null) {
+            if (dataobj2.credentials.port != null) {
               port = dataobj2.credentials.port;
             }
-            if(dataobj2.credentials.uri != null) {
+            if (dataobj2.credentials.uri != null) {
               uri = dataobj2.credentials.uri;
             }
-            if(dataobj2.credentials.username != null) {
+            if (dataobj2.credentials.username != null) {
               username = dataobj2.credentials.username;
             }
           }
@@ -1533,14 +1537,14 @@ export class AppMainComponent implements OnInit {
 
     let params = {};
     this.appMainService.unbindService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
-      if(data.result) {
+      if (data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceSuccess, true);
 
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceFail+"<br><br>"+data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceFail + "<br><br>" + data.msg.description, false);
       }
     });
   }
@@ -1567,22 +1571,22 @@ export class AppMainComponent implements OnInit {
       var datasetsArray = new Array();
 
       $.each(data, function (key, dataobj) {
-        for(var i=0; i< dataobj.length; i++) {
-          if(dataobj[i].data.data[0].data == null) {
+        for (var i = 0; i < dataobj.length; i++) {
+          if (dataobj[i].data.data[0].data == null) {
             continue;
           }
 
           var timeArray = new Array();
 
-          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
             var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
             var year = date.getFullYear();
-            var month = date.getMonth()+1;
+            var month = date.getMonth() + 1;
             var day = date.getDay();
             var hour = date.getHours();
             var min = date.getMinutes();
             var sec = date.getSeconds();
-            var retVal =   (month < 10 ? "0" + month : month) + "/"
+            var retVal = (month < 10 ? "0" + month : month) + "/"
               + (day < 10 ? "0" + day : day) + " "
               + (hour < 10 ? "0" + hour : hour) + ":"
               + (min < 10 ? "0" + min : min);
@@ -1596,12 +1600,12 @@ export class AppMainComponent implements OnInit {
             timeArray[j] = dataobj[i].data.data[0].data[j].time;
           }
 
-          if(levelsArray.length == 0) {
+          if (levelsArray.length == 0) {
             levelsArray = timeArray;
           } else {
-            if(levelsArray.length > timeArray.length) {
+            if (levelsArray.length > timeArray.length) {
 
-            } else if(levelsArray.length < timeArray.length) {
+            } else if (levelsArray.length < timeArray.length) {
               levelsArray = new Array();
               levelsArray = timeArray;
             }
@@ -1610,17 +1614,17 @@ export class AppMainComponent implements OnInit {
 
       });
 
-      for(var k=0; k< levelsArray.length; k++) {
+      for (var k = 0; k < levelsArray.length; k++) {
         levelsObj[levelsArray[k]] = "";
 
         var date = new Date(levelsArray[k] * 1000);
         var year = date.getFullYear();
-        var month = date.getMonth()+1;
+        var month = date.getMonth() + 1;
         var day = date.getDay();
         var hour = date.getHours();
         var min = date.getMinutes();
         var sec = date.getSeconds();
-        var retVal =   (month < 10 ? "0" + month : month) + "/"
+        var retVal = (month < 10 ? "0" + month : month) + "/"
           + (day < 10 ? "0" + day : day) + " "
           + (hour < 10 ? "0" + hour : hour) + ":"
           + (min < 10 ? "0" + min : min);
@@ -1639,7 +1643,7 @@ export class AppMainComponent implements OnInit {
           var valueArray = new Array();
           var valueObject = new Object();
 
-          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
             keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
           }
           // console.log(keyValueObject);
@@ -1652,7 +1656,7 @@ export class AppMainComponent implements OnInit {
 
           var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
 
-          valueObject["label"] = "Cpu_"+i;
+          valueObject["label"] = "Cpu_" + i;
           valueObject["data"] = valueArray;
           valueObject["lineTension"] = 0;
           valueObject["fill"] = false;
@@ -1667,10 +1671,10 @@ export class AppMainComponent implements OnInit {
           valueObject["pointBorderWidth"] = 0;
           valueObject["pointStyle"] = "rectRounded";
 
-          if(sltChartInstancesValue == "All") {
+          if (sltChartInstancesValue == "All") {
             valueObject["hidden"] = false;
           } else {
-            if(i == Number(sltChartInstancesValue)) {
+            if (i == Number(sltChartInstancesValue)) {
               valueObject["hidden"] = false;
             } else {
               valueObject["hidden"] = true;
@@ -1683,10 +1687,10 @@ export class AppMainComponent implements OnInit {
         }
       });
 
-      if(levelsArray2.length == 0)
+      if (levelsArray2.length == 0)
         levelsArray2 = ["0", "1"];
 
-      if(datasetsArray.length == 0)
+      if (datasetsArray.length == 0)
         datasetsArray = [{
           label: "0",
           data: [0, 0],
@@ -1706,7 +1710,7 @@ export class AppMainComponent implements OnInit {
       var speedData = null;
       speedData = {
         labels: levelsArray2,
-        datasets : datasetsArray
+        datasets: datasetsArray
       };
       var chartOptions = {
         legend: {
@@ -1754,22 +1758,22 @@ export class AppMainComponent implements OnInit {
       var datasetsArray = new Array();
 
       $.each(data, function (key, dataobj) {
-        for(var i=0; i< dataobj.length; i++) {
-          if(dataobj[i].data.data[0].data == null) {
+        for (var i = 0; i < dataobj.length; i++) {
+          if (dataobj[i].data.data[0].data == null) {
             continue;
           }
 
           var timeArray = new Array();
 
-          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
             var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
             var year = date.getFullYear();
-            var month = date.getMonth()+1;
+            var month = date.getMonth() + 1;
             var day = date.getDay();
             var hour = date.getHours();
             var min = date.getMinutes();
             var sec = date.getSeconds();
-            var retVal =   (month < 10 ? "0" + month : month) + "/"
+            var retVal = (month < 10 ? "0" + month : month) + "/"
               + (day < 10 ? "0" + day : day) + " "
               + (hour < 10 ? "0" + hour : hour) + ":"
               + (min < 10 ? "0" + min : min);
@@ -1777,12 +1781,12 @@ export class AppMainComponent implements OnInit {
             timeArray[j] = dataobj[i].data.data[0].data[j].time;
           }
 
-          if(levelsArray.length == 0) {
+          if (levelsArray.length == 0) {
             levelsArray = timeArray;
           } else {
-            if(levelsArray.length > timeArray.length) {
+            if (levelsArray.length > timeArray.length) {
 
-            } else if(levelsArray.length < timeArray.length) {
+            } else if (levelsArray.length < timeArray.length) {
               levelsArray = new Array();
               levelsArray = timeArray;
             }
@@ -1791,17 +1795,17 @@ export class AppMainComponent implements OnInit {
 
       });
 
-      for(var k=0; k< levelsArray.length; k++) {
+      for (var k = 0; k < levelsArray.length; k++) {
         levelsObj[levelsArray[k]] = "";
 
         var date = new Date(levelsArray[k] * 1000);
         var year = date.getFullYear();
-        var month = date.getMonth()+1;
+        var month = date.getMonth() + 1;
         var day = date.getDay();
         var hour = date.getHours();
         var min = date.getMinutes();
         var sec = date.getSeconds();
-        var retVal =   (month < 10 ? "0" + month : month) + "/"
+        var retVal = (month < 10 ? "0" + month : month) + "/"
           + (day < 10 ? "0" + day : day) + " "
           + (hour < 10 ? "0" + hour : hour) + ":"
           + (min < 10 ? "0" + min : min);
@@ -1820,7 +1824,7 @@ export class AppMainComponent implements OnInit {
           var valueArray = new Array();
           var valueObject = new Object();
 
-          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
             keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
           }
           // console.log(keyValueObject);
@@ -1833,7 +1837,7 @@ export class AppMainComponent implements OnInit {
 
           var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
 
-          valueObject["label"] = "Memory_"+i;
+          valueObject["label"] = "Memory_" + i;
           valueObject["data"] = valueArray;
           valueObject["lineTension"] = 0;
           valueObject["fill"] = false;
@@ -1848,10 +1852,10 @@ export class AppMainComponent implements OnInit {
           valueObject["pointBorderWidth"] = 0;
           valueObject["pointStyle"] = "rectRounded";
 
-          if(sltChartInstancesValue == "All") {
+          if (sltChartInstancesValue == "All") {
             valueObject["hidden"] = false;
           } else {
-            if(i == Number(sltChartInstancesValue)) {
+            if (i == Number(sltChartInstancesValue)) {
               valueObject["hidden"] = false;
             } else {
               valueObject["hidden"] = true;
@@ -1864,10 +1868,10 @@ export class AppMainComponent implements OnInit {
         }
       });
 
-      if(levelsArray2.length == 0)
+      if (levelsArray2.length == 0)
         levelsArray2 = ["0", "1"];
 
-      if(datasetsArray.length == 0)
+      if (datasetsArray.length == 0)
         datasetsArray = [{
           label: "0",
           data: [0, 0],
@@ -1887,7 +1891,7 @@ export class AppMainComponent implements OnInit {
       var speedData = null;
       speedData = {
         labels: levelsArray2,
-        datasets : datasetsArray
+        datasets: datasetsArray
       };
       var chartOptions = {
         legend: {
@@ -1935,22 +1939,22 @@ export class AppMainComponent implements OnInit {
       var datasetsArray = new Array();
 
       $.each(data, function (key, dataobj) {
-        for(var i=0; i< dataobj.length; i++) {
-          if(dataobj[i].data.data[0].data == null) {
+        for (var i = 0; i < dataobj.length; i++) {
+          if (dataobj[i].data.data[0].data == null) {
             continue;
           }
 
           var timeArray = new Array();
 
-          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
             var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
             var year = date.getFullYear();
-            var month = date.getMonth()+1;
+            var month = date.getMonth() + 1;
             var day = date.getDay();
             var hour = date.getHours();
             var min = date.getMinutes();
             var sec = date.getSeconds();
-            var retVal =   (month < 10 ? "0" + month : month) + "/"
+            var retVal = (month < 10 ? "0" + month : month) + "/"
               + (day < 10 ? "0" + day : day) + " "
               + (hour < 10 ? "0" + hour : hour) + ":"
               + (min < 10 ? "0" + min : min);
@@ -1958,12 +1962,12 @@ export class AppMainComponent implements OnInit {
             timeArray[j] = dataobj[i].data.data[0].data[j].time;
           }
 
-          if(levelsArray.length == 0) {
+          if (levelsArray.length == 0) {
             levelsArray = timeArray;
           } else {
-            if(levelsArray.length > timeArray.length) {
+            if (levelsArray.length > timeArray.length) {
 
-            } else if(levelsArray.length < timeArray.length) {
+            } else if (levelsArray.length < timeArray.length) {
               levelsArray = new Array();
               levelsArray = timeArray;
             }
@@ -1972,17 +1976,17 @@ export class AppMainComponent implements OnInit {
 
       });
 
-      for(var k=0; k< levelsArray.length; k++) {
+      for (var k = 0; k < levelsArray.length; k++) {
         levelsObj[levelsArray[k]] = "";
 
         var date = new Date(levelsArray[k] * 1000);
         var year = date.getFullYear();
-        var month = date.getMonth()+1;
+        var month = date.getMonth() + 1;
         var day = date.getDay();
         var hour = date.getHours();
         var min = date.getMinutes();
         var sec = date.getSeconds();
-        var retVal =   (month < 10 ? "0" + month : month) + "/"
+        var retVal = (month < 10 ? "0" + month : month) + "/"
           + (day < 10 ? "0" + day : day) + " "
           + (hour < 10 ? "0" + hour : hour) + ":"
           + (min < 10 ? "0" + min : min);
@@ -2001,7 +2005,7 @@ export class AppMainComponent implements OnInit {
           var valueArray = new Array();
           var valueObject = new Object();
 
-          for(var j=0; j< dataobj[i].data.data[0].data.length; j++) {
+          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
             keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
           }
           // console.log(keyValueObject);
@@ -2014,7 +2018,7 @@ export class AppMainComponent implements OnInit {
 
           var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
 
-          valueObject["label"] = "Network_"+i;
+          valueObject["label"] = "Network_" + i;
           valueObject["data"] = valueArray;
           valueObject["lineTension"] = 0;
           valueObject["fill"] = false;
@@ -2029,10 +2033,10 @@ export class AppMainComponent implements OnInit {
           valueObject["pointBorderWidth"] = 0;
           valueObject["pointStyle"] = "rectRounded";
 
-          if(sltChartInstancesValue == "All") {
+          if (sltChartInstancesValue == "All") {
             valueObject["hidden"] = false;
           } else {
-            if(i == Number(sltChartInstancesValue)) {
+            if (i == Number(sltChartInstancesValue)) {
               valueObject["hidden"] = false;
             } else {
               valueObject["hidden"] = true;
@@ -2045,10 +2049,10 @@ export class AppMainComponent implements OnInit {
         }
       });
 
-      if(levelsArray2.length == 0)
+      if (levelsArray2.length == 0)
         levelsArray2 = ["0", "1"];
 
-      if(datasetsArray.length == 0)
+      if (datasetsArray.length == 0)
         datasetsArray = [{
           label: "0",
           data: [0, 0],
@@ -2068,7 +2072,7 @@ export class AppMainComponent implements OnInit {
       var speedData = null;
       speedData = {
         labels: levelsArray2,
-        datasets : datasetsArray
+        datasets: datasetsArray
       };
       var chartOptions = {
         legend: {
@@ -2118,11 +2122,11 @@ export class AppMainComponent implements OnInit {
   }
 
   showWindowTailLogs() {
-    window.open('/tailLogs?name='+this.appName+'&org='+this.orgName+'&space='+this.spaceName+'&guid='+this.appGuid+'', '_blank', 'location=no, directories=no width=1000, height=700');
+    window.open('/tailLogs?name=' + this.appName + '&org=' + this.orgName + '&space=' + this.spaceName + '&guid=' + this.appGuid + '', '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
   showWindowAppLink(urlLink: string) {
-    window.open('http://'+urlLink+'', 'aaa');
+    window.open('http://' + urlLink + '', 'aaa');
   }
 
 }

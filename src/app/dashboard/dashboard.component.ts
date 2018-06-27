@@ -14,6 +14,7 @@ import {AppMainService} from '../dash/app-main/app-main.service';
 import {CatalogService, ServicePack, BuildPack, StarterPack} from '../catalog/main/catalog.service';
 import {isBoolean} from "util";
 import {TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import {containerStart} from "@angular/core/src/render3/instructions";
 
 declare var $: any;
 declare var jQuery: any;
@@ -45,6 +46,12 @@ export class DashboardComponent implements OnInit {
   public appNewName: string;
   public appDelName: string;
   public appSummaryGuid: string; /*app guid value*/
+
+  public orgName: string = '';
+  public orgGuid: string= '';
+  public spaceName: string= '';
+  public spaceGuid: string= '';
+  public appGuid: string= '';
 
   public selectedGuid: string = '';
   public selectedType: string;
@@ -138,6 +145,7 @@ export class DashboardComponent implements OnInit {
 
     this.orgs = this.getOrgList();
 
+
     this.translate.get('dashboard').subscribe((res: string) => {
       this.translateEntities = res;
     });
@@ -150,7 +158,6 @@ export class DashboardComponent implements OnInit {
       this.currentOrg = this.commonService.getCurrentOrgName();
       this.currentSpace = this.commonService.getCurrentSpaceGuid();
     }
-
   }
 
   currentSpaceBox() {
@@ -165,6 +172,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     $("[id^='apopmenu_']").hide();
     $("[id^='layerpop']").modal("hide");
+
   }
 
   getOrgList() {
@@ -282,10 +290,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  moveAppMain(){
+
+  }
+
   getAppSummary(value: string) {
-
     this.showLoading();
-
     this.dashboardService.getAppSummary(value).subscribe(data => {
       this.commonService.isLoading = false;
 
@@ -305,6 +315,8 @@ export class DashboardComponent implements OnInit {
 
       this.servicesEntities = data.services;
       this.thumnail();
+
+      // this.moveAppMain();
 
     }, () => {
       this.commonService.isLoading = false;
@@ -593,27 +605,30 @@ export class DashboardComponent implements OnInit {
 
   //move appMain
   moveDashboard(app_name: string, app_guid: string) {
-    let org_name = this.org['name'];
-    let org_guid = this.org['guid'];
-    let space_name = this.space['name'];
-    let space_guid = this.space['guid'];
+    // let org_name = this.org['name'];
+    // let org_guid = this.org['guid'];
+    // let space_name = this.space['name'];
+    // let space_guid = this.space['guid'];
+    //
+    // this.router.navigate(['appMain'], {
+    //   queryParams: {
+    //     org_name: org_name,
+    //     org_guid: org_guid,
+    //     space_name: space_name,
+    //     space_guid: space_guid,
+    //     app_name: app_name,
+    //     app_guid: app_guid,
+    //   }
+    // });
+    console.log(app_name + " ::: " + app_guid);
+    this.commonService.setCurrentAppGuid(app_guid);
+    this.commonService.setCurrentAppName(app_name);
 
-    this.router.navigate(['appMain'], {
-      queryParams: {
-        org_name: org_name,
-        org_guid: org_guid,
-        space_name: space_name,
-        space_guid: space_guid,
-        app_name: app_name,
-        app_guid: app_guid,
-      }
-    });
+    console.log(this.commonService.getCurrentAppName());
+    console.log(this.commonService.getCurrentAppGuid());
+    this.router.navigate(['appMain']);
   }
 
-  //move moveDashboard_SourceController
-  moveDashboardS() {
-    // this.router.navigate();
-  }
 
   cancelButton(){
     $('#userProvideName').val('');

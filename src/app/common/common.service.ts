@@ -407,6 +407,14 @@ export class CommonService {
     this.router.navigate(['/login'], {queryParams: {returnUrl: currentLocation}});
   }
 
+  setCurrentAppName(value: any) {
+    window.sessionStorage.setItem('_currentAppName', value);
+  }
+
+  setCurrentAppGuid(value: any) {
+    window.sessionStorage.setItem('_currentAppGuid', value);
+  }
+
   setCurrentLocation(value: any) {
     window.sessionStorage.setItem('_currentLocation', value);
   }
@@ -429,6 +437,14 @@ export class CommonService {
 
   setCurrentCatalogNumber(value: any) {
     window.sessionStorage.setItem('catalog_number', value);
+  }
+
+  getCurrentAppName(): any {
+    return window.sessionStorage.getItem('_currentAppName');
+  }
+
+  getCurrentAppGuid(): any {
+    return window.sessionStorage.getItem('_currentAppGuid');
   }
 
   getCurrentLocation(): any {
