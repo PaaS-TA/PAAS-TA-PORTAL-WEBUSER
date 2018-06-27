@@ -13,6 +13,8 @@ import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 import {CatalogService, ServicePack, BuildPack, StarterPack} from '../catalog/main/catalog.service';
 import {isBoolean} from "util";
+import {TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import {containerStart} from "@angular/core/src/render3/instructions";
 
 declare var $: any;
 declare var jQuery: any;
@@ -45,6 +47,12 @@ export class DashboardComponent implements OnInit {
   public appDelName: string;
   public appSummaryGuid: string; /*app guid value*/
 
+  public orgName: string = '';
+  public orgGuid: string= '';
+  public spaceName: string= '';
+  public spaceGuid: string= '';
+  public appGuid: string= '';
+
   public selectedGuid: string = '';
   public selectedType: string;
   public selectedName: string;
@@ -61,6 +69,7 @@ export class DashboardComponent implements OnInit {
   public appEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
   public appSummaryEntities: Observable<any[]>;
+  public translateEntities: any = [];
 
   public currentOrg: string;
   public currentSpace: string;
@@ -81,7 +90,7 @@ export class DashboardComponent implements OnInit {
 
   public placeholder="credentialsStr:{'username':'admin','password':'password';}";
 
-  constructor(private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService, private spaceService: SpaceService, private log: NGXLogger,
+  constructor(private translate: TranslateService,private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService, private spaceService: SpaceService, private log: NGXLogger,
               private appMainService: AppMainService, private catalogService: CatalogService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {router.navigate(['/']);}
 
@@ -136,11 +145,19 @@ export class DashboardComponent implements OnInit {
 
     this.orgs = this.getOrgList();
 
+
+    this.translate.get('dashboard').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.dashboard;
+    });
+
     if (this.commonService.getCurrentOrgName() != null) {
       this.currentOrg = this.commonService.getCurrentOrgName();
       this.currentSpace = this.commonService.getCurrentSpaceGuid();
     }
-
   }
 
   currentSpaceBox() {
@@ -155,6 +172,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     $("[id^='apopmenu_']").hide();
     $("[id^='layerpop']").modal("hide");
+
   }
 
   getOrgList() {
@@ -272,10 +290,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  moveAppMain(){
+
+  }
+
   getAppSummary(value: string) {
-
     this.showLoading();
-
     this.dashboardService.getAppSummary(value).subscribe(data => {
       this.commonService.isLoading = false;
 
@@ -295,6 +315,8 @@ export class DashboardComponent implements OnInit {
 
       this.servicesEntities = data.services;
       this.thumnail();
+
+      // this.moveAppMain();
 
     }, () => {
       this.commonService.isLoading = false;
@@ -371,11 +393,13 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('변경 완료되었습니다' , true);
+      // this.commonService.alertMessage('변경 완료되었습니다' , true);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
       return data['result'];
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('변경 실패되었습니다' , false);
+      // this.commonService.alertMessage('변경 실패되었습니다' , false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeFail, false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -385,11 +409,13 @@ export class DashboardComponent implements OnInit {
       guid: guidParam
     };
     this.dashboardService.delApp(params).subscribe(data => {
-      this.commonService.alertMessage('삭제 완료되었습니다' , true);
+      // this.commonService.alertMessage('삭제 완료되었습니다' , true);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('삭제 실패하였습니다.' , false);
+      // this.commonService.alertMessage('삭제 실패하였습니다.' , false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -466,10 +492,12 @@ export class DashboardComponent implements OnInit {
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('생성 완료되었습니다' , true);
+      // this.commonService.alertMessage('생성 완료되었습니다' , true);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.createSuccess, true);
       return data;
     }, error => {
-      this.commonService.alertMessage('생성 실패되었습니다.' , false);
+      // this.commonService.alertMessage('생성 실패되었습니다.' , false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.createFail, false);
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
 
@@ -521,12 +549,14 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.updateUserProvided(params).subscribe(data => {
         console.log(params, data);
         this.getAppSummary(this.selectedSpaceId);
-        this.commonService.alertMessage('수정 완료되었습니다.' , true);
+        // this.commonService.alertMessage('수정 완료되었습니다.' , true);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
         this.commonService.isLoading = false;
         return data;
       }
       , error => {
-        this.commonService.alertMessage('수정 실패되었습니다.' , false);
+        // this.commonService.alertMessage('수정 실패되었습니다.' , false);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.updateFail, false);
         this.commonService.isLoading = false;
         this.getAppSummary(this.selectedSpaceId);
       });
@@ -538,11 +568,13 @@ export class DashboardComponent implements OnInit {
       newName: this.selectedName
     };
     this.dashboardService.renameInstance(params).subscribe(data => {
-      this.commonService.alertMessage('수정 완료되었습니다' , true);
+      // this.commonService.alertMessage('수정 완료되었습니다' , true);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('수정 실패되었습니다' , false);
+      // this.commonService.alertMessage('수정 실패되었습니다' , false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.updateFail, false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -553,11 +585,13 @@ export class DashboardComponent implements OnInit {
     };
 
     this.dashboardService.delInstance(params).subscribe(data => {
-      this.commonService.alertMessage('삭제 완료되었습니다.' , true);
+      // this.commonService.alertMessage('삭제 완료되었습니다.' , true);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage('삭제 실패되었습니다.' , false);
+      // this.commonService.alertMessage('삭제 실패되었습니다.' , false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
     });
     return (this.getAppSummary(this.selectedSpaceId));
   }
@@ -571,27 +605,30 @@ export class DashboardComponent implements OnInit {
 
   //move appMain
   moveDashboard(app_name: string, app_guid: string) {
-    let org_name = this.org['name'];
-    let org_guid = this.org['guid'];
-    let space_name = this.space['name'];
-    let space_guid = this.space['guid'];
+    // let org_name = this.org['name'];
+    // let org_guid = this.org['guid'];
+    // let space_name = this.space['name'];
+    // let space_guid = this.space['guid'];
+    //
+    // this.router.navigate(['appMain'], {
+    //   queryParams: {
+    //     org_name: org_name,
+    //     org_guid: org_guid,
+    //     space_name: space_name,
+    //     space_guid: space_guid,
+    //     app_name: app_name,
+    //     app_guid: app_guid,
+    //   }
+    // });
+    console.log(app_name + " ::: " + app_guid);
+    this.commonService.setCurrentAppGuid(app_guid);
+    this.commonService.setCurrentAppName(app_name);
 
-    this.router.navigate(['appMain'], {
-      queryParams: {
-        org_name: org_name,
-        org_guid: org_guid,
-        space_name: space_name,
-        space_guid: space_guid,
-        app_name: app_name,
-        app_guid: app_guid,
-      }
-    });
+    console.log(this.commonService.getCurrentAppName());
+    console.log(this.commonService.getCurrentAppGuid());
+    this.router.navigate(['appMain']);
   }
 
-  //move moveDashboard_SourceController
-  moveDashboardS() {
-    // this.router.navigate();
-  }
 
   cancelButton(){
     $('#userProvideName').val('');

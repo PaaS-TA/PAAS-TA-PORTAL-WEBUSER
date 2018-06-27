@@ -624,5 +624,72 @@
       "accountDeleteSuccess": "Account deletion is complete.",
       "accountDeleteFail": "Account deletion is failed."
     }
+  },
+  "dashboard": {
+    "titleApp": "Application",
+    "titleServices": "Service",
+    "createdOrganizationName": "Created Organization Name",
+    "spaceName": "Space Name",
+    "auota": "Quota",
+    "organizationManagement" : "Organization Management",
+    "catalog" : "Catalog",
+    "region": {
+      "korea": "Republic of Korea",
+      "usa": "USA"
+    },
+    "explan": {
+      "dashboardMsg1": "Your dashboard is empty.",
+      "dashboardMsg2": "No organization and no space created.",
+      "dashboardMsg3" :  "Go to and create organizations and spaces",
+      "appMsg1" : "No app created Click on the app",
+      "appMsg2" : "to find out what to fill out.",
+      "servicesMsg1":"No services created Click on the services",
+      "servicesMsg2": "to find out what to fill out.",
+      "executionMsg1" : "App {{selectedName}} to stop?",
+      "executionMsg2" : "App {{selectedName}} to start?"
+    },
+    "button": {
+      "create": "Create",
+      "change": "Change",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    },
+    "app": {
+      "instance": "Instance",
+      "disk": "Disk",
+      "memory": "Memory",
+      "changeAppMame": "Rename app",
+      "execution": "Execution",
+      "stop": "Stop",
+      "delete": "Delete",
+      "deleteApp": "DeleteApp",
+      "explan1": "If you delete an app, you can not reverse it",
+      "explan2": "want to delete?",
+      "placeholder" : "Enter app name to change."
+    },
+    "service": {
+      "connectApp": "Connect App",
+      "serviceName": "ServiceName",
+      "changeServiceName" : "Rename service",
+      "updateService" : "Modify service",
+      "deleteService" : "Delete service",
+      "providedServices": "Provided Services",
+      "dashboard": "Dashboard",
+      "userProvidedCreate": "User Provided Create",
+      "explan1": "If you delete a service, you can not reverse it.",
+      "explan2": "want to delete?",
+      "placeholder":"Enter service name to change.",
+      "isNotSame" : "Enter all values"
+    },
+    "alertLayer": {
+      "changeSuccess": "The change was successful.",
+      "changeFail": "Change failed.",
+      "deleteSuccess": "Delete succeeded.",
+      "deleteFail": "Delete failed.",
+      "createSuccess": "Create succeeded.",
+      "createFail": "Create failed.",
+      "updateSuccess": "The amendment is complete.",
+      "updateFail": "Modification failed."
+    }
   }
 }

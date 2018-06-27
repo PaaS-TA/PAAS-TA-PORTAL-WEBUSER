@@ -628,5 +628,72 @@
       "accountDeleteFail": "조직 틸퇴 실패 하였습니다."
     }
 
+  },
+  "dashboard":{
+    "titleApp" : "애플리케이션",
+    "titleServices" : "서비스",
+    "createdOrganizationName" : "생성된 조직명",
+    "spaceName" : "해당 공간명",
+    "auota" : "할당량",
+    "organizationManagement" : "조직관리",
+    "catalog" : "카탈로그",
+    "region" :{
+      "korea" : "대한민국",
+      "usa" : "미국"
+    },
+    "explan" : {
+      "dashboardMsg1" : "대시보드가 비어 있습니다.",
+      "dashboardMsg2" : "조직 및 공간이 생성되지 않았습니다.",
+      "dashboardMsg3" : "로 이동하여 조직 및 공간을 생성하십시오.",
+      "appMsg1":"생성한 앱이 없습니다. 앱 생성을 클릭하여 작성하거나",
+      "appMsg2":"를 찾아보십시오.",
+      "servicesMsg1":"생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나",
+      "servicesMsg2": "를 찾아보십시오.",
+      "executionMsg1" : "App {{selectedName}} 을 정지하시겠습니까?",
+      "executionMsg2" : "App {{selectedName}} 을 시작하시겠습니까?"
+    },
+    "button" :{
+      "create" : "생성",
+      "change" : "변경",
+      "delete" : "삭제",
+      "cancel" : "취소"
+    },
+    "app" : {
+      "instance":"인스턴스",
+      "disk":"디스크",
+      "memory":"메모리",
+      "changeAppMame":"앱 이름 변경",
+      "execution":"실행",
+      "stop":"정지",
+      "delete":"삭제",
+      "deleteApp" : "앱 삭제",
+      "explan1":  "앱을 삭제하면 되돌릴 수 없습니다.",
+      "explan2": "를 삭제하시겠습니까?",
+      "placeholder":"변경할 앱 이름을 입력하세요."
+    },
+    "service" : {
+      "connectApp":"연결 앱",
+      "serviceName":"서비스 명",
+      "changeServiceName":"서비스 명 변경",
+      "updateService":"서비스 수정",
+      "deleteService":"서비스 삭제",
+      "providedServices":"제공서비스",
+      "dashboard":"대시보드",
+      "userProvidedCreate":"User Provided 생성",
+      "explan1":  "서비스를 삭제하면 되돌릴 수 없습니다.",
+      "explan2": "를 삭제하시겠습니까?",
+      "placeholder":"변경할 서비스 이름을 입력하세요.",
+      "isNotSame" : "모든 값을 입력하세요."
+    },
+    "alertLayer": {
+      "changeSuccess": "변경 완료되었습니다.",
+      "changeFail": "변경 실패되었습니다.",
+      "deleteSuccess": "삭제 완료되었습니다.",
+      "deleteFail": "삭제 실패하였습니다.",
+      "createSuccess": "생성 완료되었습니다.",
+      "createFail": "생성 실패하였습니다.",
+      "updateSuccess": "수정 완료되었습니다.",
+      "updateFail": "수정 실패하였습니다."
+    }
   }
 }
