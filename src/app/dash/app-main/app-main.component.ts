@@ -17,6 +17,7 @@ declare var jQuery: any;
 })
 export class AppMainComponent implements OnInit {
 
+  public location: string;
   public orgName: string;
   public orgGuid: string;
   public spaceName: string;
@@ -191,14 +192,14 @@ export class AppMainComponent implements OnInit {
       if (this.common.getCurrentAppGuid != null) {
         setTimeout(() => this.showLoading(), 0);
 
+        this.location = this.common.getCurrentLocation();
         this.orgName = this.common.getCurrentOrgName();
         this.orgGuid = this.common.getUserGuid();
         this.spaceName = this.common.getCurrentSpaceName();
         this.spaceGuid = this.common.getCurrentSpaceGuid();
         this.appName = this.common.getCurrentAppName();
         this.appGuid = this.common.getCurrentAppGuid();
-        console.log("여기 :::: " + this.common.getCurrentAppGuid());
-
+        
         this.getAppSummary(this.appGuid);
         this.getAppEvents(this.appGuid);
         this.getAppEnv(this.appGuid);
