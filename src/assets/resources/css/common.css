@@ -849,6 +849,12 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 #layerpop_ReInvite input{background:#fcfcfc; color:#808487; width: 100%; font-weight: 400;} /* border:1px solid #ced4d9; */
 #layerpop_ReInvite .red{padding-bottom:40px;}
 
+#layerpop_SpaceRole .modal-dialog{width: 800px;}
+#layerpop_SpaceRole .modal-body{font-size: 14px;}
+#layerpop_SpaceRole input{background:#fcfcfc; color:#808487; width: 100%; font-weight: 400;} /* border:1px solid #ced4d9; */
+#layerpop_SpaceRole .red{padding-bottom:40px;}
+
+
 .test{background: red; width: 100%; height:15px; }
 
 .log_dl{width: 97%; border:1px solid #e7eaec; margin:0 auto; }
