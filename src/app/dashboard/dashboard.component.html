@@ -444,8 +444,8 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <p>App {{ 'dashboard.explan.executionMsg1' | translate}}</p>
-          <!--<p>{{  'dashboard.explan.executionMsg1' | translate : {selectedName: selectedName}}}</p>-->
+          <!--<p>{{selectedName}} {{ 'dashboard.explan.executionMsg1' | translate}}</p>-->
+          <p>{{  'dashboard.explan.executionMsg1' | translate : {selectedName: selectedName} }}</p>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
