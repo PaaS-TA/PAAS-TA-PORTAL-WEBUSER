@@ -645,8 +645,8 @@
       "appMsg2" : "to find out what to fill out.",
       "servicesMsg1":"No services created Click on the services",
       "servicesMsg2": "to find out what to fill out.",
-      "executionMsg1" : "to stop?",
-      "executionMsg2" : "to start?"
+      "executionMsg1" : "App {{selectedName}} to stop?",
+      "executionMsg2" : "App {{selectedName}} to start?"
     },
     "button": {
       "create": "Create",
@@ -658,7 +658,7 @@
       "instance": "Instance",
       "disk": "Disk",
       "memory": "Memory",
-      "changeAppMame": "Change App Mame",
+      "changeAppMame": "Rename app",
       "execution": "Execution",
       "stop": "Stop",
       "delete": "Delete",

@@ -649,8 +649,8 @@
       "appMsg2":"를 찾아보십시오.",
       "servicesMsg1":"생성한 서비스가 없습니다. 서비스 생성을 클릭하여 작성하거나",
       "servicesMsg2": "를 찾아보십시오.",
-      "executionMsg1" : "을 정지하시겠습니까?",
-      "executionMsg2" : "을 시작하시겠습니까?"
+      "executionMsg1" : "App {{selectedName}} 을 정지하시겠습니까?",
+      "executionMsg2" : "App {{selectedName}} 을 시작하시겠습니까?"
     },
     "button" :{
       "create" : "생성",
