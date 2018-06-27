@@ -67,10 +67,11 @@
                   <ng-container *ngFor='let space of item.space.resources'>
                     <tr>
                       <td><p>{{space.entity.name}}</p></td>
+                      <th (click)="getUserSpaceRoles(item,space.metadata.guid, space.entity.name)"><i class="fas fa-file" style="color: #409ab2"></i></th>
                       <th>
                         <i class="fas fa-edit"></i>
                       </th>
-                      <th data-toggle="modal" (click)="showPopDeleteSpaceClick(space.metadata.guid, space.entity.name)"><i class="fas fa-trash-alt"></i></th>
+                      <th style="width: 30px" data-toggle="modal" (click)="showPopDeleteSpaceClick(space.metadata.guid, space.entity.name)"><i class="fas fa-trash-alt"></i></th>
                     </tr>
                     <tr class="on">
                       <td colspan="3">
@@ -755,5 +756,56 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="layerpop_SpaceRole">
+  <div class="vertical-alignment-helper">
+    <div class="modal-dialog vertical-align-center">
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <!-- 닫기(x) 버튼 -->
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <!-- header title -->
+          <h4 class="modal-title">{{sltSpaceName}} 권한부여</h4>
+        </div>
+        <!-- body -->
+        <ng-container *ngIf="sltEntity">
+          <div class="modal-body">
+            <table class="maT30">
+              <tbody>
+              <tr *ngFor="let userrole of sltEntity.userRoles.user_roles; let i = index">
+                <td>{{userrole.user_email}}</td>
+                <td>
+                  <input class="checkSel5" id="modal10_{{i}}" type="checkbox"/>
+                  <label for="modal10_{{i}}">SpaceManager</label>
+                </td>
+                <td>
+                  <input class="checkSel5" id="modal11_{{i}}" type="checkbox" checked="checked"/>
+                  <label for="modal11_{{i}}">SpaceDeveloper</label>
+                </td>
+                <td>
+                  <input class="checkSel5" id="modal12_{{i}}" type="checkbox" checked="checked"/>
+                  <label for="modal12_{{i}}">SpaceAuditor</label>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <input class="checkAll5" id="checkAll5" type="checkbox"/>
+            <label class="maT10" for="checkAll5">{{ 'orgMain.layerpop.layerpop4.selectAll' | translate }}</label>
+
+          </div>
+          <!-- Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="updateUserSpaceRole()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
+            <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 

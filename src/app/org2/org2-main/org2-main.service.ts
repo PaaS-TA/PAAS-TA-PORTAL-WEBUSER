@@ -112,6 +112,18 @@ export class Org2MainService {
   delInviteCancle(orgGuid: string, userId: string) {
     return this.commonService.doDelete('/commonapi/v2/orgs/'+orgGuid+'/invite?userId='+ userId,'', this.getToken()).map((res: Response) => {
       return res;
-    })
+    });
+  }
+
+  getUserSpaceRoles(spaceid : string){
+    return this.commonService.doGet('/portalapi/v2/spaces/'+spaceid+'/user-roles', this.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
+  updateUserSpaceRole(spaceid : string, params : any) {
+    return this.commonService.doPut('/portalapi/v2/spaces/' + spaceid + '/user-roles', params, this.getToken()).map((res: any) => {
+      return res;
+    });
   }
 }
