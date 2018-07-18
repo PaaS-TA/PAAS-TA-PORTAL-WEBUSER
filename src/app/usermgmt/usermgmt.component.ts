@@ -86,7 +86,6 @@ export class UsermgmtComponent implements OnInit {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.usermgmt;
     });
-
   }
 
   onFileChanged(){
@@ -94,26 +93,28 @@ export class UsermgmtComponent implements OnInit {
   }
 
   onFileChanged_click(event) {
-    const file = event.target.files[0]
+    const file = event.target.files[0];
     var tmppath = URL.createObjectURL(event.target.files[0]);
     $("#photo").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+    $("#onUploadBtn").show();
   }
 
   onUpload(){
     // upload code goes here
     let formData = new FormData();
     console.log($('#photoFile')[0].files[0].name);
-    //uploadData.append('myFile', this.selectedFile, this.selectedFile.name);
     formData.append('file', $('#photoFile')[0].files[0], $('#photoFile')[0].files[0].name);
     this.userMgmtService.photoRegistration(formData).subscribe(data => {
       console.log(data);
-     this.imgPath = data.fileURL;
+      $("#onUploadBtn").hide(); //TO disabled
+      this.imgPath = data.fileURL;
       console.log(this.imgPath);
       this.userSave();
     },error => {
       console.debug(error);
     });
   }
+
 
   userInfo() {
     this.userMgmtService.userinfo(this.common.getUserid()).subscribe(data => {
@@ -203,17 +204,6 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
-  /* 현재비밀번호
-   checkOriginalPassword(event: any) {
-   this.log.debug('password_now :: ' + this.password_now);
-   var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
-   if (!reg_pwd.test(this.password_now)) {
-   this.isOrignPassword = false;
-   } else {
-   this.isOrignPassword = true;
-   }}
-   */
-
   checkPassword(event: any) {
     // this.log.debug('password_new :: ' + this.password_new);
     // var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
@@ -226,7 +216,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   checkRePassword(event: any) {
-    // this.log.debug('password_confirm :: ' + this.password_confirm);
     if (this.password_new == this.password_confirm) {
       this.isRePassword = true;
     } else {
@@ -235,8 +224,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   checkChPassword(event: any) {
-    // this.log.debug('password_check :: ' + this.password_check);
-    // var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
     var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
     if (!reg_pwd.test(this.password_check)) {
       this.isChPassword = false;

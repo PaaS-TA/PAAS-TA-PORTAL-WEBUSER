@@ -605,31 +605,12 @@ export class DashboardComponent implements OnInit {
 
   //move appMain
   moveDashboard(app_name: string, app_guid: string) {
-    // let org_name = this.org['name'];
-    // let org_guid = this.org['guid'];
-    // let space_name = this.space['name'];
-    // let space_guid = this.space['guid'];
-    //
-    // this.router.navigate(['appMain'], {
-    //   queryParams: {
-    //     org_name: org_name,
-    //     org_guid: org_guid,
-    //     space_name: space_name,
-    //     space_guid: space_guid,
-    //     app_name: app_name,
-    //     app_guid: app_guid,
-    //   }
-    // });
     console.log(app_name + " ::: " + app_guid);
     this.commonService.setCurrentAppGuid(app_guid);
     this.commonService.setCurrentAppName(app_name);
-
-    console.log(this.commonService.getCurrentAppName());
-    console.log(this.commonService.getCurrentAppGuid());
     this.router.navigate(['appMain']);
   }
-
-
+  
   cancelButton(){
     $('#userProvideName').val('');
     $('#userProvideCredentials').val('');

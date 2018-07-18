@@ -17,6 +17,13 @@ export class AppTopComponent implements OnInit {
   @Input('app-view') isAppView: Boolean;
   @Input('catalog-view') isCatalogView: Boolean;
 
+  location: string;
+  orgName: string;
+  orgGuid: string;
+  spaceName: string;
+  spaceGuid: string;
+  appName: string;
+  appGuid: string;
   catalogName: number;
   translateEntities : any;
   allMenuCursorIds: string[] = [
@@ -37,6 +44,16 @@ export class AppTopComponent implements OnInit {
     this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
     $('#' + this.cursorId).addClass('cur');
     const url = this.router['url'].split("/")[1];
+
+    if (this.common.getCurrentAppGuid != null) {
+      this.location = this.common.getCurrentLocation();
+      this.orgName = this.common.getCurrentOrgName();
+      this.orgGuid = this.common.getUserGuid();
+      this.spaceName = this.common.getCurrentSpaceName();
+      this.spaceGuid = this.common.getCurrentSpaceGuid();
+      this.appName = this.common.getCurrentAppName();
+      this.appGuid = this.common.getCurrentAppGuid();
+    }
     this.translate.get('catalog').subscribe((res: string) => {
       this.translateEntities = res;
       if(url.indexOf('detail') > 0){
