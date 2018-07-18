@@ -3,7 +3,7 @@ import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ExternalcommonService} from "../common/externalcommon.service";
-
+declare var $: any;
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
@@ -21,7 +21,6 @@ export class CreateComponent implements OnInit {
   public isPassword: boolean;
   public isRePassword: boolean;
 
-
   constructor(private commonService: CommonService, private externalService: ExternalcommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
     this.userId = '';
     this.username = '';
@@ -31,7 +30,6 @@ export class CreateComponent implements OnInit {
     this.isUserName = false;
     this.isPassword = false;
     this.isRePassword = true;
-
     this.userId = this.route.snapshot.queryParams['userId'] || '/';
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
     if (this.userId.length > 0 && this.token.length > 0) {
@@ -68,7 +66,6 @@ export class CreateComponent implements OnInit {
   ngOnInit() {
 
   }
-
 
   checkUsername() {
     this.log.debug('username :: ' + this.username);
@@ -115,7 +112,8 @@ export class CreateComponent implements OnInit {
         'userName': this.username,
         'password': this.password,
         'tellPhone': '',
-        'address': ''
+        'address': '',
+        'active' : $("[id^='ra2']").is(":checked")
       }
 
       this.externalService.createUser(param).subscribe(data => {
@@ -128,7 +126,8 @@ export class CreateComponent implements OnInit {
             'userName': this.username,
             'refreshToken': '',
             'authAccessTime': '',
-            'authAccessCnt': 0
+            'authAccessCnt': 0,
+            'active' : $("[id^='ra2']").is(":checked") ? 'Y' : 'N'
           };
           this.externalService.updateInfo(this.userId, userInfo);
           this.router.navigate(['login']);

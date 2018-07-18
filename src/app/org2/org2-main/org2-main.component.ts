@@ -444,7 +444,7 @@ export class Org2MainComponent implements OnInit {
 
   showMemberSetOrgRole(user, role, org, orgrole, value) {
     this.sltDelete = $("#" + value + "").is(":checked");
-    if (!this.authorityCheck(role)) {
+    if (!this.managerCheck(role)) {
       this.common.alertMessage(this.translateEntities.alertLayer.orgRoleError, false);
       $("#" + value + "").prop("checked", !this.sltDelete);
       return;
@@ -496,7 +496,7 @@ export class Org2MainComponent implements OnInit {
 
 
   showMemberCancel(user, role, org) {
-    if (!this.authorityCheck(role)) {
+    if (!this.managerCheck(role)) {
       this.common.alertMessage(this.translateEntities.alertLayer.orgRoleError, false);
       return;
     }
@@ -560,6 +560,10 @@ export class Org2MainComponent implements OnInit {
 
   showUserInvite(value) {
     this.sltEntity = value;
+    if (!this.managerCheck(this.sltEntity.userRoles.user_roles)) {
+      this.common.alertMessage(this.translateEntities.alertLayer.orgRoleError, false);
+      return;
+    }
     $("[id='userEmail']").val('');
     $("#layerpop4").modal("show");
     setTimeout(() => this.allCheck(), 500);
@@ -618,15 +622,13 @@ export class Org2MainComponent implements OnInit {
   }
 
   //OrgManager 체크
-  authorityCheck(role): boolean {
+  managerCheck(role): boolean {
     return role.some(myrole => {
       if (myrole.user_email === this.common.getUserid()) {
         return myrole.roles.some(value => {
           if (value === 'OrgManager') {
             return true;
-          }
-        });
-      }
+          }});}
     });
   }
 
