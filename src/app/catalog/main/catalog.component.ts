@@ -137,6 +137,12 @@ export class CatalogComponent implements OnInit {
     data.forEach(a => {
       a = this.jsonParse(a);
     });
+    this.catalogService.starterpacks.forEach(recent => {
+      var pathHeader = recent.thumbImgPath.lastIndexOf("/");
+      var pathEnd = recent.thumbImgPath.length;
+      var fileName = recent.thumbImgPath.substring(pathHeader + 1, pathEnd);
+      recent.thumbImgPath = CATALOGURLConstant.GETIMG+fileName;
+    });
     this.catalogService.recentpacks = data;
 
   }
@@ -163,7 +169,7 @@ export class CatalogComponent implements OnInit {
     this.catalogService.buildpacks.forEach(a => {
       a = this.jsonParse(a);
     });
-    this.catalogService.starterpacks.forEach(buildpack => {
+    this.catalogService.buildpacks.forEach(buildpack => {
       var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
       var pathEnd = buildpack.thumbImgPath.length;
       var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
@@ -178,7 +184,7 @@ export class CatalogComponent implements OnInit {
     this.catalogService.servicepacks.forEach(a => {
       a = this.jsonParse(a);
     });
-    this.catalogService.starterpacks.forEach(servicepack => {
+    this.catalogService.servicepacks.forEach(servicepack => {
       var pathHeader = servicepack.thumbImgPath.lastIndexOf("/");
       var pathEnd = servicepack.thumbImgPath.length;
       var fileName = servicepack.thumbImgPath.substring(pathHeader + 1, pathEnd);
