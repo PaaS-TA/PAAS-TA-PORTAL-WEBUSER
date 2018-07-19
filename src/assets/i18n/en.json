@@ -567,7 +567,7 @@
       "password" : "Please enter your password."
     },
     "button" :{
-      "change" : "Change",
+      "change" : "Alter",
       "delete" : "Delete",
       "cancel" : "Cancel",
       "photoRegistration" : "Photo Registration"
@@ -576,10 +576,10 @@
       "loginInfo": "login Info",
       "email": "Email",
       "changePassword": {
-        "changePassword" : "Change Password",
-        "currentPassword": "Current Password",
+        "changePassword" : "Change PW",
+        "currentPassword": "Password",
         "newPassword": "New Password",
-        "newPasswordConfirmation": "New Password Confirmation"
+        "newPasswordConfirmation": "New Password"
       }
     },
     "userInfo": {
@@ -589,12 +589,12 @@
         "changeName":"Change Name"
       },
       "phoneNumber": {
-        "phoneNumber": "Phone Number",
-        "newPhoneNumber": "New PhoneNumber"
+        "phoneNumber": "Tell",
+        "newPhoneNumber": "New Tell"
       },
       "zipCode": {
-        "zipCode": "Zip Code",
-        "newZipCode": "New Zip Code"
+        "zipCode": "Postal Code",
+        "newZipCode": "New Postal Code"
       },
       "address": {
         "address": "Address",
@@ -606,12 +606,12 @@
       "orgWithdrawal":"Org Withdrawal",
       "explan1": "The organization name does not exist.",
       "explan2": "lf you leave your organization, you can not revert it",
-      "explan2-2": "Are you sure you want to leave?"
+      "explan2-2": " want to leave?"
     },
     "deleteAccount": {
       "deleteAccount":"Delete Account",
       "explan": "If you select Delete Account, all organizations and spaces are deleted and can not be reverted.",
-      "explan-2": "Are you sure you want to delete?"
+      "explan-2": " want to delete?"
     },
     "alertLayer": {
       "ChangeSuccess": "The change is complete.",
