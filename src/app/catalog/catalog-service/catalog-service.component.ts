@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NGXLogger} from "ngx-logger";
-import {BuildPack, CatalogService, ServicePack} from "../main/catalog.service";
+import {CatalogService} from "../main/catalog.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Space} from "../../model/space";
@@ -26,7 +26,7 @@ export class CatalogServiceComponent implements OnInit {
   spacename:string;
 
   servicenamelist:Array<string>;
-  servicepack:ServicePack;
+  servicepack:any;
   space:Space;
   org:Organization;
   orgs:Array<Organization> = new Array<Organization>(); // 조직 정보

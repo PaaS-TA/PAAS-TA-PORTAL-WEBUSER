@@ -26,6 +26,8 @@ export enum CATALOGURLConstant {
   GETSERVICEPACKS = '/commonapi/v2/servicepacks',
   GETSEARCH = '/commonapi/v2/packs',
 
+  GETIMG = '/storageapi/v2/swift/',
+
 
 
   SERVICEPACK = 'servicePack',

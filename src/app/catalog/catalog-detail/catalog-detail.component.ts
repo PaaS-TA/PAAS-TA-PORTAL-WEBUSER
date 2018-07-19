@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {CatalogService, StarterPack} from "../main/catalog.service";
+import {CatalogService} from "../main/catalog.service";
 import {NGXLogger} from "ngx-logger";
 import {Organization} from "../../model/organization";
 import {Space} from "../../model/space";
@@ -18,7 +18,7 @@ declare var jQuery: any;
 export class CatalogDetailComponent implements OnInit {
   catalogcontans = CATALOGURLConstant;
 
-  template: StarterPack;
+  template: any;
   public translateEntities: any = [];
   trans : string;
 

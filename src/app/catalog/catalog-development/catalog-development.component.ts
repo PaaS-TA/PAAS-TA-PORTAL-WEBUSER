@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NGXLogger} from "ngx-logger";
-import {BuildPack, CatalogService} from "../main/catalog.service";
+import {CatalogService} from "../main/catalog.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Space} from "../../model/space";
@@ -36,7 +36,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   sharedomain : any;
   currentdomain : any;
   domainList : Array<any>;
-  buildpack : BuildPack; //빌드팩 정보
+  buildpack : any; //빌드팩 정보
   appname: string = ''; //앱 이름
   hostname : string;
   appurl: string =''; // 앱URL

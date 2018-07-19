@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BuildPack, CatalogService, ServicePack, StarterPack} from "./catalog.service";
+import {CatalogService} from "./catalog.service";
 import {NGXLogger} from 'ngx-logger';
 import {Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
@@ -75,7 +75,7 @@ export class CatalogComponent implements OnInit {
       this.RecentInit(data['list']);
     },error=>{
       this.catalogService.alertMessage("서버가 불안정합니다.",false);
-    })
+    });
     this.catalogService.check = true;
   }
 
@@ -87,17 +87,17 @@ export class CatalogComponent implements OnInit {
     this.SearchServicePack();
   }
 
-  goStarter(starter : StarterPack) {
+  goStarter(starter : any) {
     this.catalogService.setCurrentCatalogNumber(starter.no);
     this.router.navigate(['catalogdetail']);
   }
 
-  goDevelopMent(build : BuildPack) {
+  goDevelopMent(build : any) {
     this.catalogService.setCurrentCatalogNumber(build.no);
     this.router.navigate(['catalogdevelopment']);
   }
 
-  goService(service : ServicePack) {
+  goService(service : any) {
     this.catalogService.setCurrentCatalogNumber(service.no);
     this.router.navigate(['catalogservice']);
   }
@@ -143,10 +143,15 @@ export class CatalogComponent implements OnInit {
 
   StarterInit(data : any) {
     this.catalogService.starterpacks = new Array<any>();
-    this.catalogService.starterpacks = data;
-    this.catalogService.starterpacks = this.catalogService.starterpacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
+    this.catalogService.starterpacks = data.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
     this.catalogService.starterpacks.forEach(a => {
       a = this.jsonParse(a);
+    });
+    this.catalogService.starterpacks.forEach(starter => {
+      var pathHeader = starter.thumbImgPath.lastIndexOf("/");
+      var pathEnd = starter.thumbImgPath.length;
+      var fileName = starter.thumbImgPath.substring(pathHeader + 1, pathEnd);
+      starter.thumbImgPath = CATALOGURLConstant.GETIMG+fileName;
     });
     this.catalogService.viewstarterpacks = this.catalogService.starterpacks;
 
@@ -154,20 +159,30 @@ export class CatalogComponent implements OnInit {
 
   BuildInit(data : any) {
     this.catalogService.buildpacks = new Array<any>();
-    this.catalogService.buildpacks = data;
-    this.catalogService.buildpacks = this.catalogService.buildpacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
+    this.catalogService.buildpacks = data.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
     this.catalogService.buildpacks.forEach(a => {
       a = this.jsonParse(a);
+    });
+    this.catalogService.starterpacks.forEach(buildpack => {
+      var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
+      var pathEnd = buildpack.thumbImgPath.length;
+      var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
+      buildpack.thumbImgPath = CATALOGURLConstant.GETIMG+fileName;
     });
     this.catalogService.viewbuildpacks = this.catalogService.buildpacks;
   }
 
   ServiceInit(data : any) {
     this.catalogService.servicepacks = new Array<any>();
-    this.catalogService.servicepacks = data;
-    this.catalogService.servicepacks = this.catalogService.servicepacks.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
+    this.catalogService.servicepacks = data.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
     this.catalogService.servicepacks.forEach(a => {
       a = this.jsonParse(a);
+    });
+    this.catalogService.starterpacks.forEach(servicepack => {
+      var pathHeader = servicepack.thumbImgPath.lastIndexOf("/");
+      var pathEnd = servicepack.thumbImgPath.length;
+      var fileName = servicepack.thumbImgPath.substring(pathHeader + 1, pathEnd);
+      servicepack.thumbImgPath = CATALOGURLConstant.GETIMG+fileName;
     });
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;
   }

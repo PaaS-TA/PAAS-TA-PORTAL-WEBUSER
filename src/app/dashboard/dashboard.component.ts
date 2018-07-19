@@ -11,7 +11,7 @@ import {SpaceService} from "../space/space.service";
 import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
-import {CatalogService, ServicePack, BuildPack, StarterPack} from '../catalog/main/catalog.service';
+import {CatalogService} from '../catalog/main/catalog.service';
 import {isBoolean} from "util";
 import {TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {containerStart} from "@angular/core/src/render3/instructions";
@@ -61,10 +61,10 @@ export class DashboardComponent implements OnInit {
   public org: Organization;
   public spaces: Array<Space>;
   public space: Space;
-  public service: Observable<Service>;
-  public servicepacks: Array<ServicePack>;
-  public buildpacks: Array<BuildPack>;
-  public starterpacks: Array<StarterPack>;
+  public service: Observable<any>;
+  public servicepacks: Array<any>;
+  public buildpacks: Array<any>;
+  public starterpacks: Array<any>;
 
   public appEntities: Observable<any[]>;
   public servicesEntities: Observable<any[]>;
@@ -610,7 +610,7 @@ export class DashboardComponent implements OnInit {
     this.commonService.setCurrentAppName(app_name);
     this.router.navigate(['appMain']);
   }
-  
+
   cancelButton(){
     $('#userProvideName').val('');
     $('#userProvideCredentials').val('');

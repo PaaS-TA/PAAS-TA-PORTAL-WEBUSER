@@ -213,6 +213,12 @@ export class CatalogService {
     });
   }
 
+  getImg(url : string){
+    return this.common.doGet(url, null  ).map((res : any) => {
+      return res;
+    });
+  }
+
   postApp(url : string, param : any){
     return this.common.doPost(url,param, this.common.getToken()).map((res: Response) => {
       return res;
@@ -243,73 +249,4 @@ export class CatalogService {
       return res;
     });
   }
-
-
-}
-
-export class BuildPack
-{
-  appSampleFileName : string;
-  appSampleFilePaht : string;
-  appSampleFilePath : string;
-  appSampleFileSize : string;
-  buildPackName : string;
-  classification : string;
-  classificationSummary : string;
-  classificationValue : string;
-  created : string;
-  description : string;
-  lastmodified : string;
-  name : string;
-  no : string;
-  summary : string;
-  thumbImgName : string;
-  thumbImgPath : string;
-  useYn : string;
-  userId : string;
-  docFileUrl : string;
-}
-
-export class StarterPack
-{
-  buildPackCategoryNo : string;
-  classification : string;
-  classificationSummary : string;
-  classificationValue : string;
-  created : string;
-  description : string;
-  lastmodified : string;
-  name : string;
-  no : string;
-  servicePackCategoryNoList : string;
-  summary : string;
-  thumbImgName : string;
-  thumbImgPath : string;
-  useYn : string;
-  userId : string;
-}
-
-export class ServicePack
-{
-  num : number;
-  appBindParameter : string;
-  appBindYn : string;
-  app_bind_parameter : string;
-  classification : string;
-  classificationSummary : string;
-  classificationValue : string;
-  created : string;
-  dashboardUseYn : string;
-  description : string;
-  lastmodified : string;
-  name : string;
-  no : string;
-  parameter : string;
-  servicePackName : string;
-  summary : string;
-  thumbImgName : string;
-  thumbImgPath : string;
-  useYn : string;
-  userId : string;
-  docFileUrl : string;
 }

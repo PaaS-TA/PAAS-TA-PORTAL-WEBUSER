@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CommonService} from '../common/common.service';
-import {CatalogService, ServicePack} from '../catalog/main/catalog.service';
+import {CatalogService} from '../catalog/main/catalog.service';
 import {NGXLogger} from 'ngx-logger';
 import 'rxjs/add/operator/map';
 import {Jsonp} from '@angular/http';
