@@ -214,7 +214,7 @@ export class CatalogService {
   }
 
   getImg(url : string){
-    return this.common.doGet(url, null  ).map((res : any) => {
+    return this.common.doStorageGet(url, null  ).map((res : any) => {
       return res;
     });
   }

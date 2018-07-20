@@ -138,6 +138,17 @@ export class CatalogDevelopmentComponent implements OnInit {
     if(!isUndefined(this.catalogService.getCurrentCatalogNumber())){
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
       this.buildpack =  data['list'][0];
+      var pathHeader = this.buildpack.thumbImgPath.lastIndexOf("/");
+      var pathEnd = this.buildpack.thumbImgPath.length;
+      var fileName = this.buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
+      this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+          this.buildpack.thumbImgPath = reader.result;
+        }, false);
+        if (data) {
+          reader.readAsDataURL(data);
+        }});
     },error => {
       this.router.navigate(['catalog']);
     });

@@ -57,7 +57,10 @@ export class CatalogServiceComponent implements OnInit {
     this.translate.get('catalog').subscribe((res: string) => {
       this.translateEntities = res;
     });
-    this.activatedRouteInit();
+    $('#nav_first').attr('class','');
+    $('#nav_second').attr('class','');
+    $('#nav_third ').attr('class','');
+    $('#nav_fourth').attr('class','cur');
     this.catalogService.isLoading(false);
     this.activatedRouteInit();
     this.DomainInit();
@@ -67,10 +70,7 @@ export class CatalogServiceComponent implements OnInit {
     this.ServiceInit();
     this.OrgsInit();
     this.doLayout();
-    $('#nav_first').attr('class','');
-    $('#nav_second').attr('class','');
-    $('#nav_third ').attr('class','');
-    $('#nav_fourth').attr('class','cur');
+
   }
   doLayout() {
     $(document).ready(() => {
@@ -140,7 +140,17 @@ export class CatalogServiceComponent implements OnInit {
   ServiceInit() {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
       this.servicepack = data['list'][0];
-      console.log(this.servicepack);
+      var pathHeader = this.servicepack.thumbImgPath.lastIndexOf("/");
+      var pathEnd = this.servicepack.thumbImgPath.length;
+      var fileName = this.servicepack.thumbImgPath.substring(pathHeader + 1, pathEnd);
+      this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+          this.servicepack.thumbImgPath = reader.result;
+        }, false);
+        if (data) {
+          reader.readAsDataURL(data);
+        }});
       this.serviceParameterSetting(this.servicepack.parameter, 'parameter');
       this.serviceParameterSetting(this.servicepack.appBindParameter, 'appBindParameter');
       this.serviceplan = new Array<ServicePlan>();

@@ -179,7 +179,21 @@ export class CatalogDetailComponent implements OnInit {
       });
     },error => {
         this.router.navigate(['catalog']);
-    });
+    }),() =>{
+      this.apptemplate.forEach(app => {
+        var pathHeader = app.thumbImgPath.lastIndexOf("/");
+        var pathEnd = app.thumbImgPath.length;
+        var fileName = app.thumbImgPath.substring(pathHeader + 1, pathEnd);
+        this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+          let reader = new FileReader();
+          reader.addEventListener("load", () => {
+            app.thumbImgPath = reader.result;
+          }, false);
+          if (data) {
+            reader.readAsDataURL(data);
+          }});
+      });
+    };
     this.disk = 512;
     this.memory = 512;
   }

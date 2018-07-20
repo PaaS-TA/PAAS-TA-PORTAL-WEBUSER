@@ -10,6 +10,7 @@ import {NGXLogger} from 'ngx-logger';
 import {Param} from "../index/login/login.component";
 import {Router} from "@angular/router";
 import {AppConfig} from "../app.config"
+import {ResponseContentType, ResponseOptions} from "@angular/http";
 
 declare var $: any;
 
@@ -37,6 +38,19 @@ export class CommonService {
     console.log(body);
     return body || {};
   }
+
+  doStorageGet(url: string, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    let storageheader = new HttpHeaders()
+      .set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==')
+    return this.http.get(this.gateway + url, {
+      headers: storageheader.set('cf-Authorization', token),
+      responseType: "blob"
+    });
+  }
+
 
   doGet(url: string, token: string) {
     if (token == null) {

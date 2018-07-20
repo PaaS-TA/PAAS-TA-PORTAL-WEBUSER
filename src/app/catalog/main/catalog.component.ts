@@ -137,12 +137,19 @@ export class CatalogComponent implements OnInit {
     data.forEach(a => {
       a = this.jsonParse(a);
     });
-    // this.catalogService.recentpacks.forEach(recent => {
-    //   var pathHeader = recent.thumbImgPath.lastIndexOf("/");
-    //   var pathEnd = recent.thumbImgPath.length;
-    //   var fileName = recent.thumbImgPath.substring(pathHeader + 1, pathEnd);
-    //   recent.thumbImgPath = CATALOGURLConstant.GETIMG+fileName;
-    // });
+    this.catalogService.recentpacks.forEach(recent => {
+      var pathHeader = recent.thumbImgPath.lastIndexOf("/");
+      var pathEnd = recent.thumbImgPath.length;
+      var fileName = recent.thumbImgPath.substring(pathHeader + 1, pathEnd);
+      this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+          recent.thumbImgPath = reader.result;
+        }, false);
+        if (data) {
+          reader.readAsDataURL(data);
+        }});
+    });
     this.catalogService.recentpacks = data;
 
   }
@@ -157,10 +164,14 @@ export class CatalogComponent implements OnInit {
       var pathHeader = starter.thumbImgPath.lastIndexOf("/");
       var pathEnd = starter.thumbImgPath.length;
       var fileName = starter.thumbImgPath.substring(pathHeader + 1, pathEnd);
-      // starter.thumbImgPath = CATALOGURLConstant.GETIMG+fileName;
-      // this.catalogService.getImg(starter.thumbImgPath).subscribe(data => {
-      //   console.log(data);
-      // })
+      this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+          starter.thumbImgPath = reader.result;
+        }, false);
+        if (data) {
+          reader.readAsDataURL(data);
+        }});
     });
     this.catalogService.viewstarterpacks = this.catalogService.starterpacks;
 
@@ -172,12 +183,19 @@ export class CatalogComponent implements OnInit {
     this.catalogService.buildpacks.forEach(a => {
       a = this.jsonParse(a);
     });
-    // this.catalogService.buildpacks.forEach(buildpack => {
-    //   var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
-    //   var pathEnd = buildpack.thumbImgPath.length;
-    //   var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
-    //   buildpack.thumbImgPath = CATALOGURLConstant.GETIMG+fileName;
-    // });
+    this.catalogService.buildpacks.forEach(buildpack => {
+      var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
+      var pathEnd = buildpack.thumbImgPath.length;
+      var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
+      this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+          buildpack.thumbImgPath = reader.result;
+        }, false);
+        if (data) {
+          reader.readAsDataURL(data);
+        }});
+    });
     this.catalogService.viewbuildpacks = this.catalogService.buildpacks;
   }
 
@@ -187,13 +205,20 @@ export class CatalogComponent implements OnInit {
     this.catalogService.servicepacks.forEach(a => {
       a = this.jsonParse(a);
     });
-   /* this.catalogService.servicepacks.forEach(servicepack => {
+    this.catalogService.servicepacks.forEach(servicepack => {
       var pathHeader = servicepack.thumbImgPath.lastIndexOf("/");
       var pathEnd = servicepack.thumbImgPath.length;
       var fileName = servicepack.thumbImgPath.substring(pathHeader + 1, pathEnd);
-      servicepack.thumbImgPath = CATALOGURLConstant.GETIMG+fileName;
+      this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+          servicepack.thumbImgPath = reader.result;
+        }, false);
+        if (data) {
+          reader.readAsDataURL(data);
+        }});
 
-    });*/
+    });
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;
   }
   SearchStarterPack() {
