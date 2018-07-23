@@ -104,15 +104,15 @@ export class CatalogComponent implements OnInit {
 
   goHistory(any : any){
     const classification = any['classification'];
-    if(classification.includes("starter_")){
+    if(classification.includes("starter")){
       this.catalogService.setCurrentCatalogNumber(any['no']);
       this.router.navigate(['catalogdetail']);
     }
-    else if(classification.includes("buildpack_")){
+    else if(classification.includes("buildpack")){
       this.catalogService.setCurrentCatalogNumber(any['no']);
       this.router.navigate(['catalogdevelopment']);
     }
-    else if(classification.includes("service_")){
+    else if(classification.includes("service")){
       this.catalogService.setCurrentCatalogNumber(any['no']);
       this.router.navigate(['catalogservice']);
     }

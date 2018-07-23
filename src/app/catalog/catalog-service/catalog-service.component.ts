@@ -310,6 +310,9 @@ export class CatalogServiceComponent implements OnInit {
     }
   }
 
+  //org_name,space_name,owner
+
+
   createService() {
     this.catalogService.isLoading(true);
     let params = {
@@ -342,16 +345,27 @@ export class CatalogServiceComponent implements OnInit {
 
   setParmeterData(value, value2):string {
     let data = '';
-    if (value != 'undefined' && value != null && value !== 'undefined' && value !== null) {
+    if (value != 'undefined' && value != null && value !== 'undefined' && value !== null && value.length > 0) {
       value.forEach(param => {
         if (data !== '') {
           data = data + ',' + param.getParameter();
         } else {
           data = param.getParameter();
         }});
-    }if (value2 != 'undefined' && value2 != null && value2 !== 'undefined' && value2 !== null) {
+    }if (value2 != 'undefined' && value2 != null && value2 !== 'undefined' && value2 !== null && value2.length > 0) {
       value2.forEach(param => {
-        param.value = "default";
+        if(param.name === 'owner'){
+          param.value = this.catalogService.getUserId();
+        }
+        else if(param.name === 'org_name'){
+          param.value = this.catalogService.getOrgName();
+        }
+        else if(param.name === 'space_name'){
+          param.value = this.catalogService.getSpaceName();
+        }
+        else{
+          param.value = "default";
+        }
         if (data !== '') {
           data = data + ',' + param.getParameter();
         } else {
@@ -370,7 +384,6 @@ export class Parameter{
     this.type = type;
     this.name = name;
   }
-
   getParameter() : string {
     return '"'+ this.name + '":"' + this.value +'"';
     //return this.value + ':' + this.type;

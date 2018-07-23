@@ -3,6 +3,7 @@ import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import {NGXLogger} from "ngx-logger";
 import {CommonService} from "../../common/common.service";
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
+import {CatalogService} from "../../catalog/main/catalog.service";
 
 declare var $: any;
 declare var jQuery: any;
@@ -32,12 +33,11 @@ export class AppTopComponent implements OnInit {
   ];
 
   constructor(private translate: TranslateService, private common: CommonService,
-              private router: Router, private logger: NGXLogger) {
+              private router: Router, private logger: NGXLogger, private catalogservice : CatalogService) {
     if (this.isAppView == null)
       this.isAppView = false;
     if (this.isCatalogView == null)
       this.isCatalogView = false;
-
   }
 
   ngOnInit() {
@@ -112,6 +112,11 @@ export class AppTopComponent implements OnInit {
     }
 
     return short;
+  }
+
+
+  catalogInit(){
+    this.catalogservice.viewPacks(true,true,true);
   }
 
   get isDashboardApp() {

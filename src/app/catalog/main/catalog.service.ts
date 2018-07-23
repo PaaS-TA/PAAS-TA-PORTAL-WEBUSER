@@ -78,6 +78,10 @@ export class CatalogService {
     this.common.alertMessage(value, result);
   }
 
+  getUserId(){
+    return this.common.getUserid();
+  }
+
   getOrgName(){
     return this.common.getCurrentOrgName();
   }

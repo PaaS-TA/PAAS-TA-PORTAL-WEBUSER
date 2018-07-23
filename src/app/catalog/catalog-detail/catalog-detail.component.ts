@@ -451,16 +451,24 @@ export class CatalogDetailComponent implements OnInit {
 
   setParmeterData(value, value2):string {
     let data = '';
-    if (value != 'undefined' && value != null && value !== 'undefined' && value !== null) {
+    if (value != 'undefined' && value != null && value !== 'undefined' && value !== null && value.length > 0)  {
       value.forEach(param => {
         if (data !== '') {
          data = data + ',' + '"'+ param[1] + '":"' + param[2] +'"';
         } else {
            data = '"'+ param[1] + '":"' + param[2] +'"';
         }});
-    }if (value2 != 'undefined' && value2 != null && value2 !== 'undefined' && value2 !== null) {
+    }if (value2 != 'undefined' && value2 != null && value2 !== 'undefined' && value2 !== null && value2.length > 0){
       value2.forEach(param => {
-        param[2] = "default";
+        if(param[1] === 'owner'){
+          param[2] = this.catalogService.getUserId();
+        } else if(param[1] === 'org_name'){
+          param[2] = this.catalogService.getOrgName();
+        } else if(param[1] === 'space_name'){
+          param[2] = this.catalogService.getSpaceName();
+        } else{
+          param[2] = "default";
+        }
         if (data !== '') {
           data = data + ',' + '"'+ param[1] + '":"' + param[2] +'"';
         } else {

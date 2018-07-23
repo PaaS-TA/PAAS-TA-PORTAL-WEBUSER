@@ -8,7 +8,7 @@
   </span>
   <ul class="gnb clearfix">
     <li *ngIf="isLogin" id="cur_dashboard" ><a [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
-    <li id="cur_catalog"><a [routerLink]="['/catalog']">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
+    <li id="cur_catalog" ><a [routerLink]="['/catalog']" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
     <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-3.0-Penne-">{{ 'common.top.main.linkTextDocument' | translate }}</a></li>
   </ul>
   <ul class="right_nav">
@@ -47,19 +47,21 @@
     </li>
     <li *ngIf="isLogin">
       <div class="btn-group">
-        <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>3</span></button>
+        <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <!--<span></span>-->
+        </button>
         <div id="bell" class="dropdown-menu">
           <div class="">
-            <span class="dot"></span>
-            <p class="">Notifications</p>
+            <!--<span class="dot"></span>-->
+            <!--<p class="">Notifications</p>-->
           </div>
           <div>
             <ul class="">
-              <ng-container *ngFor="let noti of notifications">
-              <li>
-                <a href="javascript:void(0)">{{noti}}</a><span>
-                <i class="fas fa-times-circle"></i></span></li>
-              </ng-container>
+              <!--<ng-container *ngFor="let noti of notifications">-->
+              <!--<li>-->
+                <!--<a href="javascript:void(0)">{{noti}}</a><span>-->
+                <!--<i class="fas fa-times-circle"></i></span></li>-->
+              <!--</ng-container>-->
               <!--
               <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
               <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
