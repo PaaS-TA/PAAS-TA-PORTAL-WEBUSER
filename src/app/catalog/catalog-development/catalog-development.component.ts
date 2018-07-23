@@ -48,7 +48,6 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.catalogService.isLoading(false);
     this.translate.get('catalog').subscribe((res: string) => {
       this.translateEntities = res;
-      console.log(this.translateEntities);
     });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
@@ -108,7 +107,6 @@ export class CatalogDevelopmentComponent implements OnInit {
       });
     }
     const spacename = this.catalogService.getSpaceName();
-    console.log(orgname, spacename);
     orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
     spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE) : (this.spacename = spacename);
   }
@@ -339,7 +337,6 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   routeCheck(){
-    console.log(this.appurl);
     this.routecheck = CATALOGURLConstant.OK;
     this.hostnames.forEach(host => {
       if(host === this.appurl){

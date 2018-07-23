@@ -24,6 +24,12 @@ export class AppMainService {
     }).do(console.log);
   }
 
+  getImg(filename : string){
+    return this.commonService.doStorageGet('/storageapi/v2/swift/' + filename, this.getToken()).map((res : any) => {
+      return res;
+    }).do(console.log);
+  }
+
   startApp(params: any) {
     return this.commonService.doPost('/portalapi/v3/apps/startApp', params, this.getToken()).map((res: Response) => {
       return res;

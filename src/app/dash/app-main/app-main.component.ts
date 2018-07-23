@@ -4,6 +4,7 @@ import {AppMainService} from './app-main.service';
 import {Observable} from 'rxjs/Observable';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {CommonService} from "../../common/common.service";
+import {CATALOGURLConstant} from "../../catalog/common/catalog.constant";
 
 
 declare var Chart: any;
@@ -199,7 +200,7 @@ export class AppMainComponent implements OnInit {
         this.spaceGuid = this.common.getCurrentSpaceGuid();
         this.appName = this.common.getCurrentAppName();
         this.appGuid = this.common.getCurrentAppGuid();
-        
+
         this.getAppSummary(this.appGuid);
         this.getAppEvents(this.appGuid);
         this.getAppEnv(this.appGuid);
@@ -410,10 +411,20 @@ export class AppMainComponent implements OnInit {
   getBuildPacks() {
     this.appMainService.getBuildPacks().subscribe(data => {
       var appBuildPackName = this.appSummaryBuildPackName;
-
+      let appMainservice = this.appMainService;
       $.each(data.list, function (dkey, buildpack) {
         if (buildpack.buildPackName == appBuildPackName) {
-          this.appThumbImgPath = buildpack.thumbImgPath;
+          var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
+          var pathEnd = buildpack.thumbImgPath.length;
+          var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
+          this.appMainService.getImg(fileName).subscribe(data => {
+            let reader = new FileReader();
+            reader.addEventListener("load", () => {
+              this.appThumbImgPath = reader.result;
+            }, false);
+            if (data) {
+              reader.readAsDataURL(data);
+            }});
           $("#col_in1").css({
             "background": "url(" + this.appThumbImgPath + ") 15px top no-repeat",
             "position": "relative",
@@ -665,15 +676,15 @@ export class AppMainComponent implements OnInit {
   }
 
   memUpClick() {
-    if ((this.appSummaryMemoryMax * 1024) >= (Number(this.appSummaryMemory) + 1024)) {
-      this.appSummaryMemory = Number(this.appSummaryMemory) + 1024;
+    if ((this.appSummaryMemoryMax * 1024) >= (Number(this.appSummaryMemory) + 128)) {
+      this.appSummaryMemory = Number(this.appSummaryMemory) + 128;
       $("#mem_in").val(this.appSummaryMemory);
     }
   }
 
   memDownClick() {
-    if (1 <= (Number(this.appSummaryMemory) - 1024)) {
-      this.appSummaryMemory = Number(this.appSummaryMemory) - 1024;
+    if (1 <= (Number(this.appSummaryMemory) - 128)) {
+      this.appSummaryMemory = Number(this.appSummaryMemory) - 128;
       $("#mem_in").val(this.appSummaryMemory);
     }
   }
@@ -702,15 +713,15 @@ export class AppMainComponent implements OnInit {
   }
 
   diskUpClick() {
-    if ((this.appSummaryDiskMax * 1024) >= (Number(this.appSummaryDisk) + 1024)) {
-      this.appSummaryDisk = Number(this.appSummaryDisk) + 1024;
+    if ((this.appSummaryDiskMax * 1024) >= (Number(this.appSummaryDisk) + 128)) {
+      this.appSummaryDisk = Number(this.appSummaryDisk) + 128;
       $("#disk_in").val(this.appSummaryDisk);
     }
   }
 
   diskDownClick() {
-    if (1 <= (Number(this.appSummaryDisk) - 1024)) {
-      this.appSummaryDisk = Number(this.appSummaryDisk) - 1024;
+    if (1 <= (Number(this.appSummaryDisk) - 128)) {
+      this.appSummaryDisk = Number(this.appSummaryDisk) - 128;
       $("#disk_in").val(this.appSummaryDisk);
     }
   }
