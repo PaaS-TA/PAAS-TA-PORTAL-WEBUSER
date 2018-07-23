@@ -326,6 +326,7 @@ export class CatalogServiceComponent implements OnInit {
       catalogNo : this.servicepack.no,
       userId : this.catalogService.getUserid()
     };
+    console.log(params);
     this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
     {
       if(!isUndefined(data.message)){
@@ -354,13 +355,15 @@ export class CatalogServiceComponent implements OnInit {
         }});
     }if (value2 != 'undefined' && value2 != null && value2 !== 'undefined' && value2 !== null && value2.length > 0) {
       value2.forEach(param => {
-        if(param.name === 'owner'){
+        let name = param.name.toUpperCase();
+        console.log(name);
+        if(name === 'OWNER'){
           param.value = this.catalogService.getUserId();
         }
-        else if(param.name === 'org_name'){
+        else if(name === 'ORG_NAME'){
           param.value = this.catalogService.getOrgName();
         }
-        else if(param.name === 'space_name'){
+        else if(name === 'SPACE_NAME'){
           param.value = this.catalogService.getSpaceName();
         }
         else{
