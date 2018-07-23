@@ -155,7 +155,6 @@ export class CatalogServiceComponent implements OnInit {
       this.serviceParameterSetting(this.servicepack.appBindParameter, 'appBindParameter');
       this.serviceplan = new Array<ServicePlan>();
       this.catalogService.getServicePlan(CATALOGURLConstant.GETSERVICEPLAN + this.servicepack.servicePackName).subscribe(data => {
-        console.log(data);
         data['resources'].forEach(a => {
           this.serviceplan.push(new ServicePlan(a['entity'], a['metadata']));
         })
@@ -326,7 +325,6 @@ export class CatalogServiceComponent implements OnInit {
       catalogNo : this.servicepack.no,
       userId : this.catalogService.getUserid()
     };
-    console.log(params);
     this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
     {
       if(!isUndefined(data.message)){
@@ -356,7 +354,6 @@ export class CatalogServiceComponent implements OnInit {
     }if (value2 != 'undefined' && value2 != null && value2 !== 'undefined' && value2 !== null && value2.length > 0) {
       value2.forEach(param => {
         let name = param.name.toUpperCase();
-        console.log(name);
         if(name === 'OWNER'){
           param.value = this.catalogService.getUserId();
         }

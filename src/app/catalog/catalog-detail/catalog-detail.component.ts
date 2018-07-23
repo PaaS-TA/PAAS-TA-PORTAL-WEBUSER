@@ -125,7 +125,6 @@ export class CatalogDetailComponent implements OnInit {
       });
     }
     const spacename = this.catalogService.getSpaceName();
-    console.log(orgname, spacename);
     orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
     spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE) : (this.spacename = spacename);
   }
@@ -164,7 +163,6 @@ export class CatalogDetailComponent implements OnInit {
           this.serviceParameterSetting(planlist, 'parameter', planlist.parameter);
           this.serviceParameterSetting(planlist, 'appBindParameter', planlist.appBindParameter);
           this.serviceplanlist.push(planlist);
-          console.log(this.serviceplanlist);
           $.getScript("../../assets/resources/js/common2.js")
             .done(function (script, textStatus) {
               //console.log( textStatus );
@@ -284,9 +282,6 @@ export class CatalogDetailComponent implements OnInit {
     this.spaces = new Array<Space>();
     this.spacesFrist();
     this.privateDomainInit(this.org.guid);
-    this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+this.org.guid+'/domains').subscribe(data =>{
-      console.log(data);
-    })
     this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {
         this.spaces.push(new Space(res['metadata'], res['entity'], null));
@@ -294,7 +289,6 @@ export class CatalogDetailComponent implements OnInit {
       this.catalogService.isLoading(false);
     });
     this.doLayout();
-    console.log(this.trans);
   }
 
   nameCheck() {
@@ -462,11 +456,12 @@ export class CatalogDetailComponent implements OnInit {
         }});
     }if (value2 != 'undefined' && value2 != null && value2 !== 'undefined' && value2 !== null && value2.length > 0){
       value2.forEach(param => {
-        if(param[1] === 'owner'){
+        let caseName = param[1].toUpperCase();
+        if(caseName === 'OWNER'){
           param[2] = this.catalogService.getUserId();
-        } else if(param[1] === 'org_name'){
+        } else if(caseName === 'ORG_NAME'){
           param[2] = this.catalogService.getOrgName();
-        } else if(param[1] === 'space_name'){
+        } else if(caseName === 'SPACE_NAME'){
           param[2] = this.catalogService.getSpaceName();
         } else{
           param[2] = "default";
@@ -483,7 +478,6 @@ export class CatalogDetailComponent implements OnInit {
 
   createApp(values : TranslateService) {
     this.catalogService.isLoading(true);
-    console.log(this.translateEntities);
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appurl).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {

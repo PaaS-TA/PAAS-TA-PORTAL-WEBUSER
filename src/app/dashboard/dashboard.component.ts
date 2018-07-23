@@ -15,6 +15,7 @@ import {CatalogService} from '../catalog/main/catalog.service';
 import {isBoolean} from "util";
 import {TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {containerStart} from "@angular/core/src/render3/instructions";
+import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 
 declare var $: any;
 declare var jQuery: any;
@@ -178,7 +179,6 @@ export class DashboardComponent implements OnInit {
   getOrgList() {
     this.commonService.isLoading = true;
     this.dashboardService.getOrgList().subscribe(data => {
-      this.commonService.isLoading = false;
       (data['resources'] as Array<Object>).forEach(orgData => {
         const index =
           this.orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
@@ -186,6 +186,7 @@ export class DashboardComponent implements OnInit {
       });
       return data;
     }, error => {
+      this.commonService.isLoading = false;
     }, () => {
       if (this.currentOrg != null) {
         this.commonService.isLoading = false;
@@ -198,11 +199,11 @@ export class DashboardComponent implements OnInit {
   getOrgSpaceList(orgId:string){
     this.commonService.isLoading = true;
     this.dashboardService.getOrgSpaceList(orgId).subscribe(data => {
-      this.commonService.isLoading = false;
       (data['resources'] as Array<Object>).forEach(spaceData => {
           const index =
             this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId)) - 1;
         });
+      this.commonService.isLoading = false;
       return data;
     }, error => {
       }, () => {
@@ -218,7 +219,7 @@ export class DashboardComponent implements OnInit {
     this.log.debug("::::1.getOrg:::: " +"  "+ value);
 
     if (value != '') {
-      this.commonService.isLoading = false;
+      this.commonService.isLoading = true;
       this.spaces = [];
       this.org = this.orgs.find(org => org.name === value);
       this.isLoadingSpaces = true;
@@ -241,14 +242,14 @@ export class DashboardComponent implements OnInit {
       this.spaces = [];
       this.isEmpty = true;
       this.isSpace = false;
+      this.commonService.isLoading = false;
     }
   }
 
   getSpaces(value: string) {
-
+    this.showLoading();
     this.log.debug("::::2.getSpaces:::: " +"  "+ value);
     if (value != '') {
-      this.commonService.isLoading = false;
       this.isEmpty = false;
       this.isSpace = true;
       this.isMessage = false;
@@ -266,12 +267,12 @@ export class DashboardComponent implements OnInit {
       this.getAppSummary(value);
       this.getOrgSummary();
 
-      this.commonService.isLoading = false;
     } else {
       //초기화
       // this.spaces = [];
       this.isEmpty = true;
       this.isSpace = false;
+      this.commonService.isLoading=false;
     }
   }
 
@@ -287,6 +288,8 @@ export class DashboardComponent implements OnInit {
       this.orgTotalServices = data.quota['totalServices'];
 
       return data;
+    },error => {
+    }, () => {
     });
   }
 
@@ -295,10 +298,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getAppSummary(value: string) {
-    this.showLoading();
-    this.dashboardService.getAppSummary(value).subscribe(data => {
-      this.commonService.isLoading = false;
 
+    this.dashboardService.getAppSummary(value).subscribe(data => {
       $.each(data.apps, function (key, dataobj) {
         $.each(data.appsPer, function (key2, dataobj2) {
           if (dataobj.guid == dataobj2.guid) {
@@ -309,21 +310,18 @@ export class DashboardComponent implements OnInit {
           }
         });
       });
-
       this.appEntities = data.apps;
       this.thumnailApp();
-
       this.servicesEntities = data.services;
       this.thumnail();
-
       // this.moveAppMain();
-
     }, () => {
       this.commonService.isLoading = false;
     });
   }
 
   thumnail(): void {
+    let catalog = this.catalogService;
     this.dashboardService.getServicePacks().subscribe(data => {
       $.each(this.servicesEntities, function (skey, servicesEntitie) {
         let cnt = 0;
@@ -331,7 +329,17 @@ export class DashboardComponent implements OnInit {
           if (servicesEntitie['service_plan'] != null) {
 
             if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
-              servicesEntitie['thumbImgPath'] = servicepack['thumbImgPath'];
+              var pathHeader = servicepack['thumbImgPath'].lastIndexOf("/");
+              var pathEnd = servicepack['thumbImgPath'].length;
+              var fileName = servicepack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
+              catalog.getImg('/storageapi/v2/swift/'+fileName).subscribe(data => {
+                let reader = new FileReader();
+                reader.addEventListener("load", () => {
+                  servicesEntitie['thumbImgPath'] = reader.result;
+                }, false);
+                if (data) {
+                  reader.readAsDataURL(data);
+                }});
               cnt++
             }
           }
@@ -343,21 +351,32 @@ export class DashboardComponent implements OnInit {
       return data;
     }, error => {
     }, () => {
+      this.commonService.isLoading = false;
     });
   }
 
   thumnailApp(): void {
     // this.log.debug("Start");
     // this.log.debug(this.appEntities);
+    let catalog = this.catalogService;
     this.dashboardService.getBuildPacks().subscribe(data => {
       $.each(this.appEntities, function (skey, appEntitie) {
         let cnt = 0;
         $.each(data['list'], function (dkey, buildpack) {
           if (appEntitie['buildpack'] != null) {
             // console.log(appEntitie['buildpack'] + ' == ' + buildpack['buildPackName'] + ' = ' + (appEntitie['buildpack'] === buildpack['buildPackName']));
-
             if (appEntitie['buildpack'] === buildpack['buildPackName']) {
-              appEntitie['thumbImgPath'] = buildpack['thumbImgPath'];
+              var pathHeader = buildpack['thumbImgPath'].lastIndexOf("/");
+              var pathEnd = buildpack['thumbImgPath'].length;
+              var fileName = buildpack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
+              catalog.getImg('/storageapi/v2/swift/'+fileName).subscribe(data => {
+                let reader = new FileReader();
+                reader.addEventListener("load", () => {
+                  appEntitie['thumbImgPath'] = reader.result;
+                }, false);
+                if (data) {
+                  reader.readAsDataURL(data);
+                }});
               cnt++
             }
           }
