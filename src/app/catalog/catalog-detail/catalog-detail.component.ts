@@ -63,7 +63,6 @@ export class CatalogDetailComponent implements OnInit {
     });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
-      console.log(this.translateEntities.result.appTemplateSusses);
     });
   }
 
@@ -175,18 +174,20 @@ export class CatalogDetailComponent implements OnInit {
             });
         }, error => {
           this.errorMsg(this.translateEntities.service.notServicePlan);
-          this.router.navigate(['catalog']);
+          //this.router.navigate(['catalog']);
         });
       });
     },error => {
-        this.router.navigate(['catalog']);
-    }),() =>{
+       // this.router.navigate(['catalog']);
+    },() =>{
       this.apptemplate.forEach(app => {
         var pathHeader = app.thumbImgPath.lastIndexOf("/");
         var pathEnd = app.thumbImgPath.length;
         var fileName = app.thumbImgPath.substring(pathHeader + 1, pathEnd);
+        console.log('파일네임 : ' + fileName);
         this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
           let reader = new FileReader();
+          console.log(reader);
           reader.addEventListener("load", () => {
             app.thumbImgPath = reader.result;
           }, false);
@@ -194,7 +195,7 @@ export class CatalogDetailComponent implements OnInit {
             reader.readAsDataURL(data);
           }});
       });
-    };
+    });
     this.disk = 512;
     this.memory = 512;
   }

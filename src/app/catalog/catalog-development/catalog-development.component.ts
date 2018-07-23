@@ -135,7 +135,6 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   buildInit() {
-    if(!isUndefined(this.catalogService.getCurrentCatalogNumber())){
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
       this.buildpack =  data['list'][0];
       var pathHeader = this.buildpack.thumbImgPath.lastIndexOf("/");
@@ -152,7 +151,6 @@ export class CatalogDevelopmentComponent implements OnInit {
     },error => {
       this.router.navigate(['catalog']);
     });
-    }
   }
 
   getRoutes(){

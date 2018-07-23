@@ -56,17 +56,17 @@ export class CatalogComponent implements OnInit {
     if(check){
     this.catalogService.viewPacks(true, true, true);
     }
-      this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS).subscribe(data => {
+      this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS_Y).subscribe(data => {
       this.StarterInit(data['list']);
     },error=>{
         this.catalogService.alertMessage("서버가 불안정합니다.",false);
       });
-    this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS).subscribe(data => {
+    this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS_Y).subscribe(data => {
       this.BuildInit(data['list']);
     },error=>{
       this.catalogService.alertMessage("서버가 불안정합니다.",false);
     });
-    this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS).subscribe(data => {
+    this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS_Y).subscribe(data => {
       this.ServiceInit(data['list']);
     },error=>{
       this.catalogService.alertMessage("서버가 불안정합니다.",false);
@@ -112,7 +112,7 @@ export class CatalogComponent implements OnInit {
       this.catalogService.setCurrentCatalogNumber(any['no']);
       this.router.navigate(['catalogdevelopment']);
     }
-    else if(classification.includes("service")){
+    else if(classification.includes("service") || classification.includes("dev")){
       this.catalogService.setCurrentCatalogNumber(any['no']);
       this.router.navigate(['catalogservice']);
     }
@@ -137,7 +137,7 @@ export class CatalogComponent implements OnInit {
     data.forEach(a => {
       a = this.jsonParse(a);
     });
-    this.catalogService.recentpacks.forEach(recent => {
+    data.forEach(recent => {
       var pathHeader = recent.thumbImgPath.lastIndexOf("/");
       var pathEnd = recent.thumbImgPath.length;
       var fileName = recent.thumbImgPath.substring(pathHeader + 1, pathEnd);
@@ -155,11 +155,10 @@ export class CatalogComponent implements OnInit {
   }
 
   StarterInit(data : any) {
-    this.catalogService.starterpacks = new Array<any>();
-    this.catalogService.starterpacks = data.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
-    this.catalogService.starterpacks.forEach(a => {
+    data.forEach(a => {
       a = this.jsonParse(a);
     });
+    this.catalogService.starterpacks = data;
     this.catalogService.starterpacks.forEach(starter => {
       var pathHeader = starter.thumbImgPath.lastIndexOf("/");
       var pathEnd = starter.thumbImgPath.length;
@@ -178,11 +177,10 @@ export class CatalogComponent implements OnInit {
   }
 
   BuildInit(data : any) {
-    this.catalogService.buildpacks = new Array<any>();
-    this.catalogService.buildpacks = data.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
-    this.catalogService.buildpacks.forEach(a => {
+    data.forEach(a => {
       a = this.jsonParse(a);
     });
+    this.catalogService.buildpacks = data;
     this.catalogService.buildpacks.forEach(buildpack => {
       var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
       var pathEnd = buildpack.thumbImgPath.length;
@@ -200,12 +198,12 @@ export class CatalogComponent implements OnInit {
   }
 
   ServiceInit(data : any) {
-    this.catalogService.servicepacks = new Array<any>();
-    this.catalogService.servicepacks = data.filter(a => { if(a.useYn === CATALOGURLConstant.YN){return a; }});
-    this.catalogService.servicepacks.forEach(a => {
+    data.forEach(a => {
       a = this.jsonParse(a);
     });
+    this.catalogService.servicepacks = data;
     this.catalogService.servicepacks.forEach(servicepack => {
+      try{
       var pathHeader = servicepack.thumbImgPath.lastIndexOf("/");
       var pathEnd = servicepack.thumbImgPath.length;
       var fileName = servicepack.thumbImgPath.substring(pathHeader + 1, pathEnd);
@@ -218,6 +216,13 @@ export class CatalogComponent implements OnInit {
           reader.readAsDataURL(data);
         }});
 
+    }
+    catch (e) {
+      console.log(e.toLocaleString());
+    }
+    finally {
+
+      }
     });
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;
   }
