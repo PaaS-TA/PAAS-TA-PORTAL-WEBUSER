@@ -174,7 +174,8 @@ export class CatalogDetailComponent implements OnInit {
               console.log(exception);
             });
         }, error => {
-          alert("서비스 플랜이 없습니다.");
+          this.errorMsg(this.translateEntities.service.notServicePlan);
+          this.router.navigate(['catalog']);
         });
       });
     },error => {
