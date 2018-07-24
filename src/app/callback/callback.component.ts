@@ -17,7 +17,7 @@ export class CallbackComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private commonService: CommonService, private sec: SecurityService, private log: NGXLogger) {
     this.log.debug('callback');
     this.commonService.isLoading = true;
-    console.log("token :: " + this.commonService.getToken());
+
     if (this.commonService.getToken() != null) {
       this.sec.doUserInfo();
     } else {

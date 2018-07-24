@@ -228,7 +228,7 @@ export class SecurityService {
       this.router.navigate(['login'], {queryParams: {error: '1'}});
       window.location.reload();
     } else {
-      this.router.navigate(['error'], {queryParams: {error: '1'}});
+      this.router.navigate(['/login']);
     }
   }
 }
