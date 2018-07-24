@@ -314,7 +314,7 @@ export class CatalogServiceComponent implements OnInit {
 
 
   createService() {
-    if(this.namecheck !== 1){
+    if(this.namecheck !== 1 || this.servicename.length <= 0){
       this.errorMsg(this.translateEntities.contants.createSuccessService);
       return;
     }
