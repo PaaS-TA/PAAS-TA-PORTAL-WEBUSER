@@ -52,6 +52,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
     });
+    this.catalogService.navView = 'appDevelopment';
   }
 
   ngOnInit() {

@@ -51,6 +51,7 @@ export class CatalogServiceComponent implements OnInit {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
     });
+    this.catalogService.navView = 'service';
   }
 
   ngOnInit() {
@@ -164,7 +165,7 @@ export class CatalogServiceComponent implements OnInit {
         this.router.navigate(['catalog']);
       });
     },error => {
-      this.router.navigate(['catalog']);
+     this.router.navigate(['catalog']);
     });
   }
 
@@ -208,7 +209,7 @@ export class CatalogServiceComponent implements OnInit {
           this.org = _org;
         }
       }, error => {
-        this.errorMsg(error);
+        this.errorMsg(error.message);
       });
       this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
         data['spaceList']['resources'].forEach(res => {
@@ -220,7 +221,7 @@ export class CatalogServiceComponent implements OnInit {
           } });
         this.catalogService.isLoading(false);
       }, error => {
-        this.errorMsg(error);
+        this.errorMsg(error.message);
       });
     });
   }
@@ -238,7 +239,7 @@ export class CatalogServiceComponent implements OnInit {
       if (this.spaces[0])this.space = this.spaces[0];
       this.catalogService.isLoading(false);
     }, error => {
-      this.errorMsg(error);
+      this.errorMsg(error.message);
     });
   }
 
@@ -252,7 +253,7 @@ export class CatalogServiceComponent implements OnInit {
         this.apps.push(new App(app['metadata'], app['entity']));
       })
     }, error => {
-      this.errorMsg(error);
+      this.errorMsg(error.message);
     });
     this.serviceInstanceList();
   }
@@ -266,7 +267,7 @@ export class CatalogServiceComponent implements OnInit {
       this.serviceNameCheck();
       this.catalogService.isLoading(false);
     }, error => {
-      this.errorMsg(error);
+      this.errorMsg(error.message);
     });
   }
 
@@ -313,6 +314,10 @@ export class CatalogServiceComponent implements OnInit {
 
 
   createService() {
+    if(this.namecheck !== 1){
+      this.errorMsg(this.translateEntities.contants.createSuccessService);
+      return;
+    }
     this.catalogService.isLoading(true);
     let params = {
       name: this.servicename,
@@ -328,13 +333,14 @@ export class CatalogServiceComponent implements OnInit {
     this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
     {
       if(!isUndefined(data.message)){
-        this.errorMsg(this.translateEntities.result.serviceError+' : ' + + data.message);
+        let msg = data.message;
+        this.errorMsg(this.translateEntities.result.serviceError+' : ' + msg);
         return;
       }
       this.successMsg(this.translateEntities.result.serviceSusses);
       this.router.navigate(['dashboard']);
     }, error => {
-      this.errorMsg(this.translateEntities.result.serviceError+ ' : ' + error);
+      this.errorMsg(this.translateEntities.result.serviceError+ ' : ' + error.message);
     });
   }
 

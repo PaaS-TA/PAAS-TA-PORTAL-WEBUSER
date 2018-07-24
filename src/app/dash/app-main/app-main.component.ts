@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {CommonService} from "../../common/common.service";
 import {CATALOGURLConstant} from "../../catalog/common/catalog.constant";
+import {isUndefined} from "util";
 
 
 declare var Chart: any;
@@ -224,6 +225,9 @@ export class AppMainComponent implements OnInit {
   getAppSummary(guid: any) {
     this.isLoading = true;
     this.appMainService.getAppSummary(guid).subscribe(data => {
+      if(isUndefined(data.length)){
+        this.router.navigate(['dashboard']);
+      }
       this.appSummaryEntities = data;
       this.appRoutesEntities = data.routes;
       this.appDomainsEntities = data.available_domains;
@@ -411,25 +415,28 @@ export class AppMainComponent implements OnInit {
   getBuildPacks() {
     this.appMainService.getBuildPacks().subscribe(data => {
       var appBuildPackName = this.appSummaryBuildPackName;
+
       let appMainservice = this.appMainService;
+      let imgPath = this.appThumbImgPath;
       $.each(data.list, function (dkey, buildpack) {
         if (buildpack.buildPackName == appBuildPackName) {
           var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
           var pathEnd = buildpack.thumbImgPath.length;
           var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
-          this.appMainService.getImg(fileName).subscribe(data => {
+          console.log(fileName);
+          appMainservice.getImg(fileName).subscribe(data => {
             let reader = new FileReader();
             reader.addEventListener("load", () => {
-              this.appThumbImgPath = reader.result;
+               imgPath = reader.result;
+              $("#col_in1").css({
+                "background": "url(" + imgPath + ") 15px top no-repeat",
+                "position": "relative",
+                "background-size": "55px 55px"
+              });
             }, false);
             if (data) {
               reader.readAsDataURL(data);
             }});
-          $("#col_in1").css({
-            "background": "url(" + this.appThumbImgPath + ") 15px top no-repeat",
-            "position": "relative",
-            "background-size": "55px 55px"
-          });
         }
       });
     });

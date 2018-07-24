@@ -2,36 +2,47 @@ import { Component, OnInit } from '@angular/core';
 import {CatalogService} from "../../main/catalog.service";
 import {Router} from "@angular/router";
 import {isUndefined} from "util";
-import {TranslateService} from "@ngx-translate/core";
-
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+declare var $: any;
+declare var jQuery: any;
 @Component({
   selector: 'app-catalog-nav',
   templateUrl: './catalog-nav.component.html',
   styleUrls: ['./catalog-nav.component.css']
 })
 export class CatalogNavComponent implements OnInit {
-
+  translateEntities : any;
   constructor(private catalogService: CatalogService, private router: Router) {
+
   }
 
   ngOnInit() {
+    this.navStyle(1);
   }
 
-  viewMain() {
+  viewMain(number) {
     this.router.navigate(['catalog']);
     this.catalogService.viewPacks(true, true, true);
+    this.navStyle(number);
+    this.classNavSetting(number);
+    this.catalogService.navView = 'viewAll';
   }
 
-  viewStarterPack(){
+  viewStarterPack(number){
     if(this.router.url !== '/catalog'){
       this.catalogService.check = false;
       this.catalogService.classname = '#nav_second';
     }
     this.router.navigate(['catalog']);
     this.catalogService.viewPacks(true, false, false);
+    this.navStyle(number);
+    this.classNavSetting(number);
+    if(number === 2){
+    this.catalogService.navView = 'appTemplate';}
+    else{this.catalogService.navView = 'basicType';}
   }
 
-  viewBuildPack(value){
+  viewBuildPack(value, number){
     if(this.router.url !== '/catalog'){
       this.catalogService.check = false;
       this.catalogService.classname = '#nav_third';
@@ -42,13 +53,18 @@ export class CatalogNavComponent implements OnInit {
     if(!isUndefined(value)) {
       this.catalogService.buildPackfilter = value;
       this.catalogService.buildPackFilter();
+      this.catalogService.navView = value;
     }
     else {
       this.catalogService.buildPackfilter = '';
+      number = 4;
+      this.catalogService.navView = 'appDevelopment';
     }
+    this.classNavSetting(number);
+    this.navStyle(number);
   }
 
-  viewServicePack(value){
+  viewServicePack(value, number){
     if(this.router.url !== '/catalog'){
       this.catalogService.check = false;
       this.catalogService.classname = '#nav_fourth';
@@ -58,9 +74,52 @@ export class CatalogNavComponent implements OnInit {
     if(!isUndefined(value)) {
       this.catalogService.servicePackfilter = value;
     this.catalogService.servicePackFilter();
+      this.catalogService.navView = value;
   }
     else{
       this.catalogService.servicePackfilter = '';
+      this.catalogService.navView = 'service';
+      number = 7;
+    }
+    this.classNavSetting(number);
+    this.navStyle(number);
+  }
+  navStyle(number){
+    let max = 13;
+    let min = 1;
+    for(min; min <= max; min++){
+      if(number === min){
+        $("#catlog_nav"+min).css('line-height', '54px');
+        $("#catlog_nav"+min).css('color', '#fff');
+        $("#catlog_nav"+min).css('background-color', '#32798c');
+        $("#catlog_nav"+min).css('margin-bottom', '10px');
+        $("#catlog_nav"+min).css('cursor', 'cursor');
+        $("#catlog_nav"+min).css('font-size', '16px');
+        console.log("실행 : " + number);
+      }else {
+        $("#catlog_nav"+min).css('line-height', '');
+        $("#catlog_nav"+min).css('color', '');
+        $("#catlog_nav"+min).css('background-color', '');
+        $("#catlog_nav"+min).css('margin-bottom', '');
+        $("#catlog_nav"+min).css('cursor', '');
+        $("#catlog_nav"+min).css('font-size', '');
+      }
+    }
+  }
+
+  classNavSetting(number){
+    $('#nav_first').attr('class','');
+    $('#nav_second').attr('class','');
+    $('#nav_third ').attr('class','');
+    $('#nav_fourth').attr('class','');
+    if(number == 1){
+      $('#nav_first').attr('class','cur');
+    } else if(number > 1 && number < 4){
+      $('#nav_second').attr('class','cur');
+    } else if(number > 3 && number < 7){
+      $('#nav_third ').attr('class','cur');
+    } else {
+      $('#nav_fourth').attr('class','cur');
     }
   }
   }

@@ -261,14 +261,14 @@
       "appDevelopment" : "App Dev",
       "service" : "Service",
       "basicType" : "Basic Type",
-      "systemAppDevelopment" : "System App Development",
-      "userAppDevelopment" : "User App Development",
-      "dataStore" : "dataStore",
-      "messaging" : "messaging",
-      "nosqlDatabase" : "NoSQL Database",
-      "relationalDatabase" : "Relational database",
-      "appMonitoring" : "App Monitoring",
-      "devSupportTools" : "Dev Support Tools"
+      "buildpack_system" : "System App Development",
+      "buildpack_custom" : "User App Development",
+      "service_storage" : "dataStore",
+      "service_message" : "messaging",
+      "service_nosql" : "NoSQL Database",
+      "service_rdbms" : "Relational database",
+      "service_monitoring" : "App Monitoring",
+      "dev_ops" : "Dev Support Tools"
     },
     "main" : {
       "recentWork" : "Recent Work",

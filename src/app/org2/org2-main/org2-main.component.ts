@@ -735,6 +735,7 @@ export class Org2MainComponent implements OnInit {
       "bm": $("#modal5").is(":checked"),
       "oa": $("#modal6").is(":checked")
     };
+
     inviteObjOrg.push(orgObj);
     inviteObj["org"] = inviteObjOrg;
     this.sltEntity.space.resources.forEach(function (data, index) {

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {NGXLogger} from "ngx-logger";
 import {CommonService} from "../../common/common.service";
 import {CATALOGURLConstant} from "../common/catalog.constant";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {isUndefined} from "util";
 declare var $: any;
 @Injectable()
 export class CatalogService {
@@ -25,12 +27,18 @@ export class CatalogService {
   servicePackfilter : string = '';
   first : string = 'cur';
   classname : string;
-
-
-  constructor(private common: CommonService, private log: NGXLogger) {
+  navview : string;
+  translateEntities : any;
+  constructor(private common: CommonService, private log: NGXLogger, private translate: TranslateService ) {
     this.viewstarterpacks  = new Array<any>();
     this.viewbuildpacks  = new Array<any>();
     this.viewservicepacks  = new Array<any>();
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.catalog;
+    });
+    this.translate.get('catalog').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
   }
 
   viewPacks(value, value2, value3){
@@ -59,6 +67,17 @@ export class CatalogService {
     }
   }
 
+  set navView(value){
+    this.navview = value;
+  }
+
+  get navView(){
+    if(!isUndefined(this.translateEntities)) {
+      if(!isUndefined(this.navview)){
+      return this.translateEntities.nav[this.navview];
+    } return this.translateEntities.nav.viewAll;
+    } return '';
+  }
   servicePackFilter(){
     if(this.servicePackfilter !== ''){
     this.viewservicepacks = this.servicepacks.filter(data => { if(data.classification === this.servicePackfilter){

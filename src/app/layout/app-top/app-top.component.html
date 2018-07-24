@@ -2,10 +2,7 @@
   <div class="logo">
     <a [routerLink]="['/dashboard']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
   </div>
-  <span *ngIf="isLogin" class="nav_toggle">
-      <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1">
-      <label for="checkbox-1"></label>
-  </span>
+
   <ul class="gnb clearfix">
     <li *ngIf="isLogin" id="cur_dashboard" ><a [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
     <li id="cur_catalog" ><a [routerLink]="['/catalog']" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
@@ -86,6 +83,10 @@
     <div class="header_bottom">
       <!-- dashboard container -->
       <p class="tit">Dashboard</p>
+      <span class="nav_toggle"><!-- 180724 수정 -->
+                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+                <label for="checkbox-1"></label>
+            </span>
       <ul class="content_dev">
         <li>{{orgName}}</li>
         <li>{{spaceName}}</li>
@@ -93,17 +94,35 @@
     </div>
   </ng-container>
   <ng-template #catalog>
-    <!-- catalog container -->
-    <ng-container *ngIf="isCatalog; else emptyMenu">
+  <!-- catalog container -->
+  <ng-container *ngIf="isCatalog; else menagement">
+    <div class="header_bottom">
+      <p class="tit">Catalog</p>
+      <span class="nav_toggle"><!-- 180724 수정 -->
+                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+                <label for="checkbox-1"></label>
+            </span>
+      <ul class="content_dev">
+        <li>{{catalogName}}</li>
+      </ul>
+    </div>
+  </ng-container>
+</ng-template>
+  <ng-template #menagement>
+    <ng-container *ngIf="isManagement; else emptyMenu">
       <div class="header_bottom">
-        <p class="tit">Catalog</p>
+        <p class="tit">Management</p>
+          <span class="nav_toggle"><!-- 180724 수정 -->
+                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+                <label for="checkbox-1"></label>
+            </span>
         <ul class="content_dev">
-          <li>{{catalogName}}</li>
+          <li>{{menagementName}}</li>
         </ul>
       </div>
     </ng-container>
   </ng-template>
   <ng-template #emptyMenu>
-    <!-- empty container -->
+
   </ng-template>
 </header>

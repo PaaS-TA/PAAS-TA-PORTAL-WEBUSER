@@ -296,11 +296,11 @@ header.account{height:76px;}
 .logo{line-height:76px; text-align:center; width:120px;display:inline-block;vertical-align:middle;}
 .logo a{display:block;}
 .logo h1{color:#fff;font-size:14px;}
-.nav_toggle{display:inline-block; vertical-align:middle;} /* margin-top:-7px; */
+.nav_toggle{display:inline-block; vertical-align:middle; float:left; margin-left:20px;} /* margin-top:-7px; *//*180725 수정*/
 .nav_toggle input.navcheck{position:absolute;opacity:0;cursor:pointer;}
 .nav_toggle input.navcheck+label{cursor:pointer;}
-.nav_toggle input.navcheck+label:before{font-family:'Font Awesome 5 Free'; content: "\f0c9"; font-size:20px;color:#fff;border:0;background:transparent; font-weight: 900; line-height:20px;}
-.nav_toggle input.navcheck:checked+label:before{font-family: 'Font Awesome 5 Free'; content:"\f009";font-size:20px;line-height:1.1;}
+.nav_toggle input.navcheck+label:before{font-family:'Font Awesome 5 Free'; content: "\f0c9"; font-size:20px;color:rgb(76,86,103);border:0;background:transparent; font-weight: 900; line-height:20px;}/*180725 수정*/
+.nav_toggle input.navcheck:checked+label:before{font-family: 'Font Awesome 5 Free'; content:"\f009";font-size:20px;line-height:1.1;color:rgb(76,86,103);}/*180725 수정*/
 .gnb{display:inline-block;vertical-align:middle;}
 .gnb > li{float:left; padding:0 20px;}
 .gnb > li > a{display:block;line-height:76px;color:#fff;font-size:18px;text-align:left;}
@@ -357,7 +357,7 @@ header.account{height:76px;}
 }
 
 /* dev */
-.content_dev{}
+.content_dev{float:left;}/*180725 수정*/
 .content_dev li{float:left; font-family:'Nanum Gothic'; font-size:15px; margin-right:7px; padding-right: 14px; background:url('../../resources/images/main/dev.png') center right no-repeat; color:#454545;}
 .content_dev li:first-child{margin-left:20px; font-weight:700!important;}
 .content_dev li:last-child{margin-right:0px; padding-right: 0px; background:none; font-weight:300;}
@@ -428,7 +428,7 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
 .nav_2d div > ul > li{color:#808487; font-size:14px;  margin-bottom:20px; margin-bottom:20px; padding-left:20px; cursor: pointer;}
 .nav_2d div > ul > li i{width:24px;}
 .nav_2d div > ul > li.titles{ color:#293133; font-size:16px; margin-top:40px; cursor: pointer; }
-.nav_2d div > ul > li:first-child{ line-height:54px; color:#fff; background:#32798c; margin-bottom:0px; cursor: pointer; font-size:16px;}
+
 .nav_2d div > ul{cursor: pointer;}
 /*.two_line{margin-left: 0.4%;}*/
 
@@ -544,7 +544,7 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
 table.variable tr{ border:none; }
 table.variable th{font-weight: bold;}
 table.variable td,table.variable th{ text-align: left;}
-table.variable textarea{width:100%; height: 198px; line-height:27px; padding-top:9px; display: block; overflow: auto;}
+table.variable textarea{width:100%; height: 198px; line-height:27px; padding-top:9px; display: block; overflow: auto; background: #f6f6f6; padding-left: 10px}
 table.variable textarea,table.variable textarea:hover{ border: none;}
 table.variable .H180{height: 180px; vertical-align: top;}
 .condition{clear: both; float:none; margin-bottom:30px!important;} /*  */
@@ -599,7 +599,7 @@ li > dl > dd > div > table > tbody > tr .text-right{padding-right:15px;}
 
 #out_a{ position: absolute; left:-999999999999px;}
 
-nav.nav_mini{width:120px;position:absolute;top:0;left:-120px;height:100%;}
+nav.nav_mini{width:120px;position:absolute;/*top:0;*/left:-120px;height:100%;}/* 180725 수정 */
 nav.nav_mini .menu-title{display:none;}
 nav.nav_mini ul li{width:100%;height:49px;display:block;position:relative;}
 nav.nav_mini ul li a{width:100%;height:49px;display:block;text-align:center;}

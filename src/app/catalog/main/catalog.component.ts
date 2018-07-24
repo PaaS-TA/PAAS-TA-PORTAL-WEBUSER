@@ -18,6 +18,7 @@ export class CatalogComponent implements OnInit {
   userid : string;
   recentpacks : Array<any> = Array<any>();
   translateEntities : any;
+  views : string = '';
   constructor(private translate: TranslateService, private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
     this.userid = catalogService.getUserid();
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {

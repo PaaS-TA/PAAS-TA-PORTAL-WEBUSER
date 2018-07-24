@@ -25,7 +25,9 @@ export class AppTopComponent implements OnInit {
   spaceGuid: string;
   appName: string;
   appGuid: string;
-  catalogName: number;
+  mySign : string;
+  orgMng : string;
+  viewusage : string;
   translateEntities : any;
   allMenuCursorIds: string[] = [
     'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc',
@@ -54,35 +56,18 @@ export class AppTopComponent implements OnInit {
       this.appName = this.common.getCurrentAppName();
       this.appGuid = this.common.getCurrentAppGuid();
     }
-    this.translate.get('catalog').subscribe((res: string) => {
+
+    this.translate.get('common').subscribe((res: string) => {
       this.translateEntities = res;
-      if(url.indexOf('detail') > 0){
-        this.catalogName = this.translateEntities.nav.appTemplate;
-      }
-      else if(url.indexOf('development') > 0){
-        this.catalogName = this.translateEntities.nav.appDevelopment;
-      }
-      else if(url.indexOf('service') > 0){
-        this.catalogName = this.translateEntities.nav.service;
-      }
-      else{
-        this.catalogName = this.translateEntities.nav.viewAll;
-      }
+      this.viewusage = this.translateEntities.nav.viewUsage;
+      this.orgMng = this.translateEntities.nav.orgManage;
+      this.mySign = this.translateEntities.nav.myAccount;
     });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.translateEntities = event.translations.catalog;
-      if(url.indexOf('detail') > 0){
-        this.catalogName = this.translateEntities.nav.appTemplate;
-      }
-      else if(url.indexOf('development') > 0){
-        this.catalogName = this.translateEntities.nav.appDevelopment;
-      }
-      else if(url.indexOf('service') > 0){
-        this.catalogName = this.translateEntities.nav.service;
-      }
-      else{
-        this.catalogName = this.translateEntities.nav.viewAll;
-      }
+      this.translateEntities = event.translations;
+      this.viewusage = this.translateEntities.common.nav.viewUsage;
+      this.orgMng = this.translateEntities.common.nav.orgManage;
+      this.mySign = this.translateEntities.common.nav.myAccount;
     })
   }
 
@@ -99,10 +84,6 @@ export class AppTopComponent implements OnInit {
 
     switch(this.cursorId) {
       case 'cur_dashboard':
-      case 'cur_usermgmt':
-      case 'cur_org':
-      case 'cur_org2':
-      case 'cur_quantity':
       case 'cur_login' :
         short = true;
         break;
@@ -127,8 +108,32 @@ export class AppTopComponent implements OnInit {
     return this.cursorId === 'cur_catalog';
   }
 
+  get isManagement(){
+    return (this.cursorId === 'cur_usermgmt') || (this.cursorId ==='cur_org2')|| (this.cursorId ==='cur_quantity')
+  }
+
+  get menagementName(){
+    if(this.cursorId === 'cur_usermgmt'){
+      return this.mySign;
+    }
+    else if(this.cursorId === 'cur_org2'){
+      return this.orgMng;
+    }
+    else if(this.cursorId === 'cur_quantity'){
+      return this.viewusage;
+    }
+  }
+
+  get catalogName(){
+    return this.catalogservice.navView;
+  }
+
   get isLogin() {
-    return this.cursorId !== 'cur_login';
+    return this.cursorId !== 'cur_login'
+  }
+
+  get isIcon(){
+    return (this.cursorId === 'cur_login' || this.cursorId === 'cur_dashboard');
   }
 
   get name() {
