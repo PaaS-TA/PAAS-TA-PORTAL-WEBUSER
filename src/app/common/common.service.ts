@@ -162,7 +162,7 @@ export class CommonService {
      * 그래서 분으로 바꾸고 분에서 2분 전에 토큰 리플레쉬 하게, -2 을 해줌
      */
     token_time.setMinutes(token_time.getMinutes() + (expires_in / 60 - 2));
-    this.log.debug('Token Expire Time :' + token_time.getHours() + ":" + token_time.getMinutes() + ":" + token_time.getSeconds());
+    //this.log.debug('Token Expire Time :' + token_time.getHours() + ":" + token_time.getMinutes() + ":" + token_time.getSeconds());
     window.sessionStorage.setItem('expire_date', token_time.getTime().toString());
 
 
@@ -171,7 +171,7 @@ export class CommonService {
      */
     let sessionTime = new Date();
     sessionTime.setMinutes(sessionTime.getMinutes() + AppConfig.sessionTimeout);
-    this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
+    //this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
   }
 
@@ -181,7 +181,7 @@ export class CommonService {
      */
     let sessionTime = new Date();
     sessionTime.setMinutes(sessionTime.getMinutes() + AppConfig.sessionTimeout);
-    this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
+    //this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
   }
 
@@ -422,7 +422,7 @@ export class CommonService {
   reloadPage() {
     const currentLocation = window.location.pathname;
 
-    this.log.debug("Reload page :", currentLocation);
+    //this.log.debug("Reload page :", currentLocation);
     this.router.navigate(['/login'], {queryParams: {returnUrl: currentLocation}});
   }
 

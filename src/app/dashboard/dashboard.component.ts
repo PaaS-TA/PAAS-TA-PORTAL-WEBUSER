@@ -215,7 +215,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getOrg(value: string) {
-    this.log.debug("::::1.getOrg:::: " +"  "+ value);
+    // this.log.debug("::::1.getOrg:::: " +"  "+ value);
     if (value != '') {
       this.commonService.isLoading = true;
       this.spaces = [];

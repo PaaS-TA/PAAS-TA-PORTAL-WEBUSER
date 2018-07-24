@@ -65,7 +65,7 @@ export class IndexCommonService {
   sendCreateEmail(email: string) {
     let param = {userid: email};
     this.commonService.doPost("/commonapi/v2/users/create/email", param, '').subscribe(data => {
-      this.log.debug(data);
+      //this.log.debug(data);
       if (data['result'] === true) {
         this.isSendEmail = true;
       } else {
@@ -82,7 +82,7 @@ export class IndexCommonService {
   sendResetEmail(email: string) {
     let param = {userid: email};
     this.commonService.doPost("/commonapi/v2/users/password/email", param, '').subscribe(data => {
-      this.log.debug(data);
+      //this.log.debug(data);
       if (data['result'] === true) {
         this.isSendEmail = true;
       } else {

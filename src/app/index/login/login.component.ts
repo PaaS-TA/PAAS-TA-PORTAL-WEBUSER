@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
       this.oAuthLogin();
     }
     let err = this.route.snapshot.queryParams['error'];
-    this.log.debug('ERROR : ' + err);
+    //this.log.debug('ERROR : ' + err);
     if (err != null) {
       this.showMsg(err);
     }
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
     } else {
       this.errorMsg = msg;
     }
-    this.log.debug('ERROR');
+    //this.log.debug('ERROR');
     this.error = true;
   }
 
