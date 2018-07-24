@@ -118,8 +118,8 @@ export class CommonService {
   }
 
   signOut() {
-    this.removeItems();
     window.sessionStorage.clear();
+    this.removeItems();
   }
 
   private removeItems() {
@@ -130,6 +130,7 @@ export class CommonService {
     window.sessionStorage.removeItem('cf_user_guid');
     window.sessionStorage.removeItem('cf_user_id');
     window.sessionStorage.removeItem('cf_user_email');
+    window.sessionStorage.removeItem('cf_previous_logon_time');
     window.sessionStorage.removeItem('login_type');
     window.sessionStorage.removeItem('user_id');
     window.sessionStorage.removeItem('user_name');
@@ -141,7 +142,9 @@ export class CommonService {
     window.sessionStorage.removeItem('img_path');
     window.sessionStorage.removeItem('expires_in');
     window.sessionStorage.removeItem('catalog_number');
-
+    window.sessionStorage.removeItem('sessionTimeout');
+    window.sessionStorage.removeItem('expire_date');
+    window.sessionStorage.removeItem('token');
   }
 
   public saveToken(token_type: any, token: any, refresh_token: any, expires_in: any, scope: any, login_type: any) {
@@ -159,7 +162,7 @@ export class CommonService {
      * 그래서 분으로 바꾸고 분에서 2분 전에 토큰 리플레쉬 하게, -2 을 해줌
      */
     token_time.setMinutes(token_time.getMinutes() + (expires_in / 60 - 2));
-    this.log.debug('Token Expire Time :' + token_time.getHours() + ":" + token_time.getMinutes() + ":" + token_time.getSeconds());
+    //this.log.debug('Token Expire Time :' + token_time.getHours() + ":" + token_time.getMinutes() + ":" + token_time.getSeconds());
     window.sessionStorage.setItem('expire_date', token_time.getTime().toString());
 
 
@@ -168,7 +171,7 @@ export class CommonService {
      */
     let sessionTime = new Date();
     sessionTime.setMinutes(sessionTime.getMinutes() + AppConfig.sessionTimeout);
-    this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
+    //this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
   }
 
@@ -178,7 +181,7 @@ export class CommonService {
      */
     let sessionTime = new Date();
     sessionTime.setMinutes(sessionTime.getMinutes() + AppConfig.sessionTimeout);
-    this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
+    //this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
   }
 
@@ -288,15 +291,17 @@ export class CommonService {
     const cf_token = this.getTokenWithoutRefresh();
 
     let now = new Date();
-    if (cf_token !== null && cf_expires <= now.getTime().toString()) {
+    if (cf_token != null && cf_expires <= now.getTime().toString()) {
       if (this.getLoginType() === 'API') {
         this.doTokenRefreshAPI();
       } else {
         this.doTokenRefreshOauth();
       }
+    } else if (cf_token == null){
+      return null;
     }
+    return cf_token;
 
-    return sessionStorage.getItem('cf_token');
   }
 
   private getTokenWithoutRefresh(): string {
@@ -417,7 +422,7 @@ export class CommonService {
   reloadPage() {
     const currentLocation = window.location.pathname;
 
-    this.log.debug("Reload page :", currentLocation);
+    //this.log.debug("Reload page :", currentLocation);
     this.router.navigate(['/login'], {queryParams: {returnUrl: currentLocation}});
   }
 

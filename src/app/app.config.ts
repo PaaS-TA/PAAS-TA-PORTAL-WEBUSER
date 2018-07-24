@@ -2,6 +2,7 @@ export const AppConfig = {
   clientId: 'portalclient',
   clientSecret: 'clientsecret',
   redirectUri: window.location.origin + '/callback',
+  logoutredirectUri: window.location.origin + '/login',
   scope: 'openid cloud_controller_service_permissions.read cloud_controller.read cloud_controller.write',
   authUrl: 'https://uaa.115.68.46.187.xip.io/oauth/authorize',
   checkUrl: 'https://uaa.115.68.46.187.xip.io/check_token',
@@ -12,3 +13,4 @@ export const AppConfig = {
   code: 'code',
   sessionTimeout: 10
 };
+

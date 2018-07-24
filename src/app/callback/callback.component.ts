@@ -24,15 +24,17 @@ export class CallbackComponent implements OnInit {
       route.queryParams.subscribe(params => {
         this.commonService.isLoading = false;
         if (params != null) {
+          if(params['code'] == 'undefined' || params['code'] == null){
+            this.router.navigate(['/login']);
+          }
           if (params['error'] != null) {
             this.router.navigate(['/login']);
           } else {
-            this.log.debug('Non Error');
             AppConfig.code = params.code;
             this.sec.doToken();
           }
         } else {
-          this.sec.doAuthorization();
+          this.router.navigate(['/login']);
         }
       });
     }

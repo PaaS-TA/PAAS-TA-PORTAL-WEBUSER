@@ -68,7 +68,7 @@ export class CreateComponent implements OnInit {
   }
 
   checkUsername() {
-    this.log.debug('username :: ' + this.username);
+    ////this.log.debug('username :: ' + this.username);
     if (this.username.length == 0) {
       this.isUserName = false;
     } else {
@@ -78,16 +78,16 @@ export class CreateComponent implements OnInit {
 
 
   checkPassword() {
-    this.log.debug('password :: ' + this.password);
+    ////this.log.debug('password :: ' + this.password);
     var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
     if (!reg_pwd.test(this.password)) {
-      this.log.debug('password :: 1');
+      ////this.log.debug('password :: 1');
       this.isPassword = false;
       return;
     }
 
     if (this.password.search(/₩s/) != -1) {
-      this.log.debug('password :: 2');
+      ////this.log.debug('password :: 2');
       this.isPassword = false;
       return;
     }
@@ -97,7 +97,7 @@ export class CreateComponent implements OnInit {
 
 
   checkRePassword() {
-    this.log.debug('repassword :: ' + this.re_password);
+    ////this.log.debug('repassword :: ' + this.re_password);
     if (this.password == this.re_password) {
       this.isRePassword = true;
     } else {

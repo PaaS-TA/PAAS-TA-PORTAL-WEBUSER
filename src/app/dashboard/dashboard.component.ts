@@ -95,7 +95,7 @@ export class DashboardComponent implements OnInit {
               private appMainService: AppMainService, private catalogService: CatalogService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {router.navigate(['/']);}
 
-    this.log.debug("Token ::: " + this.commonService.getToken());
+    // this.log.debug("Token ::: " + this.commonService.getToken());
 
     this.service = new Observable<Service>();
 
@@ -162,7 +162,6 @@ export class DashboardComponent implements OnInit {
   }
 
   currentSpaceBox() {
-    this.log.debug("currentSpaceBox");
     if (this.orgs.length > 0) {
       this.getOrg(this.currentOrg);
     } else {
@@ -200,24 +199,23 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
     this.dashboardService.getOrgSpaceList(orgId).subscribe(data => {
       (data['resources'] as Array<Object>).forEach(spaceData => {
-          const index =
-            this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId)) - 1;
-        });
+        const index =
+          this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId)) - 1;
+      });
       this.commonService.isLoading = false;
       return data;
     }, error => {
-      }, () => {
-        if (this.currentSpace != null) {
-          this.commonService.isLoading = false;
-          this.getSpaces(this.currentSpace);
-        }
-      });
+    }, () => {
+      if (this.currentSpace != null) {
+        this.commonService.isLoading = false;
+        this.getSpaces(this.currentSpace);
+      }
+    });
     return this.spaces;
   }
 
   getOrg(value: string) {
-    this.log.debug("::::1.getOrg:::: " +"  "+ value);
-
+    // this.log.debug("::::1.getOrg:::: " +"  "+ value);
     if (value != '') {
       this.commonService.isLoading = true;
       this.spaces = [];
@@ -226,7 +224,6 @@ export class DashboardComponent implements OnInit {
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;
-      this.log.debug(this.orgs);
 
       if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
         this.isLoadingSpaces = false;
@@ -242,22 +239,20 @@ export class DashboardComponent implements OnInit {
       this.spaces = [];
       this.isEmpty = true;
       this.isSpace = false;
+      this.appSummaryEntities = null;
       this.commonService.isLoading = false;
     }
   }
 
   getSpaces(value: string) {
     this.showLoading();
-    this.log.debug("::::2.getSpaces:::: " +"  "+ value);
+    // this.log.debug("::::2.getSpaces:::: " +"  "+ value);
     if (value != '') {
       this.isEmpty = false;
       this.isSpace = true;
       this.isMessage = false;
       this.selectedSpaceId = value;
       this.space = this.spaces.find(Space => Space['_metadata']['guid'] === value);
-
-      this.log.debug('getSpaces value');
-      this.log.debug(this.spaces);
 
       /*세이브 ORG 정보*/
       if (this.space != null) {
@@ -268,8 +263,7 @@ export class DashboardComponent implements OnInit {
       this.getOrgSummary();
 
     } else {
-      //초기화
-      // this.spaces = [];
+      /*초기화*/
       this.isEmpty = true;
       this.isSpace = false;
       this.commonService.isLoading=false;
@@ -293,10 +287,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  moveAppMain(){
-
-  }
-
   getAppSummary(value: string) {
 
     this.dashboardService.getAppSummary(value).subscribe(data => {
@@ -314,7 +304,6 @@ export class DashboardComponent implements OnInit {
       this.thumnailApp();
       this.servicesEntities = data.services;
       this.thumnail();
-      // this.moveAppMain();
     }, () => {
       this.commonService.isLoading = false;
     });
@@ -356,8 +345,6 @@ export class DashboardComponent implements OnInit {
   }
 
   thumnailApp(): void {
-    // this.log.debug("Start");
-    // this.log.debug(this.appEntities);
     let catalog = this.catalogService;
     this.dashboardService.getBuildPacks().subscribe(data => {
       $.each(this.appEntities, function (skey, appEntitie) {
@@ -412,12 +399,10 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
       this.commonService.isLoading = false;
-      // this.commonService.alertMessage('변경 완료되었습니다' , true);
       this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
       return data['result'];
     }, error => {
       this.commonService.isLoading = false;
-      // this.commonService.alertMessage('변경 실패되었습니다' , false);
       this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeFail, false);
     });
     return this.getAppSummary(this.selectedSpaceId);
@@ -427,14 +412,14 @@ export class DashboardComponent implements OnInit {
     let params = {
       guid: guidParam
     };
+    this.commonService.isLoading = true;
     this.dashboardService.delApp(params).subscribe(data => {
-      // this.commonService.alertMessage('삭제 완료되었습니다' , true);
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
+      this.commonService.isLoading = false;
       return data;
     }, error => {
-      this.commonService.isLoading = false;
-      // this.commonService.alertMessage('삭제 실패하였습니다.' , false);
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
+      this.commonService.isLoading = false;
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -476,9 +461,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // startAppClick() {
-  //   return this.appMainService.getAppStats(this.selectedGuid);
-  // }
 
   userProvidedInfo(){
     console.log(this.selectedGuid);
@@ -510,16 +492,12 @@ export class DashboardComponent implements OnInit {
       console.log(params, data);
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
-      this.commonService.isLoading = false;
-      // this.commonService.alertMessage('생성 완료되었습니다' , true);
       this.commonService.alertMessage(this.translateEntities.alertLayer.createSuccess, true);
       return data;
     }, error => {
-      // this.commonService.alertMessage('생성 실패되었습니다.' , false);
       this.commonService.alertMessage(this.translateEntities.alertLayer.createFail, false);
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
-
     });
     this.userProvideName = '';
     this.userProvideCredentials = '';
@@ -532,24 +510,26 @@ export class DashboardComponent implements OnInit {
       /*createUserProvided*/
       this.createUserProvided();
     }else{
+      this.commonService.alertMessage(this.translateEntities.alertLayer.createFail, false);
       return false;
     }
   }
 
   isUserProvideValidation() {
-  if (this.userProvideName.length &&  this.userProvideCredentials.length && this.userProvideSyslogDrainUrl.length > 0) {
-    this.isLength = true;
-    try {
-      JSON.parse(this.userProvideCredentials);
-      return true;
-    } catch (e) {
+    if (this.userProvideName.length &&  this.userProvideCredentials.length && this.userProvideSyslogDrainUrl.length > 0) {
+      this.isLength = true;
+      try {
+        JSON.parse(this.userProvideCredentials);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    } else {
+      this.isLength = false;
+
       return false;
     }
-  } else {
-    this.isLength = false;
-    return false;
   }
-}
 
   updateUserProvided() {
     //username':'admin','password':'password';
@@ -568,13 +548,11 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.updateUserProvided(params).subscribe(data => {
         console.log(params, data);
         this.getAppSummary(this.selectedSpaceId);
-        // this.commonService.alertMessage('수정 완료되었습니다.' , true);
         this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
         this.commonService.isLoading = false;
         return data;
       }
       , error => {
-        // this.commonService.alertMessage('수정 실패되었습니다.' , false);
         this.commonService.alertMessage(this.translateEntities.alertLayer.updateFail, false);
         this.commonService.isLoading = false;
         this.getAppSummary(this.selectedSpaceId);
@@ -586,30 +564,30 @@ export class DashboardComponent implements OnInit {
       guid: this.selectedGuid,
       newName: this.selectedName
     };
+    this.commonService.isLoading = true;
     this.dashboardService.renameInstance(params).subscribe(data => {
-      // this.commonService.alertMessage('수정 완료되었습니다' , true);
       this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
+      this.commonService.isLoading = false;
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      // this.commonService.alertMessage('수정 실패되었습니다' , false);
       this.commonService.alertMessage(this.translateEntities.alertLayer.updateFail, false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
 
+  /*UserProvide Delete*/
   delInstance() {
     let params = {
       guid: this.selectedGuid
     };
-
+    this.commonService.isLoading = true;
     this.dashboardService.delInstance(params).subscribe(data => {
-      // this.commonService.alertMessage('삭제 완료되었습니다.' , true);
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
+      this.commonService.isLoading = false;
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      // this.commonService.alertMessage('삭제 실패되었습니다.' , false);
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
     });
     return (this.getAppSummary(this.selectedSpaceId));
@@ -675,9 +653,8 @@ export class DashboardComponent implements OnInit {
     if(type == "provided"){
       this.userProvidedInfo();
     }
-    this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid + ' NAME :: ' + name);
+    // this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid + ' NAME :: ' + name);
   }
 
-
-}//
+}
 

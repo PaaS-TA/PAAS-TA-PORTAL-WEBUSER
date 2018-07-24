@@ -338,7 +338,7 @@ export class UsermgmtComponent implements OnInit {
     console.log(":: delete start ::" + " username : " + this.user['userId'] + "  " + "password :" + this.password_check + "  " + "userGuid :" + this.common.getUserGuid() + "  " + "Guid :" + this.common.getUserid());
     this.common.isLoading = true;
     this.apiLogin(this.username, this.password).subscribe(data => {
-      this.log.debug(data['user_name']);
+      // this.log.debug(data['user_name']);
       if (data['user_name'] == this.user['userId']) {
         this.common.isLoading = false;
         // 계정삭제:cf,db
@@ -371,7 +371,7 @@ export class UsermgmtComponent implements OnInit {
   }
 
   goLogout() {
-    this.log.debug('doLogout()');
+    // this.log.debug('doLogout()');
     this.common.signOut();
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';

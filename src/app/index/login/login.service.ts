@@ -16,10 +16,10 @@ export class LoginService {
 
   apiLogin(username: string, password: string) {
     this.common.isLoading = true;
-    this.log.debug('api Login');
+    //this.log.debug('api Login');
     let params = {id: username, password: password};
     return this.common.doPost('/portalapi/login', params, '').map(data => {
-      this.log.debug(data);
+      //this.log.debug(data);
       this.common.saveToken(data['token_type'], data['token'], data['refresh_token'], data['expire_in'], data['scope'], 'API');
       this.sec.doUserInfoProvider(data['user_name']);
       return data;
@@ -27,7 +27,7 @@ export class LoginService {
   }
 
   oAuthLogin() {
-    this.log.debug('oAuth Login');
+    //this.log.debug('oAuth Login');
     this.sec.doAuthorization();
   }
 
