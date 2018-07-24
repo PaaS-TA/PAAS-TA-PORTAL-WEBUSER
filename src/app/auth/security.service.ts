@@ -21,14 +21,8 @@ export class SecurityService {
   doLogout() {
     this.log.debug('doLogout()');
     this.common.signOut();
-
-    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
-    this.log.debug(AppConfig.logoutUrl +
-      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
-      '&client_id=' + AppConfig.clientId);
     window.location.href = AppConfig.logoutUrl +
-      '?redirect=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
-      '&client_id=' + AppConfig.clientId ;
+      '?redirect=' + AppConfig.logoutredirectUri + '&client_id=' + AppConfig.clientId ;
   }
 
 

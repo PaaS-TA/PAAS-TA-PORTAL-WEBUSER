@@ -17,22 +17,24 @@ export class CallbackComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private commonService: CommonService, private sec: SecurityService, private log: NGXLogger) {
     this.log.debug('callback');
     this.commonService.isLoading = true;
-
+    console.log("token :: " + this.commonService.getToken());
     if (this.commonService.getToken() != null) {
       this.sec.doUserInfo();
     } else {
       route.queryParams.subscribe(params => {
         this.commonService.isLoading = false;
         if (params != null) {
+          if(params['code'] == 'undefined' || params['code'] == null){
+            this.router.navigate(['/login']);
+          }
           if (params['error'] != null) {
             this.router.navigate(['/login']);
           } else {
-            this.log.debug('Non Error');
             AppConfig.code = params.code;
             this.sec.doToken();
           }
         } else {
-          this.sec.doAuthorization();
+          this.router.navigate(['/login']);
         }
       });
     }
