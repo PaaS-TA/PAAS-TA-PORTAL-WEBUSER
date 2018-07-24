@@ -558,7 +558,6 @@ export class DashboardComponent implements OnInit {
         console.log(params, data);
         this.getAppSummary(this.selectedSpaceId);
         this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
-        this.commonService.isLoading = false;
         return data;
       }
       , error => {
@@ -579,8 +578,8 @@ export class DashboardComponent implements OnInit {
       this.commonService.isLoading = false;
       return data;
     }, error => {
-      this.commonService.isLoading = false;
       this.commonService.alertMessage(this.translateEntities.alertLayer.updateFail, false);
+      this.commonService.isLoading = false;
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -593,7 +592,6 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
     this.dashboardService.delInstance(params).subscribe(data => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
-      this.commonService.isLoading = false;
       return data;
     }, error => {
       this.commonService.isLoading = false;
