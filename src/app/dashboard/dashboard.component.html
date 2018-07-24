@@ -18,7 +18,7 @@
           </li>
           <li>
             <div>
-              <select (change)="getOrg($event.target.value)" [(ngModel)]="currentOrg">
+              <select (change)="getOrg($event.target.value,'select')" [(ngModel)]="currentOrg">
                 <option value="" name="org_name">{{'dashboard.createdOrganizationName' | translate}}</option>
                 <option *ngFor="let org of orgs" [value]="org.name">{{org.name}}</option>
               </select>

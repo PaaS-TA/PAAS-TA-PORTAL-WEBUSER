@@ -13,7 +13,7 @@ import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 import {CatalogService} from '../catalog/main/catalog.service';
 import {isBoolean} from "util";
-import {TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {containerStart} from "@angular/core/src/render3/instructions";
 import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 
@@ -46,13 +46,14 @@ export class DashboardComponent implements OnInit {
   public appName: string;
   public appNewName: string;
   public appDelName: string;
-  public appSummaryGuid: string; /*app guid value*/
+  public appSummaryGuid: string;
+  /*app guid value*/
 
   public orgName: string = '';
-  public orgGuid: string= '';
-  public spaceName: string= '';
-  public spaceGuid: string= '';
-  public appGuid: string= '';
+  public orgGuid: string = '';
+  public spaceName: string = '';
+  public spaceGuid: string = '';
+  public appGuid: string = '';
 
   public selectedGuid: string = '';
   public selectedType: string;
@@ -75,25 +76,27 @@ export class DashboardComponent implements OnInit {
   public currentOrg: string;
   public currentSpace: string;
 
-  public userProvideName : string;
-  public userProvideName_update : string;
-  public userProvideCredentials : string;
+  public userProvideName: string;
+  public userProvideName_update: string;
+  public userProvideCredentials: string;
   public userProvideSyslogDrainUrl: string;
-  public userProvideType : string;
+  public userProvideType: string;
 
-  public orgMemoryDevelopmentTotal : string;
-  public orgMemoryProductionTotal : string;
-  public orgServiceTotal : string;
-  public orgQuotaMemoryLimit : string;
-  public orgTotalRoutes : string;
-  public orgTotalServiceKeys : string;
-  public orgTotalServices : string;
+  public orgMemoryDevelopmentTotal: string;
+  public orgMemoryProductionTotal: string;
+  public orgServiceTotal: string;
+  public orgQuotaMemoryLimit: string;
+  public orgTotalRoutes: string;
+  public orgTotalServiceKeys: string;
+  public orgTotalServices: string;
 
-  public placeholder="credentialsStr:{'username':'admin','password':'password';}";
+  public placeholder = "credentialsStr:{'username':'admin','password':'password';}";
 
-  constructor(private translate: TranslateService,private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService, private spaceService: SpaceService, private log: NGXLogger,
+  constructor(private translate: TranslateService, private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService, private spaceService: SpaceService, private log: NGXLogger,
               private appMainService: AppMainService, private catalogService: CatalogService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
-    if (commonService.getToken() == null) {router.navigate(['/']);}
+    if (commonService.getToken() == null) {
+      router.navigate(['/']);
+    }
 
     // this.log.debug("Token ::: " + this.commonService.getToken());
 
@@ -163,7 +166,7 @@ export class DashboardComponent implements OnInit {
 
   currentSpaceBox() {
     if (this.orgs.length > 0) {
-      this.getOrg(this.currentOrg);
+      this.getOrg(this.currentOrg,'defalut');
     } else {
       setTimeout(this.currentSpaceBox(), 3000);
     }
@@ -189,13 +192,13 @@ export class DashboardComponent implements OnInit {
     }, () => {
       if (this.currentOrg != null) {
         this.commonService.isLoading = false;
-        this.getOrg(this.currentOrg);
+        this.getOrg(this.currentOrg,'defalut');
       }
     });
     return this.orgs;
   }
 
-  getOrgSpaceList(orgId:string){
+  getOrgSpaceList(orgId: string) {
     this.commonService.isLoading = true;
     this.dashboardService.getOrgSpaceList(orgId).subscribe(data => {
       (data['resources'] as Array<Object>).forEach(spaceData => {
@@ -214,8 +217,13 @@ export class DashboardComponent implements OnInit {
     return this.spaces;
   }
 
-  getOrg(value: string) {
-    // this.log.debug("::::1.getOrg:::: " +"  "+ value);
+  getOrg(value: string, type: string) {
+    if (type == 'select') {
+      this.appEntities = null;
+      this.servicesEntities = null;
+      this.spaces = [];
+      this.currentSpace = null;
+    }
     if (value != '') {
       this.commonService.isLoading = true;
       this.spaces = [];
@@ -236,7 +244,6 @@ export class DashboardComponent implements OnInit {
 
     } else {
       /*초기화*/
-      this.spaces = [];
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;
@@ -246,7 +253,7 @@ export class DashboardComponent implements OnInit {
 
   getSpaces(value: string) {
     this.showLoading();
-    // this.log.debug("::::2.getSpaces:::: " +"  "+ value);
+    this.log.debug("::::2.getSpaces:::: " + "  " + value);
     if (value != '') {
       this.isEmpty = false;
       this.isSpace = true;
@@ -266,7 +273,7 @@ export class DashboardComponent implements OnInit {
       /*초기화*/
       this.isEmpty = true;
       this.isSpace = false;
-      this.commonService.isLoading=false;
+      this.commonService.isLoading = false;
     }
   }
 
@@ -282,7 +289,7 @@ export class DashboardComponent implements OnInit {
       this.orgTotalServices = data.quota['totalServices'];
 
       return data;
-    },error => {
+    }, error => {
     }, () => {
     });
   }
@@ -321,14 +328,15 @@ export class DashboardComponent implements OnInit {
               var pathHeader = servicepack['thumbImgPath'].lastIndexOf("/");
               var pathEnd = servicepack['thumbImgPath'].length;
               var fileName = servicepack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
-              catalog.getImg('/storageapi/v2/swift/'+fileName).subscribe(data => {
+              catalog.getImg('/storageapi/v2/swift/' + fileName).subscribe(data => {
                 let reader = new FileReader();
                 reader.addEventListener("load", () => {
                   servicesEntitie['thumbImgPath'] = reader.result;
                 }, false);
                 if (data) {
                   reader.readAsDataURL(data);
-                }});
+                }
+              });
               cnt++
             }
           }
@@ -356,14 +364,15 @@ export class DashboardComponent implements OnInit {
               var pathHeader = buildpack['thumbImgPath'].lastIndexOf("/");
               var pathEnd = buildpack['thumbImgPath'].length;
               var fileName = buildpack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
-              catalog.getImg('/storageapi/v2/swift/'+fileName).subscribe(data => {
+              catalog.getImg('/storageapi/v2/swift/' + fileName).subscribe(data => {
                 let reader = new FileReader();
                 reader.addEventListener("load", () => {
                   appEntitie['thumbImgPath'] = reader.result;
                 }, false);
                 if (data) {
                   reader.readAsDataURL(data);
-                }});
+                }
+              });
               cnt++
             }
           }
@@ -380,14 +389,14 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  pattenTest(value : string){
+  pattenTest(value: string) {
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-    $('#'+value).val($('#'+value).val().replace(regExpPattern, '')
+    $('#' + value).val($('#' + value).val().replace(regExpPattern, '')
       .replace(regExpBlankPattern, '')
       .replace(regKoreanPatten, '').substring(0, 64));
-    this.selectedName =$('#'+value).val();
+    this.selectedName = $('#' + value).val();
   }
 
 
@@ -462,7 +471,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  userProvidedInfo(){
+  userProvidedInfo() {
     console.log(this.selectedGuid);
     this.dashboardService.userProvidedInfo(this.selectedGuid).subscribe(data => {
 
@@ -505,18 +514,18 @@ export class DashboardComponent implements OnInit {
   }
 
   checkLength() {
-    if (this.isUserProvideValidation()){
+    if (this.isUserProvideValidation()) {
       this.isLength == true;
       /*createUserProvided*/
       this.createUserProvided();
-    }else{
+    } else {
       this.commonService.alertMessage(this.translateEntities.alertLayer.createFail, false);
       return false;
     }
   }
 
   isUserProvideValidation() {
-    if (this.userProvideName.length &&  this.userProvideCredentials.length && this.userProvideSyslogDrainUrl.length > 0) {
+    if (this.userProvideName.length && this.userProvideCredentials.length && this.userProvideSyslogDrainUrl.length > 0) {
       this.isLength = true;
       try {
         JSON.parse(this.userProvideCredentials);
@@ -608,7 +617,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['appMain']);
   }
 
-  cancelButton(){
+  cancelButton() {
     $('#userProvideName').val('');
     $('#userProvideCredentials').val('');
     $('#userProvideSyslogDrainUrl').val('');
@@ -650,7 +659,7 @@ export class DashboardComponent implements OnInit {
       this.selectedName = '';
     }
 
-    if(type == "provided"){
+    if (type == "provided") {
       this.userProvidedInfo();
     }
     // this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid + ' NAME :: ' + name);
