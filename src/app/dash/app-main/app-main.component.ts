@@ -225,7 +225,7 @@ export class AppMainComponent implements OnInit {
   getAppSummary(guid: any) {
     this.isLoading = true;
     this.appMainService.getAppSummary(guid).subscribe(data => {
-      if(isUndefined(data.length)){
+      if(isUndefined(data.routes)){
         this.router.navigate(['dashboard']);
       }
       this.appSummaryEntities = data;
@@ -336,7 +336,10 @@ export class AppMainComponent implements OnInit {
       this.getServicepacks();
       // this.getServicesInstances();
       this.getBuildPacks();
+    }, error => {
+      this.router.navigate(['dashboard']);
     });
+
   }
 
   initRouteTab() {
