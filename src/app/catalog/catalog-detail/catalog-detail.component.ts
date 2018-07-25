@@ -488,7 +488,7 @@ export class CatalogDetailComponent implements OnInit {
 
   createApp(values : TranslateService) {
     this.catalogService.isLoading(true);
-    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
+    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appurl).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
           const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
