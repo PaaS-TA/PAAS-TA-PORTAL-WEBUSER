@@ -140,18 +140,27 @@ export class CatalogServiceComponent implements OnInit {
 
   ServiceInit() {
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
+      try{
       this.servicepack = data['list'][0];
       var pathHeader = this.servicepack.thumbImgPath.lastIndexOf("/");
       var pathEnd = this.servicepack.thumbImgPath.length;
       var fileName = this.servicepack.thumbImgPath.substring(pathHeader + 1, pathEnd);
       this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+
         let reader = new FileReader();
         reader.addEventListener("load", () => {
           this.servicepack.thumbImgPath = reader.result;
         }, false);
         if (data) {
           reader.readAsDataURL(data);
-        }});
+        }
+
+      }, error => {
+        this.servicepack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+      });
+      } catch(e){
+        this.servicepack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+      }
       this.serviceParameterSetting(this.servicepack.parameter, 'parameter');
       this.serviceParameterSetting(this.servicepack.appBindParameter, 'appBindParameter');
       this.serviceplan = new Array<ServicePlan>();

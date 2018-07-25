@@ -139,17 +139,24 @@ export class CatalogComponent implements OnInit {
       a = this.jsonParse(a);
     });
     data.forEach(recent => {
-      var pathHeader = recent.thumbImgPath.lastIndexOf("/");
-      var pathEnd = recent.thumbImgPath.length;
-      var fileName = recent.thumbImgPath.substring(pathHeader + 1, pathEnd);
-      this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
-        let reader = new FileReader();
-        reader.addEventListener("load", () => {
-          recent.thumbImgPath = reader.result;
-        }, false);
-        if (data) {
-          reader.readAsDataURL(data);
-        }});
+      try {
+        var pathHeader = recent.thumbImgPath.lastIndexOf("/");
+        var pathEnd = recent.thumbImgPath.length;
+        var fileName = recent.thumbImgPath.substring(pathHeader + 1, pathEnd);
+        this.catalogService.getImg(CATALOGURLConstant.GETIMG + fileName).subscribe(data => {
+          let reader = new FileReader();
+          reader.addEventListener("load", () => {
+            recent.thumbImgPath = reader.result;
+          }, false);
+          if (data) {
+            reader.readAsDataURL(data);
+          }
+        },error => {
+          recent.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        });
+      }catch (e) {
+        recent.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+      }
     });
     this.catalogService.recentpacks = data;
 
@@ -161,6 +168,7 @@ export class CatalogComponent implements OnInit {
     });
     this.catalogService.starterpacks = data;
     this.catalogService.starterpacks.forEach(starter => {
+      try{
       var pathHeader = starter.thumbImgPath.lastIndexOf("/");
       var pathEnd = starter.thumbImgPath.length;
       var fileName = starter.thumbImgPath.substring(pathHeader + 1, pathEnd);
@@ -171,7 +179,12 @@ export class CatalogComponent implements OnInit {
         }, false);
         if (data) {
           reader.readAsDataURL(data);
-        }});
+        }}, error=> {
+        starter.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+      });
+      } catch (e) {
+        starter.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+      }
     });
     this.catalogService.viewstarterpacks = this.catalogService.starterpacks;
 
@@ -183,17 +196,26 @@ export class CatalogComponent implements OnInit {
     });
     this.catalogService.buildpacks = data;
     this.catalogService.buildpacks.forEach(buildpack => {
-      var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
-      var pathEnd = buildpack.thumbImgPath.length;
-      var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
-      this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
-        let reader = new FileReader();
-        reader.addEventListener("load", () => {
-          buildpack.thumbImgPath = reader.result;
-        }, false);
-        if (data) {
-          reader.readAsDataURL(data);
-        }});
+      try {
+        var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
+        var pathEnd = buildpack.thumbImgPath.length;
+
+        var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
+        this.catalogService.getImg(CATALOGURLConstant.GETIMG + fileName).subscribe(data => {
+          let reader = new FileReader();
+          reader.addEventListener("load", () => {
+            buildpack.thumbImgPath = reader.result;
+          }, false);
+          if (data) {
+            reader.readAsDataURL(data);
+          }
+        }, error => {
+          buildpack.thumbImgPath = 'assets/resources/images/catalog/catalog_3.png';
+        });
+      }catch (e) {
+        buildpack.thumbImgPath = 'assets/resources/images/catalog/catalog_3.png';
+        console.log("캐치문 실행");
+      }
     });
     this.catalogService.viewbuildpacks = this.catalogService.buildpacks;
   }
@@ -215,14 +237,12 @@ export class CatalogComponent implements OnInit {
         }, false);
         if (data) {
           reader.readAsDataURL(data);
-        }});
+        }}, error =>{
+        servicepack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+      });
 
-    }
-    catch (e) {
-      console.log(e.toLocaleString());
-    }
-    finally {
-
+    } catch (e) {
+        servicepack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
       }
     });
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;

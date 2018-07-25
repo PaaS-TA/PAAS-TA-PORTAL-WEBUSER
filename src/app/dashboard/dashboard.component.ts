@@ -328,6 +328,7 @@ export class DashboardComponent implements OnInit {
           if (servicesEntitie['service_plan'] != null && servicepack['thumbImgName'] != null) {
             if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
               servicesEntitie['dashboardUseYn'] = servicepack['dashboardUseYn'];
+              try{
               var pathHeader = servicepack['thumbImgPath'].lastIndexOf("/");
               var pathEnd = servicepack['thumbImgPath'].length;
               var fileName = servicepack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
@@ -341,6 +342,9 @@ export class DashboardComponent implements OnInit {
                 }
               });
               cnt++
+            }catch (e) {
+                servicesEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
+              }
             }
           }
         })
@@ -365,6 +369,7 @@ export class DashboardComponent implements OnInit {
           if (appEntitie['buildpack'] != null) {
             // console.log(appEntitie['buildpack'] + ' == ' + buildpack['buildPackName'] + ' = ' + (appEntitie['buildpack'] === buildpack['buildPackName']));
             if (appEntitie['buildpack'] === buildpack['buildPackName']) {
+              try{
               var pathHeader = buildpack['thumbImgPath'].lastIndexOf("/");
               var pathEnd = buildpack['thumbImgPath'].length;
               var fileName = buildpack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
@@ -375,8 +380,10 @@ export class DashboardComponent implements OnInit {
                 }, false);
                 if (data) {
                   reader.readAsDataURL(data);
-                }
-              });
+                }});}
+              catch (e) {
+                appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
+              }
               cnt++
             }
           }
@@ -476,7 +483,7 @@ export class DashboardComponent implements OnInit {
 
 
   userProvidedInfo() {
-    // console.log(this.selectedGuid);
+    console.log(this.selectedGuid);
     this.dashboardService.userProvidedInfo(this.selectedGuid).subscribe(data => {
 
       this.userProvideName = data.entity["name"];

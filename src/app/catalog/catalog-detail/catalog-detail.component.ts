@@ -181,11 +181,13 @@ export class CatalogDetailComponent implements OnInit {
        // this.router.navigate(['catalog']);
     },() =>{
       this.apptemplate.forEach(app => {
+        try{
         var pathHeader = app.thumbImgPath.lastIndexOf("/");
         var pathEnd = app.thumbImgPath.length;
         var fileName = app.thumbImgPath.substring(pathHeader + 1, pathEnd);
         console.log('파일네임 : ' + fileName);
         this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+
           let reader = new FileReader();
           console.log(reader);
           reader.addEventListener("load", () => {
@@ -193,8 +195,14 @@ export class CatalogDetailComponent implements OnInit {
           }, false);
           if (data) {
             reader.readAsDataURL(data);
-          }});
-      });
+          }
+        }, error => {
+          app.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        });
+        } catch(e){
+          app.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        } }
+      );
     });
     this.disk = 512;
     this.memory = 512;
