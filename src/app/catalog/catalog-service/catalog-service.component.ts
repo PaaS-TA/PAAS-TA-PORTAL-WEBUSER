@@ -156,10 +156,10 @@ export class CatalogServiceComponent implements OnInit {
         }
 
       }, error => {
-        this.servicepack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        this.servicepack.thumbImgPath = 'assets/resources/images/catalog/catalog_3.png';
       });
       } catch(e){
-        this.servicepack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        this.servicepack.thumbImgPath = 'assets/resources/images/catalog/catalog_3.png';
       }
       this.serviceParameterSetting(this.servicepack.parameter, 'parameter');
       this.serviceParameterSetting(this.servicepack.appBindParameter, 'appBindParameter');
