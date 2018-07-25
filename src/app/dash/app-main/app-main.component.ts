@@ -430,6 +430,7 @@ export class AppMainComponent implements OnInit {
           appMainservice.getImg(fileName).subscribe(data => {
             let reader = new FileReader();
             reader.addEventListener("load", () => {
+              console.log(reader);
                imgPath = reader.result;
               $("#col_in1").css({
                 "background": "url(" + imgPath + ") 15px top no-repeat",
@@ -444,7 +445,6 @@ export class AppMainComponent implements OnInit {
       });
     });
   }
-
   // getServicesInstances() {
   //   this.appMainService.getServicesInstances(this.appSummarySpaceGuid).subscribe(data => {
   //

@@ -1001,7 +1001,7 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 .title_input_wrap button + button{float:right;}
 */
 
-#col_in1{ background: url("../../resources/images/main/ico.png") 15px top no-repeat; position: relative;}
+#col_in1{ background: url("../../resources/images/catalog/catalog_3.png") 15px top no-repeat; position: relative;}
 #col_in1 > button + button{display: none;}
 #col_in1 p.copy{margin:0px 0 14px;}
 

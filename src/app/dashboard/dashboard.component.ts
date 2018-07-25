@@ -325,6 +325,7 @@ export class DashboardComponent implements OnInit {
           if (servicesEntitie['service_plan'] != null) {
 
             if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
+              try{
               var pathHeader = servicepack['thumbImgPath'].lastIndexOf("/");
               var pathEnd = servicepack['thumbImgPath'].length;
               var fileName = servicepack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
@@ -338,6 +339,9 @@ export class DashboardComponent implements OnInit {
                 }
               });
               cnt++
+            }catch (e) {
+                servicesEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
+              }
             }
           }
         })
@@ -361,6 +365,7 @@ export class DashboardComponent implements OnInit {
           if (appEntitie['buildpack'] != null) {
             // console.log(appEntitie['buildpack'] + ' == ' + buildpack['buildPackName'] + ' = ' + (appEntitie['buildpack'] === buildpack['buildPackName']));
             if (appEntitie['buildpack'] === buildpack['buildPackName']) {
+              try{
               var pathHeader = buildpack['thumbImgPath'].lastIndexOf("/");
               var pathEnd = buildpack['thumbImgPath'].length;
               var fileName = buildpack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
@@ -371,8 +376,10 @@ export class DashboardComponent implements OnInit {
                 }, false);
                 if (data) {
                   reader.readAsDataURL(data);
-                }
-              });
+                }});}
+              catch (e) {
+                appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
+              }
               cnt++
             }
           }
@@ -407,12 +414,11 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
-      this.commonService.isLoading = false;
-      this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.changeSuccess, true);
       return data['result'];
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeFail, false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.changeFail, false);
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -574,6 +580,7 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.renameInstance(params).subscribe(data => {
+      console.log(this.translateEntities.alertLayer.updateSuccess);
       this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
       this.commonService.isLoading = false;
       return data;
