@@ -98,8 +98,8 @@
                   <!--<a [routerLink]="['../appMain']">-->
                   <!--<div (click)="moveAppMain()">-->
                   <div class="app_title" (click)="moveDashboard(item.name,item.guid)" >
-                    <div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 56px; height: 56px" onError="this.src='assets/resources/images/catalog/catalog_3.png'"/></div>
-                    <a href="javascript:void(0);" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">{{item.name}}</a>
+                    <div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 56px; height: 56px" onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div>
+                    <a href="javascript:void(0);" class="title_anchor">{{item.name.trim()}}</a>
                   </div>
 
                   <div class="app_per clearfix">
@@ -195,12 +195,15 @@
                       </li>
                       <li><div>{{'dashboard.service.serviceName' | translate}}</div><div>:</div><div class="serviceTitle">{{item.service_plan.service.label}}</div></li>
                       <li><div>{{'dashboard.service.providedServices' | translate}}</div><div>:</div><div class="serviceTitle">{{item.service_plan.name}}</div></li>
+                      <!--<ng-container *ngIf-->
+                      <ng-container *ngIf="item.dashboardUseYn =='Y'">
                       <li *ngIf="item.dashboard_url != null">
                         <div>{{'dashboard.service.dashboard' | translate}}</div><div>:</div>
                         <div class="serviceTitle">
                           <a href="{{item.dashboard_url}}" target="_blank"><button class="btns colors5">{{'dashboard.service.dashboard' | translate}}</button></a>
                         </div>
                       </li>
+                      </ng-container>
                     </ul>
                   </div>
                   <div class="app_per clearfix" *ngIf="item.service_plan == null">
