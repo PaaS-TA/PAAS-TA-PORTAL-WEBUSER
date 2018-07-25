@@ -195,12 +195,15 @@
                       </li>
                       <li><div>{{'dashboard.service.serviceName' | translate}}</div><div>:</div><div class="serviceTitle">{{item.service_plan.service.label}}</div></li>
                       <li><div>{{'dashboard.service.providedServices' | translate}}</div><div>:</div><div class="serviceTitle">{{item.service_plan.name}}</div></li>
+                      <!--<ng-container *ngIf-->
+                      <ng-container *ngIf="item.dashboardUseYn =='Y'">
                       <li *ngIf="item.dashboard_url != null">
                         <div>{{'dashboard.service.dashboard' | translate}}</div><div>:</div>
                         <div class="serviceTitle">
                           <a href="{{item.dashboard_url}}" target="_blank"><button class="btns colors5">{{'dashboard.service.dashboard' | translate}}</button></a>
                         </div>
                       </li>
+                      </ng-container>
                     </ul>
                   </div>
                   <div class="app_per clearfix" *ngIf="item.service_plan == null">

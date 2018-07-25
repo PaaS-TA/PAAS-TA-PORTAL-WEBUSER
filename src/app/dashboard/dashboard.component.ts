@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit {
   public appName: string;
   public appNewName: string;
   public appDelName: string;
+  public dashboardUseYn : string;
   public appSummaryGuid: string;
   /*app guid value*/
 
@@ -318,13 +319,15 @@ export class DashboardComponent implements OnInit {
 
   thumnail(): void {
     let catalog = this.catalogService;
+
     this.dashboardService.getServicePacks().subscribe(data => {
+      // console.log(data['list']);
       $.each(this.servicesEntities, function (skey, servicesEntitie) {
         let cnt = 0;
         $.each(data['list'], function (dkey, servicepack) {
-          if (servicesEntitie['service_plan'] != null) {
-
+          if (servicesEntitie['service_plan'] != null && servicepack['thumbImgName'] != null) {
             if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
+              servicesEntitie['dashboardUseYn'] = servicepack['dashboardUseYn'];
               var pathHeader = servicepack['thumbImgPath'].lastIndexOf("/");
               var pathEnd = servicepack['thumbImgPath'].length;
               var fileName = servicepack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
@@ -351,6 +354,7 @@ export class DashboardComponent implements OnInit {
       this.commonService.isLoading = false;
     });
   }
+
 
   thumnailApp(): void {
     let catalog = this.catalogService;
@@ -407,12 +411,12 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
-      this.commonService.isLoading = false;
       this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
+      this.commonService.isLoading = false;
       return data['result'];
     }, error => {
-      this.commonService.isLoading = false;
       this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeFail, false);
+      this.commonService.isLoading = false;
     });
     return this.getAppSummary(this.selectedSpaceId);
   }
@@ -472,7 +476,7 @@ export class DashboardComponent implements OnInit {
 
 
   userProvidedInfo() {
-    console.log(this.selectedGuid);
+    // console.log(this.selectedGuid);
     this.dashboardService.userProvidedInfo(this.selectedGuid).subscribe(data => {
 
       this.userProvideName = data.entity["name"];
@@ -486,7 +490,7 @@ export class DashboardComponent implements OnInit {
   createUserProvided() {
 
     var str = JSON.stringify(this.service['credentialsStr']);
-    console.log(str);
+    // console.log(str);
 
     let params = {
       orgName: this.org.name,
@@ -498,7 +502,7 @@ export class DashboardComponent implements OnInit {
 
     this.commonService.isLoading = true;
     this.dashboardService.createUserProvided(params).subscribe(data => {
-      console.log(params, data);
+      // console.log(params, data);
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
       this.commonService.alertMessage(this.translateEntities.alertLayer.createSuccess, true);
@@ -543,7 +547,7 @@ export class DashboardComponent implements OnInit {
   updateUserProvided() {
     //username':'admin','password':'password';
     var str = JSON.stringify(this.userProvideCredentials);
-    console.log(str);
+    // console.log(str);
 
     let params = {
       orgName: this.org.name,
@@ -555,7 +559,7 @@ export class DashboardComponent implements OnInit {
 
     this.commonService.isLoading = true;
     this.dashboardService.updateUserProvided(params).subscribe(data => {
-        console.log(params, data);
+        // console.log(params, data);
         this.getAppSummary(this.selectedSpaceId);
         this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
         return data;
@@ -609,7 +613,7 @@ export class DashboardComponent implements OnInit {
 
   //move appMain
   moveDashboard(app_name: string, app_guid: string) {
-    console.log(app_name + " ::: " + app_guid);
+    // console.log(app_name + " ::: " + app_guid);
     this.commonService.setCurrentAppGuid(app_guid);
     this.commonService.setCurrentAppName(app_name);
     this.router.navigate(['appMain']);
