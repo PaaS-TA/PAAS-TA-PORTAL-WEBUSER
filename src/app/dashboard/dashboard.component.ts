@@ -419,7 +419,6 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
-      this.commonService.isLoading = false;
       return data['result'];
     }, error => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeFail, false);
