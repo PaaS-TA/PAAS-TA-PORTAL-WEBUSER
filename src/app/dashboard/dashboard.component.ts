@@ -418,10 +418,10 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.renameApp(params).subscribe(data => {
-      this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.changeSuccess, true);
       return data['result'];
     }, error => {
-      this.commonService.alertMessage(this.translateEntities.alertLayer.ChangeFail, false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.changeFail, false);
       this.commonService.isLoading = false;
     });
     return this.getAppSummary(this.selectedSpaceId);
@@ -434,12 +434,12 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
     this.dashboardService.delApp(params).subscribe(data => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
-      this.commonService.isLoading = false;
       return data;
     }, error => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
       this.commonService.isLoading = false;
     });
+    setTimeout(() => this.getOrgSummary(), 500);
     return this.getAppSummary(this.selectedSpaceId);
   }
 
@@ -585,13 +585,12 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
     this.dashboardService.renameInstance(params).subscribe(data => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
-      this.commonService.isLoading = false;
       return data;
     }, error => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.updateFail, false);
       this.commonService.isLoading = false;
     });
-    return this.getAppSummary(this.selectedSpaceId);
+    setTimeout(() => this.getAppSummary(this.selectedSpaceId), 500);
   }
 
   /*UserProvide Delete*/
@@ -607,7 +606,7 @@ export class DashboardComponent implements OnInit {
       this.commonService.isLoading = false;
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
     });
-    return (this.getAppSummary(this.selectedSpaceId));
+    setTimeout(() => this.getAppSummary(this.selectedSpaceId), 500);
   }
 
 
