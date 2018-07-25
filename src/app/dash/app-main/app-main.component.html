@@ -1491,7 +1491,7 @@
         <!-- Footer -->
         <div class="modal-footer">
           <button type="button" class="btns2 colors4" (click)="restageAppClick()">{{ 'appMain.layerpop.appRestart.btn1' | translate }}</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'appMain.layerpop.appRestart.btn2' | translate }}</button>
+          <button type="button" class="btns2 colors5" (click)="ngOnInit()" data-dismiss="modal">{{ 'appMain.layerpop.appRestart.btn2' | translate }}</button>
         </div>
       </div>
     </div>
