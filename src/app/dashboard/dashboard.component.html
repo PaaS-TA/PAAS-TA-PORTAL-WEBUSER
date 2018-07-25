@@ -41,7 +41,7 @@
   <div *ngIf='isEmpty'>
     <div class="space_wrap">
       <div class="space_alert_img"><img src="../../assets/resources/images/space/alert.gif" alt=""/></div>
-      <div class="space_title2">{{'dashboard.explan.dashboardMsg1' | translate}}</div>
+      <div class="space_title2" class="title_anchor">{{'dashboard.explan.dashboardMsg1' | translate}}</div>
       <div class="space_txt">{{'dashboard.explan.dashboardMsg2' | translate}}<br><span><em><a [routerLink]="['../org']">{{'dashboard.organizationManagement' | translate}}</a></em></span>{{'dashboard.explan.dashboardMsg3' | translate}}
       </div>
     </div>
@@ -99,7 +99,7 @@
                   <!--<div (click)="moveAppMain()">-->
                   <div class="app_title" (click)="moveDashboard(item.name,item.guid)" >
                     <div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 56px; height: 56px" onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div>
-                    <a href="javascript:void(0);" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">{{item.name}}</a>
+                    <a href="javascript:void(0);" class="title_anchor">{{item.name.trim()}}</a>
                   </div>
 
                   <div class="app_per clearfix">

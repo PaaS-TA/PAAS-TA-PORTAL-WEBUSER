@@ -1411,9 +1411,9 @@ body.email h4{color:#293133;}
 .space_pop_submenu li:first-child{margin-top: 6px;}
 .space_pop_submenu li:last-child {margin-bottom:6px}
 .space_pop_menu > i{cursor:pointer}
-.app_title{font-size:32px;font-weight:bold;border-bottom:1px solid #cccccc; padding-bottom:15px; color:#293133; }
-.app_title a{font-size:32px;font-weight:bold; color:#000; padding-left: 16px }
-.app_title a:hover{font-size:32px;font-weight:bold; color:#293133; text-decoration:underline;}
+.app_title{font-size:32px;font-weight:bold;border-bottom:1px solid #cccccc;color:#293133;padding-bottom:15px}
+.title_anchor{color:#293133;}/*폰트 색상 유지*/
+.title_anchor:hover{border-bottom:1px solid #000;}/*hover시 밑줄 추가*/
 .app_img{float:left}/*180621 스타일 수정*/
 .app_img > img {width:80%;}/*180621 스타일 수정*/
 .app_per{margin-top:15px;float:left;width:100%;}/*180621 스타일 수정*/
