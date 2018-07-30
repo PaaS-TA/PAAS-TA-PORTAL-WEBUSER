@@ -179,16 +179,9 @@ export class CatalogDetailComponent implements OnInit {
           this.serviceParameterSetting(planlist, 'parameter', planlist.parameter);
           this.serviceParameterSetting(planlist, 'appBindParameter', planlist.appBindParameter);
           this.serviceplanlist.push(planlist);
-          $.getScript("../../assets/resources/js/common2.js")
-            .done(function (script, textStatus) {
-              //console.log( textStatus );
-            })
-            .fail(function (jqxhr, settings, exception) {
-              console.log(exception);
-            });
         }, error => {
           this.errorMsg(this.translateEntities.service.notServicePlan);
-          //this.router.navigate(['catalog']);
+          this.router.navigate(['catalog']);
         });
       });
     },error => {

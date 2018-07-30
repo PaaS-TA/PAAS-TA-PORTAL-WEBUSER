@@ -11,6 +11,7 @@ import {Param} from "../index/login/login.component";
 import {Router} from "@angular/router";
 import {AppConfig} from "../app.config"
 import {ResponseContentType, ResponseOptions} from "@angular/http";
+import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 
 declare var $: any;
 
@@ -258,8 +259,21 @@ export class CommonService {
     if (img_path == null) {
       img_path = '';
     }
-    window.sessionStorage.setItem('img_path', img_path);
-
+    try{
+      var pathHeader = img_path.lastIndexOf("/");
+      var pathEnd = img_path.length;
+      var fileName = img_path.substring(pathHeader + 1, pathEnd);
+      this.doStorageGet('/storageapi/v2/swift/'+fileName, this.getToken()).subscribe(data => {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+          window.sessionStorage.setItem('img_path', reader.result);
+        }, false);
+        if (data) {
+          reader.readAsDataURL(data);
+        }}, error=> {
+      });
+    } catch (e) {
+    }
   }
 
   public getSessionTime(): string {
@@ -457,6 +471,11 @@ export class CommonService {
   setCurrentCatalogNumber(value: any) {
     window.sessionStorage.setItem('catalog_number', value);
   }
+
+  setImagePath(value : any) {
+    window.sessionStorage.setItem('img_path', value);
+  }
+
 
   getCurrentAppName(): any {
     return window.sessionStorage.getItem('_currentAppName');

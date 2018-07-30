@@ -7,9 +7,11 @@
       <div class="row one_line">
         <h1>{{ 'orgMain.title' | translate }}
           <div class="pull-right btns_top_ww">
+            <ng-container *ngIf="sltflag">
             <button class="btns6 colors4 btns_top" (click)="goOrgCreate()">
               {{ 'orgMain.addNewOrg' | translate }}
             </button>
+            </ng-container>
           </div>
         </h1>
         <div class="col-md-12 organization_wrap on maT30" *ngFor="let item of orgsEntities; let i = index">

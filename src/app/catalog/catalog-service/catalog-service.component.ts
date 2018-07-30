@@ -146,7 +146,6 @@ export class CatalogServiceComponent implements OnInit {
       var pathEnd = this.servicepack.thumbImgPath.length;
       var fileName = this.servicepack.thumbImgPath.substring(pathHeader + 1, pathEnd);
       this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
-
         let reader = new FileReader();
         reader.addEventListener("load", () => {
           this.servicepack.thumbImgPath = reader.result;
@@ -320,11 +319,21 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   //org_name,space_name,owner
-
+  errorCheck() : boolean{
+    if(this.org.guid === '(id_dummy)'){
+      this.catalogService.alertMessage(this.translateEntities.contants.selectOrgAndSpace, false);
+      return true;
+    } if(this.space.guid === '(id_dummy)'){
+      this.catalogService.alertMessage(this.translateEntities.contants.selectOrgAndSpace, false);
+      return true;
+    } if(this.namecheck !== 1 || this.servicename.length <= 0){
+      this.errorMsg(this.translateEntities.contants.createFalseService);
+      return true;
+    } return false;
+  }
 
   createService() {
-    if(this.namecheck !== 1 || this.servicename.length <= 0){
-      this.errorMsg(this.translateEntities.contants.createSuccessService);
+    if(this.errorCheck()){
       return;
     }
     this.catalogService.isLoading(true);
@@ -341,13 +350,13 @@ export class CatalogServiceComponent implements OnInit {
     };
     this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
     {
-      if(!isUndefined(data.message)){
-        let msg = data.message;
-        this.errorMsg(this.translateEntities.result.serviceError+' : ' + msg);
-        return;
+      if(data.RESULT === 'SUCCESS'){
+        this.successMsg(this.translateEntities.result.serviceSusses);
+        this.router.navigate(['dashboard']);
+      }else if(data.RESULT === 'FAIL'){
+        this.errorMsg(data.MSG);
       }
-      this.successMsg(this.translateEntities.result.serviceSusses);
-      this.router.navigate(['dashboard']);
+
     }, error => {
       this.errorMsg(this.translateEntities.result.serviceError+ ' : ' + error.message);
     });

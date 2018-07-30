@@ -54,10 +54,7 @@ export class Org2ProduceComponent implements OnInit {
           console.log(exception);
         });
     });
-
   }
-
-
 
   getOrgNameList() {
     let page = 1;
@@ -69,7 +66,6 @@ export class Org2ProduceComponent implements OnInit {
       });
       for(page; data.total_pages >= page ; page++){
         this.orgService.getOrgNameList(OrgURLConstant.URLOrgListUsingToken + '-admin/' + page).subscribe( data2 =>{
-          console.log(data2);
           data2['resources'].forEach(b => {
             this.orgnamelist.push(b.entity.name);
           });
@@ -78,7 +74,6 @@ export class Org2ProduceComponent implements OnInit {
     }, error => {
       this.serverError();
     },()=>{
-      console.log(this.orgnamelist);
       this.orgService.isLoding(false);
     });
   }
@@ -123,8 +118,6 @@ export class Org2ProduceComponent implements OnInit {
     this.errorMessage = errorMessage;
   }
 
-
-
   pattenTest(){
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
@@ -148,6 +141,11 @@ export class Org2ProduceComponent implements OnInit {
     this.orgService.getOrgName(url).subscribe(data=>{
       if (data === false || data === 'false') {
         this.orgService.postOrg(url2, body).subscribe(data => {
+          if(data.RESULT==='SUCCESS'){
+            this.showPopAppStartClick();
+          } else if(data.RESULT==='FAIL'){
+            this.orgService.alertSetting(data.MSG, false);
+          }
         },error => {
           this.isError = true;
         });
@@ -162,7 +160,6 @@ export class Org2ProduceComponent implements OnInit {
       this.isError = true;
       this.errorMessage = this.translateEntities.alertLayer.serverError;
     },()=>{
-      this.showPopAppStartClick();
       this.orgService.isLoding(false);
     });
     } else{

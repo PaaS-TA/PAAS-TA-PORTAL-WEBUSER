@@ -37,6 +37,7 @@ export class Org2MainComponent implements OnInit {
   public sltInvite: any;
   public sltSpaceRole : any;
   public sltSpaceName : string;
+  public sltflag : boolean;
   private showIndexArray: Array<string> = [];
 
 
@@ -78,12 +79,23 @@ export class Org2MainComponent implements OnInit {
       });
       this.showIndexArray = showArry;
     }
-
+    this.getOrgFlag();
     this.getDomains();
     this.getQuotaDefinitions();
     this.getOrgList();
     this.getInviteOrg();
   }
+
+  getOrgFlag(){
+    this.orgMainService.getOrgFlag().subscribe(data => {
+      if(data.RESULT){
+        this.sltflag = true;
+      } else {
+        this.sltflag = false;
+      }
+    });
+  }
+
 
   getDomains() {
     this.orgMainService.getDomains().subscribe(data => {

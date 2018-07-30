@@ -14,6 +14,12 @@ export class Org2MainService {
     }).do(console.log);
   }
 
+  getOrgFlag(){
+    return this.commonService.doGet('/portalapi/v2/user_org_creation/orgflag', this.commonService.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
   getDomains() {
     return this.commonService.doGet('/portalapi/v2/domains/all', this.commonService.getToken()).map((res: Response) => {
       return res;

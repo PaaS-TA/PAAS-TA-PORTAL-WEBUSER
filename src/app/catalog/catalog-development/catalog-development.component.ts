@@ -38,8 +38,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   domainList : Array<any>;
   buildpack : any; //빌드팩 정보
   appname: string = ''; //앱 이름
-  hostname : string;
-  appurl: string =''; // 앱URL
+  hostname: string =''; // 앱 호스트
   memory: number; // 메모리
   disk: number; // 디스크
   appStart : boolean = true; // 앱 시작 여부
@@ -280,14 +279,32 @@ export class CatalogDevelopmentComponent implements OnInit {
     $('#routename').val($('#routename').val().replace(regExpPattern, '')
       .replace(regExpBlankPattern, '')
       .replace(regKoreanPatten, ''));
-    this.appurl =$('#routename').val();
+    this.hostname =$('#routename').val();
+  }
+
+  errorCheck() : boolean{
+    if(this.org.guid === '(id_dummy)'){
+      this.catalogService.alertMessage(this.translateEntities.contants.selectOrgAndSpace, false);
+      return true;
+    } if(this.space.guid === '(id_dummy)'){
+      this.catalogService.alertMessage(this.translateEntities.contants.selectOrgAndSpace, false);
+      return true;
+    } if(this.namecheck !== 1 || this.appname.length <= 0){
+      this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
+      return true;
+    } if(this.routecheck !== 1 || this.hostname.length <= 0){
+      this.catalogService.alertMessage(this.translateEntities.result.routeNameError, false);
+      return true;
+    } return false;
   }
 
   createApp() {
+    if(this.errorCheck()){
+      return;
+    }
     this.catalogService.isLoading(true);
-    var encodename = encodeURI(this.appname);
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appurl).subscribe(data => {
+      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
           let appSampleFilePath = this.buildpack['appSampleFilePath'];
           if(appSampleFilePath ==='' || appSampleFilePath === null)
@@ -300,7 +317,7 @@ export class CatalogDevelopmentComponent implements OnInit {
             orgName: this.org.name,
             appName: this.appname,
             name : this.appname,
-            hostName: this.appurl,
+            hostName: this.hostname,
             domainId: this.currentdomain.metadata.guid,
             memorySize : this.memory,
             diskSize : this.disk,
@@ -350,7 +367,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   routeCheck(){
     this.routecheck = CATALOGURLConstant.OK;
     this.hostnames.forEach(host => {
-      if(host === this.appurl){
+      if(host === this.hostname){
         this.routecheck = CATALOGURLConstant.NO;
         return;
       }

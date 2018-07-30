@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../auth/security.service";
 import {AppConfig} from "../app.config";
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import {isNullOrUndefined} from "util";
 
 
 declare var $: any;
@@ -89,17 +90,22 @@ export class UsermgmtComponent implements OnInit {
   }
 
   onFileChanged_click(event) {
+
     const file = event.target.files[0];
-    var tmppath = URL.createObjectURL(event.target.files[0]);
+    if(isNullOrUndefined(file)){
+      return;
+    }
+    this.fileToUpload = file;
     $("#photo").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
     $("#onUploadBtn").show();
   }
 
   onUpload(){
-    // upload code goes here
+    if(isNullOrUndefined(this.fileToUpload)){
+      return;
+    }
     let formData = new FormData();
-    console.log($('#photoFile')[0].files[0].name);
-    formData.append('file', $('#photoFile')[0].files[0], $('#photoFile')[0].files[0].name);
+    formData.append('file',  this.fileToUpload,  this.fileToUpload.name);
     this.userMgmtService.photoRegistration(formData).subscribe(data => {
       $("#onUploadBtn").hide(); //TO disabled
       this.imgPath = data.fileURL;
@@ -112,7 +118,6 @@ export class UsermgmtComponent implements OnInit {
 
   userInfo() {
     this.userMgmtService.userinfo(this.common.getUserid()).subscribe(data => {
-      console.log(data);
       this.user = data;
       this.tellPhone = data['tellPhone'];
       this.zipCode = data['zipCode'];
@@ -125,6 +130,7 @@ export class UsermgmtComponent implements OnInit {
           let reader = new FileReader();
           reader.addEventListener("load", () => {
             this.photoFile = reader.result;
+            this.common.setImagePath(this.photoFile);
           }, false);
           if (data) {
             reader.readAsDataURL(data);

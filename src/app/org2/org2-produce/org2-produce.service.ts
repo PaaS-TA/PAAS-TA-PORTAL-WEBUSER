@@ -24,7 +24,7 @@ export class Org2ProduceService {
     });
   }
   public postOrg(url : string, body : any){
-    return this.common.doPost(url, body, this.common.getToken()).map((res: Response) => {
+    return this.common.doPost(url, body, this.common.getToken()).map((res: any) => {
       return res;
     });
   }
