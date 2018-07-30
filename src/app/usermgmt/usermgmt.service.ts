@@ -39,6 +39,17 @@ export class UsermgmtService {
     }).do(console.log);
   }
 
+  getImg(url : string){
+    return this.common.doStorageGet(url, null  ).map((res : any) => {
+      return res;
+    });
+  }
+
+  getOrgList() {
+    return this.common.doGet('/portalapi/v2/orgs', this.common.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
 
 
 }

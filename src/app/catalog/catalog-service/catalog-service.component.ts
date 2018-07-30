@@ -104,7 +104,7 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   DomainInit() {
-    this.catalogService.getDomain().subscribe(data => {
+    this.catalogService.getDomain('/portalapi/v2/domains/shared').subscribe(data => {
       this.domain = data['resources'][0]['entity']['name'];
       this.domainid = data['resources'][0]['metadata']['guid'];
     });

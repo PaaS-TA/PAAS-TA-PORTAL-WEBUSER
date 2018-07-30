@@ -189,8 +189,8 @@ export class CatalogService {
       return res;
     });
   }
-  getDomain() {
-      return this.common.doGet('/portalapi/v2/domains/shared', this.common.getToken()).map((res: Response) => {
+  getDomain(url : string) {
+      return this.common.doGet(url, this.common.getToken()).map((res: Response) => {
         return res;
       });
     }

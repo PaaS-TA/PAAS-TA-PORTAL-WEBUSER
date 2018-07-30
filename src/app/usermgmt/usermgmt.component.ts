@@ -11,11 +11,6 @@ import {SecurityService} from "../auth/security.service";
 import {AppConfig} from "../app.config";
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
-import {FormControl} from '@angular/forms';
-import {viewWrappedDebugError} from '@angular/core/src/view/errors';
-import {validate} from 'codelyzer/walkerFactory/walkerFn';
-import {error, isNumber} from "util";
-import {userInfo} from "os";
 
 declare var $: any;
 declare var jQuery: any;
@@ -60,12 +55,12 @@ export class UsermgmtComponent implements OnInit {
 
   public fileToUpload: File = null;
 
-  constructor(private httpClient: HttpClient, private common: CommonService, private userMgmtService: UsermgmtService, private orgService: OrgService, private translate: TranslateService,
+  constructor(private httpClient: HttpClient, private common: CommonService, private userMgmtService: UsermgmtService, private translate: TranslateService,
               private router: Router, private activeRoute: ActivatedRoute, private sec: SecurityService, private log: NGXLogger) {
 
-    this.userInfo();
+
     this.user = new Observable<User>();
-    this.orgs = orgService.getOrgList();
+    this.orgs = new Array<Organization>();
     this.token = '';
     this.orgName = '';
     this.password = '';
@@ -78,7 +73,8 @@ export class UsermgmtComponent implements OnInit {
     this.isPassword = false;
     this.isRePassword = true;
     this.isChPassword = false;
-
+    this.userInfo();
+    this.orgInit();
     this.translate.get('usermgmt').subscribe((res: string) => {
       this.translateEntities = res;
     });
@@ -105,10 +101,8 @@ export class UsermgmtComponent implements OnInit {
     console.log($('#photoFile')[0].files[0].name);
     formData.append('file', $('#photoFile')[0].files[0], $('#photoFile')[0].files[0].name);
     this.userMgmtService.photoRegistration(formData).subscribe(data => {
-      console.log(data);
       $("#onUploadBtn").hide(); //TO disabled
       this.imgPath = data.fileURL;
-      console.log(this.imgPath);
       this.userSave();
     },error => {
       console.debug(error);
@@ -123,7 +117,21 @@ export class UsermgmtComponent implements OnInit {
       this.tellPhone = data['tellPhone'];
       this.zipCode = data['zipCode'];
       this.address = data['address'];
-      this.photoFile = data['imgPath'];
+      try{
+        var pathHeader = data['imgPath'].lastIndexOf("/");
+        var pathEnd = data['imgPath'].length;
+        var fileName = data['imgPath'].substring(pathHeader + 1, pathEnd);
+        this.userMgmtService.getImg('/storageapi/v2/swift/'+fileName).subscribe(data => {
+          let reader = new FileReader();
+          reader.addEventListener("load", () => {
+            this.photoFile = reader.result;
+          }, false);
+          if (data) {
+            reader.readAsDataURL(data);
+          }}, error=> {
+        });
+      } catch (e) {
+      }
       return data;
     });
   }
@@ -305,6 +313,13 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
+  orgInit(){
+    this.userMgmtService.getOrgList().subscribe(data => {
+      this.orgs = data.resources;
+      console.log(this.orgs);
+    })
+  }
+
   popclickOrg(guid: string, name: string) {
     this.selectedOrgGuid = guid;
     this.selectedOrgName = name;
@@ -314,10 +329,14 @@ export class UsermgmtComponent implements OnInit {
   cancelOrg(orgId: string) {
     this.common.isLoading = true;
     if (orgId != '') {
-      let body = this.orgService.cancelOrg(orgId, this.common.getUserGuid());
-      this.deleteOrg(body.url, body.params).subscribe(data => {
+      let param = {
+        userId : this.common.getUserGuid()
+      }
+      this.deleteOrg('/portalapi/v2/orgs/' + orgId + '/member', param).subscribe(data => {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
-        this.orgs = this.orgService.getOrgList();
+        this.userMgmtService.getOrgList().subscribe(data => {
+          this.orgs = data.resources;
+        })
       }, error=> {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
       },() => {

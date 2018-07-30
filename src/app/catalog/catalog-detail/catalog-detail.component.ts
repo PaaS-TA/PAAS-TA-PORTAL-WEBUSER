@@ -53,8 +53,6 @@ export class CatalogDetailComponent implements OnInit {
   buttonid : number = 0;
   switchid : number = 3;
   radioid : number = 0;
-
-
   privatedomain : any;
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
 
@@ -69,12 +67,8 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.navInit();
     this.domainList = new Array<any>();
-
-    $('#nav_first').attr('class','');
-    $('#nav_second').attr('class','cur');
-    $('#nav_third ').attr('class','');
-    $('#nav_fourth').attr('class','');
     this.shareDomainInit();
     this.activatedRouteInit();
     this.buildAndServiceInit();
@@ -82,27 +76,44 @@ export class CatalogDetailComponent implements OnInit {
     this.orgsFrist();
     this.spacesFrist();
     this.orgsInit();
-    this.doLayout();
+    setTimeout(() => this.doLayout(), 500);
   }
 
+  // 카탈로그 네비 초기화
+  navInit(){
+    $('#nav_first').attr('class','');
+    $('#nav_second').attr('class','cur');
+    $('#nav_third ').attr('class','');
+    $('#nav_fourth').attr('class','');
+    if(isNullOrUndefined(this.catalogService.getCurrentCatalogNumber())){
+      this.router.navigate(['catalog']);
+    }
+  }
+
+  // 알럿 메시지(오류)
   errorMsg(value : any){
     this.catalogService.alertMessage(value, false);
     this.catalogService.isLoading(false);
   }
 
+  // 알럿 메시지(성공)
   successMsg(value : any){
     this.catalogService.alertMessage(value, true);
     this.catalogService.isLoading(false);
   }
 
+  //공용 도메인 가져오기
   shareDomainInit(){
-    this.catalogService.getDomain().subscribe(data => {
+    this.catalogService.getDomain('/portalapi/v2/domains/shared').subscribe(data => {
       this.sharedomain = data['resources'][0];
       this.currentdomain = this.sharedomain;
       this.domainList.unshift(this.sharedomain);
+    }, error => {
+      this.errorMsg(error.toLocaleString());
     });
   }
 
+  //프라이빗 도메인 가져오기(org 선택시)
   privateDomainInit(value){
     this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+value+'/domains').subscribe(data =>{
       this.domainList = new Array<any>();
@@ -112,9 +123,11 @@ export class CatalogDetailComponent implements OnInit {
         this.domainList.push(domain);
       });
     },error => {
-      this.errorMsg(error);
+      this.errorMsg(error.toLocaleString());
     });
   }
+
+  //프라이빗 도메인 가져오기(페이지 이동시)
   activatedRouteInit(){
     const orgname = this.catalogService.getOrgName();
     if(orgname !== null){
@@ -128,9 +141,10 @@ export class CatalogDetailComponent implements OnInit {
     }
     const spacename = this.catalogService.getSpaceName();
     orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
-    spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE) : (this.spacename = spacename);
+    spacename == null ? this.spacename = CATALOGURLConstant.OPTIONSPACE : this.spacename = spacename;
   }
 
+  // 라우트 목록을
   getRoutes(){
     this.hostnames = new Array<string>();
     this.catalogService.getRoutes(CATALOGURLConstant.GETLISTROUTE).subscribe(data => {
@@ -178,18 +192,15 @@ export class CatalogDetailComponent implements OnInit {
         });
       });
     },error => {
-       // this.router.navigate(['catalog']);
+        this.router.navigate(['catalog']);
     },() =>{
       this.apptemplate.forEach(app => {
         try{
         var pathHeader = app.thumbImgPath.lastIndexOf("/");
         var pathEnd = app.thumbImgPath.length;
         var fileName = app.thumbImgPath.substring(pathHeader + 1, pathEnd);
-        console.log('파일네임 : ' + fileName);
         this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
-
           let reader = new FileReader();
-          console.log(reader);
           reader.addEventListener("load", () => {
             app.thumbImgPath = reader.result;
           }, false);
@@ -205,7 +216,7 @@ export class CatalogDetailComponent implements OnInit {
       );
     });
     this.disk = 512;
-    this.memory = 512;
+    this.memory = 256;
   }
 
   orgsInit(){
@@ -230,16 +241,17 @@ export class CatalogDetailComponent implements OnInit {
     });
 
   }
+
   orgsFrist(){
     this.org = new Organization(null, null);
     this.org.name = CATALOGURLConstant.OPTIONORG;
-    this.orgs.push(this.org);
+    this.orgs.unshift(this.org);
   }
 
   spacesFrist(){
     this.space = new Space(null, null, null);
     this.space.name = CATALOGURLConstant.OPTIONSPACE;
-    this.spaces.push(this.space);
+    this.spaces.unshift(this.space);
   }
 
   spaceSelect(){
@@ -266,7 +278,7 @@ export class CatalogDetailComponent implements OnInit {
     this.catalogService.getServiceInstance(CATALOGURLConstant.GETSERVICEINSTANCE + this.org.guid + '/' + this.space.guid).subscribe(data => {
       data['resources'].forEach(resources => {
         this.servicenamelist.push(resources['entity']['name']);
-      })
+      });
 //      this.serviceNameCheck();
       this.catalogService.isLoading(false);
     });
@@ -298,7 +310,6 @@ export class CatalogDetailComponent implements OnInit {
       });
       this.catalogService.isLoading(false);
     });
-    this.doLayout();
   }
 
   nameCheck() {
@@ -420,7 +431,6 @@ export class CatalogDetailComponent implements OnInit {
       amount = value.costs[0]['amount'].usd;
     }
     return amount + '/' + value.costs[0]['unit'];
-
   }
 
   serviceParameterSetting(planlist, key, params) {
@@ -486,7 +496,30 @@ export class CatalogDetailComponent implements OnInit {
   }
 
 
+  errorCheck() : boolean{
+    if(this.org.guid === '(id_dummy)'){
+      this.catalogService.alertMessage(this.translateEntities.contants.selectOrgAndSpace, false);
+      return true;
+    } if(this.space.guid === '(id_dummy)'){
+      this.catalogService.alertMessage(this.translateEntities.contants.selectOrgAndSpace, false);
+      return true;
+    } if(this.namecheck !== 1 || this.appname.length <= 0){
+      this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
+      return true;
+    } if(this.routecheck !== 1 || this.appurl.length <= 0){
+      this.catalogService.alertMessage(this.translateEntities.result.routeNameError, false);
+      return true;
+    } if(this.serviceplanlist.some(plan => {if(plan.servicenamecheck !== 1 && plan.servicename.length <= 0){ return true;}}) || this.serviceplanlist.length <= 0){
+      this.catalogService.alertMessage(this.translateEntities.contants.createFalseService, false);
+      return true;
+    }
+    return false;
+  }
+
   createApp(values : TranslateService) {
+   if(this.errorCheck()){
+     return;
+   }
     this.catalogService.isLoading(true);
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appurl).subscribe(data => {
@@ -496,13 +529,13 @@ export class CatalogDetailComponent implements OnInit {
           if(appSampleFilePath ==='' || appSampleFilePath === null)
             appSampleFilePath = 'N';
           let paramlist = new Array<any>();
-          this.serviceplanlist.forEach(list => {
+          this.serviceplanlist.forEach(plan => {
             let serviceparam = {
-              name: list.servicename,
-              servicePlan: list.plan.metadata.guid,
-              parameter: this.setParmeterData(list.serviceparameter, list.hiddenserviceparameter),
-              app_bind_parameter: this.setParmeterData(list.appparameter, list.hiddenappparameter),
-              appGuid : list.appbind ? '' : '(id_dummy)',
+              name: plan.servicename,
+              servicePlan: plan.plan.metadata.guid,
+              parameter: this.setParmeterData(plan.serviceparameter, plan.hiddenserviceparameter),
+              app_bind_parameter: this.setParmeterData(plan.appparameter, plan.hiddenappparameter),
+              appGuid : plan.appbind ? '' : '(id_dummy)',
             };
             paramlist.push(serviceparam);
           });
@@ -538,7 +571,6 @@ export class CatalogDetailComponent implements OnInit {
         this.catalogService.alertMessage(this.translateEntities.result.routeNameError, false);
         this.getRoutes();
         this.routecheck = CATALOGURLConstant.NO;
-        return false;
       });
     }, error => {
       this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
