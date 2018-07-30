@@ -284,8 +284,8 @@
               </colgroup>
               <tbody>
               <tr *ngFor="let org of orgs">
-                <td>{{org.name}}</td>
-                <th data-target="#layerpop" data-toggle="modal" (click)="popclickOrg(org.guid,org.name)"><i class="fas fa-trash-alt" pattern="[A-Za-z0-9]*"></i></th>
+                <td>{{org.entity.name}}</td>
+                <th data-target="#layerpop" data-toggle="modal" (click)="popclickOrg(org.metadata.guid,org.entity.name)"><i class="fas fa-trash-alt" pattern="[A-Za-z0-9]*"></i></th>
               </tr>
               </tbody>
               <tfoot>

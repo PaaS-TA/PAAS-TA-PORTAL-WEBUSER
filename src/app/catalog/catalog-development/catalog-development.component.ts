@@ -113,7 +113,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   shareDomainInit(){
-    this.catalogService.getDomain().subscribe(data => {
+    this.catalogService.getDomain('/portalapi/v2/domains/shared').subscribe(data => {
       this.sharedomain = data['resources'][0];
       this.currentdomain = this.sharedomain;
       this.domainList.unshift(this.sharedomain);
@@ -134,6 +134,9 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   buildInit() {
+    if(isNullOrUndefined(this.catalogService.getCurrentCatalogNumber())){
+      this.router.navigate(['catalog']);
+    }
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
       try {
       this.buildpack =  data['list'][0];

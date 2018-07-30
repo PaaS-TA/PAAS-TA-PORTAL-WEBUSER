@@ -102,16 +102,11 @@ export class Org2MainComponent implements OnInit {
 
     this.orgMainService.getOrgList().subscribe(data => {
       this.orgsEntities = data.result;
-      console.log(this.orgsEntities);
       if (this.orgsEntities) {
         this.sltEntity = this.orgsEntities[0];
       }
       setTimeout(() => this.buttonEvent(), 100);
       this.common.isLoading = false;
-
-      // if(this.sltIndex != undefined) {
-      //   $(".btns6.colors4.organization_sw:eq("+this.sltIndex+")").trigger("click");
-      // }
     });
   }
 
@@ -783,7 +778,6 @@ export class Org2MainComponent implements OnInit {
       this.sltSpaceRole = data.resources;
       let spaceRole = data.resources;
       $(".checkSel5").prop('checked', false);
-      console.log(spaceRole);
       this.sltEntity.userRoles.user_roles.forEach(function (role, index) {
         let username = role.user_email;
         spaceRole.some(model => {
