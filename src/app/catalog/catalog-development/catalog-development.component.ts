@@ -55,11 +55,8 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.navInit();
     this.domainList = new Array<any>();
-    $('#nav_first').attr('class','');
-    $('#nav_second').attr('class','');
-    $('#nav_third ').attr('class','cur');
-    $('#nav_fourth').attr('class','');
     this.activatedRouteInit();
     this.shareDomainInit();
     this.buildInit();
@@ -68,8 +65,31 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.spacesFrist();
     this.orgsInit();
     this.doLayout();
+    setTimeout(() => this.keyPressInit(), 1000);
     this.memory = 256;
     this.disk = 512;
+  }
+
+  navInit(){
+    $('#nav_first').attr('class','');
+    $('#nav_second').attr('class','');
+    $('#nav_third ').attr('class','cur');
+    $('#nav_fourth').attr('class','');
+  }
+
+  keyPressInit(){
+    $('#orgname').trigger('focus');
+
+    $('input[name=appname]').keydown(function (key) {
+      if(key.keyCode == 13){
+        $('#createApp').trigger('click');
+      }
+    });
+    $('input[name=route]').keydown(function (key) {
+      if(key.keyCode == 13){
+        $('#createApp').trigger('click');
+      }
+    });
   }
 
   errorMsg(value : any){
@@ -92,6 +112,7 @@ export class CatalogDevelopmentComponent implements OnInit {
         .fail(function (jqxhr, settings, exception) {
           console.log(exception);
         });
+
     });
   }
 
@@ -302,6 +323,8 @@ export class CatalogDevelopmentComponent implements OnInit {
     if(this.errorCheck()){
       return;
     }
+    this.pattenTest();
+    this.routepattenTest();
     this.catalogService.isLoading(true);
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
@@ -365,6 +388,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   routeCheck(){
+
     this.routecheck = CATALOGURLConstant.OK;
     this.hostnames.forEach(host => {
       if(host === this.hostname){

@@ -170,6 +170,11 @@ export class Org2ProduceComponent implements OnInit {
   limitvalue(value) : any{
     return value === -1 ? '무제한' : value;
   }
+
+  quotaFree(value) : any{
+    return value ? '무료' : '유료';
+  }
+
   changeQuota(value){
     this.aquota = value;
   }

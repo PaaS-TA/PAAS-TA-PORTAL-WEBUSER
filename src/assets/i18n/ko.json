@@ -406,11 +406,12 @@
     "select": "선택",
     "serviceName": "서비스명",
     "memory": "메모리",
-    "instantMemory": "인스턴트 메모리",
+    "instantMemory": "인스턴스 메모리",
     "route": "라우트",
-    "serviceInstant": "서비스 인스턴트",
+    "serviceInstant": "서비스 인스턴스",
     "price": "가격",
-    "instant": "인스턴트",
+    "instant": "인스턴스",
+    "routePort": "라우트포트",
     "layerpop": {
       "orgRename": {
         "title": "조직명 변경",
@@ -527,11 +528,12 @@
       "select": "선택",
       "serviceName": "서비스명",
       "memory": "메모리",
-      "instantMemory": "인스턴트 메모리",
+      "instantMemory": "인스턴스 메모리",
       "route": "라우트",
-      "serviceInstant": "서비스 인스턴트",
+      "serviceInstant": "서비스 인스턴스",
       "price": "가격",
-      "instant": "인스턴트"
+      "instant": "인스턴스",
+      "routePort": "라우트포트"
     },
     "button": {
       "orgCreate": "조직생성",

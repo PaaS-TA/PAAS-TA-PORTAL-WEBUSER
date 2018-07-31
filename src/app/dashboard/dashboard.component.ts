@@ -12,7 +12,7 @@ import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 import {CatalogService} from '../catalog/main/catalog.service';
-import {isBoolean} from "util";
+import {isBoolean, isNullOrUndefined} from "util";
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {containerStart} from "@angular/core/src/render3/instructions";
 import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
@@ -90,6 +90,7 @@ export class DashboardComponent implements OnInit {
   public orgTotalRoutes: string;
   public orgTotalServiceKeys: string;
   public orgTotalServices: string;
+  public selbind : boolean;
 
   public placeholder = "credentialsStr:{'username':'admin','password':'password';}";
 
@@ -159,7 +160,7 @@ export class DashboardComponent implements OnInit {
       this.translateEntities = event.translations.dashboard;
     });
 
-    if (this.commonService.getCurrentOrgName() != null) {
+    if (!isNullOrUndefined(this.commonService.getCurrentOrgName())) {
       this.currentOrg = this.commonService.getCurrentOrgName();
       this.currentSpace = this.commonService.getCurrentSpaceGuid();
     }
@@ -199,13 +200,26 @@ export class DashboardComponent implements OnInit {
     return this.orgs;
   }
 
-  getOrgSpaceList(orgId: string) {
+  getOrgSpaceList(orgId: string, spacedefault : boolean) {
     this.commonService.isLoading = true;
     this.dashboardService.getOrgSpaceList(orgId).subscribe(data => {
       (data['resources'] as Array<Object>).forEach(spaceData => {
         const index =
           this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId)) - 1;
       });
+      if(isNullOrUndefined(this.spaces.find(space => space.guid === this.commonService.getCurrentSpaceGuid()))){
+        if(this.spaces.length > 0){
+          this.currentSpace = this.spaces[0].guid;
+        } else {
+          this.currentSpace = '';
+        }
+      }
+      if(spacedefault && data['resources'].length > 0){
+        this.space = this.spaces[0];
+        this.currentSpace = this.space.guid;
+        this.commonService.setCurrentSpaceGuid(this.space.guid);
+        this.commonService.setCurrentSpaceName(this.space.name);
+      }
       this.commonService.isLoading = false;
       return data;
     }, error => {
@@ -219,6 +233,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getOrg(value: string, type: string) {
+    this.commonService.setCurrentSpaceName('');
+    this.commonService.setCurrentSpaceGuid('');
+    console.log("a");
     if (type == 'select') {
       this.appEntities = null;
       this.servicesEntities = null;
@@ -226,6 +243,7 @@ export class DashboardComponent implements OnInit {
       this.currentSpace = null;
     }
     if (value != '') {
+      console.log("b");
       this.commonService.isLoading = true;
       this.spaces = [];
       this.org = this.orgs.find(org => org.name === value);
@@ -234,17 +252,33 @@ export class DashboardComponent implements OnInit {
       this.isSpace = false;
       this.appSummaryEntities = null;
 
-      if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
+      if (!isNullOrUndefined(this.org) && this.isLoadingSpaces && this.spaces.length <= 0) {
         this.isLoadingSpaces = false;
-        this.spaces = this.getOrgSpaceList(this.org.guid);
-
+        this.spaces = this.getOrgSpaceList(this.org.guid, false);
         /* 세이브 ORG 정보*/
         this.commonService.setCurrentOrgGuid(this.org.guid);
         this.commonService.setCurrentOrgName(this.org.name);
-      }
+      }else{
+        if(this.orgs.length > 0){
+        this.org = this.orgs[0];
+        this.commonService.setCurrentOrgGuid(this.org.guid);
+        this.commonService.setCurrentOrgName(this.org.name);
 
+        this.currentOrg = this.org.OrgName();
+        this.getOrgSpaceList(this.org.guid, true);
+        }
+      }
     } else {
       /*초기화*/
+      if(this.orgs.length > 0){
+        this.org = this.orgs[0];
+        this.commonService.setCurrentOrgGuid(this.org.guid);
+        this.commonService.setCurrentOrgName(this.org.name);
+        this.commonService.setCurrentSpaceName('');
+        this.commonService.setCurrentSpaceGuid('');
+        this.currentOrg = this.org.OrgName();
+        this.getOrgSpaceList(this.org.guid, true);
+      }
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;
@@ -311,6 +345,9 @@ export class DashboardComponent implements OnInit {
       this.appEntities = data.apps;
       this.thumnailApp();
       this.servicesEntities = data.services;
+      this.servicesEntities.forEach(service => {
+        service['bind'] = false;
+      })
       this.thumnail();
     }, () => {
       this.commonService.isLoading = false;
@@ -595,6 +632,10 @@ export class DashboardComponent implements OnInit {
 
   /*UserProvide Delete*/
   delInstance() {
+    if(this.selbind){
+      this.commonService.alertMessage("앱 바인드된 상태에서 삭제할 수 없습니다.", false);
+      return;
+    }
     let params = {
       guid: this.selectedGuid
     };
@@ -649,10 +690,9 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  popclick(id: string, type: string, guid: string, name: string) {
-
+  popclick(id: string, type: string, guid: string, name: string, bind : boolean) {
     $('.space_pop_submenu').hide();
-
+    this.selbind = bind;
     if (this.current_popmenu_id != id) {
       $("#" + id).show();
       this.current_popmenu_id = id;
@@ -670,6 +710,10 @@ export class DashboardComponent implements OnInit {
       this.userProvidedInfo();
     }
     // this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid + ' NAME :: ' + name);
+  }
+
+  appbind(service : any){
+    service.bind = true;
   }
 
 }

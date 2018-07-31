@@ -224,6 +224,10 @@ export class Organization {
     return this.entity.users_url;
   }
 
+  public OrgName() : string{
+    return this.entity.name;
+  }
+
   /**
    * Comparable.compareTo method implementation for Organization
    * @param {Organization} objA

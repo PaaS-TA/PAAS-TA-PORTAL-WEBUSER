@@ -404,11 +404,12 @@
     "select" : "Select",
     "serviceName" : "Service name",
     "memory" : "Memory",
-    "instantMemory" : "Instant Memory",
+    "instantMemory" : "Instance Memory",
     "route" : "Route",
-    "serviceInstant" : "Service Instant",
+    "serviceInstant" : "Service Instance",
     "price" : "Price",
-    "instant" : "Instant",
+    "instant" : "Instance",
+    "routePort" : "Route Port",
     "layerpop": {
       "orgRename": {
         "title": "Change organization name",
@@ -525,11 +526,12 @@
       "select" : "Select",
       "serviceName" : "Service name",
       "memory" : "Memory",
-      "instantMemory" : "Instant Memory",
+      "instantMemory" : "Instance Memory",
       "route" : "Route",
-      "serviceInstant" : "Service Instant",
+      "serviceInstant" : "Service Instance",
       "price" : "Price",
-      "instant" : "Instant"
+      "instant" : "Instance",
+      "routePort": "Route Port"
     },
     "button" : {
       "orgCreate" : "Create organization",

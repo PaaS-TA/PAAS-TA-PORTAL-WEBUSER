@@ -59,6 +59,12 @@ export class DashboardService {
     }).do(console.log);
   }
 
+  getBinding(guid : string){
+    return this.commonService.doGet('/portalapi/v2/service/'+guid+'/binding', this.commonService.getToken()).map((res : Response) => {
+      return res;
+    })
+  }
+
 // @RequestMapping(value = {Constants.V2_URL + "/service/userprovidedserviceinstances/{guid}"}, method = RequestMethod.GET)
   userProvidedInfo(guid: string) {
     return this.commonService.doGet('/portalapi/v2/service/userprovidedserviceinstances/' + guid, this.commonService.getToken()).map((res: Response) => {

@@ -60,7 +60,7 @@
                       <td>{{ 'orgProduce.quota.serviceInstant' | translate }}</td>
                       <td>{{ 'orgProduce.quota.price' | translate }}</td>
                       <td>{{ 'orgProduce.quota.instant' | translate }}</td>
-                      <td>{{ 'orgProduce.quota.instant' | translate }}</td>
+                      <td>{{ 'orgProduce.quota.routePort' | translate }}</td>
                     </tr>
                   </thead>
                   <tbody>
@@ -78,15 +78,15 @@
                     </td>
                     <td>{{limitvalue(quota.instance_memory_limit)}}
                     </td>
-                    <td>{{limitvalue(quota.total_routes)}}
+                    <td>{{quota.total_routes}}
                     </td>
-                    <td>{{limitvalue(quota.total_services)}}
+                    <td>{{quota.total_services}}
                     </td>
-                    <td>무료
+                    <td>{{quotaFree(quota.non_basic_services_allowed)}}
                     </td>
                     <td>{{limitvalue(quota.app_instance_limit)}}
                     </td>
-                    <td>{{limitvalue(quota.total_reserved_route_ports)}}
+                    <td>{{quota.total_reserved_route_ports}}
                     </td>
                   </tr>
                   </ng-container>

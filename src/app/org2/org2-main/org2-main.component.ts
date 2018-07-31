@@ -37,7 +37,7 @@ export class Org2MainComponent implements OnInit {
   public sltInvite: any;
   public sltSpaceRole : any;
   public sltSpaceName : string;
-  public sltflag : boolean;
+  public sltflag : boolean = false;
   private showIndexArray: Array<string> = [];
 
 
@@ -53,6 +53,8 @@ export class Org2MainComponent implements OnInit {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.orgMain;
     });
+
+
   }
 
   ngOnInit() {
@@ -114,6 +116,7 @@ export class Org2MainComponent implements OnInit {
 
     this.orgMainService.getOrgList().subscribe(data => {
       this.orgsEntities = data.result;
+      console.log(this.orgsEntities);
       if (this.orgsEntities) {
         this.sltEntity = this.orgsEntities[0];
       }
@@ -193,13 +196,11 @@ export class Org2MainComponent implements OnInit {
       return instance_memory_limit;
   }
 
-  priceKorean(name): String {
-    if (name.search('paid') >= 0) {
-      return '유료';
-    } else if (name.search('free') >= 0) {
+  priceKorean(price : boolean): String {
+    if(price){
       return '무료';
     } else {
-      return '무료';
+      return '유료';
     }
   }
 
@@ -265,8 +266,7 @@ export class Org2MainComponent implements OnInit {
       if (data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
-
-        this.ngOnInit();
+        setTimeout(()=>this.ngOnInit(), 1000);
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail + "<br><br>" + data.msg.description, false);
@@ -346,8 +346,7 @@ export class Org2MainComponent implements OnInit {
       if (data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteSpaceSuccess, true);
-
-        setTimeout(() => this.ngOnInit(), 500);
+        setTimeout(() => this.ngOnInit(), 1000);
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteSpaceFail + "<br><br>" + data.msg.description, false);
@@ -398,8 +397,7 @@ export class Org2MainComponent implements OnInit {
       if (data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteDomainSuccess, true);
-
-        this.ngOnInit();
+        setTimeout(() => this.ngOnInit(), 1000);
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteDomainFail + "<br><br>" + data.msg.description, false);

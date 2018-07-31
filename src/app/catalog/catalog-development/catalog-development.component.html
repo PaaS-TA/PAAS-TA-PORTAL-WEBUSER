@@ -150,7 +150,7 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <input type="text" id="orgname" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()"/>
+                  <input name="appname" type="text" id="orgname" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()" autofocus />
                   <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
                   <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
                 </th>
@@ -185,7 +185,7 @@
           </div>
           <div class="clear"></div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="createApp()">{{ 'catalog.appDevelopment.produce' | translate }}</button>
+            <button id="createApp" class="btns2 btns2_1 colors4" (click)="createApp()">{{ 'catalog.appDevelopment.produce' | translate }}</button>
             <button class="btns2 btns2_1 colors5" [routerLink]="['/catalog']">{{ 'catalog.appDevelopment.cancel' | translate }}</button>
           </div>
         </div>
