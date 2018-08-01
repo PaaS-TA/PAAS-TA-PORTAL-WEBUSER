@@ -248,7 +248,7 @@ export class DashboardComponent implements OnInit {
       this.isSpace = false;
       this.appSummaryEntities = null;
 
-      if (!isNullOrUndefined(this.org) && this.isLoadingSpaces && this.spaces.length <= 0) {
+      if (!isNullOrUndefined(this.org) && this.isLoadingSpaces) {
         this.isLoadingSpaces = false;
         this.spaces = this.getOrgSpaceList(this.org.guid, false);
         /* 세이브 ORG 정보*/
