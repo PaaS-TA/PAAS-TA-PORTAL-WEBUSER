@@ -404,11 +404,12 @@
     "select" : "Select",
     "serviceName" : "Service name",
     "memory" : "Memory",
-    "instantMemory" : "Instant Memory",
+    "instantMemory" : "Instance Memory",
     "route" : "Route",
-    "serviceInstant" : "Service Instant",
+    "serviceInstant" : "Service Instance",
     "price" : "Price",
-    "instant" : "Instant",
+    "instant" : "Instance",
+    "routePort" : "Route Port",
     "layerpop": {
       "orgRename": {
         "title": "Change organization name",
@@ -461,13 +462,13 @@
       "memberCancel": {
         "title": "Cancel member",
         "bodyText": "Are you sure you want to cancel the membership of <span>{{sltMemberName}}</span>?",
-        "btn1": "Confirm",
+        "btn1": "confirm",
         "btn2": "cancel"
       },
       "orgSetRole": {
         "title": "Edit organization permissions",
         "bodyText": "Are you sure you want to modify <span>{{SltOrgRoleName}}</span> permissions for <span>{{sltMemberName}}</span>?",
-        "btn1": "Confirm",
+        "btn1": "confirm",
         "btn2": "cancel"
       },
       "layerpop4": {
@@ -482,7 +483,8 @@
         "user" : "user",
         "roleGiveSpace" : "Role to give space",
         "btn1": "invite",
-        "btn2": "cancel"
+        "btn2": "cancel",
+        "btn3": "confirm"
       }
     },
     "alertLayer": {
@@ -525,11 +527,12 @@
       "select" : "Select",
       "serviceName" : "Service name",
       "memory" : "Memory",
-      "instantMemory" : "Instant Memory",
+      "instantMemory" : "Instance Memory",
       "route" : "Route",
-      "serviceInstant" : "Service Instant",
+      "serviceInstant" : "Service Instance",
       "price" : "Price",
-      "instant" : "Instant"
+      "instant" : "Instance",
+      "routePort": "Route Port"
     },
     "button" : {
       "orgCreate" : "Create organization",
@@ -570,7 +573,7 @@
       "change" : "Alter",
       "delete" : "Delete",
       "cancel" : "Cancel",
-      "photoRegistration" : "Photo Registration"
+      "photoRegistration" : "Registration"
     },
     "loginInfo": {
       "loginInfo": "login Info",
@@ -689,7 +692,12 @@
       "createSuccess": "Create succeeded.",
       "createFail": "Create failed.",
       "updateSuccess": "The amendment is complete.",
-      "updateFail": "Modification failed."
+      "updateFail": "Modification failed.",
+      "appstartSuccess": "Started the app.",
+      "appstartFail": "App startup failed.",
+      "appstopSuccess": "Stopped the app.",
+      "appstopFail": "App suspension failed.",
+      "bindingService": "Cannot delete service instance, service keys and bindings must first be deleted."
     }
   }
 }

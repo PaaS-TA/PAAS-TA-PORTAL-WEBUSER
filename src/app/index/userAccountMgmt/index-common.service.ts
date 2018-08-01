@@ -38,7 +38,9 @@ export class IndexCommonService {
         this.commonService.isLoading = false;
       }
     }, error => {
+      this.alertMessage('사용자 정보를 확인하는데 실패하였습니다.', false);
       this.commonService.isLoading = false;
+
     });
   }
 
@@ -57,6 +59,7 @@ export class IndexCommonService {
         this.commonService.isLoading = false;
       }
     }, error => {
+      this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
       this.commonService.isLoading = false;
     });
   }
@@ -65,7 +68,7 @@ export class IndexCommonService {
   sendCreateEmail(email: string) {
     let param = {userid: email};
     this.commonService.doPost("/commonapi/v2/users/create/email", param, '').subscribe(data => {
-      //this.log.debug(data);
+
       if (data['result'] === true) {
         this.isSendEmail = true;
       } else {
@@ -74,6 +77,7 @@ export class IndexCommonService {
       this.commonService.isLoading = false;
     }, error => {
       this.commonService.doDelete("/commonapi/v2/users/" + email, '', '').subscribe();
+      this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
       this.isSendEmail = false;
       this.commonService.isLoading = false;
     });
@@ -90,12 +94,13 @@ export class IndexCommonService {
       }
       this.commonService.isLoading = false;
     }, error => {
+      this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
       this.isSendEmail = false;
       this.commonService.isLoading = false;
     });
   }
 
-  alertMessage(msg : string, result : boolean){
-    this.commonService.alertMessage(msg,result);
+  alertMessage(msg: string, result: boolean) {
+    this.commonService.alertMessage(msg, result);
   }
 }

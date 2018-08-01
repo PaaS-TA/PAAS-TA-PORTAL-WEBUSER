@@ -12,7 +12,7 @@ import {Space} from '../model/space';
 import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 import {CatalogService} from '../catalog/main/catalog.service';
-import {isBoolean} from "util";
+import {isBoolean, isNullOrUndefined} from "util";
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {containerStart} from "@angular/core/src/render3/instructions";
 import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
@@ -90,6 +90,7 @@ export class DashboardComponent implements OnInit {
   public orgTotalRoutes: string;
   public orgTotalServiceKeys: string;
   public orgTotalServices: string;
+  public selectedBinding : boolean;
 
   public placeholder = "credentialsStr:{'username':'admin','password':'password';}";
 
@@ -159,7 +160,7 @@ export class DashboardComponent implements OnInit {
       this.translateEntities = event.translations.dashboard;
     });
 
-    if (this.commonService.getCurrentOrgName() != null) {
+    if (!isNullOrUndefined(this.commonService.getCurrentOrgName())) {
       this.currentOrg = this.commonService.getCurrentOrgName();
       this.currentSpace = this.commonService.getCurrentSpaceGuid();
     }
@@ -199,13 +200,26 @@ export class DashboardComponent implements OnInit {
     return this.orgs;
   }
 
-  getOrgSpaceList(orgId: string) {
+  getOrgSpaceList(orgId: string, spacedefault : boolean) {
     this.commonService.isLoading = true;
     this.dashboardService.getOrgSpaceList(orgId).subscribe(data => {
       (data['resources'] as Array<Object>).forEach(spaceData => {
         const index =
           this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId)) - 1;
       });
+      if(isNullOrUndefined(this.spaces.find(space => space.guid === this.commonService.getCurrentSpaceGuid()))){
+        if(this.spaces.length > 0){
+          this.currentSpace = this.spaces[0].guid;
+        } else {
+          this.currentSpace = '';
+        }
+      }
+      if(spacedefault && data['resources'].length > 0){
+        this.space = this.spaces[0];
+        this.currentSpace = this.space.guid;
+        this.commonService.setCurrentSpaceGuid(this.space.guid);
+        this.commonService.setCurrentSpaceName(this.space.name);
+      }
       this.commonService.isLoading = false;
       return data;
     }, error => {
@@ -234,17 +248,33 @@ export class DashboardComponent implements OnInit {
       this.isSpace = false;
       this.appSummaryEntities = null;
 
-      if (this.org != null && this.isLoadingSpaces && this.spaces.length <= 0) {
+      if (!isNullOrUndefined(this.org) && this.isLoadingSpaces && this.spaces.length <= 0) {
         this.isLoadingSpaces = false;
-        this.spaces = this.getOrgSpaceList(this.org.guid);
-
+        this.spaces = this.getOrgSpaceList(this.org.guid, false);
         /* 세이브 ORG 정보*/
         this.commonService.setCurrentOrgGuid(this.org.guid);
         this.commonService.setCurrentOrgName(this.org.name);
-      }
+      }else{
+        if(this.orgs.length > 0){
+        this.org = this.orgs[0];
+        this.commonService.setCurrentOrgGuid(this.org.guid);
+        this.commonService.setCurrentOrgName(this.org.name);
 
+        this.currentOrg = this.org.OrgName();
+        this.getOrgSpaceList(this.org.guid, true);
+        }
+      }
     } else {
       /*초기화*/
+      if(this.orgs.length > 0){
+        this.org = this.orgs[0];
+        this.commonService.setCurrentOrgGuid(this.org.guid);
+        this.commonService.setCurrentOrgName(this.org.name);
+        this.commonService.setCurrentSpaceName('');
+        this.commonService.setCurrentSpaceGuid('');
+        this.currentOrg = this.org.OrgName();
+        this.getOrgSpaceList(this.org.guid, true);
+      }
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;
@@ -311,6 +341,9 @@ export class DashboardComponent implements OnInit {
       this.appEntities = data.apps;
       this.thumnailApp();
       this.servicesEntities = data.services;
+      this.servicesEntities.forEach(service => {
+        service['binding'] = false;
+      })
       this.thumnail();
     }, () => {
       this.commonService.isLoading = false;
@@ -433,14 +466,17 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.delApp(params).subscribe(data => {
-      this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
-      return data;
+      if(data.result){
+        this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
+      }else{
+        this.commonService.alertMessage(data.msg, false);
+      }
     }, error => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
       this.commonService.isLoading = false;
     });
-    setTimeout(() => this.getOrgSummary(), 500);
-    return this.getAppSummary(this.selectedSpaceId);
+    setTimeout(() => this.getOrgSummary(), 3000);
+    setTimeout(() => this.getAppSummary(this.selectedSpaceId), 3000);
   }
 
   showPopAppStopClick() {
@@ -449,14 +485,23 @@ export class DashboardComponent implements OnInit {
 
   stopAppClick() {
     $("[id^='layerpop']").modal("hide");
+    this.commonService.isLoading = true;
+
     let params = {
       guid: this.selectedGuid
     };
-    this.commonService.isLoading = true;
+
     this.appMainService.stopApp(params).subscribe(data => {
-      this.commonService.isLoading = false;
-      this.getAppSummary(this.selectedSpaceId);
-      this.ngOnInit();
+      if(data.result){
+        this.commonService.isLoading = false;
+        this.commonService.alertMessage(this.translateEntities.alertLayer.appstopSuccess, true);
+        this.getAppSummary(this.selectedSpaceId);
+
+        this.ngOnInit();
+      }else{
+        this.commonService.isLoading = false;
+        this.commonService.alertMessage(this.translateEntities.alertLayer.appstopFail + "<br><br>" + data.msg.description, false);
+      }
     });
   }
 
@@ -466,23 +511,32 @@ export class DashboardComponent implements OnInit {
 
   startAppClick() {
     $("[id^='layerpop']").modal("hide");
+    this.commonService.isLoading = true;
+
     let params = {
       guid: this.selectedGuid,
       orgName: this.org['name'],
       spaceName: this.space['name'],
       name: this.selectedName
     };
-    this.commonService.isLoading = true;
+
     this.appMainService.startApp(params).subscribe(data => {
-      this.commonService.isLoading = false;
-      this.getAppSummary(this.selectedSpaceId);
-      this.ngOnInit();
+      if(data.result){
+        this.commonService.isLoading = false;
+        this.getAppSummary(this.selectedSpaceId);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.appstartSuccess, true);
+
+        this.ngOnInit();
+      }else{
+        this.commonService.isLoading = false;
+        this.commonService.alertMessage(this.translateEntities.alertLayer.appstartFail + "<br><br>" + data.msg.description, false);
+      }
     });
   }
 
 
   userProvidedInfo() {
-    console.log(this.selectedGuid);
+    //console.log(this.selectedGuid);
     this.dashboardService.userProvidedInfo(this.selectedGuid).subscribe(data => {
 
       this.userProvideName = data.entity["name"];
@@ -590,23 +644,30 @@ export class DashboardComponent implements OnInit {
       this.commonService.alertMessage(this.translateEntities.alertLayer.updateFail, false);
       this.commonService.isLoading = false;
     });
-    setTimeout(() => this.getAppSummary(this.selectedSpaceId), 500);
+    setTimeout(() => this.getAppSummary(this.selectedSpaceId), 3000);
   }
 
   /*UserProvide Delete*/
   delInstance() {
+    if(this.selectedBinding){
+      this.commonService.alertMessage(this.translateEntities.alertLayer.bindingService, false);
+      return;
+    }
     let params = {
       guid: this.selectedGuid
     };
     this.commonService.isLoading = true;
     this.dashboardService.delInstance(params).subscribe(data => {
-      this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
-      return data;
+      if(data.result){
+        this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
+      }else{
+        this.commonService.alertMessage(data.msg, false);
+      }
     }, error => {
       this.commonService.isLoading = false;
       this.commonService.alertMessage(this.translateEntities.alertLayer.deleteFail, false);
     });
-    setTimeout(() => this.getAppSummary(this.selectedSpaceId), 500);
+    setTimeout(() => this.getAppSummary(this.selectedSpaceId), 3000);
   }
 
 
@@ -634,11 +695,13 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
   }
 
-  dashTabClick(id: string) {
+  setAppBinding(app : any){
+    app.binding = true;
+  }
 
+  dashTabClick(id: string) {
     $("[id^='dashTab_']").hide();
     $("#" + id).show();
-
     if (id == "dashTab_1") {
       $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
       $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
@@ -649,23 +712,22 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  popclick(id: string, type: string, guid: string, name: string) {
-
+  popclick(id: string, type: string, guid: string, name: string, binding: boolean) {
     $('.space_pop_submenu').hide();
-
     if (this.current_popmenu_id != id) {
       $("#" + id).show();
       this.current_popmenu_id = id;
       this.selectedType = type;
       this.selectedGuid = guid;
       this.selectedName = name;
+      this.selectedBinding = binding;
     } else {
       this.current_popmenu_id = '';
       this.selectedType = '';
       this.selectedGuid = '';
       this.selectedName = '';
+      this.selectedBinding = false;
     }
-
     if (type == "provided") {
       this.userProvidedInfo();
     }

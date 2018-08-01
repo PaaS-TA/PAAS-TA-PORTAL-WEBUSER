@@ -5,6 +5,7 @@ import {OrgURLConstant} from "../../org/common/org.constant";
 import {Parser} from "@angular/compiler";
 import {_finally} from "rxjs/operator/finally";
 import { TranslateService, LangChangeEvent, TranslationChangeEvent } from '@ngx-translate/core';
+import {isNullOrUndefined} from "util";
 
 
 declare var $: any;
@@ -40,7 +41,7 @@ export class Org2ProduceComponent implements OnInit {
     this.doLayout();
     this.getOrgNameList();
     this.getOrgQuota();
-    setTimeout(() => this.orgNameCheck(), 1000);
+    setTimeout(() => this.orgNameCheck(), 500);
   }
 
   doLayout() {
@@ -99,7 +100,7 @@ export class Org2ProduceComponent implements OnInit {
 
   orgNameCheck(){
     this.pattenTest();
-    if (this.orgname == null || (this.orgname != null && "" === this.orgname.trim())) {
+    if ( isNullOrUndefined(this.orgname) || "" === this.orgname.trim()) {
       this.msgSetting('blue','red',true,this.translateEntities.alertLayer.orgNameCheck1);
       return;
     }
@@ -129,7 +130,7 @@ export class Org2ProduceComponent implements OnInit {
   }
 
   createOrg(){
-    this.orgService.isLoding(true);
+    this.orgNameCheck();
     const url = OrgURLConstant.URLOrgRequestBase + this.orgname + '/exist';
     const url2 = OrgURLConstant.URLOrgRequestBase;
     const body = {
@@ -138,6 +139,7 @@ export class Org2ProduceComponent implements OnInit {
       name : this.orgService.getuserId()
     };
     if (!this.isError) {
+      this.orgService.isLoding(true);
     this.orgService.getOrgName(url).subscribe(data=>{
       if (data === false || data === 'false') {
         this.orgService.postOrg(url2, body).subscribe(data => {
@@ -170,6 +172,11 @@ export class Org2ProduceComponent implements OnInit {
   limitvalue(value) : any{
     return value === -1 ? '무제한' : value;
   }
+
+  quotaFree(value) : any{
+    return value ? '무료' : '유료';
+  }
+
   changeQuota(value){
     this.aquota = value;
   }

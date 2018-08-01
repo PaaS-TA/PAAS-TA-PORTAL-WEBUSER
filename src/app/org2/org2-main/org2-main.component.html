@@ -220,7 +220,7 @@
                     <td>{{ 'orgMain.serviceInstant' | translate }}</td>
                     <td>{{ 'orgMain.price' | translate }}</td>
                     <td>{{ 'orgMain.instant' | translate }}</td>
-                    <td>{{ 'orgMain.instant' | translate }}</td>
+                    <td>{{ 'orgMain.routePort' | translate }}</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -241,7 +241,7 @@
                       <td>{{instanceMemoryLimit(quotaDefinition.entity.instance_memory_limit)}}</td>
                       <td>{{quotaDefinition.entity.total_routes}}</td>
                       <td>{{quotaDefinition.entity.total_services}}</td>
-                      <td>{{priceKorean(quotaDefinition.entity.name)}}</td>
+                      <td>{{priceKorean(quotaDefinition.entity.non_basic_services_allowed)}}</td>
                       <td>{{applicationInstanceLimit(quotaDefinition.entity.app_instance_limit)}}</td>
                       <td>{{quotaDefinition.entity.total_reserved_route_ports}}</td>
                     </tr>
@@ -800,7 +800,7 @@
           </div>
           <!-- Footer -->
           <div class="modal-footer">
-            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="updateUserSpaceRole()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
+            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="updateUserSpaceRole()">{{ 'orgMain.layerpop.layerpop4.btn3' | translate }}</button>
             <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
           </div>
         </ng-container>

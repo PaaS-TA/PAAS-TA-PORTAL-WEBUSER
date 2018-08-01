@@ -37,7 +37,7 @@ export class Org2MainComponent implements OnInit {
   public sltInvite: any;
   public sltSpaceRole : any;
   public sltSpaceName : string;
-  public sltflag : boolean;
+  public sltflag : boolean = false;
   private showIndexArray: Array<string> = [];
 
 
@@ -83,7 +83,7 @@ export class Org2MainComponent implements OnInit {
     this.getDomains();
     this.getQuotaDefinitions();
     this.getOrgList();
-    this.getInviteOrg();
+    //this.getInviteOrg();
   }
 
   getOrgFlag(){
@@ -111,7 +111,9 @@ export class Org2MainComponent implements OnInit {
 
   getOrgList() {
     this.common.isLoading = true;
-
+    this.orgMainService.getInviteOrg().subscribe(data => {
+      this.inviteOrgList = data.result;
+    });
     this.orgMainService.getOrgList().subscribe(data => {
       this.orgsEntities = data.result;
       if (this.orgsEntities) {
@@ -193,13 +195,11 @@ export class Org2MainComponent implements OnInit {
       return instance_memory_limit;
   }
 
-  priceKorean(name): String {
-    if (name.search('paid') >= 0) {
-      return '유료';
-    } else if (name.search('free') >= 0) {
+  priceKorean(price : boolean): String {
+    if(price){
       return '무료';
     } else {
-      return '무료';
+      return '유료';
     }
   }
 
@@ -263,10 +263,8 @@ export class Org2MainComponent implements OnInit {
 
     this.orgMainService.deleteOrg(this.sltOrgGuid, true).subscribe(data => {
       if (data.result) {
-        this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
-
-        this.ngOnInit();
+        setTimeout(()=>this.ngOnInit(), 1500);
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail + "<br><br>" + data.msg.description, false);
@@ -293,9 +291,7 @@ export class Org2MainComponent implements OnInit {
       $("#createSpaceName").val("");
 
       if (data.result) {
-        this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.createSpaceSuccess, true);
-
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
@@ -321,10 +317,8 @@ export class Org2MainComponent implements OnInit {
 
     this.orgMainService.renameSpace(params).subscribe(data => {
       if (data.result) {
-        this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.renameSpaceSuccess, true);
-
-        this.ngOnInit();
+        setTimeout(() => this.ngOnInit(), 3000);
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.renameSpaceFail + "<br><br>" + data.msg.description, false);
@@ -344,10 +338,8 @@ export class Org2MainComponent implements OnInit {
 
     this.orgMainService.deleteSpace(this.sltSpaceGuid, true).subscribe(data => {
       if (data.result) {
-        this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteSpaceSuccess, true);
-
-        setTimeout(() => this.ngOnInit(), 500);
+        setTimeout(() => this.ngOnInit(), 3000);
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteSpaceFail + "<br><br>" + data.msg.description, false);
@@ -373,7 +365,6 @@ export class Org2MainComponent implements OnInit {
       $("#addDmaoinName").val("");
 
       if (data.result) {
-        this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.addDomainSuccess, true);
 
         this.ngOnInit();
@@ -396,10 +387,8 @@ export class Org2MainComponent implements OnInit {
 
     this.orgMainService.deleteDmaoin(this.sltOrgGuid, this.sltDomainName).subscribe(data => {
       if (data.result) {
-        this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteDomainSuccess, true);
-
-        this.ngOnInit();
+        setTimeout(() => this.ngOnInit(), 3000);
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteDomainFail + "<br><br>" + data.msg.description, false);
@@ -428,9 +417,7 @@ export class Org2MainComponent implements OnInit {
 
     this.orgMainService.changeQuota(this.sltOrgGuid, params).subscribe(data => {
       if (data.result) {
-        this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.changeQuotaSuccess, true);
-
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
@@ -480,7 +467,7 @@ export class Org2MainComponent implements OnInit {
         this.cancelMemberSetOrgRole();
         this.common.isLoading = false;
       }, () => {
-        this.common.isLoading = false;
+
       });
     } else {
       this.orgMainService.delOrgUserRole(this.sltOrgGuid, body).subscribe(data => {
@@ -492,7 +479,7 @@ export class Org2MainComponent implements OnInit {
         this.cancelMemberSetOrgRole();
         this.common.isLoading = false;
       }, () => {
-        this.common.isLoading = false;
+
       });
     }
   }
@@ -518,11 +505,10 @@ export class Org2MainComponent implements OnInit {
     this.common.isLoading = true;
     this.orgMainService.delMemberCancel(this.sltOrgGuid, this.sltUserGuid).subscribe(data => {
       this.common.alertMessage(this.translateEntities.alertLayer.memberCancelSuccess, true);
-      this.getOrgList();
     }, error => {
       this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail, true);
     }, () => {
-      this.common.isLoading = false;
+      this.getOrgList();
     });
   }
 
@@ -577,7 +563,6 @@ export class Org2MainComponent implements OnInit {
   }
 
   userInvite() {
-    this.common.isLoading = true;
 
     var inviteObj = {};
     var inviteObjOrg = [];
@@ -607,7 +592,7 @@ export class Org2MainComponent implements OnInit {
     });
     inviteObjSpace.push(spaceObj);
     inviteObj["space"] = inviteObjSpace;
-
+    this.common.isLoading = true;
     let params = {
       orgName: this.sltEntity.org.entity.name,
       orgId: this.sltEntity.org.metadata.guid,
@@ -618,7 +603,6 @@ export class Org2MainComponent implements OnInit {
     };
     this.orgMainService.userInviteEmailSend(params).subscribe(data => {
       if (data) {
-        this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.sendEmailSuccess, true);
       }
     }, error => {
@@ -641,9 +625,13 @@ export class Org2MainComponent implements OnInit {
 
 
   getInviteOrg() {
+    this.common.isLoading = true;
     this.orgMainService.getInviteOrg().subscribe(data => {
-      console.log(data);
       this.inviteOrgList = data.result;
+    },error => {
+
+    }, () => {
+      this.common.isLoading = false;
     });
   }
 
@@ -658,6 +646,7 @@ export class Org2MainComponent implements OnInit {
   }
 
   inviteCancel() {
+    this.common.isLoading = true;
     this.orgMainService.delInviteCancle(this.sltEntity.org.metadata.guid, this.sltInvite.userId).subscribe(data => {
       if (data) {
         this.common.alertMessage("초대 취소 성공", true);
@@ -838,7 +827,6 @@ export class Org2MainComponent implements OnInit {
       }
       params.push(param);
     });
-    console.log(params);
     this.common.isLoading = true;
     this.orgMainService.updateUserSpaceRole(this.sltSpaceGuid, params).subscribe(data => {
       if(data){

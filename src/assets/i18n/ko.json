@@ -406,11 +406,12 @@
     "select": "선택",
     "serviceName": "서비스명",
     "memory": "메모리",
-    "instantMemory": "인스턴트 메모리",
+    "instantMemory": "인스턴스 메모리",
     "route": "라우트",
-    "serviceInstant": "서비스 인스턴트",
+    "serviceInstant": "서비스 인스턴스",
     "price": "가격",
-    "instant": "인스턴트",
+    "instant": "인스턴스",
+    "routePort": "라우트포트",
     "layerpop": {
       "orgRename": {
         "title": "조직명 변경",
@@ -484,7 +485,8 @@
         "user": "사용자",
         "roleGiveSpace": "부여할 공간 역할",
         "btn1": "초대",
-        "btn2": "취소"
+        "btn2": "취소",
+        "btn3": "확인"
       }
     },
     "alertLayer": {
@@ -527,11 +529,12 @@
       "select": "선택",
       "serviceName": "서비스명",
       "memory": "메모리",
-      "instantMemory": "인스턴트 메모리",
+      "instantMemory": "인스턴스 메모리",
       "route": "라우트",
-      "serviceInstant": "서비스 인스턴트",
+      "serviceInstant": "서비스 인스턴스",
       "price": "가격",
-      "instant": "인스턴트"
+      "instant": "인스턴스",
+      "routePort": "라우트포트"
     },
     "button": {
       "orgCreate": "조직생성",
@@ -693,7 +696,12 @@
       "createSuccess": "생성 완료되었습니다.",
       "createFail": "생성 실패하였습니다.",
       "updateSuccess": "수정 완료되었습니다.",
-      "updateFail": "수정 실패하였습니다."
+      "updateFail": "수정 실패하였습니다.",
+      "appstartSuccess": "App을 시작 하였습니다.",
+      "appstartFail": "App 시작이 실패하였습니다.",
+      "appstopSuccess": "App을 정지 하였습니다.",
+      "appstopFail": "App 정지가 실패하였습니다.",
+      "bindingService": "이 서비스는 현재 어플리케이션과 연결되어있는 상태입니다. 연결 해제를 해야 삭제가 가능합니다."
     }
   }
 }
