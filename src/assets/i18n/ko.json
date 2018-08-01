@@ -695,7 +695,11 @@
       "createSuccess": "생성 완료되었습니다.",
       "createFail": "생성 실패하였습니다.",
       "updateSuccess": "수정 완료되었습니다.",
-      "updateFail": "수정 실패하였습니다."
+      "updateFail": "수정 실패하였습니다.",
+      "appstartSuccess": "App을 시작 하였습니다.",
+      "appstartFail": "App 시작이 실패하였습니다.",
+      "appstopSuccess": "App을 정지 하였습니다.",
+      "appstopFail": "App 정지가 실패하였습니다."
     }
   }
 }

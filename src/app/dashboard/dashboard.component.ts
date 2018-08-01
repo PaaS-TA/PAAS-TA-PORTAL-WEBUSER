@@ -233,9 +233,11 @@ export class DashboardComponent implements OnInit {
   }
 
   getOrg(value: string, type: string) {
+    this.log.debug("::::1.getOrg:::: " +"  "+ value);
+
     this.commonService.setCurrentSpaceName('');
     this.commonService.setCurrentSpaceGuid('');
-    console.log("a");
+
     if (type == 'select') {
       this.appEntities = null;
       this.servicesEntities = null;
@@ -486,14 +488,23 @@ export class DashboardComponent implements OnInit {
 
   stopAppClick() {
     $("[id^='layerpop']").modal("hide");
+    this.commonService.isLoading = true;
+
     let params = {
       guid: this.selectedGuid
     };
-    this.commonService.isLoading = true;
+
     this.appMainService.stopApp(params).subscribe(data => {
-      this.commonService.isLoading = false;
-      this.getAppSummary(this.selectedSpaceId);
-      this.ngOnInit();
+      if(data.result){
+        this.commonService.isLoading = false;
+        this.commonService.alertMessage(this.translateEntities.alertLayer.appstopSuccess, true);
+        this.getAppSummary(this.selectedSpaceId);
+
+        this.ngOnInit();
+      }else{
+        this.commonService.isLoading = false;
+        this.commonService.alertMessage(this.translateEntities.alertLayer.appstopFail + "<br><br>" + data.msg.description, false);
+      }
     });
   }
 
@@ -503,17 +514,26 @@ export class DashboardComponent implements OnInit {
 
   startAppClick() {
     $("[id^='layerpop']").modal("hide");
+    this.commonService.isLoading = true;
+
     let params = {
       guid: this.selectedGuid,
       orgName: this.org['name'],
       spaceName: this.space['name'],
       name: this.selectedName
     };
-    this.commonService.isLoading = true;
+
     this.appMainService.startApp(params).subscribe(data => {
-      this.commonService.isLoading = false;
-      this.getAppSummary(this.selectedSpaceId);
-      this.ngOnInit();
+      if(data.result){
+        this.commonService.isLoading = false;
+        this.getAppSummary(this.selectedSpaceId);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.appstartSuccess, true);
+
+        this.ngOnInit();
+      }else{
+        this.commonService.isLoading = false;
+        this.commonService.alertMessage(this.translateEntities.alertLayer.appstartFail + "<br><br>" + data.msg.description, false);
+      }
     });
   }
 

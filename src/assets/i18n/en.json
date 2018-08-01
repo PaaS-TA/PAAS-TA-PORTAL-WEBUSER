@@ -572,7 +572,7 @@
       "change" : "Alter",
       "delete" : "Delete",
       "cancel" : "Cancel",
-      "photoRegistration" : "Photo Registration"
+      "photoRegistration" : "Registration"
     },
     "loginInfo": {
       "loginInfo": "login Info",
@@ -691,7 +691,11 @@
       "createSuccess": "Create succeeded.",
       "createFail": "Create failed.",
       "updateSuccess": "The amendment is complete.",
-      "updateFail": "Modification failed."
+      "updateFail": "Modification failed.",
+      "appstartSuccess": "Started the app.",
+      "appstartFail": "App startup failed.",
+      "appstopSuccess": "Stopped the app.",
+      "appstopFail": "App suspension failed."
     }
   }
 }
