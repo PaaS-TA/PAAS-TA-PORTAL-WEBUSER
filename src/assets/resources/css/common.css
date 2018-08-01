@@ -555,7 +555,11 @@ table.variable .H180{height: 180px; vertical-align: top;}
 .condition thead{border-bottom: none;}
 .condition thead th select{width: 100%;}
 .condition tbody th span{font-size: 10px; height: 18px; line-height: 18px; color:#fff; text-align:center; font-size: 10px; border-radius: 3px; padding:4px; font-weight: 700;}
+/*180730 추가*/
 .condition .fa-chart-bar{font-size:20px; cursor: pointer;}
+.condition a{text-decoration: underline; color:#337ab7; }
+.condition a:hover{text-decoration: underline; color:#46a4f7;}
+.condition img{margin-left: 10px}
 
 
 .weekday{float:right;}
@@ -941,10 +945,15 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 .lauth_dl dd{width:calc(50% - 114.5px); float: left;}
 .lauth_dl dt:last-child{width:225px;}
 
+
+/*180730 스타일 수정*/
 .lauth_ul{width:97%; margin:0 auto;}
 .lauth_ul li{height:62px; line-height:62px; padding-left:20px; border-bottom: 1px solid #e6eaed; vertical-align: middle;}
 .lauth_ul li:nth-child(odd){background:#f9f9f9;}
 .lauth_ul li button{float:right; margin-right:20px; line-height:1; margin-top:13px;}
+.lauth_ul li a{text-decoration: underline; color:#337ab7; }
+.lauth_ul li a:hover{text-decoration: underline; color:#46a4f7;}
+.lauth_ul li img{margin-left: 10px}
 
 
 .service_wrap{margin-bottom:30px; }
@@ -1412,8 +1421,11 @@ body.email h4{color:#293133;}
 .space_pop_submenu li:last-child {margin-bottom:6px}
 .space_pop_menu > i{cursor:pointer}
 .app_title{font-size:32px;font-weight:bold;border-bottom:1px solid #cccccc;color:#293133;padding-bottom:15px}
+
+/*180730 스타일 추가*/
 .title_anchor{color:#293133;}/*폰트 색상 유지*/
 .title_anchor:hover{border-bottom:1px solid #000;}/*hover시 밑줄 추가*/
+
 .app_img{float:left}/*180621 스타일 수정*/
 .app_img > img {width:80%;}/*180621 스타일 수정*/
 .app_per{margin-top:15px;float:left;width:100%;}/*180621 스타일 수정*/
@@ -1472,5 +1484,12 @@ body.error_b{background:#f0f2f2;}
 .space_title3.error{margin-top:70px; text-align:center; font-size:26px}
 .space_txt.error{color:808487;font-size:16px;}
 .errorOn, .errorOn:hover, .errorOn:active{display:block; width:200px;height:50px;font-size:20px;line-height:50px;text-align:center;margin:60px auto 0;border-radius:3px;}
+
+
+/*180730 dashboard.html*/
+.alignL{text-align:left !important;}
+.custom_url_1{width:30%;padding:0 5px;height:32px;}
+.custom_url_2{width:calc(70% - 10px);padding:0 5px;height:32px;}
+
 
 

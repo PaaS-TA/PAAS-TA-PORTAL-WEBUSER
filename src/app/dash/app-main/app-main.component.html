@@ -353,8 +353,9 @@
                         <th>{{ 'appMain.env.userCustom' | translate }}</th>
                         <td>
                           <span *ngFor="let item of appEnvUserEntities">
-                            {{item.eventID}}:{{item.eventData}}
-                          </span>
+                          <input type="text" class="custom_url_1" value="{{item.eventID}}" />
+                          <input type="text" class="custom_url_2"  value="{{item.eventData}}"/>
+                          </span >
                         </td>
                       </tr>
                       <tr class="H180">
@@ -733,7 +734,7 @@
                 <div class="">
                   <ul class="lauth_ul" *ngFor="let item of appRoutesEntitiesRe">
                     <li>
-                      {{item.uri}}
+                      <a href="javascript:void(0);">{{item.uri.trim()}}<img src="../../../assets/resources/images/link.png"/></a>
                       <button class="btns2 colors5" (click)="showPopRouteDelClick(item.guid, item.uri)">{{ 'appMain.route.disconnect' | translate }}</button>
                     </li>
                   </ul>
