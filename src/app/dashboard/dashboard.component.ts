@@ -266,15 +266,6 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       /*초기화*/
-      if(this.orgs.length > 0){
-        this.org = this.orgs[0];
-        this.commonService.setCurrentOrgGuid(this.org.guid);
-        this.commonService.setCurrentOrgName(this.org.name);
-        this.commonService.setCurrentSpaceName('');
-        this.commonService.setCurrentSpaceGuid('');
-        this.currentOrg = this.org.OrgName();
-        this.getOrgSpaceList(this.org.guid, true);
-      }
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;
