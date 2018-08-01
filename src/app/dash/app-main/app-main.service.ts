@@ -9,7 +9,7 @@ export class AppMainService {
   constructor(private commonService: CommonService) { }
 
   private getToken() {
-    return this.commonService.getRefreshToken();
+    return this.commonService.getToken();
   }
 
   getAppSummary(guid: string) {
