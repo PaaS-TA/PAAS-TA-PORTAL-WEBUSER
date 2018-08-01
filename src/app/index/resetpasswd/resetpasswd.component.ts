@@ -36,7 +36,7 @@ export class ResetpasswdComponent implements OnInit {
 
     if (this.isSendEmail) {
       this.isSendEmail = false;
-      alert("성공적으로 메일 발송");
+      this.indexCommonService.alertMessage('메일 발송에 성공하였습니다.', true);
       this.router.navigate(['/']);
     }
   }
