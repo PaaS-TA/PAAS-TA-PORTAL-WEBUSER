@@ -192,9 +192,11 @@ export class DashboardComponent implements OnInit {
     }, error => {
       this.commonService.isLoading = false;
     }, () => {
-      if (this.currentOrg != null) {
+      if (this.currentOrg != '') {
         this.commonService.isLoading = false;
         this.getOrg(this.currentOrg,'defalut');
+      } else {
+        this.getOrg("",'first');
       }
     });
     return this.orgs;
@@ -238,6 +240,15 @@ export class DashboardComponent implements OnInit {
       this.servicesEntities = null;
       this.spaces = [];
       this.currentSpace = null;
+    } else if(type === 'first'){
+      if(this.orgs.length > 0) {
+        this.org = this.orgs[0];
+        this.commonService.setCurrentOrgGuid(this.org.guid);
+        this.commonService.setCurrentOrgName(this.org.name);
+        this.currentOrg = this.org.OrgName();
+        this.getOrgSpaceList(this.org.guid, true);
+      }
+      return;
     }
     if (value != '') {
       this.commonService.isLoading = true;
@@ -247,7 +258,6 @@ export class DashboardComponent implements OnInit {
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;
-
       if (!isNullOrUndefined(this.org) && this.isLoadingSpaces) {
         this.isLoadingSpaces = false;
         this.spaces = this.getOrgSpaceList(this.org.guid, false);
@@ -266,6 +276,7 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       /*초기화*/
+      this.currentSpace = '';
       this.isEmpty = true;
       this.isSpace = false;
       this.appSummaryEntities = null;

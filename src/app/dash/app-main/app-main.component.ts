@@ -599,7 +599,7 @@ export class AppMainComponent implements OnInit {
         this.ngOnInit();
       } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.appstartFail + "<br><br>" + data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.appstartFail + "<br><br>" + data.msg, false);
       }
     });
   }
