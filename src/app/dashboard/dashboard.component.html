@@ -60,7 +60,7 @@
               {{ (orgQuotaMemoryLimit >= 1024) ? 'GB' : 'MB' }}
             </div>
             <div class="progress">
-              <ng-container *ngIf="orgMemoryDevelopmentTotal >= orgQuotaMemoryLimit; else OrgMemory">
+              <ng-container *ngIf="orgMemoryDevelopmentTotal >= orgQuotaMemoryLimit && orgQuotaMemoryLimit !==''; else OrgMemory">
                 <div class="progress-bar" role="progressbar" aria-valuenow="1.5" aria-valuemin="0" aria-valuemax="10"
                      [ngStyle]="{'width': '100%'}">100%
                 </div>

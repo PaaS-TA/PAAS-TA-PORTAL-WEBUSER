@@ -25,12 +25,6 @@ export class NavComponent implements OnInit {
       this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
       $('#' + this.cursorId).addClass('cur');
     })
-    if(this.common.getQuantity() === 'true'){
-      this.quantity = true;
-    } else if(this.common.getQuantity() === 'false'){
-      this.quantity = false;
-    }
-
   }
 
   ngDoCheck() {

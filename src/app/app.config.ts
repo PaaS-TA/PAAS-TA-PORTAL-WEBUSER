@@ -12,7 +12,8 @@ export const AppConfig = {
   userinfoUrl: '/commonapi/v2/user',
   code: 'code',
   sessionTimeout: 10,
-  monitoring : false,
-  quantity : false
+  monitoring : false,         // 모니터링 사용 유무
+  quantity : false,           // 사용량 조회 사용 유무
+  automaticApproval : true // 회원가입 자동승인 사용 유무
 };
 

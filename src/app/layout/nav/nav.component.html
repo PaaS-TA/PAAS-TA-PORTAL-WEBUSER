@@ -27,7 +27,7 @@
           </dd>
         </dl>
       </li>
-      <ng-container *ngIf="quantity">
+      <ng-container *ngIf="common.getQuantity()">
       <li id="cur_quantity_nav" [routerLink]="['/quantity']">
         <dl>
           <dt>
