@@ -11,67 +11,7 @@
 <body>
 <div class="wrap account">
   <app-app-top [cursorId]="'cur_usermgmt'"></app-app-top>
-  <nav>
-    <div class="scroll_style">
-      <ul class="nav_1d">
-        <li class="cur"  [routerLink]="['/usermgmt']">
-          <dl>
-            <dt>
-            <div id="lnbimg10">
-            </div>
-            </dt>
-            <dd>
-              <p>
-                {{'common.top.user.linkTextMyAccount' | translate}}
-              </p>
-            </dd>
-          </dl>
-        </li>
-        <li [routerLink]="['/org']">
-          <dl>
-            <dt>
-            <div id="lnbimg11">
-
-            </div>
-            </dt>
-            <dd>
-              <p>
-                {{'common.top.user.linkTextOrgManager' | translate}}
-              </p>
-            </dd>
-          </dl>
-        </li>
-        <li [routerLink]="['/quantity']">
-          <dl>
-            <dt>
-            <div id="lnbimg12" class="">
-
-            </div>
-            </dt>
-            <dd>
-              <p>
-                {{'common.top.user.linkTextViewUsage' | translate}}
-              </p>
-            </dd>
-          </dl>
-        </li>
-        <li [routerLink]="['/logout']">
-          <dl>
-            <dt>
-            <div id="lnbimg13" class="">
-
-            </div>
-            </dt>
-            <dd>
-              <p>
-                {{'common.top.user.linkTextLogOut' | translate}}
-              </p>
-            </dd>
-          </dl>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <app-nav [cursorId]="'cur_usermgmt_nav'" ></app-nav>
   <div class="contain">
     <div class="content">
       <div class="row one_line">
