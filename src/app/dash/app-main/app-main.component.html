@@ -734,7 +734,7 @@
                 <div class="">
                   <ul class="lauth_ul" *ngFor="let item of appRoutesEntitiesRe">
                     <li>
-                      <a href="javascript:void(0);">{{item.uri.trim()}}<img src="../../../assets/resources/images/link.png"/></a>
+                      {{item.uri}}<a href="{{item.uri.trim()}}}" target="_blank"><img src="../../../assets/resources/images/link.png"/></a>
                       <button class="btns2 colors5" (click)="showPopRouteDelClick(item.guid, item.uri)">{{ 'appMain.route.disconnect' | translate }}</button>
                     </li>
                   </ul>
