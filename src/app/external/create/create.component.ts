@@ -113,7 +113,8 @@ export class CreateComponent implements OnInit {
         'password': this.password,
         'tellPhone': '',
         'address': '',
-        'active' : $("[id^='ra2']").is(":checked")
+        'active' : true
+         // 'active' : $("[id^='ra2']").is(":checked")
       }
 
       this.externalService.createUser(param).subscribe(data => {
@@ -127,7 +128,8 @@ export class CreateComponent implements OnInit {
             'refreshToken': '',
             'authAccessTime': '',
             'authAccessCnt': 0,
-            'active' : $("[id^='ra2']").is(":checked") ? 'Y' : 'N'
+            'active' : 'Y'
+            // 'active' : $("[id^='ra2']").is(":checked") ? 'Y' : 'N'
           };
           this.externalService.updateInfo(this.userId, userInfo);
           this.router.navigate(['login']);

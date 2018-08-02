@@ -188,7 +188,6 @@ export class DashboardComponent implements OnInit {
           this.orgs.push(new Organization(orgData['metadata'], orgData['entity'])) - 1;
         this.orgs[index].indexOfOrgs = index;
       });
-      return data;
     }, error => {
       this.commonService.isLoading = false;
     }, () => {
@@ -206,21 +205,24 @@ export class DashboardComponent implements OnInit {
     this.commonService.isLoading = true;
     this.dashboardService.getOrgSpaceList(orgId).subscribe(data => {
       (data['resources'] as Array<Object>).forEach(spaceData => {
-        const index =
-          this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId)) - 1;
+          this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId));
       });
+      console.log(this.spaces);
+      console.log(this.commonService.getCurrentSpaceGuid());
+      console.log(this.spaces.find(space => space.guid === this.commonService.getCurrentSpaceGuid()));
       if(isNullOrUndefined(this.spaces.find(space => space.guid === this.commonService.getCurrentSpaceGuid()))){
         if(this.spaces.length > 0){
           this.currentSpace = this.spaces[0].guid;
         } else {
           this.currentSpace = '';
         }
-      }
-      if(spacedefault && data['resources'].length > 0){
+      }else if (data['resources'].length > 0){
         this.space = this.spaces[0];
         this.currentSpace = this.space.guid;
         this.commonService.setCurrentSpaceGuid(this.space.guid);
         this.commonService.setCurrentSpaceName(this.space.name);
+      }else {
+        this.currentSpace = '';
       }
       this.commonService.isLoading = false;
       return data;
@@ -241,12 +243,15 @@ export class DashboardComponent implements OnInit {
       this.spaces = [];
       this.currentSpace = null;
     } else if(type === 'first'){
+      console.log("펄스트");
       if(this.orgs.length > 0) {
         this.org = this.orgs[0];
         this.commonService.setCurrentOrgGuid(this.org.guid);
         this.commonService.setCurrentOrgName(this.org.name);
         this.currentOrg = this.org.OrgName();
         this.getOrgSpaceList(this.org.guid, true);
+      }else{
+        this.commonService.isLoading =false;
       }
       return;
     }
@@ -272,6 +277,10 @@ export class DashboardComponent implements OnInit {
 
         this.currentOrg = this.org.OrgName();
         this.getOrgSpaceList(this.org.guid, true);
+        } else {
+          this.currentOrg = '';
+          this.currentSpace = '';
+          this.commonService.isLoading = false;
         }
       }
     } else {
@@ -531,7 +540,7 @@ export class DashboardComponent implements OnInit {
         this.ngOnInit();
       }else{
         this.commonService.isLoading = false;
-        this.commonService.alertMessage(this.translateEntities.alertLayer.appstartFail + "<br><br>" + data.msg.description, false);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.appstartFail + "<br><br>" + data.msg, false);
       }
     });
   }

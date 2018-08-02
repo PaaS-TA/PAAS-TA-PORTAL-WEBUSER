@@ -119,7 +119,7 @@
               </tr>
               <tr style="height: 10px">
                 <th colspan="3">
-                  <input type="text" id="servicename" placeholder="{{ 'catalog.contants.inputService' | translate }}" (keyup)="serviceNameCheck()" />
+                  <input type="text" id="servicename" placeholder="{{ 'catalog.contants.inputService' | translate }}" (keyup)="serviceNameCheck()"  maxlength="50"/>
                   <div *ngIf="(namecheck === 1 && servicename.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
                   <div *ngIf="(namecheck === -1 && servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseService' | translate }}</p></div>
                 </th>

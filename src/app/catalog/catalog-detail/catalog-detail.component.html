@@ -112,7 +112,7 @@
                     </tr>
                     <tr>
                       <td  colspan="2">
-                        <input type="text" id="orgname" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()"/>
+                        <input type="text" id="orgname" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()" maxlength="50"/>
                         <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
                         <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
                       </td>
@@ -127,7 +127,7 @@
                     </tr>
                     <tr>
                       <td colspan="1">
-                        <input name="route" id="routename" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}" (keyup)="checkHostName()" maxlength="64" style="width:98%"/>
+                        <input name="route" id="routename" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}" (keyup)="checkHostName()" maxlength="50" style="width:98%"/>
                       </td>
                       <td colspan="1">
                         <select [(ngModel)]="currentdomain">
@@ -138,8 +138,8 @@
                     </tr>
                     <tr style="height: 10px">
                       <th colspan="2">
-                      <div *ngIf="(routecheck === 1 && appurl.length > 0)"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
-                      <div *ngIf="(routecheck === -1  && appurl.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
+                      <div *ngIf="(routecheck === 1 && hostname.length > 0)"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
+                      <div *ngIf="(routecheck === -1  && hostname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
                       </th>
                     </tr>
                     <tr>
@@ -210,7 +210,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td><input type="text" [id]="'servicename_'+i" placeholder="{{ 'catalog.contants.inputService' | translate }}" (keyup)="serviceNameCheck(i)"/>
+                      <td><input type="text" [id]="'servicename_'+i" placeholder="{{ 'catalog.contants.inputService' | translate }}" (keyup)="serviceNameCheck(i)" maxlength="50"/>
                         <div *ngIf="(serviceplan.servicenamecheck === 1 && serviceplan.servicename.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
                         <div *ngIf="(serviceplan.servicenamecheck === -1 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseService' | translate }}</p></div>
                         <div *ngIf="(serviceplan.servicenamecheck === 2 && serviceplan.servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.overLapService' | translate }}</p></div>
