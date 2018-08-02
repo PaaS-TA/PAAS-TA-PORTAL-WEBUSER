@@ -254,7 +254,6 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.spacesFrist();
     this.privateDomainInit(this.org.guid);
     this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
-
       data['spaceList']['resources'].forEach(res => {
         this.spaces.push(new Space(res['metadata'], res['entity'], null));
       });
@@ -272,9 +271,7 @@ export class CatalogDevelopmentComponent implements OnInit {
 
   checkAppName() {
     this.pattenTest();
-    if(this.appname.length < 64){
-      $('#routename').val(this.appname);
-    }
+    $('#routename').val(this.appname);
     this.nameCheck();
     this.checkHostName();
   }
@@ -291,7 +288,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     $('#orgname').val($('#orgname').val().replace(regExpPattern, '')
       .replace(regExpBlankPattern, '')
       .replace(regKoreanPatten, ''));
-    this.appname =$('#orgname').val();
+    this.appname =$('#orgname').val().substring(0,50);
   }
   routepattenTest(){
     const regExpPattern = /[\@\{\}\[\]\/?.,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;

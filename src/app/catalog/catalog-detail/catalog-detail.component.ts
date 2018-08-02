@@ -35,8 +35,7 @@ export class CatalogDetailComponent implements OnInit {
   spacename : string;
   region: string; // 지역
   appname: string = ''; //앱 이름
-  hostname : string;
-  appurl: string; // 앱URL
+  hostname: string; // 앱URL
   sharedomain : any;
   currentdomain : any;
   domainList : Array<any>;
@@ -319,9 +318,7 @@ export class CatalogDetailComponent implements OnInit {
 
   checkAppName() {
     this.pattenTest();
-    if(this.appname.length < 64){
-      $('#routename').val(this.appname);
-    }
+    $('#routename').val(this.appname);
     this.nameCheck();
     this.checkHostName();
   }
@@ -338,7 +335,7 @@ export class CatalogDetailComponent implements OnInit {
     $('#orgname').val($('#orgname').val().replace(regExpPattern, '')
       .replace(regExpBlankPattern, '')
       .replace(regKoreanPatten, ''));
-    this.appname =$('#orgname').val();
+    this.appname =$('#orgname').val().substring(0,50);
   }
   routepattenTest(){
     const regExpPattern = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
@@ -347,17 +344,13 @@ export class CatalogDetailComponent implements OnInit {
     $('#routename').val($('#routename').val().replace(regExpPattern, '')
       .replace(regExpBlankPattern, '')
       .replace(regKoreanPatten, ''));
-    this.appurl =$('#routename').val();
+    this.hostname =$('#routename').val();
   }
-
-
-
-
 
   routeCheck(){
     this.routecheck = CATALOGURLConstant.OK;
     this.hostnames.forEach(host => {
-      if(host === this.appurl){
+      if(host === this.hostname){
         this.routecheck = CATALOGURLConstant.NO;
         return;
       }
@@ -499,7 +492,7 @@ export class CatalogDetailComponent implements OnInit {
     } if(this.namecheck !== 1 || this.appname.length <= 0){
       this.catalogService.alertMessage(this.translateEntities.result.appNameError, false);
       return true;
-    } if(this.routecheck !== 1 || this.appurl.length <= 0){
+    } if(this.routecheck !== 1 || this.hostname.length <= 0){
       this.catalogService.alertMessage(this.translateEntities.result.routeNameError, false);
       return true;
     } if(this.serviceplanlist.some(plan => {if(plan.servicenamecheck !== 1 && plan.servicename.length <= 0){ return true;}}) || this.serviceplanlist.length <= 0){
@@ -510,12 +503,19 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   createApp(values : TranslateService) {
+    this.pattenTest();
+    this.routepattenTest();
+    let min = 0;
+    let max = this.serviceplanlist.length;
+    for(min; min < max; min++){
+      this.servicepattenTest(min);
+    }
    if(this.errorCheck()){
      return;
    }
     this.catalogService.isLoading(true);
     this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
-      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.appurl).subscribe(data => {
+      this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
           const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
           let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];
@@ -540,7 +540,7 @@ export class CatalogDetailComponent implements OnInit {
             orgName: this.org.name,
             appName: this.appname,
             name : this.appname,
-            hostName: this.appurl,
+            hostName: this.hostname,
             domainId: this.currentdomain.metadata.guid,
             memorySize : this.memory,
             diskSize : this.disk,

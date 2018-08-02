@@ -150,7 +150,7 @@
               </tr>
               <tr>
                 <th colspan="3">
-                  <input name="appname" type="text" id="orgname" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()" autofocus />
+                  <input name="appname" type="text" id="orgname" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()" autofocus maxlength="50"/>
                   <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
                   <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
                 </th>
@@ -165,7 +165,7 @@
               </tr>
               <tr>
                 <th colspan="2">
-                  <input name="route" id="routename" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}" (keyup)="checkHostName()" maxlength="64"/>
+                  <input name="route" id="routename" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}" (keyup)="checkHostName()" maxlength="50"/>
                 </th>
                 <th colspan="1">
                   <select [(ngModel)]="currentdomain">
