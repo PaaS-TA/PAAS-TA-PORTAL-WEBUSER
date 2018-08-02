@@ -258,7 +258,7 @@ export class UsermgmtComponent implements OnInit {
         this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
         this.common.isLoading = false;
       } else {
-        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail+ "<br><br>" + data.msg.description, false);
         this.common.isLoading = false;
       }
       /*reset*/
@@ -296,7 +296,7 @@ export class UsermgmtComponent implements OnInit {
 
     const reg_koreanPatten = /^[가-힣]+$/;
     // var reg_koreanPatten =  /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
-    var reg_zip = /^[A-Za-z0-9]{0,15}$/;
+    var reg_zip = /^[A-Za-z0-9]{0,1000}$/;
     if (reg_zip.test(value) && !reg_koreanPatten.test(value)) {
       this.isZipCode = true;
       return true;
@@ -341,11 +341,13 @@ export class UsermgmtComponent implements OnInit {
       this.deleteOrg('/portalapi/v2/orgs/' + orgId + '/member', param).subscribe(data => {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
         this.userMgmtService.getOrgList().subscribe(data => {
-          this.orgs = data.resources;
-        })
-      }, error=> {
-        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
-      },() => {
+          if(data.result) {
+            this.orgs = data.resources;
+          }else{
+            this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail+ "<br><br>" + data.msg.description, false);
+          }
+        }
+        )},() => {
         this.common.isLoading= false;
       });
     } else {

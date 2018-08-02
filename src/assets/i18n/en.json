@@ -562,7 +562,7 @@
     "explan" : {
       "check1" : "Only enter without spaces within 6-20 characters by mixing English and numbers.",
       "check2" : "Only enter numbers.",
-      "check3" : "Only numbers and English are allowed.",
+      "check3" : "Only 15 characters numbers and English are allowed.",
       "check4" : "Only 256 characters or less is allowed.",
       "check5" : "It is different from the password you entered."
     },

@@ -148,7 +148,7 @@
                         <input type="password" [(ngModel)]="password_new" name="password_new" id= "password_new" required="" (change)="checkPassword($event)" (keydown)="checkPassword($event)" (keyup)="checkPassword($event)">
                         <br> <span></span>
                         <span class="red"  use-form-error="isNotSame" *ngIf="!isPassword">
-                        <i class="fas fa-exclamation-circle"></i>{{'usermgmt.explan.check1' | translate}}</span>
+                        <i class="fas fa-exclamation-circle"></i> {{'usermgmt.explan.check1' | translate}}</span>
                       </p>
                       <span>{{'usermgmt.loginInfo.changePassword.newPasswordConfirmation' | translate}}
                       </span>
@@ -159,8 +159,7 @@
                       </div>
                       <span></span>
                       <span class="red"  use-form-error="isNotSame" *ngIf="!isRePassword">
-                        <i class="fas fa-exclamation-circle"></i>
-                        {{'usermgmt.explan.check5' | translate}}
+                        <i class="fas fa-exclamation-circle"></i> {{'usermgmt.explan.check5' | translate}}
                       </span>
                     </div>
                   </div>
@@ -217,7 +216,7 @@
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isTellPhone">
-                        <i class="fas fa-exclamation-circle"></i>{{'usermgmt.explan.check2' | translate}}
+                        <i class="fas fa-exclamation-circle"></i> {{'usermgmt.explan.check2' | translate}}
                       </span>
                     </div>
                   </div>
@@ -241,7 +240,7 @@
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isZipCode" >
-                        <i class="fas fa-exclamation-circle"></i>{{'usermgmt.explan.check3' | translate}}
+                        <i class="fas fa-exclamation-circle"></i> {{'usermgmt.explan.check3' | translate}}
                       </span>
                     </div>
                   </div>
@@ -265,7 +264,7 @@
                       </div>
                       <span></span>
                       <span class="red" use-form-error="isNotSame" *ngIf="!isAddress" >
-                        <i class="fas fa-exclamation-circle"></i>{{'usermgmt.explan.check4' | translate}}
+                        <i class="fas fa-exclamation-circle"></i> {{'usermgmt.explan.check4' | translate}}
                       </span>
                     </div>
                   </div>
