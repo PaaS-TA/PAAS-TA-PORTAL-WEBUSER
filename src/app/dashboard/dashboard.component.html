@@ -125,7 +125,9 @@
                   <div class="app_title" (click)="moveDashboard(item.name,item.guid)">
                     <div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 56px; height: 56px"
                                               onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div>
-                    <a href="javascript:void(0);" class="title_anchor">{{item.name.trim()}}</a>
+                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: 260px;">
+                    <a href="javascript:void(0);" class="title_anchor">
+                      {{item.name.trim()}}</a></span>
                   </div>
 
                   <div class="app_per clearfix">
@@ -241,8 +243,8 @@
                   <div class="app_title">
                     <div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 54px; height: 54px"
                                               onError="this.src='../../assets/resources/images/catalog/catalog_3.png'"/>
-                    </div>
-                    &nbsp;{{item.name}}
+                    </div> <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: 260px;">
+                    &nbsp;{{item.name}} </span>
                   </div>
                   <div class="app_per clearfix" *ngIf="item.service_plan != null">
                     <ul>
