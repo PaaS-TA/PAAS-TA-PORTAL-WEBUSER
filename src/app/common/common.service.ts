@@ -146,6 +146,8 @@ export class CommonService {
     window.sessionStorage.removeItem('sessionTimeout');
     window.sessionStorage.removeItem('expire_date');
     window.sessionStorage.removeItem('token');
+    window.sessionStorage.removeItem('monitoring');
+    window.sessionStorage.removeItem('quantity');
   }
 
   public saveToken(token_type: any, token: any, refresh_token: any, expires_in: any, scope: any, login_type: any) {
@@ -174,6 +176,10 @@ export class CommonService {
     sessionTime.setMinutes(sessionTime.getMinutes() + AppConfig.sessionTimeout);
     //this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
+
+
+    window.sessionStorage.setItem('monitoring', AppConfig.monitoring.toString());
+    window.sessionStorage.setItem('quantity', AppConfig.quantity.toString());
   }
 
   public refreshSession() {
@@ -507,6 +513,14 @@ export class CommonService {
 
   getCurrentCatalogNumber(): any {
     return window.sessionStorage.getItem('catalog_number');
+  }
+
+  getMonitoring() : any {
+    return window.sessionStorage.getItem('monitoring');
+  }
+
+  getQuantity() : any {
+    return window.sessionStorage.getItem('quantity');
   }
 
   alertMessage(value, result) {

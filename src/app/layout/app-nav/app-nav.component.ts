@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {CommonService} from "../../common/common.service";
 
 declare var $: any; declare var jQuery: any;
 
@@ -9,9 +10,15 @@ declare var $: any; declare var jQuery: any;
 })
 export class AppNavComponent implements OnInit {
 
-  constructor() { }
+  constructor(private common : CommonService) { }
+  monitoring : boolean;
 
   ngOnInit() {
+    if(this.common.getMonitoring() === 'true'){
+      this.monitoring = true;
+    }else {
+      this.monitoring = false;
+    }
   }
 
   tabShowClick(id) {
