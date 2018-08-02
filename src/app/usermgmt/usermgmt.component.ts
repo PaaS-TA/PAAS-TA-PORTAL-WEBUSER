@@ -155,10 +155,15 @@ export class UsermgmtComponent implements OnInit {
     this.common.isLoading = true;
     console.log(params);
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
-      this.common.isLoading = false;
-      console.log(data);
-      return this.userInfo();
+      if(data.result){
+        this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
+        this.common.isLoading = false;
+        console.log(data);
+        return this.userInfo();
+      }else{
+        this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail + "<br><br>" + data.msg, false);
+        this.common.isLoading = false;
+      }
     }, error => {
       this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
       this.common.isLoading = false;
@@ -258,7 +263,7 @@ export class UsermgmtComponent implements OnInit {
         this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
         this.common.isLoading = false;
       } else {
-        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail+ "<br><br>" + data.msg.description, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail+ "<br><br>" + data.msg, false);
         this.common.isLoading = false;
       }
       /*reset*/
@@ -341,13 +346,11 @@ export class UsermgmtComponent implements OnInit {
       this.deleteOrg('/portalapi/v2/orgs/' + orgId + '/member', param).subscribe(data => {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
         this.userMgmtService.getOrgList().subscribe(data => {
-          if(data.result) {
-            this.orgs = data.resources;
-          }else{
-            this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail+ "<br><br>" + data.msg.description, false);
-          }
-        }
-        )},() => {
+          this.orgs = data.resources;
+        })
+      }, error=> {
+        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail+ "<br><br>" + data.msg, false);
+      },() => {
         this.common.isLoading= false;
       });
     } else {
