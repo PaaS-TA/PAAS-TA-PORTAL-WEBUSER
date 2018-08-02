@@ -353,15 +353,15 @@
                         <th>{{ 'appMain.env.userCustom' | translate }}</th>
                         <td>
                           <span *ngFor="let item of appEnvUserEntities">
-                          <input type="text" class="custom_url_1" value="{{item.eventID}}" />
-                          <input type="text" class="custom_url_2"  value="{{item.eventData}}"/>
+                          <input type="text" class="custom_url_1" value="{{item.eventID}}" disabled />
+                          <input type="text" class="custom_url_2"  value="{{item.eventData}}" disabled/>
                           </span >
                         </td>
                       </tr>
                       <tr class="H180">
                         <th>{{ 'appMain.env.systemCustom' | translate }}</th>
                         <td>
-                          <textarea id="in_a">{{appSystemProvidedEnv}}</textarea>
+                          <textarea id="in_a" disabled>{{appSystemProvidedEnv}}</textarea>
                         </td>
                       </tr>
                     </tbody>
