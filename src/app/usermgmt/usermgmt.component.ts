@@ -346,10 +346,10 @@ export class UsermgmtComponent implements OnInit {
       this.deleteOrg('/portalapi/v2/orgs/' + orgId + '/member', param).subscribe(data => {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
         this.userMgmtService.getOrgList().subscribe(data => {
-          this.orgs = data.resources;
+            this.orgs = data.resources;
         })
       }, error=> {
-        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail+ "<br><br>" + data.msg, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
       },() => {
         this.common.isLoading= false;
       });
