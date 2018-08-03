@@ -107,7 +107,7 @@ export class ResetComponent implements OnInit {
       this.externalService.reset(param).subscribe(data => {
         if (data['result'] == true) {
           this.commonService.isLoading = false;
-          alert('성공적으로 변경');
+          this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
           let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
           this.externalService.updateInfo(this.userId, userInfo);
           this.router.navigate(['login']);
@@ -115,6 +115,7 @@ export class ResetComponent implements OnInit {
           alert(data['msg']);
         }
       },error =>{
+        this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
         this.commonService.isLoading = false;
       } );
     }
