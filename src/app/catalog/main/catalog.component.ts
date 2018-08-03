@@ -31,8 +31,9 @@ export class CatalogComponent implements OnInit {
 
 
   ngOnInit() {
-    var name = this.catalogService.classname;
-    var check = this.catalogService.check;
+    let name = this.catalogService.classname;
+    let check = this.catalogService.check;
+    let service = this.catalogService;
     console.log(check);
     $(document).ready(() => {
       //TODO 임시로...
@@ -45,6 +46,7 @@ export class CatalogComponent implements OnInit {
           $('#nav_fourth').attr('class','');
           if(check){
             $('#nav_first').attr('class','cur');
+            service.navView = 'viewAll';
           }
           else{
             $(name).attr('class','cur');

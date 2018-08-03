@@ -119,7 +119,7 @@
               </tr>
               <tr style="height: 10px">
                 <th colspan="3">
-                  <input type="text" id="servicename" placeholder="{{ 'catalog.contants.inputService' | translate }}" (keyup)="serviceNameCheck()"  maxlength="50"/>
+                  <input name="servicename" type="text" id="servicename" placeholder="{{ 'catalog.contants.inputService' | translate }}" (keyup)="serviceNameCheck()"  maxlength="50" autofocus/>
                   <div *ngIf="(namecheck === 1 && servicename.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
                   <div *ngIf="(namecheck === -1 && servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseService' | translate }}</p></div>
                 </th>
@@ -220,7 +220,7 @@
             </div>
           </div>
           <div class="cWrap_btn">
-            <button class="btns2 btns2_1 colors4" (click)="createService()">{{ 'catalog.service.produce' | translate }}</button>
+            <button class="btns2 btns2_1 colors4" id="createService" (click)="createService()">{{ 'catalog.service.produce' | translate }}</button>
             <button class="btns2 btns2_1 colors5" [routerLink]="['/catalog']">{{ 'catalog.service.cancel' | translate }}</button>
           </div>
         </div>

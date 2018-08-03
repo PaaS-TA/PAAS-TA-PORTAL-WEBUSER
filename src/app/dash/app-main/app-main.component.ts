@@ -2150,5 +2150,8 @@ export class AppMainComponent implements OnInit {
   showWindowAppLink(urlLink: string) {
     window.open('http://' + urlLink + '', 'aaa');
   }
+  getWindowAppLink(urlLink : string) : string{
+    return 'http://'+urlLink+'';
+  }
 
 }

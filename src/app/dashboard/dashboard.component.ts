@@ -207,18 +207,15 @@ export class DashboardComponent implements OnInit {
       (data['resources'] as Array<Object>).forEach(spaceData => {
           this.spaces.push(new Space(spaceData['metadata'], spaceData['entity'], orgId));
       });
-      console.log(this.spaces);
-      console.log(this.commonService.getCurrentSpaceGuid());
-      console.log(this.spaces.find(space => space.guid === this.commonService.getCurrentSpaceGuid()));
-      if(isNullOrUndefined(this.spaces.find(space => space.guid === this.commonService.getCurrentSpaceGuid()))){
+      this.space = this.spaces.find(space => space.guid === this.commonService.getCurrentSpaceGuid())
+      if(isNullOrUndefined(this.space)){
         if(this.spaces.length > 0){
           this.currentSpace = this.spaces[0].guid;
         } else {
           this.currentSpace = '';
         }
       }else if (data['resources'].length > 0){
-        this.space = this.spaces[0];
-        this.currentSpace = this.space.guid;
+        this.currentSpace = this.commonService.getCurrentSpaceGuid()
         this.commonService.setCurrentSpaceGuid(this.space.guid);
         this.commonService.setCurrentSpaceName(this.space.name);
       }else {
@@ -243,7 +240,6 @@ export class DashboardComponent implements OnInit {
       this.spaces = [];
       this.currentSpace = null;
     } else if(type === 'first'){
-      console.log("펄스트");
       if(this.orgs.length > 0) {
         this.org = this.orgs[0];
         this.commonService.setCurrentOrgGuid(this.org.guid);
@@ -313,6 +309,8 @@ export class DashboardComponent implements OnInit {
 
     } else {
       /*초기화*/
+      this.commonService.setCurrentSpaceGuid('');
+      this.commonService.setCurrentSpaceName('');
       this.isEmpty = true;
       this.isSpace = false;
       this.commonService.isLoading = false;

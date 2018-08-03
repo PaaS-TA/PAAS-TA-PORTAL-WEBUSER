@@ -47,6 +47,7 @@ export class AppTopComponent implements OnInit {
     $('#' + this.cursorId).addClass('cur');
     const url = this.router['url'].split("/")[1];
 
+
     if (this.common.getCurrentAppGuid != null) {
       this.location = this.common.getCurrentLocation();
       this.orgName = this.common.getCurrentOrgName();
