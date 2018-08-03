@@ -11,6 +11,9 @@ export const AppConfig = {
   logoutUrl: 'https://uaa.115.68.46.187.xip.io/logout',
   userinfoUrl: '/commonapi/v2/user',
   code: 'code',
-  sessionTimeout: 10
+  sessionTimeout: 10,
+  monitoring : false,         // 모니터링 사용 유무
+  quantity : false,           // 사용량 조회 사용 유무
+  automaticApproval : true // 회원가입 자동승인 사용 유무
 };
 

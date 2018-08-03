@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {CommonService} from "../../common/common.service";
 
 declare var $: any; declare var jQuery: any;
 
@@ -9,7 +10,7 @@ declare var $: any; declare var jQuery: any;
 })
 export class AppNavComponent implements OnInit {
 
-  constructor() { }
+  constructor(private common : CommonService) { }
 
   ngOnInit() {
   }

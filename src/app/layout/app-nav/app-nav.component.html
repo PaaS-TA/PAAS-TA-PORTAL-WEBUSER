@@ -105,6 +105,7 @@
           <!--</dd>-->
         <!--</dl>-->
       <!--</li>-->
+      <ng-container *ngIf="common.getMonitoring()">
       <li id="nav_tabContent_viewchart" (click)="tabShowClick('tabContent_viewchart')">
         <dl>
           <dt>
@@ -118,6 +119,7 @@
           </dd>
         </dl>
       </li>
+      </ng-container>
     </ul>
   </div>
 </nav>

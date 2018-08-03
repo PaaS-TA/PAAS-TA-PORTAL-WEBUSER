@@ -113,26 +113,31 @@ export class CreateComponent implements OnInit {
         'password': this.password,
         'tellPhone': '',
         'address': '',
-        'active' : true
-         // 'active' : $("[id^='ra2']").is(":checked")
+        'active' : this.commonService.getAutomaticApproval()
       }
 
       this.externalService.createUser(param).subscribe(data => {
         this.commonService.isLoading = true;
         if (data['result'] == true) {
           this.commonService.isLoading = false;
-          this.commonService.alertMessage('성공적으로 생성되었습니다.', true);
+          alert('성공적으로 생성');
           let userInfo = {
             'userId': this.userId,
             'userName': this.username,
             'refreshToken': '',
             'authAccessTime': '',
             'authAccessCnt': 0,
-            'active' : 'Y'
-            // 'active' : $("[id^='ra2']").is(":checked") ? 'Y' : 'N'
+            'active' : this.commonService.getAutomaticApproval() ? 'Y' : 'N'
           };
           this.externalService.updateInfo(this.userId, userInfo);
-          this.router.navigate(['login']);
+          if(!this.commonService.getAutomaticApproval()){
+            this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
+          }else {
+            this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
+          }
+          setTimeout(() => this.commonService.isLoading=false, 5000);
+          setTimeout(() => this.router.navigate(['login']), 5000);
+
         } else {
           this.commonService.alertMessage(data['msg'], false);
         }

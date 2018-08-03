@@ -509,6 +509,18 @@ export class CommonService {
     return window.sessionStorage.getItem('catalog_number');
   }
 
+  getMonitoring() : boolean {
+    return AppConfig.monitoring;
+  }
+
+  getQuantity() : boolean {
+    return AppConfig.quantity;
+  }
+
+  getAutomaticApproval() : boolean {
+    return AppConfig.automaticApproval;
+  }
+
   alertMessage(value, result) {
     $(".alertLayer .in").html(value);
     if (result) {

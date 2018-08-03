@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {CommonService} from "../../common/common.service";
 
 declare var $: any;
 
@@ -11,12 +12,13 @@ declare var $: any;
 export class NavComponent implements OnInit {
   @Input('cursorId') cursorId: string;
 
+  quantity : boolean;
   translateEntities : any;
   allMenuCursorIds: string[] = [
     'cur_usermgmt_nav', 'cur_org_nav', 'cur_org2_nav', 'cur_quantity_nav', 'cur_login_nav'
   ];
 
-  constructor(private translate: TranslateService) { }
+  constructor(private translate: TranslateService, private common : CommonService) { }
 
   ngOnInit() {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
