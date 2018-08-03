@@ -318,13 +318,13 @@
               </div>
               <div class="table_wrap table_wraps">
                 <div>
-                  <table class="nocondition">
+                  <table class="condition alignL">
                     <colgroup>
                       <col style='*'>
                     </colgroup>
                     <tbody *ngFor="let item of appRoutesEntitiesRe">
                       <tr>
-                        <td>{{item.uri}}</td>
+                        <td><a target="_blank" href="{{getWindowAppLink(item.uri)}}"target="_blank">{{item.uri}}<img src="../../../assets/resources/images/link.png"/></a></td>
                       </tr>
                     </tbody>
                   </table>
