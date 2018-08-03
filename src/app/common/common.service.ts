@@ -12,6 +12,7 @@ import {Router} from "@angular/router";
 import {AppConfig} from "../app.config"
 import {ResponseContentType, ResponseOptions} from "@angular/http";
 import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
+import {isNullOrUndefined} from "util";
 
 declare var $: any;
 
@@ -340,11 +341,11 @@ export class CommonService {
 
   public getImagePath(): string {
     let imgPath: string = sessionStorage.getItem('img_path');
-    if (imgPath === undefined || imgPath === null || imgPath === 'null' || imgPath.trim() === "") {
+    let index = imgPath.indexOf('data:application/json;base64');
+    if (isNullOrUndefined(imgPath) || imgPath.trim() === ""|| index !== -1) {
       imgPath = '/assets/resources/images/account/profile-thumbnail-sample.png';
       this.log.trace('Header img path is empty string. So, image url set default.');
     }
-
     return imgPath;
   }
 
