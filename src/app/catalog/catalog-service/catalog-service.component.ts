@@ -71,7 +71,7 @@ export class CatalogServiceComponent implements OnInit {
     this.ServiceInit();
     this.OrgsInit();
     this.doLayout();
-
+    this.keyPressInit();
   }
   doLayout() {
     $(document).ready(() => {
@@ -95,6 +95,15 @@ export class CatalogServiceComponent implements OnInit {
     this.catalogService.alertMessage(value, true);
     this.catalogService.isLoading(false);
   }
+
+  keyPressInit(){
+    $('input[name=servicename]').keydown(function (key) {
+      if(key.keyCode == 13){
+        $('#createService').trigger('click');
+      }
+    });
+  }
+
 
   activatedRouteInit() {
     const orgname = this.catalogService.getOrgName();
