@@ -436,7 +436,7 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
 .nav_2d div > ul{cursor: pointer;}
 /*.two_line{margin-left: 0.4%;}*/
 
-.two_line > ul#sortable{float:left;}
+.two_line > ul#sortable{float:left;width:100%}/* 180803 width 추가 */
 .two_line > ul#sortable > li{width:35.97%; float:left; margin-top:30px; margin-left:1.6%;}
 .two_line > ul#sortable > li:first-child{}
 .two_line > ul#sortable > li:nth-child(3n+1){margin-left:0%;}
