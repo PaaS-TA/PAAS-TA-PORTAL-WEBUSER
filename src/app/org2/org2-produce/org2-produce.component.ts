@@ -17,16 +17,16 @@ declare var jQuery: any;
   styleUrls: ['./org2-produce.component.css']
 })
 export class Org2ProduceComponent implements OnInit {
-  private orgname :string = '';
-  private errorMessage: string = '';
-  private orgnamelist: any;
-  private orgquotalist : any = [];
-  private isError : boolean;
-  private aquota : any;
+  public orgname :string = '';
+  public errorMessage: string = '';
+  public orgnamelist: any;
+  public orgquotalist : any = [];
+  public isError : boolean;
+  public aquota : any;
 
   public translateEntities: any = [];
 
-  constructor(private orgService : Org2ProduceService, private translate: TranslateService) {
+  constructor(public orgService : Org2ProduceService, public translate: TranslateService) {
     this.translate.get('orgProduce').subscribe((res: string) => {
       this.translateEntities = res;
     });

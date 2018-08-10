@@ -12,7 +12,7 @@ declare var jQuery: any;
 })
 export class CatalogNavComponent implements OnInit {
   translateEntities : any;
-  constructor(private catalogService: CatalogService, private router: Router) {
+  constructor(public catalogService: CatalogService, public router: Router) {
 
   }
 

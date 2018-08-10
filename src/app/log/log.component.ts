@@ -1,5 +1,4 @@
 import {Component, InjectionToken, OnInit} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
 import {CommonService} from "../common/common.service";
 
 

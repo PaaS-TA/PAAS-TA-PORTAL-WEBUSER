@@ -10,7 +10,7 @@ declare var $: any; declare var jQuery: any;
 })
 export class AppNavComponent implements OnInit {
 
-  constructor(private common : CommonService) { }
+  constructor(public common : CommonService) { }
 
   ngOnInit() {
   }

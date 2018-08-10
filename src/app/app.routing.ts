@@ -23,8 +23,6 @@ import {UsermgmtComponent} from './usermgmt/usermgmt.component';
 import {LoginComponent} from './index/login/login.component';
 import {AuthGuard} from './auth/auth.guard';
 import {CatalogDetailComponent} from "./catalog/catalog-detail/catalog-detail.component";
-import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
-import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
 import {ErrorComponent} from "./error/error.component";
 import {CreateuserComponent} from "./index/createuser/createuser.component";
 import {ResetpasswdComponent} from "./index/resetpasswd/resetpasswd.component";
@@ -65,8 +63,6 @@ const routes: Routes = [
   {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},
   {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]},
   {path: 'tailLogs', component: TailLogsComponent, canActivate: [AuthGuard]},
-  {path: 'dashboardSpace', component: DashboardSpaceComponent, canActivate: [AuthGuard]},
-  {path: 'dashboardProduce', component: DashboardProduceComponent, canActivate: [AuthGuard]},
   {path: 'quantity', component: QuantityMainComponent, canActivate: [AuthGuard]},
   {path: 'createuser', component: CreateuserComponent},
   {path: 'resetpasswd', component: ResetpasswdComponent},

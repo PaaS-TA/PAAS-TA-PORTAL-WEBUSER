@@ -4,9 +4,9 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0",
-    "start-prod": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0 --prod --base-href / --aot=false",
-    "build": "ng build --prod --base-href / --aot=false",
+    "start": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0 --aot=true",
+    "start-prod": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0 --prod --base-href / --aot=true",
+    "build": "ng build --prod --base-href / --aot=true",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

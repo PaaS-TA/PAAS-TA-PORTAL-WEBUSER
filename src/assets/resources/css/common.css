@@ -1332,11 +1332,12 @@ body.email h4{color:#293133;}
 .monitor_set li:first-child{margin-top:30px}
 .monitor_set li{width:100%;margin-top:10px}
 .monitor_set li:after{display:table;clear:both;content:'';overflow:hidden;visibility:hidden;height:0;width:0;}
-.monitor_set li > div:nth-child(1){float:left;line-height:40px;width:26%}
-.monitor_set li > div:nth-child(2){float:left;line-height:40px;width:6%}
-.monitor_set li > div:nth-child(3){float:left;width:21%;position:relative;}
-.monitor_set li > div:nth-child(4){float:left;line-height:40px;width:6%;margin-left:5%}
-.monitor_set li > div:nth-child(5){float:left;width:21%;margin-right:15%;position:relative}
+.monitor_set li > div:nth-child(1){float:left;line-height:40px;width:22%}
+.monitor_set li > div:nth-child(2){float:left;line-height:40px;width:4%}
+.monitor_set li > div:nth-child(3){float:left;line-height:40px;width:6%}
+.monitor_set li > div:nth-child(4){float:left;width:21%;position:relative;}
+.monitor_set li > div:nth-child(5){float:left;line-height:40px;width:6%;margin-left:5%}
+.monitor_set li > div:nth-child(6){float:left;width:21%;margin-right:15%;position:relative}
 .monitor_set input{width:100%}
 .monitor_center{text-align:center;margin-bottom:30px}
 .monitor_centers{text-align:center;margin-bottom:80px}

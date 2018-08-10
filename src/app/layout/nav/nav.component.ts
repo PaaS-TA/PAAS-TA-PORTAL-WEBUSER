@@ -18,7 +18,7 @@ export class NavComponent implements OnInit {
     'cur_usermgmt_nav', 'cur_org_nav', 'cur_org2_nav', 'cur_quantity_nav', 'cur_login_nav'
   ];
 
-  constructor(private translate: TranslateService, private common : CommonService) { }
+  constructor(private translate: TranslateService, public common : CommonService) { }
 
   ngOnInit() {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {

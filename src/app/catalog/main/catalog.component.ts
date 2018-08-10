@@ -19,7 +19,7 @@ export class CatalogComponent implements OnInit {
   recentpacks : Array<any> = Array<any>();
   translateEntities : any;
   views : string = '';
-  constructor(private translate: TranslateService, private catalogService: CatalogService, private logger: NGXLogger,private router: Router) {
+  constructor(public translate: TranslateService, public catalogService: CatalogService, public logger: NGXLogger,public router: Router) {
     this.userid = catalogService.getUserid();
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
@@ -121,7 +121,7 @@ export class CatalogComponent implements OnInit {
     }
   }
 
-  private jsonParse(value) : any{
+  public jsonParse(value) : any{
     let result = '';
     let json = JSON.parse(value.tagsParam);
     value.buttonclass = new Array<any>();

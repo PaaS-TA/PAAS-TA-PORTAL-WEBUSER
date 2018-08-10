@@ -343,7 +343,7 @@ export class CommonService {
     try{
     let imgPath: string = sessionStorage.getItem('img_path');
     if(isNullOrUndefined(imgPath)){
-      return '';
+      return '/assets/resources/images/account/profile-thumbnail-sample.png';
     }
     let index = imgPath.indexOf('data:application/json;base64');
     if (isNullOrUndefined(imgPath) || imgPath.trim() === ""|| index !== -1) {
@@ -352,7 +352,7 @@ export class CommonService {
     }
     return imgPath;
     }catch (e) {
-      return '';
+      return '/assets/resources/images/account/profile-thumbnail-sample.png';
     }
   }
 

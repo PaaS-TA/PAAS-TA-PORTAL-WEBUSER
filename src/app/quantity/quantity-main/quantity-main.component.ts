@@ -15,7 +15,7 @@ declare var Chart;
   styleUrls: ['./quantity-main.component.css']
 })
 export class QuantityMainComponent implements OnInit, AfterContentChecked {
-  private charts: Array<QuantityChart> = [];
+  public charts: Array<QuantityChart> = [];
   private isLoadingChart: Boolean = null;
   constructor(private common: CommonService, private quantityService: QuantityMainService,
               private logger: NGXLogger) { }
@@ -92,7 +92,7 @@ export class QuantityMainComponent implements OnInit, AfterContentChecked {
 }
 
 class QuantityChart {
-  private _chart;
+  public _chart;
   private _data;
 
   constructor(data) {
