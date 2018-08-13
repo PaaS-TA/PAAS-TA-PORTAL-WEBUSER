@@ -37,12 +37,6 @@ import {AuthGuard} from './auth/auth.guard';
 import {OrgModule} from './org/org.module';
 import {Org2Module} from './org2/org2.module';
 import {CatalogModule} from "./catalog/catalog.module";
-
-import {DashboardSpaceComponent} from './dashboard/dashboard-space/dashboard-space.component';
-import {DashboardSapaceService} from './dashboard/dashboard-space/dashboard-sapace.service';
-
-import {DashboardProduceComponent} from './dashboard/dashboard-produce/dashboard-produce.component';
-import {DashboardProduceService} from './dashboard/dashboard-produce/dashboard-produce.service';
 import {CatalogService} from "./catalog/main/catalog.service";
 import {ErrorComponent} from './error/error.component';
 import {IndexModule} from "./index/index.module";
@@ -78,8 +72,6 @@ export function createTranslateLoader(http: HttpClient) {
     LeftComponent,
     CallbackComponent,
     LogoutComponent,
-    DashboardSpaceComponent,
-    DashboardProduceComponent,
     ErrorComponent
   ],
   imports: [
@@ -128,8 +120,6 @@ export function createTranslateLoader(http: HttpClient) {
     SpaceService,
     OrgQuotaService,
     CatalogService,
-    DashboardProduceService,
-    DashboardSapaceService,
   ],
   bootstrap: [AppComponent],
   exports: [],

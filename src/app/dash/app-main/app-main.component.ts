@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {CommonService} from "../../common/common.service";
 import {CATALOGURLConstant} from "../../catalog/common/catalog.constant";
-import {isUndefined} from "util";
+import {isNull, isNullOrUndefined, isUndefined} from "util";
 
 
 declare var Chart: any;
@@ -26,7 +26,7 @@ export class AppMainComponent implements OnInit {
   public spaceGuid: string;
   public appName: string;
   public appGuid: string;
-  private isLoading: boolean = false;
+  public isLoading: boolean = false;
 
   public translateEntities: any = [];
 
@@ -51,33 +51,33 @@ export class AppMainComponent implements OnInit {
   public servicepacksEntities: Observable<any[]>;
   public servicepacksEntitiesRe: any = [];
 
-  private appThumbImgPath: string;
-  private appSummarySpaceGuid: string;
-  private appSummaryName: string = "";
-  private appSummaryGuid: string;
-  private appSummaryState: string;
-  private appSummaryRouteUri: string;
-  private appSummaryPackageUpdatedAt: string;
-  private appSummaryBuildpack: string;
-  private appSummaryBuildPackName: string;
-  private appSummaryInstance: number;
-  private appSummaryInstanceMax: number;
-  private appSummaryInstancePer: number;
-  private appSummaryMemoryMax: number;
-  private appSummaryMemory: number;
-  private appSummaryDiskMax: number;
-  private appSummaryDisk: number;
+  public appThumbImgPath: string;
+  public appSummarySpaceGuid: string;
+  public appSummaryName: string = "";
+  public appSummaryGuid: string;
+  public appSummaryState: string;
+  public appSummaryRouteUri: string;
+  public appSummaryPackageUpdatedAt: string;
+  public appSummaryBuildpack: string;
+  public appSummaryBuildPackName: string;
+  public appSummaryInstance: number;
+  public appSummaryInstanceMax: number;
+  public appSummaryInstancePer: number;
+  public appSummaryMemoryMax: number;
+  public appSummaryMemory: number;
+  public appSummaryDiskMax: number;
+  public appSummaryDisk: number;
 
-  private appStatsCpuPer: number;
-  private appStatsMemoryPer: number;
-  private appStatsDiskPer: number;
+  public appStatsCpuPer: number;
+  public appStatsMemoryPer: number;
+  public appStatsDiskPer: number;
 
-  private appSystemProvidedEnv: string;
+  public appSystemProvidedEnv: string;
 
-  private appRecentLogs: string;
+  public appRecentLogs: string;
 
-  private tabContentEventListLimit: number;
-  private tabContentStatsListLimit: number;
+  public tabContentEventListLimit: number;
+  public tabContentStatsListLimit: number;
 
   public sltStatsInstance: string;
 
@@ -135,7 +135,7 @@ export class AppMainComponent implements OnInit {
   alive = true;
 
 
-  constructor(private route: ActivatedRoute, private router: Router, private translate: TranslateService, private appMainService: AppMainService, private common: CommonService) {
+  constructor(public route: ActivatedRoute, public router: Router, public translate: TranslateService, public appMainService: AppMainService, public common: CommonService) {
     this.common.isLoading = false;
 
     // Observable.timer(0,1000 * 60 * 2)
@@ -365,12 +365,10 @@ export class AppMainComponent implements OnInit {
       var servicepacks = this.servicepacksEntities;
       var servicepacksRe = [];
       var useServices = this.appServicesEntities;
-
       $.each(data.services, function (key, dataobj) {
         $.each(servicepacks, function (key2, dataobj2) {
-          if ((dataobj.service_plan.service.label == dataobj2.servicePackName) && (dataobj2.appBindYn == "Y") && (dataobj2.useYn == "Y")) {
-
-            if (JSON.stringify(useServices).indexOf("\"name\":\"" + dataobj.name + "\"") < 0) {
+          if(!isNullOrUndefined(dataobj.service_plan)){
+          if ((dataobj.service_plan.service.label === dataobj2.servicePackName) && (dataobj2.appBindYn === 'Y') && (dataobj2.useYn === 'Y')) {
               var obj = {
                 name: dataobj.name,
                 guid: dataobj.guid,
@@ -378,13 +376,12 @@ export class AppMainComponent implements OnInit {
                 appBindParameter: dataobj2.appBindParameter
               };
               servicepacksRe.push(obj);
-            } else {
-            }
-
+          }
           }
         });
       });
       this.servicepacksEntitiesRe = servicepacksRe;
+      console.log(this.servicepacksEntitiesRe);
     });
   }
 
@@ -1594,6 +1591,7 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
+          if(!isNullOrUndefined(dataobj[i].data.data)){
           if (dataobj[i].data.data[0].data == null) {
             continue;
           }
@@ -1633,7 +1631,7 @@ export class AppMainComponent implements OnInit {
             }
           }
         }
-
+        }
       });
 
       for (var k = 0; k < levelsArray.length; k++) {
@@ -1656,9 +1654,11 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if (dataobj[i].data.data[0].data == null) {
-            continue;
-          }
+          if(!isNullOrUndefined(dataobj[i].data.data)){
+            if (dataobj[i].data.data[0].data == null) {
+              continue;
+            }
+
 
           var keyValueObject = new Object;
           keyValueObject = levelsObj;
@@ -1706,6 +1706,7 @@ export class AppMainComponent implements OnInit {
           datasetsArray[i] = valueObject;
 
           // console.log(datasetsArray);
+        }
         }
       });
 
@@ -1781,9 +1782,11 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if (dataobj[i].data.data[0].data == null) {
-            continue;
-          }
+          if(!isNullOrUndefined(dataobj[i].data.data)){
+            if (dataobj[i].data.data[0].data == null) {
+              continue;
+            }
+
 
           var timeArray = new Array();
 
@@ -1814,7 +1817,7 @@ export class AppMainComponent implements OnInit {
             }
           }
         }
-
+        }
       });
 
       for (var k = 0; k < levelsArray.length; k++) {
@@ -1837,9 +1840,11 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if (dataobj[i].data.data[0].data == null) {
-            continue;
-          }
+          if(!isNullOrUndefined(dataobj[i].data.data)){
+            if (dataobj[i].data.data[0].data == null) {
+              continue;
+            }
+
 
           var keyValueObject = new Object;
           keyValueObject = levelsObj;
@@ -1887,6 +1892,7 @@ export class AppMainComponent implements OnInit {
           datasetsArray[i] = valueObject;
 
           // console.log(datasetsArray);
+        }
         }
       });
 
@@ -1962,9 +1968,11 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if (dataobj[i].data.data[0].data == null) {
-            continue;
-          }
+          if(!isNullOrUndefined(dataobj[i].data.data)){
+            if (dataobj[i].data.data[0].data == null) {
+              continue;
+            }
+
 
           var timeArray = new Array();
 
@@ -1995,7 +2003,7 @@ export class AppMainComponent implements OnInit {
             }
           }
         }
-
+        }
       });
 
       for (var k = 0; k < levelsArray.length; k++) {
@@ -2018,9 +2026,10 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if (dataobj[i].data.data[0].data == null) {
-            continue;
-          }
+          if (!isNullOrUndefined(dataobj[i].data.data)) {
+            if (dataobj[i].data.data[0].data == null) {
+              continue;
+            }
 
           var keyValueObject = new Object;
           keyValueObject = levelsObj;
@@ -2068,6 +2077,7 @@ export class AppMainComponent implements OnInit {
           datasetsArray[i] = valueObject;
 
           // console.log(datasetsArray);
+        }
         }
       });
 

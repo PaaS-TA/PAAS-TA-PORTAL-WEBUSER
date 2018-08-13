@@ -2,3 +2,9 @@
 .right_nav > li .dropdown-menu#r_user .log_out{ background: #243135; text-align: center; color:#fff; font-size: 14px; line-height: 45px; border-top: 1px solid #404e52; cursor: pointer;}
 .right_nav > li > a{display:inline-block;line-height:76px;color:#fff;font-size:18px;text-align:left; font-weight: normal;}
 .right_nav > li > a:hover{color:#64e9fd ;}
+
+
+/*koren css*/
+/*.header{position:fixed;top:0;left:0;width:100%;height:136px;background:#23366e;z-index:999;}*/
+/*header.account{height:76px;}*/
+

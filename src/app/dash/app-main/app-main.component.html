@@ -883,6 +883,7 @@
                 <ul>
                   <li>
                     <div>{{ 'appMain.viewchart.settingTab.instanceCnt' | translate }}</div>
+                    <div>&nbsp;</div>
                     <div>{{ 'appMain.viewchart.settingTab.min' | translate }}</div>
                     <div>
                       <input type="text" id="appAutoscalingInstanceMinCnt" name="appAutoscalingInstanceMinCnt" [(ngModel)]="appAutoscalingInstanceMinCnt" class="num1"/>
@@ -898,6 +899,10 @@
                   </li>
                   <li>
                     <div>{{ 'appMain.viewchart.settingTab.cpuThreshold' | translate }}</div>
+                    <div>
+                      <input id="check1" type="checkbox" checked="checked">
+                      <label for="check1"></label>
+                    </div>
                     <div>{{ 'appMain.viewchart.settingTab.min' | translate }}</div>
                     <div>
                       <input type="text" id="appAutoscalingCpuMinThreshold" name="appAutoscalingCpuMinThreshold" [(ngModel)]="appAutoscalingCpuMinThreshold" class="num3"/>
@@ -913,6 +918,10 @@
                   </li>
                   <li>
                     <div>{{ 'appMain.viewchart.settingTab.memoryThreshold' | translate }}</div>
+                    <div>
+                        <input id="check2" type="checkbox" checked="checked">
+                        <label for="check2"></label>
+                    </div>
                     <div>{{ 'appMain.viewchart.settingTab.min' | translate }}</div>
                     <div>
                       <input type="text" id="appAutoscalingMemoryMinThreshold" name="appAutoscalingMemoryMinThreshold" [(ngModel)]="appAutoscalingMemoryMinThreshold" class="num5"/>
@@ -929,6 +938,7 @@
                   <li>
                     <div>{{ 'appMain.viewchart.settingTab.measurementTime' | translate }}</div>
                     <div>&nbsp;</div>
+                    <div>&nbsp;</div>
                     <div>
                       <input type="text" id="appAutoscalingMeasureTimeSec" name="appAutoscalingMeasureTimeSec" [(ngModel)]="appAutoscalingMeasureTimeSec" class="num7"/>
                       <div class="monitor_count_up" onClick="updown('7','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up7"/></div>
@@ -939,6 +949,7 @@
                   </li>
                   <li>
                     <div class="monitor_switch_txt">{{ 'appMain.viewchart.settingTab.autoEx' | translate }}</div>
+                    <div>&nbsp;</div>
                     <div>&nbsp;</div>
                     <div class="monitor_switch">
                       <input class="switch_large" id="switch10" type="checkbox" switch="none">
@@ -956,6 +967,7 @@
                       </div>
                     </i>
                     </div>
+                    <div>&nbsp;</div>
                     <div>&nbsp;</div>
                     <div>
                       <input class="switch_large" id="switch11" type="checkbox" switch="none">
@@ -976,6 +988,7 @@
                 <ul>
                   <li>
                     <div>{{ 'appMain.viewchart.settingTab.cpuThreshold' | translate }}</div>
+                    <div>&nbsp;</div>
                     <div>{{ 'appMain.viewchart.settingTab.min' | translate }}</div>
                     <div>
                       <input type="text" id="appAlarmCpuWarningThreshold" name="appAlarmCpuWarningThreshold" [(ngModel)]="appAlarmCpuWarningThreshold" class="num8"/>
@@ -991,6 +1004,7 @@
                   </li>
                   <li>
                     <div>{{ 'appMain.viewchart.settingTab.memoryThreshold' | translate }}</div>
+                    <div>&nbsp;</div>
                     <div>{{ 'appMain.viewchart.settingTab.min' | translate }}</div>
                     <div>
                       <input type="text" id="appAlarmMemoryWarningThreshold" name="appAlarmMemoryWarningThreshold" [(ngModel)]="appAlarmMemoryWarningThreshold" class="num10"/>
@@ -1007,6 +1021,7 @@
                   <li>
                     <div>{{ 'appMain.viewchart.settingTab.measurementTime' | translate }}</div>
                     <div>&nbsp;</div>
+                    <div>&nbsp;</div>
                     <div>
                       <input type="text" id="appAlarmMeasureTimeSec" name="appAlarmMeasureTimeSec" [(ngModel)]="appAlarmMeasureTimeSec" class="num12"/>
                       <div class="monitor_count_up" onClick="updown('12','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up5"/></div>
@@ -1018,6 +1033,7 @@
                   <li>
                     <div>{{ 'appMain.viewchart.settingTab.email' | translate }}</div>
                     <div>&nbsp;</div>
+                    <div>&nbsp;</div>
                     <div><input type="text" id="appAlarmEmail" name="appAlarmEmail" [(ngModel)]="appAlarmEmail" /></div>
                     <div>{{ 'appMain.viewchart.settingTab.send' | translate }}</div>
                     <div class="monitor_switch2">
@@ -1027,6 +1043,7 @@
                   </li>
                   <li>
                     <div class="monitor_switch_txt">{{ 'appMain.viewchart.settingTab.usingAlarms' | translate }}</div>
+                    <div>&nbsp;</div>
                     <div>&nbsp;</div>
                     <div class="monitor_switch">
                       <input class="switch_large" id="switch13" type="checkbox" switch="none">

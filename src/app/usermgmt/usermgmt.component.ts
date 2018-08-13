@@ -123,6 +123,9 @@ export class UsermgmtComponent implements OnInit {
       this.zipCode = data['zipCode'];
       this.address = data['address'];
       try{
+        if(isNullOrUndefined(data['imgPath'].lastIndexOf("/"))){
+          return '';
+        }
         var pathHeader = data['imgPath'].lastIndexOf("/");
         var pathEnd = data['imgPath'].length;
         var fileName = data['imgPath'].substring(pathHeader + 1, pathEnd);
