@@ -394,7 +394,7 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
 .nav_1d li.cur p,.nav_1d li.on p{color:#32798c;}
 
 .nav_1d li.cur,
-.nav_1d li.on {background:#f5f5f5 url('../../resources/images/main/lnb_over.png') 13px 12px no-repeat; border: 1px solid #357f94; }
+.nav_1d li.on {background:#f5f5f5; border: 1px solid #357f94; }
 
 /* 대쉬보드 */
 #lnbimg1{ width: 52px; height: 42px; background-image: url('../../resources/images/main/lnb_1.png');}
