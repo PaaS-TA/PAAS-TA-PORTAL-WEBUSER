@@ -119,6 +119,8 @@ export class CreateComponent implements OnInit {
       this.externalService.createUser(param).subscribe(data => {
         this.commonService.isLoading = true;
         if (data['result'] == true) {
+          this.commonService.isLoading = false;
+          alert('성공적으로 생성');
           let userInfo = {
             'userId': this.userId,
             'userName': this.username,
@@ -137,7 +139,7 @@ export class CreateComponent implements OnInit {
           setTimeout(() => this.router.navigate(['login']), 5000);
 
         } else {
-          alert(data['msg']);
+          this.commonService.alertMessage(data['msg'], false);
         }
       });
     }
