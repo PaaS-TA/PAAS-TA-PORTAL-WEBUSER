@@ -4,6 +4,7 @@ import { Org2MainService } from './org2-main.service';
 import { Observable } from 'rxjs/Observable';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { CommonService } from "../../common/common.service";
+import {setTimeout} from "timers";
 
 declare var $: any;
 
@@ -39,7 +40,7 @@ export class Org2MainComponent implements OnInit {
   public sltSpaceName : string;
   public sltflag : boolean = false;
   private showIndexArray: Array<string> = [];
-
+  private sltPage : number;
 
   public translateEntities: any = [];
 
@@ -53,6 +54,7 @@ export class Org2MainComponent implements OnInit {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.orgMain;
     });
+    this.sltPage = 1;
   }
 
   ngOnInit() {
@@ -83,6 +85,7 @@ export class Org2MainComponent implements OnInit {
     this.getDomains();
     this.getQuotaDefinitions();
     this.getOrgList();
+
     //this.getInviteOrg();
   }
 
@@ -114,13 +117,18 @@ export class Org2MainComponent implements OnInit {
     this.orgMainService.getInviteOrg().subscribe(data => {
       this.inviteOrgList = data.result;
     });
-    this.orgMainService.getOrgList().subscribe(data => {
+    this.orgMainService.getOrgList(1).subscribe(data => {
       this.orgsEntities = data.result;
       if (this.orgsEntities) {
         this.sltEntity = this.orgsEntities[0];
       }
       setTimeout(() => this.buttonEvent(), 100);
-      this.common.isLoading = false;
+      for(let i = 2; i <= this.sltPage ; i++){
+        this.addOrgList(i,'init');
+      }
+      if(this.sltPage ===1){
+        this.common.isLoading = false;
+      }
     });
   }
 
@@ -227,6 +235,7 @@ export class Org2MainComponent implements OnInit {
     this.sltOrgGuid = orgGuid;
     this.sltOrgRename = $("#modifyOrgName_" + this.sltOrgGuid).val();
     $("#layerpop_org_rename").modal("show");
+    setTimeout(() => {$("#createSpaceName").focus()}, 250);
   }
 
   renameOrg() {
@@ -255,6 +264,7 @@ export class Org2MainComponent implements OnInit {
     this.sltOrgGuid = orgGuid;
     this.sltOrgDelname = orgName;
     $("#layerpop_org_delete").modal("show");
+
   }
 
   deleteOrg() {
@@ -275,6 +285,9 @@ export class Org2MainComponent implements OnInit {
   showPopSpaceCreateClick(sltOrgGuid: string) {
     this.sltOrgGuid = sltOrgGuid;
     $("#layerpop_space_create").modal("show");
+    setTimeout(() => {$("#createSpaceName").focus()}, 250);
+
+
   }
 
   createSpace() {
@@ -350,6 +363,9 @@ export class Org2MainComponent implements OnInit {
   showPopAddDomainClick(orgGuid: string) {
     this.sltOrgGuid = orgGuid;
     $("#layerpop_domain_add").modal("show");
+    setTimeout(() => {
+      $("#addDmaoinName").focus();
+    }, 250);
   }
 
   addDmaoin() {
@@ -559,7 +575,10 @@ export class Org2MainComponent implements OnInit {
     }
     $("[id='userEmail']").val('');
     $("#layerpop4").modal("show");
-    setTimeout(() => this.allCheck(), 500);
+    setTimeout(() => {
+      this.allCheck();
+      $("#userEmail").trigger('focus');
+    },500);
   }
 
   userInvite() {
@@ -835,6 +854,36 @@ export class Org2MainComponent implements OnInit {
       this.common.alertMessage("변경 실패", false);
     },() => {
       this.common.isLoading = false;
+    });
+  }
+
+  addOrgList(_page : number, type : string){
+    let page;
+    if(type === 'click'){
+      this.common.isLoading = true;
+      this.sltPage++;
+      page = this.sltPage;
+    }else if(type === 'init'){
+      page = _page;
+    }
+    this.orgMainService.getOrgList(page).subscribe(data => {
+      if( data.result.length === 0){
+        this.sltPage--;
+      }else {
+      data.result.forEach(resource => {
+        this.orgsEntities.push(resource);
+      });
+      setTimeout(() => this.buttonEvent(), 100);
+      }if(type ==='click'){
+        this.common.isLoading = false;
+      }else if(type ==='init' && _page === this.sltPage){
+        this.common.isLoading = false;
+      }
+    }, error => {
+      this.sltPage--;
+      if(type ==='click'){
+        this.common.isLoading = false;
+      }
     });
   }
 }

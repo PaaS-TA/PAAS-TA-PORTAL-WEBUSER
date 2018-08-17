@@ -71,8 +71,10 @@ export class CatalogServiceComponent implements OnInit {
     this.ServiceInit();
     this.OrgsInit();
     this.doLayout();
-    this.keyPressInit();
+    setTimeout(() => this.keyPressInit(), 1000);
   }
+
+
   doLayout() {
     $(document).ready(() => {
       //TODO 임시로...
@@ -97,6 +99,7 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   keyPressInit(){
+    $('#servicename').trigger('focus');
     $('input[name=servicename]').keydown(function (key) {
       if(key.keyCode == 13){
         $('#createService').trigger('click');

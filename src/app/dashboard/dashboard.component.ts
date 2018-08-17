@@ -742,6 +742,30 @@ export class DashboardComponent implements OnInit {
     }
     // this.log.debug('TYPE :: ' + type + ' GUID :: ' + guid + ' NAME :: ' + name);
   }
+  renamefocus(){
+    $("#layerpop1").modal("show");
+    setTimeout(() => {
+    $('#appName').trigger('focus');
+    $('input[id=appName]').keydown(function (key) {
+      if(key.keyCode == 13){
+        $('#renameApp').trigger('click');
+        $('#renameApp').trigger('click');
+      }
+    });
+  }, 250)
+  }
 
+  serviceRename(){
+    $("#layerpop3").modal("show");
+    setTimeout(() => {
+      $('#selectedName').trigger('focus');
+      $('input[id=selectedName]').keydown(function (key) {
+        if(key.keyCode == 13){
+          $('#renameInstance').trigger('click');
+          $('#renameInstance').trigger('click');
+        }
+      });
+    }, 300)
+  }
 }
 

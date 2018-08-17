@@ -52,7 +52,8 @@ export class CatalogDetailComponent implements OnInit {
   buttonid : number = 0;
   switchid : number = 3;
   radioid : number = 0;
-  privatedomain : any;
+
+
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
 
     this.translate.get('catalog').subscribe((res: string) => {
@@ -76,6 +77,27 @@ export class CatalogDetailComponent implements OnInit {
     this.spacesFrist();
     this.orgsInit();
     setTimeout(() => this.doLayout(), 500);
+    setTimeout(() => this.keyPressInit(), 1000);
+  }
+
+  keyPressInit(){
+    $('#orgname').trigger('focus');
+
+    $('input[name=appname]').keydown(function (key) {
+      if(key.keyCode == 13){
+        $('#createApp').trigger('click');
+      }
+    });
+    $('input[name=route]').keydown(function (key) {
+      if(key.keyCode == 13){
+        $('#createApp').trigger('click');
+      }
+    });
+    $('input[id=servicename_]').keydown(function (key) {
+      if(key.keyCode == 13){
+        $('#createApp').trigger('click');
+      }
+    });
   }
 
   // 카탈로그 네비 초기화

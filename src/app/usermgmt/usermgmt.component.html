@@ -71,7 +71,7 @@
               <tr>
                 <td>{{'usermgmt.loginInfo.changePassword.changePassword' | translate}}</td>
                 <th></th>
-                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td class="table_edit"><i class="fas fa-edit" (click)="inputFocus('password_now')"></i>
                 <td>
               </tr>
               <tr class="on">
@@ -80,21 +80,21 @@
                     <div class="account_table_in">
                       <p>
                         <span>{{'usermgmt.loginInfo.changePassword.currentPassword' | translate}}</span>
-                        <input type="password" name="password_now" id= "password_now" [(ngModel)]="password_now"/>
+                        <input type="password" name="password_now" id= "password_now" [(ngModel)]="password_now" (keyup.enter)="updateUserPassword()"/>
                       </p>
                       <p>
                         <span>{{'usermgmt.loginInfo.changePassword.newPassword' | translate}}
                         </span>
-                        <input type="password" [(ngModel)]="password_new" name="password_new" id= "password_new" required="" (change)="checkPassword($event)" (keydown)="checkPassword($event)" (keyup)="checkPassword($event)">
+                        <input type="password" [(ngModel)]="password_new" name="password_new" id= "password_new" required="" (change)="checkPassword($event)" (keydown)="checkPassword($event)" (keyup)="checkPassword($event)" (keyup.enter)="updateUserPassword()">
                         <br> <span></span>
                         <span class="red"  use-form-error="isNotSame" *ngIf="!isPassword">
                         <i class="fas fa-exclamation-circle"></i> {{'usermgmt.explan.check1' | translate}}</span>
                       </p>
                       <span>{{'usermgmt.loginInfo.changePassword.newPasswordConfirmation' | translate}}
                       </span>
-                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" id= "password_confirm" required="" (change)="checkRePassword($event)" (keydown)="checkRePassword($event)" (keyup)="checkRePassword($event)"/>
+                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" id= "password_confirm" required="" (change)="checkRePassword($event)" (keydown)="checkRePassword($event)" (keyup)="checkRePassword($event)" (keyup.enter)="updateUserPassword()"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="updateUserPassword()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors4 btns_sw" id="passwordChange" (click)="updateUserPassword()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                       <span></span>
@@ -121,7 +121,7 @@
               <tr>
                 <td>{{'usermgmt.userInfo.name.name' | translate}}</td>
                 <th> {{user['userName']}}</th>
-                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td class="table_edit"><i class="fas fa-edit" (click)="inputFocus('username')"></i>
               </tr>
               <tr class="on">
                 <td colspan="3">
@@ -129,9 +129,9 @@
                     <div class="account_table_in">
                       <span>{{'usermgmt.userInfo.name.changeName' | translate}}
                       </span>
-                      <input type="text" name="userName" id="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }" ng-minlength="0"/>
+                      <input type="text" name="userName" id="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }" ng-minlength="0" (keyup.enter)="userSave()"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="userSave()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors4 btns_sw" id="userSave" (click)="userSave()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                     </div>
@@ -141,7 +141,7 @@
               <tr>
                 <td>{{'usermgmt.userInfo.phoneNumber.phoneNumber' | translate}}</td>
                 <th>{{user['tellPhone']}}</th>
-                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td class="table_edit"><i class="fas fa-edit" (click)="inputFocus('tellPhone')" ></i>
               </tr>
               <tr class="on">
                 <td colspan="3">
@@ -149,9 +149,9 @@
                     <div class="account_table_in" >
                       <span>{{'usermgmt.userInfo.phoneNumber.newPhoneNumber' | translate}}
                       </span>
-                      <input type="text" class="input_tellphone" id="tellPhone" name="tellPhone" [(ngModel)]="tellPhone" (ngModelChange)="tellPhone_pattenTest()" ng-maxlength="15"/>
+                      <input type="text" class="input_tellphone" id="tellPhone" name="tellPhone" [(ngModel)]="tellPhone" (ngModelChange)="tellPhone_pattenTest()" ng-maxlength="15" (keyup.enter)="checkTellPhone()"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="checkTellPhone()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors4 btns_sw" id="checkTellPhone" (click)="checkTellPhone()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                       <span></span>
@@ -165,7 +165,7 @@
               <tr>
                 <td>{{'usermgmt.userInfo.zipCode.zipCode' | translate}}</td>
                 <th>{{user['zipCode']}}</th>
-                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td class="table_edit"><i class="fas fa-edit" (click)="inputFocus('zipCode')"></i>
                     </tr>
               <tr class="on">
                 <td colspan="3">
@@ -173,9 +173,9 @@
                     <div class="account_table_in">
                       <span>{{'usermgmt.userInfo.zipCode.newZipCode' | translate}}
                       </span>
-                      <input type="text" class="input_zipCode" id="zipCode" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()" ng-maxlength="15"/>
+                      <input type="text" class="input_zipCode" id="zipCode" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()" ng-maxlength="15" (keyup.enter)="checkZipCode()"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="checkZipCode()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors4 btns_sw" id="checkZipCode" (click)="checkZipCode()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                       <span></span>
@@ -189,7 +189,7 @@
               <tr>
                 <td>{{'usermgmt.userInfo.address.address' | translate}}</td>
                 <th>{{user['address']}}</th>
-                <td class="table_edit"><i class="fas fa-edit"></i>
+                <td class="table_edit"><i class="fas fa-edit" (click)="inputFocus('address')"></i>
                         </tr>
               <tr class="on">
                 <td colspan="3">
@@ -197,9 +197,9 @@
                     <div class="account_table_in">
                       <span>{{'usermgmt.userInfo.address.newAddress' | translate}}
                       </span>
-                      <input type="text" class="input_address" id="address" name="address" [(ngModel)]="address" (ngModelChange)="address_pattenTest()"/>
+                      <input type="text" class="input_address" id="address" name="address" [(ngModel)]="address" (ngModelChange)="address_pattenTest()" (keyup.enter)="checkAddress()"/>
                       <div class="">
-                        <button class="btns6 colors4 btns_sw" (click)="checkAddress()">{{'usermgmt.button.change' | translate }}</button>
+                        <button class="btns6 colors4 btns_sw" id="checkAddress" (click)="checkAddress()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
                       </div>
                       <span></span>

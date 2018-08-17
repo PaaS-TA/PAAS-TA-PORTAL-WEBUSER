@@ -4,6 +4,7 @@ import {NGXLogger} from "ngx-logger";
 import {CommonService} from "../../common/common.service";
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
 import {CatalogService} from "../../catalog/main/catalog.service";
+import {isNullOrUndefined} from "util";
 
 declare var $: any;
 declare var jQuery: any;
@@ -130,7 +131,7 @@ export class AppTopComponent implements OnInit {
   }
 
   get isLogin() {
-    return this.cursorId !== 'cur_login'
+    return !isNullOrUndefined(this.common.getToken());
   }
 
   get isIcon(){

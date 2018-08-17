@@ -216,7 +216,22 @@ export class AppMainComponent implements OnInit {
 
         this.router.navigate(['dashboard']);
       }
+    this.keyPressInit();
   }
+
+  keyPressInit(){
+    $('input[id=envAddData]').keydown(function (key) {
+      if(key.keyCode == 13){
+        $('#envAddButton').trigger('click');
+      }
+    });
+    $('input[id=envAddId]').keydown(function (key) {
+      if(key.keyCode == 13){
+        $('#envAddButton').trigger('click');
+      }
+    });
+  }
+
 
   showLoading() {
     this.common.isLoading = true;

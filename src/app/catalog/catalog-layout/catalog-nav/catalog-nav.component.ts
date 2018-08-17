@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CatalogService} from "../../main/catalog.service";
 import {Router} from "@angular/router";
-import {isUndefined} from "util";
+import {isNullOrUndefined, isUndefined} from "util";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 declare var $: any;
 declare var jQuery: any;
@@ -50,7 +50,7 @@ export class CatalogNavComponent implements OnInit {
     this.router.navigate(['catalog']);
     this.catalogService.viewPacks(false, true, false);
 
-    if(!isUndefined(value)) {
+    if(!isNullOrUndefined(value)) {
       this.catalogService.buildPackfilter = value;
       this.catalogService.buildPackFilter();
       this.catalogService.navView = value;
@@ -71,7 +71,7 @@ export class CatalogNavComponent implements OnInit {
     }
     this.router.navigate(['catalog']);
     this.catalogService.viewPacks(false, false, true);
-    if(!isUndefined(value)) {
+    if(!isNullOrUndefined(value)) {
       this.catalogService.servicePackfilter = value;
     this.catalogService.servicePackFilter();
       this.catalogService.navView = value;

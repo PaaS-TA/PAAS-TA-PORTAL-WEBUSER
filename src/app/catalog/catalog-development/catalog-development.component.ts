@@ -190,7 +190,7 @@ export class CatalogDevelopmentComponent implements OnInit {
       });
       this.catalogService.isLoading(false);
     },error => {
-      this.errorMsg(error);
+      this.errorMsg(this.translateEntities.result.errorGetRoutes);
     });
   }
 

@@ -37,7 +37,7 @@
                 <i class="fas fa-ellipsis-v"></i>
                 <ul>
                   <li class="name_inputTitle2">
-                    <p><i class="fas fa-edit"></i>&nbsp;&nbsp;{{ 'orgMain.reName' | translate }}</p>
+                    <p><i class="fas fa-edit" (click)="renamefoucs()"></i>&nbsp;&nbsp;{{ 'orgMain.reName' | translate }}</p>
                   </li>
                   <li data-toggle="modal" (click)="showPopDeleteOrgClick(item.org.metadata.guid, item.org.entity.name)">
                     <p>
@@ -251,7 +251,9 @@
             </div><!-- organization_table2 -->
           </div>
         </div>
+        <div class="org_add"><button class="btns2 btns2_1 colors4 event_btns" (click)="addOrgList(0,'click')">+ 더보기</button></div>
       </div><!-- row one_line -->
+
     </div>
     <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>
   </div>
@@ -324,7 +326,7 @@
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <input type="text" placeholder="{{ 'orgMain.layerpop.spaceCreate.placeholder' | translate }}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="createSpace()" id="createSpaceName" />
+            <input type="text" placeholder="{{ 'orgMain.layerpop.spaceCreate.placeholder' | translate }}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="createSpace()" id="createSpaceName" autofocus/>
           </div>
         </div>
         <!-- Footer -->
@@ -404,7 +406,7 @@
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <input type="text" placeholder="{{ 'orgMain.layerpop.domainAdd.placeholder' | translate }}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="addDmaoin()" id="addDmaoinName" />
+            <input type="text" placeholder="{{ 'orgMain.layerpop.domainAdd.placeholder' | translate }}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="addDmaoin()" id="addDmaoinName"/>
           </div>
         </div>
         <!-- Footer -->
@@ -575,7 +577,7 @@
         <!-- body -->
         <ng-container *ngIf="sltEntity">
         <div class="modal-body">
-          <input class="w100" placeholder="sample@test.com" id="userEmail"/>
+          <input class="w100" placeholder="sample@test.com" id="userEmail" (keyup.enter)="userInvite()"/>
           <span class="red">{{ 'orgMain.layerpop.layerpop4.explanation' | translate }}</span>
           <table class="maT30">
             <colgroup>
@@ -706,6 +708,7 @@
                 </td>
               </tr>
               </tbody>
+
             </table>
             <input class="checkAll3" id="checkAll3" type="checkbox" (click)="allCheck()"/>
             <label class="maT10" for="checkAll3">{{ 'orgMain.layerpop.layerpop4.selectAll' | translate }}</label>
@@ -796,8 +799,8 @@
 
             <input class="checkAll5" id="checkAll5" type="checkbox"/>
             <label class="maT10" for="checkAll5">{{ 'orgMain.layerpop.layerpop4.selectAll' | translate }}</label>
-
           </div>
+
           <!-- Footer -->
           <div class="modal-footer">
             <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="updateUserSpaceRole()">{{ 'orgMain.layerpop.layerpop4.btn3' | translate }}</button>
@@ -808,6 +811,7 @@
     </div>
   </div>
 </div>
+
 
 
 

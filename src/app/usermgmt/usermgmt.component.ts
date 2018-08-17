@@ -431,4 +431,19 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-}//
+  inputFocus(inputid : string){
+    setTimeout(() => {
+    if(inputid === 'password_now'){
+      $('#password_now').trigger('focus');
+    }else if(inputid ==='username'){
+      $('#userName').trigger('focus');
+    }else if(inputid ==='tellPhone'){
+      $('#tellPhone').trigger('focus');
+    }else if(inputid ==='zipCode'){
+      $('#zipCode').trigger('focus');
+    }else if(inputid ==='address'){
+      $('#address').trigger('focus');
+    }}, 300);
+  }
+
+}

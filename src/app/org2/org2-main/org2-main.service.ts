@@ -8,8 +8,8 @@ export class Org2MainService {
 
   constructor(private commonService: CommonService) { }
 
-  getOrgList() {
-    return this.commonService.doGet('/portalapi/v2/orgList', this.commonService.getToken()).map((res: Response) => {
+  getOrgList(page : number) {
+    return this.commonService.doGet('/portalapi/v2/orgList/'+page, this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
