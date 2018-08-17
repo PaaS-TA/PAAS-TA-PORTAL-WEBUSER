@@ -4,7 +4,7 @@ import { Org2MainService } from './org2-main.service';
 import { Observable } from 'rxjs/Observable';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { CommonService } from "../../common/common.service";
-import {setTimeout} from "timers";
+
 
 declare var $: any;
 
