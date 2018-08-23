@@ -4,8 +4,9 @@ import {SecurityService} from '../auth/security.service';
 import {Log} from 'ng2-logger/client';
 import {NGXLogger} from 'ngx-logger';
 import {CommonService} from '../common/common.service';
-import {AppConfig} from "../app.config"
 
+declare  var require : any;
+let appConfig = require('assets/resources/env/config.json');
 @Component({
   selector: 'app-callback',
   template: `
@@ -30,7 +31,7 @@ export class CallbackComponent implements OnInit {
           if (params['error'] != null) {
             this.router.navigate(['/login']);
           } else {
-            AppConfig.code = params.code;
+            appConfig['code'] = params.code;
             this.sec.doToken();
           }
         } else {

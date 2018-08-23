@@ -5,9 +5,9 @@ import {NGXLogger} from 'ngx-logger';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {CommonService} from '../common/common.service';
-import {AppConfig} from "../app.config"
 
-
+declare  var require : any;
+let appConfig = require('assets/resources/env/config.json');
 @Injectable()
 export class SecurityService {
   url: string;
@@ -21,8 +21,8 @@ export class SecurityService {
   doLogout() {
     this.log.debug('doLogout()');
     this.common.signOut();
-    window.location.href = AppConfig.logoutUrl +
-      '?redirect=' + AppConfig.logoutredirectUri + '&client_id=' + AppConfig.clientId ;
+    window.location.href = appConfig['logoutUrl'] +
+      '?redirect=' + window.location.origin + appConfig['logoutredirectUri'] + '&client_id=' + appConfig['clientId'] ;
   }
 
 
@@ -35,17 +35,17 @@ export class SecurityService {
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
     const params = {
       // 'response_type': 'code',
-      'client_id': AppConfig.clientId,
-      'scope': AppConfig.scope,
-      'redirect_uri': AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl)
+      'client_id': appConfig['clientId'],
+      'scope': appConfig['scope'],
+      'redirect_uri': window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl)
     };
 
     this.router.navigate(['/login']).then(result => {
-      window.location.href = AppConfig.authUrl +
-        '?response_type=' + AppConfig.code +
-        '&client_id=' + AppConfig.clientId +
-        '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
-        '&scope=' + AppConfig.scope;
+      window.location.href = appConfig['authUrl'] +
+        '?response_type=' + appConfig['code'] +
+        '&client_id=' + appConfig['clientId'] +
+        '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
+        '&scope=' + appConfig['scope'];
     });
 
   }
@@ -61,13 +61,13 @@ export class SecurityService {
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
 
-    let accessUrl = AppConfig.accessUrl +
+    let accessUrl = appConfig['accessUrl'] +
       '?response_type=token' +
-      '&client_id=' + AppConfig.clientId +
-      '&client_secret=' + AppConfig.clientSecret +
-      '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&client_id=' + appConfig['clientId'] +
+      '&client_secret=' + appConfig['clientSecret'] +
+      '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
       '&grant_type=authorization_code' +
-      '&code=' + AppConfig.code;
+      '&code=' + appConfig['code'];
 
     this.http.post(accessUrl, null, {
       headers: headers
@@ -89,10 +89,10 @@ export class SecurityService {
   doCheckToken() {
     this.log.debug('doCheckToken()');
     const headers = new HttpHeaders()
-      .append('Authorization', 'Basic ' + btoa(AppConfig.clientId + ':' + AppConfig.clientSecret))
+      .append('Authorization', 'Basic ' + btoa(appConfig['clientId'] + ':' + appConfig['clientSecret']))
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let checkUrl = AppConfig.checkUrl + '?token=' + this.common.getToken();
+    let checkUrl = appConfig['checkUrl'] + '?token=' + this.common.getToken();
 
     this.http.post(checkUrl, null, {
       headers: headers
@@ -118,7 +118,7 @@ export class SecurityService {
       .append('Authorization', 'Bearer ' + this.common.getToken())
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let checkUrl = AppConfig.infoUrl;
+    let checkUrl = appConfig['infoUrl'];
 
     this.http.get(checkUrl, {
       headers: headers
@@ -144,13 +144,13 @@ export class SecurityService {
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
 
-    let refreshUrl = AppConfig.accessUrl +
+    let refreshUrl = appConfig['accessUrl'] +
       '?response_type=refresh_token' +
-      '&client_id=' + AppConfig.clientId +
-      '&client_secret=' + AppConfig.clientSecret +
-      '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&client_id=' + appConfig['clientId'] +
+      '&client_secret=' + appConfig['clientSecret'] +
+      '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
       '&grant_type=refresh_token' +
-      '&code=' + AppConfig.code +
+      '&code=' + appConfig['code'] +
       '&refresh_token=' + this.common.getRefreshToken();
 
     this.http.post(refreshUrl, null, {
@@ -173,7 +173,7 @@ export class SecurityService {
   doUserInfoProvider(userId: string) {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
-    return this.common.doGet(AppConfig.userinfoUrl + '/' + userId, this.common.getToken()).retryWhen(error => {
+    return this.common.doGet(appConfig['userinfoUrl'] + '/' + userId, this.common.getToken()).retryWhen(error => {
       return error.flatMap((error: any) => {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
@@ -200,7 +200,7 @@ export class SecurityService {
    */
   saveUserDB(userId: string) {
     let params = {userId: userId, userName: '', status: '1', adminYn: 'N', imgPath: ''};
-    this.common.doPost(AppConfig.userinfoUrl, params, this.common.getToken()).retryWhen(error => {
+    this.common.doPost(appConfig['userinfoUrl'], params, this.common.getToken()).retryWhen(error => {
       return error.flatMap((error: any) => {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));

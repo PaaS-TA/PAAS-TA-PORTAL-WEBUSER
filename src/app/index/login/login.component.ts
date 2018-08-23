@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit {
 
 
   showMsg(msg: string) {
-    console.log('헤헤헤헤');
     this.common.signOut();
     this.common.isLoading = false;
     if (msg == '') {

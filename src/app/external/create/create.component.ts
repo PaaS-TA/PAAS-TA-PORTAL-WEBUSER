@@ -135,9 +135,10 @@ export class CreateComponent implements OnInit {
           }else {
             this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
           }
-          setTimeout(() => this.commonService.isLoading=false, 5000);
-          setTimeout(() => this.router.navigate(['login']), 5000);
-
+          setTimeout(() => {
+            this.commonService.isLoading=false;
+            this.router.navigate(['login']), 5000
+          });
         } else {
           this.commonService.alertMessage(data['msg'], false);
         }

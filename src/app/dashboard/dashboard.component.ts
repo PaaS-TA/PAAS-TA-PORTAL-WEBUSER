@@ -391,7 +391,7 @@ export class DashboardComponent implements OnInit {
           }
         })
         if (cnt == 0) {
-          servicesEntitie['thumbImgPath'] = 'DEFALUT';
+          servicesEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
         }
       });
       return data;
@@ -431,7 +431,7 @@ export class DashboardComponent implements OnInit {
           }
         })
         if (cnt == 0) {
-          appEntitie['thumbImgPath'] = 'DEFALUT';
+          appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
         }
       });
       return data;

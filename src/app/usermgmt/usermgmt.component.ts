@@ -8,14 +8,14 @@ import {Organization} from '../model/organization';
 import {OrgService} from '../org/common/org.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../auth/security.service";
-import {AppConfig} from "../app.config";
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {isNullOrUndefined} from "util";
 
 
 declare var $: any;
 declare var jQuery: any;
-
+declare  var require : any;
+let appConfig = require('assets/resources/env/config.json');
 @Component({
   selector: 'app-usermgmt',
   templateUrl: './usermgmt.component.html',
@@ -408,11 +408,11 @@ export class UsermgmtComponent implements OnInit {
     this.common.signOut();
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
-    window.location.href = AppConfig.logoutUrl +
-      '?response_type=' + AppConfig.code +
-      '&client_id=' + AppConfig.clientId +
-      '&redirect_uri=' + AppConfig.redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
-      '&scope=' + AppConfig.scope +
+    window.location.href = appConfig['logoutUrl'] +
+      '?response_type=' + appConfig['code'] +
+      '&client_id=' + appConfig['clientId'] +
+      '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
+      '&scope=' + appConfig['scope'] +
       '&state=';
   }
 

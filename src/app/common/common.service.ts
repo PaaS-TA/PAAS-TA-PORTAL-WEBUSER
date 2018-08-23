@@ -9,11 +9,12 @@ import {logger} from 'codelyzer/util/logger';
 import {NGXLogger} from 'ngx-logger';
 import {Param} from "../index/login/login.component";
 import {Router} from "@angular/router";
-import {AppConfig} from "../app.config"
+
 import {ResponseContentType, ResponseOptions} from "@angular/http";
 import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 import {isNullOrUndefined} from "util";
-
+declare  var require : any;
+let appConfig = require('assets/resources/env/config.json');
 declare var $: any;
 
 @Injectable()
@@ -172,7 +173,7 @@ export class CommonService {
      * Session Time
      */
     let sessionTime = new Date();
-    sessionTime.setMinutes(sessionTime.getMinutes() + AppConfig.sessionTimeout);
+    sessionTime.setMinutes(sessionTime.getMinutes() + appConfig['sessionTimeout']);
     //this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
   }
@@ -182,7 +183,7 @@ export class CommonService {
      * Session Time
      */
     let sessionTime = new Date();
-    sessionTime.setMinutes(sessionTime.getMinutes() + AppConfig.sessionTimeout);
+    sessionTime.setMinutes(sessionTime.getMinutes() + appConfig['sessionTimeout']);
     //this.log.debug('Session Expire Time : ' + sessionTime.getHours() + ":" + sessionTime.getMinutes() + ":" + sessionTime.getSeconds());
     window.sessionStorage.setItem('sessionTimeout', sessionTime.getTime().toString());
   }
@@ -395,13 +396,13 @@ export class CommonService {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let refreshUrl = AppConfig.accessUrl +
+    let refreshUrl = appConfig['accessUrl'] +
       '?response_type=refresh_token' +
-      '&client_id=' + AppConfig.clientId +
-      '&client_secret=' + AppConfig.clientSecret +
-      '&redirect_uri=' + AppConfig.redirectUri +
+      '&client_id=' + appConfig['clientId'] +
+      '&client_secret=' + appConfig['clientSecret'] +
+      '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] +
       '&grant_type=refresh_token' +
-      '&code=' + AppConfig.code +
+      '&code=' + appConfig['code']+
       '&refresh_token=' + this.getRefreshToken();
 
     return this.http.post(refreshUrl, null, {
@@ -518,15 +519,15 @@ export class CommonService {
   }
 
   getMonitoring() : boolean {
-    return AppConfig.monitoring;
+    return appConfig['monitoring'];
   }
 
   getQuantity() : boolean {
-    return AppConfig.quantity;
+    return appConfig['quantity'];
   }
 
   getAutomaticApproval() : boolean {
-    return AppConfig.automaticApproval;
+    return appConfig['automaticApproval'];
   }
 
   alertMessage(value, result) {
