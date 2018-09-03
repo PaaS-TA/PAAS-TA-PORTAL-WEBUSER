@@ -367,7 +367,7 @@ export class DashboardComponent implements OnInit {
       $.each(this.servicesEntities, function (skey, servicesEntitie) {
         let cnt = 0;
         $.each(data['list'], function (dkey, servicepack) {
-          if (servicesEntitie['service_plan'] != null && servicepack['thumbImgName'] != null) {
+          if (servicesEntitie['service_plan'] != null) {
             if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
               servicesEntitie['dashboardUseYn'] = servicepack['dashboardUseYn'];
               try{
