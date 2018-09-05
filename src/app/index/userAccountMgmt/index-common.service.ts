@@ -29,8 +29,13 @@ export class IndexCommonService {
     this.isUsed = false;
     this.usermgmtService.userinfo(email).subscribe(data => {
       let userId = data;
+      if (userId == null) {
         this.sendCreateEmail(email);
         this.isUsed = false;
+      } else {
+        this.isUsed = true;
+        this.commonService.isLoading = false;
+      }
     }, error => {
       this.alertMessage('사용자 정보를 확인하는데 실패하였습니다.', false);
       this.commonService.isLoading = false;
