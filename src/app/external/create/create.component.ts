@@ -120,7 +120,6 @@ export class CreateComponent implements OnInit {
         this.commonService.isLoading = true;
         if (data['result'] == true) {
           this.commonService.isLoading = false;
-          alert('성공적으로 생성');
           let userInfo = {
             'userId': this.userId,
             'userName': this.username,

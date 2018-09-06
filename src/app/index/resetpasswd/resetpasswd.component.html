@@ -10,7 +10,7 @@
   <form class="form-horizontal maT30" action="">
     <div class="form-group">
       <div class="col-xs-12">
-        <input class="form-control" type="text" required="" placeholder="E-mail" name="email" [(ngModel)]="email" (keyup)="checkValidation()" (keypress)="checkValidation()">
+        <input class="form-control" type="text" required="" placeholder="E-mail" name="email" [(ngModel)]="email" (keyup)="checkValidation()">
         <div *ngIf="isValidation"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> 이메일 형식이 아닙니다
         </p></div>
       </div>

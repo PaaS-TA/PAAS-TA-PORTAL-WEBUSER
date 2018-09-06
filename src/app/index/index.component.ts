@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -6,7 +6,7 @@ declare var jQuery: any;
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit, OnDestroy {
 
   constructor() { }
 
@@ -25,6 +25,11 @@ export class IndexComponent implements OnInit {
     });
 
 
+  }
+
+  ngOnDestroy(){
+    console.log("삭제실행");
+    $('#fp-nav').remove();
   }
 
 }
