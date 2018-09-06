@@ -158,12 +158,12 @@ export class UsermgmtComponent implements OnInit {
     this.common.isLoading = true;
     console.log(params);
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-      if(data.result){
+      if(data === 1){
         this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
         this.common.isLoading = false;
         console.log(data);
         return this.userInfo();
-      }else{
+      } else{
         this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail + "<br><br>" + data.msg, false);
         this.common.isLoading = false;
       }
