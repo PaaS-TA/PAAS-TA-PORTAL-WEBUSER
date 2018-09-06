@@ -286,11 +286,11 @@
         </div>
         <!-- body -->
         <div class="modal-body">
-          <div class="">
+          <div class="" >
             <p class="account_modal_p">{{'usermgmt.deleteAccount.explan' | translate }}<br/>
               <span>{{user['userId']}}</span>{{'usermgmt.deleteAccount.explan-2' | translate }}
             </p>
-            <input type="text" [(ngModel)]="user['userId']"/>
+            <input type="text" [(ngModel)]="user['userId']" disabled/>
             <input type="password" placeholder="{{'usermgmt.placeholder.password' | translate }}" name="password_check" [(ngModel)]="password_check" (click)="checkChPassword($event)" (keydown)="checkChPassword($event)" (keyup)="checkChPassword($event)"/>
             <!--<p class="red" use-form-error="isNotSame" *ngIf="!isChPassword">-->
               <!--<i class="fas fa-exclamation-circle"></i> 비밀 번호가 일치하지 않습니다.</p>-->
