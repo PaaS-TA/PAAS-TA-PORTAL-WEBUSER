@@ -560,11 +560,12 @@
   "usermgmt": {
     "myAccount" : "My Account",
     "explan" : {
-      "check1" : "Only enter without spaces within 6-20 characters by mixing English and numbers.",
-      "check2" : "Only enter numbers.",
-      "check3" : "Only 15 characters numbers and English are allowed.",
-      "check4" : "Only 256 characters or less is allowed.",
-      "check5" : "It is different from the password you entered."
+      "check1" : "only enter without spaces within 6-20 characters by mixing English and numbers.",
+      "check2" : "only enter numbers.",
+      "check3" : "only 15 characters numbers and English are allowed.",
+      "check4" : "only 256 characters or less is allowed.",
+      "check5" : "It is different from the password you entered.",
+      "check6" : "only numbers without spaces in English, Hangul."
     },
     "placeholder" : {
       "password" : "Please enter your password."
@@ -678,6 +679,7 @@
       "deleteService" : "Delete service",
       "providedServices": "Provided Services",
       "dashboard": "Dashboard",
+      "web-ide": "WEB-IDE Application",
       "userProvidedCreate": "User Provided Create",
       "explan1": "If you delete a service, you can not reverse it.",
       "explan2": "want to delete?",

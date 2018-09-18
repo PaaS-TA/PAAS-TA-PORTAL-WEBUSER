@@ -26,25 +26,25 @@ export class UsermgmtComponent implements OnInit {
   public orgs: Array<Organization> = [];
   public translateEntities: any = [];
 
-  public token: string = '';
-  public orgName: string = '';
-  public username: string = '';
-  public password: string = '';
+  /*로그인 정보*/
+  public isPassword: boolean;
+  public isRePassword: boolean;
+  public isChPassword: boolean;
+  public isTellPhone: boolean;
+  public isZipCode: boolean;
+  public isAddress: boolean;
+
+  public userName: string;
   public tellPhone: string;
   public zipCode: string;
   public address: string;
   public photoFile : string;
   public imgPath : string;
 
-  public isPassword: boolean;
-  public isRePassword: boolean;
-  public isChPassword: boolean;
-  /*현재비밀번호 public isOrignPassword: boolean; */
-
-  public isTellPhone: boolean;
-  public isZipCode: boolean;
-  public isAddress: boolean;
-
+  public token: string = '';
+  public orgName: string = '';
+  public username: string = '';
+  public password: string = '';
   public password_now: string = '';
   public password_new: string = '';
   public password_confirm: string = '';
@@ -70,7 +70,6 @@ export class UsermgmtComponent implements OnInit {
     this.isAddress = false;
     this.photoFile = '';
 
-    /*현재비밀번호 this.isOrignPassword = true; */
     this.isPassword = false;
     this.isRePassword = true;
     this.isChPassword = false;
@@ -90,7 +89,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   onFileChanged_click(event) {
-
     const file = event.target.files[0];
     if(isNullOrUndefined(file)){
       return;
@@ -115,10 +113,10 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-
   userInfo() {
     this.userMgmtService.userinfo(this.common.getUserid()).subscribe(data => {
       this.user = data;
+      this.userName = data['userName'];
       this.tellPhone = data['tellPhone'];
       this.zipCode = data['zipCode'];
       this.address = data['address'];
@@ -146,9 +144,9 @@ export class UsermgmtComponent implements OnInit {
   }
 
   userSave() {
-
     let params = {
-      userName: this.user['userName'],
+      //userName: this.user['userName'],
+      userName: this.userName,
       tellPhone: this.tellPhone,
       zipCode: this.zipCode,
       address: this.address,
@@ -172,6 +170,7 @@ export class UsermgmtComponent implements OnInit {
       this.common.isLoading = false;
     });
     /*reset*/
+    $('#userName').val('');
     $('#tellPhone').val('');
     $('#zipCode').val('');
     $('#address').val('');
@@ -182,6 +181,18 @@ export class UsermgmtComponent implements OnInit {
     $('#tellPhone').val('');
     $('#zipCode').val('');
     $('#address').val('');
+  }
+
+  replaceInvalidateString($event) {
+    const regFirstExpPattern = /^[\{\}\[\]\/?,;:|\)*~`!^+<>\#\-_@$%&\\\=\(\'\"]+/g;
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#@$%&\\\=\(\'\"]/g;
+    const regExpBlankPattern = /[\s]/g;
+
+    let typingStr = $event.target.value.replace(regFirstExpPattern, '')
+      .replace(regExpPattern, '').replace(regExpBlankPattern, '')
+      .substring(0, 64);
+
+    $event.target.value = typingStr;
   }
 
   checkTellPhone() {
@@ -227,8 +238,7 @@ export class UsermgmtComponent implements OnInit {
   }
 
   checkPassword(event: any) {
-    // this.log.debug('password_new :: ' + this.password_new);
-    // var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
+
     var reg_pwd = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
     if (!reg_pwd.test(this.password_new)) {
       this.isPassword = false;
@@ -435,7 +445,7 @@ export class UsermgmtComponent implements OnInit {
     setTimeout(() => {
     if(inputid === 'password_now'){
       $('#password_now').trigger('focus');
-    }else if(inputid ==='username'){
+    }else if(inputid ==='userName'){
       $('#userName').trigger('focus');
     }else if(inputid ==='tellPhone'){
       $('#tellPhone').trigger('focus');

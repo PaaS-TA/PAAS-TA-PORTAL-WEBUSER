@@ -121,7 +121,7 @@
               <tr>
                 <td>{{'usermgmt.userInfo.name.name' | translate}}</td>
                 <th> {{user['userName']}}</th>
-                <td class="table_edit"><i class="fas fa-edit" (click)="inputFocus('username')"></i>
+                <td class="table_edit"><i class="fas fa-edit" (click)="inputFocus('userName')"></i>
               </tr>
               <tr class="on">
                 <td colspan="3">
@@ -129,7 +129,7 @@
                     <div class="account_table_in">
                       <span>{{'usermgmt.userInfo.name.changeName' | translate}}
                       </span>
-                      <input type="text" name="userName" id="userName" [(ngModel)]="user['userName']" ng-model-options="{ getterSetter: true }" ng-minlength="0" (keyup.enter)="userSave()"/>
+                      <input type="text" name="userName" id="userName" [(ngModel)]="userName" ng-model-options="{ getterSetter: true }" ng-minlength="0" (keyup)="replaceInvalidateString($event)" (keyup.enter)="userSave()"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" id="userSave" (click)="userSave()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
