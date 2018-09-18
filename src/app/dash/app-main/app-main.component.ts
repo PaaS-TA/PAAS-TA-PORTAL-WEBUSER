@@ -232,6 +232,11 @@ export class AppMainComponent implements OnInit {
     });
   }
 
+  spacingExpression($event){
+    const regExpBlankPattern = /[\s]/g;
+    let typingStr = $event.target.value.replace(regExpBlankPattern, '').substring(0, 64);
+    $event.target.value = typingStr;
+  }
 
   showLoading() {
     this.common.isLoading = true;

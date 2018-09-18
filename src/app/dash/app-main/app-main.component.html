@@ -650,7 +650,7 @@
                 <div id="add_env" class="maT20 service_in" style="display:none;">
                   <dl class="variable_dl">
                     <dt>
-                      <input type="text" placeholder="{{ 'appMain.env.placeholderText1' | translate }}" id="envAddId" />
+                      <input type="text" placeholder="{{ 'appMain.env.placeholderText1' | translate }}" id="envAddId" (keyup)="spacingExpression($event)"/>
                     </dt>
                     <dd>
                       <input type="text" placeholder="{{ 'appMain.env.placeholderText2' | translate }}"id="envAddData" />
