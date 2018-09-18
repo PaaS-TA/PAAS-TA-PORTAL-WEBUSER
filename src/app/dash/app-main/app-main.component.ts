@@ -94,6 +94,7 @@ export class AppMainComponent implements OnInit {
   public sltServiceUnbindName: string;
   public sltServiceUnbindGuid: string;
   public sltServiceUnbindProvide : boolean;
+  public sltServiceUserProvideCredentials : any =[];
 
   public appSltEnvSystemName: string;
   public appSltEnvSystemLabel: string;
@@ -1551,7 +1552,19 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  showPopServiceCredentialsClick(name: string, label: string) {
+  showPopServiceCredentialsClick(name: string, guid: string, label: string, provide : boolean) {
+    this.sltServiceUnbindProvide = provide;
+    if(this.sltServiceUnbindProvide){
+      this.appMainService.userProvideCredentials(guid).subscribe(data => {
+        this.sltServiceUserProvideCredentials = data.List;
+        console.log(this.sltServiceUserProvideCredentials);
+        this.sltServiceUserProvideCredentials.forEach(datas => {
+          console.log(datas);
+          console.log(datas.key);
+          console.log(datas.value);
+        })
+        });
+    }else{
     var hostname = "";
     var name2 = "";
     var password = "";
@@ -1587,17 +1600,17 @@ export class AppMainComponent implements OnInit {
         })
       }
     });
+      this.appSltEnvSystemName = name;
+      this.appSltEnvSystemLabel = label;
 
-    this.appSltEnvSystemName = name;
-    this.appSltEnvSystemLabel = label;
+      this.appSltEnvSystemCredentialsHostname = hostname;
+      this.appSltEnvSystemCredentialsName = name2;
+      this.appSltEnvSystemCredentialsPassword = password;
+      this.appSltEnvSystemCredentialsPort = port;
+      this.appSltEnvSystemCredentialsUri = uri;
+      this.appSltEnvSystemCredentialsUsername = username;
 
-    this.appSltEnvSystemCredentialsHostname = hostname;
-    this.appSltEnvSystemCredentialsName = name2;
-    this.appSltEnvSystemCredentialsPassword = password;
-    this.appSltEnvSystemCredentialsPort = port;
-    this.appSltEnvSystemCredentialsUri = uri;
-    this.appSltEnvSystemCredentialsUsername = username;
-
+    }
     $("#layerpop_service_credentials").modal("show");
   }
 

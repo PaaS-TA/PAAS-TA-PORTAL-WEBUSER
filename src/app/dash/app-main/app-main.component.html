@@ -613,7 +613,7 @@
                       <td>{{item.service_plan.service.label}}</td>
                       <td><a href="{{item.dashboard_url}}" target="_blank" *ngIf="item.useYn == 'Y'"><i class="far fa-lightbulb on"></i></a></td>
                       <th (click)="showPopServiceUnbindClick(item.name, item.guid, item.provide)"><span class="BGcolors6 btn_bg_change1">{{ 'appMain.service.disconnect' | translate }}</span></th>
-                      <td (click)="showPopServiceCredentialsClick(item.name, item.service_plan.service.label)"><i class="fas fa-edit"></i></td>
+                      <td (click)="showPopServiceCredentialsClick(item.name, item.guid, item.service_plan.service.label, item.provide)"><i class="fas fa-edit"></i></td>
                     </tr>
                   </tbody>
                   <!--tfoot>
@@ -1383,6 +1383,7 @@
                 <col>
                 <col>
               </colgroup>
+              <ng-container *ngIf="!sltServiceUnbindProvide">
               <tbody>
                 <tr *ngIf="appSltEnvSystemCredentialsHostname != ''">
                   <td>{{ 'appMain.layerpop.serviceCredentials.hostname' | translate }}</td>
@@ -1429,6 +1430,17 @@
                   </td>
                 </tr>
               </tbody>
+              </ng-container>
+              <ng-container *ngIf="sltServiceUnbindProvide">
+                <tbody>
+                <tr  *ngFor="let Credential of sltServiceUserProvideCredentials">
+                  <td>{{ Credential.key }}</td>
+                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
+                    {{Credential.value}}
+                  </td>
+                </tr>
+                </tbody>
+              </ng-container>
             </table>
           </div>
         </div>

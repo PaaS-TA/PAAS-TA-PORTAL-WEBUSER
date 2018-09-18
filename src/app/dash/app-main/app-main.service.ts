@@ -126,6 +126,12 @@ export class AppMainService {
     }).do(console.log);
   }
 
+  userProvideCredentials(guid : string){
+    return this.commonService.doGet('/portalapi/v2/apps/' + guid + '/credentials',  this.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
   unbindService(applicationId: string, serviceInstanceId: string, params: any) {
     return this.commonService.doDelete('/portalapi/v2/service-bindings/'+serviceInstanceId+'/apps/'+applicationId, params, this.getToken()).map((res: Response) => {
       return res;
