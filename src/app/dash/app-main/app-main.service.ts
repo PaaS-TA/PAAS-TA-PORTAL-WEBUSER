@@ -132,6 +132,12 @@ export class AppMainService {
     }).do(console.log);
   }
 
+  unbindUserProvideService(applicationId: string, serviceInstanceId: string, params: any) {
+    return this.commonService.doDelete('/portalapi/v2/user-provide-service-bindings/'+serviceInstanceId+'/apps/'+applicationId, params, this.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
   getAlarms(appGuid: string, pageItems: number, pageIndex: number, resourceType: string, alarmLevel: string) {
     return this.commonService.doGet('/portalapi/app/alarm/list?appGuid='+appGuid+'&pageItems='+pageItems+'&pageIndex='+pageIndex+'&resourceType='+resourceType+'&alarmLevel='+alarmLevel, this.getToken()).map((res: Response) => {
       return res;

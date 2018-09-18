@@ -612,7 +612,7 @@
                       <td>{{item.service_plan.name}}</td>
                       <td>{{item.service_plan.service.label}}</td>
                       <td><a href="{{item.dashboard_url}}" target="_blank" *ngIf="item.useYn == 'Y'"><i class="far fa-lightbulb on"></i></a></td>
-                      <th (click)="showPopServiceUnbindClick(item.name, item.guid)"><span class="BGcolors6 btn_bg_change1">{{ 'appMain.service.disconnect' | translate }}</span></th>
+                      <th (click)="showPopServiceUnbindClick(item.name, item.guid, item.provide)"><span class="BGcolors6 btn_bg_change1">{{ 'appMain.service.disconnect' | translate }}</span></th>
                       <td (click)="showPopServiceCredentialsClick(item.name, item.service_plan.service.label)"><i class="fas fa-edit"></i></td>
                     </tr>
                   </tbody>

@@ -93,6 +93,7 @@ export class AppMainComponent implements OnInit {
   public sltServiceBindName: string;
   public sltServiceUnbindName: string;
   public sltServiceUnbindGuid: string;
+  public sltServiceUnbindProvide : boolean;
 
   public appSltEnvSystemName: string;
   public appSltEnvSystemLabel: string;
@@ -394,9 +395,28 @@ export class AppMainComponent implements OnInit {
           }
           }
         });
+      if(isNullOrUndefined(dataobj.service_plan)){
+          let obj = {
+            name: dataobj.name,
+            guid: dataobj.guid,
+            label: dataobj.name,
+            appBindParameter: ""
+          };
+          servicepacksRe.push(obj);
+        }
       });
+      //console.log(this.appServicesEntitiesRe2);
+      $.each(this.appServicesEntitiesRe2, function (key, bindservice) {
+        servicepacksRe.forEach((appservice, index) => {
+          if(bindservice.name === appservice.name){
+            servicepacksRe.splice(index,1);
+          }
+        });
+      });
+
+
       this.servicepacksEntitiesRe = servicepacksRe;
-      console.log(this.servicepacksEntitiesRe);
+
     });
   }
 
@@ -407,18 +427,34 @@ export class AppMainComponent implements OnInit {
       var appServices = [];
       var useYn = "N";
       $.each(this.appServicesEntitiesRe, function (key, serviceObj) {
-        $.each(data.list, function (key2, dataobj2) {
-          if (serviceObj.service_plan.service.label == dataobj2.servicePackName) {
-            useYn = dataobj2.dashboardUseYn;
+        if(!isNullOrUndefined(serviceObj.service_plan)) {
+          $.each(data.list, function (key2, dataobj2) {
+            if (serviceObj.service_plan.service.label == dataobj2.servicePackName) {
+              useYn = dataobj2.dashboardUseYn;
+            }
+          });
+          var obj = {
+            name: serviceObj.name,
+            service_plan: serviceObj.service_plan,
+            dashboard_url: serviceObj.dashboard_url,
+            guid: serviceObj.guid,
+            useYn: useYn,
+            provide: false
+          };
+        } else {
+          serviceObj.service_plan = [];
+          serviceObj.service_plan.name = 'User-Provide';
+          serviceObj.service_plan.service = [];
+          serviceObj.service_plan.service.label = "";
+          var obj = {
+            name: serviceObj.name,
+            service_plan: serviceObj.service_plan,
+            dashboard_url: serviceObj.service_plan.service,
+            guid: serviceObj.guid,
+            useYn: 'N',
+            provide: true
           }
-        });
-        var obj = {
-          name: serviceObj.name,
-          service_plan: serviceObj.service_plan,
-          dashboard_url: serviceObj.dashboard_url,
-          guid: serviceObj.guid,
-          useYn: useYn
-        };
+        }
         appServices.push(obj);
       });
       this.appServicesEntitiesRe2 = appServices;
@@ -1287,6 +1323,7 @@ export class AppMainComponent implements OnInit {
     $.each(this.servicepacksEntitiesRe, function (key, dataobj) {
       if (dataobj.guid == val) {
         var str = dataobj.appBindParameter.replace("}", "").replace("{", "");
+        console.log(str);
         var split = str.split(",");
 
         for (var i = 0; i < split.length; i++) {
@@ -1559,9 +1596,10 @@ export class AppMainComponent implements OnInit {
     $("#layerpop_service_credentials").modal("show");
   }
 
-  showPopServiceUnbindClick(name: string, guid: string) {
+  showPopServiceUnbindClick(name: string, guid: string, provide : boolean) {
     this.sltServiceUnbindName = name;
     this.sltServiceUnbindGuid = guid;
+    this.sltServiceUnbindProvide = provide;
     $("#layerpop_service_unbind").modal("show");
   }
 
@@ -1570,17 +1608,29 @@ export class AppMainComponent implements OnInit {
     this.common.isLoading = true;
 
     let params = {};
+    if(this.sltServiceUnbindProvide){
+      this.appMainService.unbindUserProvideService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
+        if (data.result) {
+          this.common.isLoading = false;
+          this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceSuccess, true);
+          this.showPopAppRestageClick();
+        } else {
+          this.common.isLoading = false;
+          this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceFail + "<br><br>" + data.msg.description, false);
+        }
+      });
+    } else if (!this.sltServiceUnbindProvide){
     this.appMainService.unbindService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
       if (data.result) {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceSuccess, true);
-
         this.showPopAppRestageClick();
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceFail + "<br><br>" + data.msg.description, false);
       }
     });
+    }
   }
 
   getCpuChart() {
