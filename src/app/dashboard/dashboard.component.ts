@@ -48,7 +48,6 @@ export class DashboardComponent implements OnInit {
   public appDelName: string;
   public dashboardUseYn : string;
   public appSummaryGuid: string;
-  /*app guid value*/
 
   public orgName: string = '';
   public orgGuid: string = '';
@@ -466,7 +465,7 @@ export class DashboardComponent implements OnInit {
       this.commonService.alertMessage(this.translateEntities.alertLayer.changeFail, false);
       this.commonService.isLoading = false;
     });
-    return this.getAppSummary(this.selectedSpaceId);
+    setTimeout(() => this.getAppSummary(this.selectedSpaceId), 3000);
   }
 
   delApp(guidParam: string) {
