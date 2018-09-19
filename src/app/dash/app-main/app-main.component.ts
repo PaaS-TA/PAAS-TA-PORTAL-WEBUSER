@@ -328,7 +328,6 @@ export class AppMainComponent implements OnInit {
       $("#instancePer").val(this.appSummaryInstancePer);
 
       this.appSummaryMemory = data.memory;
-
       this.appSummaryDisk = data.disk_quota;
 
       if (this.appSummaryState == "STARTED") {
@@ -1061,7 +1060,7 @@ export class AppMainComponent implements OnInit {
       this.appSystemProvidedEnv = JSON.stringify(data, undefined, 2);
 
       if (JSON.stringify(data.environment_json) == "{}") {
-        //document.getElementById("noEnvMsg").style = ""
+        this.appEnvUserEntities = [];
       } else {
         var appUserEnv = [];
         $.each(data.environment_json, function (eventID, eventData) {
@@ -1557,12 +1556,6 @@ export class AppMainComponent implements OnInit {
     if(this.sltServiceUnbindProvide){
       this.appMainService.userProvideCredentials(guid).subscribe(data => {
         this.sltServiceUserProvideCredentials = data.List;
-        console.log(this.sltServiceUserProvideCredentials);
-        this.sltServiceUserProvideCredentials.forEach(datas => {
-          console.log(datas);
-          console.log(datas.key);
-          console.log(datas.value);
-        })
         });
     }else{
     var hostname = "";
