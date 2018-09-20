@@ -199,24 +199,28 @@ export class SecurityService {
    * 모든 로그인 방식의 제일 마지막 - 공통
    */
   saveUserDB(userId: string) {
-    let params = {userId: userId, userName: '', status: '1', adminYn: 'N', imgPath: ''};
-    this.common.doPost(appConfig['userinfoUrl'], params, this.common.getToken()).retryWhen(error => {
-      return error.flatMap((error: any) => {
-        return Observable.of(error.status).delay(1000);
-      }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
-    }).subscribe(data => {
-      let result = data['result'];
-      if (result != null) {
-        if (result == 1) {
-          this.doUserInfoProvider(userId);
+    this.common.doGet('commonapi/v2/user/'+ userId + '/uaa',this.common.getToken()).subscribe(data => {
+      let params = {userId: userId, userName: '', status: '1', adminYn: 'N', imgPath: '', active : (data['active'] === 't') ? 'Y':'N'};
+      this.common.doPost(appConfig['userinfoUrl'], params, this.common.getToken()).retryWhen(error => {
+        return error.flatMap((error: any) => {
+          return Observable.of(error.status).delay(1000);
+        }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
+      }).subscribe(data2 => {
+        let result = data2['result'];
+        if (result != null) {
+          if (result == 1) {
+            this.doUserInfoProvider(userId);
+          } else {
+            this.moveErrLogin();
+          }
         } else {
           this.moveErrLogin();
         }
-      } else {
+        this.common.isLoading = false;
+        return data2['result'];
+      }, error => {
         this.moveErrLogin();
-      }
-      this.common.isLoading = false;
-      return data['result'];
+      });
     }, error => {
       this.moveErrLogin();
     });

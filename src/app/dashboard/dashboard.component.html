@@ -214,7 +214,7 @@
           </ul>
           <div class="space_btn_container clearfix">
             <div class="space_btn2">
-              <button class="btns colors4" data-target="#layerpop4" data-toggle="modal">
+              <button class="btns colors4" data-target="#layerpop4" data-toggle="modal" (click)="provideinit()">
                 {{'dashboard.service.userProvidedCreate' | translate}}
               </button>
             </div>
@@ -455,6 +455,14 @@
               <div><input type="text" id="userProvideSyslogDrainUrl" [(ngModel)]="userProvideSyslogDrainUrl"
                           class="space_input"/></div>
             </li>
+            <li>
+              <div>Route Service Url</div>
+              <div><input type="text" id="userProvideRouteServiceUrl" [(ngModel)]="userProvideRouteServiceUrl"
+                          class="space_input"
+                          placeholder="EXAMPLE:https://xxx.xxx.xxx"/>
+
+              </div>
+            </li>
           </ul>
           <span class="red" use-form-error="isNotSame" *ngIf="!isLength" style="padding-left: 150px"><i
             class="fas fa-exclamation-circle"></i>{{'dashboard.service.isNotSame' | translate}}</span>
@@ -473,10 +481,10 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="layerpop6">
+<div class="modal fade" id="layerpop6" >
   <div class="vertical-alignment-helper">
     <div class="modal-dialog vertical-align-center">
-      <div class="modal-content">
+      <div class="modal-content"  style="width: 800px">
         <!-- header -->
         <div class="modal-header">
           <!-- 닫기(x) 버튼 -->
@@ -495,7 +503,7 @@
               <div>Credentials</div>
               <div><input type="text" name="userProvideCredentials" [(ngModel)]="userProvideCredentials"
                           class="space_input"
-                          placeholder="{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;0000&quot;}"/>
+                          placeholder="EXAMPLE:{&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;0000&quot;}"/>
               </div>
             </li>
             <li>
@@ -503,7 +511,16 @@
               <div><input type="text" name="userProvideSyslogDrainUrl" [(ngModel)]="userProvideSyslogDrainUrl"
                           class="space_input"/></div>
             </li>
+            <li>
+              <div>Route Service Url</div>
+              <div><input type="text" name="userProvideRouteServiceUrl" [(ngModel)]="userProvideRouteServiceUrl"
+                          class="space_input"
+                          placeholder="EXAMPLE:https://xxx.xxx.xxx"/></div>
+
+            </li>
           </ul>
+          <span class="red" use-form-error="isNotSame" *ngIf="!isLength" style="padding-left: 150px"><i
+            class="fas fa-exclamation-circle"></i>{{'dashboard.service.isNotSame' | translate}}</span>
         </div>
         <!-- Footer -->
         <div class="modal-footer">

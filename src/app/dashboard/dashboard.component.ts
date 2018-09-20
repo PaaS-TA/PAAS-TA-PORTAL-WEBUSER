@@ -81,6 +81,7 @@ export class DashboardComponent implements OnInit {
   public userProvideCredentials: string;
   public userProvideSyslogDrainUrl: string;
   public userProvideType: string;
+  public userProvideRouteServiceUrl : string;
 
   public orgMemoryDevelopmentTotal: string;
   public orgMemoryProductionTotal: string;
@@ -362,7 +363,6 @@ export class DashboardComponent implements OnInit {
     let catalog = this.catalogService;
 
     this.dashboardService.getServicePacks().subscribe(data => {
-      // console.log(data['list']);
       $.each(this.servicesEntities, function (skey, servicesEntitie) {
         let cnt = 0;
         $.each(data['list'], function (dkey, servicepack) {
@@ -408,7 +408,6 @@ export class DashboardComponent implements OnInit {
         let cnt = 0;
         $.each(data['list'], function (dkey, buildpack) {
           if (appEntitie['buildpack'] != null) {
-            // console.log(appEntitie['buildpack'] + ' == ' + buildpack['buildPackName'] + ' = ' + (appEntitie['buildpack'] === buildpack['buildPackName']));
             if (appEntitie['buildpack'] === buildpack['buildPackName']) {
               try{
               var pathHeader = buildpack['thumbImgPath'].lastIndexOf("/");
@@ -544,93 +543,117 @@ export class DashboardComponent implements OnInit {
 
 
   userProvidedInfo() {
-    //console.log(this.selectedGuid);
     this.dashboardService.userProvidedInfo(this.selectedGuid).subscribe(data => {
-
       this.userProvideName = data.entity["name"];
       this.userProvideCredentials = JSON.stringify(data.entity["credentials"]);
       this.userProvideSyslogDrainUrl = data.entity["syslog_drain_url"];
       this.userProvideType = data.entity["type"];
+      this.userProvideRouteServiceUrl = data.entity['route_service_url'];
       return data;
     });
   }
 
   createUserProvided() {
 
-    var str = JSON.stringify(this.service['credentialsStr']);
-    // console.log(str);
-
-    let params = {
+    if(this.userProvideCredentials.length > 0){
+      var str = JSON.stringify(this.userProvideCredentials);
+    }
+   let params = {
       orgName: this.org.name,
       spaceGuid: this.selectedSpaceId,
       serviceInstanceName: this.userProvideName,
       credentials: this.userProvideCredentials,
-      syslogDrainUrl: this.userProvideSyslogDrainUrl
+      syslogDrainUrl: this.userProvideSyslogDrainUrl,
+     routeServiceUrl : this.userProvideRouteServiceUrl
     };
-
     this.commonService.isLoading = true;
     this.dashboardService.createUserProvided(params).subscribe(data => {
-      // console.log(params, data);
+      if(data.result){
       this.getAppSummary(this.selectedSpaceId);
       this.ngOnInit();
       this.commonService.alertMessage(this.translateEntities.alertLayer.createSuccess, true);
-      return data;
+      return data;}
+      else if(!data.result){
+        this.commonService.alertMessage(data.msg, false);
+        this.commonService.isLoading = false;
+        return data;
+      }
     }, error => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.createFail, false);
       this.commonService.isLoading = false;
       this.getAppSummary(this.selectedSpaceId);
     });
-    this.userProvideName = '';
-    this.userProvideCredentials = '';
-    this.userProvideSyslogDrainUrl = '';
   }
 
   checkLength() {
     if (this.isUserProvideValidation()) {
-      this.isLength == true;
-      /*createUserProvided*/
       this.createUserProvided();
     } else {
-      this.commonService.alertMessage(this.translateEntities.alertLayer.createFail, false);
+      //
       return false;
     }
   }
 
+  provideinit(){
+    this.userProvideCredentials = '';
+    this.userProvideName = '';
+    this.userProvideSyslogDrainUrl = '';
+    this.userProvideRouteServiceUrl = '';
+  }
+
+
   isUserProvideValidation() {
-    if (this.userProvideName.length && this.userProvideCredentials.length && this.userProvideSyslogDrainUrl.length > 0) {
-      this.isLength = true;
+    if (this.userProvideName !=='') {
       try {
-        JSON.parse(this.userProvideCredentials);
+        if (this.userProvideCredentials !==''){
+        if(this.userProvideCredentials.length > 0 && this.userProvideCredentials.indexOf("{") > -1 && this.userProvideCredentials.indexOf("}")){
+          JSON.parse(this.userProvideCredentials);
+          return true;
+        }else {
+          this.commonService.alertMessage("Credential 작성 형식이 맞지 않습니다.", false);
+          return false;
+        }
+        }
+        if( this.userProvideRouteServiceUrl !== '' ){
+          if(this.userProvideRouteServiceUrl.indexOf("https://") === -1){
+            this.commonService.alertMessage("Route Service Url 작성 형식이 맞지 않습니다.", false);
+            return false;
+          }
+        }
         return true;
       } catch (e) {
+        this.commonService.alertMessage("Credential 작성 형식이 맞지 않습니다.", false);
         return false;
       }
     } else {
-      this.isLength = false;
-
+      this.commonService.alertMessage("userProvideName을 입력해주십시오", false);
       return false;
     }
   }
 
   updateUserProvided() {
     //username':'admin','password':'password';
-    var str = JSON.stringify(this.userProvideCredentials);
-    // console.log(str);
-
+    if (!this.isUserProvideValidation()) {
+    }
     let params = {
       orgName: this.org.name,
       guid: this.selectedGuid,
       serviceInstanceName: this.userProvideName,
       credentials: this.userProvideCredentials,
-      syslogDrainUrl: this.userProvideSyslogDrainUrl
+      syslogDrainUrl: this.userProvideSyslogDrainUrl,
+      routeServiceUrl : this.userProvideRouteServiceUrl
     };
-
     this.commonService.isLoading = true;
     this.dashboardService.updateUserProvided(params).subscribe(data => {
-        // console.log(params, data);
+      if(data.result){
         this.getAppSummary(this.selectedSpaceId);
         this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
         return data;
+      }else {
+        this.commonService.alertMessage(data.msg, false);
+        this.commonService.isLoading = false;
+        return data;
+      }
       }
       , error => {
         this.commonService.alertMessage(this.translateEntities.alertLayer.updateFail, false);
@@ -646,8 +669,14 @@ export class DashboardComponent implements OnInit {
     };
     this.commonService.isLoading = true;
     this.dashboardService.renameInstance(params).subscribe(data => {
-      this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
-      return data;
+      if(data.result) {
+        this.commonService.alertMessage(this.translateEntities.alertLayer.updateSuccess, true);
+        return data;
+      } else {
+        this.commonService.alertMessage(data.msg, false);
+        this.commonService.isLoading = false;
+        return data;
+      }
     }, error => {
       this.commonService.alertMessage(this.translateEntities.alertLayer.updateFail, false);
       this.commonService.isLoading = false;
@@ -670,6 +699,8 @@ export class DashboardComponent implements OnInit {
         this.commonService.alertMessage(this.translateEntities.alertLayer.deleteSuccess, true);
       }else{
         this.commonService.alertMessage(data.msg, false);
+        this.commonService.isLoading = false;
+        return data;
       }
     }, error => {
       this.commonService.isLoading = false;
@@ -681,13 +712,11 @@ export class DashboardComponent implements OnInit {
 
   //move catalogDevelopment
   moveDevelopMent() {
-    //console.log(this.space);
     this.router.navigate(['catalogdevelopment', this.org.guid, this.org.name, this.space['name']]);
   }
 
   //move appMain
   moveDashboard(app_name: string, app_guid: string) {
-    // console.log(app_name + " ::: " + app_guid);
     this.commonService.setCurrentAppGuid(app_guid);
     this.commonService.setCurrentAppName(app_name);
     this.router.navigate(['appMain']);

@@ -21,6 +21,7 @@ export class LoginService {
     return this.common.doPost('/portalapi/login', params, '').map(data => {
       //this.log.debug(data);
       this.common.saveToken(data['token_type'], data['token'], data['refresh_token'], data['expire_in'], data['scope'], 'API');
+
       this.sec.doUserInfoProvider(data['user_name']);
       return data;
     });
