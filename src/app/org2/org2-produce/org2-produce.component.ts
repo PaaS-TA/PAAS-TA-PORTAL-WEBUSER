@@ -121,11 +121,7 @@ export class Org2ProduceComponent implements OnInit {
 
   pattenTest(){
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
-    const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-    $('#orgname').val($('#orgname').val().replace(regExpPattern, '')
-      .replace(regExpBlankPattern, '')
-      .replace(regKoreanPatten, '').substring(0, 64));
+    $('#orgname').val($('#orgname').val().replace(regExpPattern, '').substring(0, 64));
     this.orgname =$('#orgname').val();
   }
 
