@@ -84,7 +84,7 @@
   <ng-container *ngIf="isDashboardApp && isAppView; else catalog">
     <div class="header_bottom">
       <!-- dashboard container -->
-      <p class="tit">Dashboard</p>
+      <p class="tit" [routerLink]="['/dashboard']" style="cursor: pointer">Dashboard</p>
       <span class="nav_toggle"><!-- 180724 수정 -->
                 <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
                 <label for="checkbox-1"></label>

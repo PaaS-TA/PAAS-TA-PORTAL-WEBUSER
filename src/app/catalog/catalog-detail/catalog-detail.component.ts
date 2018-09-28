@@ -189,9 +189,16 @@ export class CatalogDetailComponent implements OnInit {
           planlist.servicenamecheck = 0;
           planlist.plans = list['resources'];
           planlist.plans.forEach(list => {
-            list.bullet = this.serviceBulletSetting(list.entity.extra);
-            list.subbullet = this.serviceSubBulletSetting(list.entity.extra);
+            if(!list.entity){
+            console.log(list);
+            //list.bullet = this.serviceBulletSetting(list.entity.extra);
+            //list.subbullet = this.serviceSubBulletSetting(list.entity.extra);
             list.amount = this.serviceAmountSetting(list.entity.extra);
+            }else {
+              list.bullet = 'Free';
+              list.subbullet = 'Free';
+              list.amount = 'Free';
+            }
             list.radioid = this.radioid++;
           });
           planlist.id = 'ra' + ++this.buttonid;
@@ -438,6 +445,7 @@ export class CatalogDetailComponent implements OnInit {
     if(value.costs){
       amount = value.costs[0]['amount'].usd;
     }
+    console.log(value);
     return amount + '/' + value.costs[0]['unit'];
   }
 

@@ -20,7 +20,6 @@ import {OrgUserRoleService} from "../common/org-userrole.service";
 import {DomainService} from "../../domain/domain.service";
 import {Domain} from "../../model/domain";
 import {OrgUserRole, SpaceUserRole} from "../../model/userrole";
-import {current} from "codelyzer/util/syntaxKind";
 
 declare var $: any;
 declare var jQuery: any;

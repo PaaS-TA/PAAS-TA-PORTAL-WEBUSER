@@ -24,7 +24,7 @@ export class UsermgmtService {
 
   updateUserPassword(userId:string ,param:any){
     console.log('TOKEN ::: ' + this.common.getToken());
-    return this.common.doPut('/portalapi/v2/users/' +encodeURI(userId) + '/password/update', param, this.common.getToken()).map((res: Response) => {return res['result'];});
+    return this.common.doPut('/portalapi/v2/users/' +encodeURI(userId) + '/password/update', param, this.common.getToken()).map((res: any) => {return res;});
   }
 
   // @DeleteMapping(V2_URL + "/user/{guid}/all")  ::CF&DB

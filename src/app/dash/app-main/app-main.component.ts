@@ -11,6 +11,8 @@ import {isNull, isNullOrUndefined, isUndefined} from "util";
 declare var Chart: any;
 declare var $: any;
 declare var jQuery: any;
+declare  var require : any;
+let appConfig = require('assets/resources/env/config.json');
 
 @Component({
   selector: 'app-app-main',
@@ -175,7 +177,7 @@ export class AppMainComponent implements OnInit {
         });
     });
 
-    this.appSummaryMemoryMax = 10;
+
     this.appSummaryDiskMax = 10;
     this.tabContentEventListLimit = 5;
     this.tabContentStatsListLimit = 5;
@@ -198,12 +200,13 @@ export class AppMainComponent implements OnInit {
 
         this.location = this.common.getCurrentLocation();
         this.orgName = this.common.getCurrentOrgName();
-        this.orgGuid = this.common.getUserGuid();
+        this.orgGuid = this.common.getCurrentOrgGuid();
         this.spaceName = this.common.getCurrentSpaceName();
         this.spaceGuid = this.common.getCurrentSpaceGuid();
         this.appName = this.common.getCurrentAppName();
         this.appGuid = this.common.getCurrentAppGuid();
 
+        this.getOrgSummary(this.orgGuid);
         this.getAppSummary(this.appGuid);
         this.getAppEvents(this.appGuid);
         this.getAppEnv(this.appGuid);
@@ -211,6 +214,7 @@ export class AppMainComponent implements OnInit {
         this.getAlarms(this.appGuid);
         this.getAlarm(this.appGuid);
         this.getAutoscaling(this.appGuid);
+
       } else {
         setTimeout(() => this.showLoading(), 0);
 
@@ -379,6 +383,18 @@ export class AppMainComponent implements OnInit {
       appRoutes.push(obj);
     });
     this.appRoutesEntitiesRe = appRoutes;
+  }
+
+  getOrgSummary(guid : string){
+    this.appMainService.getOrgSummary(guid).subscribe(data => {
+      console.log(data);
+      this.appSummaryMemoryMax = data.quota.memoryLimit/1024;
+      if(data.quota.applicationInstanceLimit === -1){
+        this.appSummaryInstanceMax = 7;
+      } else {
+      this.appSummaryInstanceMax = data.quota.applicationInstanceLimit;
+      }
+    });
   }
 
   getSpaceSummary() {
@@ -1093,9 +1109,10 @@ export class AppMainComponent implements OnInit {
   }
 
   getAlarms(guid: any) {
+    if(!appConfig.monitoring){
+      return;
+    }
     //TODO 임시
-    guid = "9dac6e76-37cf-484f-8ebe-bdbaf99943e6";
-
     this.appMainService.getAlarms(guid, this.sltAlaramPageItems, this.sltAlaramPageIndex, this.sltAlaramResourceType, this.sltAlaramAlarmLevel).subscribe(data => {
       this.appAlarmsEntities = data.data;
     });
@@ -1117,8 +1134,10 @@ export class AppMainComponent implements OnInit {
   }
 
   getAlarm(guid: any) {
+    if(!appConfig.monitoring){
+      return;
+    }
     //TODO 임시
-    guid = "9dac6e76-37cf-484f-8ebe-bdbaf99943e6";
 
     this.appMainService.getAlarm(guid).subscribe(data => {
       this.appAlaramEntities = data;
@@ -1147,6 +1166,9 @@ export class AppMainComponent implements OnInit {
   }
 
   showPopAlarmEditClick() {
+    if(!appConfig.monitoring){
+      return;
+    }
     if ($('#appAlarmEmail').css("color") == "rgb(255, 0, 0)") {
       alert("Email 형식이 잘못 되었습니다.");
       return false;
@@ -1156,6 +1178,9 @@ export class AppMainComponent implements OnInit {
   }
 
   editAlarmClick() {
+    if(!appConfig.monitoring){
+      return;
+    }
     if ($("#switch12").is(":checked") == true) {
       this.appAlarmEmailSendYn = "Y";
     } else {
@@ -1171,7 +1196,7 @@ export class AppMainComponent implements OnInit {
     let params = {
       // TODO 하드코딩
       // appGuid: this.appSummaryGuid,
-      appGuid: "9dac6e76-37cf-484f-8ebe-bdbaf99943e6",
+      appGuid: this.appSummaryGuid,
       cpuWarningThreshold: Number($("#appAlarmCpuWarningThreshold").val()),
       cpuCriticalThreshold: Number($("#appAlarmCpuCriticalThreshold").val()),
       memoryWarningThreshold: Number($("#appAlarmMemoryWarningThreshold").val()),
@@ -1200,7 +1225,9 @@ export class AppMainComponent implements OnInit {
 
   getAutoscaling(guid: any) {
     // TODO 임시
-    guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
+    if(!appConfig.monitoring){
+      return;
+    }
 
     this.appMainService.getAutoscaling(guid).subscribe(data => {
       this.appAutoscalingEntities = data;
@@ -1235,6 +1262,9 @@ export class AppMainComponent implements OnInit {
   }
 
   editAutoscalingClick() {
+    if(!appConfig.monitoring){
+      return;
+    }
     if ($("#switch10").is(":checked") == true) {
       this.appAutoscalingOutYn = "Y";
     } else {
@@ -1323,6 +1353,7 @@ export class AppMainComponent implements OnInit {
   }
 
   selectBoxServiceChange(val: string) {
+
     var appBindParam = [];
 
     $.each(this.servicepacksEntitiesRe, function (key, dataobj) {
@@ -1410,6 +1441,7 @@ export class AppMainComponent implements OnInit {
   }
 
   statsResrtartClick() {
+
     $("[id^='layerpop']").modal("hide");
     this.common.isLoading = true;
 
@@ -1645,13 +1677,16 @@ export class AppMainComponent implements OnInit {
   }
 
   getCpuChart() {
+    if(!appConfig.monitoring){
+      return;
+    }
     var speedCanvas = document.getElementById("speedChart");
 
     Chart.defaults.global.defaultFontFamily = "gulim";
     Chart.defaults.global.defaultFontSize = 12;
 
     // TODO 하드코딩
-    var guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
+    var guid = this.appGuid;
     var idx = String(this.appSummaryInstance);
     var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
     var groupBy = String(this.sltChartGroupBy) + "s";
@@ -1836,13 +1871,16 @@ export class AppMainComponent implements OnInit {
   }
 
   getMemoryChart() {
+    if(!appConfig.monitoring){
+      return;
+    }
     var speedCanvas2 = document.getElementById("speedChart2");
 
     Chart.defaults.global.defaultFontFamily = "gulim";
     Chart.defaults.global.defaultFontSize = 12;
 
     // TODO 하드코딩
-    var guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
+    var guid = this.appGuid;
     var idx = String(this.appSummaryInstance);
     var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
     var groupBy = String(this.sltChartGroupBy) + "s";
@@ -2022,13 +2060,16 @@ export class AppMainComponent implements OnInit {
   }
 
   getNetworkByte() {
+    if(!appConfig.monitoring){
+      return;
+    }
     var speedCanvas3 = document.getElementById("speedChart3");
 
     Chart.defaults.global.defaultFontFamily = "gulim";
     Chart.defaults.global.defaultFontSize = 12;
 
     // TODO 하드코딩
-    var guid = "2d35e19c-f223-49a3-b4b5-da2c55969f07";
+    var guid = this.appGuid;
     var idx = String(this.appSummaryInstance);
     var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
     var groupBy = String(this.sltChartGroupBy) + "s";

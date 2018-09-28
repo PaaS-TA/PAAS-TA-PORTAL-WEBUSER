@@ -634,6 +634,7 @@ export class DashboardComponent implements OnInit {
   updateUserProvided() {
     //username':'admin','password':'password';
     if (!this.isUserProvideValidation()) {
+      return;
     }
     let params = {
       orgName: this.org.name,

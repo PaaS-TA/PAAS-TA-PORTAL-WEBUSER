@@ -12,6 +12,12 @@ export class AppMainService {
     return this.commonService.getToken();
   }
 
+  getOrgSummary(orgId: string) {
+    return this.commonService.doGet('/portalapi/v2/orgs/' + orgId + '/summary', this.commonService.getToken()).map((res: Response) => {
+      return res;
+    }).do(console.log);
+  }
+
   getAppSummary(guid: string) {
     return this.commonService.doGet('/portalapi/v2/apps/'+guid+'/summary', this.getToken()).map((res: Response) => {
       return res;
@@ -82,7 +88,7 @@ export class AppMainService {
     return this.commonService.doDelete('/portalapi/v2/apps/'+guid+'/instances/'+index, params, this.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
-  }
+  }cpuUsage
 
   addAppRoute(params: any) {
     return this.commonService.doPost('/portalapi/v2/routes', params, this.getToken()).map((res: Response) => {
@@ -149,6 +155,7 @@ export class AppMainService {
       return res;
     }).do(console.log);
   }
+
 
   getAlarm(appGuid: string) {
     return this.commonService.doGet('/portalapi/app/alarm/policy?appGuid='+appGuid, this.getToken()).map((res: Response) => {
