@@ -21,6 +21,7 @@ let appConfig = require('assets/resources/env/config.json');
 })
 export class AppMainComponent implements OnInit {
 
+  private jquerySetting : boolean;
   public location: string;
   public orgName: string;
   public orgGuid: string;
@@ -158,6 +159,8 @@ export class AppMainComponent implements OnInit {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.appMain;
     });
+    this.jquerySetting = true;
+
   }
 
   ngOnDestroy() {
@@ -176,9 +179,15 @@ export class AppMainComponent implements OnInit {
           console.log(exception);
         });
     });
+    if(this.jquerySetting){
+      $(".lauthOn").on("click" ,function(){
+        $(".lauth_dl").toggleClass("on");
+        $("#routeAddHostName").focus();
+      });
+      this.jquerySetting = false;
+    }
 
 
-    this.appSummaryDiskMax = 10;
     this.tabContentEventListLimit = 5;
     this.tabContentStatsListLimit = 5;
     this.sltAlaramPageItems = 10;
@@ -207,14 +216,15 @@ export class AppMainComponent implements OnInit {
         this.appGuid = this.common.getCurrentAppGuid();
 
         this.getOrgSummary(this.orgGuid);
-        this.getAppSummary(this.appGuid);
+        setTimeout(() => this.getAppSummary(this.appGuid), 500);
+
         this.getAppEvents(this.appGuid);
         this.getAppEnv(this.appGuid);
         this.getAppRecentLogs(this.appGuid);
         this.getAlarms(this.appGuid);
         this.getAlarm(this.appGuid);
         this.getAutoscaling(this.appGuid);
-
+        this.getMaxDisk();
       } else {
         setTimeout(() => this.showLoading(), 0);
 
@@ -223,6 +233,7 @@ export class AppMainComponent implements OnInit {
         this.router.navigate(['dashboard']);
       }
     this.keyPressInit();
+
   }
 
   keyPressInit(){
@@ -247,6 +258,7 @@ export class AppMainComponent implements OnInit {
   showLoading() {
     this.common.isLoading = true;
   }
+
 
   getAppSummary(guid: any) {
     this.isLoading = true;
@@ -326,7 +338,6 @@ export class AppMainComponent implements OnInit {
       this.appSummaryBuildPackName = data.buildpack;
 
       this.appSummaryInstance = data.instances;
-      this.appSummaryInstanceMax = 7;
       this.appSummaryInstancePer = Math.round((this.appSummaryInstance * 100) / this.appSummaryInstanceMax);
 
       $("#instancePer").val(this.appSummaryInstancePer);
@@ -385,15 +396,46 @@ export class AppMainComponent implements OnInit {
     this.appRoutesEntitiesRe = appRoutes;
   }
 
+  getMaxDisk(){
+    this.appMainService.getCodeMax('APP_DISK_SIZE').subscribe(data => {
+      data.list.some(r => {
+        if(r.key==='max_size'){
+          this.appSummaryDiskMax = r.value/1024;
+          return true;
+        }
+        this.appSummaryDiskMax = 10;
+      })
+    })
+  }
+
   getOrgSummary(guid : string){
     this.appMainService.getOrgSummary(guid).subscribe(data => {
-      console.log(data);
-      this.appSummaryMemoryMax = data.quota.memoryLimit/1024;
-      if(data.quota.applicationInstanceLimit === -1){
-        this.appSummaryInstanceMax = 7;
-      } else {
-      this.appSummaryInstanceMax = data.quota.applicationInstanceLimit;
-      }
+      this.appMainService.getCodeMax('APP_MEMORY_SIZE').subscribe(codedata => {
+        codedata.list.some(r => {
+          if(r.key==='max_size'){
+            if(r.value > data.quota.memoryLimit){
+              this.appSummaryMemoryMax = data.quota.memoryLimit/1024;
+            } else {
+            this.appSummaryMemoryMax = r.value/1024;
+            }
+            return true;
+          }
+          this.appSummaryMemoryMax = 1;
+        })
+      });
+      this.appMainService.getCodeMax('APP_INSTANCE_SIZE').subscribe(codedata => {
+        codedata.list.some(r => {
+          if(r.key==='max_size'){
+            if(r.value > data.quota.applicationInstanceLimit && data.quota.applicationInstanceLimit !== -1){
+              this.appSummaryInstanceMax = data.quota.applicationInstanceLimit;
+            } else {
+              this.appSummaryInstanceMax = r.value;
+            }
+            return true;
+          }
+          this.appSummaryMemoryMax = 1;
+        })
+      });
     });
   }
 
@@ -495,11 +537,9 @@ export class AppMainComponent implements OnInit {
           var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
           var pathEnd = buildpack.thumbImgPath.length;
           var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
-          console.log(fileName);
           appMainservice.getImg(fileName).subscribe(data => {
             let reader = new FileReader();
             reader.addEventListener("load", () => {
-              console.log(reader);
                imgPath = reader.result;
               $("#col_in1").css({
                 "background": "url(" + imgPath + ") 15px top no-repeat",
@@ -529,34 +569,39 @@ export class AppMainComponent implements OnInit {
         var mem = 0;
         var disk = 0;
         var cnt = 0;
+        let maxmem = this.appSummaryMemoryMax;
+        let maxdisk = this.appSummaryDiskMax;
+        console.log(maxmem +" :::::" + maxdisk);
 
         $.each(data.instances, function (key, dataobj) {
           if (dataobj.stats != null) {
             if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
-            if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + dataobj.stats.usage.mem / dataobj.stats.mem_quota * 100;
-            if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + dataobj.stats.usage.disk / dataobj.stats.disk_quota * 100;
+            if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + (dataobj.stats.usage.mem) /  (maxmem*1024*1024*1024)  * 100;
+            if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + (dataobj.stats.usage.disk) / (maxdisk* 1024*1024*1024) * 100;
+            console.log(dataobj.stats.usage.cpu +" :::::" + dataobj.stats.usage.mem + "::::::::" + dataobj.stats.usage.disk);
             cnt++;
           }
         });
+
 
         if (cpu > 0) {
           if (Number((cpu / cnt).toFixed(0)) > 100) {
             this.appStatsCpuPer = 100;
           } else {
-            this.appStatsCpuPer = Number((cpu / cnt).toFixed(2));
+            this.appStatsCpuPer = Number((cpu).toFixed(2));
           }
         } else {
           this.appStatsCpuPer = 0;
         }
 
         if (mem > 0) {
-          this.appStatsMemoryPer = Math.round(mem / cnt);
+          this.appStatsMemoryPer = Math.round(mem);
         } else {
           this.appStatsMemoryPer = 0;
         }
 
         if (mem > 0) {
-          this.appStatsDiskPer = Math.round(disk / cnt);
+          this.appStatsDiskPer = Math.round(disk);
         } else {
           this.appStatsDiskPer = 0;
         }
@@ -1359,7 +1404,6 @@ export class AppMainComponent implements OnInit {
     $.each(this.servicepacksEntitiesRe, function (key, dataobj) {
       if (dataobj.guid == val) {
         var str = dataobj.appBindParameter.replace("}", "").replace("{", "");
-        console.log(str);
         var split = str.split(",");
 
         for (var i = 0; i < split.length; i++) {
@@ -1596,7 +1640,6 @@ export class AppMainComponent implements OnInit {
     var port = "";
     var uri = "";
     var username = "";
-
     var useSysEnvs = this.appEnvSystemEntities;
     $.each(useSysEnvs, function (key, dataobj) {
       if (key == label) {

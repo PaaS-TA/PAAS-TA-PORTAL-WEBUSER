@@ -126,17 +126,17 @@ export class CreateComponent implements OnInit {
             'refreshToken': '',
             'authAccessTime': '',
             'authAccessCnt': 0,
-            'active' : this.commonService.getAutomaticApproval() ? 'Y' : 'N'
+            'active' : this.commonService.getAutomaticApproval() ? 'N' : 'Y'
           };
           this.externalService.updateInfo(this.userId, userInfo);
-          if(!this.commonService.getAutomaticApproval()){
+          if(this.commonService.getAutomaticApproval()){
             this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
           }else {
             this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
           }
           setTimeout(() => {
             this.commonService.isLoading=false;
-            this.router.navigate(['login']), 5000
+            this.router.navigate(['login']), 10000
           });
         } else {
           this.commonService.alertMessage(data['msg'], false);

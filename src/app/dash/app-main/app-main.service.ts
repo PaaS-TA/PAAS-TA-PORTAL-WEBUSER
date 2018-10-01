@@ -12,6 +12,12 @@ export class AppMainService {
     return this.commonService.getToken();
   }
 
+  getCodeMax(groudid : string){
+    return this.commonService.doGet('/commonapi/v2/'+groudid+'/codedetail' , this.commonService.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
   getOrgSummary(orgId: string) {
     return this.commonService.doGet('/portalapi/v2/orgs/' + orgId + '/summary', this.commonService.getToken()).map((res: Response) => {
       return res;

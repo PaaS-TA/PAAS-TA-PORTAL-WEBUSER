@@ -283,15 +283,11 @@ export class CatalogDevelopmentComponent implements OnInit {
 
   pattenTest(){
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
-    const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-    $('#orgname').val($('#orgname').val().replace(regExpPattern, '')
-      .replace(regExpBlankPattern, '')
-      .replace(regKoreanPatten, ''));
+    $('#orgname').val($('#orgname').val().replace(regExpPattern, ''));
     this.appname =$('#orgname').val().substring(0,50);
   }
   routepattenTest(){
-    const regExpPattern = /[\@\{\}\[\]\/?.,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
+    const regExpPattern = /[\{\}\[\]\/?.,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
     const regExpBlankPattern = /[\s]/g;
     const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
     $('#routename').val($('#routename').val().replace(regExpPattern, '')

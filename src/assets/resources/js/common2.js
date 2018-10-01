@@ -398,11 +398,10 @@
         $(this).find(".organization_dot").addClass('on');
     });
 
-    //$(".serviceOn,.lauthOn").on("click" ,function(){
-    $(".lauthOn").on("click" ,function(){
-        $(".lauth_dl").toggleClass("on");
-        $("#routeAddHostName").focus();
-    });
+    // $(".lauthOn").on("click" ,function(){
+    //   $(".lauth_dl").toggleClass("on");
+    //   $("#routeAddHostName").focus();
+    // });
 
     $(".variableSW").on("click" , function(){
         $("#DLid1").toggleClass("on");

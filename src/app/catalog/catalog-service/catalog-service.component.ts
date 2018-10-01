@@ -142,11 +142,7 @@ export class CatalogServiceComponent implements OnInit {
 
   pattenTest(){
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
-    const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-    $('#servicename').val($('#servicename').val().replace(regExpPattern, '')
-      .replace(regExpBlankPattern, '')
-      .replace(regKoreanPatten, ''));
+    $('#servicename').val($('#servicename').val().replace(regExpPattern, ''));
     this.servicename =$('#servicename').val();
   }
 

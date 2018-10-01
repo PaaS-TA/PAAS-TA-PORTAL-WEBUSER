@@ -442,11 +442,7 @@ export class DashboardComponent implements OnInit {
 
   pattenTest(value: string) {
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
-    const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-    $('#' + value).val($('#' + value).val().replace(regExpPattern, '')
-      .replace(regExpBlankPattern, '')
-      .replace(regKoreanPatten, '').substring(0, 64));
+    $('#' + value).val($('#' + value).val().replace(regExpPattern, ''));
     this.selectedName = $('#' + value).val();
   }
 
