@@ -124,6 +124,7 @@ export class CatalogComponent implements OnInit {
   public jsonParse(value) : any{
     let result = '';
     let json = JSON.parse(value.tagsParam);
+    console.log(json);
     value.buttonclass = new Array<any>();
     const keys = Object.keys(json);
     keys.forEach(key => {
@@ -148,16 +149,16 @@ export class CatalogComponent implements OnInit {
         this.catalogService.getImg(CATALOGURLConstant.GETIMG + fileName).subscribe(data => {
           let reader = new FileReader();
           reader.addEventListener("load", () => {
-            recent.thumbImgPath = reader.result;
+            recent.Img = reader.result;
           }, false);
           if (data) {
             reader.readAsDataURL(data);
           }
         },error => {
-          recent.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+          recent.Img = '../../../assets/resources/images/catalog/catalog_3.png';
         });
       }catch (e) {
-        recent.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        recent.Img = '../../../assets/resources/images/catalog/catalog_3.png';
       }
     });
     this.catalogService.recentpacks = data;
@@ -166,6 +167,7 @@ export class CatalogComponent implements OnInit {
 
   StarterInit(data : any) {
     data.forEach(a => {
+      console.log(a);
       a = this.jsonParse(a);
     });
     this.catalogService.starterpacks = data;
@@ -177,15 +179,15 @@ export class CatalogComponent implements OnInit {
       this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
         let reader = new FileReader();
         reader.addEventListener("load", () => {
-          starter.thumbImgPath = reader.result;
+          starter.Img = reader.result;
         }, false);
         if (data) {
           reader.readAsDataURL(data);
         }}, error=> {
-        starter.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        starter.Img = '../../../assets/resources/images/catalog/catalog_3.png';
       });
       } catch (e) {
-        starter.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        starter.Img = '../../../assets/resources/images/catalog/catalog_3.png';
       }
     });
     this.catalogService.viewstarterpacks = this.catalogService.starterpacks;
@@ -206,17 +208,16 @@ export class CatalogComponent implements OnInit {
         this.catalogService.getImg(CATALOGURLConstant.GETIMG + fileName).subscribe(data => {
           let reader = new FileReader();
           reader.addEventListener("load", () => {
-            buildpack.thumbImgPath = reader.result;
+            buildpack.Img = reader.result;
           }, false);
           if (data) {
             reader.readAsDataURL(data);
           }
         }, error => {
-          buildpack.thumbImgPath = 'assets/resources/images/catalog/catalog_3.png';
+          buildpack.Img = 'assets/resources/images/catalog/catalog_3.png';
         });
       }catch (e) {
-        buildpack.thumbImgPath = 'assets/resources/images/catalog/catalog_3.png';
-        console.log("캐치문 실행");
+        buildpack.Img = 'assets/resources/images/catalog/catalog_3.png';
       }
     });
     this.catalogService.viewbuildpacks = this.catalogService.buildpacks;
@@ -235,16 +236,16 @@ export class CatalogComponent implements OnInit {
       this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
         let reader = new FileReader();
         reader.addEventListener("load", () => {
-          servicepack.thumbImgPath = reader.result;
+          servicepack.Img = reader.result;
         }, false);
         if (data) {
           reader.readAsDataURL(data);
         }}, error =>{
-        servicepack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        servicepack.Img = '../../../assets/resources/images/catalog/catalog_3.png';
       });
 
     } catch (e) {
-        servicepack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        servicepack.Img = '../../../assets/resources/images/catalog/catalog_3.png';
       }
     });
     this.catalogService.viewservicepacks = this.catalogService.servicepacks;

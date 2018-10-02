@@ -167,16 +167,16 @@ export class CatalogDevelopmentComponent implements OnInit {
 
           let reader = new FileReader();
           reader.addEventListener("load", () => {
-            this.buildpack.thumbImgPath = reader.result;
+            this.buildpack.img = reader.result;
           }, false);
           if (data) {
             reader.readAsDataURL(data);
           }
         }, error => {
-        this.buildpack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        this.buildpack.img = '../../../assets/resources/images/catalog/catalog_3.png';
       });
       }catch(e){
-        this.buildpack.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+        this.buildpack.img = '../../../assets/resources/images/catalog/catalog_3.png';
       }},error => {
       this.router.navigate(['catalog']);
     });

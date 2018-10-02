@@ -1733,7 +1733,7 @@ export class AppMainComponent implements OnInit {
     var idx = String(this.appSummaryInstance);
     var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
     var groupBy = String(this.sltChartGroupBy) + "s";
-    var type = "All";
+    var type = $("#selectBoxChartInstance").val();
     var sltChartInstancesValue = this.sltChartInstances;
 
 
@@ -1927,9 +1927,9 @@ export class AppMainComponent implements OnInit {
     var idx = String(this.appSummaryInstance);
     var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
     var groupBy = String(this.sltChartGroupBy) + "s";
-    var type = "All";
+    var type = $("#selectBoxChartInstance").val();
     var sltChartInstancesValue = this.sltChartInstances;
-
+    console.log(type);
 
     this.appMainService.getMemoryUsage(guid, idx, defaultTimeRange, groupBy, type).subscribe(data => {
       var levelsArray = new Array();
@@ -2116,7 +2116,7 @@ export class AppMainComponent implements OnInit {
     var idx = String(this.appSummaryInstance);
     var defaultTimeRange = String(this.sltChartDefaultTimeRange) + "m";
     var groupBy = String(this.sltChartGroupBy) + "s";
-    var type = "All";
+    var type = $("#selectBoxChartInstance").val();
     var sltChartInstancesValue = this.sltChartInstances;
 
 

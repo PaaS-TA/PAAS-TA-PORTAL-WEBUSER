@@ -527,7 +527,7 @@ export class CommonService {
   }
 
   getAutomaticApproval() : boolean {
-    return appConfig['automaticApproval'];
+    return !appConfig['automaticApproval'];
   }
 
   alertMessage(value, result) {

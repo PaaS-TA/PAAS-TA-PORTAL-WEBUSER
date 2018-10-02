@@ -106,6 +106,7 @@ export class CreateComponent implements OnInit {
   }
 
   save() {
+    this.commonService.isLoading = true;
     if (this.isUserName && this.isPassword && this.isRePassword) {
       let param = {
         'userId': this.userId,
@@ -115,31 +116,30 @@ export class CreateComponent implements OnInit {
         'address': '',
         'active' : this.commonService.getAutomaticApproval()
       }
-
       this.externalService.createUser(param).subscribe(data => {
-        this.commonService.isLoading = true;
         if (data['result'] == true) {
-          this.commonService.isLoading = false;
           let userInfo = {
             'userId': this.userId,
             'userName': this.username,
             'refreshToken': '',
             'authAccessTime': '',
             'authAccessCnt': 0,
-            'active' : this.commonService.getAutomaticApproval() ? 'N' : 'Y'
+            'active' : this.commonService.getAutomaticApproval() ? 'Y' : 'N'
           };
           this.externalService.updateInfo(this.userId, userInfo);
-          if(this.commonService.getAutomaticApproval()){
+
+          if(!this.commonService.getAutomaticApproval()){
             this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
           }else {
             this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
           }
           setTimeout(() => {
             this.commonService.isLoading=false;
-            this.router.navigate(['login']), 10000
-          });
+            this.router.navigate(['login']);
+          }, 2000);
         } else {
           this.commonService.alertMessage(data['msg'], false);
+          this.commonService.isLoading=false;
         }
       });
     }

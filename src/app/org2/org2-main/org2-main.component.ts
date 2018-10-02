@@ -219,11 +219,10 @@ export class Org2MainComponent implements OnInit {
   }
 
   replaceInvalidateString($event) {
-    const regFirstExpPattern = /^[\{\}\[\]\/?,;:|\)*~`!^+<>\#\-_@$%&\\\=\(\'\"]+/g;
-    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#@$%&\\\=\(\'\"]/g;
+    //const regFirstExpPattern = /^[\{\}\[\]\/?,;:|\)*~`!^+<>\#\-_@$%&\\\=\(\'\"]+/g;
+    const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/g;
 
-    let typingStr = $event.target.value.replace(regFirstExpPattern, '')
-      .replace(regExpPattern, '').substring(0, 64);
+    let typingStr = $event.target.value.replace(regExpPattern, '').substring(0, 64);
 
     $event.target.value = typingStr;
   }

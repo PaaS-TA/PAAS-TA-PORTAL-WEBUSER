@@ -223,16 +223,16 @@ export class CatalogDetailComponent implements OnInit {
         this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
           let reader = new FileReader();
           reader.addEventListener("load", () => {
-            app.thumbImgPath = reader.result;
+            app.Img = reader.result;
           }, false);
           if (data) {
             reader.readAsDataURL(data);
           }
         }, error => {
-          app.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+          app.Img = '../../../assets/resources/images/catalog/catalog_3.png';
         });
         } catch(e){
-          app.thumbImgPath = '../../../assets/resources/images/catalog/catalog_3.png';
+          app.Img = '../../../assets/resources/images/catalog/catalog_3.png';
         } }
       );
     });

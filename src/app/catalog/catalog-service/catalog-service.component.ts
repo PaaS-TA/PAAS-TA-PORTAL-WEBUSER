@@ -156,7 +156,7 @@ export class CatalogServiceComponent implements OnInit {
       this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
         let reader = new FileReader();
         reader.addEventListener("load", () => {
-          this.servicepack.thumbImgPath = reader.result;
+          this.servicepack.img = reader.result;
         }, false);
         if (data) {
           reader.readAsDataURL(data);
