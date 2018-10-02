@@ -174,6 +174,7 @@ export class UsermgmtComponent implements OnInit {
     $('#tellPhone').val('');
     $('#zipCode').val('');
     $('#address').val('');
+
   }
 
   cancelButton(){
@@ -181,6 +182,10 @@ export class UsermgmtComponent implements OnInit {
     $('#tellPhone').val('');
     $('#zipCode').val('');
     $('#address').val('');
+  }
+
+  userSaveEnter(){
+    $("#userSave").click();
   }
 
   replaceInvalidateString($event) {
@@ -193,6 +198,14 @@ export class UsermgmtComponent implements OnInit {
       .substring(0, 64);
 
     $event.target.value = typingStr;
+  }
+
+  updateUserPasswordEnter(){
+    $("#passwordChange").click();
+  }
+
+  checkTellPhoneEnter(){
+    $("#checkTellPhone").click();
   }
 
   checkTellPhone() {
@@ -209,6 +222,10 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
+  checkZipCodeEnter(){
+    $("#checkZipCode").click();
+  }
+
   checkZipCode() {
     // this.log.debug(this.zipCode + ' :::: ' + this.zipCode_pattenTest());
     if (this.zipCode_pattenTest()){
@@ -221,6 +238,10 @@ export class UsermgmtComponent implements OnInit {
       $('#zipCode').val('');
       return this.userInfo;
     }
+  }
+
+  checkAddressEnter(){
+    $("#checkAddress").click();
   }
 
   checkAddress() {

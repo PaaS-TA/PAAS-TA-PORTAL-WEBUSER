@@ -92,7 +92,7 @@
                       </p>
                       <span>{{'usermgmt.loginInfo.changePassword.newPasswordConfirmation' | translate}}
                       </span>
-                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" id= "password_confirm" required="" (change)="checkRePassword($event)" (keydown)="checkRePassword($event)" (keyup)="checkRePassword($event)" (keyup.enter)="updateUserPassword()"/>
+                      <input type="password" name="password_confirm" [(ngModel)]="password_confirm" id= "password_confirm" required="" (change)="checkRePassword($event)" (keydown)="checkRePassword($event)" (keyup)="checkRePassword($event)" (keyup.enter)="updateUserPasswordEnter()"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" id="passwordChange" (click)="updateUserPassword()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw">{{'usermgmt.button.cancel' | translate }}</button>
@@ -129,7 +129,7 @@
                     <div class="account_table_in">
                       <span>{{'usermgmt.userInfo.name.changeName' | translate}}
                       </span>
-                      <input type="text" name="userName" id="userName" [(ngModel)]="userName" ng-model-options="{ getterSetter: true }" ng-minlength="0" (keyup)="replaceInvalidateString($event)" (keyup.enter)="userSave()"/>
+                      <input type="text" name="userName" id="userName" [(ngModel)]="userName" ng-model-options="{ getterSetter: true }" ng-minlength="0" (keyup)="replaceInvalidateString($event)" (keyup.enter)="userSaveEnter()"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" id="userSave" (click)="userSave()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
@@ -149,7 +149,7 @@
                     <div class="account_table_in" >
                       <span>{{'usermgmt.userInfo.phoneNumber.newPhoneNumber' | translate}}
                       </span>
-                      <input type="text" class="input_tellphone" id="tellPhone" name="tellPhone" [(ngModel)]="tellPhone" (ngModelChange)="tellPhone_pattenTest()" ng-maxlength="15" (keyup.enter)="checkTellPhone()"/>
+                      <input type="text" class="input_tellphone" id="tellPhone" name="tellPhone" [(ngModel)]="tellPhone" (ngModelChange)="tellPhone_pattenTest()" ng-maxlength="15" (keyup.enter)="checkTellPhoneEnter()"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" id="checkTellPhone" (click)="checkTellPhone()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
@@ -173,7 +173,7 @@
                     <div class="account_table_in">
                       <span>{{'usermgmt.userInfo.zipCode.newZipCode' | translate}}
                       </span>
-                      <input type="text" class="input_zipCode" id="zipCode" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()" ng-maxlength="15" (keyup.enter)="checkZipCode()"/>
+                      <input type="text" class="input_zipCode" id="zipCode" name="zipCode" [(ngModel)]="zipCode" (ngModelChange)="zipCode_pattenTest()" ng-maxlength="15" (keyup.enter)="checkZipCodeEnter()"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" id="checkZipCode" (click)="checkZipCode()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
@@ -197,7 +197,7 @@
                     <div class="account_table_in">
                       <span>{{'usermgmt.userInfo.address.newAddress' | translate}}
                       </span>
-                      <input type="text" class="input_address" id="address" name="address" [(ngModel)]="address" (ngModelChange)="address_pattenTest()" (keyup.enter)="checkAddress()"/>
+                      <input type="text" class="input_address" id="address" name="address" [(ngModel)]="address" (ngModelChange)="address_pattenTest()" (keyup.enter)="checkAddressEnter()"/>
                       <div class="">
                         <button class="btns6 colors4 btns_sw" id="checkAddress" (click)="checkAddress()">{{'usermgmt.button.change' | translate }}</button>
                         <button class="btns6 colors5 btns_sw" (click)="cancelButton()">{{'usermgmt.button.cancel' | translate }}</button>
