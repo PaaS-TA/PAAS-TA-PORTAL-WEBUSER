@@ -1287,6 +1287,16 @@ export class AppMainComponent implements OnInit {
       this.appAutoscalingMeasureTimeSec = data.measureTimeSec;
       this.appAutoscalingMemoryMaxThreshold = data.memoryMaxThreshold;
       this.appAutoscalingMemoryMinThreshold = data.memoryMinThreshold;
+      if(data.autoScalingCpuYn === 'Y'){
+        $("#autoScalingCpuYn").attr("checked", true);
+      } else {
+        $("#autoScalingCpuYn").attr("checked", false);
+      }
+      if(data.autoScalingMemoryYn === 'Y'){
+        $("#autoScalingMemoryYn").attr("checked", true);
+      } else {
+        $("#autoScalingMemoryYn").attr("checked", false);
+      }
 
       if (this.appAutoscalingOutYn == "Y") {
         $("#switch10").attr("checked", true);
@@ -1325,19 +1335,20 @@ export class AppMainComponent implements OnInit {
     let params = {
       // TODO 하드코딩
       // appGuid: this.appSummaryGuid,
-      appGuid: "2d35e19c-f223-49a3-b4b5-da2c55969f07",
-      autoScalingInYn: this.appAutoscalingInYn,
-      autoScalingOutYn: this.appAutoscalingOutYn,
-      cpuMaxThreshold: Number($("#appAutoscalingCpuMaxThreshold").val()),
-      cpuMinThreshold: Number($("#appAutoscalingCpuMinThreshold").val()),
-      instanceMaxCnt: Number($("#appAutoscalingInstanceMaxCnt").val()),
+      appGuid: this.appGuid,
       instanceMinCnt: Number($("#appAutoscalingInstanceMinCnt").val()),
+      instanceMaxCnt: Number($("#appAutoscalingInstanceMaxCnt").val()),
+      cpuMinThreshold: Number($("#appAutoscalingCpuMinThreshold").val()),
+      cpuMaxThreshold: Number($("#appAutoscalingCpuMaxThreshold").val()),
+      memoryMinThreshold: Number($("#appAutoscalingMemoryMinThreshold").val()),
+      memoryMaxThreshold: Number($("#appAutoscalingMemoryMaxThreshold").val()),
       instanceVariationUnit: this.appAutoscalingInstanceVariationUnit,
       measureTimeSec: Number($("#appAutoscalingMeasureTimeSec").val()),
-      memoryMaxThreshold: Number($("#appAutoscalingMemoryMaxThreshold").val()),
-      memoryMinThreshold: Number($("#appAutoscalingMemoryMinThreshold").val())
+      autoScalingOutYn: this.appAutoscalingOutYn,
+      autoScalingInYn: this.appAutoscalingInYn,
+      autoScalingCpuYn : $("#autoScalingCpuYn").is(":checked") ? 'Y' : 'N',
+      autoScalingMemoryYn : $("#autoScalingMemoryYn").is(":checked") ? 'Y' : 'N'
     };
-
     this.appMainService.updateAutoscaling(params).subscribe(data => {
       if (data) {
         if (data.status == "success") {
