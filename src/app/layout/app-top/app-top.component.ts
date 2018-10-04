@@ -134,6 +134,10 @@ export class AppTopComponent implements OnInit {
     return !isNullOrUndefined(this.common.getToken());
   }
 
+  get isMonitoring(){
+    return this.common.getMonitoring();
+  }
+
   get isIcon(){
     return (this.cursorId === 'cur_login' || this.cursorId === 'cur_dashboard');
   }

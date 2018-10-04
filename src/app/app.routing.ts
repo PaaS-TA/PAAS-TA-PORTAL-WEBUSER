@@ -69,8 +69,8 @@ const routes: Routes = [
   {path: 'authcreate', component: CreateComponent},
   {path: 'authreset', component: ResetComponent},
   {path: 'inviteorg', component: InviteOrgComponent},
-  {path: 'error', component: ErrorComponent}
-
+  {path: 'error', component: ErrorComponent},
+  {path: '**', component: ErrorComponent }
 ];
 
 export const RoutingModule: ModuleWithProviders = RouterModule.forRoot(routes);

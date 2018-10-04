@@ -184,10 +184,23 @@ export class SecurityService {
           data['User']['zipCode'], data['User']['address'], data['User']['addressDetail'], data['User']['imgPath']);
 
         const nextUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
+
         this.router.navigate([nextUrl]);
       } else {
         this.saveUserDB(userId);
       }
+      this.common.doGet('/commonapi/v2/invitations/userInfo/'+userId, this.common.getToken()).subscribe(data => {
+        let invite_user = '';
+        data['result'].forEach(info => {
+          if(invite_user !== ''){
+            invite_user += ',';
+          }
+          if(invite_user.indexOf(info.userId) === -1){
+          invite_user += info.userId
+          }
+        });
+        this.common.alertMessage(invite_user + " 님에게 조직 초대를 받았습니다. 메일 확인 바랍니다.", true);
+      });
       return true;
     }, error => {
       this.moveErrLogin();
