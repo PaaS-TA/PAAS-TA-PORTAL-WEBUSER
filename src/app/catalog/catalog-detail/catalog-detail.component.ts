@@ -574,9 +574,14 @@ export class CatalogDetailComponent implements OnInit {
             userId : this.catalogService.getUserid()
           };
           this.catalogService.postApp(url, param).subscribe(data => {
-            this.catalogService.isLoading(false);
-            this.catalogService.alertMessage(this.translateEntities.result.appTemplateSusses, true);
-            this.router.navigate(['dashboard']);
+            if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
+              this.catalogService.isLoading(false);
+              this.catalogService.alertMessage(this.translateEntities.result.appTemplateSusses, true);
+              this.router.navigate(['dashboard']);
+            }else {
+              this.catalogService.isLoading(false);
+              this.errorMsg(data['msg']);
+            }
           }, error => {
             this.catalogService.isLoading(false);
             this.catalogService.alertMessage(this.translateEntities.result.appTemplateError, false);
