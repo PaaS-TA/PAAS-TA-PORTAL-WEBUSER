@@ -1384,52 +1384,14 @@
                 <col>
               </colgroup>
               <ng-container *ngIf="!sltServiceUnbindProvide">
-              <tbody>
-                <tr *ngIf="appSltEnvSystemCredentialsHostname != ''">
-                  <td>{{ 'appMain.layerpop.serviceCredentials.hostname' | translate }}</td>
+                <tbody>
+                <tr  *ngFor="let Credential of sltServiceCredentials">
+                  <td>{{ Credential.key }}</td>
                   <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
-                    {{appSltEnvSystemCredentialsHostname}}
+                    {{Credential.value}}
                   </td>
                 </tr>
-                <tr *ngIf="appSltEnvSystemCredentialsUri != ''">
-                  <td>{{ 'appMain.layerpop.serviceCredentials.jdbcUrl' | translate }}</td>
-                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
-                    {{appSltEnvSystemCredentialsUri}}
-                  </td>
-                </tr>
-                <tr *ngIf="appSltEnvSystemCredentialsName != ''">
-                  <td>{{ 'appMain.layerpop.serviceCredentials.name' | translate }}</td>
-                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
-                    {{appSltEnvSystemCredentialsName}}
-                  </td>
-                </tr>
-                <tr *ngIf="appSltEnvSystemCredentialsPort != ''">
-                  <td>{{ 'appMain.layerpop.serviceCredentials.port' | translate }}</td>
-                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
-                    {{appSltEnvSystemCredentialsPort}}
-                  </td>
-                </tr>
-                <!--<tr *ngIf="appSltEnvSystemCredentialsUri != ''">-->
-                  <!--<td>-->
-                    <!--Url-->
-                  <!--</td>-->
-                  <!--<td>-->
-                    <!--<input type="text" />-->
-                  <!--</td>-->
-                <!--</tr>-->
-                <tr *ngIf="appSltEnvSystemCredentialsUsername != ''">
-                  <td>{{ 'appMain.layerpop.serviceCredentials.username' | translate }}</td>
-                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
-                    {{appSltEnvSystemCredentialsUsername}}
-                  </td>
-                </tr>
-                <tr *ngIf="appSltEnvSystemCredentialsPassword != ''">
-                  <td>{{ 'appMain.layerpop.serviceCredentials.password' | translate }}</td>
-                  <td style="width: 560px; word-wrap: break-word; display: inline-block; padding-left: 20px; padding-top: 13px; font-weight: bold;">
-                    {{appSltEnvSystemCredentialsPassword}}
-                  </td>
-                </tr>
-              </tbody>
+                </tbody>
               </ng-container>
               <ng-container *ngIf="sltServiceUnbindProvide">
                 <tbody>

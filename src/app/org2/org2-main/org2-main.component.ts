@@ -586,9 +586,9 @@ export class Org2MainComponent implements OnInit {
     var spaceObj = {};
 
     orgObj = {
-      "om": $("[id^='modal1']").is(":checked"),
-      "bm": $("[id^='modal2']").is(":checked"),
-      "oa": $("[id^='modal3']").is(":checked")
+      "om": $("#modal1").is(":checked"),
+      "bm": $("#modal2").is(":checked"),
+      "oa": $("#modal3").is(":checked")
     };
     inviteObjOrg.push(orgObj);
     inviteObj["org"] = inviteObjOrg;
