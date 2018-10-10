@@ -1647,6 +1647,7 @@ export class AppMainComponent implements OnInit {
         this.sltServiceUserProvideCredentials = data.List;
         });
     }else{
+      this.sltServiceCredentials = [];
       let service = this.sltServiceCredentials;
       $.each(this.appEnvSystemEntities, function (key, dataobj) {
         if (key == label) {

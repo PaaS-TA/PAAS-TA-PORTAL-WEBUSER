@@ -344,8 +344,12 @@ export class CatalogDevelopmentComponent implements OnInit {
             userId : this.catalogService.getUserid()
           };
           this.catalogService.postApp(CATALOGURLConstant.CREATEAPP, params).subscribe(data => {
-            this.successMsg(this.translateEntities.result.buildPackSusses);
-            this.router.navigate(['dashboard']);
+            if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
+              this.successMsg(this.translateEntities.result.buildPackSusses);
+              this.router.navigate(['dashboard']);
+            }else {
+              this.errorMsg(data['msg']);
+            }
           }, error =>{
             this.errorMsg(this.translateEntities.result.buildPackError);
           });
