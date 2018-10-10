@@ -69,14 +69,14 @@
                   <ng-container *ngFor='let space of item.space.resources'>
                     <tr>
                       <td><p>{{space.entity.name}}</p></td>
-                      <th (click)="getUserSpaceRoles(item,space.metadata.guid, space.entity.name)"><i class="fas fa-file" style="color: #409ab2"></i></th>
                       <th>
                         <i class="fas fa-edit"></i>
                       </th>
+                      <th (click)="getUserSpaceRoles(item,space.metadata.guid, space.entity.name)"><i class="fas fa-file" style="color: #409ab2"></i></th>
                       <th style="width: 30px" data-toggle="modal" (click)="showPopDeleteSpaceClick(space.metadata.guid, space.entity.name)"><i class="fas fa-trash-alt"></i></th>
                     </tr>
                     <tr class="on">
-                      <td colspan="3">
+                      <td colspan="4">
                         <div class="">
                           <div class="account_table_in">
                             <span>{{ 'orgMain.changeName' | translate }}</span>
