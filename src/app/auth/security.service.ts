@@ -189,14 +189,17 @@ export class SecurityService {
       } else {
         this.saveUserDB(userId);
       }
-      this.common.doGet('/commonapi/v2/invitations/userInfo/'+userId, this.common.getToken()).subscribe(data => {
+      this.common.doGet('/commonapi/v2/invitations/'+userId, this.common.getToken()).subscribe(data => {
+        if(data['result'].length === 0){
+          return true;
+        }
         let invite_user = '';
         data['result'].forEach(info => {
           if(invite_user !== ''){
             invite_user += ',';
           }
-          if(invite_user.indexOf(info.userId) === -1){
-          invite_user += info.userId
+          if(invite_user.indexOf(info.inviteName) === -1){
+          invite_user += info.inviteName
           }
         });
         this.common.alertMessage(invite_user + " 님에게 조직 초대를 받았습니다. 메일 확인 바랍니다.", true);

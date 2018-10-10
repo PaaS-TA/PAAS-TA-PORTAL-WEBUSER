@@ -97,6 +97,7 @@ export class AppMainComponent implements OnInit {
   public sltServiceUnbindName: string;
   public sltServiceUnbindGuid: string;
   public sltServiceUnbindProvide : boolean;
+  public sltServiceCredentials : any =[];
   public sltServiceUserProvideCredentials : any =[];
 
   public appSltEnvSystemName: string;
@@ -414,6 +415,7 @@ export class AppMainComponent implements OnInit {
         codedata.list.some(r => {
           if(r.key==='max_size'){
             if(r.value > data.quota.memoryLimit){
+              console.log(data.quota.memoryLimit);
               this.appSummaryMemoryMax = data.quota.memoryLimit/1024;
             } else {
             this.appSummaryMemoryMax = r.value/1024;
@@ -1342,7 +1344,7 @@ export class AppMainComponent implements OnInit {
       cpuMaxThreshold: Number($("#appAutoscalingCpuMaxThreshold").val()),
       memoryMinThreshold: Number($("#appAutoscalingMemoryMinThreshold").val()),
       memoryMaxThreshold: Number($("#appAutoscalingMemoryMaxThreshold").val()),
-      instanceVariationUnit: this.appAutoscalingInstanceVariationUnit,
+      instanceVariationUnit: 1,
       measureTimeSec: Number($("#appAutoscalingMeasureTimeSec").val()),
       autoScalingOutYn: this.appAutoscalingOutYn,
       autoScalingInYn: this.appAutoscalingInYn,
@@ -1645,50 +1647,22 @@ export class AppMainComponent implements OnInit {
         this.sltServiceUserProvideCredentials = data.List;
         });
     }else{
-    var hostname = "";
-    var name2 = "";
-    var password = "";
-    var port = "";
-    var uri = "";
-    var username = "";
-    var useSysEnvs = this.appEnvSystemEntities;
-    $.each(useSysEnvs, function (key, dataobj) {
-      if (key == label) {
-        $.each(dataobj, function (key2, dataobj2) {
-          if (dataobj2.name == name) {
-            // console.log(dataobj2.credentials);
-            if (dataobj2.credentials.hostname != null) {
-              hostname = dataobj2.credentials.hostname;
-            }
-            if (dataobj2.credentials.name != null) {
-              name2 = dataobj2.credentials.name;
-            }
-            if (dataobj2.credentials.password != null) {
-              password = dataobj2.credentials.password;
-            }
-            if (dataobj2.credentials.port != null) {
-              port = dataobj2.credentials.port;
-            }
-            if (dataobj2.credentials.uri != null) {
-              uri = dataobj2.credentials.uri;
-            }
-            if (dataobj2.credentials.username != null) {
-              username = dataobj2.credentials.username;
-            }
-          }
-        })
-      }
-    });
-      this.appSltEnvSystemName = name;
-      this.appSltEnvSystemLabel = label;
-
-      this.appSltEnvSystemCredentialsHostname = hostname;
-      this.appSltEnvSystemCredentialsName = name2;
-      this.appSltEnvSystemCredentialsPassword = password;
-      this.appSltEnvSystemCredentialsPort = port;
-      this.appSltEnvSystemCredentialsUri = uri;
-      this.appSltEnvSystemCredentialsUsername = username;
-
+      this.sltServiceCredentials = [];
+      let service = this.sltServiceCredentials;
+      $.each(this.appEnvSystemEntities, function (key, dataobj) {
+        if (key == label) {
+          $.each(dataobj, function (key2, dataobj2) {
+            if (dataobj2.name == name){
+              $.each(Object.getOwnPropertyNames(dataobj2.credentials), function (key2, dataobj3) {
+                let key = dataobj3;
+                let value = dataobj2.credentials[dataobj3];
+                let push = {'key': key, 'value' : dataobj2.credentials[dataobj3]};
+                service.push(push);
+              });
+              }
+          });
+        }
+      });
     }
     $("#layerpop_service_credentials").modal("show");
   }
@@ -1746,7 +1720,6 @@ export class AppMainComponent implements OnInit {
     var groupBy = String(this.sltChartGroupBy) + "s";
     var type = $("#selectBoxChartInstance").val();
     var sltChartInstancesValue = this.sltChartInstances;
-
 
     this.appMainService.getCpuUsage(guid, idx, defaultTimeRange, groupBy, type).subscribe(data => {
       var levelsArray = new Array();
@@ -1861,7 +1834,7 @@ export class AppMainComponent implements OnInit {
           if (sltChartInstancesValue == "All") {
             valueObject["hidden"] = false;
           } else {
-            if (i == Number(sltChartInstancesValue)) {
+            if (dataobj[i].name == Number(sltChartInstancesValue)) {
               valueObject["hidden"] = false;
             } else {
               valueObject["hidden"] = true;
@@ -2050,7 +2023,7 @@ export class AppMainComponent implements OnInit {
           if (sltChartInstancesValue == "All") {
             valueObject["hidden"] = false;
           } else {
-            if (i == Number(sltChartInstancesValue)) {
+            if (dataobj[i].name == Number(sltChartInstancesValue)) {
               valueObject["hidden"] = false;
             } else {
               valueObject["hidden"] = true;
@@ -2238,7 +2211,7 @@ export class AppMainComponent implements OnInit {
           if (sltChartInstancesValue == "All") {
             valueObject["hidden"] = false;
           } else {
-            if (i == Number(sltChartInstancesValue)) {
+            if (dataobj[i].name == Number(sltChartInstancesValue)) {
               valueObject["hidden"] = false;
             } else {
               valueObject["hidden"] = true;

@@ -39,6 +39,7 @@ export class Org2MainComponent implements OnInit {
   public sltSpaceRole : any;
   public sltSpaceName : string;
   public sltflag : boolean = false;
+  public sltplus : boolean = false;
   private showIndexArray: Array<string> = [];
   private sltPage : number;
 
@@ -119,6 +120,11 @@ export class Org2MainComponent implements OnInit {
     });
     this.orgMainService.getOrgList(1).subscribe(data => {
       this.orgsEntities = data.result;
+      if(this.orgsEntities.length < 10){
+        this.sltplus = false;
+      } else {
+        this.sltplus = true;
+      }
       if (this.orgsEntities) {
         this.sltEntity = this.orgsEntities[0];
       }
@@ -586,9 +592,9 @@ export class Org2MainComponent implements OnInit {
     var spaceObj = {};
 
     orgObj = {
-      "om": $("[id^='modal1']").is(":checked"),
-      "bm": $("[id^='modal2']").is(":checked"),
-      "oa": $("[id^='modal3']").is(":checked")
+      "om": $("#modal1").is(":checked"),
+      "bm": $("#modal2").is(":checked"),
+      "oa": $("#modal3").is(":checked")
     };
     inviteObjOrg.push(orgObj);
     inviteObj["org"] = inviteObjOrg;
@@ -863,14 +869,16 @@ export class Org2MainComponent implements OnInit {
       page = _page;
     }
     this.orgMainService.getOrgList(page).subscribe(data => {
-      if( data.result.length === 0){
-        this.sltPage--;
-      }else {
+        if(data.result.length < 10){
+          this.sltplus = false;
+        } else {
+          this.sltplus = true;
+        }
       data.result.forEach(resource => {
         this.orgsEntities.push(resource);
       });
       setTimeout(() => this.buttonEvent(), 100);
-      }if(type ==='click'){
+      if(type ==='click'){
         this.common.isLoading = false;
       }else if(type ==='init' && _page === this.sltPage){
         this.common.isLoading = false;
