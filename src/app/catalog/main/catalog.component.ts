@@ -34,7 +34,6 @@ export class CatalogComponent implements OnInit {
     let name = this.catalogService.classname;
     let check = this.catalogService.check;
     let service = this.catalogService;
-    console.log(check);
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
@@ -84,7 +83,6 @@ export class CatalogComponent implements OnInit {
 
   Search()  {
     this.searchKeyword = $("#catalog-search").val();
-    console.log(this.searchKeyword);
     this.SearchStarterPack();
     this.SearchBuildPack();
     this.SearchServicePack();
@@ -125,7 +123,6 @@ export class CatalogComponent implements OnInit {
   public jsonParse(value) : any{
     let result = '';
     let json = JSON.parse(value.tagsParam);
-    console.log(json);
     value.buttonclass = new Array<any>();
     const keys = Object.keys(json);
     keys.forEach(key => {
@@ -168,7 +165,6 @@ export class CatalogComponent implements OnInit {
 
   StarterInit(data : any) {
     data.forEach(a => {
-      console.log(a);
       a = this.jsonParse(a);
     });
     this.catalogService.starterpacks = data;

@@ -209,7 +209,6 @@ export class CatalogDetailComponent implements OnInit {
           planlist.plans = list['resources'];
           planlist.plans.forEach(list => {
             if(!list.entity){
-            console.log(list);
             //list.bullet = this.serviceBulletSetting(list.entity.extra);
             //list.subbullet = this.serviceSubBulletSetting(list.entity.extra);
             list.amount = this.serviceAmountSetting(list.entity.extra);
@@ -375,9 +374,12 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   pattenTest(){
+    try{
     const regExpPattern = /[\{\}\[\]\/?,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
-    $('#orgname').val($('#orgname').val().replace(regExpPattern, ''));
-    this.appname =$('#orgname').val().substring(0,50);
+    $('#appName').val($('#appName').val().replace(regExpPattern, ''));
+    this.appname =$('#appName').val().substring(0,50);
+    }catch(Error) {
+    }
   }
   routepattenTest(){
     const regExpPattern = /[\{\}\[\]\/?.,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
@@ -454,7 +456,6 @@ export class CatalogDetailComponent implements OnInit {
     if(value.costs){
       amount = value.costs[0]['amount'].usd;
     }
-    console.log(value);
     return amount + '/' + value.costs[0]['unit'];
   }
 

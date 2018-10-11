@@ -8,7 +8,7 @@ declare var $: any;
 @Injectable()
 export class CatalogService {
 
-  buildpacks : Array<any>;
+  buildpacks : Array<any> = [];
   starterpacks : Array<any> = [];
   recentpacks : Array<any> = [];
   servicepacks : Array<any> = [];
@@ -18,9 +18,9 @@ export class CatalogService {
   viewbuildpack : boolean = true;
   viewservicepack : boolean = true;
 
-  viewstarterpacks : Array<any>;
-  viewbuildpacks  : Array<any>;
-  viewservicepacks  : Array<any>;
+  viewstarterpacks : any = [];
+  viewbuildpacks  : any = [];
+  viewservicepacks  : any = [];
 
 
   buildPackfilter : string = '';
@@ -31,9 +31,6 @@ export class CatalogService {
   translateEntities : any;
   autoSearch : boolean = false;
   constructor(private common: CommonService, private log: NGXLogger, private translate: TranslateService ) {
-    this.viewstarterpacks  = new Array<any>();
-    this.viewbuildpacks  = new Array<any>();
-    this.viewservicepacks  = new Array<any>();
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
     });
@@ -47,13 +44,13 @@ export class CatalogService {
     this.viewbuildpack  = value2;
     this.viewservicepack  = value3;
     if(this.viewstartpack){
-      this.viewstarterpacks = this.starterpacks;
+      this.viewstarterpacks;
     }
     if(this.viewbuildpack){
-      this.viewbuildpacks = this.buildpacks;
+      this.viewbuildpacks;
     }
     if(this.viewservicepack){
-      this.viewservicepacks = this.servicepacks;
+      this.viewservicepacks;
     }
   }
 
@@ -70,7 +67,6 @@ export class CatalogService {
 
   set navView(value){
     this.navview = value;
-    this.autoSearch = true;
   }
 
 
@@ -132,7 +128,6 @@ export class CatalogService {
   }
 
   getCurrentCatalogNumber(){
-    console.log(this.common.getCurrentCatalogNumber());
     return this.common.getCurrentCatalogNumber();
   }
 

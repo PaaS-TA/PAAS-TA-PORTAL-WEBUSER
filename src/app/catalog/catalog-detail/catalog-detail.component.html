@@ -112,7 +112,7 @@
                     </tr>
                     <tr>
                       <td  colspan="2">
-                        <input type="text" name="orgname" id="orgname" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()" maxlength="50"/>
+                        <input type="text" name="appName" id="appName" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()" maxlength="50"/>
                         <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
                         <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
                       </td>
