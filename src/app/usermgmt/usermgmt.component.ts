@@ -356,9 +356,7 @@ export class UsermgmtComponent implements OnInit {
   address_pattenTest() {
     let value = this.address;
 
-    const regExpBlankPattern = /[\s]/g;
-
-    if (this.address.length < 256 && !regExpBlankPattern.test(value)) {
+    if (this.address.length < 256) {
       console.log(this.address.length);
       this.isAddress = true;
       return true;
