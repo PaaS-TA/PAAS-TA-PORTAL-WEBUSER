@@ -33,6 +33,8 @@ export class CatalogDevelopmentComponent implements OnInit {
   orgs: Array<Organization> = new Array<Organization>(); // 조직 정보 리스트
   spaces: Array<Space> = new Array<Space>(); // 공간 정보 리스트
 
+  diskoption : any = [];
+  memoryoption : any = [];
   sharedomain : any;
   currentdomain : any;
   domainList : Array<any>;
@@ -57,6 +59,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   ngOnInit() {
     this.navInit();
     this.domainList = new Array<any>();
+    this.setting();
     this.activatedRouteInit();
     this.shareDomainInit();
     this.buildInit();
@@ -66,8 +69,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.orgsInit();
     this.doLayout();
     setTimeout(() => this.keyPressInit(), 1000);
-    this.memory = 256;
-    this.disk = 512;
+
   }
 
   navInit(){
@@ -75,6 +77,17 @@ export class CatalogDevelopmentComponent implements OnInit {
     $('#nav_second').attr('class','');
     $('#nav_third ').attr('class','cur');
     $('#nav_fourth').attr('class','');
+  }
+
+  setting(){
+    this.catalogService.getDiskOption().subscribe(data => {
+      this.diskoption = data.list;
+      this.disk = this.diskoption[0].value2
+    });
+    this.catalogService.getMemoryOption().subscribe(data => {
+      this.memoryoption = data.list;
+      this.memory = this.memoryoption[0].value2
+    });
   }
 
   keyPressInit(){

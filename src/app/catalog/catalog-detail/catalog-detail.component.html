@@ -151,31 +151,13 @@
                     <tr>
                       <th>
                         <select [(ngModel)]="memory">
-                          <option>256
-                          </option>
-                          <option>512
-                          </option>
-                          <option>768
-                          </option>
-                          <option>1024
-                          </option>
-                          <option>1536
-                          </option>
-                          <option>2048
+                          <option *ngFor="let sltmemoy of memoryoption" [ngValue]="sltmemoy.value2">{{sltmemoy.value2}}
                           </option>
                         </select>
                       </th>
                       <td>
                         <select [(ngModel)]="disk">
-                          <option>512
-                          </option>
-                          <option>1024
-                          </option>
-                          <option>1280
-                          </option>
-                          <option>1536
-                          </option>
-                          <option>2048
+                          <option *ngFor="let sltdisk of diskoption" [ngValue]="sltdisk.value2">{{sltdisk.value2}}
                           </option>
                         </select>
                       </td>
