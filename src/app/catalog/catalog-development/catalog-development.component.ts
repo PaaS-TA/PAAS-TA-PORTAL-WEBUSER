@@ -79,6 +79,7 @@ export class CatalogDevelopmentComponent implements OnInit {
 
   keyPressInit(){
     $('#orgname').trigger('focus');
+    window.scrollTo(0,0);
 
     $('input[name=appname]').keydown(function (key) {
       if(key.keyCode == 13){

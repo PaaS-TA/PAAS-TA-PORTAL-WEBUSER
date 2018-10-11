@@ -100,6 +100,8 @@ export class CatalogServiceComponent implements OnInit {
 
   keyPressInit(){
     $('#servicename').trigger('focus');
+    window.scrollTo(0,0);
+
     $('input[name=servicename]').keydown(function (key) {
       if(key.keyCode == 13){
         $('#createService').trigger('click');
