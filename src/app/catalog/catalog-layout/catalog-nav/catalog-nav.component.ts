@@ -3,6 +3,7 @@ import {CatalogService} from "../../main/catalog.service";
 import {Router} from "@angular/router";
 import {isNullOrUndefined, isUndefined} from "util";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {CatalogComponent} from "../../main/catalog.component";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -12,7 +13,7 @@ declare var jQuery: any;
 })
 export class CatalogNavComponent implements OnInit {
   translateEntities : any;
-  constructor(public catalogService: CatalogService, public router: Router) {
+  constructor(public catalogService: CatalogService, public catalogComponent : CatalogComponent, public router: Router) {
 
   }
 
@@ -26,6 +27,7 @@ export class CatalogNavComponent implements OnInit {
     this.navStyle(number);
     this.classNavSetting(number);
     this.catalogService.navView = 'viewAll';
+    this.navSearch();
   }
 
   viewStarterPack(number){
@@ -40,6 +42,7 @@ export class CatalogNavComponent implements OnInit {
     if(number === 2){
     this.catalogService.navView = 'appTemplate';}
     else{this.catalogService.navView = 'basicType';}
+    this.navSearch();
   }
 
   viewBuildPack(value, number){
@@ -62,6 +65,7 @@ export class CatalogNavComponent implements OnInit {
     }
     this.classNavSetting(number);
     this.navStyle(number);
+    this.navSearch();
   }
 
   viewServicePack(value, number){
@@ -83,7 +87,14 @@ export class CatalogNavComponent implements OnInit {
     }
     this.classNavSetting(number);
     this.navStyle(number);
+    this.navSearch();
   }
+
+  navSearch(){
+    this.catalogComponent.Search()
+  }
+
+
   navStyle(number){
     let max = 13;
     let min = 1;
