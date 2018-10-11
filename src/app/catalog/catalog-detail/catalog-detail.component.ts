@@ -23,6 +23,8 @@ export class CatalogDetailComponent implements OnInit {
   trans : string;
 
 
+  diskoption : any = [];
+  memoryoption : any = [];
   apptemplate: Array<any> = new Array<any>(); // 앱 구성에 나오는 목록
   serviceplanlist : Array<any> = new Array<any>();
   servicenamelist : Array<any>;
@@ -76,6 +78,7 @@ export class CatalogDetailComponent implements OnInit {
     this.orgsFrist();
     this.spacesFrist();
     this.orgsInit();
+    this.setting();
     setTimeout(() => this.doLayout(), 500);
     setTimeout(() => this.keyPressInit(), 1000);
   }
@@ -109,6 +112,17 @@ export class CatalogDetailComponent implements OnInit {
     if(isNullOrUndefined(this.catalogService.getCurrentCatalogNumber())){
       this.router.navigate(['catalog']);
     }
+  }
+
+  setting(){
+    this.catalogService.getDiskOption().subscribe(data => {
+      this.diskoption = data.list;
+      this.disk = this.diskoption[0].value2
+    });
+    this.catalogService.getMemoryOption().subscribe(data => {
+      this.memoryoption = data.list;
+      this.memory = this.memoryoption[0].value2
+    });
   }
 
   // 알럿 메시지(오류)
@@ -236,8 +250,6 @@ export class CatalogDetailComponent implements OnInit {
         } }
       );
     });
-    this.disk = 512;
-    this.memory = 256;
   }
 
   orgsInit(){

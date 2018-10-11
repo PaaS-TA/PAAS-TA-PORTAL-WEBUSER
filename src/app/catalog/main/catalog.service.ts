@@ -242,6 +242,18 @@ export class CatalogService {
     });
   }
 
+  getDiskOption(){
+    return this.common.doGet('/commonapi/v2/APP_DISK_SIZE/codegroup', null  ).map((res : any) => {
+      return res;
+    });
+  }
+
+  getMemoryOption(){
+    return this.common.doGet('/commonapi/v2/APP_MEMORY_SIZE/codegroup', null  ).map((res : any) => {
+      return res;
+    });
+  }
+
   postApp(url : string, param : any){
     return this.common.doPost(url,param, this.common.getToken()).map((res: Response) => {
       return res;
