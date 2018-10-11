@@ -15,7 +15,13 @@ declare var jQuery: any;
 export class AppComponent implements DoCheck {
   isLoading: boolean = false;
   constructor(public common: CommonService, public translate: TranslateService) {
-    this.translate.setDefaultLang(this.common.defaultLang);
+    if($.cookie("useLang") != null && $.cookie("useLang") != "") {
+      this.translate.setDefaultLang($.cookie("useLang"));
+      this.common.useLang = $.cookie("useLang");
+    } else {
+      this.translate.setDefaultLang(this.common.defaultLang);
+    }
+
     this.translate.use(this.common.useLang);
 
     $("li[id^='lang_']").removeClass("cur");
