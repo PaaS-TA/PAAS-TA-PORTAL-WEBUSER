@@ -13,7 +13,7 @@ declare var jQuery: any;
 })
 export class CatalogNavComponent implements OnInit {
   translateEntities : any;
-  constructor(public catalogService: CatalogService, public catalogComponent : CatalogComponent, public router: Router) {
+  constructor(public catalogService: CatalogService, public router: Router) {
 
   }
 
@@ -42,7 +42,6 @@ export class CatalogNavComponent implements OnInit {
     if(number === 2){
     this.catalogService.navView = 'appTemplate';}
     else{this.catalogService.navView = 'basicType';}
-    this.navSearch();
   }
 
   viewBuildPack(value, number){
@@ -65,7 +64,7 @@ export class CatalogNavComponent implements OnInit {
     }
     this.classNavSetting(number);
     this.navStyle(number);
-    this.navSearch();
+
   }
 
   viewServicePack(value, number){
@@ -87,11 +86,11 @@ export class CatalogNavComponent implements OnInit {
     }
     this.classNavSetting(number);
     this.navStyle(number);
-    this.navSearch();
+
   }
 
   navSearch(){
-    this.catalogComponent.Search()
+
   }
 
 

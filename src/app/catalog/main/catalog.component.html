@@ -9,6 +9,7 @@
             <div class="input-group-btn">
               <button name="button" class="btn" type="button"><i class="fas fa-search"></i></button>
             </div>
+            <ng-container *ngIf="catalogService.autoSearch">{{Search()}}</ng-container>
             <input class="form-control" id="catalog-search" type="text" placeholder="Catalog Search" (keyup)="Search()"/>
           </div>
         </div>

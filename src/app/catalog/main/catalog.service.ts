@@ -29,6 +29,7 @@ export class CatalogService {
   classname : string;
   navview : string;
   translateEntities : any;
+  autoSearch : boolean = false;
   constructor(private common: CommonService, private log: NGXLogger, private translate: TranslateService ) {
     this.viewstarterpacks  = new Array<any>();
     this.viewbuildpacks  = new Array<any>();
@@ -69,7 +70,10 @@ export class CatalogService {
 
   set navView(value){
     this.navview = value;
+    this.autoSearch = true;
   }
+
+
 
   get navView(){
     if(!isUndefined(this.translateEntities)) {
