@@ -34,6 +34,7 @@ export class UsermgmtComponent implements OnInit {
   public isZipCode: boolean;
   public isAddress: boolean;
 
+  /*사용자 정보*/
   public userName: string;
   public tellPhone: string;
   public zipCode: string;
@@ -56,6 +57,7 @@ export class UsermgmtComponent implements OnInit {
 
   public fileToUpload: File = null;
 
+
   constructor(private httpClient: HttpClient, private common: CommonService, private userMgmtService: UsermgmtService, private translate: TranslateService,
               private router: Router, private activeRoute: ActivatedRoute, private sec: SecurityService, private log: NGXLogger) {
 
@@ -65,9 +67,9 @@ export class UsermgmtComponent implements OnInit {
     this.token = '';
     this.orgName = '';
     this.password = '';
-    this.isTellPhone = false;
-    this.isZipCode = false;
-    this.isAddress = false;
+    this.isTellPhone = true;
+    this.isZipCode = true;
+    this.isAddress = true;
     this.photoFile = '';
 
     this.isPassword = false;
@@ -82,6 +84,7 @@ export class UsermgmtComponent implements OnInit {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.usermgmt;
     });
+
   }
 
   onFileChanged(){
@@ -320,10 +323,11 @@ export class UsermgmtComponent implements OnInit {
   tellPhone_pattenTest() {
     let value = this.tellPhone;
 
-    var reg_alpha = /^[A-Za-z]*$/;
-    var reg_koreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-    // var reg_koreanPatten2 = /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
-    if (!reg_alpha.test(value) && !reg_koreanPatten.test(value) && this.isNumber(value)) {
+    const reg_alpha = /^[A-Za-z]*$/;
+    const regExpBlankPattern = /[\s]/g;
+    const reg_koreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+
+    if (!reg_alpha.test(value) && !reg_koreanPatten.test(value) && !regExpBlankPattern.test(value) && this.isNumber(value)) {
       this.isTellPhone = true;
       return true;
     } else {
@@ -336,9 +340,10 @@ export class UsermgmtComponent implements OnInit {
     let value = this.zipCode;
 
     const reg_koreanPatten = /^[가-힣]+$/;
-    // var reg_koreanPatten =  /^[\u3131-\u318E\uAC00-\uD7A3]*$/;
-    var reg_zip = /^[A-Za-z0-9]{0,1000}$/;
-    if (reg_zip.test(value) && !reg_koreanPatten.test(value)) {
+    const regExpBlankPattern = /[\s]/g;
+    const reg_zip = /^[A-Za-z0-9]{0,1000}$/;
+
+    if (reg_zip.test(value) && !reg_koreanPatten.test(value) &&!regExpBlankPattern.test(value)) {
       this.isZipCode = true;
       return true;
     } else {
@@ -350,7 +355,9 @@ export class UsermgmtComponent implements OnInit {
   address_pattenTest() {
     let value = this.address;
 
-    if (this.address.length < 256) {
+    const regExpBlankPattern = /[\s]/g;
+
+    if (this.address.length < 256 && !regExpBlankPattern.test(value)) {
       console.log(this.address.length);
       this.isAddress = true;
       return true;
