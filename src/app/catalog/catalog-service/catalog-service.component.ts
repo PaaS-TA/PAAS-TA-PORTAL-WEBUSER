@@ -47,9 +47,21 @@ export class CatalogServiceComponent implements OnInit {
 
 
   constructor(private translate: TranslateService, private router : Router, private route:ActivatedRoute, private catalogService:CatalogService, private log:NGXLogger) {
-
+    this.translate.get('catalog').subscribe((res: string) => {
+      this.translateEntities = res;
+      this.orgsFirst();
+      this.spacesFirst();
+      this.appsFirst();
+    });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
+      if(this.orgs.length > 1) {
+        this.orgs[0].name = event.translations.catalog.nav.org_name;
+        this.spaces[0].name = event.translations.catalog.nav.space_name;
+      }
+      if(this.apps.length > 1) {
+        this.apps[0].name =  this.translateEntities.nav.not_bind_start;
+      }
     });
     this.catalogService.navView = 'service';
   }
@@ -65,9 +77,6 @@ export class CatalogServiceComponent implements OnInit {
     this.catalogService.isLoading(false);
     this.activatedRouteInit();
     this.DomainInit();
-    this.orgsFirst();
-    this.spacesFirst();
-    this.appsFirst();
     this.ServiceInit();
     this.OrgsInit();
     this.doLayout();
@@ -113,8 +122,8 @@ export class CatalogServiceComponent implements OnInit {
   activatedRouteInit() {
     const orgname = this.catalogService.getOrgName();
     const spacename = this.catalogService.getSpaceName();
-    orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
-    spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE) : (this.spacename = spacename);
+    orgname == null ? this.orgname = this.translateEntities.nav.org_name : this.orgname = orgname;
+    spacename == null ? (this.spacename = this.translateEntities.nav.space_name) : (this.spacename = spacename);
   }
 
   DomainInit() {
@@ -126,20 +135,20 @@ export class CatalogServiceComponent implements OnInit {
 
   orgsFirst() {
     this.org = new Organization(null, null);
-    this.org.name = CATALOGURLConstant.OPTIONORG;
+    this.org.name = this.translateEntities.nav.org_name;
     this.orgs.push(this.org);
   }
 
   spacesFirst() {
     this.space = new Space(null, null, null);
-    this.space.name = CATALOGURLConstant.OPTIONSPACE;
+    this.space.name = this.translateEntities.nav.space_name;
     this.spaces.push(this.space);
   }
 
   appsFirst() {
     this.app = new App(null, null);
-    this.app.name = CATALOGURLConstant.NOTAPPBINDING;
-    this.apps.push(this.app);
+    this.app.name = this.translateEntities.nav.not_bind_start;
+    this.apps.unshift(this.app);
   }
 
   pattenTest(){

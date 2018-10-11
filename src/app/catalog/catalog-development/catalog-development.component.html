@@ -105,7 +105,7 @@
               </tr>
               <tr style="height: 10px">
               <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSpace' | translate }}</p></div>
-                <div *ngIf="spaces.length > 1 && space.name ===catalogcontans.OPTIONSPACE"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSelectSpace' | translate }}</p></div></th>
+                <div *ngIf="spaces.length > 1 && space.name === translateEntities.nav.space_name"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSelectSpace' | translate }}</p></div></th>
               </tr>
               <tr>
                 <td><p>{{ 'catalog.appDevelopment.memory' | translate }}</p>

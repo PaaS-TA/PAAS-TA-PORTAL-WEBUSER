@@ -268,7 +268,10 @@
       "service_nosql": "NoSQL 데이터베이스",
       "service_rdbms": "관계형 데이터베이스",
       "service_monitoring": "어플리케이션 모니터링",
-      "dev_ops": "개발 지원 도구"
+      "dev_ops": "개발 지원 도구",
+      "org_name" : "생성된 조직명",
+      "space_name" : "해당 공간명",
+      "not_bind_start" : "연결없이 시작"
     },
     "main": {
       "recentWork": "최근작업",

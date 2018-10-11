@@ -268,7 +268,10 @@
       "service_nosql" : "NoSQL Database",
       "service_rdbms" : "Relational database",
       "service_monitoring" : "App Monitoring",
-      "dev_ops" : "Dev Support Tools"
+      "dev_ops" : "Dev Support Tools",
+      "org_name" : "Created Organization Name",
+      "space_name" : "Space Name",
+      "not_bind_start" : "Start Not Bind"
     },
     "main" : {
       "recentWork" : "Recent Work",

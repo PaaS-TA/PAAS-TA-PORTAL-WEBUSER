@@ -49,9 +49,15 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.catalogService.isLoading(false);
     this.translate.get('catalog').subscribe((res: string) => {
       this.translateEntities = res;
+      this.orgsFirst();
+      this.spacesFirst();
     });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
+      if(this.orgs.length > 1){
+      this.orgs[0].name = event.translations.catalog.nav.org_name;
+      this.spaces[0].name = event.translations.catalog.nav.space_name;
+      }
     });
     this.catalogService.navView = 'appDevelopment';
   }
@@ -64,8 +70,6 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.shareDomainInit();
     this.buildInit();
     this.getRoutes();
-    this.orgsFrist();
-    this.spacesFrist();
     this.orgsInit();
     this.doLayout();
     setTimeout(() => this.keyPressInit(), 1000);
@@ -142,8 +146,8 @@ export class CatalogDevelopmentComponent implements OnInit {
       });
     }
     const spacename = this.catalogService.getSpaceName();
-    orgname == null ? this.orgname = CATALOGURLConstant.OPTIONORG : this.orgname = orgname;
-    spacename == null ? (this.spacename = CATALOGURLConstant.OPTIONSPACE) : (this.spacename = spacename);
+    orgname == null ? this.orgname =this.translateEntities.nav.org_name : this.orgname = orgname;
+    spacename == null ? this.spacename = this.translateEntities.nav.space_name : this.spacename = spacename;
   }
 
   shareDomainInit(){
@@ -221,16 +225,16 @@ export class CatalogDevelopmentComponent implements OnInit {
     });
   }
 
-  orgsFrist(){
+  orgsFirst(){
     this.org = new Organization(null, null);
-    this.org.name = CATALOGURLConstant.OPTIONORG;
-    this.orgs.push(this.org);
+    this.org.name = this.translateEntities.nav.org_name;
+    this.orgs.unshift(this.org);
   }
 
-  spacesFrist(){
+  spacesFirst(){
     this.space = new Space(null, null, null);
-    this.space.name = CATALOGURLConstant.OPTIONSPACE;
-    this.spaces.push(this.space);
+    this.space.name = this.translateEntities.nav.space_name;
+    this.spaces.unshift(this.space);
   }
 
 
@@ -265,7 +269,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.catalogService.setCurrentOrg(this.org.name, this.org.guid);
     this.catalogService.setCurrentSpace(null, null);
     this.spaces = new Array<Space>();
-    this.spacesFrist();
+    this.spacesFirst();
     this.privateDomainInit(this.org.guid);
     this.catalogService.getSpacelist(this.org.guid).subscribe(data => {
       data['spaceList']['resources'].forEach(res => {

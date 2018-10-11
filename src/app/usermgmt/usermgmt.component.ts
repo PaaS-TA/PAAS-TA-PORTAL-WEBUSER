@@ -163,6 +163,7 @@ export class UsermgmtComponent implements OnInit {
         this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
         this.common.isLoading = false;
         console.log(data);
+        this.common.setUserName(this.userName);
         return this.userInfo();
       } else{
         this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail + "<br><br>" + data.msg, false);

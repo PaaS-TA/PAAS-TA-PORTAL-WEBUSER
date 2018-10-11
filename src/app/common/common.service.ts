@@ -485,6 +485,10 @@ export class CommonService {
     window.sessionStorage.setItem('img_path', value);
   }
 
+  setUserName(value : any) {
+    return sessionStorage.setItem('user_name', value);
+  }
+
 
   getCurrentAppName(): any {
     return window.sessionStorage.getItem('_currentAppName');
