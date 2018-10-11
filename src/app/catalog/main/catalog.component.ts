@@ -88,6 +88,7 @@ export class CatalogComponent implements OnInit {
     this.SearchStarterPack();
     this.SearchBuildPack();
     this.SearchServicePack();
+    this.catalogService.autoSearch = false;
   }
 
   goStarter(starter : any) {
