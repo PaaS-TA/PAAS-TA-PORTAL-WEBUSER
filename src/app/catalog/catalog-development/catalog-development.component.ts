@@ -305,12 +305,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.appname =$('#orgname').val().substring(0,50);
   }
   routepattenTest(){
-    const regExpPattern = /[\{\}\[\]\/?.,;:|\)*~`!^+<>\#$%&\\\=\(\'\"]/gi;
-    const regExpBlankPattern = /[\s]/g;
-    const regKoreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
-    $('#routename').val($('#routename').val().replace(regExpPattern, '')
-      .replace(regExpBlankPattern, '')
-      .replace(regKoreanPatten, ''));
+    $('#routename').val($('#routename').val().replace(/[^a-z0-9]/gi,''));
     this.hostname =$('#routename').val();
   }
 
