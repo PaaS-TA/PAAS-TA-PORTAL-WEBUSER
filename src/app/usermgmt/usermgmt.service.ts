@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from '../common/common.service';
 import { NGXLogger } from 'ngx-logger';
-import { OrgService } from '../org/common/org.service';
 import {SecurityService} from "../auth/security.service";
 
 @Injectable()
 export class UsermgmtService {
   constructor(
     private http: HttpClient, private common: CommonService, private logger: NGXLogger,
-    private orgService: OrgService, private log: NGXLogger, private sec: SecurityService) {
+    private log: NGXLogger, private sec: SecurityService) {
     console.log(this.common.getToken());
     console.log(this.common.getUserid());
   }

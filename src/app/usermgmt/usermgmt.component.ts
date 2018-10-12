@@ -5,7 +5,6 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {NGXLogger} from 'ngx-logger';
 import {Organization} from '../model/organization';
-import {OrgService} from '../org/common/org.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../auth/security.service";
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';

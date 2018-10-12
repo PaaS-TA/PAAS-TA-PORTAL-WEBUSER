@@ -1,9 +1,9 @@
 import {AfterContentChecked, AfterViewChecked, AfterViewInit, Component, DoCheck, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from "@angular/router";
-import {OrgService} from "../../org/common/org.service";
 import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {Observable} from "rxjs/Observable";
+import {OrgMainService} from "../../org/org-main/org-main.service";
 
 
 declare var $: any;
@@ -22,7 +22,7 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
   private _orgName: string;
   private refreshToken: string;
 
-  constructor(private common: CommonService, private orgService: OrgService,
+  constructor(private common: CommonService, private orgService: OrgMainService,
               private router: Router, private logger: NGXLogger) {
 
   }

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OrgMainComponent } from './org-main.component';
 
-describe('OrgComponent', () => {
+describe('OrgMainComponent', () => {
   let component: OrgMainComponent;
   let fixture: ComponentFixture<OrgMainComponent>;
 

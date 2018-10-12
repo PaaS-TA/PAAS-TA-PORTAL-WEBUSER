@@ -5,17 +5,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {DashboardService, Service} from './dashboard.service';
-import {OrgService} from "../org/common/org.service";
 import {Organization} from "../model/organization";
-import {SpaceService} from "../space/space.service";
 import {Space} from '../model/space';
-import {count} from "rxjs/operator/count";
 import {AppMainService} from '../dash/app-main/app-main.service';
 import {CatalogService} from '../catalog/main/catalog.service';
 import {isBoolean, isNullOrUndefined} from "util";
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
-import {containerStart} from "@angular/core/src/render3/instructions";
-import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 
 declare var $: any;
 declare var jQuery: any;
@@ -94,7 +89,7 @@ export class DashboardComponent implements OnInit {
 
   public placeholder = "credentialsStr:{'username':'admin','password':'password';}";
 
-  constructor(private translate: TranslateService, private commonService: CommonService, private dashboardService: DashboardService, private orgService: OrgService, private spaceService: SpaceService, private log: NGXLogger,
+  constructor(private translate: TranslateService, private commonService: CommonService, private dashboardService: DashboardService, private log: NGXLogger,
               private appMainService: AppMainService, private catalogService: CatalogService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
     if (commonService.getToken() == null) {
       router.navigate(['/']);

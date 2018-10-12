@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Org2ProduceService} from "./org2-produce.service";
-import {Observable} from "rxjs/Observable";
-import {OrgURLConstant} from "../../org/common/org.constant";
-import {Parser} from "@angular/compiler";
-import {_finally} from "rxjs/operator/finally";
+import {OrgProduceService} from "./org-produce.service";
 import { TranslateService, LangChangeEvent, TranslationChangeEvent } from '@ngx-translate/core';
 import {isNullOrUndefined} from "util";
 
@@ -13,10 +9,10 @@ declare var jQuery: any;
 
 @Component({
   selector: 'app-org2-produce',
-  templateUrl: './org2-produce.component.html',
-  styleUrls: ['./org2-produce.component.css']
+  templateUrl: './org-produce.component.html',
+  styleUrls: ['./org-produce.component.css']
 })
-export class Org2ProduceComponent implements OnInit {
+export class OrgProduceComponent implements OnInit {
   public orgname :string = '';
   public errorMessage: string = '';
   public orgnamelist: any;
@@ -26,7 +22,7 @@ export class Org2ProduceComponent implements OnInit {
 
   public translateEntities: any = [];
 
-  constructor(public orgService : Org2ProduceService, public translate: TranslateService) {
+  constructor(public orgService : OrgProduceService, public translate: TranslateService) {
     this.translate.get('orgProduce').subscribe((res: string) => {
       this.translateEntities = res;
     });
@@ -59,14 +55,14 @@ export class Org2ProduceComponent implements OnInit {
 
   getOrgNameList() {
     let page = 1;
-    this.orgService.getOrgNameList(OrgURLConstant.URLOrgListUsingToken + '-admin/' + page++).subscribe(data => {
+    this.orgService.getOrgNameList('/portalapi/v2/orgs' + '-admin/' + page++).subscribe(data => {
       console.log(data);
       this.orgnamelist = new Array<any>();
       data['resources'].forEach(a => {
         this.orgnamelist.push(a.entity.name);
       });
       for(page; data.total_pages >= page ; page++){
-        this.orgService.getOrgNameList(OrgURLConstant.URLOrgListUsingToken + '-admin/' + page).subscribe( data2 =>{
+        this.orgService.getOrgNameList('/portalapi/v2/orgs' + '-admin/' + page).subscribe( data2 =>{
           data2['resources'].forEach(b => {
             this.orgnamelist.push(b.entity.name);
           });
@@ -79,7 +75,7 @@ export class Org2ProduceComponent implements OnInit {
     });
   }
   getOrgQuota(){
-    this.orgService.getOrgQuota(OrgURLConstant.URLOrgAvailableQuotasHead + OrgURLConstant.URLOrgAvailableQuotasTail).subscribe(data => {
+    this.orgService.getOrgQuota('/portalapi/v2/orgs/quota-definitions').subscribe(data => {
       data['resources'].forEach(a => {
         a.entity.guid =  a.metadata.guid;
         this.orgquotalist.push(a.entity);
@@ -127,8 +123,8 @@ export class Org2ProduceComponent implements OnInit {
 
   createOrg(){
     this.orgNameCheck();
-    const url = OrgURLConstant.URLOrgRequestBase + this.orgname + '/exist';
-    const url2 = OrgURLConstant.URLOrgRequestBase;
+    const url = '/portalapi/v2/orgs/' + this.orgname + '/exist';
+    const url2 = '/portalapi/v2/orgs/';
     const body = {
       orgName: this.orgname,
       quotaGuid: this.aquota.guid,

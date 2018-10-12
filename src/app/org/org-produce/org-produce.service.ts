@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {CommonService} from "../../common/common.service";
 import {ActivatedRoute, Router} from "@angular/router";
 @Injectable()
-export class Org2ProduceService {
+export class OrgProduceService {
 
   constructor(private common : CommonService, private router : Router) {}
 

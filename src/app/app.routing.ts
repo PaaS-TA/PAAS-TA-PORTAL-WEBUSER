@@ -7,10 +7,8 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {WebIdeUserComponent} from './web-ide-user/web-ide-user.component';
 import {UserComponent} from './user/user.component';
 import {UsageComponent} from './usage/usage.component';
-import {SpaceComponent} from './space/space.component';
 import {ServiceComponent} from './service/service.component';
 import {OrgMainComponent} from './org/org-main/org-main.component';
-import {Org2MainComponent} from './org2/org2-main/org2-main.component';
 import {MenuComponent} from './menu/menu.component';
 import {LogComponent} from './log/log.component';
 import {ModuleWithProviders} from '@angular/core';
@@ -32,7 +30,7 @@ import {CreateComponent} from "./external/create/create.component";
 import {ResetComponent} from "./external/reset/reset.component";
 import {InviteOrgComponent} from "./external/invite-org/invite-org.component";
 import {QuantityMainComponent} from "./quantity/quantity-main/quantity-main.component";
-import {Org2ProduceComponent} from "./org2/org2-produce/org2-produce.component";
+import {OrgProduceComponent} from "./org/org-produce/org-produce.component";
 
 /*
 * Route 모듈 설정
@@ -48,10 +46,9 @@ const routes: Routes = [
   {path: 'domain', component: DomainComponent, canActivate: [AuthGuard]},
   {path: 'log', component: LogComponent, canActivate: [AuthGuard]},
   {path: 'menu', component: MenuComponent, canActivate: [AuthGuard]},
-  {path: 'org', component: Org2MainComponent, canActivate: [AuthGuard]},
-  {path: 'orgproduce', component: Org2ProduceComponent, canActivate: [AuthGuard]},
+  {path: 'org', component: OrgMainComponent, canActivate: [AuthGuard]},
+  {path: 'orgproduce', component: OrgProduceComponent, canActivate: [AuthGuard]},
   {path: 'service', component: ServiceComponent, canActivate: [AuthGuard]},
-  {path: 'space', component: SpaceComponent, canActivate: [AuthGuard]},
   {path: 'usage', component: UsageComponent, canActivate: [AuthGuard]},
   {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
   {path: 'usermgmt', component: UsermgmtComponent, canActivate: [AuthGuard]},

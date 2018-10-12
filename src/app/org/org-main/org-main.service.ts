@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 import {CommonService} from '../../common/common.service';
 
 @Injectable()
-export class Org2MainService {
+export class OrgMainService {
 
   constructor(private commonService: CommonService) { }
 
@@ -125,5 +125,10 @@ export class Org2MainService {
     return this.commonService.doPut('/portalapi/v2/spaces/' + spaceid + '/user-roles', params, this.commonService.getToken()).map((res: any) => {
       return res;
     });
+  }
+  userInviteAccept(params: any) {
+    return this.commonService.doPut('/portalapi/v2/orgs/user-roles', params, '').map((res: Response) => {
+      return res;
+    }).do(console.log);
   }
 }

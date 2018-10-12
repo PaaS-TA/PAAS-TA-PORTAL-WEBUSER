@@ -7,7 +7,6 @@ import {DomainComponent} from './domain/domain.component';
 import {LogComponent} from './log/log.component';
 import {MenuComponent} from './menu/menu.component';
 import {ServiceComponent} from './service/service.component';
-import {SpaceComponent} from './space/space.component';
 import {UsageComponent} from './usage/usage.component';
 import {UserComponent} from './user/user.component';
 import {WebIdeUserComponent} from './web-ide-user/web-ide-user.component';
@@ -20,32 +19,22 @@ import {TopComponent} from './layout/top/top.component';
 import {BottonComponent} from './layout/botton/botton.component';
 import {LeftComponent} from './layout/left/left.component';
 import {FormsModule} from '@angular/forms';
-
 import {SecurityService} from './auth/security.service';
 import {CallbackComponent} from './callback/callback.component';
 import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
 import {LogoutComponent} from './logout/logout.component';
-
 import {DashboardService} from './dashboard/dashboard.service';
 import {JsonpModule} from '@angular/http';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CommonService} from './common/common.service';
-
 import {DashModule} from './dash/dash.module';
-import {SpaceService} from './space/space.service';
 import {AuthGuard} from './auth/auth.guard';
 import {OrgModule} from './org/org.module';
-import {Org2Module} from './org2/org2.module';
 import {CatalogModule} from "./catalog/catalog.module";
 import {CatalogService} from "./catalog/main/catalog.service";
 import {ErrorComponent} from './error/error.component';
 import {IndexModule} from "./index/index.module";
 import {ExternalModule} from "./external/external.module";
-import {InviteOrgComponent} from "./external/invite-org/invite-org.component";
-import {OrgQuotaService} from "./org/common/org-quota.service";
-import {OrgService} from "./org/common/org.service";
-import {QuantityModule} from "./quantity/quantity.module";
-
 import {SharedModule} from './shared/shared.module';
 import {UsermgmtModule} from "./usermgmt/usermgmt.module";
 import {UsermgmtService} from "./usermgmt/usermgmt.service";
@@ -63,7 +52,6 @@ export function createTranslateLoader(http: HttpClient) {
     LogComponent,
     MenuComponent,
     ServiceComponent,
-    SpaceComponent,
     UsageComponent,
     UserComponent,
     WebIdeUserComponent,
@@ -78,9 +66,7 @@ export function createTranslateLoader(http: HttpClient) {
     IndexModule,
     DashModule,
     OrgModule,
-    Org2Module,
     CatalogModule,
-    QuantityModule,
     UsermgmtModule,
     FormsModule,
     RoutingModule,
@@ -116,9 +102,6 @@ export function createTranslateLoader(http: HttpClient) {
     SecurityService,
     DashboardService,
     UsermgmtService,
-    OrgService,
-    SpaceService,
-    OrgQuotaService,
     CatalogService,
   ],
   bootstrap: [AppComponent],
