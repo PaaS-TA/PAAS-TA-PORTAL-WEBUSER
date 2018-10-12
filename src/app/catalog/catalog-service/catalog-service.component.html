@@ -118,10 +118,10 @@
                 </th>
               </tr>
               <tr style="height: 10px">
-                <th colspan="3">
+                <th colspan="3" style="position:relative;">
                   <input name="servicename" type="text" id="servicename" placeholder="{{ 'catalog.contants.inputService' | translate }}" (keyup)="serviceNameCheck()" autofocus maxlength="50" />
-                  <div *ngIf="(namecheck === 1 && servicename.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
-                  <div *ngIf="(namecheck === -1 && servicename.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseService' | translate }}</p></div>
+                  <div *ngIf="(namecheck === 1 && servicename.length > 0)" style="position:absolute; left:0;"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessService' | translate }}</p></div>
+                  <div *ngIf="(namecheck === -1 && servicename.length > 0)" style="position:absolute; left:0;"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseService' | translate }}</p></div>
                 </th>
               </tr>
               <tr>
