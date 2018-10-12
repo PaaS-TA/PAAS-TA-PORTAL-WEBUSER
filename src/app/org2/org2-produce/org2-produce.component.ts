@@ -165,6 +165,12 @@ export class Org2ProduceComponent implements OnInit {
     }
   }
 
+  orgInit(){
+    this.getOrgNameList();
+    $('#orgname').val('');
+    $('#orgname').trigger('focus');
+  }
+
   limitvalue(value) : any{
     return value === -1 ? '무제한' : value;
   }

@@ -1536,6 +1536,8 @@ export class AppMainComponent implements OnInit {
 
   showAddEnvClick() {
     $("#add_env").show();
+    $("#envAddId").val('');
+    $("#envAddData").val('');
     $("#envAddId").focus();
   }
 
