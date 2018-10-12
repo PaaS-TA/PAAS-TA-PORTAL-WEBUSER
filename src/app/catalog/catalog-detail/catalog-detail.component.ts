@@ -88,10 +88,10 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   keyPressInit(){
-    $('#orgname').trigger('focus');
+    $('#appName').trigger('focus');
     window.scrollTo(0,0);
 
-    $('input[name=appname]').keydown(function (key) {
+    $('input[name=appName]').keydown(function (key) {
       if(key.keyCode == 13){
         $('#createApp').trigger('click');
       }
