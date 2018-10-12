@@ -73,6 +73,7 @@
         "cpuThreshold": "CPU 임계 값(%)",
         "memoryThreshold": "메모리 임계 값(%)",
         "measurementTime": "측정시간(초)",
+        "InstanceIncrementValue": "인스턴스 증감 값",
         "autoEx": "가상머신 자동확장",
         "autoSh": "가상머신 자동축소",
         "autoShText": "인스턴스 자동축소는 시스템에 영향을 줄 수 있습니다.",

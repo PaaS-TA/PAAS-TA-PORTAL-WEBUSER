@@ -122,6 +122,7 @@ export class AppMainComponent implements OnInit {
   public appAutoscalingInstanceMinCnt: number;
   public appAutoscalingInstanceVariationUnit: number;
   public appAutoscalingMeasureTimeSec: number;
+  public InstanceIncrementValue : number;
   public appAutoscalingMemoryMaxThreshold: number;
   public appAutoscalingMemoryMinThreshold: number;
 
@@ -1344,7 +1345,7 @@ export class AppMainComponent implements OnInit {
       cpuMaxThreshold: Number($("#appAutoscalingCpuMaxThreshold").val()),
       memoryMinThreshold: Number($("#appAutoscalingMemoryMinThreshold").val()),
       memoryMaxThreshold: Number($("#appAutoscalingMemoryMaxThreshold").val()),
-      instanceVariationUnit: 1,
+      instanceVariationUnit:  Number($("#InstanceIncrementValue").val()),
       measureTimeSec: Number($("#appAutoscalingMeasureTimeSec").val()),
       autoScalingOutYn: this.appAutoscalingOutYn,
       autoScalingInYn: this.appAutoscalingInYn,

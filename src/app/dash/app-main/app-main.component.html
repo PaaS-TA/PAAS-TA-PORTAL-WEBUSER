@@ -948,6 +948,18 @@
                     <div></div>
                   </li>
                   <li>
+                    <div>{{ 'appMain.viewchart.settingTab.InstanceIncrementValue' | translate }}</div>
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+                    <div>
+                      <input type="text" id="InstanceIncrementValue" name="InstanceIncrementValue" [(ngModel)]="appAutoscalingInstanceVariationUnit" class="num8"/>
+                      <div class="monitor_count_up" onClick="updown('8','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up8"/></div>
+                      <div class="monitor_count_down" onClick="updown('8','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down8" /></div>
+                    </div>
+                    <div></div>
+                    <div></div>
+                  </li>
+                  <li>
                     <div class="monitor_switch_txt">{{ 'appMain.viewchart.settingTab.autoEx' | translate }}</div>
                     <div>&nbsp;</div>
                     <div>&nbsp;</div>
@@ -991,15 +1003,15 @@
                     <div>&nbsp;</div>
                     <div>{{ 'appMain.viewchart.settingTab.min' | translate }}</div>
                     <div>
-                      <input type="text" id="appAlarmCpuWarningThreshold" name="appAlarmCpuWarningThreshold" [(ngModel)]="appAlarmCpuWarningThreshold" class="num8"/>
-                      <div class="monitor_count_up" onClick="updown('8','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up1"/></div>
-                      <div class="monitor_count_down" onClick="updown('8','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down1" /></div>
+                      <input type="text" id="appAlarmCpuWarningThreshold" name="appAlarmCpuWarningThreshold" [(ngModel)]="appAlarmCpuWarningThreshold" class="num9"/>
+                      <div class="monitor_count_up" onClick="updown('9','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up1"/></div>
+                      <div class="monitor_count_down" onClick="updown('9','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down1" /></div>
                     </div>
                     <div>{{ 'appMain.viewchart.settingTab.max' | translate }}</div>
                     <div>
-                      <input type="text" id="appAlarmCpuCriticalThreshold" name="appAlarmCpuCriticalThreshold" [(ngModel)]="appAlarmCpuCriticalThreshold" class="num9"/>
-                      <div class="monitor_count_up" onClick="updown('9','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up2"/></div>
-                      <div class="monitor_count_down" onClick="updown('9','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down2" /></div>
+                      <input type="text" id="appAlarmCpuCriticalThreshold" name="appAlarmCpuCriticalThreshold" [(ngModel)]="appAlarmCpuCriticalThreshold" class="num10"/>
+                      <div class="monitor_count_up" onClick="updown('10','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up2"/></div>
+                      <div class="monitor_count_down" onClick="updown('10','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down2" /></div>
                     </div>
                   </li>
                   <li>
@@ -1007,15 +1019,15 @@
                     <div>&nbsp;</div>
                     <div>{{ 'appMain.viewchart.settingTab.min' | translate }}</div>
                     <div>
-                      <input type="text" id="appAlarmMemoryWarningThreshold" name="appAlarmMemoryWarningThreshold" [(ngModel)]="appAlarmMemoryWarningThreshold" class="num10"/>
-                      <div class="monitor_count_up" onClick="updown('10','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up3"/></div>
-                      <div class="monitor_count_down" onClick="updown('10','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down3" /></div>
+                      <input type="text" id="appAlarmMemoryWarningThreshold" name="appAlarmMemoryWarningThreshold" [(ngModel)]="appAlarmMemoryWarningThreshold" class="num11"/>
+                      <div class="monitor_count_up" onClick="updown('11','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up3"/></div>
+                      <div class="monitor_count_down" onClick="updown('11','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down3" /></div>
                     </div>
                     <div>{{ 'appMain.viewchart.settingTab.max' | translate }}</div>
                     <div>
-                      <input type="text" id="appAlarmMemoryCriticalThreshold" name="appAlarmMemoryCriticalThreshold" [(ngModel)]="appAlarmMemoryCriticalThreshold" class="num11"/>
-                      <div class="monitor_count_up" onClick="updown('11','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up4"/></div>
-                      <div class="monitor_count_down" onClick="updown('11','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down4" /></div>
+                      <input type="text" id="appAlarmMemoryCriticalThreshold" name="appAlarmMemoryCriticalThreshold" [(ngModel)]="appAlarmMemoryCriticalThreshold" class="num12"/>
+                      <div class="monitor_count_up" onClick="updown('12','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up4"/></div>
+                      <div class="monitor_count_down" onClick="updown('12','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down4" /></div>
                     </div>
                   </li>
                   <li>
@@ -1023,9 +1035,9 @@
                     <div>&nbsp;</div>
                     <div>&nbsp;</div>
                     <div>
-                      <input type="text" id="appAlarmMeasureTimeSec" name="appAlarmMeasureTimeSec" [(ngModel)]="appAlarmMeasureTimeSec" class="num12"/>
-                      <div class="monitor_count_up" onClick="updown('12','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up5"/></div>
-                      <div class="monitor_count_down" onClick="updown('12','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down5" /></div>
+                      <input type="text" id="appAlarmMeasureTimeSec" name="appAlarmMeasureTimeSec" [(ngModel)]="appAlarmMeasureTimeSec" class="num13"/>
+                      <div class="monitor_count_up" onClick="updown('13','+');"><img src="/assets/resources/images/monitor/count_up.gif" class="bt_up5"/></div>
+                      <div class="monitor_count_down" onClick="updown('13','-');"><img src="/assets/resources/images/monitor/count_down.gif" class="bt_down5" /></div>
                     </div>
                     <div></div>
                     <div></div>

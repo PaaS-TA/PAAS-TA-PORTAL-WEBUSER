@@ -30,6 +30,7 @@ export class AppTopComponent implements OnInit {
   orgMng : string;
   viewusage : string;
   translateEntities : any;
+  index : boolean;
   allMenuCursorIds: string[] = [
     'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc',
     'cur_usermgmt', 'cur_org', 'cur_org2', 'cur_quantity', 'cur_login',
@@ -50,7 +51,7 @@ export class AppTopComponent implements OnInit {
 
     this.changeLangClick(this.common.useLang);
 
-    if (this.common.getCurrentAppGuid != null) {
+    if (!isNullOrUndefined(this.common.getCurrentAppGuid)) {
       this.location = this.common.getCurrentLocation();
       this.orgName = this.common.getCurrentOrgName();
       this.orgGuid = this.common.getUserGuid();
@@ -88,6 +89,7 @@ export class AppTopComponent implements OnInit {
     let short: boolean;
 
     switch(this.cursorId) {
+
       case 'cur_dashboard':
       case 'cur_login' :
         short = true;
@@ -100,6 +102,18 @@ export class AppTopComponent implements OnInit {
     return short;
   }
 
+  get aLink(){
+    let result: boolean;
+    switch (this.cursorId){
+      case 'cur_login' :
+        result = true;
+        break;
+      default:
+        result = false;
+        break;
+    }
+    return result
+  }
 
   catalogInit(){
     this.catalogservice.viewPacks(true,true,true);

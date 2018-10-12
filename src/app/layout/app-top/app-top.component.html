@@ -1,11 +1,23 @@
 <header [class]="'header' + (isShortHeader? ' account' : '')" >
   <div class="logo">
-    <a [routerLink]="['/dashboard']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
+    <ng-container *ngIf="aLink">
+      <a href="/dashboard"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
+    </ng-container>
+
+      <ng-container *ngIf="!aLink">
+        <a [routerLink]="['/dashboard']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
+      </ng-container>
   </div>
 
   <ul class="gnb clearfix">
-    <li *ngIf="isLogin" id="cur_dashboard" ><a [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
-    <li id="cur_catalog" ><a [routerLink]="['/catalog']" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
+    <ng-container *ngIf="aLink">
+      <li *ngIf="isLogin" ><a href="/dashboard">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
+      <li ><a href="/catalog" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
+    </ng-container>
+    <ng-container *ngIf="!aLink">
+      <li *ngIf="isLogin" id="cur_dashboard" ><a [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
+      <li id="cur_catalog" ><a [routerLink]="['/catalog']" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
+    </ng-container>
     <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-3.0-Penne-">{{ 'common.top.main.linkTextDocument' | translate }}</a></li>
   </ul>
   <ul class="right_nav">
@@ -29,14 +41,29 @@
           </div>
           <ul class="">
             <li id="cur_usermgmt">
+              <ng-container *ngIf="aLink">
+                <a href="/usermgmt">{{ 'common.top.user.linkTextMyAccount' | translate }}</a>
+              </ng-container>
+              <ng-container *ngIf="!aLink">
               <a [routerLink]="['/usermgmt']">{{ 'common.top.user.linkTextMyAccount' | translate }}</a>
+              </ng-container>
             </li>
             <li id="cur_org">
+              <ng-container *ngIf="aLink">
+                <a href="/org">{{ 'common.top.user.linkTextOrgManager' | translate }}</a>
+              </ng-container>
+              <ng-container *ngIf="!aLink">
               <a [routerLink]="['/org']">{{ 'common.top.user.linkTextOrgManager' | translate }}</a>
+              </ng-container>
             </li>
             <ng-container *ngIf="common.getQuantity()">
             <li id="cur_quantity">
+              <ng-container *ngIf="aLink">
+                <a href="/quantity">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
+              </ng-container>
+              <ng-container *ngIf="!aLink">
               <a [routerLink]="['/quantity']">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
+              </ng-container>
             </li>
             </ng-container>
           </ul>
