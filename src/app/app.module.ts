@@ -60,7 +60,7 @@ export function createTranslateLoader(http: HttpClient) {
     LeftComponent,
     CallbackComponent,
     LogoutComponent,
-    ErrorComponent
+    ErrorComponent,
   ],
   imports: [
     IndexModule,

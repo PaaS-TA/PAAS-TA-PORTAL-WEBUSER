@@ -31,12 +31,13 @@ export class CatalogComponent implements OnInit {
 
 
   ngOnInit() {
+    console.log("실행");
     let name = this.catalogService.classname;
     let check = this.catalogService.check;
     let service = this.catalogService;
     $(document).ready(() => {
       //TODO 임시로...
-      $.getScript("../../assets/resources/js/common2.js")
+      $.getScript("../../assets/resources/js/common.js")
         .done(function (script, textStatus) {
           //console.log( textStatus );
           $('#nav_first').attr('class','');

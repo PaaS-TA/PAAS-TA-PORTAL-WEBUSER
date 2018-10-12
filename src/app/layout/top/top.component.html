@@ -1,77 +1,130 @@
-<header class="header">
-		<div class="logo">
-			<a href="#"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
-		</div>
-		<span class="nav_toggle">
-            <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
-            <label for="checkbox-1"></label>
-        </span>
-        <ul class="gnb clearfix">
-        	<li class="cur"><a href="dashboard.html">대시보드</a></li>
-        	<li><a href="catalog_list.html">카달로그</a></li>
-        	<li><a href="dashboard1.html">문서</a></li>
-        </ul>
-        <ul class="right_nav">
-            <li><!-- <a href="#" class="fas fa-user"></a> -->
-                <div class="btn-group">
-                <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                </button>
-                    <div id="r_user" class="dropdown-menu">
-                        <div class="">
-                            <span class="dot"></span>
-                            <dl>
-                                <dt>
-                                    <i href="#" class="fas fa-user"></i>
-                                    <img src="/assets/resources/images/account/profile-thumbnail-sample.png" alt="temp" />
-                                </dt>
-                                <dd>
-                                    <p>홍길동</p>
-                                    <p>test@test.com</p>
-                                </dd>
-                            </dl>
-                        </div>
-                        <ul class="">
-                            <li class="cur"><a href="#">내계정</a></li>
-                            <li><a href="#">조직관리</a></li>
-                            <li><a href="#">사용량조회</a></li>
-                        </ul>
-                        <p class="log_out" [routerLink]="['../logout']">로그아웃</p>
-                    </div>
-                </div>
+<header [class]="'header' + (isShortHeader? ' account' : '')" >
+  <div class="logo">
+    <a [routerLink]="['/dashboard']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
+  </div>
+
+  <ul class="gnb clearfix">
+    <li *ngIf="isLogin" id="cur_dashboard" ><a [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
+    <li id="cur_catalog" ><a [routerLink]="['/catalog']" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
+    <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-3.0-Penne-">{{ 'common.top.main.linkTextDocument' | translate }}</a></li>
+  </ul>
+  <ul class="right_nav">
+    <li *ngIf="isLogin"><!-- <a href="#" class="fas fa-user"></a> -->
+      <div class="btn-group" >
+        <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+        </button>
+        <div id="r_user" class="dropdown-menu" >
+          <div class="">
+            <span class="dot"></span>
+            <dl>
+              <dt>
+                <i href="#" class="fas fa-user"></i>
+                <img [src]="pictureUrl" alt="temp" />
+              </dt>
+              <dd style="width:160px; word-wrap: break-word;">
+                <p>{{name}}</p>
+                <p>{{id}}</p>
+              </dd>
+            </dl>
+          </div>
+          <ul class="">
+            <li id="cur_usermgmt">
+              <a [routerLink]="['/usermgmt']">{{ 'common.top.user.linkTextMyAccount' | translate }}</a>
             </li>
-        	<li>
-                <div class="btn-group">
-                <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>3</span></button>
-                    <div id="bell" class="dropdown-menu">
-                        <div class="">
-                            <span class="dot"></span>
-                            <p class="">Notifications</p>
-                        </div>
-                        <div>
-                            <ul class="">
-                                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
-                                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
-                                <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <li id="cur_org">
+              <a [routerLink]="['/org']">{{ 'common.top.user.linkTextOrgManager' | translate }}</a>
             </li>
-            <li>
-                <div id="globes" class="btn-group">
-                <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>
-                    <ul class="dropdown-menu">
-                        <li class="cur"><a href="#">Korean</a></li>
-                        <li><a href="#">English</a></li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-        <div class="header_bottom">
-            <p class="tit">Dashboard</p>
-            <ul class="content_dev">
-                <li>DEV</li>
-                <li>Dev_area</li>
-            </ul>
+            <ng-container *ngIf="common.getQuantity()">
+              <li id="cur_quantity">
+                <a [routerLink]="['/quantity']">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
+              </li>
+            </ng-container>
+          </ul>
+          <p class="log_out" [routerLink]="['/logout']">{{ 'common.top.user.linkTextLogOut' | translate }}</p>
         </div>
-	</header>
+      </div>
+    </li>
+    <li *ngIf="isLogin && isMonitoring">
+      <div class="btn-group">
+        <button href="#" class="dropdown-toggle bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <!--<span></span>-->
+        </button>
+        <div id="bell" class="dropdown-menu">
+          <div class="">
+            <span class="dot"></span>
+            <!--<p class="">Notifications</p>-->
+          </div>
+          <div>
+            <ul class="">
+              <!--<ng-container *ngFor="let noti of notifications">-->
+              <!--<li>-->
+              <!--<a href="javascript:void(0)">{{noti}}</a><span>-->
+              <!--<i class="fas fa-times-circle"></i></span></li>-->
+              <!--</ng-container>-->
+              <!--
+              <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+              <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
+              -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li *ngIf="!isLogin" style="width: 75px"><a [routerLink]="['/login']">{{'common.top.main.login' | translate}}</a></li>
+    <li>
+      <div id="globes" class="btn-group">
+        <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>
+        <ul class="dropdown-menu">
+          <li id="lang_ko" class="cur"><a href="javascript:void(0);" (click)="changeLangClick('ko');">Korean</a></li>
+          <li id="lang_en"><a href="javascript:void(0);" (click)="changeLangClick('en');">English</a></li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+  <ng-container *ngIf="isDashboardApp && isAppView; else catalog">
+    <div class="header_bottom">
+      <!-- dashboard container -->
+      <p class="tit" [routerLink]="['/dashboard']" style="cursor: pointer">Dashboard</p>
+      <span class="nav_toggle"><!-- 180724 수정 -->
+                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+                <label for="checkbox-1"></label>
+            </span>
+      <ul class="content_dev">
+        <li>{{orgName}}</li>
+        <li>{{spaceName}}</li>
+      </ul>
+    </div>
+  </ng-container>
+  <ng-template #catalog>
+    <!-- catalog container -->
+    <ng-container *ngIf="isCatalog; else menagement">
+      <div class="header_bottom">
+        <p class="tit">Catalog</p>
+        <span class="nav_toggle"><!-- 180724 수정 -->
+                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+                <label for="checkbox-1"></label>
+            </span>
+        <ul class="content_dev">
+          <li>{{catalogName}}</li>
+        </ul>
+      </div>
+    </ng-container>
+  </ng-template>
+  <ng-template #menagement>
+    <ng-container *ngIf="isManagement; else emptyMenu">
+      <div class="header_bottom">
+        <p class="tit">Management</p>
+        <span class="nav_toggle"><!-- 180724 수정 -->
+                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+                <label for="checkbox-1"></label>
+            </span>
+        <ul class="content_dev">
+          <li>{{menagementName}}</li>
+        </ul>
+      </div>
+    </ng-container>
+  </ng-template>
+  <ng-template #emptyMenu>
+
+  </ng-template>
+</header>

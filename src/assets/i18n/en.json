@@ -73,6 +73,7 @@
         "cpuThreshold": "CPU Threshold(%)",
         "memoryThreshold": "Memory Threshold(%)",
         "measurementTime": "Measurement time (seconds)",
+        "InstanceIncrementValue": "Instance Increment Value",
         "autoEx": "Automatic expansion of virtual machines",
         "autoSh": "Automatic shrink of virtual machines",
         "autoShText": "Automatic instance reduction can affect your system.",
