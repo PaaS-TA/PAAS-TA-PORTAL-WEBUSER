@@ -20,7 +20,8 @@
                   <ul class="icon">
                     <li *ngFor="let app of apptemplate">
                       <div>
-                        <img title="{{app.description}}" src="{{app.Img}}" alt="{{app.name}}" onError="this.src='assets/resources/images/catalog/catalog_3.png'"/>
+                        <img title="" src="{{app.Img}}" alt="{{app.name}}"  onError="this.src='assets/resources/images/catalog/catalog_3.png'" />
+                        <input id="desc" value="{{app.description}}"  type="hidden" />
                       </div>
                     </li>
                   </ul>
