@@ -111,10 +111,10 @@
                       </td>
                     </tr>
                     <tr>
-                      <td  colspan="2">
+                      <td  colspan="2" style="position:relative;">
                         <input type="text" name="appName" id="appName" placeholder="{{ 'catalog.contants.inputAppName' | translate }}" (keyup)="checkAppName()" maxlength="50"/>
-                        <div *ngIf="(namecheck === 1 && appname.length > 0)" ><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
-                        <div *ngIf="(namecheck === -1 && appname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
+                        <div *ngIf="(namecheck === 1 && appname.length > 0)" style="position:absolute; bottom:-22px; left:0;"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.createSuccessApp' | translate }}</p></div>
+                        <div *ngIf="(namecheck === -1 && appname.length > 0)" style="position:absolute; bottom:-22px; left:0;"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseApp' | translate }}</p></div>
                       </td>
                     </tr>
                     <tr>
@@ -126,8 +126,10 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="1">
+                      <td colspan="1" style="position:relative;">
                         <input name="route" id="routename" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}" (keyup)="checkHostName()" maxlength="50" style="width:98%"/>
+                        <div *ngIf="(routecheck === 1 && hostname.length > 0)" style="position:absolute; bottom:-22px; left:0;"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
+                        <div *ngIf="(routecheck === -1  && hostname.length > 0)" style="position:absolute; bottom:-22px; left:0;"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
                       </td>
                       <td colspan="1">
                         <select [(ngModel)]="currentdomain">
@@ -136,12 +138,12 @@
                         </select>
                       </td>
                     </tr>
-                    <tr style="height: 10px">
-                      <th colspan="2">
-                      <div *ngIf="(routecheck === 1 && hostname.length > 0)"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
-                      <div *ngIf="(routecheck === -1  && hostname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
-                      </th>
-                    </tr>
+                    <!--<tr style="height: 10px">-->
+                      <!--<th colspan="2">-->
+                      <!--<div *ngIf="(routecheck === 1 && hostname.length > 0)"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>-->
+                      <!--<div *ngIf="(routecheck === -1  && hostname.length > 0)"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>-->
+                      <!--</th>-->
+                    <!--</tr>-->
                     <tr>
                       <td><p>{{ 'catalog.appTemplate.memory' | translate }}</p>
                       </td>
