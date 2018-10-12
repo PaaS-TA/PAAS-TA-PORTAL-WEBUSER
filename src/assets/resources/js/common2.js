@@ -541,7 +541,7 @@
     // 20180323 아이콘 텍스트
     $(".icon li div img").on("mouseenter", function(){
         var IcoTitle = $(this).attr("alt");
-        var IcoCopy = $(this).attr("title");
+        var IcoCopy = $(this).next().val();
         $(".icon_TT").html(IcoTitle);
         $(".icon_TC").html(IcoCopy);
     });
