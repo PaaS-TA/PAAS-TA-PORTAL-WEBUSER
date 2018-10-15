@@ -68,8 +68,8 @@
       "settingTab": {
         "title": "Auto-Scaling Setting",
         "instanceCnt": "Number of instances",
-        "min": "At least",
-        "max": "Maximum",
+        "min": "Min",
+        "max": "Max",
         "cpuThreshold": "CPU Threshold(%)",
         "memoryThreshold": "Memory Threshold(%)",
         "measurementTime": "Measurement time (seconds)",
@@ -349,7 +349,7 @@
       "notServicePlan" : "There is no service plan."
     },
     "region" :{
-      "korea" : "KOREA",
+      "korea" : "Republic of Korea",
       "usa" : "USA"
     },
     "contants" : {

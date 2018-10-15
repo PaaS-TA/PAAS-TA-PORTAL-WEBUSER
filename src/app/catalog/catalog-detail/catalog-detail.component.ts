@@ -62,6 +62,8 @@ export class CatalogDetailComponent implements OnInit {
       this.translateEntities = res;
       this.orgsFirst();
       this.spacesFirst();
+      this.activatedRouteInit();
+      this.buildAndServiceInit();
     });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
@@ -78,8 +80,8 @@ export class CatalogDetailComponent implements OnInit {
     this.navInit();
     this.domainList = new Array<any>();
     this.shareDomainInit();
-    this.activatedRouteInit();
-    this.buildAndServiceInit();
+
+
     this.getRoutes();
     this.orgsInit();
     this.setting();

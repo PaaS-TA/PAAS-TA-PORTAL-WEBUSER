@@ -52,6 +52,7 @@ export class CatalogServiceComponent implements OnInit {
       this.orgsFirst();
       this.spacesFirst();
       this.appsFirst();
+      this.activatedRouteInit();
     });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
@@ -67,15 +68,12 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.translate.get('catalog').subscribe((res: string) => {
-      this.translateEntities = res;
-    });
     $('#nav_first').attr('class','');
     $('#nav_second').attr('class','');
     $('#nav_third ').attr('class','');
     $('#nav_fourth').attr('class','cur');
     this.catalogService.isLoading(false);
-    this.activatedRouteInit();
+
     this.DomainInit();
     this.ServiceInit();
     this.OrgsInit();
