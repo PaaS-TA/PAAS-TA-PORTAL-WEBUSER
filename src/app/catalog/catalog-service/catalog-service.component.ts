@@ -9,7 +9,7 @@ import {cataloghistroy} from "../model/cataloghistory";
 import {App} from "../../model/app";
 import {ServicePlan} from "../model/Serviceplan";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {isUndefined} from "util";
+import {isNullOrUndefined, isUndefined} from "util";
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -156,6 +156,10 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   ServiceInit() {
+    if(isNullOrUndefined(this.catalogService.getCurrentCatalogNumber())){
+      this.router.navigate(['catalog']);
+      return;
+    }
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
       try{
       this.servicepack = data['list'][0];

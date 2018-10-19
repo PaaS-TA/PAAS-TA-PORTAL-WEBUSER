@@ -139,6 +139,9 @@ export class AppMainComponent implements OnInit {
   public sltChartDefaultTimeRange: number;
   public sltChartGroupBy: number;
 
+  public sltLaaSView : boolean = false;
+  public sltLaaSUrl : string = '';
+
   alive = true;
 
 
@@ -227,6 +230,7 @@ export class AppMainComponent implements OnInit {
         this.getAlarm(this.appGuid);
         this.getAutoscaling(this.appGuid);
         this.getMaxDisk();
+        this.InitLaaSView();
       } else {
         setTimeout(() => this.showLoading(), 0);
 
@@ -2302,6 +2306,22 @@ export class AppMainComponent implements OnInit {
 
   showWindowTailLogs() {
     window.open('/tailLogs?name=' + this.appName + '&org=' + this.orgName + '&space=' + this.spaceName + '&guid=' + this.appGuid + '', '_blank', 'location=no, directories=no width=1000, height=700');
+  }
+
+  InitLaaSView(){
+    this.appMainService.getCodeMax('LAAS').subscribe(data => {
+      data.list.some(r => {
+        if (r.key === 'laas_base_url') {
+          this.sltLaaSView = r.useYn == 'Y' ? true : false;
+          this.sltLaaSUrl = r.value;
+          return true;
+        }
+      });
+    });
+  }
+
+  showWindowLaaS(){
+    window.open(this.sltLaaSUrl+'/'+this.appGuid, '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
   showWindowAppLink(urlLink: string) {

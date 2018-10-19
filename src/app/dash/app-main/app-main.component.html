@@ -757,6 +757,11 @@
               <div class="view_table_wrap service_wrap">
                 <div class="service_title maT30">
                   <div class="pull-right">
+                    <ng-container *ngIf="sltLaaSView">
+                    <span class="fcolor" style="cursor: pointer;" (click)="showWindowLaaS()">
+                      <i class="fas fa-code"></i> LaaS 앱상세
+                    </span>
+                    </ng-container>
                     <span class="fcolor" style="cursor: pointer;" (click)="showWindowTailLogs()">
                       <i class="fas fa-code"></i> Tail Logs
                     </span>

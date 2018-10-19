@@ -174,6 +174,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   buildInit() {
     if(isNullOrUndefined(this.catalogService.getCurrentCatalogNumber())){
       this.router.navigate(['catalog']);
+      return;
     }
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
       try {

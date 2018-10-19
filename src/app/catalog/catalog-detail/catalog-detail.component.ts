@@ -118,6 +118,7 @@ export class CatalogDetailComponent implements OnInit {
     $('#nav_fourth').attr('class','');
     if(isNullOrUndefined(this.catalogService.getCurrentCatalogNumber())){
       this.router.navigate(['catalog']);
+      return;
     }
   }
 
