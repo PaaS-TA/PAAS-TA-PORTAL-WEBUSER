@@ -2295,11 +2295,6 @@ export class AppMainComponent implements OnInit {
     this.getNetworkByte();
   }
 
-  // copyClick(id: string) {
-  //   var inContent = $("#"+id).val();
-  //   $("#out_a").val(inContent);
-  // }
-
   refreshClick() {
     this.ngOnInit();
   }
