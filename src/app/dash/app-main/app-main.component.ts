@@ -1735,8 +1735,8 @@ export class AppMainComponent implements OnInit {
       var datasetsArray = new Array();
 
       //TODO 임시 데이터
-      // var datatest ='{"data":[{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540183010,"value":16.289524933333343},{"time":1540183041,"value":25.955745267741975},{"time":1540183071,"value":60.25358099333336},{"time":1540183101,"value":40.72985974333325},{"time":1540183131,"value":34.49463596000006}],"serviceName":"cpu"}]},"name":0},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"cpu"}]},"name":1}]}';
-      // data = JSON.parse(datatest);
+      var datatest ='{"data":[{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190118,"value":0.16231043666666758},{"time":1540190148,"value":68.7453735},{"time":1540190179,"value":34.9714239580645},{"time":1540190209,"value":0.22373058000001816},{"time":1540190239,"value":0.16153721333331816}],"serviceName":"cpu"}]},"name":0},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190120,"value":3.551006506666668},{"time":1540190151,"value":73.32921754838709},{"time":1540190181,"value":27.25220766333334},{"time":1540190211,"value":0.22697904333332036},{"time":1540190241,"value":0.1130010900000163}],"serviceName":"cpu"}]},"name":1},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190118,"value":0.16610875666666894},{"time":1540190149,"value":65.14547624193548},{"time":1540190179,"value":37.03421541999998},{"time":1540190209,"value":0.19677300999999167},{"time":1540190239,"value":0.18908909333333668}],"serviceName":"cpu"}]},"name":2},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190121,"value":4.828283780000001},{"time":1540190151,"value":70.75098146333332},{"time":1540190181,"value":30.501003850000004},{"time":1540190212,"value":0.2811323225806461},{"time":1540190242,"value":0.1369847833333419}],"serviceName":"cpu"}]},"name":3},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190243,"value":0.21850222666666735}],"serviceName":"cpu"}]},"name":4},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"cpu"}]},"name":5}]}';
+      data = JSON.parse(datatest);
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
@@ -1933,8 +1933,8 @@ export class AppMainComponent implements OnInit {
       var datasetsArray = new Array();
 
       //TODO 임시 데이터
-      // var datatest ='{"data":[{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"memory"}]},"name":"All"},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"memory"}]},"name":"All"}]}';
-      // data = JSON.parse(datatest);
+      var datatest ='{"data":[{"data":{"name":"4a1d905b-75b3-4d1c-9f97-6ede37fd8de6","data":[{"data":null,"serviceName":"memory"}]},"name":"All"},{"data":{"name":"4a1d905b-75b3-4d1c-9f97-6ede37fd8de6","data":[{"data":null,"serviceName":"memory"}]},"name":"All"}]}';
+      data = JSON.parse(datatest);
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
@@ -2126,8 +2126,8 @@ export class AppMainComponent implements OnInit {
       var datasetsArray = new Array();
 
       //TODO 임시 데이터
-      // var datatest ='{"data":[{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540183020,"value":34954.00146484375},{"time":1540183080,"value":58579.8056640625}],"serviceName":"Rx_Network"},{"data":[{"time":1540183020,"value":9418.1142578125},{"time":1540183080,"value":15783.67578125}],"serviceName":"Tx_Network"}]},"name":0},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"Rx_Network"},{"data":null,"serviceName":"Tx_Network"}]},"name":1}]}';
-      // data = JSON.parse(datatest);
+      var datatest ='{"data":[{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190100,"value":3172.11572265625},{"time":1540190160,"value":21404.11865234375}],"serviceName":"Rx_Network"},{"data":[{"time":1540190100,"value":856.22216796875},{"time":1540190160,"value":5828.10791015625}],"serviceName":"Tx_Network"}]},"name":0},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190100,"value":6188.22265625},{"time":1540190160,"value":18395.52490234375}],"serviceName":"Rx_Network"},{"data":[{"time":1540190100,"value":1677.3017578125},{"time":1540190160,"value":4998.76611328125}],"serviceName":"Tx_Network"}]},"name":1},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190100,"value":3171.0390625},{"time":1540190160,"value":21408.7666015625}],"serviceName":"Rx_Network"},{"data":[{"time":1540190100,"value":855.5546875},{"time":1540190160,"value":5822.94921875}],"serviceName":"Tx_Network"}]},"name":2},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190100,"value":6187.775390625},{"time":1540190160,"value":18396.10546875}],"serviceName":"Rx_Network"},{"data":[{"time":1540190100,"value":1678.05810546875},{"time":1540190160,"value":4998.74560546875}],"serviceName":"Tx_Network"}]},"name":3},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540190220,"value":0}],"serviceName":"Rx_Network"},{"data":[{"time":1540190220,"value":0}],"serviceName":"Tx_Network"}]},"name":4},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"Rx_Network"},{"data":null,"serviceName":"Tx_Network"}]},"name":5}]}';
+      data = JSON.parse(datatest);
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
