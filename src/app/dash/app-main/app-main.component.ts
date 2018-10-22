@@ -1734,6 +1734,10 @@ export class AppMainComponent implements OnInit {
       var levelsObj = new Object();
       var datasetsArray = new Array();
 
+      //TODO 임시 데이터
+      // var datatest ='{"data":[{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540183010,"value":16.289524933333343},{"time":1540183041,"value":25.955745267741975},{"time":1540183071,"value":60.25358099333336},{"time":1540183101,"value":40.72985974333325},{"time":1540183131,"value":34.49463596000006}],"serviceName":"cpu"}]},"name":0},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"cpu"}]},"name":1}]}';
+      // data = JSON.parse(datatest);
+
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
           if(!isNullOrUndefined(dataobj[i].data.data)){
@@ -1928,6 +1932,10 @@ export class AppMainComponent implements OnInit {
       var levelsObj = new Object();
       var datasetsArray = new Array();
 
+      //TODO 임시 데이터
+      // var datatest ='{"data":[{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"memory"}]},"name":"All"},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"memory"}]},"name":"All"}]}';
+      // data = JSON.parse(datatest);
+
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
           if(!isNullOrUndefined(dataobj[i].data.data)){
@@ -2116,6 +2124,10 @@ export class AppMainComponent implements OnInit {
       var levelsArray2 = new Array();
       var levelsObj = new Object();
       var datasetsArray = new Array();
+
+      //TODO 임시 데이터
+      // var datatest ='{"data":[{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":[{"time":1540183020,"value":34954.00146484375},{"time":1540183080,"value":58579.8056640625}],"serviceName":"Rx_Network"},{"data":[{"time":1540183020,"value":9418.1142578125},{"time":1540183080,"value":15783.67578125}],"serviceName":"Tx_Network"}]},"name":0},{"data":{"name":"e8b35704-2924-4120-8c8e-b5b84bdb7ff0","data":[{"data":null,"serviceName":"Rx_Network"},{"data":null,"serviceName":"Tx_Network"}]},"name":1}]}';
+      // data = JSON.parse(datatest);
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
