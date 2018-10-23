@@ -32,9 +32,9 @@ export class AppMainComponent implements OnInit {
   public isLoading: boolean = false;
 
   public translateEntities: any = [];
-
+  public InstanceNum : number = 1;
   public appSummaryEntities: Observable<any[]>;
-  public appStatsEntities: Observable<any[]>;
+  public appStatsEntities: any;
   public appEventsEntities: Observable<any[]>;
   public appEventsEntitiesRe: any = [];
   public appEnvEntities: Observable<any[]>;
@@ -410,7 +410,7 @@ export class AppMainComponent implements OnInit {
           return true;
         }
         this.appSummaryDiskMax = 10;
-      })
+      });
     })
   }
 
@@ -428,7 +428,7 @@ export class AppMainComponent implements OnInit {
             return true;
           }
           this.appSummaryMemoryMax = 1;
-        })
+        });
       });
       this.appMainService.getCodeMax('APP_INSTANCE_SIZE').subscribe(codedata => {
         codedata.list.some(r => {
@@ -440,7 +440,7 @@ export class AppMainComponent implements OnInit {
             }
             return true;
           }
-          this.appSummaryMemoryMax = 1;
+          this.appSummaryInstanceMax = 7;
         })
       });
     });
@@ -578,19 +578,15 @@ export class AppMainComponent implements OnInit {
         var cnt = 0;
         let maxmem = this.appSummaryMemoryMax;
         let maxdisk = this.appSummaryDiskMax;
-        console.log(maxmem +" :::::" + maxdisk);
 
         $.each(data.instances, function (key, dataobj) {
           if (dataobj.stats != null) {
             if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
             if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + (dataobj.stats.usage.mem) /  (maxmem*1024*1024*1024)  * 100;
             if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + (dataobj.stats.usage.disk) / (maxdisk* 1024*1024*1024) * 100;
-            console.log(dataobj.stats.usage.cpu +" :::::" + dataobj.stats.usage.mem + "::::::::" + dataobj.stats.usage.disk);
-            cnt++;
+                    cnt++;
           }
         });
-
-
         if (cpu > 0) {
           if (Number((cpu / cnt).toFixed(0)) > 100) {
             this.appStatsCpuPer = 100;
@@ -614,8 +610,8 @@ export class AppMainComponent implements OnInit {
         }
 
         $("#cpuPer").val(this.appStatsCpuPer);
-        $("#memoryPer").val(this.appStatsMemoryPer);
-        $("#diskPer").val(this.appStatsDiskPer);
+        $("#memoryPer").val(this.appStatsMemoryPer/cnt);
+        $("#diskPer").val(this.appStatsDiskPer/cnt);
 
         this.procSetAppStatusTab();
       }
