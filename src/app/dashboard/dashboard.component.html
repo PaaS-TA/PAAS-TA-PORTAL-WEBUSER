@@ -257,7 +257,7 @@
                           <div>:</div>
                           <div class="serviceTitle">{{item.service_plan.name}}</div>
                         </li>
-                        <li>
+                        <li *ngIf="item.bound_app_count > 0">
                           <div>{{'dashboard.service.connectApp' | translate}}</div>
                           <div>:</div>
                           <ng-container *ngFor="let app of appEntities;">
