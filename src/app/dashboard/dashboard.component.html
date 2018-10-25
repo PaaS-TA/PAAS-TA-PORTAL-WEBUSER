@@ -217,88 +217,92 @@
             </div>
           </div>
           <ul class="maT10 space_list space_list_small">
-            <li *ngFor="let item of servicesEntities;  let i = index">
-              <div class="sortable_wrap">
-                <!-- 서비스 영역 시작 -->
-                <div class="space_pop_container space_list_small">
-                  <div class="space_pop_menu">
-                    <!--<button _ngcontent-c4="" class="btns colors4" (click)="moveDashboardS()">대시보드</button>-->
-                    <i class="fas fa-ellipsis-v" *ngIf="item.service_plan !== null"
-                       (click)="popclick('spopmenu_'+i,'service',item.guid,item.name,item.binding)"></i>
-                    <i class="fas fa-ellipsis-v" *ngIf="item.service_plan == null"
-                       (click)="popclick('spopmenu_'+i,'provided',item.guid,item.name,false)"></i>
-                    <ol class="space_pop_submenu" id="spopmenu_{{i}}">
-                      <li *ngIf="item.service_plan !== null" (click)="serviceRename()"><a
-                        class="fas fa-edit">{{'dashboard.service.changeServiceName' | translate}}</a></li>
-                      <!--<li data-target="#layerpop7" data-toggle="modal" *ngIf="item.service_plan == null"><a class="fas fa-edit"> 서비스 이름변경</a></li>-->
-                      <li data-target="#layerpop6" data-toggle="modal" *ngIf="item.service_plan == null"><a
-                        class="fas fa-wrench">{{'dashboard.service.updateService' | translate}}</a></li>
-                      <li data-target="#layerpop5" data-toggle="modal"><a class="fas fa-trash-alt">{{'dashboard.button.delete'
-                        | translate}}</a></li>
-                    </ol>
-                  </div>
-                  <div class="app_title">
-                    <div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 54px; height: 54px"
-                                              onError="this.src='../../assets/resources/images/catalog/catalog_3.png'"/>
-                    </div> <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: 260px;">
+
+            <ng-container *ngFor="let item of servicesEntities;  let i = index">
+              <li>
+                <div class="sortable_wrap">
+                  <!-- 서비스 영역 시작 -->
+                  <div class="space_pop_container space_list_small">
+                    <div class="space_pop_menu">
+                      <!--<button _ngcontent-c4="" class="btns colors4" (click)="moveDashboardS()">대시보드</button>-->
+                      <i class="fas fa-ellipsis-v" *ngIf="item.service_plan !== null"
+                         (click)="popclick('spopmenu_'+i,'service',item.guid,item.name,item.binding)"></i>
+                      <i class="fas fa-ellipsis-v" *ngIf="item.service_plan == null"
+                         (click)="popclick('spopmenu_'+i,'provided',item.guid,item.name,false)"></i>
+                      <ol class="space_pop_submenu" id="spopmenu_{{i}}">
+                        <li *ngIf="item.service_plan !== null" (click)="serviceRename()"><a
+                          class="fas fa-edit">{{'dashboard.service.changeServiceName' | translate}}</a></li>
+                        <!--<li data-target="#layerpop7" data-toggle="modal" *ngIf="item.service_plan == null"><a class="fas fa-edit"> 서비스 이름변경</a></li>-->
+                        <li data-target="#layerpop6" data-toggle="modal" *ngIf="item.service_plan == null"><a
+                          class="fas fa-wrench">{{'dashboard.service.updateService' | translate}}</a></li>
+                        <li data-target="#layerpop5" data-toggle="modal"><a class="fas fa-trash-alt">{{'dashboard.button.delete'
+                          | translate}}</a></li>
+                      </ol>
+                    </div>
+                    <div class="app_title">
+                      <div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 54px; height: 54px"
+                                                onError="this.src='../../assets/resources/images/catalog/catalog_3.png'"/>
+                      </div> <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: 260px;">
                     &nbsp;{{item.name}} </span>
-                  </div>
-                  <div class="app_per clearfix" *ngIf="item.service_plan != null">
-                    <ul>
-                      <li>
-                        <div>{{'dashboard.service.connectApp' | translate}}</div>
-                        <div>:</div>
-                        <ng-container *ngFor="let app of appEntities;">
-                          <ng-container *ngFor="let servicename of app.service_names;">
-                            <ng-container *ngIf="item.name == servicename">
-                              <div class="serviceTitle">{{app.name}}{{setAppBinding(item)}}</div>
+                    </div>
+                    <div class="app_per clearfix" *ngIf="item.service_plan != null">
+                      <ul>
+                        <li>
+                          <div>{{'dashboard.service.serviceName' | translate}}</div>
+                          <div>:</div>
+                          <div class="serviceTitle">{{item.service_plan.service.label}}</div>
+                        </li>
+                        <li>
+                          <div>{{'dashboard.service.providedServices' | translate}}</div>
+                          <div>:</div>
+                          <div class="serviceTitle">{{item.service_plan.name}}</div>
+                        </li>
+                        <li *ngIf="item.bound_app_count > 0">
+                          <div>{{'dashboard.service.connectApp' | translate}}</div>
+                          <div>:</div>
+                          <ng-container *ngFor="let app of appEntities;">
+                            <ng-container *ngFor="let servicename of app.service_names;">
+                              <ng-container *ngIf="item.name == servicename">
+                                <div class="serviceTitle">{{app.name}}{{setAppBinding(item)}}</div>
+                              </ng-container>
                             </ng-container>
                           </ng-container>
-                        </ng-container>
-                      </li>
-                      <li>
-                        <div>{{'dashboard.service.serviceName' | translate}}</div>
-                        <div>:</div>
-                        <div class="serviceTitle">{{item.service_plan.service.label}}</div>
-                      </li>
-                      <li>
-                        <div>{{'dashboard.service.providedServices' | translate}}</div>
-                        <div>:</div>
-                        <div class="serviceTitle">{{item.service_plan.name}}</div>
-                      </li>
-                      <!--<ng-container *ngIf-->
-                      <ng-container *ngIf="item.dashboardUseYn =='Y'">
-                        <li *ngIf="item.dashboard_url != null">
-                          <div>{{'dashboard.service.dashboard' | translate}}</div>
-                          <div>:</div>
-                          <div class="serviceTitle">
-                            <a href="{{item.dashboard_url}}" target="_blank">
-                              <button class="btns colors5">{{'dashboard.service.dashboard' | translate}}</button>
-                            </a>
-                          </div>
                         </li>
-                      </ng-container>
-                    </ul>
+                        <!--<ng-container *ngIf-->
+                        <ng-container *ngIf="item.dashboardUseYn =='Y'">
+                          <li *ngIf="item.dashboard_url != null">
+                            <div>{{'dashboard.service.dashboard' | translate}}</div>
+                            <div>:</div>
+                            <div class="serviceTitle">
+                              <a href="{{item.dashboard_url}}" target="_blank">
+                                <button class="btns colors5">{{'dashboard.service.dashboard' | translate}}</button>
+                              </a>
+                            </div>
+                          </li>
+                        </ng-container>
+                      </ul>
+                    </div>
+                    <div class="app_per clearfix" *ngIf="item.service_plan == null">
+                      <ul>
+                        <li>
+                          <div>{{'dashboard.service.serviceName' | translate}}</div>
+                          <div>:</div>
+                          <div class="serviceTitle">{{item.name}}</div>
+                        </li>
+                        <li>
+                          <div>{{'dashboard.service.providedServices' | translate}}</div>
+                          <div>:</div>
+                          <div class="serviceTitle">user-provided</div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="clear"></div>
                   </div>
-                  <div class="app_per clearfix" *ngIf="item.service_plan == null">
-                    <ul>
-                      <li>
-                        <div>{{'dashboard.service.serviceName' | translate}}</div>
-                        <div>:</div>
-                        <div class="serviceTitle">{{item.name}}</div>
-                      </li>
-                      <li>
-                        <div>{{'dashboard.service.providedServices' | translate}}</div>
-                        <div>:</div>
-                        <div class="serviceTitle">user-provided</div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="clear"></div>
+                  <!-- 애플리케이션 영역 끝 -->
                 </div>
-                <!-- 애플리케이션 영역 끝 -->
-              </div>
-            </li>
+              </li>
+            </ng-container>
+
             <!-- 애플리케이션 영역 이동 -->
             <li>
               <div class="sortable_wrap"><a [routerLink]="['/catalog']">

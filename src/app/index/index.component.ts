@@ -22,8 +22,15 @@ export class IndexComponent implements OnInit, OnDestroy {
         verticalCentered: true,
         css3:false,
       });
-    });
 
+      var agent = navigator.userAgent.toLowerCase();
+
+      if(agent.indexOf("chrome") != -1 || agent.indexOf("edge") != -1 || agent.indexOf("firefox") != -1) {
+      } else {
+        $("#layerpop_index_browser_notice").modal("show");
+      }
+
+    });
 
   }
 
