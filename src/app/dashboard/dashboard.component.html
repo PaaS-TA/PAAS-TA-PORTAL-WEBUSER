@@ -35,7 +35,7 @@
       <!--<div class="space_btn1"><button class="btnspace colors4 "><img src="../../assets/resources/images/main/btn_icon.png" alt=""/>WEB IDE 사용</button></div>-->
     </div>
   </div>
-  <div *ngIf='isEmpty'>
+  <div *ngIf='isEmpty' style="min-height:100%;">
     <div class="space_wrap">
       <div class="space_alert_img"><img src="../../assets/resources/images/space/alert.gif" alt=""/></div>
       <div class="space_title2">{{'dashboard.explan.dashboardMsg1' | translate}}</div>
@@ -44,7 +44,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf='isSpace'>
+  <div *ngIf='isSpace' style="min-height:100%;">
     <div class="contain_s">
       <div class="content">
         <!-- 할당량 시작-->
@@ -315,7 +315,7 @@
       </div>
     </div>
   </div>
-  <div class="footer_n" style="position: fixed; bottom: 0; width: 100%;">Copyright © 2018 PaaS-TA. All rights reserved</div>
+  <div class="footer_n" style="bottom: 0; width: 100%;">Copyright © 2018 PaaS-TA. All rights reserved</div>
 </div>
 <!-- modal -->
 <div class="modal fade" id="layerpop1">
