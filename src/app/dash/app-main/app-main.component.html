@@ -758,17 +758,21 @@
                 <div class="service_title maT30">
                   <div class="pull-right">
                     <ng-container *ngIf="sltLaaSView">
-                    <span class="fcolor" style="cursor: pointer;" (click)="showWindowLaaS()">
-                      <i class="fas fa-code"></i> LaaS 앱상세
-                    </span>
+                      <button _ngcontent-c6="" class="btns4 colors4" (click)="showWindowLaaS()" style="margin-right: 20px;">LaaS App Details
+                      </button>
                     </ng-container>
-                    <span class="fcolor" style="cursor: pointer;" (click)="showWindowTailLogs()">
-                      <i class="fas fa-code"></i> Tail Logs
-                    </span>
+                    <button _ngcontent-c6="" class="btns4 colors4" (click)="showWindowTailLogs()">Tail Logs
+                    </button>
+                    <!--<span class="fcolor" style="cursor: pointer;" >-->
+                      <!--<i class="fas fa-code"></i> LaaS App Details-->
+                    <!--</span>-->
+                    <!--<span class="fcolor" style="cursor: pointer;" >-->
+                      <!--<i class="fas fa-code"></i> Tail Logs-->
+                    <!--</span>-->
                   </div>
                   <h5>{{ 'appMain.logs.recentLogs' | translate }} <i class="rot fas fa-sync-alt" (click)="refreshClick()"></i></h5>
                 </div>
-                <dl class="log_dl">
+                <dl class="log_dl" style="margin-top: 20px;">
                   <dt>
                   <ul>
                     <li>
