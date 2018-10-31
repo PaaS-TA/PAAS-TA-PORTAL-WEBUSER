@@ -185,6 +185,7 @@ export class DashboardComponent implements OnInit {
       });
     }, error => {
       this.commonService.isLoading = false;
+      this.commonService.alertMessage("서버가 불안정합니다.", false);
     }, () => {
       if (this.currentOrg != '') {
         this.commonService.isLoading = false;
@@ -219,6 +220,8 @@ export class DashboardComponent implements OnInit {
       this.commonService.isLoading = false;
       return data;
     }, error => {
+      this.commonService.isLoading = false;
+      this.commonService.alertMessage("서버가 불안정합니다.", false);
     }, () => {
       if (this.currentSpace != null) {
         this.commonService.isLoading = false;
@@ -325,6 +328,8 @@ export class DashboardComponent implements OnInit {
 
       return data;
     }, error => {
+      this.commonService.isLoading = false;
+      this.commonService.alertMessage("서버가 불안정합니다.", false);
     }, () => {
     });
   }
@@ -351,6 +356,7 @@ export class DashboardComponent implements OnInit {
       this.thumnail();
     }, () => {
       this.commonService.isLoading = false;
+      this.commonService.alertMessage("서버가 불안정합니다.", false);
     });
   }
 
@@ -390,6 +396,8 @@ export class DashboardComponent implements OnInit {
       });
       return data;
     }, error => {
+      this.commonService.isLoading = false;
+      this.commonService.alertMessage("서버가 불안정합니다.", false);
     }, () => {
       this.commonService.isLoading = false;
     });
@@ -429,6 +437,8 @@ export class DashboardComponent implements OnInit {
       });
       return data;
     }, error => {
+      this.commonService.isLoading = false;
+      this.commonService.alertMessage("서버가 불안정합니다.", false);
     }, () => {
       // this.log.debug('END');
       // this.log.debug(this.appEntities);
