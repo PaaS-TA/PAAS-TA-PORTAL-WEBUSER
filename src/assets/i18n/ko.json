@@ -337,7 +337,7 @@
       "createService": "서비스 생성",
       "serviceName": "서비스 이름",
       "apps": "앱",
-      "selectServiceUsagespecification": "서비스 이용사양 선택",
+      "selectServiceUsageSpecification": "서비스 이용사양 선택",
       "whetherTheAppIsConnected": "앱 연결 여부",
       "serviceCreationParameters": "서비스 생성 파라미터",
       "appBindParameters": "앱 바인드 파라미터",
