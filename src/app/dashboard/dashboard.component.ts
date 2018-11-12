@@ -353,6 +353,7 @@ export class DashboardComponent implements OnInit {
       this.servicesEntities.forEach(service => {
         service['binding'] = false;
       })
+      console.log(this.servicesEntities);
       this.thumnail();
     }, () => {
       this.commonService.isLoading = false;
@@ -362,14 +363,15 @@ export class DashboardComponent implements OnInit {
 
   thumnail(): void {
     let catalog = this.catalogService;
-
     this.dashboardService.getServicePacks().subscribe(data => {
+
       $.each(this.servicesEntities, function (skey, servicesEntitie) {
         let cnt = 0;
         $.each(data['list'], function (dkey, servicepack) {
           if (servicesEntitie['service_plan'] != null) {
             if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
               servicesEntitie['dashboardUseYn'] = servicepack['dashboardUseYn'];
+              servicesEntitie['appBindYn'] = servicepack['appBindYn'];
               try{
               var pathHeader = servicepack['thumbImgPath'].lastIndexOf("/");
               var pathEnd = servicepack['thumbImgPath'].length;
