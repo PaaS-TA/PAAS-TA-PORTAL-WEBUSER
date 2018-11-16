@@ -5,14 +5,14 @@
       <div class="space_title">Dashboard</div>
       <div class="space_select_dv">
         <ul>
-          <li>
-            <div>
-              <select readonly="readonly">
-                <!--<option value="" name="area">{{'dashboard.region.usa' | translate}}</option>-->
-                <option value="" selected="selected" name="area">{{'dashboard.region.korea' | translate}}</option>
-              </select>
-            </div>
-          </li>
+          <!--<li>-->
+            <!--<div>-->
+              <!--<select readonly="readonly">-->
+                <!--&lt;!&ndash;<option value="" name="area">{{'dashboard.region.usa' | translate}}</option>&ndash;&gt;-->
+                <!--<option value="" selected="selected" name="area">{{'dashboard.region.korea' | translate}}</option>-->
+              <!--</select>-->
+            <!--</div>-->
+          <!--</li>-->
           <li>
             <div>
               <select (change)="getOrg($event.target.value,'select')" [(ngModel)]="currentOrg">

@@ -71,55 +71,54 @@
               </colgroup>
               <thead>
               <tr>
-                <td><p>{{ 'catalog.appDevelopment.region' | translate }}</p>
-                </td>
+                <!--<td><p>{{ 'catalog.appDevelopment.region' | translate }}</p>-->
+                <!--</td>-->
                 <td><p>{{ 'catalog.appDevelopment.organization' | translate }}</p>
                 </td>
                 <td><p>{{ 'catalog.appDevelopment.space' | translate }}</p>
+                </td>
+                <td><p>{{ 'catalog.appDevelopment.memory' | translate }}</p>
                 </td>
               </tr>
               </thead>
               <tbody>
               <tr>
-                <td>
-                  <select>
-                    <option >{{ 'catalog.region.korea' | translate }}
-                    </option>
+                <!--<td>-->
+                  <!--<select>-->
+                    <!--<option >{{ 'catalog.region.korea' | translate }}-->
+                    <!--</option>-->
                     <!--<option >{{ 'catalog.region.usa' | translate }}-->
                     <!--</option>-->
-                  </select>
-                </td>
+                  <!--</select>-->
+                <!--</td>-->
                 <td>
                   <select [(ngModel)]="org" (ngModelChange)="orgSelect()">
                     <option *ngFor="let org of orgs"  [ngValue]="org">{{org.name}}
                     </option>
                   </select>
                 </td>
-                <th>
+                <td>
                   <select [(ngModel)]="space" (ngModelChange)="spaceSelect()">
                     <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}
                     </option>
                   </select>
-
-                </th>
-              </tr>
-              <tr style="height: 10px">
-              <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSpace' | translate }}</p></div>
-                <div *ngIf="spaces.length > 1 && space.name === translateEntities.nav.space_name"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSelectSpace' | translate }}</p></div></th>
-              </tr>
-              <tr>
-                <td><p>{{ 'catalog.appDevelopment.memory' | translate }}</p>
                 </td>
-                <td><p>{{ 'catalog.appDevelopment.disk' | translate }}</p>
-                </td>
-              </tr>
-              <tr>
                 <td>
                   <select [(ngModel)]="memory">
                     <option *ngFor="let sltmemoy of memoryoption" [ngValue]="sltmemoy.value2">{{sltmemoy.value2}}
                     </option>
                   </select>
                 </td>
+              </tr>
+              <tr style="height: 10px">
+              <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSpace' | translate }}</p></div>
+                <div *ngIf="spaces.length > 1 && space.name === translateEntities.nav.space_name"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSelectSpace' | translate }}</p></div></th>
+              </tr>
+              <tr>
+                <td><p>{{ 'catalog.appDevelopment.disk' | translate }}</p>
+                </td>
+              </tr>
+              <tr>
                 <td>
                   <select [(ngModel)]="disk">
                     <option *ngFor="let sltdisk of diskoption" [ngValue]="sltdisk.value2">{{sltdisk.value2}}
