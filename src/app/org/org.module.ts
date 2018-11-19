@@ -7,6 +7,7 @@ import { OrgMainService } from './org-main/org-main.service';
 import { OrgProduceService } from './org-produce/org-produce.service';
 import { SharedModule } from '../shared/shared.module';
 import {RouterModule} from "@angular/router";
+import { OrgTempComponent } from './org-temp/org-temp.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import {RouterModule} from "@angular/router";
     SharedModule,
     RouterModule
   ],
-  declarations: [OrgMainComponent, OrgProduceComponent],
+  declarations: [OrgMainComponent, OrgProduceComponent, OrgTempComponent],
+  entryComponents: [OrgTempComponent],
   providers: [OrgMainService, OrgProduceService],
   exports: [SharedModule]
 })
