@@ -91,6 +91,10 @@ export class OrgMainComponent implements OnInit {
       });
       this.showIndexArray = showArry;
     }
+    if(this.showIndexArray.length > 0) {
+      $(".wrap > [id^='layerpop']").remove();
+    }
+
     this.getOrgFlag();
     this.getDomains();
     this.getQuotaDefinitions();
@@ -137,10 +141,15 @@ export class OrgMainComponent implements OnInit {
       if (this.orgsEntities) {
         this.sltEntity = this.orgsEntities[0];
       }
-      // setTimeout(() => this.buttonEvent(), 100);
-      for(let i = 2; i <= this.sltPage ; i++){
-        this.addOrgList(i,'init');
+
+      if(this.sltPage >= 2) {
+        for(let i = 2; i <= this.sltPage ; i++){
+          this.addOrgList(i,'init');
+        }
+      } else {
+        setTimeout(() => this.buttonEvent(), 100);
       }
+
       if(this.sltPage ===1){
         this.common.isLoading = false;
       }

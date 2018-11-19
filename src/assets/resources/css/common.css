@@ -738,7 +738,7 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 
 .organization_table2 span {text-overflow:ellipsis; white-space: nowrap;}
 .account_modal_a{margin-bottom:30px; text-decoration: underline;}
-.line_tables tbody tr.cur{border: 1px solid #00aacc; }
+.line_tables tbody tr.cur{border: 2px solid #00aacc; }
 
 .organization_dot{margin-left:5px; color:#2e6e80; position: absolute; top:40px; right:0.9%; display:none; cursor: pointer; z-index:5;}
 .organization_dot.on{display:block;} /* 도트 */
