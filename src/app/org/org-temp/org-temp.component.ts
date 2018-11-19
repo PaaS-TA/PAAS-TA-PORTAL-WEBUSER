@@ -22,7 +22,6 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
   @Input() orgsDetailIndex: number;
   @Input() inviteOrgList: Observable<any[]>;
   @Input() quotaDefinitionsEntities: Observable<any[]>;
-  @Output() initExe = new EventEmitter();
 
   public sltEntity: any;
   public sltIndex: number;
@@ -82,7 +81,7 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  getUserSpaceRoles(item: any,spaceid: string, spacename : string) {
+  getUserSpaceRoles(item: any, spaceid: string, spacename : string) {
     this.common.isLoading=true;
     this.sltEntity = item;
     this.sltSpaceName = spacename;
