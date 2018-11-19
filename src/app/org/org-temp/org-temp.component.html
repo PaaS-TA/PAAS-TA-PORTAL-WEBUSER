@@ -184,13 +184,13 @@
             <label for="quota_radio_{{orgsDetailIndex}}_{{j}}"></label>
           </td>
           <td>{{quotaDefinition.entity.name}}</td>
-          <td>{{quotaDefinition.entity.memory_limit}}</td>
+          <td>{{instanceMemoryLimit(quotaDefinition.entity.memory_limit)}}</td>
           <td>{{instanceMemoryLimit(quotaDefinition.entity.instance_memory_limit)}}</td>
-          <td>{{quotaDefinition.entity.total_routes}}</td>
-          <td>{{quotaDefinition.entity.total_services}}</td>
+          <td>{{applicationInstanceLimit(quotaDefinition.entity.total_routes)}}</td>
+          <td>{{applicationInstanceLimit(quotaDefinition.entity.total_services)}}</td>
           <td>{{priceKorean(quotaDefinition.entity.non_basic_services_allowed)}}</td>
           <td>{{applicationInstanceLimit(quotaDefinition.entity.app_instance_limit)}}</td>
-          <td>{{quotaDefinition.entity.total_reserved_route_ports}}</td>
+          <td>{{applicationInstanceLimit(quotaDefinition.entity.total_reserved_route_ports)}}</td>
         </tr>
       </ng-container>
       </tbody>
