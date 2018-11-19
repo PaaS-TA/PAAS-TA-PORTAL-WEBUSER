@@ -71,8 +71,8 @@
               </colgroup>
               <thead>
               <tr>
-                <td><p>{{ 'catalog.appDevelopment.region' | translate }}</p>
-                </td>
+                <!--<td><p>{{ 'catalog.appDevelopment.region' | translate }}</p>-->
+                <!--</td>-->
                 <td><p>{{ 'catalog.appDevelopment.organization' | translate }}</p>
                 </td>
                 <td><p>{{ 'catalog.appDevelopment.space' | translate }}</p>
@@ -81,27 +81,26 @@
               </thead>
               <tbody>
               <tr>
-                <td>
-                  <select>
-                    <option >{{ 'catalog.region.korea' | translate }}
-                    </option>
+                <!--<td>-->
+                  <!--<select>-->
+                    <!--<option >{{ 'catalog.region.korea' | translate }}-->
+                    <!--</option>-->
                     <!--<option >{{ 'catalog.region.usa' | translate }}-->
                     <!--</option>-->
-                  </select>
-                </td>
+                  <!--</select>-->
+                <!--</td>-->
                 <td>
                   <select [(ngModel)]="org" (ngModelChange)="orgSelect()">
                     <option *ngFor="let org of orgs"  [ngValue]="org">{{org.name}}
                     </option>
                   </select>
                 </td>
-                <th>
+                <td>
                   <select [(ngModel)]="space" (ngModelChange)="spaceSelect()">
                     <option *ngFor="let space of spaces" [ngValue]="space">{{space.name}}
                     </option>
                   </select>
-
-                </th>
+                </td>
               </tr>
               <tr style="height: 10px">
               <th colspan="3"><div *ngIf="spaces.length < 2"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i>{{ 'catalog.contants.notSpace' | translate }}</p></div>
