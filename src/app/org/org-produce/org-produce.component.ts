@@ -172,11 +172,11 @@ export class OrgProduceComponent implements OnInit {
       return '무제한';
     else {
       if (instance_memory_limit >= 1024) {
-        return  Math.round(instance_memory_limit/1024) + 'GB';
+        return  Math.round(instance_memory_limit/1024) + 'G';
       }
       else
       {
-        return instance_memory_limit + 'MB';
+        return instance_memory_limit + 'M';
       }
     }
   }
