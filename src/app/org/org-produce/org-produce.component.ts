@@ -167,6 +167,20 @@ export class OrgProduceComponent implements OnInit {
     $('#orgname').trigger('focus');
   }
 
+  memoryQuota(value){
+    if(value == -1)
+      return '무제한';
+    else {
+      if (instance_memory_limit >= 1024) {
+        return  Math.round(instance_memory_limit/1024) + 'GB';
+      }
+      else
+      {
+        return instance_memory_limit + 'MB';
+      }
+    }
+  }
+
   limitvalue(value) : any{
     return value === -1 ? '무제한' : value;
   }

@@ -74,19 +74,19 @@
                     <td>
                       {{quota.name}}
                     </td>
-                    <td>{{limitvalue(quota.memory_limit)}}
+                    <td>{{memoryQuota(quota.memory_limit)}}
                     </td>
-                    <td>{{limitvalue(quota.instance_memory_limit)}}
+                    <td>{{memoryQuota(quota.instance_memory_limit)}}
                     </td>
-                    <td>{{quota.total_routes}}
+                    <td>{{limitvalue(quota.total_routes)}}
                     </td>
-                    <td>{{quota.total_services}}
+                    <td>{{limitvalue(quota.total_services)}}
                     </td>
                     <td>{{quotaFree(quota.non_basic_services_allowed)}}
                     </td>
                     <td>{{limitvalue(quota.app_instance_limit)}}
                     </td>
-                    <td>{{quota.total_reserved_route_ports}}
+                    <td>{{limitvalue(quota.total_reserved_route_ports)}}
                     </td>
                   </tr>
                   </ng-container>
