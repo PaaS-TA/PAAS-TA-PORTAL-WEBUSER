@@ -172,8 +172,15 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
   instanceMemoryLimit(instance_memory_limit) {
     if (instance_memory_limit === -1)
       return '무제한';
-    else
-      return instance_memory_limit;
+    else {
+      if (instance_memory_limit >= 1024) {
+        return  Math.round(instance_memory_limit/1024) + 'GB';
+      }
+  else
+    {
+      return instance_memory_limit + 'MB';
+    }
+  }
   }
 
   priceKorean(price : boolean): String {
