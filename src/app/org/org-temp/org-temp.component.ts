@@ -70,6 +70,10 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
+    for (var i = 0; $("[id^='domain_'] tbody").length > i; i++) {
+      $("[id^='domain_']:eq(" + i + ") caption span").text($("[id^='domain_']:eq(" + i + ") tbody tr").length);
+    }
+
     $("th .fa-edit,.table_edit .fa-edit").on("click", function () {
       $("body > div").addClass('account_modify');
       $(this).toggleClass("on");
