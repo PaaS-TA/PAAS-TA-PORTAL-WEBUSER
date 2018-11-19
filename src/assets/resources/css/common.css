@@ -847,10 +847,10 @@ nav.nav_mini .nav_1d > li:hover > a .arrow{position:absolute;right:0px;}
 .modal-body .modal_t2 input{width: 100%;}
 .modal-body .modal_t2 tr{border:none;}
 
-#layerpop4 .modal-dialog{width: 800px;}
-#layerpop4 .modal-body{font-size: 14px;}
-#layerpop4 input{background:#fcfcfc; color:#808487; width: 100%; font-weight: 400;} /* border:1px solid #ced4d9; */
-#layerpop4 .red{padding-bottom:40px;}
+[id^='layerpop4_'] .modal-dialog{width: 800px;}
+[id^='layerpop4_'] .modal-body{font-size: 14px;}
+[id^='layerpop4_'] input{background:#fcfcfc; color:#808487; width: 100%; font-weight: 400;} /* border:1px solid #ced4d9; */
+[id^='layerpop4_'] .red{padding-bottom:40px;}
 
 #layerpop_ReInvite .modal-dialog{width: 800px;}
 #layerpop_ReInvite .modal-body{font-size: 14px;}
