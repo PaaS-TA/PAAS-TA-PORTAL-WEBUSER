@@ -107,7 +107,6 @@ export class OrgService {
         if (changedName === wantedNewName) {
           org.name = changedName;
         }
-        console.log(data);
       });
   }
 

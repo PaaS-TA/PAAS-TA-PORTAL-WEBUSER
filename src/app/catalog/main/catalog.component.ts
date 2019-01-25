@@ -34,12 +34,10 @@ export class CatalogComponent implements OnInit {
     let name = this.catalogService.classname;
     let check = this.catalogService.check;
     let service = this.catalogService;
-    console.log(check);
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
         .done(function (script, textStatus) {
-          //console.log( textStatus );
           $('#nav_first').attr('class','');
           $('#nav_second').attr('class','');
           $('#nav_third ').attr('class','');
@@ -84,7 +82,6 @@ export class CatalogComponent implements OnInit {
 
   Search()  {
     this.searchKeyword = $("#catalog-search").val();
-    console.log(this.searchKeyword);
     this.SearchStarterPack();
     this.SearchBuildPack();
     this.SearchServicePack();
@@ -216,7 +213,6 @@ export class CatalogComponent implements OnInit {
         });
       }catch (e) {
         buildpack.thumbImgPath = 'assets/resources/images/catalog/catalog_3.png';
-        console.log("캐치문 실행");
       }
     });
     this.catalogService.viewbuildpacks = this.catalogService.buildpacks;

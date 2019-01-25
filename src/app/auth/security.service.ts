@@ -46,6 +46,11 @@ export class SecurityService {
         '&client_id=' + appConfig['clientId'] +
         '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
         '&scope=' + appConfig['scope'];
+      this.log.debug(appConfig['authUrl'] +
+        '?response_type=' + appConfig['code'] +
+        '&client_id=' + appConfig['clientId'] +
+        '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
+        '&scope=' + appConfig['scope']);
     });
 
   }
@@ -68,6 +73,7 @@ export class SecurityService {
       '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
       '&grant_type=authorization_code' +
       '&code=' + appConfig['code'];
+
 
     this.http.post(accessUrl, null, {
       headers: headers

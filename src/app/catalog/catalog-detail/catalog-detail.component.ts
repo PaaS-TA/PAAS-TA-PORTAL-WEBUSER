@@ -190,7 +190,6 @@ export class CatalogDetailComponent implements OnInit {
           planlist.plans = list['resources'];
           planlist.plans.forEach(list => {
             if(!list.entity){
-            console.log(list);
             //list.bullet = this.serviceBulletSetting(list.entity.extra);
             //list.subbullet = this.serviceSubBulletSetting(list.entity.extra);
             list.amount = this.serviceAmountSetting(list.entity.extra);
@@ -445,7 +444,6 @@ export class CatalogDetailComponent implements OnInit {
     if(value.costs){
       amount = value.costs[0]['amount'].usd;
     }
-    console.log(value);
     return amount + '/' + value.costs[0]['unit'];
   }
 

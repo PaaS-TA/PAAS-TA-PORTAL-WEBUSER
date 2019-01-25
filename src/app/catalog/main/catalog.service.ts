@@ -128,7 +128,6 @@ export class CatalogService {
   }
 
   getCurrentCatalogNumber(){
-    console.log(this.common.getCurrentCatalogNumber());
     return this.common.getCurrentCatalogNumber();
   }
 

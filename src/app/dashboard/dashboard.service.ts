@@ -25,7 +25,6 @@ export class DashboardService {
   // @RequestMapping(value = {Constants.V2_URL + "/apps/{guid}/rename"}, method = RequestMethod.PUT)
   renameApp(params: any) {
     return this.commonService.doPut('/portalapi/v2/apps/' + params.guid + '/rename', params, this.commonService.getToken()).map((res: Response) => {
-      console.log(res);
       return res;
     }).do(console.log);
   }
@@ -47,7 +46,6 @@ export class DashboardService {
   // @RequestMapping(value = {Constants.V2_URL + "/service/{guid}/rename"}, method = RequestMethod.PUT)
   renameInstance(params: any) {
     return this.commonService.doPut('/portalapi/v2/service/' + params.guid + '/rename', params, this.commonService.getToken()).map((res: Response) => {
-      console.log(res);
       return res;
     }).do(console.log);
   }

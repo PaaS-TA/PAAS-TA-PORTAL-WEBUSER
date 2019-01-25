@@ -60,7 +60,6 @@ export class Org2ProduceComponent implements OnInit {
   getOrgNameList() {
     let page = 1;
     this.orgService.getOrgNameList(OrgURLConstant.URLOrgListUsingToken + '-admin/' + page++).subscribe(data => {
-      console.log(data);
       this.orgnamelist = new Array<any>();
       data['resources'].forEach(a => {
         this.orgnamelist.push(a.entity.name);
@@ -84,7 +83,6 @@ export class Org2ProduceComponent implements OnInit {
         a.entity.guid =  a.metadata.guid;
         this.orgquotalist.push(a.entity);
       });
-      console.log(this.orgquotalist);
       this.aquota = this.orgquotalist[0];
       this.orgService.isLoding(false);
     }, error => {

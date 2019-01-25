@@ -165,7 +165,6 @@ export class AppMainComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("ngOnInit in~");
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
@@ -387,7 +386,6 @@ export class AppMainComponent implements OnInit {
 
   getOrgSummary(guid : string){
     this.appMainService.getOrgSummary(guid).subscribe(data => {
-      console.log(data);
       this.appSummaryMemoryMax = data.quota.memoryLimit/1024;
       if(data.quota.applicationInstanceLimit === -1){
         this.appSummaryInstanceMax = 7;
@@ -495,11 +493,9 @@ export class AppMainComponent implements OnInit {
           var pathHeader = buildpack.thumbImgPath.lastIndexOf("/");
           var pathEnd = buildpack.thumbImgPath.length;
           var fileName = buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
-          console.log(fileName);
           appMainservice.getImg(fileName).subscribe(data => {
             let reader = new FileReader();
             reader.addEventListener("load", () => {
-              console.log(reader);
                imgPath = reader.result;
               $("#col_in1").css({
                 "background": "url(" + imgPath + ") 15px top no-repeat",
@@ -1359,7 +1355,6 @@ export class AppMainComponent implements OnInit {
     $.each(this.servicepacksEntitiesRe, function (key, dataobj) {
       if (dataobj.guid == val) {
         var str = dataobj.appBindParameter.replace("}", "").replace("{", "");
-        console.log(str);
         var split = str.split(",");
 
         for (var i = 0; i < split.length; i++) {

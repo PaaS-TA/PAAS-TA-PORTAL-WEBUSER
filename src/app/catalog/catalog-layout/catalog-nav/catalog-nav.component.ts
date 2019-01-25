@@ -95,7 +95,6 @@ export class CatalogNavComponent implements OnInit {
         $("#catlog_nav"+min).css('margin-bottom', '10px');
         $("#catlog_nav"+min).css('cursor', 'cursor');
         $("#catlog_nav"+min).css('font-size', '16px');
-        console.log("실행 : " + number);
       }else {
         $("#catlog_nav"+min).css('line-height', '');
         $("#catlog_nav"+min).css('color', '');

@@ -154,12 +154,10 @@ export class UsermgmtComponent implements OnInit {
     };
 
     this.common.isLoading = true;
-    console.log(params);
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
       if(data === 1){
         this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
         this.common.isLoading = false;
-        console.log(data);
         return this.userInfo();
       } else{
         this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail + "<br><br>" + data.msg, false);
@@ -272,7 +270,6 @@ export class UsermgmtComponent implements OnInit {
     };
     this.common.isLoading = true;
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
-      console.log(data);
       if (data.result&& this.isPassword && this.isRePassword) {
         this.common.saveToken(data.token['token_type'], data.token['access_token'], data.token['refresh_token'], data.token['expires_in'], data.token['scope'], 'OAUTH');
         this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
@@ -330,7 +327,6 @@ export class UsermgmtComponent implements OnInit {
     let value = this.address;
 
     if (this.address.length < 256) {
-      console.log(this.address.length);
       this.isAddress = true;
       return true;
     } else {
@@ -342,14 +338,12 @@ export class UsermgmtComponent implements OnInit {
   orgInit(){
     this.userMgmtService.getOrgList().subscribe(data => {
       this.orgs = data.resources;
-      console.log(this.orgs);
     })
   }
 
   popclickOrg(guid: string, name: string) {
     this.selectedOrgGuid = guid;
     this.selectedOrgName = name;
-    console.log("::GUID::" + guid + "::NAME" + name);
   }
 
   cancelOrg(orgId: string) {
@@ -429,8 +423,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('ngOnInit fired');
-
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common.js")

@@ -38,7 +38,6 @@ export class CommonService {
 
   extractData(res: Response) {
     let body = res.json();
-    console.log(body);
     return body || {};
   }
 

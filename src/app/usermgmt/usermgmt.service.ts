@@ -10,8 +10,6 @@ export class UsermgmtService {
   constructor(
     private http: HttpClient, private common: CommonService, private logger: NGXLogger,
     private orgService: OrgService, private log: NGXLogger, private sec: SecurityService) {
-    console.log(this.common.getToken());
-    console.log(this.common.getUserid());
   }
 
   userinfo(username: string) {
@@ -23,7 +21,6 @@ export class UsermgmtService {
   }
 
   updateUserPassword(userId:string ,param:any){
-    console.log('TOKEN ::: ' + this.common.getToken());
     return this.common.doPut('/portalapi/v2/users/' +encodeURI(userId) + '/password/update', param, this.common.getToken()).map((res: any) => {return res;});
   }
 
