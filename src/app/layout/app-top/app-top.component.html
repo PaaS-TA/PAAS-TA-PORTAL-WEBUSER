@@ -97,7 +97,18 @@
         </div>
       </div>
     </li>
-    <li *ngIf="!isLogin" style="width: 75px"><a [routerLink]="['/login']">{{'common.top.main.login' | translate}}</a></li>
+
+    <!--레기온 추가 -->
+    <li *ngIf="!isLogin && isRegion" style="padding-right: 100px;">
+      <div id="globes" class="btn-group">
+        <button href="#" class="dropdown-toggle empty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100px;font-size: 18px;"> {{'common.top.main.login' | translate}}</button>
+        <ul class="dropdown-menu">
+          <li class="cur" *ngFor="let region of regions" ><a href="javascript:void(0);" (click)="changeRegionClick(region.index);">{{region.name}}</a></li>
+        </ul>
+      </div>
+    </li>
+    <!--레기온 추가 끝 -->
+    <li *ngIf="!isLogin && !isRegion" style="width: 75px"><a [routerLink]="['/login']">{{'common.top.main.login' | translate}}</a></li>
     <li>
       <div id="globes" class="btn-group">
         <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>

@@ -5,6 +5,8 @@ import {SecurityService} from "../../auth/security.service";
 import {NGXLogger} from "ngx-logger";
 import {Observable} from "rxjs/Observable";
 
+declare  var require : any;
+let appConfig = require('assets/resources/env/config.json');
 @Injectable()
 export class LoginService {
 
@@ -29,7 +31,7 @@ export class LoginService {
 
   oAuthLogin() {
     //this.log.debug('oAuth Login');
-    this.sec.doAuthorization();
+    this.sec.doAuthorization(appConfig["authUrl"]);
   }
 
 

@@ -322,6 +322,7 @@ header.account{height:76px;}
 .right_nav > li .dropdown-toggle:before{font-family:'Font Awesome 5 Free'; content:"\f007";font-size:18px;background:transparent; font-weight: 900;}
 .right_nav > li .dropdown-toggle.bell:before{content:"\f0f3";}
 .right_nav > li .dropdown-toggle.globe:before{content:"\f0ac";}
+.right_nav > li .dropdown-toggle.empty:before{content:"";}
 .right_nav > li .dropdown-toggle.bell .dropdown-menu{top:65px;}
 .right_nav > li .dropdown-menu{min-width:80px; right:0px; top:74px; left:auto; border-radius: 0; background: #2d3c40; font-size: 16px; /*border: 1px solid #263336;*/}
 .right_nav > li .dropdown-menu > div{position: relative; min-width:253px; line-height: 57px;}

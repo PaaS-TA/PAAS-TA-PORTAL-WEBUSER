@@ -29,7 +29,7 @@ export class SecurityService {
   /*
    * 로그인 시도 - > OAUTH 로그인용
    */
-  doAuthorization() {
+  doAuthorization(authUrl:string) {
     this.log.debug('doAuthorization()');
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
@@ -41,7 +41,7 @@ export class SecurityService {
     };
 
     this.router.navigate(['/login']).then(result => {
-      window.location.href = appConfig['authUrl'] +
+      window.location.href = authUrl +
         '?response_type=' + appConfig['code'] +
         '&client_id=' + appConfig['clientId'] +
         '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +

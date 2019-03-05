@@ -5,9 +5,13 @@ import {CommonService} from "../../common/common.service";
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
 import {CatalogService} from "../../catalog/main/catalog.service";
 import {isNullOrUndefined} from "util";
+import {Organization} from "../../model/organization";
+
 
 declare var $: any;
-declare var jQuery: any;
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
 
 @Component({
   selector: 'app-app-top',
@@ -18,7 +22,7 @@ export class AppTopComponent implements OnInit {
   @Input('cursorId') cursorId: string;
   @Input('app-view') isAppView: Boolean;
   @Input('catalog-view') isCatalogView: Boolean;
-
+  isRegion: boolean = false;
   location: string;
   orgName: string;
   orgGuid: string;
@@ -26,18 +30,19 @@ export class AppTopComponent implements OnInit {
   spaceGuid: string;
   appName: string;
   appGuid: string;
-  mySign : string;
-  orgMng : string;
-  viewusage : string;
-  translateEntities : any;
-  index : boolean;
+  mySign: string;
+  orgMng: string;
+  viewusage: string;
+  translateEntities: any;
+  regions: string[];
+  index: boolean;
   allMenuCursorIds: string[] = [
     'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc',
     'cur_usermgmt', 'cur_org', 'cur_org2', 'cur_quantity', 'cur_login',
   ];
 
   constructor(private translate: TranslateService, private common: CommonService,
-              private router: Router, private logger: NGXLogger, private catalogservice : CatalogService) {
+              private router: Router, private logger: NGXLogger, private catalogservice: CatalogService) {
     if (this.isAppView == null)
       this.isAppView = false;
     if (this.isCatalogView == null)
@@ -45,6 +50,13 @@ export class AppTopComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.regions = appConfig['region'];
+    if (this.regions.length > 0) {
+      this.isRegion = true;
+    }
+
+
     this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
     $('#' + this.cursorId).addClass('cur');
     const url = this.router['url'].split("/")[1];
@@ -80,15 +92,20 @@ export class AppTopComponent implements OnInit {
     this.common.useLang = lang;
 
     $("li[id^='lang_']").removeClass("cur");
-    $("#lang_"+lang+"").addClass("cur");
+    $("#lang_" + lang + "").addClass("cur");
 
     $.cookie("useLang", this.common.useLang);
+  }
+
+
+  changeRegionClick(region: string) {
+    console.log(region);
   }
 
   get isShortHeader() {
     let short: boolean;
 
-    switch(this.cursorId) {
+    switch (this.cursorId) {
 
       case 'cur_dashboard':
       case 'cur_login' :
@@ -102,9 +119,9 @@ export class AppTopComponent implements OnInit {
     return short;
   }
 
-  get aLink(){
+  get aLink() {
     let result: boolean;
-    switch (this.cursorId){
+    switch (this.cursorId) {
       case 'cur_login' :
         result = true;
         break;
@@ -115,8 +132,8 @@ export class AppTopComponent implements OnInit {
     return result
   }
 
-  catalogInit(){
-    this.catalogservice.viewPacks(true,true,true);
+  catalogInit() {
+    this.catalogservice.viewPacks(true, true, true);
   }
 
   get isDashboardApp() {
@@ -127,23 +144,21 @@ export class AppTopComponent implements OnInit {
     return this.cursorId === 'cur_catalog';
   }
 
-  get isManagement(){
-    return (this.cursorId === 'cur_usermgmt') || (this.cursorId ==='cur_org2')|| (this.cursorId ==='cur_quantity')
+  get isManagement() {
+    return (this.cursorId === 'cur_usermgmt') || (this.cursorId === 'cur_org2') || (this.cursorId === 'cur_quantity')
   }
 
-  get menagementName(){
-    if(this.cursorId === 'cur_usermgmt'){
+  get menagementName() {
+    if (this.cursorId === 'cur_usermgmt') {
       return this.mySign;
-    }
-    else if(this.cursorId === 'cur_org2'){
+    } else if (this.cursorId === 'cur_org2') {
       return this.orgMng;
-    }
-    else if(this.cursorId === 'cur_quantity'){
+    } else if (this.cursorId === 'cur_quantity') {
       return this.viewusage;
     }
   }
 
-  get catalogName(){
+  get catalogName() {
     return this.catalogservice.navView;
   }
 
@@ -151,11 +166,11 @@ export class AppTopComponent implements OnInit {
     return !isNullOrUndefined(this.common.getToken());
   }
 
-  get isMonitoring(){
+  get isMonitoring() {
     return this.common.getMonitoring();
   }
 
-  get isIcon(){
+  get isIcon() {
     return (this.cursorId === 'cur_login' || this.cursorId === 'cur_dashboard');
   }
 
