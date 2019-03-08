@@ -426,7 +426,7 @@ export class CommonService {
    */
   doTokenRefreshAPI() {
     const headers = new HttpHeaders()
-      .append('Content-Type', 'application/x-www-form-urlencoded');
+      // .append('Content-Type', 'application/x-www-form-urlencoded');
 
     let param = {'token': sessionStorage.getItem('cf_token'), 'refresh_token': this.getRefreshToken()};
     return this.doPost('/portalapi/token/refresh', param, sessionStorage.getItem('cf_token')).retryWhen(error => {

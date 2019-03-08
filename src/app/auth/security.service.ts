@@ -6,8 +6,9 @@ import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {CommonService} from '../common/common.service';
 
-declare  var require : any;
+declare var require: any;
 let appConfig = require('assets/resources/env/config.json');
+
 @Injectable()
 export class SecurityService {
   url: string;
@@ -22,31 +23,38 @@ export class SecurityService {
     this.log.debug('doLogout()');
     this.common.signOut();
     window.location.href = appConfig['logoutUrl'] +
-      '?redirect=' + window.location.origin + appConfig['logoutredirectUri'] + '&client_id=' + appConfig['clientId'] ;
+      '?redirect=' + window.location.origin + appConfig['logoutredirectUri'] + '&client_id=' + appConfig['clientId'];
   }
 
 
   /*
    * 로그인 시도 - > OAUTH 로그인용
    */
-  doAuthorization(authUrl:string) {
+  doAuthorization() {
     this.log.debug('doAuthorization()');
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
-    const params = {
-      // 'response_type': 'code',
-      'client_id': appConfig['clientId'],
-      'scope': appConfig['scope'],
-      'redirect_uri': window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl)
-    };
 
-    this.router.navigate(['/login']).then(result => {
-      window.location.href = authUrl +
-        '?response_type=' + appConfig['code'] +
-        '&client_id=' + appConfig['clientId'] +
-        '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
-        '&scope=' + appConfig['scope'];
-    });
+    window.location.href = appConfig['authUrl'] +
+      '?response_type=' + appConfig['code'] +
+      '&client_id=' + appConfig['clientId'] +
+      '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
+      '&scope=' + appConfig['scope'];
+
+  }
+
+
+  /*
+  * 로그인 시도 - > 다른 OAUTH 로그인용
+  */
+  doMulitRegionAuthorization(authUrl: string, redirectUri: string) {
+    this.log.debug('doMulitRegionAuthorization()');
+    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
+    window.location.href = authUrl +
+      '?response_type=' + appConfig['code'] +
+      '&client_id=' + appConfig['clientId'] +
+      '&redirect_uri=' + redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&scope=' + appConfig['scope'];
 
   }
 
@@ -189,17 +197,17 @@ export class SecurityService {
       } else {
         this.saveUserDB(userId);
       }
-      this.common.doGet('/commonapi/v2/invitations/'+userId, this.common.getToken()).subscribe(data => {
-        if(data['result'].length === 0){
+      this.common.doGet('/commonapi/v2/invitations/' + userId, this.common.getToken()).subscribe(data => {
+        if (data['result'].length === 0) {
           return true;
         }
         let invite_user = '';
         data['result'].forEach(info => {
-          if(invite_user !== ''){
+          if (invite_user !== '') {
             invite_user += ',';
           }
-          if(invite_user.indexOf(info.inviteName) === -1){
-          invite_user += info.inviteName
+          if (invite_user.indexOf(info.inviteName) === -1) {
+            invite_user += info.inviteName
           }
         });
         this.common.alertMessage(invite_user + " 님에게 조직 초대를 받았습니다. 메일 확인 바랍니다.", true);
@@ -215,8 +223,15 @@ export class SecurityService {
    * 모든 로그인 방식의 제일 마지막 - 공통
    */
   saveUserDB(userId: string) {
-    this.common.doGet('commonapi/v2/user/'+ userId + '/uaa',this.common.getToken()).subscribe(data => {
-      let params = {userId: userId, userName: '', status: '1', adminYn: 'N', imgPath: '', active : (data['active'] === 't') ? 'Y':'N'};
+    this.common.doGet('commonapi/v2/user/' + userId + '/uaa', this.common.getToken()).subscribe(data => {
+      let params = {
+        userId: userId,
+        userName: '',
+        status: '1',
+        adminYn: 'N',
+        imgPath: '',
+        active: (data['active'] === 't') ? 'Y' : 'N'
+      };
       this.common.doPost(appConfig['userinfoUrl'], params, this.common.getToken()).retryWhen(error => {
         return error.flatMap((error: any) => {
           return Observable.of(error.status).delay(1000);

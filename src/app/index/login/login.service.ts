@@ -18,7 +18,6 @@ export class LoginService {
 
   apiLogin(username: string, password: string) {
     this.common.isLoading = true;
-    //this.log.debug('api Login');
     let params = {id: username, password: password};
     return this.common.doPost('/portalapi/login', params, '').map(data => {
       //this.log.debug(data);
@@ -30,8 +29,7 @@ export class LoginService {
   }
 
   oAuthLogin() {
-    //this.log.debug('oAuth Login');
-    this.sec.doAuthorization(appConfig["authUrl"]);
+    this.sec.doAuthorization();
   }
 
 

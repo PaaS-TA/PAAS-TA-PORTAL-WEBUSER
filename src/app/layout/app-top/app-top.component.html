@@ -108,7 +108,7 @@
       </div>
     </li>
     <!--레기온 추가 끝 -->
-    <li *ngIf="!isLogin && !isRegion" style="width: 75px"><a [routerLink]="['/login']">{{'common.top.main.login' | translate}}</a></li>
+    <li *ngIf="!isLogin && !isRegion" style="width: 75px"><a href="javascript:void(0);" (click)="loginClick('ko');">{{'common.top.main.login' | translate}}</a></li>
     <li>
       <div id="globes" class="btn-group">
         <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>

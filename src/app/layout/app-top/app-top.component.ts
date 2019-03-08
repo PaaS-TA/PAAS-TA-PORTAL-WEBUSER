@@ -2,10 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import {NGXLogger} from "ngx-logger";
 import {CommonService} from "../../common/common.service";
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {CatalogService} from "../../catalog/main/catalog.service";
 import {isNullOrUndefined} from "util";
-import {Organization} from "../../model/organization";
+import {SecurityService} from "../../auth/security.service";
 
 
 declare var $: any;
@@ -42,7 +42,7 @@ export class AppTopComponent implements OnInit {
   ];
 
   constructor(private translate: TranslateService, private common: CommonService,
-              private router: Router, private logger: NGXLogger, private catalogservice: CatalogService) {
+              private router: Router, private logger: NGXLogger, private catalogservice: CatalogService, private sec: SecurityService) {
     if (this.isAppView == null)
       this.isAppView = false;
     if (this.isCatalogView == null)
@@ -97,9 +97,17 @@ export class AppTopComponent implements OnInit {
     $.cookie("useLang", this.common.useLang);
   }
 
+  loginClick() {
+    this.sec.doAuthorization();
+  }
 
-  changeRegionClick(region: string) {
-    console.log(region);
+  changeRegionClick(index: string) {
+    this.regions.forEach(region => {
+      if (index == region["index"]) {
+        console.log(region["authUrl"] + "  " +  region["redirectUri"]);
+        this.sec.doMulitRegionAuthorization(region["authUrl"], region["redirectUri"]);
+      }
+    });
   }
 
   get isShortHeader() {

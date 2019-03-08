@@ -1,6 +1,6 @@
 {
   "clientId": "portalclient",
-  "clientSecret": "portalclient",
+  "clientSecret": "clientsecret",
   "redirectUri": "/callback",
   "logoutredirectUri": "/login",
   "scope": "openid cloud_controller_service_permissions.read cloud_controller.read cloud_controller.write",
