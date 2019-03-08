@@ -16,5 +16,17 @@
   "quantity": false,
   "automaticApproval": true,
   "region": [
+    {
+      "index": 1,
+      "name": "openStack",
+      "redirectUri": "https://portal-web-user.111.111.111.xip.io/callback",
+      "uaa": "https://uaa.111.111.111.xip.io/oauth/authorize"
+    },
+    {
+      "index": 2,
+      "name": "Azure",
+      "redirectUri": "http://portal-web-user.222.222.222.222.xip.io/callback",
+      "uaa": "https://uaa.111.111.111.xip.io/oauth/authorize"
+    }
   ]
 }
