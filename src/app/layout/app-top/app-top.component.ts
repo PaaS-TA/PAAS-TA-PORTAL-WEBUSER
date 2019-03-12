@@ -104,8 +104,8 @@ export class AppTopComponent implements OnInit {
   changeRegionClick(index: string) {
     this.regions.forEach(region => {
       if (index == region["index"]) {
-        console.log(region["authUrl"] + "  " +  region["redirectUri"]);
-        this.sec.doMulitRegionAuthorization(region["authUrl"], region["redirectUri"]);
+        console.log(region["uaa"] + "  " +  region["redirectUri"]);
+        this.sec.doMulitRegionAuthorization(region["uaa"], region["redirectUri"]);
       }
     });
   }

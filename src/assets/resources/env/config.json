@@ -18,15 +18,15 @@
   "region": [
     {
       "index": 1,
-      "name": "openStack",
-      "redirectUri": "https://portal-web-user.111.111.111.xip.io/callback",
-      "uaa": "https://uaa.111.111.111.xip.io/oauth/authorize"
+      "name": "Vsphere",
+      "redirectUri": "https://portal-web-user.115.68.46.213.xip.io/callback",
+      "uaa": "https://uaa.115.68.46.184.xip.io/oauth/authorize"
     },
     {
       "index": 2,
       "name": "Azure",
-      "redirectUri": "http://portal-web-user.222.222.222.222.xip.io/callback",
-      "uaa": "https://uaa.111.111.111.xip.io/oauth/authorize"
+      "redirectUri": "https://portal-web-user.115.68.46.214.xip.io/callback",
+      "uaa": "https://uaa.115.68.46.188.xip.io/oauth/authorize"
     }
   ]
 }

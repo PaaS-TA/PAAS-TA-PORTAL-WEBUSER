@@ -32,9 +32,7 @@ export class SecurityService {
    */
   doAuthorization() {
     this.log.debug('doAuthorization()');
-
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
-
     window.location.href = appConfig['authUrl'] +
       '?response_type=' + appConfig['code'] +
       '&client_id=' + appConfig['clientId'] +
@@ -45,12 +43,12 @@ export class SecurityService {
 
 
   /*
-  * 로그인 시도 - > 다른 OAUTH 로그인용
-  */
+   * 로그인 시도 - > 다른 OAUTH 로그인용
+   */
   doMulitRegionAuthorization(authUrl: string, redirectUri: string) {
     this.log.debug('doMulitRegionAuthorization()');
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
-    window.location.href = authUrl +
+      window.location.href = authUrl +
       '?response_type=' + appConfig['code'] +
       '&client_id=' + appConfig['clientId'] +
       '&redirect_uri=' + redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
