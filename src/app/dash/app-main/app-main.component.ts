@@ -64,13 +64,14 @@ export class AppMainComponent implements OnInit {
   public appSummaryBuildpack: string;
   public appSummaryBuildPackName: string;
   public appSummaryInstance: number;
-  public appSummaryInstanceMax: number;
+  public appSummaryInstanceMax: number = -1;
   public appSummaryInstancePer: number;
   public appSummaryMemoryMax: number;
   public appSummaryMemory: number;
+  public appMemorySwitch: boolean = true;
   public appSummaryDiskMax: number;
   public appSummaryDisk: number;
-
+  public appDiskSwitch: boolean = true;
   public appStatsCpuPer: number;
   public appStatsMemoryPer: number;
   public appStatsDiskPer: number;
@@ -144,6 +145,8 @@ export class AppMainComponent implements OnInit {
 
   alive = true;
 
+  public switch1 : boolean = false;
+  public switch2 : boolean = false;
 
   constructor(public route: ActivatedRoute, public router: Router, public translate: TranslateService, public appMainService: AppMainService, public common: CommonService) {
     this.common.isLoading = false;
@@ -344,10 +347,11 @@ export class AppMainComponent implements OnInit {
       this.appSummaryBuildPackName = data.buildpack;
 
       this.appSummaryInstance = data.instances;
+      this.switch1 = true;
+      if(this.switch1 && this.switch2){
       this.appSummaryInstancePer = Math.round((this.appSummaryInstance * 100) / this.appSummaryInstanceMax);
-
       $("#instancePer").val(this.appSummaryInstancePer);
-
+      }
       this.appSummaryMemory = data.memory;
       this.appSummaryDisk = data.disk_quota;
 
@@ -442,6 +446,11 @@ export class AppMainComponent implements OnInit {
           }
           this.appSummaryInstanceMax = 7;
         })
+        this.switch2 = true;
+        if(this.switch1 && this.switch2){
+          this.appSummaryInstancePer = Math.round((this.appSummaryInstance * 100) / this.appSummaryInstanceMax);
+          $("#instancePer").val(this.appSummaryInstancePer);
+        }
       });
     });
   }
@@ -806,30 +815,34 @@ export class AppMainComponent implements OnInit {
     if ((this.appSummaryMemoryMax * 1024) >= (Number(this.appSummaryMemory) + 128)) {
       this.appSummaryMemory = Number(this.appSummaryMemory) + 128;
       $("#mem_in").val(this.appSummaryMemory);
+    }else if ((this.appSummaryMemoryMax * 1024) <= (Number(this.appSummaryMemory) + 128)) {
+      this.appSummaryMemory = Number(this.appSummaryMemoryMax) * 1024;
+      $("#mem_in").val(this.appSummaryMemory);
     }
+    console.log(this.appSummaryMemory);
   }
 
   memDownClick() {
     if (1 <= (Number(this.appSummaryMemory) - 128)) {
       this.appSummaryMemory = Number(this.appSummaryMemory) - 128;
       $("#mem_in").val(this.appSummaryMemory);
+    }else if (1 >= (Number(this.appSummaryMemory) - 128)) {
+      this.appSummaryMemory = 1;
+      $("#mem_in").val(this.appSummaryMemory);
     }
+    console.log(this.appSummaryMemory);
   }
 
   memDirectInputClick() {
     if ($("#memS2").css("display") == "none") {
       this.appSummaryMemory = $("#mem_in").val();
-      $("#memS2").next().text("M");
+      this.appMemorySwitch = false;
       $("#memS1").hide();
       $("#memS2").show();
       $("#mem_in").focus();
     } else {
+      this.appMemorySwitch = true;
       this.appSummaryMemory = $("#mem_in").val();
-      if (this.appSummaryMemory >= 1024) {
-        $("#memS2").next().text("G");
-      } else {
-        $("#memS2").next().text("M");
-      }
       $("#memS2").hide();
       $("#memS1").show();
     }
@@ -843,6 +856,9 @@ export class AppMainComponent implements OnInit {
     if ((this.appSummaryDiskMax * 1024) >= (Number(this.appSummaryDisk) + 128)) {
       this.appSummaryDisk = Number(this.appSummaryDisk) + 128;
       $("#disk_in").val(this.appSummaryDisk);
+    } else if((this.appSummaryDiskMax * 1024) <= (Number(this.appSummaryDisk) + 128)){
+      this.appSummaryDisk = Number(this.appSummaryDiskMax * 1024);
+      $("#disk_in").val(this.appSummaryDisk);
     }
   }
 
@@ -850,23 +866,22 @@ export class AppMainComponent implements OnInit {
     if (1 <= (Number(this.appSummaryDisk) - 128)) {
       this.appSummaryDisk = Number(this.appSummaryDisk) - 128;
       $("#disk_in").val(this.appSummaryDisk);
+    }else if(1 >= (Number(this.appSummaryDisk) - 128)){
+      this.appSummaryDisk = 1;
+      $("#disk_in").val(this.appSummaryDisk);
     }
   }
 
   diskDirectInputClick() {
     if ($("#diskS2").css("display") == "none") {
       this.appSummaryDisk = $("#disk_in").val();
-      $("#diskS2").next().text("M");
+      this.appDiskSwitch = false;
       $("#diskS1").hide();
       $("#diskS2").show();
       $("#disk_in").focus();
     } else {
       this.appSummaryDisk = $("#disk_in").val();
-      if (this.appSummaryDisk >= 1024) {
-        $("#diskS2").next().text("G");
-      } else {
-        $("#diskS2").next().text("M");
-      }
+      this.appDiskSwitch = true;
       $("#diskS2").hide();
       $("#diskS1").show();
     }

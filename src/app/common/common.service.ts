@@ -261,7 +261,11 @@ export class CommonService {
     if (img_path == null) {
       img_path = '';
     }
+
     try{
+      if(isNullOrUndefined(img_path.lastIndexOf("/")) || img_path === ''){
+        return '';
+      }
       var pathHeader = img_path.lastIndexOf("/");
       var pathEnd = img_path.length;
       var fileName = img_path.substring(pathHeader + 1, pathEnd);

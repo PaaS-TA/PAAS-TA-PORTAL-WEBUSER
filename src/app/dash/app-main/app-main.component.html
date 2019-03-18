@@ -160,7 +160,7 @@
               <dd>
                 <span class="memS" id="memS1">{{ (appSummaryMemory >= 1024) ? ((appSummaryMemory%1024 == 0 || appSummaryMemory%1024 < 11) ? (appSummaryMemory/1024).toFixed(0) : (appSummaryMemory/1024).toFixed(2)) : (appSummaryMemory) }}</span>
                 <span class="memS" id="memS2" style="display:none;"><input class="instance_in" id="mem_in" type="text" style="font-size: 40px;" value="{{appSummaryMemory}}" /></span>
-                <i>{{ (appSummaryMemory >= 1024) ? 'G' : 'M' }}</i><small> / {{ 'appMain.app.maximum' | translate }} {{appSummaryMemoryMax}}G</small>
+                <i>{{ (appSummaryMemory >= 1024) && (appMemorySwitch) ? 'G' : 'M' }}</i><small> / {{ 'appMain.app.maximum' | translate }} {{appSummaryMemoryMax}}G</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/memory_ico.png" alt="" />
@@ -195,7 +195,7 @@
               <dd>
                 <span class="diskS" id="diskS1">{{ (appSummaryDisk >= 1024) ? ((appSummaryDisk%1024 == 0 || appSummaryDisk%1024 < 11) ? (appSummaryDisk/1024).toFixed(0) : (appSummaryDisk/1024).toFixed(2)) : (appSummaryDisk) }}</span>
                 <span class="diskS" id="diskS2" style="display:none;"><input class="instance_in" id="disk_in" type="text" style="font-size: 40px;" value="{{appSummaryDisk}}" /></span>
-                <i>{{ (appSummaryDisk >= 1024) ? 'G' : 'M' }}</i><small> / {{ 'appMain.app.maximum' | translate }} {{appSummaryDiskMax}}G</small>
+                <i>{{ (appSummaryDisk >= 1024) && (appDiskSwitch)? 'G' : 'M' }}</i><small> / {{ 'appMain.app.maximum' | translate }} {{appSummaryDiskMax}}G</small>
                 <div class="pull-right">
                   <div class="icon_wrap">
                     <img src="/assets/resources/images/main/disk_ico.png" alt="" />
