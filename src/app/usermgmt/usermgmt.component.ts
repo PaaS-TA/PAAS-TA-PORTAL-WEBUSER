@@ -298,7 +298,8 @@ export class UsermgmtComponent implements OnInit {
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.log(data);
       if (data.result&& this.isPassword && this.isRePassword) {
-        this.common.saveToken(data.token['token_type'], data.token['access_token'], data.token['refresh_token'], data.token['expires_in'], data.token['scope'], 'OAUTH');
+        this.common.saveToken(data.token['token_type'], data.
+          token['access_token'], data.token['refresh_token'], data.token['expires_in'], data.token['scope'], 'OAUTH');
         this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
         this.common.isLoading = false;
       } else {

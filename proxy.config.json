@@ -1,6 +1,24 @@
 {
+  "/zone_1/*": {
+    "target": "http://XXX.XX.XX.XXX:2225",
+    "logLevel": "debug",
+    "secure": false,
+    "changeOrigin": "true",
+    "pathRewrite": {
+      "^/zone_1": ""
+    }
+  },
+  "/zone_2/*": {
+    "target": "http://XXX.XX.XX.XXX:2225",
+    "logLevel": "debug",
+    "secure": false,
+    "changeOrigin": "true",
+    "pathRewrite": {
+      "^/zone_2": ""
+    }
+  },
   "/portalapi/*": {
-    "target": "http://localhost:2225/portalapi",
+    "target": "http://localhost:2225",
     "logLevel": "debug",
     "secure": false,
     "changeOrigin": "true",

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {CommonService} from "../../common/common.service";
 
 @Injectable()
@@ -16,6 +16,12 @@ export class ExternalcommonService {
   reset(param) {
     return this.commonService.doPost('/portalapi/v2/users/password/reset', param, '');
   }
+
+
+  reset_external(url, param) {
+    return this.commonService.doPost2(url + '/portalapi/v2/users/password/reset', param, '');
+  }
+
 
   updateInfo(userId: string, param) {
     return this.commonService

@@ -4,6 +4,11 @@ import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {ExternalcommonService} from "../common/externalcommon.service";
 
+declare var $: any;
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Component({
   selector: 'app-reset',
   templateUrl: './reset.component.html',
@@ -20,6 +25,7 @@ export class ResetComponent implements OnInit {
   public isUserName: boolean;
   public isPassword: boolean;
   public isRePassword: boolean;
+  public regions: string[];
 
 
   constructor(private commonService: CommonService, private externalService: ExternalcommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
@@ -99,25 +105,43 @@ export class ResetComponent implements OnInit {
 
   save() {
     this.commonService.isLoading = true;
+    this.regions = appConfig['region'];
+
     if (this.isPassword && this.isRePassword) {
       let param = {
         'userId': this.userId,
         'password': this.password
-      }
-      this.externalService.reset(param).subscribe(data => {
-        if (data['result'] == true) {
+      };
+      if(this.regions.length <= 0) {
+        this.externalService.reset(param).subscribe(data => {
+          if (data['result'] == true) {
+            this.commonService.isLoading = false;
+            this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
+            let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
+            this.externalService.updateInfo(this.userId, userInfo);
+
+          } else {
+            alert(data['msg']);
+          }
+        }, error => {
+          this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
           this.commonService.isLoading = false;
-          this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
-          let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-          this.externalService.updateInfo(this.userId, userInfo);
-          this.router.navigate(['login']);
-        } else {
-          alert(data['msg']);
-        }
-      },error =>{
-        this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
-        this.commonService.isLoading = false;
-      } );
+        });
+      }
+      //region
+      if(this.regions.length > 0){
+        this.regions.forEach(region => {
+          let result = region['zuulUrl'];
+          this.externalService.reset_external(result, param).subscribe(data => {
+            this.commonService.isLoading = false;
+            this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
+          },error =>{
+            this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
+            this.commonService.isLoading = false;
+          });
+        });
+        this.router.navigate(['/']);
+      }
     }
   }
 

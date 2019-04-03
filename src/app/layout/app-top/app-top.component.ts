@@ -50,9 +50,8 @@ export class AppTopComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.regions = appConfig['region'];
-    if (this.regions.length > 0) {
+    if (this.regions.length > 0){
       this.isRegion = true;
     }
 
@@ -104,8 +103,8 @@ export class AppTopComponent implements OnInit {
   changeRegionClick(index: string) {
     this.regions.forEach(region => {
       if (index == region["index"]) {
-        console.log(region["uaa"] + "  " +  region["redirectUri"]);
-        this.sec.doMulitRegionAuthorization(region["uaa"], region["redirectUri"]);
+        console.log(region["uaa"] + "  " +  region["redirectUrl"]);
+        this.sec.doMulitRegionAuthorization(region["uaa"], region["redirectUrl"]);
       }
     });
   }

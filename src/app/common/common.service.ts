@@ -1,17 +1,13 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
-import {reject} from 'q';
-import {logger} from 'codelyzer/util/logger';
+
 import {NGXLogger} from 'ngx-logger';
 import {Param} from "../index/login/login.component";
 import {Router} from "@angular/router";
-
-import {ResponseContentType, ResponseOptions} from "@angular/http";
-import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 import {isNullOrUndefined} from "util";
 declare  var require : any;
 let appConfig = require('assets/resources/env/config.json');
@@ -32,7 +28,7 @@ export class CommonService {
       .set('Content-Type', 'application/json')
       .set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==')
       .set('X-Broker-Api-Version', '2.4')
-      .set('X-Requested-With', 'XMLHttpRequest');
+      .set('X-Requested-With', 'XMLHttpRequest')
   }
 
 
@@ -47,7 +43,7 @@ export class CommonService {
       token = '';
     }
     let storageheader = new HttpHeaders()
-      .set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==')
+      .set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==');
     return this.http.get(this.gateway + url, {
       headers: storageheader.set('cf-Authorization', token),
       responseType: "blob"
@@ -66,14 +62,25 @@ export class CommonService {
 
 
   doPost(url: string, body: any, token: string) {
+  if (token == null) {
+    token ='';
+  }
+  return this.http.post(this.gateway + url, body, {
+    headers: this.headers.set('cf-Authorization', token)
+  });
+}
+
+  doPost2(url: string, body: any, token: string) {
     if (token == null) {
       token = '';
     }
-    return this.http.post(this.gateway + url, body, {
+    return this.http.post(url, body, {
       headers: this.headers.set('cf-Authorization', token)
+        .set('Access-Control-Allow-Methods','POST, GET, OPTIONS, DELETE') // POST, GET, OPTIONS, DELETE 요청에 대해 허용하겠다는 의미
+        .set('Access-Control-Allow-Headers', 'X-Requested-With')
+        .set('Access-Control-Allow-Origin', '*') // * 는 모든 도메인에 대해 허용하겠다는 의미
     });
   }
-
 
   doFilePost(url: string, body: any, token: string) {
     if (token == null) {
