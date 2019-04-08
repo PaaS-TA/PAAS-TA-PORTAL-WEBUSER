@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../auth/security.service";
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {isNullOrUndefined} from "util";
+import {ExternalcommonService} from "../external/common/externalcommon.service";
 
 
 declare var $: any;
@@ -56,9 +57,10 @@ export class UsermgmtComponent implements OnInit {
 
   public fileToUpload: File = null;
 
+  public regions: string[];
 
   constructor(private httpClient: HttpClient, private common: CommonService, private userMgmtService: UsermgmtService, private translate: TranslateService,
-              private router: Router, private activeRoute: ActivatedRoute, private sec: SecurityService, private log: NGXLogger) {
+              private externalService: ExternalcommonService, private router: Router, private activeRoute: ActivatedRoute, private sec: SecurityService, private log: NGXLogger) {
 
 
     this.user = new Observable<User>();
@@ -274,6 +276,27 @@ export class UsermgmtComponent implements OnInit {
   checkRePassword(event: any) {
     if (this.password_new == this.password_confirm) {
       this.isRePassword = true;
+        /*reset*/
+        let param = {
+          'userId': this.user['userId'],
+          'password': this.password_new
+        };
+
+        this.regions = appConfig['region'];
+
+        this.regions.forEach(region => {
+          let result = region['zuulUrl'];
+
+          console.log("result"+ result);
+          this.externalService.reset_external(result, param).subscribe(data => {
+            this.common.isLoading = false;
+            this.common.alertMessage('성공적으로 변경되었습니다.', true);
+          },error =>{
+            this.common.alertMessage('변경하는데 실패하였습니다.', false);
+            this.common.isLoading = false;
+          });
+        });
+
     } else {
       this.isRePassword = false;
     }
@@ -289,17 +312,18 @@ export class UsermgmtComponent implements OnInit {
   }
 
   updateUserPassword() {
+    this.common.isLoading = true;
+
     let params = {
       userGuid: this.common.getUserGuid(),
       oldPassword: this.password_now,
       password: this.password_new
     };
-    this.common.isLoading = true;
-    this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
+
+      this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.log(data);
       if (data.result&& this.isPassword && this.isRePassword) {
-        this.common.saveToken(data.token['token_type'], data.
-          token['access_token'], data.token['refresh_token'], data.token['expires_in'], data.token['scope'], 'OAUTH');
+        this.common.saveToken(data.token['token_type'], data.token['access_token'], data.token['refresh_token'], data.token['expires_in'], data.token['scope'], 'OAUTH');
         this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
         this.common.isLoading = false;
       } else {
@@ -312,6 +336,7 @@ export class UsermgmtComponent implements OnInit {
       $('#password_confirm').val('');
     });
   }
+
 
   isNumber(data) {
     if (isNaN(data)) {

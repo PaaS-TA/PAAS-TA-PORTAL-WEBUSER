@@ -17,15 +17,6 @@
       "^/zone_2": ""
     }
   },
-  "/portalapi/*": {
-    "target": "http://localhost:2225",
-    "logLevel": "debug",
-    "secure": false,
-    "changeOrigin": "true",
-    "pathRewrite": {
-      "^/portalapi": ""
-    }
-  },
   "/ws/*": {
     "target": "ws://localhost:5555",
     "logLevel": "debug",
@@ -34,6 +25,15 @@
     "ws": true,
     "pathRewrite": {
       "^/ws": ""
+    }
+  },
+  "/portalapi/*": {
+    "target": "http://localhost:2225/portalapi",
+    "logLevel": "debug",
+    "secure": false,
+    "changeOrigin": "true",
+    "pathRewrite": {
+      "^/portalapi": ""
     }
   },
   "/commonapi/*": {
