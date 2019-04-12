@@ -276,27 +276,7 @@ export class UsermgmtComponent implements OnInit {
   checkRePassword(event: any) {
     if (this.password_new == this.password_confirm) {
       this.isRePassword = true;
-        /*reset*/
-        let param = {
-          'userId': this.user['userId'],
-          'password': this.password_new
-        };
-
-        this.regions = appConfig['region'];
-
-        this.regions.forEach(region => {
-          let result = region['zuulUrl'];
-
-          console.log("result"+ result);
-          this.externalService.reset_external(result, param).subscribe(data => {
-            this.common.isLoading = false;
-            this.common.alertMessage('성공적으로 변경되었습니다.', true);
-          },error =>{
-            this.common.alertMessage('변경하는데 실패하였습니다.', false);
-            this.common.isLoading = false;
-          });
-        });
-
+      return;
     } else {
       this.isRePassword = false;
     }
@@ -313,21 +293,42 @@ export class UsermgmtComponent implements OnInit {
 
   updateUserPassword() {
     this.common.isLoading = true;
+    this.regions = appConfig['region'];
 
+      if (this.regions.length <= 0) {
+        this.defaultPasswd();
+      } else {
+        this.regions.forEach(region => {
+          let result = region['zuulUrl'];
+          console.log("result:" + result);
+          let param = {userId: this.user['userId'], password: this.password_new};
+          this.common.doPost2(result + '/portalapi/login', param, '').map(data => {
+            if (data != null) {
+              this.regionPasswd();
+            }
+          },error =>{
+            this.common.alertMessage('변경하는데 실패하였습니다.', false);
+            this.common.isLoading = false;
+          });
+        });
+      } //else
+  }
+
+
+  defaultPasswd(){
     let params = {
       userGuid: this.common.getUserGuid(),
       oldPassword: this.password_now,
       password: this.password_new
     };
-
-      this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
+    this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
       console.log(data);
-      if (data.result&& this.isPassword && this.isRePassword) {
+      if (data.result && this.isPassword && this.isRePassword) {
         this.common.saveToken(data.token['token_type'], data.token['access_token'], data.token['refresh_token'], data.token['expires_in'], data.token['scope'], 'OAUTH');
         this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
         this.common.isLoading = false;
       } else {
-        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail+ "<br><br>" + data.msg, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail + "<br><br>" + data.msg, false);
         this.common.isLoading = false;
       }
       /*reset*/
@@ -337,6 +338,21 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
+  regionPasswd() {
+    this.regions = appConfig['region'];
+    this.regions.forEach(region => {
+      let result = region['zuulUrl'];
+      let param = {userId: this.user['userId'], password: this.password_new};
+      this.externalService.reset_external(result, param).subscribe(data => {
+        this.common.isLoading = false;
+        this.common.alertMessage('성공적으로 변경되었습니다.', true);
+      }, error => {
+        this.common.alertMessage('변경하는데 실패하였습니다.', false);
+        this.common.isLoading = false;
+      });
+    });
+    this.router.navigate(['/']);
+  }
 
   isNumber(data) {
     if (isNaN(data)) {
