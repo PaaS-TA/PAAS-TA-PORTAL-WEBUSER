@@ -7,14 +7,14 @@ import {NGXLogger} from 'ngx-logger';
 import {Organization} from '../model/organization';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../auth/security.service";
-import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {isNullOrUndefined} from "util";
 import {ExternalcommonService} from "../external/common/externalcommon.service";
 
 
 declare var $: any;
 declare var jQuery: any;
-declare  var require : any;
+declare var require: any;
 let appConfig = require('assets/resources/env/config.json');
 @Component({
   selector: 'app-usermgmt',
@@ -39,8 +39,8 @@ export class UsermgmtComponent implements OnInit {
   public tellPhone: string;
   public zipCode: string;
   public address: string;
-  public photoFile : string;
-  public imgPath : string;
+  public photoFile: string;
+  public imgPath: string;
 
   public token: string = '';
   public orgName: string = '';
@@ -88,31 +88,31 @@ export class UsermgmtComponent implements OnInit {
 
   }
 
-  onFileChanged(){
+  onFileChanged() {
     $("#photoFile").trigger("click");
   }
 
   onFileChanged_click(event) {
     const file = event.target.files[0];
-    if(isNullOrUndefined(file)){
+    if (isNullOrUndefined(file)) {
       return;
     }
     this.fileToUpload = file;
-    $("#photo").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+    $("#photo").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
     $("#onUploadBtn").show();
   }
 
-  onUpload(){
-    if(isNullOrUndefined(this.fileToUpload)){
+  onUpload() {
+    if (isNullOrUndefined(this.fileToUpload)) {
       return;
     }
     let formData = new FormData();
-    formData.append('file',  this.fileToUpload,  this.fileToUpload.name);
+    formData.append('file', this.fileToUpload, this.fileToUpload.name);
     this.userMgmtService.photoRegistration(formData).subscribe(data => {
       $("#onUploadBtn").hide(); //TO disabled
       this.imgPath = data.fileURL;
       this.userSave();
-    },error => {
+    }, error => {
       console.debug(error);
     });
   }
@@ -124,14 +124,14 @@ export class UsermgmtComponent implements OnInit {
       this.tellPhone = data['tellPhone'];
       this.zipCode = data['zipCode'];
       this.address = data['address'];
-      try{
-        if(isNullOrUndefined(data['imgPath'].lastIndexOf("/")) || data['imgPath'] === ''){
+      try {
+        if (isNullOrUndefined(data['imgPath'].lastIndexOf("/")) || data['imgPath'] === '') {
           return '';
         }
         var pathHeader = data['imgPath'].lastIndexOf("/");
         var pathEnd = data['imgPath'].length;
         var fileName = data['imgPath'].substring(pathHeader + 1, pathEnd);
-        this.userMgmtService.getImg('/storageapi/v2/swift/'+fileName).subscribe(data => {
+        this.userMgmtService.getImg('/storageapi/v2/swift/' + fileName).subscribe(data => {
           let reader = new FileReader();
           reader.addEventListener("load", () => {
             this.photoFile = reader.result;
@@ -139,7 +139,8 @@ export class UsermgmtComponent implements OnInit {
           }, false);
           if (data) {
             reader.readAsDataURL(data);
-          }}, error=> {
+          }
+        }, error => {
         });
       } catch (e) {
       }
@@ -154,19 +155,19 @@ export class UsermgmtComponent implements OnInit {
       tellPhone: this.tellPhone,
       zipCode: this.zipCode,
       address: this.address,
-      imgPath : this.imgPath
+      imgPath: this.imgPath
     };
 
     this.common.isLoading = true;
     console.log(params);
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
-      if(data === 1){
+      if (data === 1) {
         this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
         this.common.isLoading = false;
         console.log(data);
         this.common.setUserName(this.userName);
         return this.userInfo();
-      } else{
+      } else {
         this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail + "<br><br>" + data.msg, false);
         this.common.isLoading = false;
       }
@@ -182,14 +183,14 @@ export class UsermgmtComponent implements OnInit {
 
   }
 
-  cancelButton(){
+  cancelButton() {
     $('#userName').val('');
     $('#tellPhone').val('');
     $('#zipCode').val('');
     $('#address').val('');
   }
 
-  userSaveEnter(){
+  userSaveEnter() {
     $("#userSave").click();
   }
 
@@ -205,17 +206,17 @@ export class UsermgmtComponent implements OnInit {
     $event.target.value = typingStr;
   }
 
-  updateUserPasswordEnter(){
+  updateUserPasswordEnter() {
     $("#passwordChange").click();
   }
 
-  checkTellPhoneEnter(){
+  checkTellPhoneEnter() {
     $("#checkTellPhone").click();
   }
 
   checkTellPhone() {
     // this.log.debug(this.tellPhone + ' :::: ' + this.tellPhone_pattenTest());
-    if (this.tellPhone_pattenTest()){
+    if (this.tellPhone_pattenTest()) {
       this.isTellPhone == true;
       $('#tellPhone').val(this.user['tellPhone']);
       this.userSave();
@@ -227,17 +228,17 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
-  checkZipCodeEnter(){
+  checkZipCodeEnter() {
     $("#checkZipCode").click();
   }
 
   checkZipCode() {
     // this.log.debug(this.zipCode + ' :::: ' + this.zipCode_pattenTest());
-    if (this.zipCode_pattenTest()){
+    if (this.zipCode_pattenTest()) {
       this.isZipCode == true;
       $('#zipCode').val(this.user['zipCode']);
       this.userSave();
-    }else{
+    } else {
       this.isZipCode == false;
       this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
       $('#zipCode').val('');
@@ -245,17 +246,17 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
-  checkAddressEnter(){
+  checkAddressEnter() {
     $("#checkAddress").click();
   }
 
   checkAddress() {
     // this.log.debug(this.address + ' :::: ' + this.address_pattenTest());
-    if (this.address_pattenTest()){
+    if (this.address_pattenTest()) {
       this.isAddress == true;
       $('#address').val(this.user['address']);
       this.userSave();
-    }else{
+    } else {
       this.isAddress == false;
       this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
       $('#address').val('');
@@ -295,27 +296,33 @@ export class UsermgmtComponent implements OnInit {
     this.common.isLoading = true;
     this.regions = appConfig['region'];
 
-      if (this.regions.length <= 0) {
-        this.defaultPasswd();
-      } else {
-        this.regions.forEach(region => {
-          let result = region['zuulUrl'];
-          console.log("result:" + result);
-          let param = {userId: this.user['userId'], password: this.password_new};
-          this.common.doPost2(result + '/portalapi/login', param, '').map(data => {
-            if (data != null) {
+    if (this.regions.length <= 0) {
+      this.defaultPasswd();
+    } else {
+
+      this.regions.forEach(region => {
+
+        let result = region['zuulUrl'];
+        console.log("result:" + result);
+        let param = {id: this.user['userId'], password: this.password_now};
+        this.common.doPost2(result+'/portalapi/login', param, '').subscribe(data => {
+
+          console.log(data);
+
+          if (data != null) {
+            // if (this.password_new == this.password_check) {
               this.regionPasswd();
-            }
-          },error =>{
-            this.common.alertMessage('변경하는데 실패하였습니다.', false);
-            this.common.isLoading = false;
-          });
+            // }
+          }
+        }, error => {
+          this.common.alertMessage('변경하는데 실패하였습니다.', false);
+          this.common.isLoading = false;
         });
-      } //else
+      });
+    }
   }
 
-
-  defaultPasswd(){
+  defaultPasswd() {
     let params = {
       userGuid: this.common.getUserGuid(),
       oldPassword: this.password_now,
@@ -385,7 +392,7 @@ export class UsermgmtComponent implements OnInit {
     const regExpBlankPattern = /[\s]/g;
     const reg_zip = /^[A-Za-z0-9]{0,1000}$/;
 
-    if (reg_zip.test(value) && !reg_koreanPatten.test(value) &&!regExpBlankPattern.test(value)) {
+    if (reg_zip.test(value) && !reg_koreanPatten.test(value) && !regExpBlankPattern.test(value)) {
       this.isZipCode = true;
       return true;
     } else {
@@ -407,7 +414,7 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
-  orgInit(){
+  orgInit() {
     this.userMgmtService.getOrgList().subscribe(data => {
       this.orgs = data.resources;
       console.log(this.orgs);
@@ -424,25 +431,25 @@ export class UsermgmtComponent implements OnInit {
     this.common.isLoading = true;
     if (orgId != '') {
       let param = {
-        userId : this.common.getUserGuid()
+        userId: this.common.getUserGuid()
       }
       this.deleteOrg('/portalapi/v2/orgs/' + orgId + '/member', param).subscribe(data => {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
         this.userMgmtService.getOrgList().subscribe(data => {
-            this.orgs = data.resources;
+          this.orgs = data.resources;
         })
-      }, error=> {
+      }, error => {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
-      },() => {
-        this.common.isLoading= false;
+      }, () => {
+        this.common.isLoading = false;
       });
     } else {
       this.common.isLoading = false;
     }
   }
 
-  deleteOrg(url : string, body : any){
-    return this.common.doDelete(url, body, this.common.getToken()).map((res : any) => {
+  deleteOrg(url: string, body: any) {
+    return this.common.doDelete(url, body, this.common.getToken()).map((res: any) => {
       return res;
     });
   }
@@ -464,7 +471,7 @@ export class UsermgmtComponent implements OnInit {
       return data;
     }, error => {
       this.common.isLoading = false;
-      this.common.alertMessage('비밀번호를 다시 입력하세요.' , false);
+      this.common.alertMessage('비밀번호를 다시 입력하세요.', false);
       this.common.alertMessage(this.translateEntities.alertLayer.passwordFail, false);
     });
   }
@@ -511,19 +518,20 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-  inputFocus(inputid : string){
+  inputFocus(inputid: string) {
     setTimeout(() => {
-    if(inputid === 'password_now'){
-      $('#password_now').trigger('focus');
-    }else if(inputid ==='userName'){
-      $('#userName').trigger('focus');
-    }else if(inputid ==='tellPhone'){
-      $('#tellPhone').trigger('focus');
-    }else if(inputid ==='zipCode'){
-      $('#zipCode').trigger('focus');
-    }else if(inputid ==='address'){
-      $('#address').trigger('focus');
-    }}, 300);
+      if (inputid === 'password_now') {
+        $('#password_now').trigger('focus');
+      } else if (inputid === 'userName') {
+        $('#userName').trigger('focus');
+      } else if (inputid === 'tellPhone') {
+        $('#tellPhone').trigger('focus');
+      } else if (inputid === 'zipCode') {
+        $('#zipCode').trigger('focus');
+      } else if (inputid === 'address') {
+        $('#address').trigger('focus');
+      }
+    }, 300);
   }
 
 }

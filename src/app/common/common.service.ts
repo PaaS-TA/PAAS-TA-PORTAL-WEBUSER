@@ -74,11 +74,12 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
+    console.log("::doPost2_url:: " + url);
+    console.log("::doPost2_token:: " + token);
+    console.log("::doPost2_body:: " + body["id"] + " "+  body["password"]);
+
     return this.http.post(url, body, {
       headers: this.headers.set('cf-Authorization', token)
-        .set('Access-Control-Allow-Methods','POST, GET, OPTIONS, DELETE') // POST, GET, OPTIONS, DELETE 요청에 대해 허용하겠다는 의미
-        .set('Access-Control-Allow-Headers', 'X-Requested-With')
-        .set('Access-Control-Allow-Origin', '*') // * 는 모든 도메인에 대해 허용하겠다는 의미
     });
   }
 
@@ -107,6 +108,16 @@ export class CommonService {
       headers: this.headers.set('cf-Authorization', token)
     });
   }
+
+  doPut2(url: string, body: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.put(url, body, {
+      headers: this.headers.set('cf-Authorization', token)
+    });
+  }
+
 
   doDelete(url: string, params: any, token: string) {
     if (token == null) {
