@@ -74,10 +74,6 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
-    console.log("::doPost2_url:: " + url);
-    console.log("::doPost2_token:: " + token);
-    console.log("::doPost2_body:: " + body["id"] + " "+  body["password"]);
-
     return this.http.post(url, body, {
       headers: this.headers.set('cf-Authorization', token)
     });

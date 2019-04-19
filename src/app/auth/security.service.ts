@@ -32,7 +32,9 @@ export class SecurityService {
    */
   doAuthorization() {
     this.log.debug('doAuthorization()');
+
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
+
     window.location.href = appConfig['authUrl'] +
       '?response_type=' + appConfig['code'] +
       '&client_id=' + appConfig['clientId'] +

@@ -1,14 +1,14 @@
 {
-  "clientId": "portalclient",
-  "clientSecret": "clientsecret",
+  "clientId": "clientId",
+  "clientSecret": "clientSecret",
   "redirectUri": "/callback",
   "logoutredirectUri": "/login",
   "scope": "openid cloud_controller_service_permissions.read cloud_controller.read cloud_controller.write",
-  "authUrl": "https://uaa.115.68.46.188.xip.io/oauth/authorize",
-  "checkUrl": "https://uaa.115.68.46.188.xip.io/check_token",
-  "accessUrl": "https://uaa.115.68.46.188.xip.io/oauth/token",
-  "infoUrl": "https://uaa.115.68.46.188.xip.io/userinfo",
-  "logoutUrl": "https://uaa.115.68.46.188.xip.io/logout.do",
+  "authUrl": "https://uaa.XXX.XX.XX.XXX.xip.io/oauth/authorize",
+  "checkUrl": "https://uaa.XXX.XX.XX.XXX.xip.io/check_token",
+  "accessUrl": "https://uaa.XXX.XX.XX.XXX.xip.io/oauth/token",
+  "infoUrl": "https://uaa.XXX.XX.XX.XXX.ip.io/userinfo",
+  "logoutUrl": "https://uaa.XXX.XX.XX.XXX.xip.io/logout.do",
   "userinfoUrl": "/commonapi/v2/user",
   "code": "code",
   "sessionTimeout": "10",
@@ -18,15 +18,17 @@
   "region": [
     {
       "index": 1,
-      "name": "Vsphere",
-      "redirectUri": "https://portal-web-user.115.68.46.213.xip.io/callback",
-      "uaa": "https://uaa.115.68.46.184.xip.io/oauth/authorize"
+      "name": "zone_1",
+      "redirectUrl": "http://portal-web-user.XXX.XX.XX.XXX.xip.io/callback",
+      "zuulUrl" : "/zone_1",
+      "uaa": "https://uaa.XXX.XX.XX.XXX.xip.io/oauth/authorize"
     },
     {
       "index": 2,
-      "name": "Azure",
-      "redirectUri": "https://portal-web-user.115.68.46.214.xip.io/callback",
-      "uaa": "https://uaa.115.68.46.188.xip.io/oauth/authorize"
+      "name": "zone_2",
+      "redirectUrl": "http://portal-web-user.XXX.XX.XX.XXX.xip.io/callback",
+      "zuulUrl" : "/zone_2",
+      "uaa": "https://uaa.XXX.XX.XX.XXX.xip.io/oauth/authorize"
     }
   ]
 }

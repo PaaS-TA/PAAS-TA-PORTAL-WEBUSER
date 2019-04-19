@@ -294,27 +294,22 @@ export class UsermgmtComponent implements OnInit {
 
   updateUserPassword() {
     this.common.isLoading = true;
+
     this.regions = appConfig['region'];
 
     if (this.regions.length <= 0) {
-      this.defaultPasswd();
+      this.defaultPassword();
     } else {
-
       this.regions.forEach(region => {
-
         let result = region['zuulUrl'];
         console.log("result:" + result);
         let param = {id: this.user['userId'], password: this.password_now};
         this.common.doPost2(result+'/portalapi/login', param, '').subscribe(data => {
-
           console.log(data);
-
           if (data != null) {
-            // if (this.password_new == this.password_check) {
-              this.regionPasswd();
-            // }
+              this.regionPassword();
           }
-        }, error => {
+        },error => {
           this.common.alertMessage('변경하는데 실패하였습니다.', false);
           this.common.isLoading = false;
         });
@@ -322,7 +317,7 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
-  defaultPasswd() {
+  defaultPassword() {
     let params = {
       userGuid: this.common.getUserGuid(),
       oldPassword: this.password_now,
@@ -345,7 +340,7 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-  regionPasswd() {
+  regionPassword() {
     this.regions = appConfig['region'];
     this.regions.forEach(region => {
       let result = region['zuulUrl'];
