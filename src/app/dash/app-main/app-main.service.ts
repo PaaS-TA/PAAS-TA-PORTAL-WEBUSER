@@ -43,13 +43,13 @@ export class AppMainService {
   }
 
   startApp(params: any) {
-    return this.commonService.doPost('/portalapi/v3/apps/startApp', params, this.getToken()).map((res: any) => {
+    return this.commonService.doPost('/portalapi/v2/apps/startApp', params, this.getToken()).map((res: any) => {
       return res;
     });
   }
 
   stopApp(params: any) {
-    return this.commonService.doPost('/portalapi/v3/apps/stopApp', params, this.getToken()).map((res: any) => {
+    return this.commonService.doPost('/portalapi/v2/apps/stopApp', params, this.getToken()).map((res: any) => {
       return res;
     });
   }
@@ -157,50 +157,50 @@ export class AppMainService {
   }
 
   getAlarms(appGuid: string, pageItems: number, pageIndex: number, resourceType: string, alarmLevel: string) {
-    return this.commonService.doGet('/portalapi/app/alarm/list?appGuid='+appGuid+'&pageItems='+pageItems+'&pageIndex='+pageIndex+'&resourceType='+resourceType+'&alarmLevel='+alarmLevel, this.getToken()).map((res: any) => {
+    return this.commonService.doGet('/portalapi/ext/app/alarm/list?appGuid='+appGuid+'&pageItems='+pageItems+'&pageIndex='+pageIndex+'&resourceType='+resourceType+'&alarmLevel='+alarmLevel, this.getToken()).map((res: any) => {
       return res;
     });
   }
 
 
   getAlarm(appGuid: string) {
-    return this.commonService.doGet('/portalapi/app/alarm/policy?appGuid='+appGuid, this.getToken()).map((res: any) => {
+    return this.commonService.doGet('/portalapi/ext/app/alarm/policy?appGuid='+appGuid, this.getToken()).map((res: any) => {
       return res;
     });
   }
 
   updateAlarm(params: any) {
-    return this.commonService.doPost('/portalapi/app/alarm/policy', params, this.getToken()).map((res: any) => {
+    return this.commonService.doPost('/portalapi/ext/app/alarm/policy', params, this.getToken()).map((res: any) => {
       return res;
     });
   }
 
   getAutoscaling(appGuid: string) {
-    return this.commonService.doGet('/portalapi/app/autoscaling/policy?appGuid='+appGuid, this.getToken()).map((res: any) => {
+    return this.commonService.doGet('/portalapi/ext/app/autoscaling/policy?appGuid='+appGuid, this.getToken()).map((res: any) => {
       return res;
     });
   }
 
   updateAutoscaling(params: any) {
-    return this.commonService.doPost('/portalapi/app/autoscaling/policy', params, this.getToken()).map((res: any) => {
+    return this.commonService.doPost('/portalapi/ext/app/autoscaling/policy', params, this.getToken()).map((res: any) => {
       return res;
     });
   }
 
   getCpuUsage(guid: string, idx: string, defaultTimeRange: string, groupBy: string, type: string) {
-    return this.commonService.doGet('/portalapi/app/'+guid+'/'+idx+'/cpuUsage?defaultTimeRange='+defaultTimeRange+'&groupBy='+groupBy+'&type='+type, this.getToken()).map((res: any) => {
+    return this.commonService.doGet('/portalapi/ext/app/'+guid+'/'+idx+'/cpuUsage?defaultTimeRange='+defaultTimeRange+'&groupBy='+groupBy+'&type='+type, this.getToken()).map((res: any) => {
       return res;
     });
   }
 
   getMemoryUsage(guid: string, idx: string, defaultTimeRange: string, groupBy: string, type: string) {
-    return this.commonService.doGet('/portalapi/app/'+guid+'/'+idx+'/memoryUsage?defaultTimeRange='+defaultTimeRange+'&groupBy='+groupBy+'&type='+type, this.getToken()).map((res: any) => {
+    return this.commonService.doGet('/portalapi/ext/app/'+guid+'/'+idx+'/memoryUsage?defaultTimeRange='+defaultTimeRange+'&groupBy='+groupBy+'&type='+type, this.getToken()).map((res: any) => {
       return res;
     });
   }
 
   getNetworkByte(guid: string, idx: string, defaultTimeRange: string, groupBy: string, type: string) {
-    return this.commonService.doGet('/portalapi/app/'+guid+'/'+idx+'/getNetworkByte?defaultTimeRange='+defaultTimeRange+'&groupBy='+groupBy+'&type='+type, '').map((res: any) => {
+    return this.commonService.doGet('/portalapi/ext/app/'+guid+'/'+idx+'/getNetworkByte?defaultTimeRange='+defaultTimeRange+'&groupBy='+groupBy+'&type='+type, '').map((res: any) => {
       return res;
     });
   }
