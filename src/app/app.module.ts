@@ -9,12 +9,11 @@ import {MenuComponent} from './menu/menu.component';
 import {ServiceComponent} from './service/service.component';
 import {UsageComponent} from './usage/usage.component';
 import {UserComponent} from './user/user.component';
-import {WebIdeUserComponent} from './web-ide-user/web-ide-user.component';
 import {CfAppComponent} from './cf-app/cf-app.component';
 import {RoutingModule} from './app.routing';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TopComponent} from './layout/top/top.component';
 import {BottonComponent} from './layout/botton/botton.component';
 import {LeftComponent} from './layout/left/left.component';
@@ -54,7 +53,6 @@ export function createTranslateLoader(http: HttpClient) {
     ServiceComponent,
     UsageComponent,
     UserComponent,
-    WebIdeUserComponent,
     TopComponent,
     BottonComponent,
     LeftComponent,

@@ -2,8 +2,13 @@ import {Injectable} from '@angular/core';
 import {CommonService} from "../../common/common.service";
 import {UsermgmtService} from "../../usermgmt/usermgmt.service";
 
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Injectable()
 export class CreateService {
+
+  apiversion = appConfig['apiversion'];
 
   constructor(private  commonService: CommonService, private userMgmtService: UsermgmtService) {
   }
@@ -15,7 +20,7 @@ export class CreateService {
 
 
   createUser(param) {
-    return this.commonService.doPost('/portalapi/v2/users', param, '');
+    return this.commonService.doPost('/portalapi/' + this.apiversion + '/users', param, '');
   }
 
   updateToken(userId: string, param) {

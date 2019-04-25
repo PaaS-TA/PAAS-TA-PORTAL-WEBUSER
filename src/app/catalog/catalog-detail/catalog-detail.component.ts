@@ -10,12 +10,19 @@ import {isNullOrUndefined} from "util";
 
 declare var $: any;
 declare var jQuery: any;
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Component({
   selector: 'app-catalog-detail',
   templateUrl: './catalog-detail.component.html',
   styleUrls: ['./catalog-detail.component.css']
 })
 export class CatalogDetailComponent implements OnInit {
+
+  apiversion = appConfig['apiversion'];
+
   catalogcontans = CATALOGURLConstant;
 
   template: any;
@@ -147,7 +154,7 @@ export class CatalogDetailComponent implements OnInit {
 
   //공용 도메인 가져오기
   shareDomainInit(){
-    this.catalogService.getDomain('/portalapi/v2/domains/shared').subscribe(data => {
+    this.catalogService.getDomain('portalapi/' + this.apiversion + '/domains/shared').subscribe(data => {
       this.sharedomain = data['resources'][0];
       this.currentdomain = this.sharedomain;
       this.domainList.unshift(this.sharedomain);
@@ -158,7 +165,7 @@ export class CatalogDetailComponent implements OnInit {
 
   //프라이빗 도메인 가져오기(org 선택시)
   privateDomainInit(value){
-    this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+value+'/domains').subscribe(data =>{
+    this.catalogService.getOrgPrivateDomain('/portalapi/' + this.apiversion + '/'+value+'/domains').subscribe(data =>{
       this.domainList = new Array<any>();
       this.domainList.unshift(this.sharedomain);
       this.currentdomain = this.sharedomain;
@@ -174,7 +181,7 @@ export class CatalogDetailComponent implements OnInit {
   activatedRouteInit(){
     const orgname = this.catalogService.getOrgName();
     if(orgname !== null){
-      this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+this.catalogService.getOrgGuid()+'/domains').subscribe(data =>{
+      this.catalogService.getOrgPrivateDomain('/portalapi/' + this.apiversion + '/'+this.catalogService.getOrgGuid()+'/domains').subscribe(data =>{
         data.resources.forEach(domain => {
           this.domainList.push(domain);
         });

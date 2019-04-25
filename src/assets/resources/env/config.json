@@ -15,6 +15,7 @@
   "monitoring": false,
   "quantity": false,
   "automaticApproval": true,
+  "apiversion": "v3",
   "region": [
   ]
 }

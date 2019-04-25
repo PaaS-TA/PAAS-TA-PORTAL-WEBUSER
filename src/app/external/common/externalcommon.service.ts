@@ -1,8 +1,14 @@
 import {Injectable} from '@angular/core';
 import {CommonService} from "../../common/common.service";
 
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Injectable()
 export class ExternalcommonService {
+
+  apiversion = appConfig['apiversion'];
 
   constructor(private commonService: CommonService) {
   }
@@ -14,12 +20,12 @@ export class ExternalcommonService {
 
 
   reset(param) {
-    return this.commonService.doPost('/portalapi/v2/users/password/reset', param, '');
+    return this.commonService.doPost('/portalapi/' + this.apiversion + '/users/password/reset', param, '');
   }
 
 
   reset_external(url, param) {
-    return this.commonService.doPost2(url + '/portalapi/v2/users/password/reset', param, '');
+    return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users/password/reset', param, '');
   }
 
 
@@ -31,6 +37,6 @@ export class ExternalcommonService {
   }
 
   createUser(param) {
-    return this.commonService.doPost('/portalapi/v2/users', param, '');
+    return this.commonService.doPost('/portalapi/' + this.apiversion + '/users', param, '');
   }
 }

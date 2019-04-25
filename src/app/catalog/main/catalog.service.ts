@@ -5,8 +5,15 @@ import {CATALOGURLConstant} from "../common/catalog.constant";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {isUndefined} from "util";
 declare var $: any;
+
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Injectable()
 export class CatalogService {
+
+  apiversion = appConfig['apiversion'];
 
   buildpacks : Array<any> = [];
   starterpacks : Array<any> = [];
@@ -178,13 +185,13 @@ export class CatalogService {
   }
 
   getOrglist() {
-    return this.common.doGet('/portalapi/v2/orgs', this.common.getToken()).map((res: Response) => {
+    return this.common.doGet('/portalapi/' + this.apiversion + '/orgs', this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
 
   getSpacelist(orgid : string) {
-    return this.common.doGet('/portalapi/v2/orgs/' + orgid + '/spaces', this.common.getToken()).map((res: Response) => {
+    return this.common.doGet('/portalapi/' + this.apiversion + '/orgs/' + orgid + '/spaces', this.common.getToken()).map((res: Response) => {
       return res;
     });
   }
@@ -195,7 +202,7 @@ export class CatalogService {
     }
 
   getSecretDomain(){
-    return this.common.doGet('/portalapi/v2/domains/private', this.common.getToken()).map((res: Response) => {
+    return this.common.doGet('/portalapi/' + this.apiversion + '/domains/private', this.common.getToken()).map((res: Response) => {
       return res;
     });
   }

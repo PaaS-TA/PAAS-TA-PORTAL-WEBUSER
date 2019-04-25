@@ -3,8 +3,15 @@ import {CommonService} from "../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {Domain} from "../model/domain";
 
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Injectable()
 export class DomainService {
+
+  apiversion = appConfig['apiversion'];
+
   constructor(private common: CommonService, private logger: NGXLogger) { }
 
   private getToken() {
@@ -12,7 +19,7 @@ export class DomainService {
   }
 
   private get URLDomainRequest(): string {
-    return '/portalapi/v2/domains';
+    return '/portalapi/' + this.apiversion + ' /domains';
   }
 
   public getDomainList(orgId: string, scope = "all", func?: Function) {

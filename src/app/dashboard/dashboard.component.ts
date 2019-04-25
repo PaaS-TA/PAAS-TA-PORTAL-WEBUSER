@@ -289,7 +289,6 @@ export class DashboardComponent implements OnInit {
 
   getSpaces(value: string) {
     this.showLoading();
-    this.log.debug("::::2.getSpaces:::: " + "  " + value);
     if (value != '') {
       this.isEmpty = false;
       this.isSpace = true;

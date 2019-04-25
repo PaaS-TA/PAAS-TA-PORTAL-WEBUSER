@@ -11,12 +11,19 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {isNullOrUndefined, isUndefined} from "util";
 declare var $: any;
 declare var jQuery: any;
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Component({
   selector: 'app-catalog-development',
   templateUrl: './catalog-development.component.html',
   styleUrls: ['./catalog-development.component.css']
 })
 export class CatalogDevelopmentComponent implements OnInit {
+
+  apiversion = appConfig['apiversion'];
+
   catalogcontans = CATALOGURLConstant;
   translateEntities : any;
   namecheck : number = 0;
@@ -137,7 +144,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   activatedRouteInit(){
     const orgname = this.catalogService.getOrgName();
     if(orgname !== null){
-      this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+this.catalogService.getOrgGuid()+'/domains').subscribe(data =>{
+      this.catalogService.getOrgPrivateDomain('/portalapi/' + this.apiversion + '/'+this.catalogService.getOrgGuid()+'/domains').subscribe(data =>{
         data.resources.forEach(domain => {
           this.domainList.push(domain);
         });
@@ -151,7 +158,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   shareDomainInit(){
-    this.catalogService.getDomain('/portalapi/v2/domains/shared').subscribe(data => {
+    this.catalogService.getDomain('/portalapi/' + this.apiversion + '/domains/shared').subscribe(data => {
       this.sharedomain = data['resources'][0];
       this.currentdomain = this.sharedomain;
       this.domainList.unshift(this.sharedomain);
@@ -159,7 +166,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   privateDomainInit(value){
-    this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+value+'/domains').subscribe(data =>{
+    this.catalogService.getOrgPrivateDomain('/portalapi/' + this.apiversion + '/'+value+'/domains').subscribe(data =>{
       this.domainList = new Array<any>();
       this.domainList.unshift(this.sharedomain);
       this.currentdomain = this.sharedomain;

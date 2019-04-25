@@ -13,6 +13,8 @@ let appConfig = require('assets/resources/env/config.json');
 export class SecurityService {
   url: string;
 
+  apiversion = appConfig['apiversion'];
+
   constructor(private common: CommonService, private http: HttpClient, private router: Router, private activeRoute: ActivatedRoute, private log: NGXLogger) {
   }
 

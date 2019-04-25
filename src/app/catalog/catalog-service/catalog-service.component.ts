@@ -12,6 +12,10 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {isNullOrUndefined, isUndefined} from "util";
 declare var $: any;
 declare var jQuery: any;
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Component({
   selector: 'app-catalog-service',
   templateUrl: './catalog-service.component.html',
@@ -19,6 +23,9 @@ declare var jQuery: any;
 })
 
 export class CatalogServiceComponent implements OnInit {
+
+  apiversion = appConfig['apiversion'];
+
   catalogcontans = CATALOGURLConstant;
   namecheck:number = 0;
   translateEntities : any;
@@ -125,7 +132,7 @@ export class CatalogServiceComponent implements OnInit {
   }
 
   DomainInit() {
-    this.catalogService.getDomain('/portalapi/v2/domains/shared').subscribe(data => {
+    this.catalogService.getDomain('/portalapi/' + this.apiversion + '/domains/shared').subscribe(data => {
       this.domain = data['resources'][0]['entity']['name'];
       this.domainid = data['resources'][0]['metadata']['guid'];
     });

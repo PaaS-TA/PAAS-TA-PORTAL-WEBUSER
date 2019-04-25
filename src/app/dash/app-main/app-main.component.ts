@@ -21,6 +21,8 @@ let appConfig = require('assets/resources/env/config.json');
 })
 export class AppMainComponent implements OnInit {
 
+  apiversion = appConfig['apiversion'];
+
   private jquerySetting : boolean;
   public location: string;
   public orgName: string;

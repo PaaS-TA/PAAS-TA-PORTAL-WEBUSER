@@ -4,12 +4,19 @@ import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ExternalcommonService} from "../common/externalcommon.service";
 declare var $: any;
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css']
 })
+
+
 export class CreateComponent implements OnInit {
+
+  apiversion = appConfig['apiversion'];
 
   public token: string;
   public userId: string;

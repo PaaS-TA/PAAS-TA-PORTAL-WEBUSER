@@ -7,12 +7,18 @@ import {isNullOrUndefined} from "util";
 declare var $: any;
 declare var jQuery: any;
 
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Component({
   selector: 'app-org2-produce',
   templateUrl: './org-produce.component.html',
   styleUrls: ['./org-produce.component.css']
 })
 export class OrgProduceComponent implements OnInit {
+
+  apiversion = appConfig['apiversion'];
+
   public orgname :string = '';
   public errorMessage: string = '';
   public orgnamelist: any;
@@ -55,14 +61,14 @@ export class OrgProduceComponent implements OnInit {
 
   getOrgNameList() {
     let page = 1;
-    this.orgService.getOrgNameList('/portalapi/v2/orgs' + '-admin/' + page++).subscribe(data => {
+    this.orgService.getOrgNameList('/portalapi/' + this.apiversion + '/orgs' + '-admin/' + page++).subscribe(data => {
       console.log(data);
       this.orgnamelist = new Array<any>();
       data['resources'].forEach(a => {
         this.orgnamelist.push(a.entity.name);
       });
       for(page; data.total_pages >= page ; page++){
-        this.orgService.getOrgNameList('/portalapi/v2/orgs' + '-admin/' + page).subscribe( data2 =>{
+        this.orgService.getOrgNameList('/portalapi/' + this.apiversion + '/orgs' + '-admin/' + page).subscribe( data2 =>{
           data2['resources'].forEach(b => {
             this.orgnamelist.push(b.entity.name);
           });
@@ -75,7 +81,7 @@ export class OrgProduceComponent implements OnInit {
     });
   }
   getOrgQuota(){
-    this.orgService.getOrgQuota('/portalapi/v2/orgs/quota-definitions').subscribe(data => {
+    this.orgService.getOrgQuota('/portalapi/' + this.apiversion + '/orgs/quota-definitions').subscribe(data => {
       data['resources'].forEach(a => {
         a.entity.guid =  a.metadata.guid;
         this.orgquotalist.push(a.entity);
@@ -123,8 +129,8 @@ export class OrgProduceComponent implements OnInit {
 
   createOrg(){
     this.orgNameCheck();
-    const url = '/portalapi/v2/orgs/' + this.orgname + '/exist';
-    const url2 = '/portalapi/v2/orgs/';
+    const url = '/portalapi/' + this.apiversion + '/orgs/' + this.orgname + '/exist';
+    const url2 = '/portalapi/' + this.apiversion + '/orgs/';
     const body = {
       orgName: this.orgname,
       quotaGuid: this.aquota.guid,

@@ -16,6 +16,7 @@ declare var $: any;
 declare var jQuery: any;
 declare var require: any;
 let appConfig = require('assets/resources/env/config.json');
+
 @Component({
   selector: 'app-usermgmt',
   templateUrl: './usermgmt.component.html',
@@ -25,6 +26,8 @@ export class UsermgmtComponent implements OnInit {
   public user: Observable<User>;
   public orgs: Array<Organization> = [];
   public translateEntities: any = [];
+
+  apiversion = appConfig['apiversion'];
 
   /*로그인 정보*/
   public isPassword: boolean;
@@ -428,7 +431,7 @@ export class UsermgmtComponent implements OnInit {
       let param = {
         userId: this.common.getUserGuid()
       }
-      this.deleteOrg('/portalapi/v2/orgs/' + orgId + '/member', param).subscribe(data => {
+      this.deleteOrg('/portalapi/' + this.apiversion + ' /orgs/' + orgId + '/member', param).subscribe(data => {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
         this.userMgmtService.getOrgList().subscribe(data => {
           this.orgs = data.resources;

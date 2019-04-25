@@ -3,37 +3,41 @@ import 'rxjs/add/operator/map';
 
 import {CommonService} from '../../common/common.service';
 
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Injectable()
 export class OrgMainService {
+  apiversion = appConfig['apiversion'];
 
   constructor(private commonService: CommonService) { }
 
   getOrgList(page : number) {
-    return this.commonService.doGet('/portalapi/v2/orgList/'+page, this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/orgList/'+page, this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   getOrgDetail(guid : String) {
-    return this.commonService.doGet('/portalapi/v2/orgDetail/'+guid, this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/orgDetail/'+guid, this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   getOrgFlag(){
-    return this.commonService.doGet('/portalapi/v2/user_org_creation/orgflag', this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/user_org_creation/orgflag', this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   getDomains() {
-    return this.commonService.doGet('/portalapi/v2/domains/all', this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/domains/all', this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   getQuotaDefinitions() {
-    return this.commonService.doGet('/portalapi/v2/orgs/quota-definitions', this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/orgs/quota-definitions', this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
@@ -45,66 +49,66 @@ export class OrgMainService {
   }
 
   createSpace(params: any) {
-    return this.commonService.doPost('/portalapi/v2/spaces', params, this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doPost('/portalapi/' + this.apiversion + '/spaces', params, this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   renameSpace(params: any) {
-    return this.commonService.doPut('/portalapi/v2/spaces', params, this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doPut('/portalapi/' + this.apiversion + '/spaces', params, this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   deleteSpace(guid: string, recursive: boolean) {
-    return this.commonService.doDelete('/portalapi/v2/spaces/'+guid+'?recursive='+recursive, '', this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doDelete('/portalapi/' + this.apiversion + '/spaces/'+guid+'?recursive='+recursive, '', this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   addDmaoin(params: any) {
-    return this.commonService.doPost('/portalapi/v2/domains', params, this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doPost('/portalapi/' + this.apiversion + '/domains', params, this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   deleteDmaoin(guid: string, domainName: string) {
-    return this.commonService.doDelete('/portalapi/v2/domains/'+guid+'?domainName='+domainName, '', this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doDelete('/portalapi/' + this.apiversion + '/domains/'+guid+'?domainName='+domainName, '', this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
   delMemberCancel(guid : string, userId : string){
-    return this.commonService.doDelete('/portalapi/v2/orgs/'+guid+'/member?userId='+userId, '', this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doDelete('/portalapi/' + this.apiversion + '/orgs/'+guid+'/member?userId='+userId, '', this.commonService.getToken()).map((res: Response) => {
       return res;
     });
   }
 
   changeQuota(orgGuid: string, params: any) {
-    return this.commonService.doPut('/portalapi/v2/orgs/'+orgGuid+'/quota', params, this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doPut('/portalapi/' + this.apiversion + '/orgs/'+orgGuid+'/quota', params, this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   renameOrg(params: any) {
-    return this.commonService.doPut('/portalapi/v2/orgs', params, this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doPut('/portalapi/' + this.apiversion + '/orgs', params, this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   deleteOrg(guid: string, recursive: boolean) {
-    return this.commonService.doDelete('/portalapi/v2/orgs/'+guid+'?recursive='+recursive, '', this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doDelete('/portalapi/' + this.apiversion + '/orgs/'+guid+'?recursive='+recursive, '', this.commonService.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
 
   changeOrgUserRole(orgGuid: string, params: any) {
-  return this.commonService.doPut('/portalapi/v2/orgs/'+orgGuid+'/user-roles', params, this.commonService.getToken()).map((res: Response) => {
+  return this.commonService.doPut('/portalapi/' + this.apiversion + '/orgs/'+orgGuid+'/user-roles', params, this.commonService.getToken()).map((res: Response) => {
     return res;
   });
   }
 
   delOrgUserRole(orgGuid: string, params: any) {
-    return this.commonService.doDelete('/portalapi/v2/orgs/'+orgGuid+'/user-roles', params, this.commonService.getToken()).map((res: Response) => {
+    return this.commonService.doDelete('/portalapi/' + this.apiversion + '/orgs/'+orgGuid+'/user-roles', params, this.commonService.getToken()).map((res: Response) => {
       return res;
     })
   }
@@ -122,18 +126,18 @@ export class OrgMainService {
   }
 
   getUserSpaceRoles(spaceid : string){
-    return this.commonService.doGet('/portalapi/v2/spaces/'+spaceid+'/user-roles', this.commonService.getToken()).map((res: any) => {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/spaces/'+spaceid+'/user-roles', this.commonService.getToken()).map((res: any) => {
       return res;
     });
   }
 
   updateUserSpaceRole(spaceid : string, params : any) {
-    return this.commonService.doPut('/portalapi/v2/spaces/' + spaceid + '/user-roles', params, this.commonService.getToken()).map((res: any) => {
+    return this.commonService.doPut('/portalapi/' + this.apiversion + '/spaces/' + spaceid + '/user-roles', params, this.commonService.getToken()).map((res: any) => {
       return res;
     });
   }
   userInviteAccept(params: any) {
-    return this.commonService.doPut('/portalapi/v2/orgs/user-roles', params, '').map((res: Response) => {
+    return this.commonService.doPut('/portalapi/' + this.apiversion + '/orgs/user-roles', params, '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
