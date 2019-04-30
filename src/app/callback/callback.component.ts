@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SecurityService} from '../auth/security.service';
-import {Log} from 'ng2-logger/client';
 import {NGXLogger} from 'ngx-logger';
 import {CommonService} from '../common/common.service';
-import {delay} from "rxjs/operator/delay";
 
 declare var require: any;
 let appConfig = require('assets/resources/env/config.json');
@@ -19,8 +17,12 @@ export class CallbackComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private commonService: CommonService, private sec: SecurityService, private log: NGXLogger) {
     this.log.debug('callback');
     this.commonService.isLoading = true;
-    setTimeout(this.callback(), 1000);
 
+
+  }
+
+  ngOnInit() {
+    this.callback();
   }
 
   callback() {
@@ -44,9 +46,6 @@ export class CallbackComponent implements OnInit {
         }
       });
     }
-  }
-
-  ngOnInit() {
   }
 
 }

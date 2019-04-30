@@ -11,7 +11,7 @@ import {isNull, isNullOrUndefined, isUndefined} from "util";
 declare var Chart: any;
 declare var $: any;
 declare var jQuery: any;
-declare  var require : any;
+declare var require: any;
 let appConfig = require('assets/resources/env/config.json');
 
 @Component({
@@ -23,7 +23,7 @@ export class AppMainComponent implements OnInit {
 
   apiversion = appConfig['apiversion'];
 
-  private jquerySetting : boolean;
+  private jquerySetting: boolean;
   public location: string;
   public orgName: string;
   public orgGuid: string;
@@ -34,7 +34,7 @@ export class AppMainComponent implements OnInit {
   public isLoading: boolean = false;
 
   public translateEntities: any = [];
-  public InstanceNum : number = 1;
+  public InstanceNum: number = 1;
   public appSummaryEntities: Observable<any[]>;
   public appStatsEntities: any;
   public appEventsEntities: Observable<any[]>;
@@ -98,9 +98,9 @@ export class AppMainComponent implements OnInit {
   public sltServiceBindName: string;
   public sltServiceUnbindName: string;
   public sltServiceUnbindGuid: string;
-  public sltServiceUnbindProvide : boolean;
-  public sltServiceCredentials : any =[];
-  public sltServiceUserProvideCredentials : any =[];
+  public sltServiceUnbindProvide: boolean;
+  public sltServiceCredentials: any = [];
+  public sltServiceUserProvideCredentials: any = [];
 
   public appSltEnvSystemName: string;
   public appSltEnvSystemLabel: string;
@@ -124,7 +124,7 @@ export class AppMainComponent implements OnInit {
   public appAutoscalingInstanceMinCnt: number;
   public appAutoscalingInstanceVariationUnit: number;
   public appAutoscalingMeasureTimeSec: number;
-  public InstanceIncrementValue : number;
+  public InstanceIncrementValue: number;
   public appAutoscalingMemoryMaxThreshold: number;
   public appAutoscalingMemoryMinThreshold: number;
 
@@ -141,23 +141,24 @@ export class AppMainComponent implements OnInit {
   public sltChartDefaultTimeRange: number;
   public sltChartGroupBy: number;
 
-  public sltLaaSView : boolean = false;
-  public sltLaaSUrl : string = '';
+  public sltLaaSView: boolean = false;
+  public sltLaaSUrl: string = '';
 
   alive = true;
 
+  isLodingNums = 0;
 
   constructor(public route: ActivatedRoute, public router: Router, public translate: TranslateService, public appMainService: AppMainService, public common: CommonService) {
     this.common.isLoading = false;
 
     // Observable.timer(0,1000 * 60 * 2)
-    Observable.timer(1000 * 60 * 2)
-      .takeWhile(() => this.alive) // only fires when component is alive
-      .subscribe(() => {
-        this.ngOnInit();
-      });
+    // Observable.timer(10000)
+    //   .takeWhile(() => this.alive) // only fires when component is alive
+    //   .subscribe(() => {
+    //     this.ngOnInit();
+    //   });
 
-    // setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
+    setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
 
     this.translate.get('appMain').subscribe((res: string) => {
       this.translateEntities = res;
@@ -174,6 +175,7 @@ export class AppMainComponent implements OnInit {
     this.alive = false; // switches your IntervalObservable off
   }
 
+
   ngOnInit() {
     $(document).ready(() => {
       //TODO 임시로...
@@ -185,8 +187,8 @@ export class AppMainComponent implements OnInit {
           console.log(exception);
         });
     });
-    if(this.jquerySetting){
-      $(".lauthOn").on("click" ,function(){
+    if (this.jquerySetting) {
+      $(".lauthOn").on("click", function () {
         $(".lauth_dl").toggleClass("on");
         $("#routeAddHostName").focus();
       });
@@ -206,71 +208,75 @@ export class AppMainComponent implements OnInit {
 
     $("[id^='layerpop']").modal("hide");
 
+
     if ($(".colright_btn li > ol").hasClass('on'))
       $(".colright_btn li > ol").toggleClass('on');
 
 
-      if (this.common.getCurrentAppGuid != null) {
-        setTimeout(() => this.showLoading(), 0);
+    if (this.common.getCurrentAppGuid != null) {
 
-        this.location = this.common.getCurrentLocation();
-        this.orgName = this.common.getCurrentOrgName();
-        this.orgGuid = this.common.getCurrentOrgGuid();
-        this.spaceName = this.common.getCurrentSpaceName();
-        this.spaceGuid = this.common.getCurrentSpaceGuid();
-        this.appName = this.common.getCurrentAppName();
-        this.appGuid = this.common.getCurrentAppGuid();
+      this.location = this.common.getCurrentLocation();
+      this.orgName = this.common.getCurrentOrgName();
+      this.orgGuid = this.common.getCurrentOrgGuid();
+      this.spaceName = this.common.getCurrentSpaceName();
+      this.spaceGuid = this.common.getCurrentSpaceGuid();
+      this.appName = this.common.getCurrentAppName();
+      this.appGuid = this.common.getCurrentAppGuid();
 
-        this.getOrgSummary(this.orgGuid);
-        setTimeout(() => this.getAppSummary(this.appGuid), 500);
+      this.getOrgSummary(this.orgGuid);
+      setTimeout(() => this.getAppSummary(this.appGuid), 500);
 
-        this.getAppEvents(this.appGuid);
-        this.getAppEnv(this.appGuid);
-        this.getAppRecentLogs(this.appGuid);
-        this.getAlarms(this.appGuid);
-        this.getAlarm(this.appGuid);
-        this.getAutoscaling(this.appGuid);
-        this.getMaxDisk();
-        this.InitLaaSView();
-      } else {
-        setTimeout(() => this.showLoading(), 0);
-
-        this.common.alertMessage("Application Fail.", false);
-
-        this.router.navigate(['dashboard']);
-      }
+      this.getAppEvents(this.appGuid);
+      this.getAppEnv(this.appGuid);
+      this.getAppRecentLogs(this.appGuid);
+      this.getAlarms(this.appGuid);
+      this.getAlarm(this.appGuid);
+      this.getAutoscaling(this.appGuid);
+      this.getMaxDisk();
+      this.InitLaaSView();
+    } else {
+      this.common.isLoading = true;
+      this.common.alertMessage("Application Fail.", false);
+      this.router.navigate(['dashboard']);
+    }
     this.keyPressInit();
-
   }
 
-  keyPressInit(){
+
+  keyPressInit() {
     $('input[id=envAddData]').keydown(function (key) {
-      if(key.keyCode == 13){
+      if (key.keyCode == 13) {
         $('#envAddButton').trigger('click');
       }
     });
     $('input[id=envAddId]').keydown(function (key) {
-      if(key.keyCode == 13){
+      if (key.keyCode == 13) {
         $('#envAddButton').trigger('click');
       }
     });
   }
 
-  spacingExpression($event){
+  spacingExpression($event) {
     const regExpBlankPattern = /[\s]/g;
     let typingStr = $event.target.value.replace(regExpBlankPattern, '').substring(0, 64);
     $event.target.value = typingStr;
   }
 
-  showLoading() {
-    this.common.isLoading = true;
+
+  isLoadingCount() {
+    this.isLodingNums++;
+    console.log("isLodingNums :: " + this.isLodingNums);
+    if (this.isLodingNums > 2) {
+      this.isLodingNums = 0;
+      this.common.isLoading = false;
+    }
   }
 
 
   getAppSummary(guid: any) {
     this.isLoading = true;
     this.appMainService.getAppSummary(guid).subscribe(data => {
-      if(isUndefined(data.routes)){
+      if (isUndefined(data.routes)) {
         this.router.navigate(['dashboard']);
       }
       this.appSummaryEntities = data;
@@ -403,11 +409,11 @@ export class AppMainComponent implements OnInit {
     this.appRoutesEntitiesRe = appRoutes;
   }
 
-  getMaxDisk(){
+  getMaxDisk() {
     this.appMainService.getCodeMax('APP_DISK_SIZE').subscribe(data => {
       data.list.some(r => {
-        if(r.key==='max_size'){
-          this.appSummaryDiskMax = r.value/1024;
+        if (r.key === 'max_size') {
+          this.appSummaryDiskMax = r.value / 1024;
           return true;
         }
         this.appSummaryDiskMax = 10;
@@ -415,15 +421,16 @@ export class AppMainComponent implements OnInit {
     })
   }
 
-  getOrgSummary(guid : string){
+  getOrgSummary(guid: string) {
     this.appMainService.getOrgSummary(guid).subscribe(data => {
       this.appMainService.getCodeMax('APP_MEMORY_SIZE').subscribe(codedata => {
         codedata.list.some(r => {
-          if(r.key==='max_size'){
-            if(r.value > data.quota.memoryLimit){
-              this.appSummaryMemoryMax = data.quota.memoryLimit/1024;
+          if (r.key === 'max_size') {
+            if (r.value > data.quota.memoryLimit) {
+              console.log(data.quota.memoryLimit);
+              this.appSummaryMemoryMax = data.quota.memoryLimit / 1024;
             } else {
-            this.appSummaryMemoryMax = r.value/1024;
+              this.appSummaryMemoryMax = r.value / 1024;
             }
             return true;
           }
@@ -432,8 +439,8 @@ export class AppMainComponent implements OnInit {
       });
       this.appMainService.getCodeMax('APP_INSTANCE_SIZE').subscribe(codedata => {
         codedata.list.some(r => {
-          if(r.key==='max_size'){
-            if(r.value > data.quota.applicationInstanceLimit && data.quota.applicationInstanceLimit !== -1){
+          if (r.key === 'max_size') {
+            if (r.value > data.quota.applicationInstanceLimit && data.quota.applicationInstanceLimit !== -1) {
               this.appSummaryInstanceMax = data.quota.applicationInstanceLimit;
             } else {
               this.appSummaryInstanceMax = r.value;
@@ -453,8 +460,8 @@ export class AppMainComponent implements OnInit {
       var useServices = this.appServicesEntities;
       $.each(data.services, function (key, dataobj) {
         $.each(servicepacks, function (key2, dataobj2) {
-          if(!isNullOrUndefined(dataobj.service_plan)){
-          if ((dataobj.service_plan.service.label === dataobj2.servicePackName) && (dataobj2.appBindYn === 'Y') && (dataobj2.useYn === 'Y')) {
+          if (!isNullOrUndefined(dataobj.service_plan)) {
+            if ((dataobj.service_plan.service.label === dataobj2.servicePackName) && (dataobj2.appBindYn === 'Y') && (dataobj2.useYn === 'Y')) {
               var obj = {
                 name: dataobj.name,
                 guid: dataobj.guid,
@@ -462,10 +469,10 @@ export class AppMainComponent implements OnInit {
                 appBindParameter: dataobj2.appBindParameter
               };
               servicepacksRe.push(obj);
-          }
+            }
           }
         });
-      if(isNullOrUndefined(dataobj.service_plan)){
+        if (isNullOrUndefined(dataobj.service_plan)) {
           let obj = {
             name: dataobj.name,
             guid: dataobj.guid,
@@ -478,8 +485,8 @@ export class AppMainComponent implements OnInit {
       //console.log(this.appServicesEntitiesRe2);
       $.each(this.appServicesEntitiesRe2, function (key, bindservice) {
         servicepacksRe.forEach((appservice, index) => {
-          if(bindservice.name === appservice.name){
-            servicepacksRe.splice(index,1);
+          if (bindservice.name === appservice.name) {
+            servicepacksRe.splice(index, 1);
           }
         });
       });
@@ -497,7 +504,7 @@ export class AppMainComponent implements OnInit {
       var appServices = [];
       var useYn = "N";
       $.each(this.appServicesEntitiesRe, function (key, serviceObj) {
-        if(!isNullOrUndefined(serviceObj.service_plan)) {
+        if (!isNullOrUndefined(serviceObj.service_plan)) {
           $.each(data.list, function (key2, dataobj2) {
             if (serviceObj.service_plan.service.label == dataobj2.servicePackName) {
               useYn = dataobj2.dashboardUseYn;
@@ -547,7 +554,7 @@ export class AppMainComponent implements OnInit {
           appMainservice.getImg(fileName).subscribe(data => {
             let reader = new FileReader();
             reader.addEventListener("load", () => {
-               imgPath = reader.result;
+              imgPath = reader.result;
               $("#col_in1").css({
                 "background": "url(" + imgPath + ") 15px top no-repeat",
                 "position": "relative",
@@ -556,16 +563,12 @@ export class AppMainComponent implements OnInit {
             }, false);
             if (data) {
               reader.readAsDataURL(data);
-            }});
+            }
+          });
         }
       });
     });
   }
-  // getServicesInstances() {
-  //   this.appMainService.getServicesInstances(this.appSummarySpaceGuid).subscribe(data => {
-  //
-  //   });
-  // }
 
   getAppStats(guid: string) {
     this.appMainService.getAppStats(guid).subscribe(data => {
@@ -582,9 +585,9 @@ export class AppMainComponent implements OnInit {
         $.each(data.instances, function (key, dataobj) {
           if (dataobj.stats != null) {
             if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
-            if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + (dataobj.stats.usage.mem) /  (maxmem*1024*1024*1024)  * 100;
-            if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + (dataobj.stats.usage.disk) / (maxdisk* 1024*1024*1024) * 100;
-                    cnt++;
+            if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + (dataobj.stats.usage.mem) / (maxmem * 1024 * 1024 * 1024) * 100;
+            if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + (dataobj.stats.usage.disk) / (maxdisk * 1024 * 1024 * 1024) * 100;
+            cnt++;
           }
         });
         if (cpu > 0) {
@@ -1112,8 +1115,10 @@ export class AppMainComponent implements OnInit {
           requestText: requestText
         };
         appEvents.push(obj);
+        // this.isLoadingCount();
       });
       this.appEventsEntitiesRe = appEvents;
+      this.isLoadingCount();
     });
   }
 
@@ -1135,6 +1140,7 @@ export class AppMainComponent implements OnInit {
           appUserEnv.push(obj);
         });
         this.appEnvUserEntities = appUserEnv;
+        this.isLoadingCount();
       }
 
       if (JSON.stringify(data.system_env_json) != "{}") {
@@ -1151,18 +1157,17 @@ export class AppMainComponent implements OnInit {
       });
       this.appRecentLogs = str;
 
-      // TODO 마지막??
-      this.common.isLoading = false;
+      this.isLoadingCount();
     });
   }
 
   getAlarms(guid: any) {
-    if(!appConfig.monitoring){
+    if (!appConfig.monitoring) {
       return;
     }
-    //TODO 임시
     this.appMainService.getAlarms(guid, this.sltAlaramPageItems, this.sltAlaramPageIndex, this.sltAlaramResourceType, this.sltAlaramAlarmLevel).subscribe(data => {
       this.appAlarmsEntities = data.data;
+      this.isLoadingCount();
     });
   }
 
@@ -1182,7 +1187,7 @@ export class AppMainComponent implements OnInit {
   }
 
   getAlarm(guid: any) {
-    if(!appConfig.monitoring){
+    if (!appConfig.monitoring) {
       return;
     }
     //TODO 임시
@@ -1210,11 +1215,12 @@ export class AppMainComponent implements OnInit {
       } else {
         $("#switch13").attr("checked", false);
       }
+      this.isLoadingCount();
     });
   }
 
   showPopAlarmEditClick() {
-    if(!appConfig.monitoring){
+    if (!appConfig.monitoring) {
       return;
     }
     if ($('#appAlarmEmail').css("color") == "rgb(255, 0, 0)") {
@@ -1226,7 +1232,7 @@ export class AppMainComponent implements OnInit {
   }
 
   editAlarmClick() {
-    if(!appConfig.monitoring){
+    if (!appConfig.monitoring) {
       return;
     }
     if ($("#switch12").is(":checked") == true) {
@@ -1273,7 +1279,7 @@ export class AppMainComponent implements OnInit {
 
   getAutoscaling(guid: any) {
     // TODO 임시
-    if(!appConfig.monitoring){
+    if (!appConfig.monitoring) {
       return;
     }
 
@@ -1290,12 +1296,12 @@ export class AppMainComponent implements OnInit {
       this.appAutoscalingMeasureTimeSec = data.measureTimeSec;
       this.appAutoscalingMemoryMaxThreshold = data.memoryMaxThreshold;
       this.appAutoscalingMemoryMinThreshold = data.memoryMinThreshold;
-      if(data.autoScalingCpuYn === 'Y'){
+      if (data.autoScalingCpuYn === 'Y') {
         $("#autoScalingCpuYn").attr("checked", true);
       } else {
         $("#autoScalingCpuYn").attr("checked", false);
       }
-      if(data.autoScalingMemoryYn === 'Y'){
+      if (data.autoScalingMemoryYn === 'Y') {
         $("#autoScalingMemoryYn").attr("checked", true);
       } else {
         $("#autoScalingMemoryYn").attr("checked", false);
@@ -1312,6 +1318,8 @@ export class AppMainComponent implements OnInit {
       } else {
         $("#switch11").attr("checked", false);
       }
+
+      this.isLoadingCount();
     });
   }
 
@@ -1320,7 +1328,7 @@ export class AppMainComponent implements OnInit {
   }
 
   editAutoscalingClick() {
-    if(!appConfig.monitoring){
+    if (!appConfig.monitoring) {
       return;
     }
     if ($("#switch10").is(":checked") == true) {
@@ -1345,12 +1353,12 @@ export class AppMainComponent implements OnInit {
       cpuMaxThreshold: Number($("#appAutoscalingCpuMaxThreshold").val()),
       memoryMinThreshold: Number($("#appAutoscalingMemoryMinThreshold").val()),
       memoryMaxThreshold: Number($("#appAutoscalingMemoryMaxThreshold").val()),
-      instanceVariationUnit:  Number($("#InstanceIncrementValue").val()),
+      instanceVariationUnit: Number($("#InstanceIncrementValue").val()),
       measureTimeSec: Number($("#appAutoscalingMeasureTimeSec").val()),
       autoScalingOutYn: this.appAutoscalingOutYn,
       autoScalingInYn: this.appAutoscalingInYn,
-      autoScalingCpuYn : $("#autoScalingCpuYn").is(":checked") ? 'Y' : 'N',
-      autoScalingMemoryYn : $("#autoScalingMemoryYn").is(":checked") ? 'Y' : 'N'
+      autoScalingCpuYn: $("#autoScalingCpuYn").is(":checked") ? 'Y' : 'N',
+      autoScalingMemoryYn: $("#autoScalingMemoryYn").is(":checked") ? 'Y' : 'N'
     };
     this.appMainService.updateAutoscaling(params).subscribe(data => {
       if (data) {
@@ -1643,26 +1651,26 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  showPopServiceCredentialsClick(name: string, guid: string, label: string, provide : boolean) {
+  showPopServiceCredentialsClick(name: string, guid: string, label: string, provide: boolean) {
     this.sltServiceUnbindProvide = provide;
-    if(this.sltServiceUnbindProvide){
+    if (this.sltServiceUnbindProvide) {
       this.appMainService.userProvideCredentials(guid).subscribe(data => {
         this.sltServiceUserProvideCredentials = data.List;
-        });
-    }else{
+      });
+    } else {
       this.sltServiceCredentials = [];
       let service = this.sltServiceCredentials;
       $.each(this.appEnvSystemEntities, function (key, dataobj) {
         if (key == label) {
           $.each(dataobj, function (key2, dataobj2) {
-            if (dataobj2.name == name){
+            if (dataobj2.name == name) {
               $.each(Object.getOwnPropertyNames(dataobj2.credentials), function (key2, dataobj3) {
                 let key = dataobj3;
                 let value = dataobj2.credentials[dataobj3];
-                let push = {'key': key, 'value' : dataobj2.credentials[dataobj3]};
+                let push = {'key': key, 'value': dataobj2.credentials[dataobj3]};
                 service.push(push);
               });
-              }
+            }
           });
         }
       });
@@ -1670,7 +1678,7 @@ export class AppMainComponent implements OnInit {
     $("#layerpop_service_credentials").modal("show");
   }
 
-  showPopServiceUnbindClick(name: string, guid: string, provide : boolean) {
+  showPopServiceUnbindClick(name: string, guid: string, provide: boolean) {
     this.sltServiceUnbindName = name;
     this.sltServiceUnbindGuid = guid;
     this.sltServiceUnbindProvide = provide;
@@ -1682,7 +1690,7 @@ export class AppMainComponent implements OnInit {
     this.common.isLoading = true;
 
     let params = {};
-    if(this.sltServiceUnbindProvide){
+    if (this.sltServiceUnbindProvide) {
       this.appMainService.unbindUserProvideService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
         if (data.result) {
           this.common.isLoading = false;
@@ -1693,22 +1701,22 @@ export class AppMainComponent implements OnInit {
           this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceFail + "<br><br>" + data.msg.description, false);
         }
       });
-    } else if (!this.sltServiceUnbindProvide){
-    this.appMainService.unbindService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
-      if (data.result) {
-        this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceSuccess, true);
-        this.showPopAppRestageClick();
-      } else {
-        this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceFail + "<br><br>" + data.msg.description, false);
-      }
-    });
+    } else if (!this.sltServiceUnbindProvide) {
+      this.appMainService.unbindService(this.appGuid, this.sltServiceUnbindGuid, params).subscribe(data => {
+        if (data.result) {
+          this.common.isLoading = false;
+          this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceSuccess, true);
+          this.showPopAppRestageClick();
+        } else {
+          this.common.isLoading = false;
+          this.common.alertMessage(this.translateEntities.alertLayer.unbindServiceFail + "<br><br>" + data.msg.description, false);
+        }
+      });
     }
   }
 
   getCpuChart() {
-    if(!appConfig.monitoring){
+    if (!appConfig.monitoring) {
       return;
     }
     var speedCanvas = document.getElementById("speedChart");
@@ -1731,46 +1739,46 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if(!isNullOrUndefined(dataobj[i].data.data)){
-          if (dataobj[i].data.data[0].data == null) {
-            continue;
-          }
+          if (!isNullOrUndefined(dataobj[i].data.data)) {
+            if (dataobj[i].data.data[0].data == null) {
+              continue;
+            }
 
-          var timeArray = new Array();
+            var timeArray = new Array();
 
-          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
-            var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDay();
-            var hour = date.getHours();
-            var min = date.getMinutes();
-            var sec = date.getSeconds();
-            var retVal = (month < 10 ? "0" + month : month) + "/"
-              + (day < 10 ? "0" + day : day) + " "
-              + (hour < 10 ? "0" + hour : hour) + ":"
-              + (min < 10 ? "0" + min : min);
+            for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
+              var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
+              var year = date.getFullYear();
+              var month = date.getMonth() + 1;
+              var day = date.getDay();
+              var hour = date.getHours();
+              var min = date.getMinutes();
+              var sec = date.getSeconds();
+              var retVal = (month < 10 ? "0" + month : month) + "/"
+                + (day < 10 ? "0" + day : day) + " "
+                + (hour < 10 ? "0" + hour : hour) + ":"
+                + (min < 10 ? "0" + min : min);
 
-            // var retVal =   year + "-" + (month < 10 ? "0" + month : month) + "-"
-            //   + (day < 10 ? "0" + day : day) + " "
-            //   + (hour < 10 ? "0" + hour : hour) + ":"
-            //   + (min < 10 ? "0" + min : min) + ":"
-            //   + (sec < 10 ? "0" + sec : sec);
+              // var retVal =   year + "-" + (month < 10 ? "0" + month : month) + "-"
+              //   + (day < 10 ? "0" + day : day) + " "
+              //   + (hour < 10 ? "0" + hour : hour) + ":"
+              //   + (min < 10 ? "0" + min : min) + ":"
+              //   + (sec < 10 ? "0" + sec : sec);
 
-            timeArray[j] = dataobj[i].data.data[0].data[j].time;
-          }
+              timeArray[j] = dataobj[i].data.data[0].data[j].time;
+            }
 
-          if (levelsArray.length == 0) {
-            levelsArray = timeArray;
-          } else {
-            if (levelsArray.length > timeArray.length) {
-
-            } else if (levelsArray.length < timeArray.length) {
-              levelsArray = new Array();
+            if (levelsArray.length == 0) {
               levelsArray = timeArray;
+            } else {
+              if (levelsArray.length > timeArray.length) {
+
+              } else if (levelsArray.length < timeArray.length) {
+                levelsArray = new Array();
+                levelsArray = timeArray;
+              }
             }
           }
-        }
         }
       });
 
@@ -1794,59 +1802,59 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if(!isNullOrUndefined(dataobj[i].data.data)){
+          if (!isNullOrUndefined(dataobj[i].data.data)) {
             if (dataobj[i].data.data[0].data == null) {
               continue;
             }
 
 
-          var keyValueObject = new Object;
-          keyValueObject = levelsObj;
-          var valueArray = new Array();
-          var valueObject = new Object();
+            var keyValueObject = new Object;
+            keyValueObject = levelsObj;
+            var valueArray = new Array();
+            var valueObject = new Object();
 
-          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
-            keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
-          }
-          // console.log(keyValueObject);
+            for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
+              keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
+            }
+            // console.log(keyValueObject);
 
-          var k = 0;
-          $.each(keyValueObject, function (key2, dataobj2) {
-            valueArray[k] = keyValueObject[key2];
-            k++;
-          });
+            var k = 0;
+            $.each(keyValueObject, function (key2, dataobj2) {
+              valueArray[k] = keyValueObject[key2];
+              k++;
+            });
 
-          var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
+            var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
 
-          valueObject["label"] = "Cpu_" + i;
-          valueObject["data"] = valueArray;
-          valueObject["lineTension"] = 0;
-          valueObject["fill"] = false;
-          valueObject["borderWidth"] = 0;
-          valueObject["borderColor"] = color[i];
-          valueObject["backgroundColor"] = color[i];
-          valueObject["pointBorderColor"] = color[i];
-          valueObject["pointBackgroundColor"] = color[i];
-          valueObject["pointRadius"] = 0;
-          valueObject["pointHoverRadius"] = 5;
-          valueObject["pointHitRadius"] = 10;
-          valueObject["pointBorderWidth"] = 0;
-          valueObject["pointStyle"] = "rectRounded";
+            valueObject["label"] = "Cpu_" + i;
+            valueObject["data"] = valueArray;
+            valueObject["lineTension"] = 0;
+            valueObject["fill"] = false;
+            valueObject["borderWidth"] = 0;
+            valueObject["borderColor"] = color[i];
+            valueObject["backgroundColor"] = color[i];
+            valueObject["pointBorderColor"] = color[i];
+            valueObject["pointBackgroundColor"] = color[i];
+            valueObject["pointRadius"] = 0;
+            valueObject["pointHoverRadius"] = 5;
+            valueObject["pointHitRadius"] = 10;
+            valueObject["pointBorderWidth"] = 0;
+            valueObject["pointStyle"] = "rectRounded";
 
-          if (sltChartInstancesValue == "All") {
-            valueObject["hidden"] = false;
-          } else {
-            if (dataobj[i].name == Number(sltChartInstancesValue)) {
+            if (sltChartInstancesValue == "All") {
               valueObject["hidden"] = false;
             } else {
-              valueObject["hidden"] = true;
+              if (dataobj[i].name == Number(sltChartInstancesValue)) {
+                valueObject["hidden"] = false;
+              } else {
+                valueObject["hidden"] = true;
+              }
             }
+
+            datasetsArray[i] = valueObject;
+
+            // console.log(datasetsArray);
           }
-
-          datasetsArray[i] = valueObject;
-
-          // console.log(datasetsArray);
-        }
         }
       });
 
@@ -1900,7 +1908,7 @@ export class AppMainComponent implements OnInit {
   }
 
   getMemoryChart() {
-    if(!appConfig.monitoring){
+    if (!appConfig.monitoring) {
       return;
     }
     var speedCanvas2 = document.getElementById("speedChart2");
@@ -1923,41 +1931,41 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if(!isNullOrUndefined(dataobj[i].data.data)){
+          if (!isNullOrUndefined(dataobj[i].data.data)) {
             if (dataobj[i].data.data[0].data == null) {
               continue;
             }
 
 
-          var timeArray = new Array();
+            var timeArray = new Array();
 
-          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
-            var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDay();
-            var hour = date.getHours();
-            var min = date.getMinutes();
-            var sec = date.getSeconds();
-            var retVal = (month < 10 ? "0" + month : month) + "/"
-              + (day < 10 ? "0" + day : day) + " "
-              + (hour < 10 ? "0" + hour : hour) + ":"
-              + (min < 10 ? "0" + min : min);
+            for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
+              var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
+              var year = date.getFullYear();
+              var month = date.getMonth() + 1;
+              var day = date.getDay();
+              var hour = date.getHours();
+              var min = date.getMinutes();
+              var sec = date.getSeconds();
+              var retVal = (month < 10 ? "0" + month : month) + "/"
+                + (day < 10 ? "0" + day : day) + " "
+                + (hour < 10 ? "0" + hour : hour) + ":"
+                + (min < 10 ? "0" + min : min);
 
-            timeArray[j] = dataobj[i].data.data[0].data[j].time;
-          }
+              timeArray[j] = dataobj[i].data.data[0].data[j].time;
+            }
 
-          if (levelsArray.length == 0) {
-            levelsArray = timeArray;
-          } else {
-            if (levelsArray.length > timeArray.length) {
-
-            } else if (levelsArray.length < timeArray.length) {
-              levelsArray = new Array();
+            if (levelsArray.length == 0) {
               levelsArray = timeArray;
+            } else {
+              if (levelsArray.length > timeArray.length) {
+
+              } else if (levelsArray.length < timeArray.length) {
+                levelsArray = new Array();
+                levelsArray = timeArray;
+              }
             }
           }
-        }
         }
       });
 
@@ -1981,59 +1989,59 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if(!isNullOrUndefined(dataobj[i].data.data)){
+          if (!isNullOrUndefined(dataobj[i].data.data)) {
             if (dataobj[i].data.data[0].data == null) {
               continue;
             }
 
 
-          var keyValueObject = new Object;
-          keyValueObject = levelsObj;
-          var valueArray = new Array();
-          var valueObject = new Object();
+            var keyValueObject = new Object;
+            keyValueObject = levelsObj;
+            var valueArray = new Array();
+            var valueObject = new Object();
 
-          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
-            keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
-          }
-          // console.log(keyValueObject);
+            for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
+              keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
+            }
+            // console.log(keyValueObject);
 
-          var k = 0;
-          $.each(keyValueObject, function (key2, dataobj2) {
-            valueArray[k] = keyValueObject[key2];
-            k++;
-          });
+            var k = 0;
+            $.each(keyValueObject, function (key2, dataobj2) {
+              valueArray[k] = keyValueObject[key2];
+              k++;
+            });
 
-          var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
+            var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
 
-          valueObject["label"] = "Memory_" + i;
-          valueObject["data"] = valueArray;
-          valueObject["lineTension"] = 0;
-          valueObject["fill"] = false;
-          valueObject["borderWidth"] = 0;
-          valueObject["borderColor"] = color[i];
-          valueObject["backgroundColor"] = color[i];
-          valueObject["pointBorderColor"] = color[i];
-          valueObject["pointBackgroundColor"] = color[i];
-          valueObject["pointRadius"] = 0;
-          valueObject["pointHoverRadius"] = 5;
-          valueObject["pointHitRadius"] = 10;
-          valueObject["pointBorderWidth"] = 0;
-          valueObject["pointStyle"] = "rectRounded";
+            valueObject["label"] = "Memory_" + i;
+            valueObject["data"] = valueArray;
+            valueObject["lineTension"] = 0;
+            valueObject["fill"] = false;
+            valueObject["borderWidth"] = 0;
+            valueObject["borderColor"] = color[i];
+            valueObject["backgroundColor"] = color[i];
+            valueObject["pointBorderColor"] = color[i];
+            valueObject["pointBackgroundColor"] = color[i];
+            valueObject["pointRadius"] = 0;
+            valueObject["pointHoverRadius"] = 5;
+            valueObject["pointHitRadius"] = 10;
+            valueObject["pointBorderWidth"] = 0;
+            valueObject["pointStyle"] = "rectRounded";
 
-          if (sltChartInstancesValue == "All") {
-            valueObject["hidden"] = false;
-          } else {
-            if (dataobj[i].name == Number(sltChartInstancesValue)) {
+            if (sltChartInstancesValue == "All") {
               valueObject["hidden"] = false;
             } else {
-              valueObject["hidden"] = true;
+              if (dataobj[i].name == Number(sltChartInstancesValue)) {
+                valueObject["hidden"] = false;
+              } else {
+                valueObject["hidden"] = true;
+              }
             }
+
+            datasetsArray[i] = valueObject;
+
+            // console.log(datasetsArray);
           }
-
-          datasetsArray[i] = valueObject;
-
-          // console.log(datasetsArray);
-        }
         }
       });
 
@@ -2087,7 +2095,7 @@ export class AppMainComponent implements OnInit {
   }
 
   getNetworkByte() {
-    if(!appConfig.monitoring){
+    if (!appConfig.monitoring) {
       return;
     }
     var speedCanvas3 = document.getElementById("speedChart3");
@@ -2110,41 +2118,41 @@ export class AppMainComponent implements OnInit {
 
       $.each(data, function (key, dataobj) {
         for (var i = 0; i < dataobj.length; i++) {
-          if(!isNullOrUndefined(dataobj[i].data.data)){
+          if (!isNullOrUndefined(dataobj[i].data.data)) {
             if (dataobj[i].data.data[0].data == null) {
               continue;
             }
 
 
-          var timeArray = new Array();
+            var timeArray = new Array();
 
-          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
-            var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDay();
-            var hour = date.getHours();
-            var min = date.getMinutes();
-            var sec = date.getSeconds();
-            var retVal = (month < 10 ? "0" + month : month) + "/"
-              + (day < 10 ? "0" + day : day) + " "
-              + (hour < 10 ? "0" + hour : hour) + ":"
-              + (min < 10 ? "0" + min : min);
+            for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
+              var date = new Date(dataobj[i].data.data[0].data[j].time * 1000);
+              var year = date.getFullYear();
+              var month = date.getMonth() + 1;
+              var day = date.getDay();
+              var hour = date.getHours();
+              var min = date.getMinutes();
+              var sec = date.getSeconds();
+              var retVal = (month < 10 ? "0" + month : month) + "/"
+                + (day < 10 ? "0" + day : day) + " "
+                + (hour < 10 ? "0" + hour : hour) + ":"
+                + (min < 10 ? "0" + min : min);
 
-            timeArray[j] = dataobj[i].data.data[0].data[j].time;
-          }
+              timeArray[j] = dataobj[i].data.data[0].data[j].time;
+            }
 
-          if (levelsArray.length == 0) {
-            levelsArray = timeArray;
-          } else {
-            if (levelsArray.length > timeArray.length) {
-
-            } else if (levelsArray.length < timeArray.length) {
-              levelsArray = new Array();
+            if (levelsArray.length == 0) {
               levelsArray = timeArray;
+            } else {
+              if (levelsArray.length > timeArray.length) {
+
+              } else if (levelsArray.length < timeArray.length) {
+                levelsArray = new Array();
+                levelsArray = timeArray;
+              }
             }
           }
-        }
         }
       });
 
@@ -2173,53 +2181,53 @@ export class AppMainComponent implements OnInit {
               continue;
             }
 
-          var keyValueObject = new Object;
-          keyValueObject = levelsObj;
-          var valueArray = new Array();
-          var valueObject = new Object();
+            var keyValueObject = new Object;
+            keyValueObject = levelsObj;
+            var valueArray = new Array();
+            var valueObject = new Object();
 
-          for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
-            keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
-          }
-          // console.log(keyValueObject);
+            for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
+              keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
+            }
+            // console.log(keyValueObject);
 
-          var k = 0;
-          $.each(keyValueObject, function (key2, dataobj2) {
-            valueArray[k] = keyValueObject[key2];
-            k++;
-          });
+            var k = 0;
+            $.each(keyValueObject, function (key2, dataobj2) {
+              valueArray[k] = keyValueObject[key2];
+              k++;
+            });
 
-          var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
+            var color = ["#d7dee6", "#64afab", "#608848", "#4ca914", "#ce5e8c", "#fb0d6f", "#53b16c", "#d109f3", "#d2afd8", "#6b0a55"];
 
-          valueObject["label"] = "Network_" + i;
-          valueObject["data"] = valueArray;
-          valueObject["lineTension"] = 0;
-          valueObject["fill"] = false;
-          valueObject["borderWidth"] = 0;
-          valueObject["borderColor"] = color[i];
-          valueObject["backgroundColor"] = color[i];
-          valueObject["pointBorderColor"] = color[i];
-          valueObject["pointBackgroundColor"] = color[i];
-          valueObject["pointRadius"] = 0;
-          valueObject["pointHoverRadius"] = 5;
-          valueObject["pointHitRadius"] = 10;
-          valueObject["pointBorderWidth"] = 0;
-          valueObject["pointStyle"] = "rectRounded";
+            valueObject["label"] = "Network_" + i;
+            valueObject["data"] = valueArray;
+            valueObject["lineTension"] = 0;
+            valueObject["fill"] = false;
+            valueObject["borderWidth"] = 0;
+            valueObject["borderColor"] = color[i];
+            valueObject["backgroundColor"] = color[i];
+            valueObject["pointBorderColor"] = color[i];
+            valueObject["pointBackgroundColor"] = color[i];
+            valueObject["pointRadius"] = 0;
+            valueObject["pointHoverRadius"] = 5;
+            valueObject["pointHitRadius"] = 10;
+            valueObject["pointBorderWidth"] = 0;
+            valueObject["pointStyle"] = "rectRounded";
 
-          if (sltChartInstancesValue == "All") {
-            valueObject["hidden"] = false;
-          } else {
-            if (dataobj[i].name == Number(sltChartInstancesValue)) {
+            if (sltChartInstancesValue == "All") {
               valueObject["hidden"] = false;
             } else {
-              valueObject["hidden"] = true;
+              if (dataobj[i].name == Number(sltChartInstancesValue)) {
+                valueObject["hidden"] = false;
+              } else {
+                valueObject["hidden"] = true;
+              }
             }
+
+            datasetsArray[i] = valueObject;
+
+            // console.log(datasetsArray);
           }
-
-          datasetsArray[i] = valueObject;
-
-          // console.log(datasetsArray);
-        }
         }
       });
 
@@ -2294,7 +2302,7 @@ export class AppMainComponent implements OnInit {
     window.open('/tailLogs?name=' + this.appName + '&org=' + this.orgName + '&space=' + this.spaceName + '&guid=' + this.appGuid + '', '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
-  InitLaaSView(){
+  InitLaaSView() {
     this.appMainService.getCodeMax('LAAS').subscribe(data => {
       data.list.some(r => {
         if (r.key === 'laas_base_url') {
@@ -2306,15 +2314,16 @@ export class AppMainComponent implements OnInit {
     });
   }
 
-  showWindowLaaS(){
-    window.open(this.sltLaaSUrl+'/'+this.appGuid, '_blank', 'location=no, directories=no width=1000, height=700');
+  showWindowLaaS() {
+    window.open(this.sltLaaSUrl + '/' + this.appGuid, '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
   showWindowAppLink(urlLink: string) {
     window.open('http://' + urlLink + '', 'aaa');
   }
-  getWindowAppLink(urlLink : string) : string{
-    return 'http://'+urlLink+'';
+
+  getWindowAppLink(urlLink: string): string {
+    return 'http://' + urlLink + '';
   }
 
 }
