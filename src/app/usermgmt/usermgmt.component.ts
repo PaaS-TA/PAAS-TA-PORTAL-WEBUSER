@@ -162,12 +162,10 @@ export class UsermgmtComponent implements OnInit {
     };
 
     this.common.isLoading = true;
-    console.log(params);
     this.userMgmtService.userSave(this.common.getUserid(), params).subscribe(data => {
       if (data === 1) {
         this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccess, true);
         this.common.isLoading = false;
-        console.log(data);
         this.common.setUserName(this.userName);
         return this.userInfo();
       } else {
@@ -305,10 +303,8 @@ export class UsermgmtComponent implements OnInit {
     } else {
       this.regions.forEach(region => {
         let result = region['zuulUrl'];
-        console.log("result:" + result);
         let param = {id: this.user['userId'], password: this.password_now};
         this.common.doPost2(result+'/portalapi/login', param, '').subscribe(data => {
-          console.log(data);
           if (data != null) {
               this.regionPassword();
           }
@@ -327,7 +323,6 @@ export class UsermgmtComponent implements OnInit {
       password: this.password_new
     };
     this.userMgmtService.updateUserPassword(this.common.getUserid(), params).subscribe(data => {
-      console.log(data);
       if (data.result && this.isPassword && this.isRePassword) {
         this.common.saveToken(data.token['token_type'], data.token['access_token'], data.token['refresh_token'], data.token['expires_in'], data.token['scope'], 'OAUTH');
         this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
@@ -403,7 +398,6 @@ export class UsermgmtComponent implements OnInit {
     let value = this.address;
 
     if (this.address.length < 256) {
-      console.log(this.address.length);
       this.isAddress = true;
       return true;
     } else {
@@ -415,14 +409,12 @@ export class UsermgmtComponent implements OnInit {
   orgInit() {
     this.userMgmtService.getOrgList().subscribe(data => {
       this.orgs = data.resources;
-      console.log(this.orgs);
     })
   }
 
   popclickOrg(guid: string, name: string) {
     this.selectedOrgGuid = guid;
     this.selectedOrgName = name;
-    console.log("::GUID::" + guid + "::NAME" + name);
   }
 
   cancelOrg(orgId: string) {
@@ -453,7 +445,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   userAllDelete() {
-    console.log(":: delete start ::" + " username : " + this.user['userId'] + "  " + "password :" + this.password_check + "  " + "userGuid :" + this.common.getUserGuid() + "  " + "Guid :" + this.common.getUserid());
     this.common.isLoading = true;
     this.apiLogin(this.username, this.password).subscribe(data => {
       // this.log.debug(data['user_name']);
@@ -476,7 +467,6 @@ export class UsermgmtComponent implements OnInit {
 
   apiLogin(username: string, password: string) {
     this.common.isLoading = true;
-    console.log(":: api Login ::" + " username : " + this.user['userId'] + "  " + "password :" + this.password_check + "  " + "userGuid :" + this.common.getUserGuid() + "  " + "Guid :" + this.common.getUserid());
     let params = {
       id: this.user['userId'],
       password: this.password_check
@@ -502,7 +492,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('ngOnInit fired');
 
     $(document).ready(() => {
       //TODO 임시로...

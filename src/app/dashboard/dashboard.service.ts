@@ -105,7 +105,6 @@ export class DashboardService {
 
   // @GetMapping(V2_URL + "/orgs")
   getOrgList() {
-    console.log(this.commonService.getToken());
     return this.commonService.doGet('/portalapi/' + this.apiversion + '/orgs', this.commonService.getToken()).map((res: any) => {
       return res;
     });

@@ -352,7 +352,6 @@ export class DashboardComponent implements OnInit {
       this.servicesEntities.forEach(service => {
         service['binding'] = false;
       })
-      console.log(this.servicesEntities);
       this.thumnail();
     }, () => {
       this.commonService.isLoading = false;

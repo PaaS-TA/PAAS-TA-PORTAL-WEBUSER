@@ -31,7 +31,6 @@ export class CatalogComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log("실행");
     let name = this.catalogService.classname;
     let check = this.catalogService.check;
     let service = this.catalogService;

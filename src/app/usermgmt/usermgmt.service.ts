@@ -14,8 +14,6 @@ export class UsermgmtService {
   constructor(
     private http: HttpClient, private common: CommonService, private logger: NGXLogger,
     private log: NGXLogger, private sec: SecurityService) {
-    console.log(this.common.getToken());
-    console.log(this.common.getUserid());
   }
 
   apiversion = appConfig['apiversion'];

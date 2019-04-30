@@ -86,7 +86,6 @@ export class OrgProduceComponent implements OnInit {
         a.entity.guid =  a.metadata.guid;
         this.orgquotalist.push(a.entity);
       });
-      console.log(this.orgquotalist);
       this.aquota = this.orgquotalist[0];
       this.orgService.isLoding(false);
     }, error => {

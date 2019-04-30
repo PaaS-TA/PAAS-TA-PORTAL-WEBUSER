@@ -317,6 +317,7 @@ export class CommonService {
   }
 
   public getToken(): string {
+
     const cf_expires = sessionStorage.getItem('expire_date');
     const cf_token = this.getTokenWithoutRefresh();
 
@@ -557,11 +558,6 @@ export class CommonService {
       $(".alertLayer").css('border-left', '4px solid #cb3d4a');
     }
     $(".alertLayer").addClass("moveAlert");
-
     setTimeout(() => $(".alertLayer").removeClass("moveAlert"), 3000);
-
-    // setInterval(function(){
-    //   $(".alertLayer").removeClass("moveAlert");
-    // }, 5000);
   }
 }

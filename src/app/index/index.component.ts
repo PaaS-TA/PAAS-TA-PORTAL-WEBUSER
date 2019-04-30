@@ -35,7 +35,6 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    console.log("삭제실행");
     $('#fp-nav').remove();
   }
 

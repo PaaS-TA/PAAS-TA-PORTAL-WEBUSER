@@ -175,7 +175,6 @@ export class AppMainComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("ngOnInit in~");
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
@@ -422,7 +421,6 @@ export class AppMainComponent implements OnInit {
         codedata.list.some(r => {
           if(r.key==='max_size'){
             if(r.value > data.quota.memoryLimit){
-              console.log(data.quota.memoryLimit);
               this.appSummaryMemoryMax = data.quota.memoryLimit/1024;
             } else {
             this.appSummaryMemoryMax = r.value/1024;
