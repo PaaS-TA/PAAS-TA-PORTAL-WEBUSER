@@ -19,26 +19,26 @@ export class UsermgmtService {
   apiversion = appConfig['apiversion'];
 
   userinfo(username: string) {
-    return this.common.doGet('/commonapi/' + this.apiversion + ' /user/' + username, this.common.getToken()).map((res: Response) => {
+    return this.common.doGet('/commonapi/v2/user/' + username, this.common.getToken()).map((res: Response) => {
       return res['User'];
     });
   }
 
   userSave(userId: string, param: any) {
-    return this.common.doPut('/commonapi/' + this.apiversion + ' /user/' + userId, param, this.common.getToken()).map((res: Response) => {
+    return this.common.doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {
       return res['result'];
     })
   }
 
   updateUserPassword(userId: string, param: any) {
-    return this.common.doPut('/portalapi/' + this.apiversion + ' /users/' + encodeURI(userId) + '/password/update', param, this.common.getToken()).map((res: any) => {
+    return this.common.doPut('/portalapi/' + this.apiversion + '/users/' + encodeURI(userId) + '/password/update', param, this.common.getToken()).map((res: any) => {
       return res;
     });
   }
 
   // @DeleteMapping(V2_URL + "/user/{guid}/all")  ::CF&DB
   userAllDelete(guid: string, param: any) {
-    return this.common.doDelete('/commonapi/' + this.apiversion + ' /user/' + guid + '/all', '', this.common.getToken()).map((res: Response) => {
+    return this.common.doDelete('/commonapi/v2/user/' + guid + '/all', '', this.common.getToken()).map((res: Response) => {
       this.log.debug(res);
       return res;
     });
@@ -46,7 +46,7 @@ export class UsermgmtService {
 
   // storageApiUrl + "/v2/" + storageApiType + '/';
   photoRegistration(params: any) {
-    return this.common.doFilePost('/storageapi/' + this.apiversion + ' /swift/', params, '').map((res: Response) => {
+    return this.common.doFilePost('/storageapi/' + this.apiversion + '/swift/', params, '').map((res: Response) => {
       return res;
     }).do(console.log);
   }
@@ -58,7 +58,7 @@ export class UsermgmtService {
   }
 
   getOrgList() {
-    return this.common.doGet('/portalapi/' + this.apiversion + ' /orgs', this.common.getToken()).map((res: Response) => {
+    return this.common.doGet('/portalapi/' + this.apiversion + '/orgs', this.common.getToken()).map((res: Response) => {
       return res;
     }).do(console.log);
   }
