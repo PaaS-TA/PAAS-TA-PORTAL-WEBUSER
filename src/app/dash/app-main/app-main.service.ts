@@ -38,7 +38,7 @@ export class AppMainService {
   }
 
   getAppStats(guid: string) {
-    return this.commonService.doGet('/portalapi/' + this.apiversion + '/apps/' + this.apiversion + '/stats', this.getToken()).map((res: any) => {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/apps/' + guid + '/stats', this.getToken()).map((res: any) => {
       return res;
     });
   }

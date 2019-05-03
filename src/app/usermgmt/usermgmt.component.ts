@@ -423,12 +423,13 @@ export class UsermgmtComponent implements OnInit {
       let param = {
         userId: this.common.getUserGuid()
       }
-      this.deleteOrg('/portalapi/' + this.apiversion + ' /orgs/' + orgId + '/member', param).subscribe(data => {
+      this.deleteOrg('/portalapi/' + this.apiversion + '/orgs/' + orgId + '/member', param).subscribe(data => {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
         this.userMgmtService.getOrgList().subscribe(data => {
           this.orgs = data.resources;
         })
       }, error => {
+        console.log(error);
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
       }, () => {
         this.common.isLoading = false;
