@@ -113,8 +113,10 @@ export class SecurityService {
     }).subscribe(data => {
       this.common.saveCfUserInfo(data['user_id'], data['user_name'], data['name'], data['given_name'], data['family_name'],
         data['email'], data['phone_number'], data['exp'], data['previous_logon_time']);
-      this.doUserInfo();
+      // this.doUserInfo();
+      this.doUserInfoProvider(data['user_name']);
     }, error => {
+      this.log.debug("Error()");
       this.moveErrLogin();
     });
   }
@@ -137,11 +139,13 @@ export class SecurityService {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
     }).subscribe(data => {
+      this.log.debug("Data :: " + data);
       this.common.saveCfUserInfo(data['user_id'], data['user_name'], data['name'], data['given_name'], data['family_name'],
         data['email'], data['phone_number'], data['exp'], data['previous_logon_time']);
       this.doUserInfoProvider(data['user_name']);
     }, error => {
-      this.moveErrLogin();
+      this.log.debug(error);
+      // this.moveErrLogin();
     });
   }
 
@@ -180,7 +184,10 @@ export class SecurityService {
   /*
    * DB에서 사용자 정보를 추출 - 공통
    */
-  doUserInfoProvider(userId: string) {
+   doUserInfoProvider(userId: string) {
+
+    this.log.debug("doUserInfoProvider");
+
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
     return this.common.doGet(appConfig['userinfoUrl'] + '/' + userId, this.common.getToken()).retryWhen(error => {
@@ -225,6 +232,7 @@ export class SecurityService {
    * 모든 로그인 방식의 제일 마지막 - 공통
    */
   saveUserDB(userId: string) {
+    this.log.debug("saveUserDB()");
     this.common.doGet('commonapi/v2/user/' + userId + '/uaa', this.common.getToken()).subscribe(data => {
       let params = {
         userId: userId,

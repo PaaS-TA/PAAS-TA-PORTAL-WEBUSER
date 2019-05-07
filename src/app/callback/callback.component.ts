@@ -27,7 +27,8 @@ export class CallbackComponent implements OnInit {
 
   callback() {
     if (this.commonService.getToken() != null) {
-      this.sec.doUserInfo();
+      // this.sec.doUserInfo();
+      this.sec.doCheckToken();
     } else {
       this.route.queryParams.subscribe(params => {
         this.commonService.isLoading = false;
