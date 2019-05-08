@@ -30,6 +30,14 @@ export class UsermgmtService {
     })
   }
 
+
+  orgMembers(orgId: string) {
+    return this.common.doGet('/portalapi/' + this.apiversion + '/orgs/' + encodeURI(orgId) + '/member',  this.common.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
+
   updateUserPassword(userId: string, param: any) {
     return this.common.doPut('/portalapi/' + this.apiversion + '/users/' + encodeURI(userId) + '/password/update', param, this.common.getToken()).map((res: any) => {
       return res;
