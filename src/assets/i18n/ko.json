@@ -515,6 +515,7 @@
       "changeQuotaFail": "할당량 수정이 실패 하였습니다.",
       "memberCancelSuccess": "맴버 취소가 완료되었습니다.",
       "memberCancelFail": "맴버 취소를 실패 하였습니다.",
+      "memberCancelFail2": "ORG에 멤버가 없는 관계로 삭제할수 없습니다. ORG를 삭제하세요.",
       "sendEmailSuccess": "사용자를 초대완료 하였습니다.",
       "sendEmailFail": "사용자 초대가 실패 하였습니다."
     }

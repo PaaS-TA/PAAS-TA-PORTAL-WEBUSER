@@ -361,14 +361,20 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
   }
 
   memberCancel() {
-    this.common.isLoading = true;
-    this.orgMainService.delMemberCancel(this.sltOrgGuid, this.sltUserGuid).subscribe(data => {
-      this.common.alertMessage(this.translateEntities.alertLayer.memberCancelSuccess, true);
-    }, error => {
-      this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail, true);
-    }, () => {
-      this.common.isLoading = false;
-    });
+    let users =  this.orgsDetailEntities.userRoles.user_roles;
+    if(users.length > 1){
+      this.common.isLoading = true;
+      this.orgMainService.delMemberCancel(this.sltOrgGuid, this.sltUserGuid).subscribe(data => {
+        this.common.alertMessage(this.translateEntities.alertLayer.memberCancelSuccess, true);
+      }, error => {
+        this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail, true);
+      }, () => {
+        this.common.isLoading = false;
+      });
+    }else{
+      this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail2, true);
+    }
+
   }
 
   cancelMemberSetOrgRole() {

@@ -513,6 +513,7 @@
       "changeQuotaFail": "Quota modification failed.",
       "memberCancelSuccess": "Unsubscribing is complete.",
       "memberCancelFail": "Failed to cancel the member.",
+      "memberCancelFail2": "Can not delete because ORG has no members. Remove the ORG.",
       "sendEmailSuccess": "You have successfully invited people.",
       "sendEmailFail": "User invitation failed."
     }

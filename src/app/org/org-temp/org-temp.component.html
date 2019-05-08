@@ -21,18 +21,24 @@
           <th>
             <i class="fas fa-edit"></i>
           </th>
-          <th (click)="getUserSpaceRoles(orgsDetailEntities, space.metadata.guid, space.entity.name)"><i class="fas fa-file" style="color: #409ab2"></i></th>
-          <th style="width: 30px" data-toggle="modal" (click)="showPopDeleteSpaceClick(orgsDetailGuid, space.metadata.guid, space.entity.name)"><i class="fas fa-trash-alt"></i></th>
+          <th (click)="getUserSpaceRoles(orgsDetailEntities, space.metadata.guid, space.entity.name)"><i
+            class="fas fa-file" style="color: #409ab2"></i></th>
+          <th style="width: 30px" data-toggle="modal"
+              (click)="showPopDeleteSpaceClick(orgsDetailGuid, space.metadata.guid, space.entity.name)"><i
+            class="fas fa-trash-alt"></i></th>
         </tr>
         <tr class="on">
           <td colspan="4">
             <div class="">
               <div class="account_table_in">
                 <span>{{ 'orgMain.changeName' | translate }}</span>
-                <input type="text" value="{{space.entity.name}}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)"
-                       (keyup.enter)="showPopModifySpaceNameClick(space.metadata.guid)" [id]="'modifySpaceName_'+space.metadata.guid" />
+                <input type="text" value="{{space.entity.name}}" (keyup)="replaceInvalidateString($event)"
+                       (change)="replaceInvalidateString($event)"
+                       (keyup.enter)="showPopModifySpaceNameClick(space.metadata.guid)"
+                       [id]="'modifySpaceName_'+space.metadata.guid"/>
                 <div class="">
-                  <button class="btns6 colors4" (click)="showPopModifySpaceNameClick(space.metadata.guid)">{{ 'orgMain.change' | translate }}</button>
+                  <button class="btns6 colors4"
+                          (click)="showPopModifySpaceNameClick(space.metadata.guid)">{{ 'orgMain.change' | translate }}</button>
                   <button class="btns6 colors5 btns_sw">{{ 'orgMain.cancel' | translate }}</button>
                 </div>
               </div>
@@ -63,7 +69,8 @@
           <td><p>{{domain.entity.name}}</p></td>
           <th><i class="fas fa-link"></i></th>
         </tr>
-        <tr *ngIf="(domain.metadata.url.indexOf('shared_domains') < 0) && (orgsDetailGuid == domain.entity.owning_organization_guid)">
+        <tr
+          *ngIf="(domain.metadata.url.indexOf('shared_domains') < 0) && (orgsDetailGuid == domain.entity.owning_organization_guid)">
           <td><p>{{domain.entity.name}}</p></td>
           <th>
             <i class="fas fa-trash-alt" (click)="showPopDelDomainClick(orgsDetailGuid, domain.entity.name)"></i>
@@ -99,42 +106,64 @@
       </thead>
       <tbody>
       <ng-container *ngFor='let userRole of orgsDetailEntities.userRoles.user_roles; let j = index'>
-        <tr>
-          <td>{{userRole.user_email}}</td>
-          <td>
-            <input id="check1_{{orgsDetailIndex}}_{{j}}" type="checkbox" [checked]="userRole.roles.indexOf('OrgManager') > -1" (click)="showMemberSetOrgRole(userRole, orgsDetailEntities.userRoles.user_roles, orgsDetailGuid, 'OrgManager', 'check1_'+orgsDetailIndex+'_'+j)"/>
-            <label for="check1_{{orgsDetailIndex}}_{{j}}">OrgManager({{ 'orgMain.orgAdmin' | translate }})</label>
-          </td>
-          <td>
-            <input id="check2_{{orgsDetailIndex}}_{{j}}" type="checkbox" [checked]="userRole.roles.indexOf('BillingManager') > -1" (click)="showMemberSetOrgRole(userRole, orgsDetailEntities.userRoles.user_roles, orgsDetailGuid, 'BillingManager', 'check2_'+orgsDetailIndex+'_'+j)"/>
-            <label for="check2_{{orgsDetailIndex}}_{{j}}">BillingManager({{ 'orgMain.orgBillingManager' | translate }})</label>
-          </td>
-          <td>
-            <input id="check3_{{orgsDetailIndex}}_{{j}}" type="checkbox" [checked]="userRole.roles.indexOf('OrgAuditor') > -1" (click)="showMemberSetOrgRole(userRole, orgsDetailEntities.userRoles.user_roles, orgsDetailGuid, 'OrgAuditor','check3_'+orgsDetailIndex+'_'+j)"/>
-            <label for="check3_{{orgsDetailIndex}}_{{j}}">OrgAuditor({{ 'orgMain.orgObserver' | translate }})</label>
-          </td>
-          <th><button class="btns4 colors8" (click)="showMemberCancel(userRole, orgsDetailEntities.userRoles.user_roles, orgsDetailGuid)">{{ 'orgMain.cancelMember' | translate }}</button></th>
-          <th></th>
-        </tr>
+        <ng-container *ngIf="userRole.user_email !== null">
+          <tr>
+            <td>{{userRole.user_email}}</td>
+            <td>
+              <input id="check1_{{orgsDetailIndex}}_{{j}}" type="checkbox"
+                     [checked]="userRole.roles.indexOf('OrgManager') > -1"
+                     (click)="showMemberSetOrgRole(userRole, orgsDetailEntities.userRoles.user_roles, orgsDetailGuid, 'OrgManager', 'check1_'+orgsDetailIndex+'_'+j)"/>
+              <label for="check1_{{orgsDetailIndex}}_{{j}}">OrgManager({{ 'orgMain.orgAdmin' | translate }})</label>
+            </td>
+            <td>
+              <input id="check2_{{orgsDetailIndex}}_{{j}}" type="checkbox"
+                     [checked]="userRole.roles.indexOf('BillingManager') > -1"
+                     (click)="showMemberSetOrgRole(userRole, orgsDetailEntities.userRoles.user_roles, orgsDetailGuid, 'BillingManager', 'check2_'+orgsDetailIndex+'_'+j)"/>
+              <label for="check2_{{orgsDetailIndex}}_{{j}}">BillingManager({{ 'orgMain.orgBillingManager' | translate }}
+                )</label>
+            </td>
+            <td>
+              <input id="check3_{{orgsDetailIndex}}_{{j}}" type="checkbox"
+                     [checked]="userRole.roles.indexOf('OrgAuditor') > -1"
+                     (click)="showMemberSetOrgRole(userRole, orgsDetailEntities.userRoles.user_roles, orgsDetailGuid, 'OrgAuditor','check3_'+orgsDetailIndex+'_'+j)"/>
+              <label for="check3_{{orgsDetailIndex}}_{{j}}">OrgAuditor({{ 'orgMain.orgObserver' | translate }})</label>
+            </td>
+            <th>
+              <button class="btns4 colors8"
+                      (click)="showMemberCancel(userRole, orgsDetailEntities.userRoles.user_roles, orgsDetailGuid)">{{ 'orgMain.cancelMember' | translate }}</button>
+            </th>
+            <th></th>
+          </tr>
+        </ng-container>
       </ng-container>
       <ng-container *ngFor='let inviteUser of inviteOrgList; let k = index'>
         <ng-container *ngIf="orgsDetailGuid === inviteUser.orgGuid">
           <tr>
             <td>{{inviteUser.userId}}</td>
             <td>
-              <input id="check4_{{orgsDetailIndex}}_{{k}}" type="checkbox" [checked]="getinviteOrgRole(inviteUser.role).om" />
+              <input id="check4_{{orgsDetailIndex}}_{{k}}" type="checkbox"
+                     [checked]="getinviteOrgRole(inviteUser.role).om"/>
               <label for="check4_{{orgsDetailIndex}}_{{k}}">OrgManager({{ 'orgMain.orgAdmin' | translate }})</label>
             </td>
             <td>
-              <input id="check5_{{orgsDetailIndex}}_{{k}}" type="checkbox" [checked]="getinviteOrgRole(inviteUser.role).bm"/>
-              <label for="check5_{{orgsDetailIndex}}_{{k}}">BillingManager({{ 'orgMain.orgBillingManager' | translate }})</label>
+              <input id="check5_{{orgsDetailIndex}}_{{k}}" type="checkbox"
+                     [checked]="getinviteOrgRole(inviteUser.role).bm"/>
+              <label for="check5_{{orgsDetailIndex}}_{{k}}">BillingManager({{ 'orgMain.orgBillingManager' | translate }}
+                )</label>
             </td>
             <td>
-              <input id="check6_{{orgsDetailIndex}}_{{k}}" type="checkbox" [checked]="getinviteOrgRole(inviteUser.role).oa"/>
+              <input id="check6_{{orgsDetailIndex}}_{{k}}" type="checkbox"
+                     [checked]="getinviteOrgRole(inviteUser.role).oa"/>
               <label for="check6_{{orgsDetailIndex}}_{{k}}">OrgAuditor({{ 'orgMain.orgObserver' | translate }})</label>
             </td>
-            <th><button class="btns4 colors8" (click)="showInviteCancel(inviteUser)">{{ 'orgMain.inviteCancel' | translate }}</button></th>
-            <th><button class="btns4 colors9" (click)="showUserReInvite(inviteUser)">{{ 'orgMain.inviteReSend' | translate }}</button></th>
+            <th>
+              <button class="btns4 colors8"
+                      (click)="showInviteCancel(inviteUser)">{{ 'orgMain.inviteCancel' | translate }}</button>
+            </th>
+            <th>
+              <button class="btns4 colors9"
+                      (click)="showUserReInvite(inviteUser)">{{ 'orgMain.inviteReSend' | translate }}</button>
+            </th>
           </tr>
         </ng-container>
       </ng-container>
@@ -172,14 +201,18 @@
       </thead>
       <tbody>
       <ng-container *ngFor='let quotaDefinition of quotaDefinitionsEntities; let j = index'>
-        <tr class="org_quota" [ngClass]="{'cur': quotaDefinition.metadata.guid == orgsDetailEntities.quota.metadata.guid}">
+        <tr class="org_quota"
+            [ngClass]="{'cur': quotaDefinition.metadata.guid == orgsDetailEntities.quota.metadata.guid}">
           <td>
-            <ng-container *ngIf="quotaDefinition.metadata.guid == orgsDetailEntities.quota.metadata.guid; else elseQuota">
-              <input id="quota_radio_{{orgsDetailIndex}}_{{j}}" type="radio" name="quota_radio_{{orgsDetailIndex}}" checked="checked" data-default="true">
+            <ng-container
+              *ngIf="quotaDefinition.metadata.guid == orgsDetailEntities.quota.metadata.guid; else elseQuota">
+              <input id="quota_radio_{{orgsDetailIndex}}_{{j}}" type="radio" name="quota_radio_{{orgsDetailIndex}}"
+                     checked="checked" data-default="true">
             </ng-container>
             <ng-template #elseQuota>
               <input id="quota_radio_{{orgsDetailIndex}}_{{j}}" type="radio" name="quota_radio_{{orgsDetailIndex}}"
-                     (click)="showPopChangeQuotaClick(orgsDetailGuid, orgsDetailEntities.quota.metadata.guid, quotaDefinition.metadata.guid, orgsDetailIndex)" data-default="false">
+                     (click)="showPopChangeQuotaClick(orgsDetailGuid, orgsDetailEntities.quota.metadata.guid, quotaDefinition.metadata.guid, orgsDetailIndex)"
+                     data-default="false">
             </ng-template>
             <label for="quota_radio_{{orgsDetailIndex}}_{{j}}"></label>
           </td>
@@ -199,7 +232,6 @@
 </div>
 
 
-
 <div class="modal fade" id="layerpop_space_create_{{orgsDetailGuid}}">
   <div class="vertical-alignment-helper">
     <div class="modal-dialog vertical-align-center">
@@ -214,13 +246,17 @@
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <input type="text" placeholder="{{ 'orgMain.layerpop.spaceCreate.placeholder' | translate }}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="createSpace()" id="createSpaceName" autofocus/>
+            <input type="text" placeholder="{{ 'orgMain.layerpop.spaceCreate.placeholder' | translate }}"
+                   (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)"
+                   (keyup.enter)="createSpace()" id="createSpaceName" autofocus/>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="createSpace()">{{ 'orgMain.layerpop.spaceCreate.btn1' | translate }}</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.spaceCreate.btn2' | translate }}</button>
+          <button type="button" class="btns2 colors4"
+                  (click)="createSpace()">{{ 'orgMain.layerpop.spaceCreate.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5"
+                  data-dismiss="modal">{{ 'orgMain.layerpop.spaceCreate.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -244,8 +280,10 @@
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="renameSpace()">{{ 'orgMain.layerpop.spaceRename.btn1' | translate }}</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.spaceRename.btn2' | translate }}</button>
+          <button type="button" class="btns2 colors4"
+                  (click)="renameSpace()">{{ 'orgMain.layerpop.spaceRename.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5"
+                  data-dismiss="modal">{{ 'orgMain.layerpop.spaceRename.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -266,14 +304,17 @@
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.spaceDelete.bodyText' | translate  : {sltSpaceDelname: sltSpaceDelname}">
+            <p class="account_modal_p"
+               [innerHTML]="'orgMain.layerpop.spaceDelete.bodyText' | translate  : {sltSpaceDelname: sltSpaceDelname}">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="deleteSpace()">{{ 'orgMain.layerpop.spaceDelete.btn1' | translate }}</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.spaceDelete.btn2' | translate }}</button>
+          <button type="button" class="btns2 colors4"
+                  (click)="deleteSpace()">{{ 'orgMain.layerpop.spaceDelete.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5"
+                  data-dismiss="modal">{{ 'orgMain.layerpop.spaceDelete.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -294,13 +335,17 @@
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <input type="text" placeholder="{{ 'orgMain.layerpop.domainAdd.placeholder' | translate }}" (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)" (keyup.enter)="addDmaoin()" id="addDmaoinName"/>
+            <input type="text" placeholder="{{ 'orgMain.layerpop.domainAdd.placeholder' | translate }}"
+                   (keyup)="replaceInvalidateString($event)" (change)="replaceInvalidateString($event)"
+                   (keyup.enter)="addDmaoin()" id="addDmaoinName"/>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="addDmaoin()">{{ 'orgMain.layerpop.domainAdd.btn1' | translate }}</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.domainAdd.btn2' | translate }}</button>
+          <button type="button" class="btns2 colors4"
+                  (click)="addDmaoin()">{{ 'orgMain.layerpop.domainAdd.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5"
+                  data-dismiss="modal">{{ 'orgMain.layerpop.domainAdd.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -321,14 +366,17 @@
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.domainDelete.bodyText' | translate  : {sltDomainName: sltDomainName}">
+            <p class="account_modal_p"
+               [innerHTML]="'orgMain.layerpop.domainDelete.bodyText' | translate  : {sltDomainName: sltDomainName}">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="deleteDmaoin()">{{ 'orgMain.layerpop.domainDelete.btn1' | translate }}</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.domainDelete.btn2' | translate }}</button>
+          <button type="button" class="btns2 colors4"
+                  (click)="deleteDmaoin()">{{ 'orgMain.layerpop.domainDelete.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5"
+                  data-dismiss="modal">{{ 'orgMain.layerpop.domainDelete.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -355,8 +403,10 @@
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" (click)="changeQuota()">{{ 'orgMain.layerpop.quotaChange.btn1' | translate }}</button>
-          <button type="button" class="btns2 colors5" (click)="changeQuotaCancel()">{{ 'orgMain.layerpop.quotaChange.btn2' | translate }}</button>
+          <button type="button" class="btns2 colors4"
+                  (click)="changeQuota()">{{ 'orgMain.layerpop.quotaChange.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5"
+                  (click)="changeQuotaCancel()">{{ 'orgMain.layerpop.quotaChange.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -376,15 +426,19 @@
         </div>
         <!-- body -->
         <div class="modal-body">
+        <div class="modal-body">
           <div class="">
-            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.memberCancel.bodyText' | translate  : {sltMemberName: sltMemberName}">
+            <p class="account_modal_p"
+               [innerHTML]="'orgMain.layerpop.memberCancel.bodyText' | translate  : {sltMemberName: sltMemberName}">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="memberCancel()">{{ 'orgMain.layerpop.memberCancel.btn1' | translate }}</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.memberCancel.btn2' | translate }}</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal"
+                  (click)="memberCancel()">{{ 'orgMain.layerpop.memberCancel.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5"
+                  data-dismiss="modal">{{ 'orgMain.layerpop.memberCancel.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -405,14 +459,17 @@
         <!-- body -->
         <div class="modal-body">
           <div class="">
-            <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.orgSetRole.bodyText' | translate  : {sltMemberName: sltMemberName, SltOrgRoleName: SltOrgRoleName}">
+            <p class="account_modal_p"
+               [innerHTML]="'orgMain.layerpop.orgSetRole.bodyText' | translate  : {sltMemberName: sltMemberName, SltOrgRoleName: SltOrgRoleName}">
             </p>
           </div>
         </div>
         <!-- Footer -->
         <div class="modal-footer">
-          <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="memberSetOrgRole()">{{ 'orgMain.layerpop.orgSetRole.btn1' | translate }}</button>
-          <button type="button" class="btns2 colors5" data-dismiss="modal" (click)="cancelMemberSetOrgRole()">{{ 'orgMain.layerpop.orgSetRole.btn2' | translate }}</button>
+          <button type="button" class="btns2 colors4" data-dismiss="modal"
+                  (click)="memberSetOrgRole()">{{ 'orgMain.layerpop.orgSetRole.btn1' | translate }}</button>
+          <button type="button" class="btns2 colors5" data-dismiss="modal"
+                  (click)="cancelMemberSetOrgRole()">{{ 'orgMain.layerpop.orgSetRole.btn2' | translate }}</button>
         </div>
       </div>
     </div>
@@ -434,14 +491,17 @@
           <!-- body -->
           <div class="modal-body">
             <div class="">
-              <p class="account_modal_p"><span>{{sltMemberName}}</span>님의 <span>{{orgsDetailName}}</span>조직의 초대를 취소하시겠습니까?
+              <p class="account_modal_p"><span>{{sltMemberName}}</span>님의 <span>{{orgsDetailName}}</span>조직의 초대를
+                취소하시겠습니까?
               </p>
             </div>
           </div>
           <!-- Footer -->
           <div class="modal-footer">
-            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="inviteCancel()">{{ 'orgMain.layerpop.orgSetRole.btn1' | translate }}</button>
-            <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.orgSetRole.btn2' | translate }}</button>
+            <button type="button" class="btns2 colors4" data-dismiss="modal"
+                    (click)="inviteCancel()">{{ 'orgMain.layerpop.orgSetRole.btn1' | translate }}</button>
+            <button type="button" class="btns2 colors5"
+                    data-dismiss="modal">{{ 'orgMain.layerpop.orgSetRole.btn2' | translate }}</button>
           </div>
         </div>
       </div>
@@ -487,7 +547,8 @@
                 </td>
                 <td>
                   <input class="checkSel3" id="modal5" type="checkbox" checked="checked"/>
-                  <label for="modal5">BillingManager({{ 'orgMain.layerpop.layerpop4.orgBillingManager' | translate }})</label>
+                  <label for="modal5">BillingManager({{ 'orgMain.layerpop.layerpop4.orgBillingManager' | translate }}
+                    )</label>
                 </td>
                 <td>
                   <input class="checkSel3" id="modal6" type="checkbox" checked="checked"/>
@@ -540,8 +601,10 @@
           </div>
           <!-- Footer -->
           <div class="modal-footer">
-            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userReInvite()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
-            <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
+            <button type="button" class="btns2 colors4" data-dismiss="modal"
+                    (click)="userReInvite()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
+            <button type="button" class="btns2 colors5"
+                    data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
           </div>
         </ng-container>
       </div>
@@ -589,8 +652,10 @@
 
           <!-- Footer -->
           <div class="modal-footer">
-            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="updateUserSpaceRole()">{{ 'orgMain.layerpop.layerpop4.btn3' | translate }}</button>
-            <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
+            <button type="button" class="btns2 colors4" data-dismiss="modal"
+                    (click)="updateUserSpaceRole()">{{ 'orgMain.layerpop.layerpop4.btn3' | translate }}</button>
+            <button type="button" class="btns2 colors5"
+                    data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
           </div>
         </ng-container>
       </div>
@@ -636,7 +701,8 @@
                 </td>
                 <td>
                   <input class="checkSel" id="modal2" type="checkbox" checked="checked"/>
-                  <label for="modal2">BillingManager({{ 'orgMain.layerpop.layerpop4.orgBillingManager' | translate }})</label>
+                  <label for="modal2">BillingManager({{ 'orgMain.layerpop.layerpop4.orgBillingManager' | translate }}
+                    )</label>
                 </td>
                 <td>
                   <input class="checkSel" id="modal3" type="checkbox" checked="checked"/>
@@ -688,8 +754,10 @@
           </div>
           <!-- Footer -->
           <div class="modal-footer">
-            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userInvite()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
-            <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
+            <button type="button" class="btns2 colors4" data-dismiss="modal"
+                    (click)="userInvite()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
+            <button type="button" class="btns2 colors5"
+                    data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
           </div>
         </ng-container>
       </div>
