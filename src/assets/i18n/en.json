@@ -631,8 +631,9 @@
       "orgDeleteSuccess": "Organization withdrawal is complete.",
       "orgDeleteFeedback" : "Remove organization and space",
       "orgDeleteFail": "Organization withdrawal is failed.",
+      "accountDelete": "Account deletion is failed.",
       "accountDeleteSuccess": "Account deletion is complete.",
-      "accountDeleteFail": "Account deletion is failed."
+      "accountDeleteFail": "Org deletion is failed."
     }
   },
   "dashboard": {

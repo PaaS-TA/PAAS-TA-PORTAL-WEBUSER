@@ -452,19 +452,22 @@ export class UsermgmtComponent implements OnInit {
       this.log.debug(data['user_name']);
       this.log.debug(data['password']);
       if (data['user_name'] == this.user['userId']) {
-        //OrgGuid:계정 삭제 전, 유무확인
-        if(this.selectedOrgGuid != ''){
-          this.common.isLoading = false;
-          // 계정삭제:cf,db
-          this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe();
-          this.common.alertMessage(this.translateEntities.alertLayer.accountDeleteSuccess, true);
-          this.goLogout();
-        } else{
-          //Org Delete
-          this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFeedback, true);
-          this.common.isLoading = false;
-        }} else {
-        this.common.isLoading = false;
+        // 조직 유무 확인
+        this.userMgmtService.getOrgList().subscribe(data => {
+          if (data.resources.length > 0) {
+            //Org Delete
+            this.common.isLoading = false;
+            this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFeedback, false);
+          }else{
+            this.common.isLoading = false;
+            // 계정삭제:cf,db
+            this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe(data=>{
+              this.common.isLoading = false;
+              this.common.alertMessage(this.translateEntities.alertLayer.accountDeleteSuccess, true);
+              this.goLogout();
+            });
+          }
+        });
       }
       return data;
     }, error => {
