@@ -628,6 +628,7 @@
       "newPasswordFail": "Please re-enter your new password.",
       "passwordFail": "Please re-enter your password.",
       "orgDeleteSuccess": "Organization withdrawal is complete.",
+      "orgDeleteFeedback" : "Remove organization and space",
       "orgDeleteFail": "Organization withdrawal is failed.",
       "accountDeleteSuccess": "Account deletion is complete.",
       "accountDeleteFail": "Account deletion is failed."
