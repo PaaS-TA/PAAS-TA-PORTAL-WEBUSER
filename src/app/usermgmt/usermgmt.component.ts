@@ -458,7 +458,7 @@ export class UsermgmtComponent implements OnInit {
           // 계정삭제:cf,db
           this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe();
           this.common.alertMessage(this.translateEntities.alertLayer.accountDeleteSuccess, true);
-          // this.goLogout();
+          this.goLogout();
         } else{
           //Org Delete
           this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFeedback, true);
