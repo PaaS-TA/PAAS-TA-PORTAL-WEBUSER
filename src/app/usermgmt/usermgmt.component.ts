@@ -424,16 +424,23 @@ export class UsermgmtComponent implements OnInit {
       let param = {
         userId: this.common.getUserGuid()
       }
-      this.deleteOrg('/portalapi/' + this.apiversion + '/orgs/' + orgId + '/member', param).subscribe(data => {
-        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
-        this.userMgmtService.getOrgList().subscribe(data => {
-          this.orgs = data.resources;
-        })
-      }, error => {
-        console.log(error);
-        this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
-      }, () => {
-        this.common.isLoading = false;
+      this.userMgmtService.orgMembers(orgId).subscribe(data => {
+        let members = data.resources;
+        if (members.length > 1) {
+          this.deleteOrg('/portalapi/' + this.apiversion + '/orgs/' + orgId + '/member', param).subscribe(data => {
+            this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
+            this.userMgmtService.getOrgList().subscribe(data => {
+              this.orgs = data.resources;
+            })
+          }, error => {
+            console.log(error);
+            this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
+          }, () => {
+            this.common.isLoading = false;
+          });
+        }else{
+          this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail2, true);
+        }
       });
     } else {
       this.common.isLoading = false;
@@ -455,7 +462,6 @@ export class UsermgmtComponent implements OnInit {
         // 조직 유무 확인
         this.userMgmtService.getOrgList().subscribe(data => {
           if (data.resources.length > 0) {
-            //Org Delete
             this.common.isLoading = false;
             this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFeedback, false);
           }else{

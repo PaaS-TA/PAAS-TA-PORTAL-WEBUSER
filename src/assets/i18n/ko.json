@@ -633,7 +633,7 @@
       "passwordFail": "비밀번호를 다시 입력하세요.",
       "orgDeleteSuccess": "조직탈퇴 완료 되었습니다.",
       "orgDeleteFeedback" : "계정 삭제 전 모든 조직 및 공간 제거하세요.",
-      "orgDeleteFail": "조직 틸퇴 실패 하였습니다.",
+      "orgDeleteFail": "조직 탈퇴 실패 하였습니다.",
       "accountDelete": "계정삭제가 실패 하였습니다.",
       "accountDeleteSuccess": "계정삭제가 완료 되었습니다.",
       "accountDeleteFail": "조직 탈퇴 실패 하였습니다."
