@@ -10,6 +10,7 @@ import {SecurityService} from "../auth/security.service";
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {isNullOrUndefined} from "util";
 import {ExternalcommonService} from "../external/common/externalcommon.service";
+import {stringify} from "querystring";
 
 
 declare var $: any;
@@ -448,14 +449,21 @@ export class UsermgmtComponent implements OnInit {
   userAllDelete() {
     this.common.isLoading = true;
     this.apiLogin(this.username, this.password).subscribe(data => {
-      // this.log.debug(data['user_name']);
+      this.log.debug(data['user_name']);
+      this.log.debug(data['password']);
       if (data['user_name'] == this.user['userId']) {
-        this.common.isLoading = false;
-        // 계정삭제:cf,db
-        this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe();
-        this.common.alertMessage(this.translateEntities.alertLayer.accountDeleteSuccess, true);
-        this.goLogout();
-      } else {
+        //OrgGuid:계정 삭제 전, 유무확인
+        if(this.selectedOrgGuid != ''){
+          this.common.isLoading = false;
+          // 계정삭제:cf,db
+          this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe();
+          this.common.alertMessage(this.translateEntities.alertLayer.accountDeleteSuccess, true);
+          // this.goLogout();
+        } else{
+          //Org Delete
+          this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFeedback, true);
+          this.common.isLoading = false;
+        }} else {
         this.common.isLoading = false;
       }
       return data;
