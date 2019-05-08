@@ -265,7 +265,6 @@ export class AppMainComponent implements OnInit {
 
   isLoadingCount() {
     this.isLodingNums++;
-    console.log("isLodingNums :: " + this.isLodingNums);
     if (this.isLodingNums > 2) {
       this.isLodingNums = 0;
       this.common.isLoading = false;
@@ -720,6 +719,7 @@ export class AppMainComponent implements OnInit {
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.appstartFail + "<br><br>" + data.msg, false);
+        this.ngOnInit();
       }
     });
   }
@@ -744,6 +744,7 @@ export class AppMainComponent implements OnInit {
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.appstopFail + "<br><br>" + data.msg.description, false);
+        this.ngOnInit();
       }
     });
   }
@@ -770,6 +771,7 @@ export class AppMainComponent implements OnInit {
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.appRestartFail + "<br><br>" + data.msg.description, false);
+        this.ngOnInit();
       }
     });
   }
@@ -1009,6 +1011,7 @@ export class AppMainComponent implements OnInit {
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.appUpdateFail + "<br><br>" + data.msg.description, false);
+        this.ngOnInit();
       }
     });
   }
@@ -1271,6 +1274,7 @@ export class AppMainComponent implements OnInit {
           alert("error");
         }
       } else {
+        this.ngOnInit();
         $("[id^='layerpop']").modal("hide");
         alert("error");
       }
@@ -1370,6 +1374,7 @@ export class AppMainComponent implements OnInit {
           alert("error");
         }
       } else {
+        this.ngOnInit();
         $("[id^='layerpop']").modal("hide");
         alert("error");
       }
@@ -1397,6 +1402,7 @@ export class AppMainComponent implements OnInit {
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.routeAddFail + "<br><br>" + data.msg.description, false);
+        this.ngOnInit();
       }
     });
   }
@@ -1415,6 +1421,7 @@ export class AppMainComponent implements OnInit {
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.routeDelFail + "<br><br>" + data.msg.description, false);
+        this.ngOnInit();
       }
     });
   }
@@ -1514,13 +1521,13 @@ export class AppMainComponent implements OnInit {
     let params = {};
     this.appMainService.terminateInstance(this.appGuid, this.sltStatsInstance, params).subscribe(data => {
       if (data.result) {
-        this.ngOnInit();
-
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.instanceRestartSuccess, true);
+        this.ngOnInit();
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.instanceRestartFail + "<br><br>" + data.msg.description, false);
+        this.ngOnInit();
       }
     });
   }
