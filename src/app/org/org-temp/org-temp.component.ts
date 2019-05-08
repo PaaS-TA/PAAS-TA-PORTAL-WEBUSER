@@ -366,13 +366,14 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
       this.common.isLoading = true;
       this.orgMainService.delMemberCancel(this.sltOrgGuid, this.sltUserGuid).subscribe(data => {
         this.common.alertMessage(this.translateEntities.alertLayer.memberCancelSuccess, true);
+        this.ngOnInit2();
       }, error => {
-        this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail, true);
+        this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail, false);
       }, () => {
         this.common.isLoading = false;
       });
     }else{
-      this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail2, true);
+      this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail2, false);
     }
 
   }

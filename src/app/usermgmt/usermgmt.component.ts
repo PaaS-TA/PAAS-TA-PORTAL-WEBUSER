@@ -305,11 +305,11 @@ export class UsermgmtComponent implements OnInit {
       this.regions.forEach(region => {
         let result = region['zuulUrl'];
         let param = {id: this.user['userId'], password: this.password_now};
-        this.common.doPost2(result+'/portalapi/login', param, '').subscribe(data => {
+        this.common.doPost2(result + '/portalapi/login', param, '').subscribe(data => {
           if (data != null) {
-              this.regionPassword();
+            this.regionPassword();
           }
-        },error => {
+        }, error => {
           this.common.alertMessage('변경하는데 실패하였습니다.', false);
           this.common.isLoading = false;
         });
@@ -438,8 +438,9 @@ export class UsermgmtComponent implements OnInit {
           }, () => {
             this.common.isLoading = false;
           });
-        }else{
-          this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail2, true);
+        } else {
+          this.common.alertMessage(this.translateEntities.alertLayer.memberCancelFail2, false);
+          this.common.isLoading = false;
         }
       });
     } else {
@@ -464,10 +465,10 @@ export class UsermgmtComponent implements OnInit {
           if (data.resources.length > 0) {
             this.common.isLoading = false;
             this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFeedback, false);
-          }else{
+          } else {
             this.common.isLoading = false;
             // 계정삭제:cf,db
-            this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe(data=>{
+            this.userMgmtService.userAllDelete(this.common.getUserGuid(), '').subscribe(data => {
               this.common.isLoading = false;
               this.common.alertMessage(this.translateEntities.alertLayer.accountDeleteSuccess, true);
               this.goLogout();
