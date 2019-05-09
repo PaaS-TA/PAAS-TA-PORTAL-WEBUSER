@@ -487,6 +487,7 @@
         "orgObserver": "조직 참관인",
         "selectAll": "전체선택",
         "user": "사용자",
+        "space": "공간",
         "roleGiveSpace": "부여할 공간 역할",
         "btn1": "초대",
         "btn2": "취소",
