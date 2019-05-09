@@ -344,15 +344,17 @@ export class UsermgmtComponent implements OnInit {
     this.regions.forEach(region => {
       let result = region['zuulUrl'];
       let param = {userId: this.user['userId'], password: this.password_new};
+      this.log.debug(this.user['userId']);
+      this.log.debug(this.password_new);
       this.externalService.reset_external(result, param).subscribe(data => {
         this.common.isLoading = false;
-        this.common.alertMessage('성공적으로 변경되었습니다.', true);
+        this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
       }, error => {
-        this.common.alertMessage('변경하는데 실패하였습니다.', false);
+        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail, false);
         this.common.isLoading = false;
       });
     });
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
   }
 
   isNumber(data) {
