@@ -568,19 +568,21 @@
             <table class="maT30">
               <tbody>
               <tr *ngFor="let userrole of sltEntity.userRoles.user_roles; let i = index">
-                <td>{{userrole.user_email}}</td>
-                <td>
-                  <input class="checkSel5" id="modal10_{{i}}" type="checkbox"/>
-                  <label for="modal10_{{i}}">SpaceManager</label>
-                </td>
-                <td>
-                  <input class="checkSel5" id="modal11_{{i}}" type="checkbox" checked="checked"/>
-                  <label for="modal11_{{i}}">SpaceDeveloper</label>
-                </td>
-                <td>
-                  <input class="checkSel5" id="modal12_{{i}}" type="checkbox" checked="checked"/>
-                  <label for="modal12_{{i}}">SpaceAuditor</label>
-                </td>
+                <ng-container *ngIf="userrole.user_email !== null">
+                  <td>{{userrole.user_email}}</td>
+                  <td>
+                    <input class="checkSel5" id="modal10_{{i}}" type="checkbox"/>
+                    <label for="modal10_{{i}}">SpaceManager</label>
+                  </td>
+                  <td>
+                    <input class="checkSel5" id="modal11_{{i}}" type="checkbox" checked="checked"/>
+                    <label for="modal11_{{i}}">SpaceDeveloper</label>
+                  </td>
+                  <td>
+                    <input class="checkSel5" id="modal12_{{i}}" type="checkbox" checked="checked"/>
+                    <label for="modal12_{{i}}">SpaceAuditor</label>
+                  </td>
+                </ng-container>
               </tr>
               </tbody>
             </table>
