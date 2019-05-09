@@ -484,6 +484,7 @@
         "orgBillingManager" : "Org Billing Manager",
         "orgObserver" : "Org observer",
         "selectAll" : "Select All",
+        "space" : "Space",
         "user" : "user",
         "roleGiveSpace" : "Role to give space",
         "btn1": "invite",
