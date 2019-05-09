@@ -182,7 +182,6 @@ export class UsermgmtComponent implements OnInit {
     $('#tellPhone').val('');
     $('#zipCode').val('');
     $('#address').val('');
-
   }
 
   cancelButton() {
@@ -190,6 +189,7 @@ export class UsermgmtComponent implements OnInit {
     $('#tellPhone').val('');
     $('#zipCode').val('');
     $('#address').val('');
+    $('#password_check').val('');
   }
 
   userSaveEnter() {
