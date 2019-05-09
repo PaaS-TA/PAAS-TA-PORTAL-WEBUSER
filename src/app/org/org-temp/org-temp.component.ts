@@ -262,6 +262,12 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  getSpace(guid : string){
+    this.orgMainService.getSpace(guid).subscribe(data => {
+      this.orgsDetailEntities.space = data.spaceList;
+    });
+  }
+
   renameSpace() {
     $("[id^='layerpop']").modal("hide");
     this.common.isLoading = true;
