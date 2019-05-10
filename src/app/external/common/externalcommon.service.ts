@@ -39,4 +39,9 @@ export class ExternalcommonService {
   createUser(param) {
     return this.commonService.doPost('/portalapi/' + this.apiversion + '/users', param, '');
   }
+
+  createUser_external(url,param) {
+    return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users', param, '');
+  }
+
 }

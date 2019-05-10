@@ -27,6 +27,7 @@ export class CreateComponent implements OnInit {
   public isUserName: boolean;
   public isPassword: boolean;
   public isRePassword: boolean;
+  public regions: string[];
 
   constructor(private commonService: CommonService, private externalService: ExternalcommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
     this.userId = '';
@@ -114,6 +115,8 @@ export class CreateComponent implements OnInit {
 
   save() {
     this.commonService.isLoading = true;
+    this.regions = appConfig['region'];
+
     if (this.isUserName && this.isPassword && this.isRePassword) {
       let param = {
         'userId': this.userId,
@@ -123,32 +126,53 @@ export class CreateComponent implements OnInit {
         'address': '',
         'active' : this.commonService.getAutomaticApproval()
       }
-      this.externalService.createUser(param).subscribe(data => {
-        if (data['result'] == true) {
-          let userInfo = {
-            'userId': this.userId,
-            'userName': this.username,
-            'refreshToken': '',
-            'authAccessTime': '',
-            'authAccessCnt': 0,
-            'active' : this.commonService.getAutomaticApproval() ? 'Y' : 'N'
-          };
-          this.externalService.updateInfo(this.userId, userInfo);
 
-          if(!this.commonService.getAutomaticApproval()){
-            this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
-          }else {
-            this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
-          }
-          setTimeout(() => {
+      if(this.regions.length <= 0) {
+        this.externalService.createUser(param).subscribe(data => {
+          if (data['result'] == true) {
+            let userInfo = {
+              'userId': this.userId,
+              'userName': this.username,
+              'refreshToken': '',
+              'authAccessTime': '',
+              'authAccessCnt': 0,
+              'active' : this.commonService.getAutomaticApproval() ? 'Y' : 'N'
+            };
+            this.externalService.updateInfo(this.userId, userInfo);
+
+            if(!this.commonService.getAutomaticApproval()){
+              this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
+            }else {
+              this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
+            }
+            setTimeout(() => {
+              this.commonService.isLoading=false;
+              this.router.navigate(['login']);
+            }, 2000);
+          } else {
+            this.commonService.alertMessage(data['msg'], false);
             this.commonService.isLoading=false;
-            this.router.navigate(['login']);
-          }, 2000);
-        } else {
-          this.commonService.alertMessage(data['msg'], false);
-          this.commonService.isLoading=false;
-        }
-      });
+          }
+        });
+      }
+      //region
+      if(this.regions.length > 0){
+        this.regions.forEach(region => {
+          let result = region['zuulUrl'];
+          this.externalService.createUser_external(result, param).subscribe(data => {
+            this.commonService.isLoading = false;
+            if(!this.commonService.getAutomaticApproval()){
+              this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
+            }else {
+              this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
+            }
+          },error =>{
+            this.commonService.alertMessage('회원가입 실패', false);
+            this.commonService.isLoading = false;
+          });
+        });
+        this.router.navigate(['login']);
+      } //region end
     }
   }
 
