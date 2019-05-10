@@ -513,7 +513,7 @@
       "changeQuotaFail": "Quota modification failed.",
       "memberCancelSuccess": "Unsubscribing is complete.",
       "memberCancelFail": "Failed to cancel the member.",
-      "memberCancelFail2": "Can not delete because ORG has no members. Remove the ORG.",
+      "memberCancelFail2": "You can not cancel a member because there is no member in the ORG. Remove the ORG.",
       "sendEmailSuccess": "You have successfully invited people.",
       "sendEmailFail": "User invitation failed."
     }
@@ -633,6 +633,7 @@
       "orgDeleteFail": "Organization withdrawal is failed.",
       "accountDelete": "Account deletion is failed.",
       "accountDeleteSuccess": "Account deletion is complete.",
+      "memberCancelFail2": "You can not cancel a member because there is no member in the ORG. Remove the ORG.",
       "accountDeleteFail": "Org deletion is failed."
     }
   },
