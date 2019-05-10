@@ -27,6 +27,10 @@ export class CatalogNavComponent implements OnInit {
     this.navStyle(number);
     this.classNavSetting(number);
     this.catalogService.navView = 'viewAll';
+    this.catalogService.buildPackfilter = '';
+    this.catalogService.buildPackFilter();
+    this.catalogService.servicePackfilter = '';
+    this.catalogService.servicePackFilter();
   }
 
   viewStarterPack(number){
@@ -53,7 +57,6 @@ export class CatalogNavComponent implements OnInit {
 
     if(!isNullOrUndefined(value)) {
       this.catalogService.buildPackfilter = value;
-      this.catalogService.buildPackFilter();
       this.catalogService.navView = value;
     }
     else {
@@ -61,6 +64,7 @@ export class CatalogNavComponent implements OnInit {
       number = 4;
       this.catalogService.navView = 'appDevelopment';
     }
+    this.catalogService.buildPackFilter();
     this.classNavSetting(number);
     this.navStyle(number);
 
@@ -75,7 +79,7 @@ export class CatalogNavComponent implements OnInit {
     this.catalogService.viewPacks(false, false, true);
     if(!isNullOrUndefined(value)) {
       this.catalogService.servicePackfilter = value;
-    this.catalogService.servicePackFilter();
+
       this.catalogService.navView = value;
   }
     else{
@@ -83,6 +87,7 @@ export class CatalogNavComponent implements OnInit {
       this.catalogService.navView = 'service';
       number = 7;
     }
+    this.catalogService.servicePackFilter();
     this.classNavSetting(number);
     this.navStyle(number);
 
