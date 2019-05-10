@@ -133,7 +133,7 @@ export class OrgProduceComponent implements OnInit {
     const body = {
       orgName: this.orgname,
       quotaGuid: this.aquota.guid,
-      name : this.orgService.getuserId()
+      userId : this.orgService.getuserId()
     };
     if (!this.isError) {
       this.orgService.isLoding(true);
