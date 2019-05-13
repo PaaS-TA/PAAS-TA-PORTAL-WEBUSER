@@ -8,7 +8,6 @@ PORTAL WEBUSER는 어플리케이션의 배포 및 관리, 개발에 필요한 �
 
 
 ## 유의사항
-
 개발 정보
 - Angular 5.2.9
 - Gradle 4.4.1
