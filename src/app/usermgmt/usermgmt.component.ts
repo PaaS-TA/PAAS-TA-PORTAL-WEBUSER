@@ -299,20 +299,15 @@ export class UsermgmtComponent implements OnInit {
 
     this.regions = appConfig['region'];
 
-    if (this.regions.length <= 0) {
+    if(this.regions.length <=0){
       this.defaultPassword();
-    } else {
-      this.regions.forEach(region => {
-        let result = region['zuulUrl'];
-        let param = {id: this.user['userId'], password: this.password_now};
-        this.common.doPost2(result + '/portalapi/login', param, '').subscribe(data => {
-          if (data != null) {
-            this.regionPassword();
-          }
-        }, error => {
-          this.common.alertMessage('변경하는데 실패하였습니다.', false);
-          this.common.isLoading = false;
-        });
+    }else{
+      let param = {id: this.user['userId'], password: this.password_now};
+      this.common.doPost('/portalapi/login', param, '').subscribe(data => { //1)로그인
+          this.regionPassword(); //2) 리셋:다시 재 로그인
+      },error=>{
+        this.common.alertMessage('변경하는데 실패하였습니다.', false);
+        this.common.isLoading = false;
       });
     }
   }
@@ -344,11 +339,16 @@ export class UsermgmtComponent implements OnInit {
     this.regions.forEach(region => {
       let result = region['zuulUrl'];
       let param = {userId: this.user['userId'], password: this.password_new};
+      this.log.debug(result);
       this.log.debug(this.user['userId']);
       this.log.debug(this.password_new);
       this.externalService.reset_external(result, param).subscribe(data => {
+        if(data["result"] == true){
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
+        }else{
+          this.common.alertMessage(data["msg"], false);
+        }
       }, error => {
         this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail, false);
         this.common.isLoading = false;
