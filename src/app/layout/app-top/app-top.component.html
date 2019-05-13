@@ -18,7 +18,7 @@
       <li *ngIf="isLogin" id="cur_dashboard" ><a [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
       <li id="cur_catalog" ><a [routerLink]="['/catalog']" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
     </ng-container>
-    <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-3.0-Penne-">{{ 'common.top.main.linkTextDocument' | translate }}</a></li>
+    <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-4.0-ROTELLE">{{ 'common.top.main.linkTextDocument' | translate }}</a></li>
   </ul>
   <ul class="right_nav">
     <li *ngIf="isLogin"><!-- <a href="#" class="fas fa-user"></a> -->
@@ -50,7 +50,7 @@
             </li>
             <li id="cur_org">
               <ng-container *ngIf="aLink">
-                <a href="/org">{{ 'common.top.user.linkTextOrgManage' | translate }}</a>
+                <a href="/org">{{ 'common.top.user.linkTextOrcur_paasta-docgManage' | translate }}</a>
               </ng-container>
               <ng-container *ngIf="!aLink">
               <a [routerLink]="['/org']">{{ 'common.top.user.linkTextOrgManage' | translate }}</a>
