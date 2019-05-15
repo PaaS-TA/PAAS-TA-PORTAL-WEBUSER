@@ -165,7 +165,7 @@ export class CreateComponent implements OnInit {
         this.regions.forEach(region => {
           let result = region['zuulUrl'];
           this.externalService.createUser_external(result, param).subscribe(data => {
-            console.log("CREATE ::: " + forEachCount + "    " + data)
+            this.log.debug("CREATE ::: " + forEachCount + "    " + data);
             forEachCount++;
             this.commonService.isLoading = false;
             if (data['result'] == true) {
@@ -195,8 +195,7 @@ export class CreateComponent implements OnInit {
                 /*한쪽에만 생성된 계정 삭제 요청 만들어*/
               }
             }
-          },
-              error => {
+          }, error => {
             this.commonService.alertMessage('회원가입 실패', false);
             this.commonService.isLoading = false;
             /*한쪽에만 생성된 계정 삭제 요청 만들어*/
@@ -206,6 +205,5 @@ export class CreateComponent implements OnInit {
       }
     }
   }
-
 
 }
