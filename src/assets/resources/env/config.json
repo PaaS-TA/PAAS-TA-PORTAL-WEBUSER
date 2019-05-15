@@ -17,14 +17,14 @@
   "automaticApproval": true,
   "region": [
     {
-      "index": 1,
+      "index": "1",
       "name": "zone_1",
       "redirectUrl": "http://portal-web-user.XXX.XX.XX.XXX.xip.io/callback",
       "zuulUrl" : "/zone_1",
       "uaa": "https://uaa.XXX.XX.XX.XXX.xip.io/oauth/authorize"
     },
     {
-      "index": 2,
+      "index": "2",
       "name": "zone_2",
       "redirectUrl": "http://portal-web-user.XXX.XX.XX.XXX.xip.io/callback",
       "zuulUrl" : "/zone_2",
