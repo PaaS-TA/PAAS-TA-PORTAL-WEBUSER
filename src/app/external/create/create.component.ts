@@ -3,6 +3,7 @@ import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ExternalcommonService} from "../common/externalcommon.service";
+
 declare var $: any;
 declare var require: any;
 let appConfig = require('assets/resources/env/config.json');
@@ -124,10 +125,10 @@ export class CreateComponent implements OnInit {
         'password': this.password,
         'tellPhone': '',
         'address': '',
-        'active' : this.commonService.getAutomaticApproval()
+        'active': this.commonService.getAutomaticApproval()
       }
 
-      if(this.regions.length <= 0) {
+      if (this.regions.length <= 0) {
         this.externalService.createUser(param).subscribe(data => {
           if (data['result'] == true) {
             let userInfo = {
@@ -136,45 +137,73 @@ export class CreateComponent implements OnInit {
               'refreshToken': '',
               'authAccessTime': '',
               'authAccessCnt': 0,
-              'active' : this.commonService.getAutomaticApproval() ? 'Y' : 'N'
+              'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'
             };
             this.externalService.updateInfo(this.userId, userInfo);
 
-            if(!this.commonService.getAutomaticApproval()){
+            if (!this.commonService.getAutomaticApproval()) {
               this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
-            }else {
+            } else {
               this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
             }
             setTimeout(() => {
-              this.commonService.isLoading=false;
+              this.commonService.isLoading = false;
               this.router.navigate(['login']);
             }, 2000);
           } else {
             this.commonService.alertMessage(data['msg'], false);
-            this.commonService.isLoading=false;
+            this.commonService.isLoading = false;
           }
         });
       }
+
+      let createSuccess = 0; // 성공여부 확인
+      let forEachCount = 0; //zuul 개수 확인
+
       //region
-      if(this.regions.length > 0){
+      if (this.regions.length > 0) {
         this.regions.forEach(region => {
           let result = region['zuulUrl'];
           this.externalService.createUser_external(result, param).subscribe(data => {
+            this.log.debug("CREATE ::: " + forEachCount + "    " + data);
+            forEachCount++;
             this.commonService.isLoading = false;
-            if(!this.commonService.getAutomaticApproval()){
-              this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
-            }else {
-              this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
+            if (data['result'] == true) {
+              createSuccess++;
+              let userInfo = {
+                'userId': this.userId,
+                'userName': this.username,
+                'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'
+              };
+              this.externalService.updateInfo(this.userId, userInfo);
             }
-          },error =>{
+
+            if (forEachCount == this.regions.length) {
+              if (createSuccess == this.regions.length) {
+                if (!this.commonService.getAutomaticApproval()) {
+                  this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
+                } else {
+                  this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
+                }
+                setTimeout(()=>{
+                  this.commonService.isLoading = false;
+                  this.router.navigate(['login']);
+                },2000)
+              } else {
+                this.commonService.alertMessage('회원가입 실패', false);
+                this.commonService.isLoading = false;
+                /*한쪽에만 생성된 계정 삭제 요청 만들어*/
+              }
+            }
+          }, error => {
             this.commonService.alertMessage('회원가입 실패', false);
             this.commonService.isLoading = false;
+            /*한쪽에만 생성된 계정 삭제 요청 만들어*/
           });
         });
-        this.router.navigate(['login']);
-      } //region end
+
+      }
     }
   }
-
 
 }
