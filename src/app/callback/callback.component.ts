@@ -46,6 +46,7 @@ export class CallbackComponent implements OnInit {
           this.router.navigate(['/login']);
         }
       });
+
     }
   }
 

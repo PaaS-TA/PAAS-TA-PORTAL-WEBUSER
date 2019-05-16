@@ -4,9 +4,9 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0 --aot=true",
-    "start-prod": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0 --prod --base-href / --aot=true",
-    "build": "ng build --prod --base-href / --aot=true",
+    "start": "ng serve --port 8080 --aot=true",
+    "start-prod": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0 --prod --base-href / --aot=true ",
+    "build": "ng build --prod=true --base-href / --aot=true --outputHashing=bundles",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -61,7 +61,3 @@
     "typescript": "~2.5.3"
   }
 }
-
-
-
-

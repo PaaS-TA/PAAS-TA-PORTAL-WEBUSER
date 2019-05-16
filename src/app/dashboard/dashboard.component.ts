@@ -91,6 +91,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private translate: TranslateService, private commonService: CommonService, private dashboardService: DashboardService, private log: NGXLogger,
               private appMainService: AppMainService, private catalogService: CatalogService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
+
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }

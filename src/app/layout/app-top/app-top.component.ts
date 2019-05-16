@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {CatalogService} from "../../catalog/main/catalog.service";
 import {isNullOrUndefined} from "util";
 import {SecurityService} from "../../auth/security.service";
+import {Organization} from "../../model/organization";
 
 
 declare var $: any;
@@ -22,7 +23,6 @@ export class AppTopComponent implements OnInit {
   @Input('cursorId') cursorId: string;
   @Input('app-view') isAppView: Boolean;
   @Input('catalog-view') isCatalogView: Boolean;
-  isRegion: boolean = false;
   location: string;
   orgName: string;
   orgGuid: string;
@@ -32,9 +32,10 @@ export class AppTopComponent implements OnInit {
   appGuid: string;
   mySign: string;
   orgMng: string;
-  viewusage: string;
+  viewusage: any;
   translateEntities: any;
-  regions: string[];
+  // regions: Array<any>;
+  public regions: any = [];
   index: boolean;
   allMenuCursorIds: string[] = [
     'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc',
@@ -50,11 +51,37 @@ export class AppTopComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.regions = appConfig['region'];
-    if (this.regions.length > 0){
-      this.isRegion = true;
-    }
+    // this.regions = appConfig['region'];
+    // if (this.regions.length > 0){
+    //   this.isRegion = true;
+    // }
 
+    this.common.getInfras().subscribe(data => {
+      var regionsObj = [];
+      $.each(data, function (key, dataobj) {
+        var obj = {
+          key: dataobj.key,
+          name: dataobj.name,
+          authorization: dataobj.authorization,
+          apiUri: dataobj.apiUri,
+          uaaUri: dataobj.uaaUri,
+        };
+        regionsObj.push(obj);
+      });
+      if (regionsObj.length == 0) {
+        var obj = {
+          key: "error",
+          name: "error",
+          apiUri: "error",
+          uaaUri: "error",
+          authorization: ""
+        };
+        this.regions.push(obj);
+      } else {
+        this.regions = regionsObj;
+      }
+    });
+    console.log(this.regions);
 
     this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
     $('#' + this.cursorId).addClass('cur');
@@ -100,12 +127,14 @@ export class AppTopComponent implements OnInit {
     this.sec.doAuthorization();
   }
 
-  changeRegionClick(index: string) {
+  changeRegionClick(key: string) {
     this.regions.forEach(region => {
-      if (index == region["index"]) {
-        this.sec.doMulitRegionAuthorization(region["uaa"], region["redirectUrl"]);
+      if (key == region["key"]) {
+        this.common.setInfra(region["key"], region["apiUri"], region["uaaUri"], region["authorization"]);
+        this.sec.doMulitRegionAuthorization(region["uaaUri"]);
       }
     });
+
   }
 
   get isShortHeader() {

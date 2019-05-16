@@ -1,34 +1,20 @@
 {
-  "clientId": "clientId",
-  "clientSecret": "clientSecret",
+  "clientId": "portalclient",
+  "clientSecret": "clientsecret",
   "redirectUri": "/callback",
   "logoutredirectUri": "/login",
   "scope": "openid cloud_controller_service_permissions.read cloud_controller.read cloud_controller.write",
-  "authUrl": "https://uaa.XXX.XX.XX.XXX.xip.io/oauth/authorize",
-  "checkUrl": "https://uaa.XXX.XX.XX.XXX.xip.io/check_token",
-  "accessUrl": "https://uaa.XXX.XX.XX.XXX.xip.io/oauth/token",
-  "infoUrl": "https://uaa.XXX.XX.XX.XXX.ip.io/userinfo",
-  "logoutUrl": "https://uaa.XXX.XX.XX.XXX.xip.io/logout.do",
+  "authUrl": "/oauth/authorize",
+  "checkUrl": "/check_token",
+  "accessUrl": "/oauth/token",
+  "infoUrl": "/userinfo",
+  "logoutUrl": "/logout.do",
   "userinfoUrl": "/commonapi/v2/user",
   "code": "code",
   "sessionTimeout": "10",
-  "monitoring": true,
+  "monitoring": false,
   "quantity": false,
   "automaticApproval": true,
-  "region": [
-    {
-      "index": "1",
-      "name": "zone_1",
-      "redirectUrl": "http://portal-web-user.XXX.XX.XX.XXX.xip.io/callback",
-      "zuulUrl" : "/zone_1",
-      "uaa": "https://uaa.XXX.XX.XX.XXX.xip.io/oauth/authorize"
-    },
-    {
-      "index": "2",
-      "name": "zone_2",
-      "redirectUrl": "http://portal-web-user.XXX.XX.XX.XXX.xip.io/callback",
-      "zuulUrl" : "/zone_2",
-      "uaa": "https://uaa.XXX.XX.XX.XXX.xip.io/oauth/authorize"
-    }
-  ]
+  "apiversion": "v3",
+  "webadminUri": "http://localhost:8090"
 }

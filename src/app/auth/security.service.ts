@@ -15,7 +15,12 @@ export class SecurityService {
 
   apiversion = appConfig['apiversion'];
 
+  uaaUri: string;
+  apiUri: string;
+
   constructor(private common: CommonService, private http: HttpClient, private router: Router, private activeRoute: ActivatedRoute, private log: NGXLogger) {
+    this.uaaUri = common.getUaaUri();
+    this.apiUri = common.getApiUri();
   }
 
   /*
@@ -24,7 +29,7 @@ export class SecurityService {
   doLogout() {
     this.log.debug('doLogout()');
     this.common.signOut();
-    window.location.href = appConfig['logoutUrl'] +
+    window.location.href = this.uaaUri + appConfig['logoutUrl'] +
       '?redirect=' + window.location.origin + appConfig['logoutredirectUri'] + '&client_id=' + appConfig['clientId'];
   }
 
@@ -37,7 +42,7 @@ export class SecurityService {
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
 
-    window.location.href = appConfig['authUrl'] +
+    window.location.href = this.uaaUri + appConfig['authUrl'] +
       '?response_type=' + appConfig['code'] +
       '&client_id=' + appConfig['clientId'] +
       '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
@@ -49,13 +54,13 @@ export class SecurityService {
   /*
    * 로그인 시도 - > 다른 OAUTH 로그인용
    */
-  doMulitRegionAuthorization(authUrl: string, redirectUri: string) {
+  doMulitRegionAuthorization(uaaUri: string,) {
     this.log.debug('doMulitRegionAuthorization()');
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
-      window.location.href = authUrl +
+    window.location.href = uaaUri + appConfig['authUrl'] +
       '?response_type=' + appConfig['code'] +
       '&client_id=' + appConfig['clientId'] +
-      '&redirect_uri=' + redirectUri + ('%3FreturnUrl%3D' + returnUrl) +
+      '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
       '&scope=' + appConfig['scope'];
 
   }
@@ -71,7 +76,7 @@ export class SecurityService {
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
 
-    let accessUrl = appConfig['accessUrl'] +
+    let accessUrl = this.uaaUri + appConfig['accessUrl'] +
       '?response_type=token' +
       '&client_id=' + appConfig['clientId'] +
       '&client_secret=' + appConfig['clientSecret'] +
@@ -87,7 +92,10 @@ export class SecurityService {
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
     }).subscribe(data => {
       this.common.saveToken(data['token_type'], data['access_token'], data['refresh_token'], data['expires_in'], data['scope'], 'OAUTH');
-      this.doCheckToken();
+      this.common.getInfra(this.common.getSeq()).subscribe(data =>{
+        this.common.setAuthorization(data["authorization"]);
+        this.doCheckToken();
+      });
     }, error => {
       this.moveErrLogin();
     });
@@ -102,7 +110,7 @@ export class SecurityService {
       .append('Authorization', 'Basic ' + btoa(appConfig['clientId'] + ':' + appConfig['clientSecret']))
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let checkUrl = appConfig['checkUrl'] + '?token=' + this.common.getToken();
+    let checkUrl = this.uaaUri + appConfig['checkUrl'] + '?token=' + this.common.getToken();
 
     this.http.post(checkUrl, null, {
       headers: headers
@@ -111,10 +119,11 @@ export class SecurityService {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
     }).subscribe(data => {
-      this.common.saveCfUserInfo(data['user_id'], data['user_name'], data['name'], data['given_name'], data['family_name'],
-        data['email'], data['phone_number'], data['exp'], data['previous_logon_time']);
+        this.common.saveCfUserInfo(data['user_id'], data['user_name'], data['name'], data['given_name'], data['family_name'],
+          data['email'], data['phone_number'], data['exp'], data['previous_logon_time']);
+        this.doUserInfoProvider(data['user_name']);
       // this.doUserInfo();
-      this.doUserInfoProvider(data['user_name']);
+
     }, error => {
       this.log.debug("Error()");
       this.moveErrLogin();
@@ -130,9 +139,8 @@ export class SecurityService {
       .append('Authorization', 'Bearer ' + this.common.getToken())
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
-    let checkUrl = appConfig['infoUrl'];
 
-    this.http.get(checkUrl, {
+    this.http.get(this.uaaUri + appConfig['infoUrl'], {
       headers: headers
     }).retryWhen(error => {
       return error.flatMap((error: any) => {
@@ -158,7 +166,7 @@ export class SecurityService {
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
 
-    let refreshUrl = appConfig['accessUrl'] +
+    let refreshUrl = this.uaaUri + appConfig['accessUrl'] +
       '?response_type=refresh_token' +
       '&client_id=' + appConfig['clientId'] +
       '&client_secret=' + appConfig['clientSecret'] +
@@ -184,7 +192,7 @@ export class SecurityService {
   /*
    * DB에서 사용자 정보를 추출 - 공통
    */
-   doUserInfoProvider(userId: string) {
+  doUserInfoProvider(userId: string) {
 
     this.log.debug("doUserInfoProvider");
 
@@ -233,7 +241,7 @@ export class SecurityService {
    */
   saveUserDB(userId: string) {
     this.log.debug("saveUserDB()");
-    this.common.doGet('commonapi/v2/user/' + userId + '/uaa', this.common.getToken()).subscribe(data => {
+    this.common.doGet('/commonapi/v2/user/' + userId + '/uaa', this.common.getToken()).subscribe(data => {
       let params = {
         userId: userId,
         userName: '',

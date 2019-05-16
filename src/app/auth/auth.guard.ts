@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {CommonService} from "../common/common.service";
 
 @Injectable()
@@ -19,7 +18,16 @@ export class AuthGuard implements CanActivate {
 
     if (this.common.getToken() != null) {
       return true;
+    } else {
+      this.common.signOut();
     }
+
+    if (this.common.getApiUri() != null) {
+      return true;
+    } else {
+      this.common.signOut();
+    }
+
 
     this.router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
     return false;
