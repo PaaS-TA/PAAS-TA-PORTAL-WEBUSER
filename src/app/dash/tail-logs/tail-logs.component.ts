@@ -29,8 +29,5 @@ export class TailLogsComponent implements OnInit {
 
   getTailLogs() {
     this.tailLogsService.getTailLogs("{aa:'aa'}");
-    // this.tailLogsService.getTailLogs("aa").subscribe(data => {
-    //   console.log(data);
-    // });
   }
 }

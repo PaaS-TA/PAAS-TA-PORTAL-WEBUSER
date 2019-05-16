@@ -117,7 +117,6 @@ export class UsermgmtComponent implements OnInit {
       this.imgPath = data.fileURL;
       this.userSave();
     }, error => {
-      console.debug(error);
     });
   }
 
@@ -435,7 +434,6 @@ export class UsermgmtComponent implements OnInit {
               this.orgs = data.resources;
             })
           }, error => {
-            console.log(error);
             this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
           }, () => {
             this.common.isLoading = false;
@@ -518,10 +516,8 @@ export class UsermgmtComponent implements OnInit {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common.js")
         .done(function (script, textStatus) {
-          //console.log( textStatus );
         })
         .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
         });
     });
   }

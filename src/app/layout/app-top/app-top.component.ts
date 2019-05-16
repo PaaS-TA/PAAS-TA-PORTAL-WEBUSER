@@ -81,7 +81,6 @@ export class AppTopComponent implements OnInit {
         this.regions = regionsObj;
       }
     });
-    console.log(this.regions);
 
     this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
     $('#' + this.cursorId).addClass('cur');

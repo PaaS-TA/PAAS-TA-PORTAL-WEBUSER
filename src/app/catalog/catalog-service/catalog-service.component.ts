@@ -94,10 +94,8 @@ export class CatalogServiceComponent implements OnInit {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
         .done(function (script, textStatus) {
-          //console.log( textStatus );
         })
         .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
         });
     });
   }
@@ -192,7 +190,6 @@ export class CatalogServiceComponent implements OnInit {
       this.serviceParameterSetting(this.servicepack.appBindParameter, 'appBindParameter');
       this.serviceplan = new Array<ServicePlan>();
       this.catalogService.getServicePlan(CATALOGURLConstant.GETSERVICEPLAN + this.servicepack.servicePackName).subscribe(data => {
-        console.log(data);
         data['resources'].forEach(a => {
           this.serviceplan.push(new ServicePlan(a['entity'], a['metadata']));
         })

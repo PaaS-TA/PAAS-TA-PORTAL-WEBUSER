@@ -54,9 +54,9 @@ export class UsermgmtService {
 
   // storageApiUrl + "/v2/" + storageApiType + '/';
   photoRegistration(params: any) {
-    return this.common.doFilePost('/storageapi/' + this.apiversion + '/swift/', params, '').map((res: Response) => {
+    return this.common.doFilePost('/storageapi/' + this.apiversion + '/swift/', params, '').map((res: any) => {
       return res;
-    }).do(console.log);
+    });
   }
 
   getImg(url: string) {
@@ -66,9 +66,9 @@ export class UsermgmtService {
   }
 
   getOrgList() {
-    return this.common.doGet('/portalapi/' + this.apiversion + '/orgs', this.common.getToken()).map((res: Response) => {
+    return this.common.doGet('/portalapi/' + this.apiversion + '/orgs', this.common.getToken()).map((res: any) => {
       return res;
-    }).do(console.log);
+    });
   }
 
 

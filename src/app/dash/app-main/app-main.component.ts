@@ -181,10 +181,8 @@ export class AppMainComponent implements OnInit {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
         .done(function (script, textStatus) {
-          //console.log( textStatus );
         })
         .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
         });
     });
     if (this.jquerySetting) {
@@ -426,7 +424,6 @@ export class AppMainComponent implements OnInit {
         codedata.list.some(r => {
           if (r.key === 'max_size') {
             if (r.value > data.quota.memoryLimit) {
-              console.log(data.quota.memoryLimit);
               this.appSummaryMemoryMax = data.quota.memoryLimit / 1024;
             } else {
               this.appSummaryMemoryMax = r.value / 1024;
@@ -481,7 +478,6 @@ export class AppMainComponent implements OnInit {
           servicepacksRe.push(obj);
         }
       });
-      //console.log(this.appServicesEntitiesRe2);
       $.each(this.appServicesEntitiesRe2, function (key, bindservice) {
         servicepacksRe.forEach((appservice, index) => {
           if (bindservice.name === appservice.name) {
@@ -1823,7 +1819,6 @@ export class AppMainComponent implements OnInit {
             for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
               keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
             }
-            // console.log(keyValueObject);
 
             var k = 0;
             $.each(keyValueObject, function (key2, dataobj2) {
@@ -1860,7 +1855,6 @@ export class AppMainComponent implements OnInit {
 
             datasetsArray[i] = valueObject;
 
-            // console.log(datasetsArray);
           }
         }
       });
@@ -2010,7 +2004,6 @@ export class AppMainComponent implements OnInit {
             for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
               keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
             }
-            // console.log(keyValueObject);
 
             var k = 0;
             $.each(keyValueObject, function (key2, dataobj2) {
@@ -2047,7 +2040,6 @@ export class AppMainComponent implements OnInit {
 
             datasetsArray[i] = valueObject;
 
-            // console.log(datasetsArray);
           }
         }
       });
@@ -2196,7 +2188,6 @@ export class AppMainComponent implements OnInit {
             for (var j = 0; j < dataobj[i].data.data[0].data.length; j++) {
               keyValueObject[dataobj[i].data.data[0].data[j].time] = dataobj[i].data.data[0].data[j].value;
             }
-            // console.log(keyValueObject);
 
             var k = 0;
             $.each(keyValueObject, function (key2, dataobj2) {
@@ -2233,7 +2224,6 @@ export class AppMainComponent implements OnInit {
 
             datasetsArray[i] = valueObject;
 
-            // console.log(datasetsArray);
           }
         }
       });
