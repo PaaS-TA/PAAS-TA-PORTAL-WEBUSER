@@ -1619,6 +1619,10 @@ export class AppMainComponent implements OnInit {
         var key = $("input[id^='serviceParamKey_']:eq(" + i + ")").val();
         var value = $("input[id^='serviceParamVal_']:eq(" + i + ")").val();
 
+        if(key.toUpperCase() === 'APP_GUID'){
+          value = this.appGuid;
+        }
+
         if (value == undefined || value == null || value == 'null' || value == 'defalut') {
           value = "default";
         }

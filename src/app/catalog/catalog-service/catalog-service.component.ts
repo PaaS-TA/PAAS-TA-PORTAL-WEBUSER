@@ -412,8 +412,9 @@ export class CatalogServiceComponent implements OnInit {
         }
         else if(name === 'SPACE_NAME'){
           param.value = this.catalogService.getSpaceName();
-        }
-        else{
+        } else if(name === 'APP_GUID'){
+          param. value = this.app.guid;
+        } else{
           param.value = "default";
         }
         if (data !== '') {
