@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import * as Rx from 'rxjs/Rx';
 import {Observable} from 'rxjs/Rx';
+import {CommonService} from "../../common/common.service";
 
 @Injectable()
 export class WebsocketService {
@@ -9,15 +10,21 @@ export class WebsocketService {
   // Our socket connection
   private socket;
 
-  constructor() {
+
+  private apiUri;
+  private authorization;
+
+  constructor(private commonService: CommonService) {
+    this.apiUri = commonService.getApiUri();
+    this.authorization = commonService.getAuthorization();
   }
 
   connect(): Rx.Subject<MessageEvent> {
     this.socket = io({
-      path: "/ws/tailLog",
+      path: this.apiUri + "/ws/tailLog",
       transportOptions: {
         polling: {
-          'Authorization': "Basic YWRtaW46b3BlbnBhYXN0YQ=="
+          'Authorization': this.authorization
         }
       }
     });
