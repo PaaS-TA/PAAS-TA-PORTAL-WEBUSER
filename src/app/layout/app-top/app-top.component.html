@@ -10,10 +10,10 @@
   </div>
 
   <ul class="gnb clearfix">
-    <ng-container *ngIf="aLink">
-      <li *ngIf="isLogin" ><a href="/dashboard">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
-      <li ><a href="/catalog" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
-    </ng-container>
+<!--    <ng-container *ngIf="aLink">-->
+<!--      <li *ngIf="isLogin" ><a href="/dashboard">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>-->
+<!--      <li ><a href="/catalog" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>-->
+<!--    </ng-container>-->
     <ng-container *ngIf="!aLink">
       <li *ngIf="isLogin" id="cur_dashboard" ><a [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
       <li id="cur_catalog" ><a [routerLink]="['/catalog']" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
