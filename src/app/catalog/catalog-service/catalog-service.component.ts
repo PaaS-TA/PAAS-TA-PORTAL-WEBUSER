@@ -5,7 +5,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
-import {cataloghistroy} from "../model/cataloghistory";
 import {App} from "../../model/app";
 import {ServicePlan} from "../model/Serviceplan";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
@@ -189,7 +188,7 @@ export class CatalogServiceComponent implements OnInit {
       this.serviceParameterSetting(this.servicepack.parameter, 'parameter');
       this.serviceParameterSetting(this.servicepack.appBindParameter, 'appBindParameter');
       this.serviceplan = new Array<ServicePlan>();
-      this.catalogService.getServicePlan(CATALOGURLConstant.GETSERVICEPLAN + this.servicepack.servicePackName).subscribe(data => {
+      this.catalogService.getServicePlan('/portalapi/'+this.apiversion+'/catalogs/serviceplan/' + this.servicepack.servicePackName).subscribe(data => {
         data['resources'].forEach(a => {
           this.serviceplan.push(new ServicePlan(a['entity'], a['metadata']));
         })
@@ -282,7 +281,7 @@ export class CatalogServiceComponent implements OnInit {
       this.catalogService.isLoading(true);
       this.apps = new Array<App>();
     this.appsFirst();
-    this.catalogService.getAppNames(CATALOGURLConstant.GETLISTAPP + this.org.guid + '/' + this.space.guid).subscribe(data => {
+    this.catalogService.getAppNames('/portalapi/'+this.apiversion+'/catalogs/apps/' + this.org.guid + '/' + this.space.guid).subscribe(data => {
       data['resources'].forEach(app => {
         this.apps.push(new App(app['metadata'], app['entity']));
       })
@@ -294,7 +293,7 @@ export class CatalogServiceComponent implements OnInit {
 
   serviceInstanceList() {
     this.servicenamelist = new Array<string>();
-    this.catalogService.getServiceInstance(CATALOGURLConstant.GETSERVICEINSTANCE + this.org.guid + '/' + this.space.guid).subscribe(data => {
+    this.catalogService.getServiceInstance('/portalapi/'+this.apiversion+'/catalogs/servicepack/' + this.org.guid + '/' + this.space.guid).subscribe(data => {
       data['resources'].forEach(resources => {
         this.servicenamelist.push(resources['entity']['name']);
       })
@@ -368,13 +367,13 @@ export class CatalogServiceComponent implements OnInit {
       spaceId: this.space.guid,
       servicePlan: this.plan.guid,
       appGuid: this.app.guid,
-      parameter: this.setParmeterData(this.parameter, this.hiddenparameter),
+      parameter: this.servicepack.onDemandYn === "Y" ? this.setParmeterData(this.appparameter, this.hiddenappparameter) : this.setParmeterData(this.parameter, this.hiddenparameter),
       app_bind_parameter: this.setParmeterData(this.appparameter, this.hiddenappparameter),
       catalogType : CATALOGURLConstant.SERVICEPACK,
       catalogNo : this.servicepack.no,
       userId : this.catalogService.getUserid()
     };
-    this.catalogService.postCreateService(CATALOGURLConstant.CREATESERVICE, params).subscribe(data =>
+    this.catalogService.postCreateService('/portalapi/'+this.apiversion+'/catalogs/serviceinstances', params).subscribe(data =>
     {
       if(data.RESULT === 'SUCCESS'){
         this.successMsg(this.translateEntities.result.serviceSusses);

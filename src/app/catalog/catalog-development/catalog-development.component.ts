@@ -5,8 +5,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
-import {cataloghistroy} from "../model/cataloghistory";
-import {CatalogComponent} from "../main/catalog.component";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {isNullOrUndefined, isUndefined} from "util";
 declare var $: any;
@@ -219,7 +217,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   getAppNames(){
-    this.catalogService.getAppNames(CATALOGURLConstant.GETLISTAPP+this.org.guid+'/'+this.space.guid).subscribe(data => {
+    this.catalogService.getAppNames('/portalapi/'+this.apiversion+'/catalogs/apps/'+this.org.guid+'/'+this.space.guid).subscribe(data => {
       this.appnames = new Array<string>();
       data['resources'].forEach(res => {
         this.appnames.push(res['entity']['name']);
@@ -338,7 +336,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.pattenTest();
     this.routepattenTest();
     this.catalogService.isLoading(true);
-    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
+    this.catalogService.getNameCheck('/portalapi/'+this.apiversion+'/catalogs/apps/'+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
           let appSampleFilePath = this.buildpack['appSampleFilePath'];
@@ -362,7 +360,7 @@ export class CatalogDevelopmentComponent implements OnInit {
             catalogNo : this.buildpack.no,
             userId : this.catalogService.getUserid()
           };
-          this.catalogService.postApp(CATALOGURLConstant.CREATEAPP, params).subscribe(data => {
+          this.catalogService.postApp('/portalapi/'+this.apiversion+'/catalogs/app', params).subscribe(data => {
             if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
               this.successMsg(this.translateEntities.result.buildPackSusses);
               this.router.navigate(['dashboard']);
