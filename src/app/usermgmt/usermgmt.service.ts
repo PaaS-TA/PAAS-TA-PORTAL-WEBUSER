@@ -54,7 +54,7 @@ export class UsermgmtService {
 
   // storageApiUrl + "/v2/" + storageApiType + '/';
   photoRegistration(params: any) {
-    return this.common.doFilePost('/storageapi/' + this.apiversion + '/swift/', params, '').map((res: any) => {
+    return this.common.doFilePost('/storageapi/v2/swift/', params, '').map((res: any) => {
       return res;
     });
   }
