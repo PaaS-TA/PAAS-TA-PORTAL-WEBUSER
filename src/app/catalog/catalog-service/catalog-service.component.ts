@@ -371,7 +371,8 @@ export class CatalogServiceComponent implements OnInit {
       app_bind_parameter: this.setParmeterData(this.appparameter, this.hiddenappparameter),
       catalogType : CATALOGURLConstant.SERVICEPACK,
       catalogNo : this.servicepack.no,
-      userId : this.catalogService.getUserid()
+      userId : this.catalogService.getUserid(),
+      onDemandYn : this.servicepack.onDemandYn
     };
     this.catalogService.postCreateService('/portalapi/'+this.apiversion+'/catalogs/serviceinstances', params).subscribe(data =>
     {
