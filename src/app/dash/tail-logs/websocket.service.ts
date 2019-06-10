@@ -15,13 +15,15 @@ export class WebsocketService {
   private authorization;
 
   constructor(private commonService: CommonService) {
-    this.apiUri = commonService.getApiUri();
+    //this.apiUri = commonService.getApiUri();
+    this.apiUri = 'ws://115.68.47.180:5555';
     this.authorization = commonService.getAuthorization();
   }
 
   connect(): Rx.Subject<MessageEvent> {
+    console.log(this.apiUri);
     this.socket = io({
-      path: this.apiUri + "/ws/tailLog",
+      path: this.apiUri + "ws/tailLog",
       transportOptions: {
         polling: {
           'Authorization': this.authorization
