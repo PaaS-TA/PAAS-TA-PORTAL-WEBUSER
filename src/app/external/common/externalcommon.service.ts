@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {CommonService} from "../../common/common.service";
 import {Router} from "@angular/router";
 import {NGXLogger} from "ngx-logger";
+import {HttpHeaders} from "@angular/common/http";
 
 
 declare var require: any;
@@ -27,9 +28,9 @@ export class ExternalcommonService {
   }
 
 
-  reset_external(url, param) {
+  reset_external(url,authorization, param : any) {
     this.log.debug("reset_external >>" + url);
-    return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users/password/reset', param, '');
+    return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users/password/reset',authorization, param, '');
   }
 
 
@@ -44,8 +45,9 @@ export class ExternalcommonService {
     return this.commonService.doPost('/portalapi/' + this.apiversion + '/users', param, '');
   }
 
-  createUser_external(url,param) {
-    return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users', param, '');
+  createUser_external(url, authorization, param) {
+    this.log.debug("createUser_external >>" + url);
+    return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users', authorization,  param, '');
   }
 
 }

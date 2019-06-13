@@ -59,6 +59,12 @@ export class CommonService {
     });
   }
 
+  getInfrasAll() {
+    this.log.debug("coomon ::getInfrasall >>");
+    return this.http.get(appConfig["webadminUri"] + "/external/configs/all", {}).map((res: any) => {
+      return res;
+    });
+  }
 
   getInfra(guid: string) {
     this.log.debug("getInfra()");
@@ -70,7 +76,7 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
-    this.log.debug("doGet :: this.gateway >>" + this.gateway + " " + "url >>" +url);
+    this.log.debug("doGet :: this.gateway >>" + this.gateway + " " + "url >>" + url);
     return this.http.get(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
@@ -81,18 +87,19 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
-    this.log.debug("doPost :: this.gateway >>" + this.gateway + " " + "url >>" +url);
+    this.log.debug("doPost :: this.gateway >>" + this.gateway + " " + "url >>" + url);
     return this.http.post(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
   }
 
-  doPost2(url: string, body: any, token: string) {
+  doPost2(url: string, authorization: any, body: any, token: string) {
     if (token == null) {
       token = '';
     }
     return this.http.post(url, body, {
-      headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
+      //auth set 기본제공
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
     });
   }
 

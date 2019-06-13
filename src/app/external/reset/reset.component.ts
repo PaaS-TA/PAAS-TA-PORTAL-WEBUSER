@@ -43,6 +43,7 @@ export class ResetComponent implements OnInit {
     this.userId = this.route.snapshot.queryParams['userId'] || '/';
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
+
     this.commonService.getInfra(this.seq).subscribe(data =>{
       //setInfra
       this.commonService.setInfra(data["seq"],data["uaaUri"],data["apiUri"],data["authorization"]);
@@ -110,29 +111,55 @@ export class ResetComponent implements OnInit {
     }
   }
 
-  save() {
+  save(){
     this.commonService.isLoading = true;
     if (this.isPassword && this.isRePassword) {
+
       let param = {
         'userId': this.userId,
         'password': this.password
       };
-      this.commonService.getInfras().subscribe(data => {
-      // this.log.debug(data);
-        //region
+
+      this.commonService.getInfrasAll().subscribe(data => {
+        let size = data.length;
+        let success = 0; // 성공여부 확인
+        let forEachCount = 0; //apiUrl 개수 확인
+
         data.forEach(data => {
+          // data 유무확인
+          if (size > 0) {
+            this.log.debug(data);
           let result = data['apiUri'];
-          // this.log.debug("result >>" + result);
-          this.externalService.reset_external(result, param).subscribe(data => {
-            // this.log.debug("reset_external >>" + result);
+          this.log.debug(data["authorization"]);
+
+          this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
+            this.log.debug("save ::: " + forEachCount + "    " + data);
+            forEachCount++;
             this.commonService.isLoading = false;
-            this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
-            },error =>{
-            this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
-            this.commonService.isLoading = false;
+            if (region['result'] == true) {
+              success++;
+              this.log.debug('result');
+            }else {
+              alert(region['msg'])
+            }
+
+            //apiUrl 이 data.length와 같을 때
+            if (forEachCount == size) {
+              if (success == size) {
+                this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
+                setTimeout(()=>{
+                  this.commonService.isLoading = false;
+                  this.router.navigate(['/']);
+                },2000)
+              } else {
+                this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
+                this.commonService.isLoading = false;
+              }
+            }
           });
+
+          }
         });
-        this.router.navigate(['/']);
       });
     }
   }
