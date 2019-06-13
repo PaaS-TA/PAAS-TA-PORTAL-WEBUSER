@@ -16,6 +16,7 @@ let appConfig = require('assets/resources/env/config.json');
 })
 export class ResetComponent implements OnInit {
 
+  public seq: string;
   public token: string;
   public userId: string;
   public username: string;
@@ -29,6 +30,7 @@ export class ResetComponent implements OnInit {
 
 
   constructor(private commonService: CommonService, private externalService: ExternalcommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
+    this.seq = '';
     this.userId = '';
     this.username = '';
     this.password = '';
@@ -40,35 +42,40 @@ export class ResetComponent implements OnInit {
 
     this.userId = this.route.snapshot.queryParams['userId'] || '/';
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
-    if (this.userId.length > 0 && this.token.length > 0) {
-      this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(data => {
-        if (data == null) {
-          this.router.navigate(['error'], {queryParams: {error: '1'}});
-        } else {
-          let accessTime = data['authAccessTime'];
-          let accessCount = data['authAccessCnt'];
-          let now = new Date();
-          if (accessTime <= now.getTime().toString()) {
+    this.seq = this.route.snapshot.queryParams['seq'] || '/';
+    this.commonService.getInfra(this.seq).subscribe(data =>{
+      //setInfra
+      this.commonService.setInfra(data["seq"],data["uaaUri"],data["apiUri"],data["authorization"]);
 
-            this.router.navigate(['error'], {queryParams: {error: '1'}});
-          }
-          if (accessCount > 3) {
-            let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-            this.externalService.updateInfo(this.userId, userInfo);
+      if (this.userId.length > 0 && this.token.length > 0) {
+        this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(data => {
+          if (data == null) {
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           } else {
-            let userInfo = {'authAccessCnt': (accessCount + 1)};
-            this.externalService.updateInfo(this.userId, userInfo);
+            let accessTime = data['authAccessTime'];
+            let accessCount = data['authAccessCnt'];
+            let now = new Date();
+            if (accessTime <= now.getTime().toString()) {
+              this.router.navigate(['error'], {queryParams: {error: '1'}});
+            }
+            if (accessCount > 3) {
+              //see
+              let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
+              this.externalService.updateInfo(this.userId, userInfo);
+              this.router.navigate(['error'], {queryParams: {error: '1'}});
+            } else {
+              let userInfo = {'authAccessCnt': (accessCount + 1)};
+              this.externalService.updateInfo(this.userId, userInfo);
+            }
           }
-        }
-      });
+        });
 
-    } else {
-      this.router.navigate(['error'], {queryParams: {error: '1'}});
-    }
+      } else {
+        this.router.navigate(['error'], {queryParams: {error: '1'}});
+      }
+    });
 
   }
-
 
   ngOnInit() {
 
@@ -95,7 +102,7 @@ export class ResetComponent implements OnInit {
 
 
   checkRePassword() {
-    this.log.debug('repassword :: ' + this.re_password);
+    this.log.debug('repassword :: ' + this.re_password)
     if (this.password == this.re_password) {
       this.isRePassword = true;
     } else {
@@ -105,43 +112,28 @@ export class ResetComponent implements OnInit {
 
   save() {
     this.commonService.isLoading = true;
-    this.regions = appConfig['region'];
-
     if (this.isPassword && this.isRePassword) {
       let param = {
         'userId': this.userId,
         'password': this.password
       };
-      if(this.regions.length <= 0) {
-        this.externalService.reset(param).subscribe(data => {
-          if (data['result'] == true) {
-            this.commonService.isLoading = false;
-            this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
-            let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-            this.externalService.updateInfo(this.userId, userInfo);
-
-          } else {
-            alert(data['msg']);
-          }
-        }, error => {
-          this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
-          this.commonService.isLoading = false;
-        });
-      }
-      //region
-      if(this.regions.length > 0){
-        this.regions.forEach(region => {
-          let result = region['zuulUrl'];
+      this.commonService.getInfras().subscribe(data => {
+      // this.log.debug(data);
+        //region
+        data.forEach(data => {
+          let result = data['apiUri'];
+          // this.log.debug("result >>" + result);
           this.externalService.reset_external(result, param).subscribe(data => {
+            // this.log.debug("reset_external >>" + result);
             this.commonService.isLoading = false;
             this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
-          },error =>{
+            },error =>{
             this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
             this.commonService.isLoading = false;
           });
         });
         this.router.navigate(['/']);
-      }
+      });
     }
   }
 

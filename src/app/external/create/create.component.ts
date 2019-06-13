@@ -19,6 +19,7 @@ export class CreateComponent implements OnInit {
 
   apiversion = appConfig['apiversion'];
 
+  public seq: string;
   public token: string;
   public userId: string;
   public username: string;
@@ -29,8 +30,10 @@ export class CreateComponent implements OnInit {
   public isPassword: boolean;
   public isRePassword: boolean;
   public regions: string[];
+  public key: string;
 
   constructor(private commonService: CommonService, private externalService: ExternalcommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
+    this.seq = '';
     this.userId = '';
     this.username = '';
     this.password = '';
@@ -41,34 +44,42 @@ export class CreateComponent implements OnInit {
     this.isRePassword = true;
     this.userId = this.route.snapshot.queryParams['userId'] || '/';
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
-    if (this.userId.length > 0 && this.token.length > 0) {
-      this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(data => {
-        if (data == null) {
-          this.router.navigate(['error'], {queryParams: {error: '1'}});
-        } else {
-          let accessTime = data['authAccessTime'];
-          let accessCount = data['authAccessCnt'];
-          let now = new Date();
-          if (accessTime <= now.getTime().toString()) {
-            let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-            this.externalService.updateInfo(this.userId, userInfo);
-            this.router.navigate(['error'], {queryParams: {error: '1'}});
-          }
-          if (accessCount > 3) {
-            let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-            this.externalService.updateInfo(this.userId, userInfo);
+    this.seq = this.route.snapshot.queryParams['seq'] || '/';
+
+    this.commonService.getInfra(this.seq).subscribe(data =>{
+      this.log.debug("getInfra >>");
+      this.log.debug(data);
+
+      //setInfra
+      this.commonService.setInfra(data["seq"],data["uaaUri"],data["apiUri"],data["authorization"]);
+      if (this.userId.length > 0 && this.token.length > 0) {
+        this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(data => {
+          if (data == null) {
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           } else {
-            let userInfo = {'authAccessCnt': (accessCount + 1)};
-            this.externalService.updateInfo(this.userId, userInfo);
+            let accessTime = data['authAccessTime'];
+            let accessCount = data['authAccessCnt'];
+            let now = new Date();
+            if (accessTime <= now.getTime().toString()) {
+              let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
+              this.externalService.updateInfo(this.userId, userInfo);
+              this.router.navigate(['error'], {queryParams: {error: '1'}});
+            }
+            if (accessCount > 3) {
+              let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
+              this.externalService.updateInfo(this.userId, userInfo);
+              this.router.navigate(['error'], {queryParams: {error: '1'}});
+            } else {
+              let userInfo = {'authAccessCnt': (accessCount + 1)};
+              this.externalService.updateInfo(this.userId, userInfo);
+            }
           }
-        }
-      });
+        });
 
-    } else {
-      this.router.navigate(['error'], {queryParams: {error: '1'}});
-    }
-
+      } else {
+        this.router.navigate(['error'], {queryParams: {error: '1'}});
+      }
+    });
   }
 
 

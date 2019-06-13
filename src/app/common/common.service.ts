@@ -53,6 +53,7 @@ export class CommonService {
 
 
   getInfras() {
+    this.log.debug("coomon ::getInfras >>");
     return this.http.get(appConfig["webadminUri"] + "/external/configs", {}).map((res: any) => {
       return res;
     });
@@ -61,6 +62,7 @@ export class CommonService {
 
   getInfra(guid: string) {
     this.log.debug("getInfra()");
+    this.log.debug("getInfra()" + guid);
     return this.http.get(appConfig["webadminUri"] + "/external/configs/" + guid + "/auth", {});
   }
 
@@ -68,6 +70,7 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
+    this.log.debug("doGet :: this.gateway >>" + this.gateway + " " + "url >>" +url);
     return this.http.get(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
@@ -78,6 +81,7 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
+    this.log.debug("doPost :: this.gateway >>" + this.gateway + " " + "url >>" +url);
     return this.http.post(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
@@ -159,10 +163,21 @@ export class CommonService {
     window.sessionStorage.setItem('authorization', authorization);
   }
 
+  public setUaaUri(uaaUri: any) {
+    window.sessionStorage.setItem('uaaUri', uaaUri);
+  }
+
+  public setSeq(seq: any) {
+    window.sessionStorage.setItem('seq', seq);
+  }
+
+  public setApiUri(apiUri: any) {
+    window.sessionStorage.setItem('seq', apiUri);
+  }
+
   public setAuthorization(authorization: any) {
     window.sessionStorage.setItem('authorization', authorization);
   }
-
 
   getSeq(): any {
     return window.sessionStorage.getItem('seq');
