@@ -42,6 +42,7 @@ export class CreateComponent implements OnInit {
     this.isUserName = false;
     this.isPassword = false;
     this.isRePassword = true;
+
     this.userId = this.route.snapshot.queryParams['userId'] || '/';
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
@@ -49,9 +50,9 @@ export class CreateComponent implements OnInit {
     this.commonService.getInfra(this.seq).subscribe(data =>{
       this.log.debug("getInfra >>");
       this.log.debug(data);
-
       //setInfra
       this.commonService.setInfra(data["seq"],data["uaaUri"],data["apiUri"],data["authorization"]);
+
       if (this.userId.length > 0 && this.token.length > 0) {
         this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(data => {
           if (data == null) {
@@ -127,8 +128,6 @@ export class CreateComponent implements OnInit {
 
   save() {
     this.commonService.isLoading = true;
-    this.regions = appConfig['region'];
-
     if (this.isUserName && this.isPassword && this.isRePassword) {
       let param = {
         'userId': this.userId,
@@ -138,83 +137,55 @@ export class CreateComponent implements OnInit {
         'address': '',
         'active': this.commonService.getAutomaticApproval()
       }
+      this.commonService.getInfrasAll().subscribe(data => {
+        let size = data.length;
+        let createSuccess = 0; // 성공여부 확인
+        let forEachCount = 0; //apiUrl 개수 확인
 
-      if (this.regions.length <= 0) {
-        this.externalService.createUser(param).subscribe(data => {
-          if (data['result'] == true) {
-            let userInfo = {
-              'userId': this.userId,
-              'userName': this.username,
-              'refreshToken': '',
-              'authAccessTime': '',
-              'authAccessCnt': 0,
-              'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'
-            };
-            this.externalService.updateInfo(this.userId, userInfo);
-
-            if (!this.commonService.getAutomaticApproval()) {
-              this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
-            } else {
-              this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
-            }
-            setTimeout(() => {
+        if (size > 0) {
+          data.forEach(data => {
+            let result = data['zuulUrl'];
+            this.externalService.createUser_external(result, data["authorization"], param).subscribe(region => {
+              this.log.debug("CREATE ::: " + forEachCount + "    " + region);
+              forEachCount++;
               this.commonService.isLoading = false;
-              this.router.navigate(['login']);
-            }, 2000);
-          } else {
-            this.commonService.alertMessage(data['msg'], false);
-            this.commonService.isLoading = false;
-          }
-        });
-      }
-
-      let createSuccess = 0; // 성공여부 확인
-      let forEachCount = 0; //zuul 개수 확인
-
-      //region
-      if (this.regions.length > 0) {
-        this.regions.forEach(region => {
-          let result = region['zuulUrl'];
-          this.externalService.createUser_external(result, param).subscribe(data => {
-            this.log.debug("CREATE ::: " + forEachCount + "    " + data);
-            forEachCount++;
-            this.commonService.isLoading = false;
-            if (data['result'] == true) {
-              createSuccess++;
-              let userInfo = {
-                'userId': this.userId,
-                'userName': this.username,
-                'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'
-              };
-              this.externalService.updateInfo(this.userId, userInfo);
-            }
-
-            if (forEachCount == this.regions.length) {
-              if (createSuccess == this.regions.length) {
-                if (!this.commonService.getAutomaticApproval()) {
-                  this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
-                } else {
-                  this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
-                }
-                setTimeout(()=>{
-                  this.commonService.isLoading = false;
-                  this.router.navigate(['login']);
-                },2000)
-              } else {
-                this.commonService.alertMessage('회원가입 실패', false);
-                this.commonService.isLoading = false;
-                /*한쪽에만 생성된 계정 삭제 요청 만들어*/
+              if (region['result'] == true) {
+                createSuccess++;
+                let userInfo = {
+                  'userId': this.userId,
+                  'userName': this.username,
+                  'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'
+                };
+                this.externalService.updateInfo(this.userId, userInfo);
               }
-            }
-          }, error => {
-            this.commonService.alertMessage('회원가입 실패', false);
-            this.commonService.isLoading = false;
-            /*한쪽에만 생성된 계정 삭제 요청 만들어*/
-          });
-        });
 
-      }
-    }
-  }
+              if (forEachCount == size) {
+                if (createSuccess == size) {
+                  if (!this.commonService.getAutomaticApproval()) {
+                    this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
+                  } else {
+                    this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
+                  }
+                  setTimeout(()=>{
+                    this.commonService.isLoading = false;
+                    this.router.navigate(['login']);
+                  },2000)
+                } else {
+                  this.commonService.alertMessage('회원가입 실패', false);
+                  this.commonService.isLoading = false;
+                }
+              }
+            }, error => {
+              this.commonService.alertMessage('회원가입 실패', false);
+              this.commonService.isLoading = false;
+            });
+          });
+
+        }
+
+      });
+
+    } //첫 if 문
+  } // save 끝
 
 }

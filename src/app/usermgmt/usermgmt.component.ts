@@ -341,17 +341,17 @@ export class UsermgmtComponent implements OnInit {
       this.log.debug(result);
       this.log.debug(this.user['userId']);
       this.log.debug(this.password_new);
-      this.externalService.reset_external(result, param).subscribe(data => {
-        if(data["result"] == true){
-        this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
-        }else{
-          this.common.alertMessage(data["msg"], false);
-        }
-      }, error => {
-        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail, false);
-        this.common.isLoading = false;
-      });
+      // this.externalService.reset_external(result, param).subscribe(data => {
+      //   if(data["result"] == true){
+      //   this.common.isLoading = false;
+      //   this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
+      //   }else{
+      //     this.common.alertMessage(data["msg"], false);
+      //   }
+      // }, error => {
+      //   this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail, false);
+      //   this.common.isLoading = false;
+      // });
     });
     // this.router.navigate(['/']);
   }
