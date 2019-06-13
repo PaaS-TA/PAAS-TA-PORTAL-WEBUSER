@@ -574,6 +574,7 @@ export class CatalogDetailComponent implements OnInit {
               parameter: plan.onDemandYn === "Y" ? this.setParmeterData(plan.appparameter, plan.hiddenappparameter) : this.setParmeterData(plan.parameter, plan.hiddenparameter),
               app_bind_parameter: this.setParmeterData(plan.appparameter, plan.hiddenappparameter),
               appGuid : plan.appbind ? '' : '(id_dummy)',
+              onDemandYn: plan.onDemandYn
             };
             paramlist.push(serviceparam);
           });
