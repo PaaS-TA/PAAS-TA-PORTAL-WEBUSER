@@ -3,6 +3,8 @@ import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ExternalcommonService} from "../common/externalcommon.service";
+import {User, UsermgmtService} from "../../usermgmt/usermgmt.service";
+import {Observable} from "rxjs";
 
 declare var $: any;
 declare var require: any;
@@ -18,6 +20,7 @@ let appConfig = require('assets/resources/env/config.json');
 export class CreateComponent implements OnInit {
 
   apiversion = appConfig['apiversion'];
+  public user: Observable<User>;
 
   public seq: string;
   public token: string;
@@ -31,8 +34,11 @@ export class CreateComponent implements OnInit {
   public isRePassword: boolean;
   public regions: string[];
   public key: string;
+  public password_check: string = '';
+  public password_now: string = '';
 
-  constructor(private commonService: CommonService, private externalService: ExternalcommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
+
+  constructor(private commonService: CommonService, private userMgmtService: UsermgmtService, private externalService: ExternalcommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
     this.seq = '';
     this.userId = '';
     this.username = '';
@@ -140,28 +146,30 @@ export class CreateComponent implements OnInit {
       this.commonService.getInfrasAll().subscribe(data => {
         let size = data.length;
         let createSuccess = 0; // 성공여부 확인
-        let forEachCount = 0; //apiUrl 개수 확인
+        let forEachCount = 0;  // apiUrl 개수 확인
 
-        if (size > 0) {
-          data.forEach(data => {
-            let result = data['zuulUrl'];
+        data.forEach(data => {
+          if (size > 0) {
+            let result = data['apiUri'];
             this.externalService.createUser_external(result, data["authorization"], param).subscribe(region => {
-              this.log.debug("CREATE ::: " + forEachCount + "    " + region);
+              this.log.debug("CREATE ::: " + forEachCount + "    "+ result);
               forEachCount++;
               this.commonService.isLoading = false;
-              if (region['result'] == true) {
+              if (region['result'] == false) {
                 createSuccess++;
                 let userInfo = {
                   'userId': this.userId,
                   'userName': this.username,
-                  'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'
                 };
                 this.externalService.updateInfo(this.userId, userInfo);
+              }else{
+                alert(region['msg'])
               }
 
               if (forEachCount == size) {
                 if (createSuccess == size) {
                   if (!this.commonService.getAutomaticApproval()) {
+                    this.log.debug("!this.commonService.getAutomaticApproval" );
                     this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
                   } else {
                     this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
@@ -173,19 +181,29 @@ export class CreateComponent implements OnInit {
                 } else {
                   this.commonService.alertMessage('회원가입 실패', false);
                   this.commonService.isLoading = false;
+
+                  /*한쪽에만 생성된 계정 삭제 요청 만들어*/
+                  this.userMgmtService.userAllDeleteMuti(this.userId, data["authorization"],'').subscribe(data => {
+                    this.log.debug("userAllDeleteMuti this.userId :: " + this.userId );
+                    this.commonService.isLoading = false;
+                    this.commonService.alertMessage("계정삭제가 완료 되었습니다", true);
+                    this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
+                  }, error => {
+                    this.commonService.isLoading = false;
+                    this.commonService.alertMessage('비밀번호를 다시 입력하세요.', false);
+                  }); //
                 }
               }
-            }, error => {
-              this.commonService.alertMessage('회원가입 실패', false);
-              this.commonService.isLoading = false;
-            });
+            },error => {
+                this.commonService.alertMessage(data['msg'], false);
+                this.commonService.isLoading=false;
+            } //
+            );
+          }
           });
-
-        }
-
       });
+    }
+  }
 
-    } //첫 if 문
-  } // save 끝
 
 }

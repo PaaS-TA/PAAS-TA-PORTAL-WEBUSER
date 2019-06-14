@@ -149,6 +149,16 @@ export class CommonService {
     });
   }
 
+  doDeleteMuti(url: string, authorization : any, params: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.delete(url, {
+      params: params,
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
+
   doDeleteNoParams(url: string, token: string) {
     if (token == null) {
       token = '';
