@@ -23,6 +23,8 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
   @Input() inviteOrgList: Observable<any[]>;
   @Input() quotaDefinitionsEntities: Observable<any[]>;
 
+
+  private emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
   public sltEntity: any;
   public sltIndex: number;
   // public sltOrgGuid: string;
@@ -45,11 +47,12 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
   public sltplus : boolean = false;
   private showIndexArray: Array<string> = [];
   private sltPage : number;
-
+  public userName : Array<string> = [];
   public translateEntities: any = [];
-
+  public invite_name : string = '';
   constructor(private translate: TranslateService, private orgMainService: OrgMainService, private common: CommonService) {
     this.common.isLoading = false;
+    this.portalGetAllUserName();
 
     this.translate.get('orgMain').subscribe((res: string) => {
       this.translateEntities = res;
@@ -389,7 +392,10 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
   }
 
   userInvite() {
-
+    if(!this.usercheck()){
+      this.common.alertMessage(this.translateEntities.alertLayer.checkEmail, false);
+      return;
+    }
     var inviteObj = {};
     var inviteObjOrg = [];
     var inviteObjSpace = [];
@@ -434,6 +440,7 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
     }, error => {
       this.common.alertMessage(this.translateEntities.alertLayer.sendEmailFail + "<br><br>" + error, false);
     }, () => {
+      $("#layerpop4_"+this.orgsDetailGuid).modal("hide");
       this.getInviteOrg();
     });
   }
@@ -692,6 +699,33 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
     this.sltOrgGuid = orgGuid;
     this.sltQuotaGuid = quotaGuid;
     $("#layerpop_quota_change_"+this.orgsDetailGuid).modal("show");
+  }
+
+  portalGetAllUserName(){
+    this.orgMainService.getAllUser().subscribe(data => {
+      console.log(data);
+      data.userInfo.forEach(info => {
+        this.userName.push(info.userName);
+      });
+    });
+  }
+
+  usercheck(){
+    let user = this.invite_name.split(" ").join("");
+    console.log(user);
+    let users = user.split(',');
+    let namech = true;
+    users.forEach(user => {
+      if(namech && !this.userName.some(name => {
+        if(name === user){
+          if(this.emailCheck.test(user)){
+            return true}}})){
+        namech = false;};
+    });
+    return namech;
+  }
+  check(){
+    console.log(this.usercheck());
   }
 
 }

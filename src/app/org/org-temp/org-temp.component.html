@@ -616,8 +616,10 @@
         <!-- body -->
         <ng-container *ngIf="sltEntity">
           <div class="modal-body">
-            <input class="w100" placeholder="sample@test.com" id="userEmail" (keyup.enter)="userInvite()"/>
-            <span class="red">{{ 'orgMain.layerpop.layerpop4.explanation' | translate }}</span>
+            <input class="w100" placeholder="sample@test.com" id="userEmail" [(ngModel)]="invite_name" (keyup.enter)="userInvite()" (keyup)="check()" />
+            <ng-container *ngIf="invite_name === ''"><span class="red">{{ 'orgMain.layerpop.layerpop4.explanation' | translate }}</span></ng-container>
+            <ng-container *ngIf="invite_name !== '' && usercheck()"><span class="blue">* 사용자 에게 초대메세지를 보낼 수 있습니다.</span></ng-container>
+            <ng-container *ngIf="invite_name !== '' && !usercheck()"><span class="red">* 이메일에 해당하는 사용자가 없습니다.</span></ng-container>
             <table class="maT30">
               <colgroup>
                 <col style=''>
@@ -692,7 +694,7 @@
           </div>
           <!-- Footer -->
           <div class="modal-footer">
-            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="userInvite()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
+            <button type="button" class="btns2 colors4" (click)="userInvite()">{{ 'orgMain.layerpop.layerpop4.btn1' | translate }}</button>
             <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.layerpop4.btn2' | translate }}</button>
           </div>
         </ng-container>
