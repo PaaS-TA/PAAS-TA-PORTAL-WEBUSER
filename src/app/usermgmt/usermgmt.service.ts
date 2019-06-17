@@ -52,6 +52,17 @@ export class UsermgmtService {
     });
   }
 
+  // @DeleteMapping(V2_URL + "/user/{guid}/all")  ::CF&DB
+  userAllDeleteMuti(guid: string, authorization,  param: any) {
+    this.log.debug(guid);
+    this.log.debug(param);
+    return this.common.doDeleteMuti('/commonapi/v2/user/' + guid+ '/all', authorization, '', '').map((res: Response) => {
+      this.log.debug(res);
+      return res;
+    });
+  }
+
+
   // storageApiUrl + "/v2/" + storageApiType + '/';
   photoRegistration(params: any) {
     return this.common.doFilePost('/storageapi/v2/swift/', params, '').map((res: any) => {

@@ -3,6 +3,8 @@ import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ExternalcommonService} from "../common/externalcommon.service";
+import {User, UsermgmtService} from "../../usermgmt/usermgmt.service";
+import {Observable} from "rxjs";
 
 declare var $: any;
 declare var require: any;
@@ -18,6 +20,7 @@ let appConfig = require('assets/resources/env/config.json');
 export class CreateComponent implements OnInit {
 
   apiversion = appConfig['apiversion'];
+  public user: Observable<User>;
 
   public seq: string;
   public token: string;
@@ -31,8 +34,12 @@ export class CreateComponent implements OnInit {
   public isRePassword: boolean;
   public regions: string[];
   public key: string;
+  public password_check: string = '';
+  public password_now: string = '';
 
-  constructor(private commonService: CommonService, private externalService: ExternalcommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
+
+  constructor(private commonService: CommonService, private userMgmtService: UsermgmtService, private externalService: ExternalcommonService,
+              private activeRoute: ActivatedRoute, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
     this.seq = '';
     this.userId = '';
     this.username = '';
@@ -45,21 +52,22 @@ export class CreateComponent implements OnInit {
 
     this.userId = this.route.snapshot.queryParams['userId'] || '/';
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
-    this.seq = this.route.snapshot.queryParams['seq'] || '/';
+    this.key = this.route.snapshot.queryParams['key'] || '/';
 
-    this.commonService.getInfra(this.seq).subscribe(data =>{
+
+    this.commonService.getInfra(this.key).subscribe(infra =>{
       this.log.debug("getInfra >>");
-      this.log.debug(data);
+      this.log.debug(infra);
       //setInfra
-      this.commonService.setInfra(data["seq"],data["uaaUri"],data["apiUri"],data["authorization"]);
+      this.commonService.setInfra(infra["key"],infra["apiUri"],infra["uaaUri"],infra["authorization"]);
 
       if (this.userId.length > 0 && this.token.length > 0) {
-        this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(data => {
-          if (data == null) {
+        this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(tokeninfo => {
+          if (tokeninfo == null) {
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           } else {
-            let accessTime = data['authAccessTime'];
-            let accessCount = data['authAccessCnt'];
+            let accessTime = tokeninfo['authAccessTime'];
+            let accessCount = tokeninfo['authAccessCnt'];
             let now = new Date();
             if (accessTime <= now.getTime().toString()) {
               let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
@@ -137,31 +145,40 @@ export class CreateComponent implements OnInit {
         'address': '',
         'active': this.commonService.getAutomaticApproval()
       }
+
+
       this.commonService.getInfrasAll().subscribe(data => {
         let size = data.length;
         let createSuccess = 0; // 성공여부 확인
-        let forEachCount = 0; //apiUrl 개수 확인
+        let forEachCount = 0;  // apiUrl 개수 확인
 
-        if (size > 0) {
-          data.forEach(data => {
-            let result = data['zuulUrl'];
+        data.forEach(data => {
+          if (size > 0) {
+            let result = data['apiUri'];
             this.externalService.createUser_external(result, data["authorization"], param).subscribe(region => {
-              this.log.debug("CREATE ::: " + forEachCount + "    " + region);
-              forEachCount++;
+              this.log.debug(param);
+                forEachCount++;
               this.commonService.isLoading = false;
+              console.log("확인");
+              console.log(region['result']);
+                console.log(region['msg']);
               if (region['result'] == true) {
                 createSuccess++;
-                let userInfo = {
-                  'userId': this.userId,
-                  'userName': this.username,
-                  'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'
-                };
-                this.externalService.updateInfo(this.userId, userInfo);
+                this.log.debug('result');
+              }else{
+                alert(region['msg'])
               }
 
               if (forEachCount == size) {
+                this.log.debug("1 " + forEachCount);
+                this.log.debug("1 " + size);
+                this.log.debug("1 " +createSuccess);
+                this.log.debug("1 " +result);
                 if (createSuccess == size) {
+                  this.log.debug("2 " +createSuccess);
+                  this.log.debug("2 " +size);
                   if (!this.commonService.getAutomaticApproval()) {
+                    this.log.debug("!this.commonService.getAutomaticApproval" );
                     this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
                   } else {
                     this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
@@ -171,21 +188,44 @@ export class CreateComponent implements OnInit {
                     this.router.navigate(['login']);
                   },2000)
                 } else {
+                  this.log.debug("회원가입 실패" );
                   this.commonService.alertMessage('회원가입 실패', false);
                   this.commonService.isLoading = false;
+                  this.commonService.getInfra(data["key"]).subscribe(data =>{
+                    this.log.debug(data);
+                    this.commonService.setAuthorization(data["authorization"]);
+                    // this.externalService.updateInfo(this.userId, param);
+                    this.userMgmtService.userAllDeleteMuti(this.userId, data["authorization"],param).subscribe(data => {
+                      this.commonService.isLoading = false;
+                      this.commonService.alertMessage("이미 존재하는 계정삭제가 완료 되었습니다.", true);
+                      // this.goLogout();
+                      this.router.navigate(['login']);
+                    });
+                  });
                 }
               }
-            }, error => {
-              this.commonService.alertMessage('회원가입 실패', false);
-              this.commonService.isLoading = false;
-            });
+            },error => {
+                this.commonService.alertMessage(data['msg'], false);
+                this.commonService.isLoading=false;
+                this.log.debug("getInfra >>");
+            } //
+            );
+          }
           });
-
-        }
-
       });
+    }
+  }
 
-    } //첫 if 문
-  } // save 끝
+  goLogout() {
+    // this.log.debug('doLogout()');
+    this.commonService.signOut();
+    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
+    window.location.href = appConfig['logoutUrl'] +
+      '?response_type=' + appConfig['code'] +
+      '&client_id=' + appConfig['clientId'] +
+      '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
+      '&scope=' + appConfig['scope'] +
+      '&state=';
+  }
 
 }

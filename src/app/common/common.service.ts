@@ -67,8 +67,7 @@ export class CommonService {
   }
 
   getInfra(guid: string) {
-    this.log.debug("getInfra()");
-    this.log.debug("getInfra()" + guid);
+    this.log.debug("/external/configs/" + guid + "/auth");
     return this.http.get(appConfig["webadminUri"] + "/external/configs/" + guid + "/auth", {});
   }
 
@@ -148,6 +147,17 @@ export class CommonService {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
   }
+
+  doDeleteMuti(url: string, authorization: any, body: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.delete(this.gateway + url, {
+      params: body,
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
+
 
   doDeleteNoParams(url: string, token: string) {
     if (token == null) {

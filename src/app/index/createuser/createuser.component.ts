@@ -2,6 +2,7 @@ import {Component, DoCheck, OnInit} from '@angular/core';
 import {NGXLogger} from "ngx-logger";
 import {Router} from "@angular/router";
 import {IndexCommonService} from "../userAccountMgmt/index-common.service";
+import {CommonService} from "../../common/common.service";
 
 @Component({
   selector: 'app-createuser',
@@ -15,7 +16,7 @@ export class CreateuserComponent implements OnInit, DoCheck {
   public isUsed: boolean;
   public isSendEmail: boolean;
 
-  constructor(public indexCommonService: IndexCommonService, private router: Router, private log: NGXLogger) {
+  constructor(public indexCommonService: IndexCommonService, private common: CommonService, private router: Router, private log: NGXLogger) {
     this.email = '';
     this.isValidation = true;
     this.isUsed = false;
@@ -47,8 +48,15 @@ export class CreateuserComponent implements OnInit, DoCheck {
 
   checkUser() {
     if (!this.isValidation) {
-      this.indexCommonService.checkUsedCreate(this.email);
+      this.log.debug("getInfra >>");
+      this.common.getInfra(this.common.getSeq()).subscribe(data =>{
+        this.log.debug(data);
+        this.common.setAuthorization(data["authorization"]);
+        this.indexCommonService.checkUsedCreate(this.email);
+      });
+
     }
   }
+
 }
 
