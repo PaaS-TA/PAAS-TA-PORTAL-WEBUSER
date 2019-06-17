@@ -712,7 +712,6 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
 
   usercheck(){
     let user = this.invite_name.split(" ").join("");
-    console.log(user);
     let users = user.split(',');
     let namech = true;
     users.forEach(user => {
@@ -723,9 +722,6 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
         namech = false;};
     });
     return namech;
-  }
-  check(){
-    console.log(this.usercheck());
   }
 
 }
