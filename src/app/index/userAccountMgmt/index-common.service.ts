@@ -1,13 +1,22 @@
 import {Injectable} from '@angular/core';
 import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
-import {UsermgmtService} from "../../usermgmt/usermgmt.service";
+import {User, UsermgmtService} from "../../usermgmt/usermgmt.service";
+import {error} from "util";
+import {Observable} from "rxjs";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Injectable()
 export class IndexCommonService {
 
+  public user: Observable<User>;
+
   isUsed: boolean;
   isSendEmail: boolean;
+
+  /*사용자 정보*/
+  public userName: string;
+  public userGuid: string;
 
   constructor(private usermgmtService: UsermgmtService, private commonService: CommonService, private log: NGXLogger) {
     this.isSendEmail = false;
@@ -48,7 +57,6 @@ export class IndexCommonService {
     this.commonService.isLoading = true;
     this.isUsed = false;
     this.usermgmtService.userinfo(email).subscribe(data => {
-
       let userId = data;
       if (userId != null) {
         this.sendResetEmail(email);
@@ -71,12 +79,14 @@ export class IndexCommonService {
         this.isSendEmail = true;
       } else {
         this.commonService.doDelete("/commonapi/v2/user/" + email, param, '').subscribe();
+        this.commonService.doDeleteMuti("/portalapi/v2/users/" + email, '', param, '').subscribe();
         this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
         this.isSendEmail = false;
       }
       this.commonService.isLoading = false;
     }, error => {
       this.commonService.doDelete("/commonapi/v2/users/" + email, param, '').subscribe();
+      this.commonService.doDeleteMuti("/portalapi/v2/users/" + email, '', param, '').subscribe();
       this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
       this.isSendEmail = false;
       this.commonService.isLoading = false;

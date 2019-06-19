@@ -18,11 +18,19 @@ export class UsermgmtService {
 
   apiversion = appConfig['apiversion'];
 
+  userinfoAll(url, authorization) {
+    return this.common.doGet2(url+'/commonapi/v2/users',authorization,'').map((res: any) => {
+      return res;
+    });
+  }
+
+
   userinfo(username: string) {
     return this.common.doGet('/commonapi/v2/user/' + username, this.common.getToken()).map((res: Response) => {
       return res['User'];
     });
   }
+
 
   userSave(userId: string, param: any) {
     return this.common.doPut('/commonapi/v2/user/' + userId, param, this.common.getToken()).map((res: Response) => {
@@ -47,17 +55,13 @@ export class UsermgmtService {
   // @DeleteMapping(V2_URL + "/user/{guid}/all")  ::CF&DB
   userAllDelete(guid: string, param: any) {
     return this.common.doDelete('/commonapi/v2/user/' + guid + '/all', '', this.common.getToken()).map((res: Response) => {
-      this.log.debug(res);
       return res;
     });
   }
 
   // @DeleteMapping(V2_URL + "/user/{guid}/all")  ::CF&DB
   userAllDeleteMuti(guid: string, authorization,  param: any) {
-    this.log.debug(guid);
-    this.log.debug(param);
     return this.common.doDeleteMuti('/commonapi/v2/user/' + guid+ '/all', authorization, '', '').map((res: Response) => {
-      this.log.debug(res);
       return res;
     });
   }

@@ -51,7 +51,6 @@ export class CommonService {
     });
   }
 
-
   getInfras() {
     this.log.debug("coomon ::getInfras >>");
     return this.http.get(appConfig["webadminUri"] + "/external/configs", {}).map((res: any) => {
@@ -60,7 +59,7 @@ export class CommonService {
   }
 
   getInfrasAll() {
-    this.log.debug("coomon ::getInfrasall >>");
+    this.log.debug("coomon ::getInfrasAll >>");
     return this.http.get(appConfig["webadminUri"] + "/external/configs/all", {}).map((res: any) => {
       return res;
     });
@@ -81,6 +80,15 @@ export class CommonService {
     });
   }
 
+  doGet2(url: string, authorization: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    this.log.debug("doGet2 :: url >>" + url);
+    return this.http.get(url, {
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
 
   doPost(url: string, body: any, token: string) {
     if (token == null) {
@@ -92,15 +100,17 @@ export class CommonService {
     });
   }
 
-  doPost2(url: string, authorization: any, body: any, token: string) {
+  doPost2(url: string, authorization: any, param: any, token: string) {
     if (token == null) {
       token = '';
     }
-    return this.http.post(url, body, {
+    this.log.debug(param);
+    return this.http.post(url, param, {
       //auth set 기본제공
       headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
     });
   }
+
 
   doFilePost(url: string, body: any, token: string) {
     if (token == null) {
@@ -128,16 +138,6 @@ export class CommonService {
     });
   }
 
-  doPut2(url: string, body: any, token: string) {
-    if (token == null) {
-      token = '';
-    }
-    return this.http.put(url, body, {
-      headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
-    });
-  }
-
-
   doDelete(url: string, params: any, token: string) {
     if (token == null) {
       token = '';
@@ -152,7 +152,7 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
-    return this.http.delete(this.gateway + url, {
+    return this.http.delete(url, {
       params: body,
       headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
     });

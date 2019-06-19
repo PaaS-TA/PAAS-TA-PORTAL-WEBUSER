@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ExternalcommonService} from "../common/externalcommon.service";
 import {User, UsermgmtService} from "../../usermgmt/usermgmt.service";
 import {Observable} from "rxjs";
+import {IndexCommonService} from "../../index/userAccountMgmt/index-common.service";
 
 declare var $: any;
 declare var require: any;
@@ -37,9 +38,12 @@ export class CreateComponent implements OnInit {
   public password_check: string = '';
   public password_now: string = '';
 
+  public isUsed: boolean;
 
-  constructor(private commonService: CommonService, private userMgmtService: UsermgmtService, private externalService: ExternalcommonService,
+
+  constructor(public indexCommonService: IndexCommonService, private commonService: CommonService, private userMgmtService: UsermgmtService, private externalService: ExternalcommonService,
               private activeRoute: ActivatedRoute, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
+
     this.seq = '';
     this.userId = '';
     this.username = '';
@@ -52,14 +56,14 @@ export class CreateComponent implements OnInit {
 
     this.userId = this.route.snapshot.queryParams['userId'] || '/';
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
-    this.key = this.route.snapshot.queryParams['key'] || '/';
+    this.seq = this.route.snapshot.queryParams['seq'] || '/';
 
 
-    this.commonService.getInfra(this.key).subscribe(infra =>{
+    this.commonService.getInfra(this.seq).subscribe(infra =>{
       this.log.debug("getInfra >>");
       this.log.debug(infra);
       //setInfra
-      this.commonService.setInfra(infra["key"],infra["apiUri"],infra["uaaUri"],infra["authorization"]);
+      this.commonService.setInfra(infra["seq"],infra["apiUri"],infra["uaaUri"],infra["authorization"]);
 
       if (this.userId.length > 0 && this.token.length > 0) {
         this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(tokeninfo => {
@@ -137,6 +141,7 @@ export class CreateComponent implements OnInit {
   save() {
     this.commonService.isLoading = true;
     if (this.isUserName && this.isPassword && this.isRePassword) {
+
       let param = {
         'userId': this.userId,
         'userName': this.username,
@@ -146,7 +151,6 @@ export class CreateComponent implements OnInit {
         'active': this.commonService.getAutomaticApproval()
       }
 
-
       this.commonService.getInfrasAll().subscribe(data => {
         let size = data.length;
         let createSuccess = 0; // 성공여부 확인
@@ -154,6 +158,7 @@ export class CreateComponent implements OnInit {
 
         data.forEach(data => {
           if (size > 0) {
+            this.log.debug(data);
             let result = data['apiUri'];
             this.externalService.createUser_external(result, data["authorization"], param).subscribe(region => {
               this.log.debug(param);
@@ -163,20 +168,17 @@ export class CreateComponent implements OnInit {
               console.log(region['result']);
                 console.log(region['msg']);
               if (region['result'] == true) {
+                let userInfo = {'userId': this.userId, 'userName': this.username};
+                this.externalService.updateInfo(this.userId, userInfo);
                 createSuccess++;
-                this.log.debug('result');
               }else{
-                alert(region['msg'])
+                this.commonService.alertMessage(data["msg"], false);
               }
 
               if (forEachCount == size) {
-                this.log.debug("1 " + forEachCount);
-                this.log.debug("1 " + size);
-                this.log.debug("1 " +createSuccess);
-                this.log.debug("1 " +result);
+                this.log.debug("1:: " + forEachCount + "/ " + size);
                 if (createSuccess == size) {
-                  this.log.debug("2 " +createSuccess);
-                  this.log.debug("2 " +size);
+                  this.log.debug("2:: " + createSuccess + "/ " + size);
                   if (!this.commonService.getAutomaticApproval()) {
                     this.log.debug("!this.commonService.getAutomaticApproval" );
                     this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
@@ -185,7 +187,7 @@ export class CreateComponent implements OnInit {
                   }
                   setTimeout(()=>{
                     this.commonService.isLoading = false;
-                    this.router.navigate(['login']);
+                    // this.router.navigate(['login']);
                   },2000)
                 } else {
                   this.log.debug("회원가입 실패" );
@@ -194,20 +196,16 @@ export class CreateComponent implements OnInit {
                   this.commonService.getInfra(data["key"]).subscribe(data =>{
                     this.log.debug(data);
                     this.commonService.setAuthorization(data["authorization"]);
-                    // this.externalService.updateInfo(this.userId, param);
-                    this.userMgmtService.userAllDeleteMuti(this.userId, data["authorization"],param).subscribe(data => {
-                      this.commonService.isLoading = false;
-                      this.commonService.alertMessage("이미 존재하는 계정삭제가 완료 되었습니다.", true);
-                      // this.goLogout();
-                      this.router.navigate(['login']);
-                    });
+                    /*
+                    * 1. 한쪽에만 생성된 계정 삭제
+                    * 2. 아이디 유무 체크 확인 let forIdCount = 0;
+                    */
                   });
                 }
               }
             },error => {
                 this.commonService.alertMessage(data['msg'], false);
                 this.commonService.isLoading=false;
-                this.log.debug("getInfra >>");
             } //
             );
           }
@@ -227,5 +225,6 @@ export class CreateComponent implements OnInit {
       '&scope=' + appConfig['scope'] +
       '&state=';
   }
+
 
 }

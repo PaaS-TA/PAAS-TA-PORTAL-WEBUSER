@@ -23,31 +23,30 @@ export class ExternalcommonService {
 
 
   reset(param) {
-    this.log.debug("reset >>" + param);
     return this.commonService.doPost('/portalapi/' + this.apiversion + '/users/password/reset', param, '');
   }
 
 
-  reset_external(url,authorization, param : any) {
-    this.log.debug("reset_external >>" + url);
+  reset_external(url, authorization, param : any) {
     return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users/password/reset',authorization, param, '');
   }
 
 
   updateInfo(userId: string, param) {
     return this.commonService
-      .doPut('/commonapi/v2/user/' + userId, param, '').map((res: Response) => {
+      .doPut('/commonapi/v2/user/' + userId,  param, '').map((res: Response) => {
         return res['result'];
       }).subscribe();
   }
+
 
   createUser(param) {
     return this.commonService.doPost('/portalapi/' + this.apiversion + '/users', param, '');
   }
 
   createUser_external(url, authorization, param : any) {
-    this.log.debug("createUser_external >>" + url);
     return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users', authorization,  param, '');
+
   }
 
 }

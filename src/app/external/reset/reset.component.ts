@@ -46,7 +46,7 @@ export class ResetComponent implements OnInit {
 
     this.commonService.getInfra(this.seq).subscribe(data =>{
       //setInfra
-      this.commonService.setInfra(data["seq"],data["uaaUri"],data["apiUri"],data["authorization"]);
+      this.commonService.setInfra(data["seq"],data["apiUrl"],data["uaaUrl"],data["authorization"]);
 
       if (this.userId.length > 0 && this.token.length > 0) {
         this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(data => {
@@ -84,16 +84,13 @@ export class ResetComponent implements OnInit {
 
 
   checkPassword() {
-    this.log.debug('password :: ' + this.password);
     var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
     if (!reg_pwd.test(this.password)) {
-      this.log.debug('password :: 1');
       this.isPassword = false;
       return;
     }
 
     if (this.password.search(/₩s/) != -1) {
-      this.log.debug('password :: 2');
       this.isPassword = false;
       return;
     }
@@ -103,7 +100,6 @@ export class ResetComponent implements OnInit {
 
 
   checkRePassword() {
-    this.log.debug('repassword :: ' + this.re_password)
     if (this.password == this.re_password) {
       this.isRePassword = true;
     } else {
@@ -124,21 +120,16 @@ export class ResetComponent implements OnInit {
         let size = data.length;
         let success = 0; // 성공여부 확인
         let forEachCount = 0; //apiUrl 개수 확인
-
         data.forEach(data => {
           // data 유무확인
           if (size > 0) {
-            this.log.debug(data);
           let result = data['apiUri'];
-          this.log.debug(data["authorization"]);
 
           this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
-            this.log.debug("save ::: " + forEachCount + "    " + data);
             forEachCount++;
             this.commonService.isLoading = false;
             if (region['result'] == true) {
               success++;
-              this.log.debug('result');
             }else {
               alert(region['msg'])
             }
