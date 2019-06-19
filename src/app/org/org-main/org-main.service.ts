@@ -48,6 +48,12 @@ export class OrgMainService {
     });
   }
 
+  getAllUser(){
+    return this.commonService.doGet('/commonapi/v2/users', this.commonService.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
   createSpace(params: any) {
     return this.commonService.doPost('/portalapi/' + this.apiversion + '/spaces', params, this.commonService.getToken()).map((res: any) => {
       return res;

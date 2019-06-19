@@ -480,6 +480,8 @@
       "layerpop4": {
         "title": "사용자 초대",
         "explanation": "* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.",
+        "succeed" : "* 사용자 에게 초대메세지를 보낼 수 있습니다.",
+        "unSucceed" : "* 이메일에 해당하는 사용자가 없습니다.",
         "org": "조직",
         "assignedOrg": "할당된 조직",
         "orgAdmin": "조직 관리자",
@@ -518,7 +520,8 @@
       "memberCancelFail": "맴버 취소를 실패 하였습니다.",
       "memberCancelFail2": "ORG에 멤버가 없는 관계로 멤버취소를 할 수 없습니다. ORG를 삭제하세요.",
       "sendEmailSuccess": "사용자를 초대완료 하였습니다.",
-      "sendEmailFail": "사용자 초대가 실패 하였습니다."
+      "sendEmailFail": "사용자 초대가 실패 하였습니다.",
+      "checkEmail" : "사용자 초대 이메일을 확인하시길 바랍니다."
     }
   },
   "orgProduce": {

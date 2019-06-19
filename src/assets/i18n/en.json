@@ -478,6 +478,8 @@
       "layerpop4": {
         "title": "Invite a user",
         "explanation": "* You can continue adding email addresses using a comma.",
+        "succeed" : "* You can send an invitation message to the user.",
+        "unSucceed" : "* There are no users for this email.",
         "org": "Organization",
         "assignedOrg": "Assigned Organization",
         "orgAdmin" : "Org Administrator",
@@ -516,7 +518,8 @@
       "memberCancelFail": "Failed to cancel the member.",
       "memberCancelFail2": "You can not cancel a member because there is no member in the ORG. Remove the ORG.",
       "sendEmailSuccess": "You have successfully invited people.",
-      "sendEmailFail": "User invitation failed."
+      "sendEmailFail": "User invitation failed.",
+      "checkEmail" : "Please check user invitation email."
     }
   },
   "orgProduce" : {
