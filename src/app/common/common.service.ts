@@ -52,14 +52,12 @@ export class CommonService {
   }
 
   getInfras() {
-    this.log.debug("coomon ::getInfras >>");
     return this.http.get(appConfig["webadminUri"] + "/external/configs", {}).map((res: any) => {
       return res;
     });
   }
 
   getInfrasAll() {
-    this.log.debug("coomon ::getInfrasAll >>");
     return this.http.get(appConfig["webadminUri"] + "/external/configs/all", {}).map((res: any) => {
       return res;
     });
@@ -69,6 +67,7 @@ export class CommonService {
     this.log.debug("/external/configs/" + guid + "/auth");
     return this.http.get(appConfig["webadminUri"] + "/external/configs/" + guid + "/auth", {});
   }
+
 
   doGet(url: string, token: string) {
     if (token == null) {

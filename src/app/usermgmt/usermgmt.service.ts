@@ -25,6 +25,13 @@ export class UsermgmtService {
   }
 
 
+  userinfoCheck(username: string, url, authorization) {
+    return this.common.doGet2(url+'/commonapi/v2/user/' + username, authorization,'').map((res: any) => {
+      return res;
+    });
+  }
+
+
   userinfo(username: string) {
     return this.common.doGet('/commonapi/v2/user/' + username, this.common.getToken()).map((res: Response) => {
       return res['User'];

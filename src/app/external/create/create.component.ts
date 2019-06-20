@@ -187,14 +187,12 @@ export class CreateComponent implements OnInit {
                   }
                   setTimeout(()=>{
                     this.commonService.isLoading = false;
-                    // this.router.navigate(['login']);
+                    this.router.navigate(['login']);
                   },2000)
                 } else {
-                  this.log.debug("회원가입 실패" );
                   this.commonService.alertMessage('회원가입 실패', false);
                   this.commonService.isLoading = false;
                   this.commonService.getInfra(data["key"]).subscribe(data =>{
-                    this.log.debug(data);
                     this.commonService.setAuthorization(data["authorization"]);
                     /*
                     * 1. 한쪽에만 생성된 계정 삭제

@@ -6,6 +6,7 @@ import {CommonService} from "../../common/common.service";
 import {User, UsermgmtService} from "../../usermgmt/usermgmt.service";
 import {Observable} from "rxjs";
 import {error} from "util";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'app-createuser',
@@ -66,15 +67,19 @@ export class CreateuserComponent implements OnInit, DoCheck {
               if(this.email == userName){
                 usedCount++;
               }
+              this.log.debug("this.email: "+this.email+"  "+"userName: "+userInfoEnv["userName"]);
             });
             forEachCount++;
 
             if(forEachCount == size){
-              if(usedCount > 0){
+              if(usedCount == 0){
+                this.multiUsedCreate();
+              }
+              if(usedCount == 1){
+                this.usedCreate();
+              }
+              if(usedCount == size){
                 this.common.alertMessage("사용자 정보가 존재합니다.", false);
-              }else{
-                console.log("COUNT C" + forEachCount + "   " + size);
-                this.userGetInfra();
               }
             }
           },error =>{
@@ -86,7 +91,8 @@ export class CreateuserComponent implements OnInit, DoCheck {
     }
   }
 
-  userGetInfra() {
+
+  multiUsedCreate() {
     if (!this.isValidation) {
       this.common.getInfra(this.common.getSeq()).subscribe(data =>{
         this.common.setAuthorization(data["authorization"]);
@@ -95,6 +101,31 @@ export class CreateuserComponent implements OnInit, DoCheck {
 
     }
   }
+
+
+  usedCreate() {
+    let forEachCount = 0;  //apiUrl 개수 확인
+    this.common.getInfrasAll().subscribe(data => {
+      let size = data.length;
+      data.forEach(data => {
+        let result = data['apiUri'];
+        this.usermgmtService.userinfoCheck(this.email, result, data["authorization"]).subscribe(data2 => {
+          let userInfoEnv = data2["User"];
+          forEachCount++;
+
+          //userInfoEnv["userId"]
+          if(userInfoEnv == null){
+            this.indexCommonService.checkUsedCreate(this.email);
+          }
+
+        },error =>{
+          this.common.alertMessage(data['msg'], false);
+        });
+      });
+    });
+
+  }//
+
 
 }
 
