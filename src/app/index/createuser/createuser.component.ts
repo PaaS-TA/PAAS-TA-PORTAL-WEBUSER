@@ -75,7 +75,7 @@ export class CreateuserComponent implements OnInit, DoCheck {
                 this.multiUsedCreate();
               }
               if(usedCount == 1){
-                this.usedCreate();
+                this.common.alertMessage("다른 계정으로 생성하세요.", false);
               }
               if(usedCount == size){
                 this.common.alertMessage("사용자 정보가 존재합니다.", false);
@@ -83,7 +83,7 @@ export class CreateuserComponent implements OnInit, DoCheck {
             }
           },error =>{
             this.common.alertMessage(data['msg'], false);
-          });//userinfoAll
+          });
 
         });
       });
@@ -100,48 +100,6 @@ export class CreateuserComponent implements OnInit, DoCheck {
 
     }
   }
-
-
-  usedCreate() {
-    let forEachCount = 0;  //apiUrl 개수 확인
-    this.common.getInfrasAll().subscribe(data => {
-      let size = data.length;
-      data.forEach(data => {
-        let result = data['apiUri'];
-        this.usermgmtService.userinfoCheck(this.email, result, data["authorization"]).subscribe(data2 => {
-          let userInfoEnv = data2["User"];
-          forEachCount++;
-
-          if(userInfoEnv == null){
-              let param = {userid: this.email};
-              this.common.doPost2(result+"/commonapi/v2/users/create/email", data["authorization"], param,'').subscribe(data => {
-                if (data['result'] === true) {
-                  this.isSendEmail = true;
-                  this.common.alertMessage('메일 발송에 성공하였습니다.', true);
-                  this.router.navigate(['/']);
-                } else {
-                  this.common.doDelete(result+"/commonapi/v2/user/" + this.email, param, '').subscribe();
-                  this.common.doDeleteMuti(result+"/portalapi/v2/users/" + this.email, '', param, '').subscribe();
-                  this.common.alertMessage('메일 발송에 실패하였습니다.', false);
-                  this.isSendEmail = false;
-                }
-                this.common.isLoading = false;
-              }, error => {
-                this.common.doDelete(result+"/commonapi/v2/users/" + this.email, param, '').subscribe();
-                this.common.doDeleteMuti(result+"/portalapi/v2/users/" + this.email, '', param, '').subscribe();
-                this.common.alertMessage('메일 발송에 실패하였습니다.', false);
-                this.isSendEmail = false;
-                this.common.isLoading = false;
-              });
-          }
-
-        },error =>{
-          this.common.alertMessage(data['msg'], false);
-        });
-      });
-    });
-
-  }//
 
 
 }
