@@ -67,7 +67,6 @@ export class CreateuserComponent implements OnInit, DoCheck {
               if(this.email == userName){
                 usedCount++;
               }
-              this.log.debug("this.email: "+this.email+"  "+"userName: "+userInfoEnv["userName"]);
             });
             forEachCount++;
 
@@ -113,9 +112,27 @@ export class CreateuserComponent implements OnInit, DoCheck {
           let userInfoEnv = data2["User"];
           forEachCount++;
 
-          //userInfoEnv["userId"]
           if(userInfoEnv == null){
-            this.indexCommonService.checkUsedCreate(this.email);
+              let param = {userid: this.email};
+              this.common.doPost2(result+"/commonapi/v2/users/create/email", data["authorization"], param,'').subscribe(data => {
+                if (data['result'] === true) {
+                  this.isSendEmail = true;
+                  this.common.alertMessage('메일 발송에 성공하였습니다.', true);
+                  this.router.navigate(['/']);
+                } else {
+                  this.common.doDelete(result+"/commonapi/v2/user/" + this.email, param, '').subscribe();
+                  this.common.doDeleteMuti(result+"/portalapi/v2/users/" + this.email, '', param, '').subscribe();
+                  this.common.alertMessage('메일 발송에 실패하였습니다.', false);
+                  this.isSendEmail = false;
+                }
+                this.common.isLoading = false;
+              }, error => {
+                this.common.doDelete(result+"/commonapi/v2/users/" + this.email, param, '').subscribe();
+                this.common.doDeleteMuti(result+"/portalapi/v2/users/" + this.email, '', param, '').subscribe();
+                this.common.alertMessage('메일 발송에 실패하였습니다.', false);
+                this.isSendEmail = false;
+                this.common.isLoading = false;
+              });
           }
 
         },error =>{
