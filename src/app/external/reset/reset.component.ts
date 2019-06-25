@@ -44,9 +44,9 @@ export class ResetComponent implements OnInit {
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
 
-    this.commonService.getInfra(this.seq).subscribe(data =>{
+    this.commonService.getInfra(this.seq).subscribe(infra =>{
       //setInfra
-      this.commonService.setInfra(data["seq"],data["apiUrl"],data["uaaUrl"],data["authorization"]);
+      this.commonService.setInfra(infra["seq"],infra["apiUrl"],infra["uaaUrl"],infra["authorization"]);
 
       if (this.userId.length > 0 && this.token.length > 0) {
         this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(data => {
