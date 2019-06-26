@@ -7,6 +7,7 @@ import {User, UsermgmtService} from "../../usermgmt/usermgmt.service";
 import {Observable} from "rxjs";
 import {error} from "util";
 import {forEach} from "@angular/router/src/utils/collection";
+import {CATALOGURLConstant} from "../../catalog/common/catalog.constant";
 
 @Component({
   selector: 'app-createuser',
@@ -59,11 +60,12 @@ export class CreateuserComponent implements OnInit, DoCheck {
       this.common.getInfrasAll().subscribe(data => {
         let size = data.length;
         data.forEach(data => {
+          // forEachCount++; : 위치에러 : this.email 두개 발송
           let result = data['apiUri'];
-          this.usermgmtService.userinfoAll(result, data["authorization"]).subscribe(data2 => {
+          this.usermgmtService.userInfoAll(result, data["authorization"]).subscribe(data2 => {
             let infoEnv = data2.userInfo;
-            infoEnv.forEach(userInfoEnv => {
-              let userName = userInfoEnv["userName"];
+            infoEnv.forEach(infoEnv => {
+              let userName = infoEnv["userName"];
               if(this.email == userName){
                 usedCount++;
               }
@@ -83,9 +85,12 @@ export class CreateuserComponent implements OnInit, DoCheck {
             }
           },error =>{
             this.common.alertMessage(data['msg'], false);
+            this.router.navigate(['/login']);
           });
-
         });
+      },error =>{
+        this.common.alertMessage('msg',false);
+        this.router.navigate(['/login']);
       });
     }
   }
@@ -93,14 +98,11 @@ export class CreateuserComponent implements OnInit, DoCheck {
 
   multiUsedCreate() {
     if (!this.isValidation) {
-      this.common.getInfra(this.common.getSeq()).subscribe(data =>{
-        this.common.setAuthorization(data["authorization"]);
-        this.indexCommonService.checkUsedCreate(this.email);
+      this.common.getInfra(this.common.getSeq()).subscribe(infra =>{
+        this.indexCommonService.sendCreateEmail(infra['apiUri'],infra["authorization"],this.email);
       });
-
     }
   }
-
 
 }
 

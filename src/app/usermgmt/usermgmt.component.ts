@@ -302,10 +302,13 @@ export class UsermgmtComponent implements OnInit {
         }else{
           let param = {id: this.user['userId'], password: this.password_now};
           this.common.doPost('/portalapi/login', param, '').subscribe(data => { //1)로그인
-            this.regionPassword(); //2) 리셋:다시 재 로그인
+            this.regionPassword();
           },error=>{
             this.common.alertMessage('변경하는데 실패하였습니다.', false);
             this.common.isLoading = false;
+            $('#password_now').val('');
+            $('#password_new').val('');
+            $('#password_confirm').val('');
           });
         }
       });
@@ -327,7 +330,6 @@ export class UsermgmtComponent implements OnInit {
         this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail + "<br><br>" + data.msg, false);
         this.common.isLoading = false;
       }
-      /*reset*/
       $('#password_now').val('');
       $('#password_new').val('');
       $('#password_confirm').val('');
@@ -338,46 +340,56 @@ export class UsermgmtComponent implements OnInit {
   regionPassword() {
     this.common.isLoading = true;
     let param = {userId: this.user['userId'], password: this.password_new};
-    this.common.getInfrasAll().subscribe(data => {
-      let size = data.length;
-      let success = 0;
-      let forEachCount = 0;
 
-      data.forEach(data => {
+    if (this.password_new == this.password_confirm) {
+      this.common.getInfrasAll().subscribe(data => {
+        let size = data.length;
+        let success = 0;
+        let forEachCount = 0;
+
+        data.forEach(data => {
           let result = data['apiUri'];
-          this.log.debug(data["authorization"]);
-
           this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
-            this.log.debug("save ::: " + forEachCount + "    " + data);
             forEachCount++;
             this.common.isLoading = false;
             if (region['result'] == true) {
               success++;
-              this.log.debug('result');
             }else {
               alert(region['msg'])
             }
 
             if (forEachCount == size) {
               if (success == size) {
-                this.common.isLoading = false;
                 this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
                 setTimeout(()=>{
                   this.common.isLoading = false;
-                  this.router.navigate(['/']);
+                  this.router.navigate(['/logout']);
                 },2000)
-              } else {
-                this.common.alertMessage(data["msg"], false);
               }
             }
-          }, error => {
-            this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail, false);
-            this.common.isLoading = false;
-          });
-          this.router.navigate(['/']);
 
+          },error =>{
+            this.common.isLoading = false;
+            this.common.alertMessage(this.translateEntities.alertLayer.passwordFailNotFound, false);
+            this.router.navigate(['/usermgmt']);
+
+          });
+        });
+      },error =>{
+        this.common.alertMessage('msg',false);
+        this.common.isLoading = false;
       });
-    });
+
+    }else{
+      this.common.isLoading = false;
+      this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail,false);
+      setTimeout(()=>{
+        this.router.navigate(['/usermgmt']);
+      },1000)
+      $('#password_now').val('');
+      $('#password_new').val('');
+      $('#password_confirm').val('');
+    }
 
   }
 

@@ -630,6 +630,7 @@
       "ChangeSuccess": "The change is complete.",
       "ChangeSuccessFail": "Please re-enter.",
       "passwordSuccess": "Successfully changed.",
+      "passwordFailNotFound": "Password change failed",
       "newPasswordFail": "Please re-enter your new password.",
       "passwordFail": "Please re-enter your password.",
       "orgDeleteSuccess": "Organization withdrawal is complete.",

@@ -64,7 +64,7 @@ export class CommonService {
   }
 
   getInfra(guid: string) {
-    this.log.debug("/external/configs/" + guid + "/auth");
+    //this.log.debug("/external/configs/" + guid + "/auth");
     return this.http.get(appConfig["webadminUri"] + "/external/configs/" + guid + "/auth", {});
   }
 
@@ -73,37 +73,35 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
-    this.log.debug("doGet :: this.gateway >>" + this.gateway + " " + "url >>" + url);
     return this.http.get(this.gateway + url, {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
   }
 
-  doGet2(url: string, authorization: any, token: string) {
+
+  doGetMulti(url: string, authorization: any, token: string) {
     if (token == null) {
       token = '';
     }
-    this.log.debug("doGet2 :: url >>" + url);
     return this.http.get(url, {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
     });
   }
 
+
   doPost(url: string, body: any, token: string) {
     if (token == null) {
       token = '';
     }
-    this.log.debug("doPost :: this.gateway >>" + this.gateway + " " + "url >>" + url);
     return this.http.post(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
   }
 
-  doPost2(url: string, authorization: any, param: any, token: string) {
+  doPostMulti(url: string, authorization: any, param: any, token: string) {
     if (token == null) {
       token = '';
     }
-    this.log.debug(param);
     return this.http.post(url, param, {
       //auth set 기본제공
       headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
@@ -147,7 +145,8 @@ export class CommonService {
     });
   }
 
-  doDeleteMuti(url: string, authorization: any, body: any, token: string) {
+
+  doDeleteMulti(url: string, authorization: any, body: any, token: string) {
     if (token == null) {
       token = '';
     }

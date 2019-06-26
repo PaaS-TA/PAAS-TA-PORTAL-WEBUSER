@@ -57,7 +57,7 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
         let size = data.length;
         data.forEach(data => {
           let result = data['apiUri'];
-          this.usermgmtService.userinfoAll(result, data["authorization"]).subscribe(data2 => {
+          this.usermgmtService.userInfoAll(result, data["authorization"]).subscribe(data2 => {
             let infoEnv = data2.userInfo;
             infoEnv.forEach(userInfoEnv => {
               let userName = userInfoEnv["userName"];
@@ -74,12 +74,11 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
                 this.common.alertMessage(data['msg'], false);
               }
             }
-
-          },error =>{
-            this.common.alertMessage(data['msg'], false);
           });
-
         });
+      },error=> {
+        this.common.alertMessage('msg',false);
+        this.router.navigate(['/login']);
       });
 
     }
@@ -88,11 +87,9 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
 
   multiCheckUsedReset() {
     if (!this.isValidation) {
-      this.common.getInfra(this.common.getSeq()).subscribe(data =>{
-        this.common.setAuthorization(data["authorization"]);
-        this.indexCommonService.checkUsedReset(this.email);
+      this.common.getInfra(this.common.getSeq()).subscribe(infra =>{
+        this.indexCommonService.sendResetEmail(infra['apiUri'], infra["authorization"],this.email);
       });
-
     }
   }
 

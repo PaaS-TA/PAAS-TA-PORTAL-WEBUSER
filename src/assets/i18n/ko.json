@@ -633,6 +633,7 @@
       "ChangeSuccess": "변경 되었습니다.",
       "ChangeSuccessFail": "재 입력 하세요.",
       "passwordSuccess": "성공적으로 변경되었습니다.",
+      "passwordFailNotFound": "비밀번호 변경에 실패하였습니다.",
       "newPasswordFail": "새 비밀번호를 다시 입력하세요.",
       "passwordFail": "비밀번호를 다시 입력하세요.",
       "orgDeleteSuccess": "조직탈퇴 완료 되었습니다.",

@@ -28,7 +28,7 @@ export class ExternalcommonService {
 
 
   reset_external(url, authorization, param : any) {
-    return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users/password/reset',authorization, param, '');
+    return this.commonService.doPostMulti(url + '/portalapi/' + this.apiversion + '/users/password/reset',authorization, param, '');
   }
 
 
@@ -40,12 +40,8 @@ export class ExternalcommonService {
   }
 
 
-  createUser(param) {
-    return this.commonService.doPost('/portalapi/' + this.apiversion + '/users', param, '');
-  }
-
   createUser_external(url, authorization, param : any) {
-    return this.commonService.doPost2(url + '/portalapi/' + this.apiversion + '/users', authorization,  param, '');
+    return this.commonService.doPostMulti(url + '/portalapi/' + this.apiversion + '/users', authorization,  param, '');
 
   }
 

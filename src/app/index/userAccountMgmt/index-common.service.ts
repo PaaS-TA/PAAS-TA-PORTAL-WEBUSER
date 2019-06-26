@@ -33,70 +33,32 @@ export class IndexCommonService {
     }
   }
 
-  checkUsedCreate(email: string) {
-    this.commonService.isLoading = true;
-    this.isUsed = false;
-    this.usermgmtService.userinfo(email).subscribe(data => {
-      let userId = data;
-      if (userId == null) {
-        this.sendCreateEmail(email);
-        this.isUsed = false;
-      } else {
-        this.isUsed = true;
-        this.commonService.isLoading = false;
-      }
-    }, error => {
-      this.alertMessage('사용자 정보를 확인하는데 실패하였습니다.', false);
-      this.commonService.isLoading = false;
-
-    });
-  }
-
-
-  checkUsedReset(email: string) {
-    this.commonService.isLoading = true;
-    this.isUsed = false;
-    this.usermgmtService.userinfo(email).subscribe(data => {
-      let userId = data;
-      if (userId != null) {
-        this.sendResetEmail(email);
-        this.isUsed = false;
-      } else {
-        this.isUsed = true;
-        this.commonService.isLoading = false;
-      }
-    }, error => {
-      this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
-      this.commonService.isLoading = false;
-    });
-  }
-
-
-  sendCreateEmail(email: string) {
-    let param = {userid: email};
-    this.commonService.doPost("/commonapi/v2/users/create/email", param, '').subscribe(data => {
+  sendCreateEmail(url, authorization, email: string) {
+    this.log.debug(this.userName);
+    let param = {userid: email, username: this.userName};
+    this.commonService.doPostMulti(url+"/commonapi/v2/users/create/email", authorization, param, '').subscribe(data => {
       if (data['result'] === true) {
         this.isSendEmail = true;
       } else {
         this.commonService.doDelete("/commonapi/v2/user/" + email, param, '').subscribe();
-        this.commonService.doDeleteMuti("/portalapi/v2/users/" + email, '', param, '').subscribe();
+        this.commonService.doDeleteMulti("/portalapi/v2/users/" + email, '', param, '').subscribe();
         this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
         this.isSendEmail = false;
       }
       this.commonService.isLoading = false;
     }, error => {
       this.commonService.doDelete("/commonapi/v2/users/" + email, param, '').subscribe();
-      this.commonService.doDeleteMuti("/portalapi/v2/users/" + email, '', param, '').subscribe();
+      this.commonService.doDeleteMulti("/portalapi/v2/users/" + email, '', param, '').subscribe();
       this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
       this.isSendEmail = false;
       this.commonService.isLoading = false;
     });
   }
 
-  sendResetEmail(email: string) {
+
+  sendResetEmail(url, authorization, email: string) {
     let param = {userid: email};
-    this.commonService.doPost("/commonapi/v2/users/password/email", param, '').subscribe(data => {
-      //this.log.debug(data);
+    this.commonService.doPostMulti(url+"/commonapi/v2/users/password/email", authorization, param, '').subscribe(data => {
       if (data['result'] === true) {
         this.isSendEmail = true;
       } else {
@@ -109,6 +71,7 @@ export class IndexCommonService {
       this.commonService.isLoading = false;
     });
   }
+
 
   alertMessage(msg: string, result: boolean) {
     this.commonService.alertMessage(msg, result);
