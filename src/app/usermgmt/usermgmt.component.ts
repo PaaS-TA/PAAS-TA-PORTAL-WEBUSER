@@ -340,49 +340,52 @@ export class UsermgmtComponent implements OnInit {
   regionPassword() {
     this.common.isLoading = true;
     let param = {userId: this.user['userId'], password: this.password_new};
+    if(this.password_now != this.password_new){
+      if (this.password_new == this.password_confirm) {
+        this.common.getInfrasAll().subscribe(data => {
+          let size = data.length;
+          let success = 0;
+          let forEachCount = 0;
 
-    if (this.password_new == this.password_confirm) {
-      this.common.getInfrasAll().subscribe(data => {
-        let size = data.length;
-        let success = 0;
-        let forEachCount = 0;
-
-        data.forEach(data => {
-          let result = data['apiUri'];
-          this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
-            forEachCount++;
-            this.common.isLoading = false;
-            if (region['result'] == true) {
-              success++;
-            }else {
-              alert(region['msg'])
-            }
-
-            if (forEachCount == size) {
-              if (success == size) {
-                this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
-                setTimeout(()=>{
-                  this.common.isLoading = false;
-                  this.router.navigate(['/logout']);
-                },2000)
+          data.forEach(data => {
+            let result = data['apiUri'];
+            this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
+              forEachCount++;
+              this.common.isLoading = false;
+              if (region['result'] == true) {
+                success++;
               }
-            }
 
-          },error =>{
-            this.common.isLoading = false;
-            this.common.alertMessage(this.translateEntities.alertLayer.passwordFailNotFound, false);
-            this.router.navigate(['/usermgmt']);
+              if (forEachCount == size) {
+                if (success == size) {
+                  this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
+                  setTimeout(()=>{
+                    this.common.isLoading = false;
+                    this.router.navigate(['/logout']);
+                  },2000)
+                }
+              }
 
+            },error =>{
+              this.common.isLoading = false;
+              this.common.alertMessage(this.translateEntities.alertLayer.passwordFailNotFound, false);
+              this.router.navigate(['/usermgmt']);
+            });
           });
-        });
-      },error =>{
-        this.common.alertMessage('msg',false);
+        },error =>{this.serverError();},()=>{this.common.isLoading = false;});
+      }else{
         this.common.isLoading = false;
-      });
-
+        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail,false);
+        setTimeout(()=>{
+          this.router.navigate(['/usermgmt']);
+        },1000)
+        $('#password_now').val('');
+        $('#password_new').val('');
+        $('#password_confirm').val('');
+      }
     }else{
       this.common.isLoading = false;
-      this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail,false);
+      this.common.alertMessage(this.translateEntities.alertLayer.sameAsPasswordFail,false);
       setTimeout(()=>{
         this.router.navigate(['/usermgmt']);
       },1000)
@@ -390,7 +393,6 @@ export class UsermgmtComponent implements OnInit {
       $('#password_new').val('');
       $('#password_confirm').val('');
     }
-
   }
 
   isNumber(data) {
@@ -445,6 +447,7 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
+
   orgInit() {
     this.userMgmtService.getOrgList().subscribe(data => {
       this.orgs = data.resources;
@@ -494,8 +497,6 @@ export class UsermgmtComponent implements OnInit {
   userAllDelete() {
     this.common.isLoading = true;
     this.apiLogin(this.username, this.password).subscribe(data => {
-      this.log.debug(data['user_name']);
-      this.log.debug(data['password']);
       if (data['user_name'] == this.user['userId']) {
         // 조직 유무 확인
         this.userMgmtService.getOrgList().subscribe(data => {
@@ -521,6 +522,11 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
+  serverError(){
+    this.common.alertMessage(this.translateEntities.alertLayer.serverError, false);
+    this.userMgmtService.back();
+  }
+
   apiLogin(username: string, password: string) {
     this.common.isLoading = true;
     let params = {
@@ -535,7 +541,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   goLogout() {
-    // this.log.debug('doLogout()');
     this.common.signOut();
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
@@ -548,7 +553,6 @@ export class UsermgmtComponent implements OnInit {
   }
 
   ngOnInit() {
-
     $(document).ready(() => {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common.js")

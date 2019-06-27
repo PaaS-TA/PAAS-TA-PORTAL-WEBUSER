@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
 import {SecurityService} from "../auth/security.service";
+import {Router} from "@angular/router";
 
 
 
@@ -13,7 +14,7 @@ let appConfig = require('assets/resources/env/config.json');
 export class UsermgmtService {
   constructor(
     private http: HttpClient, private common: CommonService, private logger: NGXLogger,
-    private log: NGXLogger, private sec: SecurityService) {
+    private log: NGXLogger, private sec: SecurityService, private router: Router) {
   }
 
   apiversion = appConfig['apiversion'];
@@ -92,6 +93,9 @@ export class UsermgmtService {
     });
   }
 
+  public back(){
+    this.router.navigate(['/usermgmt']);
+  }
 
 }
 

@@ -60,7 +60,6 @@ export class CreateuserComponent implements OnInit, DoCheck {
       this.common.getInfrasAll().subscribe(data => {
         let size = data.length;
         data.forEach(data => {
-          // forEachCount++; : 위치에러 : this.email 두개 발송
           let result = data['apiUri'];
           this.usermgmtService.userInfoAll(result, data["authorization"]).subscribe(data2 => {
             let infoEnv = data2.userInfo;
