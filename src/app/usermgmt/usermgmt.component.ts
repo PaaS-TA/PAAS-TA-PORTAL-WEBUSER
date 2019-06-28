@@ -542,14 +542,6 @@ export class UsermgmtComponent implements OnInit {
 
   goLogout() {
     this.common.signOut();
-
-    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
-    window.location.href = appConfig['logoutUrl'] +
-      '?response_type=' + appConfig['code'] +
-      '&client_id=' + appConfig['clientId'] +
-      '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
-      '&scope=' + appConfig['scope'] +
-      '&state=';
   }
 
   ngOnInit() {
