@@ -28,8 +28,9 @@ export class SecurityService {
    */
   doLogout() {
     this.log.debug('doLogout()');
+    let uaa = this.uaaUri;
     this.common.signOut();
-    window.location.href = this.uaaUri + appConfig['logoutUrl'] +
+    window.location.href = uaa + appConfig['logoutUrl'] +
       '?redirect=' + window.location.origin + appConfig['logoutredirectUri'] + '&client_id=' + appConfig['clientId'];
   }
 
