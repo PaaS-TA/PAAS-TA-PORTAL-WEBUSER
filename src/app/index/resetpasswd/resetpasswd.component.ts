@@ -68,10 +68,12 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
             forEachCount++;
 
             if(forEachCount == size){
-              if(this.email != null){
-                this.multiCheckUsedReset();
-              } else{
-                this.common.alertMessage(data['msg'], false);
+              if(usedCount == 0){
+                this.common.alertMessage("계정이 존재하지 않습니다.", false);
+              }else{
+                if(this.email != null){
+                  this.multiCheckUsedReset();
+                }
               }
             }
           });

@@ -130,11 +130,8 @@ export class ResetComponent implements OnInit {
             this.commonService.isLoading = false;
             if (region['result'] == true) {
               success++;
-            }else {
-              alert(region['msg'])
             }
 
-            //apiUrl 이 data.length와 같을 때
             if (forEachCount == size) {
               if (success == size) {
                 this.commonService.alertMessage('성공적으로 변경되었습니다.', true);

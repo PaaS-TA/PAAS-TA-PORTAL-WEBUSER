@@ -58,8 +58,6 @@ export class CreateComponent implements OnInit {
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
 
-    this.log.debug("SEQ : " + this.seq);
-
     this.commonService.getInfra(this.seq).subscribe(infra =>{
       this.commonService.setInfra(infra["seq"],infra["apiUri"],infra["uaaUri"],infra["authorization"]);
       if (this.userId.length > 0 && this.token.length > 0) {
@@ -163,7 +161,7 @@ export class CreateComponent implements OnInit {
               this.commonService.isLoading = false;
               console.log("확인");
               console.log(region['result']);
-                console.log(region['msg']);
+              console.log(region['msg']);
               if (region['result'] == true) {
                 let userInfo = {'userId': this.userId, 'userName': this.username};
                 this.externalService.updateInfo(this.userId, userInfo);
@@ -191,10 +189,6 @@ export class CreateComponent implements OnInit {
                   this.commonService.isLoading = false;
                   this.commonService.getInfra(data["key"]).subscribe(data =>{
                     this.commonService.setAuthorization(data["authorization"]);
-                    /*
-                    * 1. 한쪽에만 생성된 계정 삭제
-                    * 2. 아이디 유무 체크 확인 let forIdCount = 0;
-                    */
                   });
                 }
               }
