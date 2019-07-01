@@ -17,8 +17,8 @@ export class ExternalcommonService {
   }
 
 
-  getUserTokenInfo(userId: string, token: string) {
-    return this.commonService.doGet('/commonapi/v2/users/' + userId + '/search/refreshtoken?refreshToken=' + token,  '');
+  getUserTokenInfo(userId: string, token: string, seq) {
+    return this.commonService.doGet('/commonapi/v2/users/' + userId + '/search/refreshtoken?refreshToken=' + token + "&seq="+ seq,  '');
   }
 
 

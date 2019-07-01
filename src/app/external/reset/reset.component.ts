@@ -49,7 +49,7 @@ export class ResetComponent implements OnInit {
       this.commonService.setInfra(infra["seq"],infra["apiUrl"],infra["uaaUrl"],infra["authorization"]);
 
       if (this.userId.length > 0 && this.token.length > 0) {
-        this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(data => {
+        this.externalService.getUserTokenInfo(this.userId, this.token, this.seq).subscribe(data => {
           if (data == null) {
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           } else {

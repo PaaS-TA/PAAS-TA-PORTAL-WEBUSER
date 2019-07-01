@@ -64,9 +64,10 @@ export class CommonService {
   }
 
   getInfra(guid: string) {
-    //this.log.debug("/external/configs/" + guid + "/auth");
+    this.log.debug("getInrfra :" + guid);
     return this.http.get(appConfig["webadminUri"] + "/external/configs/" + guid + "/auth", {});
   }
+
 
 
   doGet(url: string, token: string) {
@@ -107,7 +108,6 @@ export class CommonService {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
     });
   }
-
 
   doFilePost(url: string, body: any, token: string) {
     if (token == null) {

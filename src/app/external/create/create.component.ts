@@ -58,15 +58,12 @@ export class CreateComponent implements OnInit {
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
 
+    this.log.debug("SEQ : " + this.seq);
 
     this.commonService.getInfra(this.seq).subscribe(infra =>{
-      this.log.debug("getInfra >>");
-      this.log.debug(infra);
-      //setInfra
       this.commonService.setInfra(infra["seq"],infra["apiUri"],infra["uaaUri"],infra["authorization"]);
-
       if (this.userId.length > 0 && this.token.length > 0) {
-        this.externalService.getUserTokenInfo(this.userId, this.token).subscribe(tokeninfo => {
+        this.externalService.getUserTokenInfo(this.userId, this.token, this.seq).subscribe(tokeninfo => {
           if (tokeninfo == null) {
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           } else {
