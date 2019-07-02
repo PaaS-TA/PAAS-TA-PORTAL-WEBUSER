@@ -157,8 +157,8 @@ export class CreateComponent implements OnInit {
               forEachCount++;
               this.commonService.isLoading = false;
 
+              let userInfo = {'userId': this.userId, 'userName': this.username, 'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'};
               if (region['result'] == true) {
-                let userInfo = {'userId': this.userId, 'userName': this.username, 'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'};
                 createSuccess++;
                 this.externalService.updateInfo_external(this.userId, result, data["authorization"],userInfo);
               }
@@ -166,11 +166,10 @@ export class CreateComponent implements OnInit {
               this.log.debug("forEachCount: " + forEachCount + " " +  "size: " + size + " " + "createSuccess: " + createSuccess);
 
               if(forEachCount == size){
-                this.log.debug("1:: " + forEachCount + "/ " + size);
+                this.log.debug("1:: " + forEachCount + " " + size);
                 if (createSuccess == size) {
-                  this.log.debug("2:: " + createSuccess + "/ " + size);
-                  if (!this.commonService.getAutomaticApproval()) {
-                    this.log.debug("!this.commonService.getAutomaticApproval");
+                  this.log.debug("2:: " + createSuccess + " " + size+ " " + "active: "+ userInfo['active']);
+                  if (userInfo['active'] == 'N'){
                     this.commonService.isLoading = false;
                     this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
                   } else {
