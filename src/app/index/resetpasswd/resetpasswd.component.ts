@@ -79,7 +79,7 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
           });
         });
       },error=> {
-        this.common.alertMessage('서버가 불안정합니다. 다시 시도하세요',false);
+        this.common.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요.',false);
       });
 
     }

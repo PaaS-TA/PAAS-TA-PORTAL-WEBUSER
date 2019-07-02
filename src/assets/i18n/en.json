@@ -714,6 +714,11 @@
       "appstopSuccess": "Stopped the app.",
       "appstopFail": "App suspension failed.",
       "bindingService": "Cannot delete service instance, service keys and bindings must first be deleted."
+    },
+    "external": {
+      "systemerror" : "A system error has occurred. Please try again."
+
     }
+
   }
 }

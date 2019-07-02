@@ -717,6 +717,10 @@
       "appstopSuccess": "App을 정지 하였습니다.",
       "appstopFail": "App 정지가 실패하였습니다.",
       "bindingService": "이 서비스는 현재 어플리케이션과 연결되어있는 상태입니다. 연결 해제를 해야 삭제가 가능합니다."
+    },
+    "external": {
+      "systemerror" : "시스템 에러가 발생하였습니다. 다시 시도 바랍니다."
+
     }
   }
 }

@@ -59,7 +59,6 @@ export class CreateComponent implements OnInit {
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
 
     this.commonService.getInfra(this.seq).subscribe(infra =>{
-      this.commonService.setInfra(infra["seq"],infra["apiUri"],infra["uaaUri"],infra["authorization"]);
       if (this.userId.length > 0 && this.token.length > 0) {
         this.externalService.getUserTokenInfo(this.userId, this.token, this.seq).subscribe(tokeninfo => {
           if (tokeninfo == null) {

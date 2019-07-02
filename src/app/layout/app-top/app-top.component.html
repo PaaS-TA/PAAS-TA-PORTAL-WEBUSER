@@ -1,37 +1,52 @@
-<header [class]="'header' + (isShortHeader? ' account' : '')" >
+<header [class]="'header' + (isShortHeader? ' account' : '')">
   <div class="logo">
-    <ng-container *ngIf="aLink">
-      <a href="/dashboard"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
-    </ng-container>
+    <ng-container *ngIf="isLogin">
+      <ng-container *ngIf="aLink">
+        <a href="/dashboard"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
+      </ng-container>
 
       <ng-container *ngIf="!aLink">
         <a [routerLink]="['/dashboard']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
       </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!isLogin">
+      <ng-container *ngIf="aLink">
+        <a href="/"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
+      </ng-container>
+
+      <ng-container *ngIf="!aLink">
+        <a [routerLink]="['/']"><h1><img src="/assets/resources/images/main/logo.png" alt=""/></h1></a>
+      </ng-container>
+    </ng-container>
   </div>
 
   <ul class="gnb clearfix">
-<!--    <ng-container *ngIf="aLink">-->
-<!--      <li *ngIf="isLogin" ><a href="/dashboard">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>-->
-<!--      <li ><a href="/catalog" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>-->
-<!--    </ng-container>-->
+    <!--    <ng-container *ngIf="aLink">-->
+    <!--      <li *ngIf="isLogin" ><a href="/dashboard">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>-->
+    <!--      <li ><a href="/catalog" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>-->
+    <!--    </ng-container>-->
     <ng-container *ngIf="!aLink">
-      <li *ngIf="isLogin" id="cur_dashboard" ><a [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
-      <li id="cur_catalog" ><a [routerLink]="['/catalog']" (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
+      <li *ngIf="isLogin" id="cur_dashboard"><a
+        [routerLink]="['/dashboard']">{{ 'common.top.main.linkTextDashboard' | translate }}</a></li>
+      <li id="cur_catalog"><a [routerLink]="['/catalog']"
+                              (click)="catalogInit()">{{ 'common.top.main.linkTextCatalog' | translate }}</a></li>
     </ng-container>
-    <li id="cur_paasta-doc"><a target="_blank" href="https://github.com/PaaS-TA/Guide-4.0-ROTELLE">{{ 'common.top.main.linkTextDocument' | translate }}</a></li>
+    <li id="cur_paasta-doc"><a target="_blank"
+                               href="https://github.com/PaaS-TA/Guide-4.0-ROTELLE">{{ 'common.top.main.linkTextDocument' | translate }}</a>
+    </li>
   </ul>
   <ul class="right_nav">
     <li *ngIf="isLogin"><!-- <a href="#" class="fas fa-user"></a> -->
-      <div class="btn-group" >
-        <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+      <div class="btn-group">
+        <button href="#" class="dropdown-toggle user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         </button>
-        <div id="r_user" class="dropdown-menu" >
+        <div id="r_user" class="dropdown-menu">
           <div class="">
             <span class="dot"></span>
             <dl>
               <dt>
                 <i href="#" class="fas fa-user"></i>
-                <img [src]="pictureUrl" alt="temp" />
+                <img [src]="pictureUrl" alt="temp"/>
               </dt>
               <dd style="width:160px; word-wrap: break-word;">
                 <p>{{name}}</p>
@@ -45,7 +60,7 @@
                 <a href="/usermgmt">{{ 'common.top.user.linkTextMyAccount' | translate }}</a>
               </ng-container>
               <ng-container *ngIf="!aLink">
-              <a [routerLink]="['/usermgmt']">{{ 'common.top.user.linkTextMyAccount' | translate }}</a>
+                <a [routerLink]="['/usermgmt']">{{ 'common.top.user.linkTextMyAccount' | translate }}</a>
               </ng-container>
             </li>
             <li id="cur_org">
@@ -53,18 +68,18 @@
                 <a href="/org">{{ 'common.top.user.linkTextOrgManage' | translate }}</a>
               </ng-container>
               <ng-container *ngIf="!aLink">
-              <a [routerLink]="['/org']">{{ 'common.top.user.linkTextOrgManage' | translate }}</a>
+                <a [routerLink]="['/org']">{{ 'common.top.user.linkTextOrgManage' | translate }}</a>
               </ng-container>
             </li>
             <ng-container *ngIf="common.getQuantity()">
-            <li id="cur_quantity">
-              <ng-container *ngIf="aLink">
-                <a href="/quantity">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
-              </ng-container>
-              <ng-container *ngIf="!aLink">
-              <a [routerLink]="['/quantity']">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
-              </ng-container>
-            </li>
+              <li id="cur_quantity">
+                <ng-container *ngIf="aLink">
+                  <a href="/quantity">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
+                </ng-container>
+                <ng-container *ngIf="!aLink">
+                  <a [routerLink]="['/quantity']">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
+                </ng-container>
+              </li>
             </ng-container>
           </ul>
           <p class="log_out" [routerLink]="['/logout']">{{ 'common.top.user.linkTextLogOut' | translate }}</p>
@@ -85,8 +100,8 @@
             <ul class="">
               <!--<ng-container *ngFor="let noti of notifications">-->
               <!--<li>-->
-                <!--<a href="javascript:void(0)">{{noti}}</a><span>-->
-                <!--<i class="fas fa-times-circle"></i></span></li>-->
+              <!--<a href="javascript:void(0)">{{noti}}</a><span>-->
+              <!--<i class="fas fa-times-circle"></i></span></li>-->
               <!--</ng-container>-->
               <!--
               <li><a href="#">파스타 공지사항</a><span><i class="fas fa-times-circle"></i></span></li>
@@ -101,17 +116,21 @@
     <!--레기온 추가 -->
     <li *ngIf="!isLogin" style="padding-right: 100px;">
       <div id="globes" class="btn-group">
-        <button href="#" class="dropdown-toggle empty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100px;font-size: 18px;"> {{'common.top.main.login' | translate}}</button>
+        <button href="#" class="dropdown-toggle empty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                style="width: 100px;font-size: 18px;"> {{'common.top.main.login' | translate}}</button>
         <ul class="dropdown-menu">
-          <li class="cur" *ngFor="let region of regions" ><a href="javascript:void(0);" (click)="changeRegionClick(region.key);">{{region.name}}</a></li>
+          <li class="cur" *ngFor="let region of regions"><a href="javascript:void(0);"
+                                                            (click)="changeRegionClick(region.key);">{{region.name}}</a>
+          </li>
         </ul>
       </div>
     </li>
-<!--    <li *ngIf="!isLogin && !isRegion" style="width: 75px"><a href="javascript:void(0);">Error</a></li>-->
+    <!--    <li *ngIf="!isLogin && !isRegion" style="width: 75px"><a href="javascript:void(0);">Error</a></li>-->
     <!--레기온 추가 끝 -->
     <li>
       <div id="globes" class="btn-group">
-        <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-caret-down"></i></button>
+        <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false"><i class="fas fa-caret-down"></i></button>
         <ul class="dropdown-menu">
           <li id="lang_ko" class="cur"><a href="javascript:void(0);" (click)="changeLangClick('ko');">Korean</a></li>
           <li id="lang_en"><a href="javascript:void(0);" (click)="changeLangClick('en');">English</a></li>
@@ -124,7 +143,7 @@
       <!-- dashboard container -->
       <p class="tit" [routerLink]="['/dashboard']" style="cursor: pointer">Dashboard</p>
       <span class="nav_toggle"><!-- 180724 수정 -->
-                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1">
                 <label for="checkbox-1"></label>
             </span>
       <ul class="content_dev">
@@ -134,26 +153,26 @@
     </div>
   </ng-container>
   <ng-template #catalog>
-  <!-- catalog container -->
-  <ng-container *ngIf="isCatalog; else menagement">
-    <div class="header_bottom">
-      <p class="tit">Catalog</p>
-      <span class="nav_toggle"><!-- 180724 수정 -->
-                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+    <!-- catalog container -->
+    <ng-container *ngIf="isCatalog; else menagement">
+      <div class="header_bottom">
+        <p class="tit">Catalog</p>
+        <span class="nav_toggle"><!-- 180724 수정 -->
+                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1">
                 <label for="checkbox-1"></label>
             </span>
-      <ul class="content_dev">
-        <li>{{catalogName}}</li>
-      </ul>
-    </div>
-  </ng-container>
-</ng-template>
+        <ul class="content_dev">
+          <li>{{catalogName}}</li>
+        </ul>
+      </div>
+    </ng-container>
+  </ng-template>
   <ng-template #menagement>
     <ng-container *ngIf="isManagement; else emptyMenu">
       <div class="header_bottom">
         <p class="tit">Management</p>
-          <span class="nav_toggle"><!-- 180724 수정 -->
-                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1" >
+        <span class="nav_toggle"><!-- 180724 수정 -->
+                <input type="checkbox" id="checkbox-1" name="" class="navcheck" value="1">
                 <label for="checkbox-1"></label>
             </span>
         <ul class="content_dev">
