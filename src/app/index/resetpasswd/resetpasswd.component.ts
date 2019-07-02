@@ -79,8 +79,7 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
           });
         });
       },error=> {
-        this.common.alertMessage('msg',false);
-        this.router.navigate(['/login']);
+        this.common.alertMessage('서버가 불안정합니다. 다시 시도하세요',false);
       });
 
     }
