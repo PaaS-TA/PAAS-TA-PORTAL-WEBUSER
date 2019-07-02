@@ -45,9 +45,7 @@ export class ResetComponent implements OnInit {
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
 
     this.commonService.getInfra(this.seq).subscribe(infra =>{
-      //setInfra
-      this.commonService.setInfra(infra["seq"],infra["apiUrl"],infra["uaaUrl"],infra["authorization"]);
-
+      // let param = {userid: this.userId, username: this.userId, seq : this.commonService.getSeq()};
       if (this.userId.length > 0 && this.token.length > 0) {
         this.externalService.getUserTokenInfo(this.userId, this.token, this.seq).subscribe(data => {
           if (data == null) {
@@ -121,10 +119,8 @@ export class ResetComponent implements OnInit {
         let success = 0; // 성공여부 확인
         let forEachCount = 0; //apiUrl 개수 확인
         data.forEach(data => {
-          // data 유무확인
           if (size > 0) {
           let result = data['apiUri'];
-
           this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
             forEachCount++;
             this.commonService.isLoading = false;
@@ -137,10 +133,6 @@ export class ResetComponent implements OnInit {
                 this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
                 this.commonService.isLoading = false;
                 this.router.navigate(['/']);
-                // setTimeout(()=>{
-                //   this.commonService.isLoading = false;
-                //   this.router.navigate(['/']);
-                // },4000)
               } else {
                 this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
                 this.commonService.isLoading = false;
@@ -150,6 +142,8 @@ export class ResetComponent implements OnInit {
 
           }
         });
+      }, error => {
+        this.commonService.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
       });
     }
   }

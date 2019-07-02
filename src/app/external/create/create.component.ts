@@ -152,67 +152,65 @@ export class CreateComponent implements OnInit {
 
         data.forEach(data => {
           if (size > 0) {
-            this.log.debug(data);
             let result = data['apiUri'];
             this.externalService.createUser_external(result, data["authorization"], param).subscribe(region => {
-              this.log.debug(param);
-                forEachCount++;
+              forEachCount++;
               this.commonService.isLoading = false;
-              console.log("확인");
-              console.log(region['result']);
-              console.log(region['msg']);
+
               if (region['result'] == true) {
-                let userInfo = {'userId': this.userId, 'userName': this.username};
-                this.externalService.updateInfo(this.userId, userInfo);
+                let userInfo = {'userId': this.userId, 'userName': this.username, 'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'};
                 createSuccess++;
-              }else{
-                this.commonService.alertMessage(data["msg"], false);
+                this.externalService.updateInfo_external(this.userId, result, data["authorization"],userInfo);
               }
 
-              if (forEachCount == size) {
+              this.log.debug("forEachCount: " + forEachCount + " " +  "size: " + size + " " + "createSuccess: " + createSuccess);
+
+              if(forEachCount == size){
                 this.log.debug("1:: " + forEachCount + "/ " + size);
                 if (createSuccess == size) {
                   this.log.debug("2:: " + createSuccess + "/ " + size);
                   if (!this.commonService.getAutomaticApproval()) {
-                    this.log.debug("!this.commonService.getAutomaticApproval" );
+                    this.log.debug("!this.commonService.getAutomaticApproval");
+                    this.commonService.isLoading = false;
                     this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
                   } else {
+                    this.commonService.isLoading = false;
                     this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
                   }
                   setTimeout(()=>{
                     this.commonService.isLoading = false;
-                    this.router.navigate(['login']);
-                  },2000)
-                } else {
-                  this.commonService.alertMessage('회원가입 실패', false);
+                    this.router.navigate(['/']);
+                    },2000)
+                }else{
+                  this.commonService.alertMessage('회원가입 실패, 다시 시도하세요.', false);
                   this.commonService.isLoading = false;
                   this.commonService.getInfra(data["key"]).subscribe(data =>{
                     this.commonService.setAuthorization(data["authorization"]);
                   });
                 }
               }
-            },error => {
-                this.commonService.alertMessage(data['msg'], false);
-                this.commonService.isLoading=false;
-            } //
-            );
+            });
           }
           });
+      }, error => {
+        this.commonService.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
       });
     }
   }
 
-  goLogout() {
-    // this.log.debug('doLogout()');
-    this.commonService.signOut();
-    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || '/';
-    window.location.href = appConfig['logoutUrl'] +
+
+  /*
+   * 로그인 시도 - > 다른 OAUTH 로그인용
+   */
+  doMulitRegionAuthorization(uaaUri: string,) {
+    this.log.debug('doMulitRegionAuthorization()');
+    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
+    window.location.href = uaaUri + appConfig['authUrl'] +
       '?response_type=' + appConfig['code'] +
       '&client_id=' + appConfig['clientId'] +
       '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
-      '&scope=' + appConfig['scope'] +
-      '&state=';
-  }
+      '&scope=' + appConfig['scope'];
 
+  }
 
 }

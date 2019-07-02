@@ -21,6 +21,10 @@ export class ExternalcommonService {
     return this.commonService.doGet('/commonapi/v2/users/' + userId + '/search/refreshtoken?refreshToken=' + token + "&seq="+ seq,  '');
   }
 
+  getUserTokenInfo_external(userId: string, token: string, seq, url, authorization) {
+    return this.commonService.doGetMulti(url+ '/commonapi/v2/users/' + userId + '/search/refreshtoken?refreshToken=' + token + "&seq="+ seq, authorization,'');
+  }
+
 
   reset(param) {
     return this.commonService.doPost('/portalapi/' + this.apiversion + '/users/password/reset', param, '');
@@ -28,7 +32,7 @@ export class ExternalcommonService {
 
 
   reset_external(url, authorization, param : any) {
-    return this.commonService.doPostMulti(url + '/portalapi/' + this.apiversion + '/users/password/reset',authorization, param, '');
+    return this.commonService.doPostMulti(url + '/portalapi/' + this.apiversion + '/users/password/reset', authorization, param, '');
   }
 
 
@@ -39,8 +43,17 @@ export class ExternalcommonService {
       }).subscribe();
   }
 
+  updateInfo_external(userId: string, url, authorization, param : any) {
+    return this.commonService
+      .doPutMulti(url+'/commonapi/v2/user/' + userId, authorization, param, '').map((res: Response) => {
+        return res['result'];
+      }).subscribe();
+  }
+
+
 
   createUser_external(url, authorization, param : any) {
+    this.log.debug(url + '/portalapi/' + this.apiversion + '/users');
     return this.commonService.doPostMulti(url + '/portalapi/' + this.apiversion + '/users', authorization,  param, '');
 
   }

@@ -135,6 +135,16 @@ export class CommonService {
     });
   }
 
+  doPutMulti(url: string, authorization: any, param: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.put(url, param, {
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
+
+
   doDelete(url: string, params: any, token: string) {
     if (token == null) {
       token = '';
