@@ -36,9 +36,9 @@ export class IndexCommonService {
   sendCreateEmail(url, authorization, email: string) {
     this.commonService.isLoading = true;
     this.isUsed = false;
-    let param = {userid: email, username: this.userName};
-    // this.log.debug("SEQ : " + url+"/commonapi/v2/users/create/email" + "?seq="+ this.commonService.getSeq());
-    this.commonService.doPostMulti(url+"/commonapi/v2/users/create/email" + "?seq="+ this.commonService.getSeq(), authorization, param, '').subscribe(data => {
+    let param = {userid: email, username: this.userName, seq : this.commonService.getSeq()};
+    this.log.debug(param);
+    this.commonService.doPostMulti(url+"/commonapi/v2/users/create/email", authorization, param, '').subscribe(data => {
       if (data['result'] === true) {
         this.isSendEmail = true;
       } else {
@@ -62,8 +62,7 @@ export class IndexCommonService {
     this.commonService.isLoading = true;
     this.isUsed = false;
     let param = {userid: email};
-    // this.log.debug("SEQ : " + url+"/commonapi/v2/users/password/email" + "?seq="+ this.commonService.getSeq()+" email : " + email);
-    this.commonService.doPostMulti(url+"/commonapi/v2/users/password/email" + "?seq="+ this.commonService.getSeq(), authorization, param, '').subscribe(data => {
+    this.commonService.doPostMulti(url+"/commonapi/v2/users/password/email", authorization, param, '').subscribe(data => {
       console.log(data);
       if (data['result'] === true) {
         this.isSendEmail = true;

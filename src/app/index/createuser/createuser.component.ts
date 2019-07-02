@@ -62,6 +62,8 @@ export class CreateuserComponent implements OnInit, DoCheck {
         data.forEach(data => {
           let result = data['apiUri'];
           this.usermgmtService.userInfoAll(result, data["authorization"]).subscribe(data2 => {
+            forEachCount++;
+            this.common.isLoading = false;
             let infoEnv = data2.userInfo;
             infoEnv.forEach(infoEnv => {
               let userName = infoEnv["userName"];
@@ -69,7 +71,6 @@ export class CreateuserComponent implements OnInit, DoCheck {
                 usedCount++;
               }
             });
-            forEachCount++;
 
             if(forEachCount == size){
               if(usedCount == 0){

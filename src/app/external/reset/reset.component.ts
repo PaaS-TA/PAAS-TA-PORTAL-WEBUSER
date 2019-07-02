@@ -135,10 +135,12 @@ export class ResetComponent implements OnInit {
             if (forEachCount == size) {
               if (success == size) {
                 this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
-                setTimeout(()=>{
-                  this.commonService.isLoading = false;
-                  this.router.navigate(['/']);
-                },2000)
+                this.commonService.isLoading = false;
+                this.router.navigate(['/']);
+                // setTimeout(()=>{
+                //   this.commonService.isLoading = false;
+                //   this.router.navigate(['/']);
+                // },4000)
               } else {
                 this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
                 this.commonService.isLoading = false;
