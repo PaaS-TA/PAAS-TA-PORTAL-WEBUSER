@@ -177,7 +177,7 @@ export class CommonService {
   }
 
   signOut() {
-    window.sessionStorage.clear();
+    // window.sessionStorage.clear();
     this.removeItems();
   }
 
