@@ -179,6 +179,9 @@ export class CommonService {
   signOut() {
     // window.sessionStorage.clear();
     this.removeItems();
+    setTimeout(()=>{
+      this.router.navigate(['/']);
+    },2000)
   }
 
   public setInfra(seq: any, apiUrl: any, uaaUrl: any, authorization: any) {
