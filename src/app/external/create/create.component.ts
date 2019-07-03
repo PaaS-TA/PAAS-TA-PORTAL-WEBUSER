@@ -157,10 +157,13 @@ export class CreateComponent implements OnInit {
               forEachCount++;
               this.commonService.isLoading = false;
 
-              let userInfo = {'userId': this.userId, 'userName': this.username, 'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N'};
+              let userInfo = {'userId': this.userId, 'userName': this.username, 'password': this.password, 'tellPhone': '', 'address': '',
+                'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N', 'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0, 'seq' : this.commonService.getSeq()
+              };
+
               if (region['result'] == true) {
                 createSuccess++;
-                this.externalService.updateInfo_external(this.userId, result, data["authorization"],userInfo);
+                this.externalService.updateInfo_external(this.userId, result, data["authorization"], userInfo);
               }
 
               this.log.debug("forEachCount: " + forEachCount + " " +  "size: " + size + " " + "createSuccess: " + createSuccess);
@@ -169,12 +172,13 @@ export class CreateComponent implements OnInit {
                 this.log.debug("1:: " + forEachCount + " " + size);
                 if (createSuccess == size) {
                   this.log.debug("2:: " + createSuccess + " " + size+ " " + "active: "+ userInfo['active']);
-                  if (userInfo['active'] == 'N'){
-                    this.commonService.isLoading = false;
-                    this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
-                  } else {
+
+                  if (userInfo['active'] == 'Y'){
                     this.commonService.isLoading = false;
                     this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
+                  } else {
+                    this.commonService.isLoading = false;
+                    this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
                   }
                   setTimeout(()=>{
                     this.commonService.isLoading = false;
@@ -196,20 +200,4 @@ export class CreateComponent implements OnInit {
       });
     }
   }
-
-
-  /*
-   * 로그인 시도 - > 다른 OAUTH 로그인용
-   */
-  doMulitRegionAuthorization(uaaUri: string,) {
-    this.log.debug('doMulitRegionAuthorization()');
-    const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
-    window.location.href = uaaUri + appConfig['authUrl'] +
-      '?response_type=' + appConfig['code'] +
-      '&client_id=' + appConfig['clientId'] +
-      '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] + ('%3FreturnUrl%3D' + returnUrl) +
-      '&scope=' + appConfig['scope'];
-
-  }
-
 }
