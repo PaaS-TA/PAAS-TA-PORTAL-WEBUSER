@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {ExternalcommonService} from "../common/externalcommon.service";
+import {error} from "util";
 
 declare var $: any;
 
@@ -108,9 +109,7 @@ export class ResetComponent implements OnInit {
   save(){
     this.commonService.isLoading = true;
     if (this.isPassword && this.isRePassword) {
-
-      let param = {
-        'userId': this.userId,
+      let param = {'userId': this.userId,
         'password': this.password
       };
 
@@ -119,7 +118,7 @@ export class ResetComponent implements OnInit {
         let success = 0; // 성공여부 확인
         let forEachCount = 0; //apiUrl 개수 확인
         data.forEach(data => {
-          if (size > 0) {
+          if (data.length > 0) {
           let result = data['apiUri'];
           this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
             forEachCount++;
@@ -127,19 +126,22 @@ export class ResetComponent implements OnInit {
             if (region['result'] == true) {
               success++;
             }
-
+            this.log.debug("Save :: reset_external :: Init");
             if (forEachCount == size) {
               if (success == size) {
                 this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
-                this.commonService.isLoading = false;
-                this.router.navigate(['/']);
+                setTimeout(()=>{
+                  this.commonService.isLoading = false;
+                  this.router.navigate(['/']);
+                },2000)
               } else {
                 this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
                 this.commonService.isLoading = false;
               }
             }
           });
-
+          }else{
+            this.defaultPassword();
           }
         });
       }, error => {
@@ -147,5 +149,30 @@ export class ResetComponent implements OnInit {
       });
     }
   }
+
+  defaultPassword() {
+    this.log.debug("defaultPassword Init");
+    this.commonService.isLoading = true;
+    let param = {'userId': this.userId, 'password': this.password};
+    if (this.isPassword && this.isRePassword) {
+      this.commonService.getInfrasAll().subscribe(data => {
+        data.forEach(data => {
+            let result = data['apiUri'];
+            this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
+              this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
+              setTimeout(()=>{
+                this.commonService.isLoading = false;
+                this.router.navigate(['/']);
+              },2000)
+            },error =>{
+              this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
+              this.commonService.isLoading = false;
+            });
+        });
+      }, error => {
+        this.commonService.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
+      });
+    }
+  }//
 
 }
