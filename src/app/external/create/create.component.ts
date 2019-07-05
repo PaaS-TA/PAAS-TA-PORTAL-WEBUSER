@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from "../../common/common.service";
-import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ExternalcommonService} from "../common/externalcommon.service";
 import {User, UsermgmtService} from "../../usermgmt/usermgmt.service";
 import {Observable} from "rxjs";
-import {IndexCommonService} from "../../index/userAccountMgmt/index-common.service";
 
 declare var $: any;
 declare var require: any;
@@ -41,7 +39,7 @@ export class CreateComponent implements OnInit {
   public isUsed: boolean;
 
 
-  constructor(public indexCommonService: IndexCommonService, private commonService: CommonService, private userMgmtService: UsermgmtService, private externalService: ExternalcommonService,
+  constructor(private commonService: CommonService, private userMgmtService: UsermgmtService, private externalService: ExternalcommonService,
               private activeRoute: ActivatedRoute, private router: Router, private route: ActivatedRoute) {
 
     this.seq = '';
@@ -59,26 +57,28 @@ export class CreateComponent implements OnInit {
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
 
     this.commonService.getInfra(this.seq).subscribe(infra =>{
-      if (this.userId.length > 0 && this.token.length > 0) {
-        this.externalService.getUserTokenInfo(this.userId, this.token, this.seq).subscribe(tokeninfo => {
+      console.log(infra);
+      if (this.userId.length > 0 && this.token.length > 0 ) {
+        this.externalService.getUserTokenInfo_external(this.userId, this.token, this.seq, infra['apiUri'], infra['authorization']).subscribe(tokeninfo => {
           if (tokeninfo == null) {
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           } else {
             let accessTime = tokeninfo['authAccessTime'];
             let accessCount = tokeninfo['authAccessCnt'];
+
             let now = new Date();
             if (accessTime <= now.getTime().toString()) {
               let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-              this.externalService.updateInfo(this.userId, userInfo);
+              this.externalService.updateInfo_external(this.userId, infra['apiUri'], infra['authorization'], userInfo);
               this.router.navigate(['error'], {queryParams: {error: '1'}});
             }
             if (accessCount > 3) {
               let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-              this.externalService.updateInfo(this.userId, userInfo);
+              this.externalService.updateInfo_external(this.userId, infra['apiUri'], infra['authorization'], userInfo);
               this.router.navigate(['error'], {queryParams: {error: '1'}});
             } else {
               let userInfo = {'authAccessCnt': (accessCount + 1)};
-              this.externalService.updateInfo(this.userId, userInfo);
+              this.externalService.updateInfo_external(this.userId, infra['apiUri'], infra['authorization'], userInfo);
             }
           }
         });
@@ -162,7 +162,7 @@ export class CreateComponent implements OnInit {
                 this.externalService.updateInfo_external(this.userId, result, data["authorization"], userInfo);
               }
 
-              // this.log.debug("forEachCount: " + forEachCount + " " +  "size: " + size + " " + "createSuccess: " + createSuccess);
+              console.log("forEachCount: " + forEachCount + " " +  "size: " + size + " " + "createSuccess: " + createSuccess);
 
               if(forEachCount == size){
                 if (createSuccess == size) {
