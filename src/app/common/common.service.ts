@@ -64,7 +64,7 @@ export class CommonService {
   }
 
   getInfra(guid: string) {
-    this.log.debug("getInrfra :" + guid);
+    // this.log.debug("getInrfra :" + guid);
     return this.http.get(appConfig["webadminUri"] + "/external/configs/" + guid + "/auth", {});
   }
 

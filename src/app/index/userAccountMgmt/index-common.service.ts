@@ -37,7 +37,6 @@ export class IndexCommonService {
     this.commonService.isLoading = true;
     this.isUsed = false;
     let param = {userid: email, username: email, seq : this.commonService.getSeq()};
-    this.log.debug(param);
     this.commonService.doPostMulti(url+"/commonapi/v2/users/create/email", authorization, param, '').subscribe(data => {
       if (data['result'] === true) {
         this.isSendEmail = true;
