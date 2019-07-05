@@ -131,6 +131,12 @@ export class OrgMainService {
     });
   }
 
+  // userInviteEmailSendMulti(url, authorization, params: any) {
+  //   return this.commonService.doPostMulti(url+'/commonapi/v2/email/inviteOrg', authorization, params, '').map((res: any) => {
+  //     return res;
+  //   });
+  // }
+
   delInviteCancle(orgGuid: string, userId: string) {
     return this.commonService.doDelete('/commonapi/v2/orgs/'+orgGuid+'/invite?userId='+ userId,'', this.commonService.getToken()).map((res: any) => {
       return res;
@@ -153,4 +159,11 @@ export class OrgMainService {
       return res;
     });
   }
+
+  userInviteAcceptMulti(url, authorization, params: any) {
+    return this.commonService.doPutMulti(url+'/portalapi/' + this.apiversion + '/orgs/user-roles',authorization, params, '').map((res: any) => {
+      return res;
+    });
+  }
+
 }

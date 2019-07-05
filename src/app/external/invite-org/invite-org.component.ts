@@ -21,6 +21,7 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
   private _userId: string;
   private _orgName: string;
   private refreshToken: string;
+  private seq : string;
 
   constructor(private common: CommonService, private orgService: OrgMainService,
               private router: Router, private logger: NGXLogger) {
@@ -38,6 +39,7 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
     this.userId = parser.get('userId');
     this.orgName = parser.get('orgName');
     this.refreshToken = parser.get('refreshToken');
+    this.seq = parser.get('seq');
 
     // remove parameters
     //location.hash = '';
@@ -57,18 +59,21 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
       token: this.refreshToken
     };
 
-    this.orgService.userInviteAccept(params).subscribe(data => {
-      if(!data){
-        this.common.isLoading = false;
-        this.router.navigate(['error']);
-      } else {
-        $("#html1").show();
-        $("#html2").show();
+    this.common.getInfra(this.common.getSeq()).subscribe(infra => {
+      this.logger.debug(params);
+      this.orgService.userInviteAcceptMulti(infra['apiUri'], infra['authorization'], params).subscribe(data => {
 
-        if(data != null) {
-          $("[id^='layerpop']").modal("hide");
+        if(!data){
           this.common.isLoading = false;
-        }
+          this.router.navigate(['error']);
+        } else {
+          $("#html1").show();
+          $("#html2").show();
+
+          if(data != null) {
+            $("[id^='layerpop']").modal("hide");
+            this.common.isLoading = false;
+          }
 
         setTimeout(() => {
           const current = new Date().getTime();
