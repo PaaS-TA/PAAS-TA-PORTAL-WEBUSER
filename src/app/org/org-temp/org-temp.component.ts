@@ -429,7 +429,7 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
       orgName: this.orgsDetailName,
       orgId: this.orgsDetailGuid,
       refreshToken: this.common.getRefreshToken(),
-      userEmail: $("[id='userEmail']").val(),
+      userEmail: this.invite_name,
       userRole: JSON.stringify(inviteObj),
       invitename: this.common.getUserid()
     };
@@ -480,7 +480,8 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
 
   inviteCancel() {
     this.common.isLoading = true;
-    this.orgMainService.delInviteCancle(this.sltEntity.org.metadata.guid, this.sltInvite.userId).subscribe(data => {
+    console.log(this.sltEntity);
+    this.orgMainService.delInviteCancle(this.sltOrgGuid, this.sltInvite.userId).subscribe(data => {
       if (data) {
         this.common.alertMessage("초대 취소 성공", true);
       }
