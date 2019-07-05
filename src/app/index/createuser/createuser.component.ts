@@ -27,6 +27,11 @@ export class CreateuserComponent implements OnInit, DoCheck {
     this.email = '';
     this.isValidation = true;
     this.isUsed = false;
+
+    if(this.common.getSeq() == null || this.common.getSeq() === ''){
+      this.router.navigate(['/']);
+    }
+
   }
 
   ngOnInit() {

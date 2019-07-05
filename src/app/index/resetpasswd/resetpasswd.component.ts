@@ -22,6 +22,11 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
     this.email = '';
     this.isValidation = true;
     this.isUsed = true;
+
+    if(this.common.getSeq() == null || this.common.getSeq() === ''){
+      this.router.navigate(['/']);
+    }
+
   }
 
   ngOnInit() {
