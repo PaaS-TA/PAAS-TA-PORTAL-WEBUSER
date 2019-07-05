@@ -221,11 +221,6 @@ export class UsermgmtComponent implements OnInit {
       this.isTellPhone == true;
       $('#tellPhone').val(this.user['tellPhone']);
       this.userSave();
-    } else {
-      this.isTellPhone == false;
-      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
-      $('#tellPhone').val('');
-      return this.userInfo;
     }
   }
 
@@ -239,11 +234,6 @@ export class UsermgmtComponent implements OnInit {
       this.isZipCode == true;
       $('#zipCode').val(this.user['zipCode']);
       this.userSave();
-    } else {
-      this.isZipCode == false;
-      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
-      $('#zipCode').val('');
-      return this.userInfo;
     }
   }
 
@@ -257,11 +247,6 @@ export class UsermgmtComponent implements OnInit {
       this.isAddress == true;
       $('#address').val(this.user['address']);
       this.userSave();
-    } else {
-      this.isAddress == false;
-      this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
-      $('#address').val('');
-      return this.userInfo;
     }
   }
 
@@ -403,6 +388,7 @@ export class UsermgmtComponent implements OnInit {
     }
   }
 
+
   tellPhone_pattenTest() {
     let value = this.tellPhone;
 
@@ -414,9 +400,11 @@ export class UsermgmtComponent implements OnInit {
       this.isTellPhone = true;
       return true;
     } else {
+      $('#tellPhone').val('');
       this.isTellPhone = false;
       return false;
     }
+
   }
 
   zipCode_pattenTest() {
@@ -430,6 +418,7 @@ export class UsermgmtComponent implements OnInit {
       this.isZipCode = true;
       return true;
     } else {
+      $('#zipCode').val('');
       this.isZipCode = false;
       return false;
     }
@@ -442,6 +431,7 @@ export class UsermgmtComponent implements OnInit {
       this.isAddress = true;
       return true;
     } else {
+      $('#address').val('');
       this.isAddress = false;
       return false;
     }

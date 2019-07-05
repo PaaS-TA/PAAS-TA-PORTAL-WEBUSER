@@ -15,7 +15,7 @@ let appConfig = require('assets/resources/env/config.json');
 export class CallbackComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private commonService: CommonService, private sec: SecurityService, private log: NGXLogger) {
-    this.log.debug('callback');
+    // this.log.debug('callback');
     this.commonService.isLoading = true;
 
 

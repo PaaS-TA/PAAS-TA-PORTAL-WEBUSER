@@ -4,6 +4,7 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {OrgMainService} from "../org-main/org-main.service";
 import {Observable} from "../../../../node_modules/rxjs/Observable";
 import {OrgMainComponent} from '../org-main/org-main.component';
+import {NGXLogger} from "ngx-logger";
 
 declare var $: any;
 
@@ -50,7 +51,7 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
   public userName : Array<string> = [];
   public translateEntities: any = [];
   public invite_name : string = '';
-  constructor(private translate: TranslateService, private orgMainService: OrgMainService, private common: CommonService) {
+  constructor(private translate: TranslateService, private orgMainService: OrgMainService, private common: CommonService, private log: NGXLogger) {
     this.common.isLoading = false;
     this.portalGetAllUserName();
 
@@ -425,25 +426,34 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
     inviteObjSpace.push(spaceObj);
     inviteObj["space"] = inviteObjSpace;
     this.common.isLoading = true;
+
     let params = {
       orgName: this.orgsDetailName,
       orgId: this.orgsDetailGuid,
       refreshToken: this.common.getRefreshToken(),
-      userEmail: $("[id='userEmail']").val(),
+      userEmail: this.invite_name,
       userRole: JSON.stringify(inviteObj),
-      invitename: this.common.getUserid()
+      invitename: this.common.getUserid(),
+      seq : this.common.getSeq()
     };
-    this.orgMainService.userInviteEmailSend(params).subscribe(data => {
-      if (data) {
-        this.common.alertMessage(this.translateEntities.alertLayer.sendEmailSuccess, true);
-      }
-    }, error => {
-      this.common.alertMessage(this.translateEntities.alertLayer.sendEmailFail + "<br><br>" + error, false);
-    }, () => {
-      $("#layerpop4_"+this.orgsDetailGuid).modal("hide");
-      this.getInviteOrg();
+
+    /*userInviteEmailSend*/
+    this.common.getInfra(this.common.getSeq()).subscribe(infra => {
+      this.log.debug(params);
+      this.common.doPostMulti(infra['apiUri']+'/commonapi/v2/email/inviteOrg', infra['authorization'], params, '').subscribe(data => {
+        if (data) {
+          this.common.alertMessage(this.translateEntities.alertLayer.sendEmailSuccess, true);
+        }
+      }, error => {
+        this.common.alertMessage(this.translateEntities.alertLayer.sendEmailFail + "<br><br>" + error, false);
+      }, () => {
+        $("#layerpop4_"+this.orgsDetailGuid).modal("hide");
+        this.getInviteOrg();
+      });
     });
+
   }
+
 
   memberSetOrgRole() {
     let body = {
@@ -480,7 +490,7 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
 
   inviteCancel() {
     this.common.isLoading = true;
-    this.orgMainService.delInviteCancle(this.sltEntity.org.metadata.guid, this.sltInvite.userId).subscribe(data => {
+    this.orgMainService.delInviteCancle(this.sltOrgGuid, this.sltInvite.userId).subscribe(data => {
       if (data) {
         this.common.alertMessage("초대 취소 성공", true);
       }
@@ -703,7 +713,6 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
 
   portalGetAllUserName(){
     this.orgMainService.getAllUser().subscribe(data => {
-      console.log(data);
       data.userInfo.forEach(info => {
         this.userName.push(info.userName);
       });

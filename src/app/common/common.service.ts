@@ -64,7 +64,7 @@ export class CommonService {
   }
 
   getInfra(guid: string) {
-    this.log.debug("getInrfra :" + guid);
+    // this.log.debug("getInrfra :" + guid);
     return this.http.get(appConfig["webadminUri"] + "/external/configs/" + guid + "/auth", {});
   }
 
@@ -144,6 +144,15 @@ export class CommonService {
     });
   }
 
+  doPutMail(url: string, authorization, params: any, token) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.put(url, params, {
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
+
 
   doDelete(url: string, params: any, token: string) {
     if (token == null) {
@@ -179,6 +188,9 @@ export class CommonService {
   signOut() {
     // window.sessionStorage.clear();
     this.removeItems();
+    setTimeout(()=>{
+      this.router.navigate(['/']);
+    },2000)
   }
 
   public setInfra(seq: any, apiUrl: any, uaaUrl: any, authorization: any) {

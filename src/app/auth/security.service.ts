@@ -27,7 +27,7 @@ export class SecurityService {
    * 로그인 시도 - > OAUTH 로그인용
    */
   doLogout() {
-    this.log.debug('doLogout()');
+    // this.log.debug('doLogout()');
     let uaa = this.uaaUri;
     this.common.signOut();
     window.location.href = uaa + appConfig['logoutUrl'] +
@@ -39,7 +39,7 @@ export class SecurityService {
    * 로그인 시도 - > OAUTH 로그인용
    */
   doAuthorization() {
-    this.log.debug('doAuthorization()');
+    // this.log.debug('doAuthorization()');
 
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
 
@@ -56,7 +56,7 @@ export class SecurityService {
    * 로그인 시도 - > 다른 OAUTH 로그인용
    */
   doMulitRegionAuthorization(uaaUri: string,) {
-    this.log.debug('doMulitRegionAuthorization()');
+    // this.log.debug('doMulitRegionAuthorization()');
     const returnUrl = this.activeRoute.snapshot.queryParams['returnUrl'] || 'dashboard';
     window.location.href = uaaUri + appConfig['authUrl'] +
       '?response_type=' + appConfig['code'] +
@@ -71,7 +71,7 @@ export class SecurityService {
    * 토큰 추출 - > OAUTH 로그인용
    */
   doToken() {
-    this.log.debug('doToken()');
+    // this.log.debug('doToken()');
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -106,7 +106,7 @@ export class SecurityService {
    * 토큰 정상 여부 확인 - > OAUTH 로그인용
    */
   doCheckToken() {
-    this.log.debug('doCheckToken()');
+    // this.log.debug('doCheckToken()');
     const headers = new HttpHeaders()
       .append('Authorization', 'Basic ' + btoa(appConfig['clientId'] + ':' + appConfig['clientSecret']))
       .append('Content-Type', 'application/x-www-form-urlencoded');
@@ -126,7 +126,7 @@ export class SecurityService {
       // this.doUserInfo();
 
     }, error => {
-      this.log.debug("Error()");
+      // this.log.debug("Error()");
       this.moveErrLogin();
     });
   }
@@ -135,7 +135,7 @@ export class SecurityService {
    * CF에서 사용자 정보 추출 - > OAUTH 로그인용
    */
   doUserInfo() {
-    this.log.debug('doUserInfo()');
+    // this.log.debug('doUserInfo()');
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer ' + this.common.getToken())
       .append('Content-Type', 'application/x-www-form-urlencoded');
@@ -148,12 +148,12 @@ export class SecurityService {
         return Observable.of(error.status).delay(1000);
       }).take(3).concat(Observable.throw({error: 'Sorry, there was an error (after 3 retries)'}));
     }).subscribe(data => {
-      this.log.debug("Data :: " + data);
+      // this.log.debug("Data :: " + data);
       this.common.saveCfUserInfo(data['user_id'], data['user_name'], data['name'], data['given_name'], data['family_name'],
         data['email'], data['phone_number'], data['exp'], data['previous_logon_time']);
       this.doUserInfoProvider(data['user_name']);
     }, error => {
-      this.log.debug(error);
+      // this.log.debug(error);
       // this.moveErrLogin();
     });
   }
@@ -195,7 +195,7 @@ export class SecurityService {
    */
   doUserInfoProvider(userId: string) {
 
-    this.log.debug("doUserInfoProvider");
+    // this.log.debug("doUserInfoProvider");
 
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded');
@@ -241,7 +241,7 @@ export class SecurityService {
    * 모든 로그인 방식의 제일 마지막 - 공통
    */
   saveUserDB(userId: string) {
-    this.log.debug("saveUserDB()");
+    // this.log.debug("saveUserDB()");
     this.common.doGet('/commonapi/v2/user/' + userId + '/uaa', this.common.getToken()).subscribe(data => {
       let params = {
         userId: userId,
