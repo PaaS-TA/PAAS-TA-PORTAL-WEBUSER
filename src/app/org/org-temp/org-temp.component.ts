@@ -490,7 +490,6 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
 
   inviteCancel() {
     this.common.isLoading = true;
-    console.log(this.sltEntity);
     this.orgMainService.delInviteCancle(this.sltOrgGuid, this.sltInvite.userId).subscribe(data => {
       if (data) {
         this.common.alertMessage("초대 취소 성공", true);
@@ -714,7 +713,6 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
 
   portalGetAllUserName(){
     this.orgMainService.getAllUser().subscribe(data => {
-      console.log(data);
       data.userInfo.forEach(info => {
         this.userName.push(info.userName);
       });

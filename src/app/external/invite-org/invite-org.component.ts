@@ -38,7 +38,6 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
     this.orgName = parser.get('orgName');
     this.refreshToken = parser.get('refreshToken');
     this.seq = parser.get('seq');
-
     // remove parameters
     //location.hash = '';
     //location.search = '';
@@ -57,9 +56,8 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
       token: this.refreshToken
     };
 
-    this.common.getInfra(this.common.getSeq()).subscribe(infra => {
-      this.logger.debug(params);
-      this.orgService.userInviteAcceptMulti(infra['apiUri'], infra['authorization'], params).subscribe(data => {
+    this.common.getInfra(this.seq).subscribe(infra => {
+      this.orgService.userInviteAcceptSend(infra['apiUri'], infra['authorization'], params).subscribe(data => {
 
         if(!data){
           this.common.isLoading = false;

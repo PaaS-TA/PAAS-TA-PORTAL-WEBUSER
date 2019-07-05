@@ -144,6 +144,15 @@ export class CommonService {
     });
   }
 
+  doPutMail(url: string, authorization, params: any, token) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.put(url, params, {
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
+
 
   doDelete(url: string, params: any, token: string) {
     if (token == null) {

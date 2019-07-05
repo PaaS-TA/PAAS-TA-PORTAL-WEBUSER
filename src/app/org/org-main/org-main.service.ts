@@ -166,4 +166,11 @@ export class OrgMainService {
     });
   }
 
+  userInviteAcceptSend(url, authorization, params: any){
+    return this.commonService.doPutMail(url+'/portalapi/' + this.apiversion + '/orgs/user-roles',authorization, params,'').map((res: any) => {
+      return res;
+    });
+  }
+
+
 }
