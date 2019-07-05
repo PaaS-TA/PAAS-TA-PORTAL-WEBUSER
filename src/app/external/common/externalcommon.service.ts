@@ -13,7 +13,7 @@ export class ExternalcommonService {
 
   apiversion = appConfig['apiversion'];
 
-  constructor(private commonService: CommonService, public log: NGXLogger) {
+  constructor(private commonService: CommonService) {
   }
 
 
@@ -53,7 +53,6 @@ export class ExternalcommonService {
 
 
   createUser_external(url, authorization, param : any) {
-    this.log.debug(url + '/portalapi/' + this.apiversion + '/users');
     return this.commonService.doPostMulti(url + '/portalapi/' + this.apiversion + '/users', authorization,  param, '');
 
   }

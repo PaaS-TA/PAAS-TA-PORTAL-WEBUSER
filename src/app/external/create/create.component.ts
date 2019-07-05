@@ -42,7 +42,7 @@ export class CreateComponent implements OnInit {
 
 
   constructor(public indexCommonService: IndexCommonService, private commonService: CommonService, private userMgmtService: UsermgmtService, private externalService: ExternalcommonService,
-              private activeRoute: ActivatedRoute, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
+              private activeRoute: ActivatedRoute, private router: Router, private route: ActivatedRoute) {
 
     this.seq = '';
     this.userId = '';
@@ -95,7 +95,6 @@ export class CreateComponent implements OnInit {
   }
 
   checkUsername() {
-    ////this.log.debug('username :: ' + this.username);
     if (this.username.length == 0) {
       this.isUserName = false;
     } else {
@@ -105,16 +104,13 @@ export class CreateComponent implements OnInit {
 
 
   checkPassword() {
-    ////this.log.debug('password :: ' + this.password);
     var reg_pwd = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
     if (!reg_pwd.test(this.password)) {
-      ////this.log.debug('password :: 1');
       this.isPassword = false;
       return;
     }
 
     if (this.password.search(/₩s/) != -1) {
-      ////this.log.debug('password :: 2');
       this.isPassword = false;
       return;
     }
@@ -166,13 +162,10 @@ export class CreateComponent implements OnInit {
                 this.externalService.updateInfo_external(this.userId, result, data["authorization"], userInfo);
               }
 
-              this.log.debug("forEachCount: " + forEachCount + " " +  "size: " + size + " " + "createSuccess: " + createSuccess);
+              // this.log.debug("forEachCount: " + forEachCount + " " +  "size: " + size + " " + "createSuccess: " + createSuccess);
 
               if(forEachCount == size){
-                this.log.debug("1:: " + forEachCount + " " + size);
                 if (createSuccess == size) {
-                  this.log.debug("2:: " + createSuccess + " " + size+ " " + "active: "+ userInfo['active']);
-
                   if (userInfo['active'] == 'Y'){
                     this.commonService.isLoading = false;
                     this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);

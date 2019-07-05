@@ -13,8 +13,7 @@ let appConfig = require('assets/resources/env/config.json');
 @Injectable()
 export class UsermgmtService {
   constructor(
-    private http: HttpClient, private common: CommonService, private logger: NGXLogger,
-    private log: NGXLogger, private sec: SecurityService, private router: Router) {
+    private http: HttpClient, private common: CommonService, private logger: NGXLogger, private sec: SecurityService, private router: Router) {
   }
 
   apiversion = appConfig['apiversion'];
@@ -67,8 +66,8 @@ export class UsermgmtService {
   }
 
   // @DeleteMapping(V2_URL + "/user/{guid}/all")  ::CF&DB
-  userAllDeleteMuti(guid: string, authorization,  param: any) {
-    return this.common.doDeleteMulti('/commonapi/v2/user/' + guid+ '/all', authorization, '', '').map((res: Response) => {
+  userAllDeleteMuti(url, guid: string, authorization,  param: any) {
+    return this.common.doDeleteMulti(url+'/commonapi/v2/user/' + guid+ '/all', authorization, '', '').map((res: Response) => {
       return res;
     });
   }

@@ -126,7 +126,6 @@ export class ResetComponent implements OnInit {
             if (region['result'] == true) {
               success++;
             }
-            this.log.debug("Save :: reset_external :: Init");
             if (forEachCount == size) {
               if (success == size) {
                 this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
@@ -151,7 +150,6 @@ export class ResetComponent implements OnInit {
   }
 
   defaultPassword() {
-    this.log.debug("defaultPassword Init");
     this.commonService.isLoading = true;
     let param = {'userId': this.userId, 'password': this.password};
     if (this.isPassword && this.isRePassword) {

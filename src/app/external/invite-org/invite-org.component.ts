@@ -23,9 +23,7 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
   private refreshToken: string;
   private seq : string;
 
-  constructor(private common: CommonService, private orgService: OrgMainService,
-              private router: Router, private logger: NGXLogger) {
-
+  constructor(private common: CommonService, private orgService: OrgMainService, private router: Router, private logger: NGXLogger) {
   }
 
   ngOnInit() {
@@ -75,16 +73,20 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
             this.common.isLoading = false;
           }
 
-        setTimeout(() => {
-          const current = new Date().getTime();
-          this.logger.debug('auto-navigate organization... ');
-          this.logger.debug('userId : ', this.userId, ' / orgName : ', this.orgName, ' / refreshToken : ', this.refreshToken);
-          this.logger.debug('start : ', this.timestamp, 'want to wait time : ', this.waitTime, 'real wait time : ', (current - this.timestamp), 'ms');
-          this.router.navigate(['/']);
-        }, this.waitTime);
-      }
+          setTimeout(() => {
+            const current = new Date().getTime();
+            this.logger.debug('auto-navigate organization... ');
+            this.logger.debug('userId : ', this.userId, ' / orgName : ', this.orgName, ' / refreshToken : ', this.refreshToken, ' / seq : ', this.common.getSeq());
+            this.logger.debug('start : ', this.timestamp, 'want to wait time : ', this.waitTime, 'real wait time : ', (current - this.timestamp), 'ms');
+            this.router.navigate(['/']);
+          }, this.waitTime);
+        }
+      });
+
     });
+
   }
+
 
   ngAfterViewChecked() {
     /*
