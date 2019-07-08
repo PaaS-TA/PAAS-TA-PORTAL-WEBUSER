@@ -5,12 +5,12 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {NGXLogger} from 'ngx-logger';
 import {Organization} from '../model/organization';
-import {ActivatedRoute, Router} from "@angular/router";
-import {SecurityService} from "../auth/security.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {SecurityService} from '../auth/security.service';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
-import {isNullOrUndefined} from "util";
-import {ExternalcommonService} from "../external/common/externalcommon.service";
-import {stringify} from "querystring";
+import {isNullOrUndefined} from 'util';
+import {ExternalcommonService} from '../external/common/externalcommon.service';
+import {stringify} from 'querystring';
 
 
 declare var $: any;
@@ -93,7 +93,7 @@ export class UsermgmtComponent implements OnInit {
   }
 
   onFileChanged() {
-    $("#photoFile").trigger("click");
+    $('#photoFile').trigger('click');
   }
 
   onFileChanged_click(event) {
@@ -102,8 +102,8 @@ export class UsermgmtComponent implements OnInit {
       return;
     }
     this.fileToUpload = file;
-    $("#photo").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
-    $("#onUploadBtn").show();
+    $('#photo').fadeIn('fast').attr('src', URL.createObjectURL(event.target.files[0]));
+    $('#onUploadBtn').show();
   }
 
   onUpload() {
@@ -113,7 +113,7 @@ export class UsermgmtComponent implements OnInit {
     let formData = new FormData();
     formData.append('file', this.fileToUpload, this.fileToUpload.name);
     this.userMgmtService.photoRegistration(formData).subscribe(data => {
-      $("#onUploadBtn").hide(); //TO disabled
+      $('#onUploadBtn').hide(); //TO disabled
       this.imgPath = data.fileURL;
       this.userSave();
     }, error => {
@@ -121,6 +121,11 @@ export class UsermgmtComponent implements OnInit {
   }
 
   userInfo() {
+    this.userName = '';
+    this.tellPhone = '';
+    this.zipCode = '';
+    this.address = '';
+
     this.userMgmtService.userinfo(this.common.getUserid()).subscribe(data => {
       this.user = data;
       this.userName = data['userName'];
@@ -128,15 +133,15 @@ export class UsermgmtComponent implements OnInit {
       this.zipCode = data['zipCode'];
       this.address = data['address'];
       try {
-        if (isNullOrUndefined(data['imgPath'].lastIndexOf("/")) || data['imgPath'] === '') {
+        if (isNullOrUndefined(data['imgPath'].lastIndexOf('/')) || data['imgPath'] === '') {
           return '';
         }
-        var pathHeader = data['imgPath'].lastIndexOf("/");
+        var pathHeader = data['imgPath'].lastIndexOf('/');
         var pathEnd = data['imgPath'].length;
         var fileName = data['imgPath'].substring(pathHeader + 1, pathEnd);
         this.userMgmtService.getImg('/storageapi/v2/swift/' + fileName).subscribe(data => {
           let reader = new FileReader();
-          reader.addEventListener("load", () => {
+          reader.addEventListener('load', () => {
             this.photoFile = reader.result;
             this.common.setImagePath(this.photoFile);
           }, false);
@@ -169,30 +174,33 @@ export class UsermgmtComponent implements OnInit {
         this.common.setUserName(this.userName);
         return this.userInfo();
       } else {
-        this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail + "<br><br>" + data.msg, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail + '<br><br>' + data.msg, false);
         this.common.isLoading = false;
+        return this.userInfo();
       }
     }, error => {
       this.common.alertMessage(this.translateEntities.alertLayer.ChangeSuccessFail, false);
       this.common.isLoading = false;
+      return this.userInfo();
+
     });
     /*reset*/
-    $('#userName').val('');
-    $('#tellPhone').val('');
-    $('#zipCode').val('');
-    $('#address').val('');
+    // $('#userName').val('');
+    // $('#tellPhone').val('');
+    // $('#zipCode').val('');
+    // $('#address').val('');
   }
 
   cancelButton() {
-    $('#userName').val('');
-    $('#tellPhone').val('');
-    $('#zipCode').val('');
-    $('#address').val('');
-    $('#password_check').val('');
+    // $('#userName').val('');
+    // $('#tellPhone').val('');
+    // $('#zipCode').val('');
+    // $('#address').val('');
+    // $('#password_check').val('');
   }
 
   userSaveEnter() {
-    $("#userSave").click();
+    $('#userSave').click();
   }
 
   replaceInvalidateString($event) {
@@ -208,11 +216,11 @@ export class UsermgmtComponent implements OnInit {
   }
 
   updateUserPasswordEnter() {
-    $("#passwordChange").click();
+    $('#passwordChange').click();
   }
 
   checkTellPhoneEnter() {
-    $("#checkTellPhone").click();
+    $('#checkTellPhone').click();
   }
 
   checkTellPhone() {
@@ -221,24 +229,29 @@ export class UsermgmtComponent implements OnInit {
       this.isTellPhone == true;
       $('#tellPhone').val(this.user['tellPhone']);
       this.userSave();
+    } else {
+      this.userInfo();
     }
   }
 
   checkZipCodeEnter() {
-    $("#checkZipCode").click();
+    $('#checkZipCode').click();
   }
 
   checkZipCode() {
     // this.log.debug(this.zipCode + ' :::: ' + this.zipCode_pattenTest());
+
     if (this.zipCode_pattenTest()) {
       this.isZipCode == true;
       $('#zipCode').val(this.user['zipCode']);
       this.userSave();
+    } else {
+      this.userInfo();
     }
   }
 
   checkAddressEnter() {
-    $("#checkAddress").click();
+    $('#checkAddress').click();
   }
 
   checkAddress() {
@@ -247,6 +260,8 @@ export class UsermgmtComponent implements OnInit {
       this.isAddress == true;
       $('#address').val(this.user['address']);
       this.userSave();
+    } else {
+      this.userInfo();
     }
   }
 
@@ -282,13 +297,13 @@ export class UsermgmtComponent implements OnInit {
     this.common.isLoading = true;
     this.common.getInfrasAll().subscribe(data => {
       data.forEach(data => {
-        if (data.length  <=  0) {
+        if (data.length <= 0) {
           this.defaultPassword();
-        }else{
+        } else {
           let param = {id: this.user['userId'], password: this.password_now};
           this.common.doPost('/portalapi/login', param, '').subscribe(data => { //1)로그인
             this.regionPassword();
-          },error=>{
+          }, error => {
             this.common.alertMessage('변경하는데 실패하였습니다.', false);
             this.common.isLoading = false;
             $('#password_now').val('');
@@ -312,7 +327,7 @@ export class UsermgmtComponent implements OnInit {
         this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
         this.common.isLoading = false;
       } else {
-        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail + "<br><br>" + data.msg, false);
+        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail + '<br><br>' + data.msg, false);
         this.common.isLoading = false;
       }
       $('#password_now').val('');
@@ -325,7 +340,7 @@ export class UsermgmtComponent implements OnInit {
   regionPassword() {
     this.common.isLoading = true;
     let param = {userId: this.user['userId'], password: this.password_new};
-    if(this.password_now != this.password_new){
+    if (this.password_now != this.password_new) {
       if (this.password_new == this.password_confirm) {
         this.common.getInfrasAll().subscribe(data => {
           let size = data.length;
@@ -334,7 +349,7 @@ export class UsermgmtComponent implements OnInit {
 
           data.forEach(data => {
             let result = data['apiUri'];
-            this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
+            this.externalService.reset_external(result, data['authorization'], param).subscribe(region => {
               forEachCount++;
               this.common.isLoading = false;
               if (region['result'] == true) {
@@ -344,36 +359,40 @@ export class UsermgmtComponent implements OnInit {
               if (forEachCount == size) {
                 if (success == size) {
                   this.common.alertMessage(this.translateEntities.alertLayer.passwordSuccess, true);
-                  setTimeout(()=>{
+                  setTimeout(() => {
                     this.common.isLoading = false;
                     this.router.navigate(['/logout']);
-                  },2000)
+                  }, 2000);
                 }
               }
 
-            },error =>{
+            }, error => {
               this.common.isLoading = false;
               this.common.alertMessage(this.translateEntities.alertLayer.passwordFailNotFound, false);
               this.router.navigate(['/usermgmt']);
             });
           });
-        },error =>{this.serverError();},()=>{this.common.isLoading = false;});
-      }else{
+        }, error => {
+          this.serverError();
+        }, () => {
+          this.common.isLoading = false;
+        });
+      } else {
         this.common.isLoading = false;
-        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail,false);
-        setTimeout(()=>{
+        this.common.alertMessage(this.translateEntities.alertLayer.newPasswordFail, false);
+        setTimeout(() => {
           this.router.navigate(['/usermgmt']);
-        },1000)
+        }, 1000);
         $('#password_now').val('');
         $('#password_new').val('');
         $('#password_confirm').val('');
       }
-    }else{
+    } else {
       this.common.isLoading = false;
-      this.common.alertMessage(this.translateEntities.alertLayer.sameAsPasswordFail,false);
-      setTimeout(()=>{
+      this.common.alertMessage(this.translateEntities.alertLayer.sameAsPasswordFail, false);
+      setTimeout(() => {
         this.router.navigate(['/usermgmt']);
-      },1000)
+      }, 1000);
       $('#password_now').val('');
       $('#password_new').val('');
       $('#password_confirm').val('');
@@ -396,11 +415,16 @@ export class UsermgmtComponent implements OnInit {
     const regExpBlankPattern = /[\s]/g;
     const reg_koreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
 
+    if (this.tellPhone.length > 11) {
+      this.isTellPhone = false;
+      return false;
+    }
+
     if (!reg_alpha.test(value) && !reg_koreanPatten.test(value) && !regExpBlankPattern.test(value) && this.isNumber(value)) {
       this.isTellPhone = true;
       return true;
     } else {
-      $('#tellPhone').val('');
+      // $('#tellPhone').val('');
       this.isTellPhone = false;
       return false;
     }
@@ -414,11 +438,16 @@ export class UsermgmtComponent implements OnInit {
     const regExpBlankPattern = /[\s]/g;
     const reg_zip = /^[A-Za-z0-9]{0,1000}$/;
 
+    if (this.zipCode.length > 14) {
+      this.isZipCode = false;
+      return false;
+    }
+
     if (reg_zip.test(value) && !reg_koreanPatten.test(value) && !regExpBlankPattern.test(value)) {
       this.isZipCode = true;
       return true;
     } else {
-      $('#zipCode').val('');
+      // $('#zipCode').val('');
       this.isZipCode = false;
       return false;
     }
@@ -431,7 +460,7 @@ export class UsermgmtComponent implements OnInit {
       this.isAddress = true;
       return true;
     } else {
-      $('#address').val('');
+      // $('#address').val('');
       this.isAddress = false;
       return false;
     }
@@ -441,7 +470,7 @@ export class UsermgmtComponent implements OnInit {
   orgInit() {
     this.userMgmtService.getOrgList().subscribe(data => {
       this.orgs = data.resources;
-    })
+    });
   }
 
   popclickOrg(guid: string, name: string) {
@@ -454,7 +483,7 @@ export class UsermgmtComponent implements OnInit {
     if (orgId != '') {
       let param = {
         userId: this.common.getUserGuid()
-      }
+      };
       this.userMgmtService.orgMembers(orgId).subscribe(data => {
         let members = data.resources;
         if (members.length > 1) {
@@ -462,7 +491,7 @@ export class UsermgmtComponent implements OnInit {
             this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
             this.userMgmtService.getOrgList().subscribe(data => {
               this.orgs = data.resources;
-            })
+            });
           }, error => {
             this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail, false);
           }, () => {
@@ -512,7 +541,7 @@ export class UsermgmtComponent implements OnInit {
     });
   }
 
-  serverError(){
+  serverError() {
     this.common.alertMessage(this.translateEntities.alertLayer.serverError, false);
     this.userMgmtService.back();
   }
@@ -537,7 +566,7 @@ export class UsermgmtComponent implements OnInit {
   ngOnInit() {
     $(document).ready(() => {
       //TODO 임시로...
-      $.getScript("../../assets/resources/js/common.js")
+      $.getScript('../../assets/resources/js/common.js')
         .done(function (script, textStatus) {
         })
         .fail(function (jqxhr, settings, exception) {
