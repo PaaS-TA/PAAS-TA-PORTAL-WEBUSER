@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {CommonService} from "../../common/common.service";
-import {NGXLogger} from "ngx-logger";
-import {User, UsermgmtService} from "../../usermgmt/usermgmt.service";
-import {error} from "util";
-import {Observable} from "rxjs";
-import {forEach} from "@angular/router/src/utils/collection";
+import {CommonService} from '../../common/common.service';
+import {NGXLogger} from 'ngx-logger';
+import {User, UsermgmtService} from '../../usermgmt/usermgmt.service';
+import {error} from 'util';
+import {Observable} from 'rxjs';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Injectable()
 export class IndexCommonService {
@@ -36,20 +36,36 @@ export class IndexCommonService {
   sendCreateEmail(url, authorization, email: string) {
     this.commonService.isLoading = true;
     this.isUsed = false;
-    let param = {userid: email, username: email, seq : this.commonService.getSeq()};
-    this.commonService.doPostMulti(url+"/commonapi/v2/users/create/email", authorization, param, '').subscribe(data => {
+    let param = {userid: email, username: email, seq: this.commonService.getSeq()};
+    this.commonService.doPostMulti(url + '/commonapi/v2/users/create/email', authorization, param, '').subscribe(data => {
       if (data['result'] === true) {
+        this.commonService.getInfrasAll().subscribe(infras => {
+          infras.forEach(infra => {
+            if (infra['key'] != this.commonService.getSeq()) {
+              let userInfo = {
+                userId: email,
+                userName: email,
+                status: '1',
+                adminYn: 'N',
+                imgPath: '',
+                active: 'N'
+              };
+              this.commonService.doPostMulti(infra['apiUri'] + '/commonapi/v2/user', infra['authorization'], userInfo, '').subscribe(data2 => {
+              });
+            }
+          });
+        });
         this.isSendEmail = true;
       } else {
-        this.commonService.doDelete(url+"/commonapi/v2/user/" + email, param, '').subscribe();
-        this.commonService.doDeleteMulti(url+"/portalapi/v2/users/" + email, authorization, param, '').subscribe();
+        this.commonService.doDelete(url + '/commonapi/v2/user/' + email, param, '').subscribe();
+        this.commonService.doDeleteMulti(url + '/portalapi/v2/users/' + email, authorization, param, '').subscribe();
         this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
         this.isSendEmail = false;
       }
       this.commonService.isLoading = false;
     }, error => {
-      this.commonService.doDelete(url+"/commonapi/v2/users/" + email, param, '').subscribe();
-      this.commonService.doDeleteMulti(url+"/portalapi/v2/users/" + email, authorization, param, '').subscribe();
+      this.commonService.doDelete(url + '/commonapi/v2/users/' + email, param, '').subscribe();
+      this.commonService.doDeleteMulti(url + '/portalapi/v2/users/' + email, authorization, param, '').subscribe();
       this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
       this.isSendEmail = false;
       this.commonService.isLoading = false;
@@ -60,8 +76,8 @@ export class IndexCommonService {
   sendResetEmail(url, authorization, email: string) {
     this.commonService.isLoading = true;
     this.isUsed = false;
-    let param = {userid: email , seq:this.commonService.getSeq()};
-    this.commonService.doPostMulti(url+"/commonapi/v2/users/password/email", authorization, param, '').subscribe(data => {
+    let param = {userid: email, seq: this.commonService.getSeq()};
+    this.commonService.doPostMulti(url + '/commonapi/v2/users/password/email', authorization, param, '').subscribe(data => {
       if (data['result'] === true) {
         this.isSendEmail = true;
       } else {

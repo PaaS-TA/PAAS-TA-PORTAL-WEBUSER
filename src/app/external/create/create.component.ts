@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonService} from "../../common/common.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ExternalcommonService} from "../common/externalcommon.service";
-import {User, UsermgmtService} from "../../usermgmt/usermgmt.service";
-import {Observable} from "rxjs";
+import {CommonService} from '../../common/common.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ExternalcommonService} from '../common/externalcommon.service';
+import {User, UsermgmtService} from '../../usermgmt/usermgmt.service';
+import {Observable} from 'rxjs';
+import {consoleLog} from 'ng2-logger/backend-logging';
 
 declare var $: any;
 declare var require: any;
@@ -56,9 +57,8 @@ export class CreateComponent implements OnInit {
     this.token = this.route.snapshot.queryParams['refreshToken'] || '/';
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
 
-    this.commonService.getInfra(this.seq).subscribe(infra =>{
-      console.log(infra);
-      if (this.userId.length > 0 && this.token.length > 0 ) {
+    this.commonService.getInfra(this.seq).subscribe(infra => {
+      if (this.userId.length > 0 && this.token.length > 0) {
         this.externalService.getUserTokenInfo_external(this.userId, this.token, this.seq, infra['apiUri'], infra['authorization']).subscribe(tokeninfo => {
           if (tokeninfo == null) {
             this.router.navigate(['error'], {queryParams: {error: '1'}});
@@ -139,55 +139,63 @@ export class CreateComponent implements OnInit {
         'tellPhone': '',
         'address': '',
         'active': this.commonService.getAutomaticApproval()
-      }
+      };
 
       this.commonService.getInfrasAll().subscribe(data => {
         let size = data.length;
         let createSuccess = 0; // 성공여부 확인
         let forEachCount = 0;  // apiUrl 개수 확인
-
+        console.log(data);
         data.forEach(data => {
           if (size > 0) {
             let result = data['apiUri'];
-            this.externalService.createUser_external(result, data["authorization"], param).subscribe(region => {
+            this.externalService.createUser_external(result, data['authorization'], param).subscribe(region => {
               forEachCount++;
               this.commonService.isLoading = false;
 
-              let userInfo = {'userId': this.userId, 'userName': this.username, 'password': this.password, 'tellPhone': '', 'address': '',
-                'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N', 'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0, 'seq' : this.commonService.getSeq()
+              let userInfo = {
+                'userId': this.userId,
+                'userName': this.username,
+                'password': this.password,
+                'tellPhone': '',
+                'address': '',
+                'active': this.commonService.getAutomaticApproval() ? 'Y' : 'N',
+                'refreshToken': '',
+                'authAccessTime': '',
+                'authAccessCnt': 0,
+                'seq': this.commonService.getSeq()
               };
 
               if (region['result'] == true) {
                 createSuccess++;
-                this.externalService.updateInfo_external(this.userId, result, data["authorization"], userInfo);
+                this.externalService.updateInfo_external(this.userId, result, data['authorization'], userInfo);
               }
 
-              console.log("forEachCount: " + forEachCount + " " +  "size: " + size + " " + "createSuccess: " + createSuccess);
 
-              if(forEachCount == size){
+              if (forEachCount == size) {
                 if (createSuccess == size) {
-                  if (userInfo['active'] == 'Y'){
+                  if (userInfo['active'] == 'Y') {
                     this.commonService.isLoading = false;
-                    this.commonService.alertMessage("회원가입 완료, 로그인이 가능합니다.", true);
+                    this.commonService.alertMessage('회원가입 완료, 로그인이 가능합니다.', true);
                   } else {
                     this.commonService.isLoading = false;
-                    this.commonService.alertMessage("회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.", true);
+                    this.commonService.alertMessage('회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.', true);
                   }
-                  setTimeout(()=>{
+                  setTimeout(() => {
                     this.commonService.isLoading = false;
                     this.router.navigate(['/']);
-                    },2000)
-                }else{
+                  }, 2000);
+                } else {
                   this.commonService.alertMessage('회원가입 실패, 다시 시도하세요.', false);
                   this.commonService.isLoading = false;
-                  this.commonService.getInfra(data["key"]).subscribe(data =>{
-                    this.commonService.setAuthorization(data["authorization"]);
+                  this.commonService.getInfra(data['key']).subscribe(data => {
+                    this.commonService.setAuthorization(data['authorization']);
                   });
                 }
               }
             });
           }
-          });
+        });
       }, error => {
         this.commonService.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
       });
