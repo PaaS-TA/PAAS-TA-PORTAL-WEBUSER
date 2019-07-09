@@ -197,6 +197,8 @@ export class UsermgmtComponent implements OnInit {
     // $('#zipCode').val('');
     // $('#address').val('');
     // $('#password_check').val('');
+
+    this.userInfo();
   }
 
   userSaveEnter() {
