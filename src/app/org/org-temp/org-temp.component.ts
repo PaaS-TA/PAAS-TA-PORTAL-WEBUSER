@@ -553,7 +553,8 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
       refreshToken: this.common.getRefreshToken(),
       userEmail: $("[id='invitename']").val(),
       userRole: JSON.stringify(inviteObj),
-      invitename: this.common.getUserid()
+      invitename: this.common.getUserid(),
+      seq : this.common.getSeq()
     };
     this.orgMainService.userInviteEmailSend(params).subscribe(data => {
       if (data) {
