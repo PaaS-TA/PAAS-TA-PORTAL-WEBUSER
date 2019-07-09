@@ -126,7 +126,7 @@ export class OrgMainService {
   }
 
   userInviteEmailSend(params: any) {
-    return this.commonService.doPost('/commonapi/v2/email/inviteOrg', params, this.commonService.getToken()).map((res: any) => {
+    return this.commonService.doPost('/commonapi/v2/email/inviteOrg', params, "").map((res: any) => {
       return res;
     });
   }

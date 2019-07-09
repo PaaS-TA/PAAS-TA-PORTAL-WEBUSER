@@ -439,7 +439,6 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
 
     /*userInviteEmailSend*/
     this.common.getInfra(this.common.getSeq()).subscribe(infra => {
-      this.log.debug(params);
       this.common.doPostMulti(infra['apiUri']+'/commonapi/v2/email/inviteOrg', infra['authorization'], params, '').subscribe(data => {
         if (data) {
           this.common.alertMessage(this.translateEntities.alertLayer.sendEmailSuccess, true);
@@ -554,7 +553,8 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
       refreshToken: this.common.getRefreshToken(),
       userEmail: $("[id='invitename']").val(),
       userRole: JSON.stringify(inviteObj),
-      invitename: this.common.getUserid()
+      invitename: this.common.getUserid(),
+      seq : this.common.getSeq()
     };
     this.orgMainService.userInviteEmailSend(params).subscribe(data => {
       if (data) {
