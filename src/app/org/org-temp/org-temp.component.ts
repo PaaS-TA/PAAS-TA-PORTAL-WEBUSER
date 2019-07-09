@@ -207,7 +207,7 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
       this.common.alertMessage(this.translateEntities.alertLayer.orgRoleError, false);
       return;
     }
-    $("[id='userEmail']").val('');
+    this.invite_name = '';
     $("#layerpop4_"+this.orgsDetailGuid).modal("show");
     setTimeout(() => {
       this.allCheck();

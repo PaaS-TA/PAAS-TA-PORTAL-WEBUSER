@@ -143,6 +143,8 @@ export class AppMainComponent implements OnInit {
 
   public sltLaaSView: boolean = false;
   public sltLaaSUrl: string = '';
+  public mem_DirectInputClick : boolean = true;
+  public disk_DirectInputClick : boolean= true;
 
   alive = true;
 
@@ -150,7 +152,6 @@ export class AppMainComponent implements OnInit {
 
   constructor(public route: ActivatedRoute, public router: Router, public translate: TranslateService, public appMainService: AppMainService, public common: CommonService) {
     this.common.isLoading = false;
-
     // Observable.timer(0,1000 * 60 * 2)
     // Observable.timer(10000)
     //   .takeWhile(() => this.alive) // only fires when component is alive
@@ -818,18 +819,19 @@ export class AppMainComponent implements OnInit {
   }
 
   memDirectInputClick() {
+    this.mem_DirectInputClick = !this.mem_DirectInputClick;
     if ($("#memS2").css("display") == "none") {
       this.appSummaryMemory = $("#mem_in").val();
-      $("#memS2").next().text("M");
+
       $("#memS1").hide();
       $("#memS2").show();
       $("#mem_in").focus();
     } else {
       this.appSummaryMemory = $("#mem_in").val();
       if (this.appSummaryMemory >= 1024) {
-        $("#memS2").next().text("G");
+
       } else {
-        $("#memS2").next().text("M");
+
       }
       $("#memS2").hide();
       $("#memS1").show();
@@ -855,18 +857,19 @@ export class AppMainComponent implements OnInit {
   }
 
   diskDirectInputClick() {
+    this.disk_DirectInputClick = !this.disk_DirectInputClick;
     if ($("#diskS2").css("display") == "none") {
       this.appSummaryDisk = $("#disk_in").val();
-      $("#diskS2").next().text("M");
+
       $("#diskS1").hide();
       $("#diskS2").show();
       $("#disk_in").focus();
     } else {
       this.appSummaryDisk = $("#disk_in").val();
       if (this.appSummaryDisk >= 1024) {
-        $("#diskS2").next().text("G");
+
       } else {
-        $("#diskS2").next().text("M");
+
       }
       $("#diskS2").hide();
       $("#diskS1").show();
@@ -988,17 +991,20 @@ export class AppMainComponent implements OnInit {
         $("#diskS2").hide();
         $("#diskS1").show();
 
-        if (memoryChange >= 1024) {
-          $("#memS2").next().text("G");
-        } else {
-          $("#memS2").next().text("M");
-        }
 
-        if (diskChange >= 1024) {
-          $("#diskS2").next().text("G");
-        } else {
-          $("#diskS2").next().text("M");
-        }
+        this.appSummaryMemory = memoryChange;
+        // if (memoryChange >= 1024) {
+        //   $("#memS2").next().text("G");
+        // } else {
+        //   $("#memS2").next().text("M");
+        // }
+
+        this.appSummaryDisk = diskChange;
+        // if (diskChange >= 1024) {
+        //   $("#diskS2").next().text("G");
+        // } else {
+        //   $("#diskS2").next().text("M");
+        // }
 
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.appUpdateSuccess, true);
