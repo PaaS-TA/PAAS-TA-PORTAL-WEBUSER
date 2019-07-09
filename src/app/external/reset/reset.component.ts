@@ -46,26 +46,27 @@ export class ResetComponent implements OnInit {
     this.seq = this.route.snapshot.queryParams['seq'] || '/';
 
     this.commonService.getInfra(this.seq).subscribe(infra =>{
-      // let param = {userid: this.userId, username: this.userId, seq : this.commonService.getSeq()};
-      if (this.userId.length > 0 && this.token.length > 0) {
-        this.externalService.getUserTokenInfo(this.userId, this.token, this.seq).subscribe(data => {
-          if (data == null) {
+      if (this.userId.length > 0 && this.token.length > 0 ) {
+        this.externalService.getUserTokenInfo_external(this.userId, this.token, this.seq, infra['apiUri'], infra['authorization']).subscribe(tokeninfo => {
+          if (tokeninfo == null) {
             this.router.navigate(['error'], {queryParams: {error: '1'}});
           } else {
-            let accessTime = data['authAccessTime'];
-            let accessCount = data['authAccessCnt'];
+            let accessTime = tokeninfo['authAccessTime'];
+            let accessCount = tokeninfo['authAccessCnt'];
+
             let now = new Date();
             if (accessTime <= now.getTime().toString()) {
+              let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
+              this.externalService.updateInfo_external(this.userId, infra['apiUri'], infra['authorization'], userInfo);
               this.router.navigate(['error'], {queryParams: {error: '1'}});
             }
             if (accessCount > 3) {
-              //see
               let userInfo = {'refreshToken': '', 'authAccessTime': '', 'authAccessCnt': 0};
-              this.externalService.updateInfo(this.userId, userInfo);
+              this.externalService.updateInfo_external(this.userId, infra['apiUri'], infra['authorization'], userInfo);
               this.router.navigate(['error'], {queryParams: {error: '1'}});
             } else {
               let userInfo = {'authAccessCnt': (accessCount + 1)};
-              this.externalService.updateInfo(this.userId, userInfo);
+              this.externalService.updateInfo_external(this.userId, infra['apiUri'], infra['authorization'], userInfo);
             }
           }
         });

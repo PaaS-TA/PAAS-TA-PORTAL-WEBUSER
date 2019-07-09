@@ -570,7 +570,7 @@
     "myAccount" : "My Account",
     "explan" : {
       "check1" : "only enter without spaces within 6-20 characters by mixing English and numbers.",
-      "check2" : "only enter numbers.",
+      "check2" : "Only numbers with a length of less than 11 characters can be entered.",
       "check3" : "only 15 characters numbers and English are allowed.",
       "check4" : "only 256 characters or less is allowed.",
       "check5" : "It is different from the password you entered.",
