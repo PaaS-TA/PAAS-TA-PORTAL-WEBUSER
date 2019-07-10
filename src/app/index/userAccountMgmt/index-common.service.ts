@@ -37,7 +37,7 @@ export class IndexCommonService {
     this.commonService.isLoading = true;
     this.isUsed = false;
     let param = {userid: email, username: email, seq: this.commonService.getSeq()};
-    this.commonService.doPostMulti(url + '/commonapi/v2/users/create/email', authorization, param, '').subscribe(data => {
+    this.commonService.doPostMulti(url + '/commonapi/v3/users/create/email', authorization, param, '').subscribe(data => {
       if (data['result'] === true) {
         this.commonService.getInfrasAll().subscribe(infras => {
           infras.forEach(infra => {
@@ -57,6 +57,7 @@ export class IndexCommonService {
         });
         this.isSendEmail = true;
       } else {
+        this.log.debug("ERR");
         this.commonService.doDelete(url + '/commonapi/v2/user/' + email, param, '').subscribe();
         this.commonService.doDeleteMulti(url + '/portalapi/v2/users/' + email, authorization, param, '').subscribe();
         this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
@@ -77,7 +78,7 @@ export class IndexCommonService {
     this.commonService.isLoading = true;
     this.isUsed = false;
     let param = {userid: email, seq: this.commonService.getSeq()};
-    this.commonService.doPostMulti(url + '/commonapi/v2/users/password/email', authorization, param, '').subscribe(data => {
+    this.commonService.doPostMulti(url + '/commonapi/v3/users/password/email', authorization, param, '').subscribe(data => {
       if (data['result'] === true) {
         this.isSendEmail = true;
       } else {
