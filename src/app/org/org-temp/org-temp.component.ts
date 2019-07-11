@@ -263,6 +263,8 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.createSpaceFail + "<br><br>" + data.msg.description, false);
       }
+    }, error1 => {},() => {
+      this.common.isLoading = false;
     });
   }
 
@@ -289,6 +291,8 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.renameSpaceFail + "<br><br>" + data.msg.description, false);
       }
+    }, error1 => {},() => {
+      this.common.isLoading = false;
     });
   }
 
@@ -304,6 +308,8 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteSpaceFail + "<br><br>" + data.msg.description, false);
       }
+    } ,error1 => {},() => {
+      this.common.isLoading = false;
     });
   }
 
@@ -327,6 +333,8 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.addDomainFail + "<br><br>" + data.msg.description, false);
       }
+    },error1 => {},() => {
+      this.common.isLoading = false;
     });
   }
 
@@ -342,6 +350,8 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.deleteDomainFail + "<br><br>" + data.msg.description, false);
       }
+    },error1 => {},() => {
+      this.common.isLoading = false;
     });
   }
 
