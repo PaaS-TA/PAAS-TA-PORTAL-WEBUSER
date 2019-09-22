@@ -69,6 +69,14 @@ export class CommonService {
   }
 
 
+  doGetCaas(url: string){
+    var _headers = new HttpHeaders();
+    var setting = "Basic YWRtaW46UGFhUy1UQQ==";
+    console.log(setting);
+    return this.http.get(url, {
+      headers: _headers.set('Authorization', "Basic YWRtaW46UGFhUy1UQQ==").set("Content-Type","application/json")
+    });
+  }
 
   doGet(url: string, token: string) {
     if (token == null) {

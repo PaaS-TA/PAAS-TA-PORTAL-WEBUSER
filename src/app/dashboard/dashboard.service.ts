@@ -127,6 +127,24 @@ export class DashboardService {
     this.catalogService.recentpacks = data['list'];
   }
 
+  getCodeMax(groudid: string) {
+    return this.commonService.doGet('/commonapi/v2/' + groudid + '/codedetail', this.commonService.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
+  getCaasCommonUser(url : string){
+    return this.commonService.doGetCaas("http://"+ url+":3334/users").map((res: any) => {
+      return res;
+    });
+  }
+
+  getCaasAPI(url : string, rest: string){
+    return this.commonService.doGetCaas("http://"+ url+":3333/" + rest).map((res: any) => {
+      return res;
+    });
+  }
+
 }//
 
 export class Service {
