@@ -94,10 +94,15 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   public caas_Use_M = 0;
   public caas_Use_D = 0;
 
-  public cass_Pods = 0;
-  public caas_Deployments = 0;
-  public caas_replicaSets = 0;
-  public caas_services = 0;
+  public caas_Pods : any;
+  public caas_Deployments : any;
+  public caas_ReplicaSets  : any;
+  public caas_Services  : any;
+
+  public caas_Pods_length = 0;
+  public caas_Deployments_length = 0;
+  public caas_ReplicaSets_length = 0;
+  public caas_Services_length = 0;
 
   public placeholder = "credentialsStr:{'username':'admin','password':'password';}";
 
@@ -330,6 +335,8 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       this.commonService.isLoading = false;
     }
   }
+
+
 
   getOrgSummary() {
     this.dashboardService.getOrgSummary(this.org.guid).subscribe(data => {
@@ -758,14 +765,14 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   dashTabClick(id: string) {
     $("[id^='dashTab_']").hide();
     $("#" + id).show();
-    if (id == "dashTab_1") {
-      $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
-      $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
-    } else if (id == "dashTab_2") {
-      $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
-      $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
-      $("[id^='popclick_01']").hide();
-    }
+    // if (id == "dashTab_1") {
+    //   $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+    //   $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+    // } else if (id == "dashTab_2") {
+    //   $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+    //   $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+    //   $("[id^='popclick_01']").hide();
+    // }
   }
 
   popclick(id: string, type: string, guid: string, name: string, binding: boolean) {
@@ -867,41 +874,40 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   cass_common_api(){
-    this.dashboardService.getCodeMax('CASS_SERVICE_API').subscribe(codedata => {
-      if(!(Array.isArray(codedata.list) && codedata.list.length)){
-        return
-      }
-      this.dashboardService.getCaasCommonUser(codedata.list[0].value).subscribe(caasuser=>{
+    //codedata.list[0].value
+      this.dashboardService.getCaasCommonUser("115.68.46.186").subscribe(caasuser=>{
         caasuser.forEach(r => {
           if(this.commonService.getCurrentOrgGuid() === r.organizationGuid){
             this.caas_on_off = true;
             //네임스페이스 메모리, 디스크 현재, 최대 사용량
-            this.dashboardService.getCaasAPI(codedata.list[0].value, "namespaces/"+ r.caasNamespace+"/resourceQuotas").subscribe(data=>{
+            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/resourceQuotas").subscribe(data=>{
               this.caas_Limit_M = this.int_Change(data.items[0].status.hard["limits.memory"]);
               this.caas_Limit_D = this.int_Change(data.items[0].status.hard["requests.storage"]);
               this.caas_Use_M = this.int_Change(data.items[0].status.used["limits.memory"]);
               this.caas_Use_D = this.int_Change(data.items[0].status.used["requests.storage"]);
             });
 
-            this.dashboardService.getCaasAPI(codedata.list[0].value, "namespaces/"+ r.caasNamespace+"/pods").subscribe(data => {
-              this.cass_Pods = data.items.length;
+            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/pods").subscribe(data => {
+              this.caas_Pods_length = data.items.length;
+              this.caas_Pods = data.items;
             });
 
-            this.dashboardService.getCaasAPI(codedata.list[0].value, "namespaces/"+ r.caasNamespace+"/deployments").subscribe(data => {
-              this.caas_Deployments = data.items.length;
+            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/deployments").subscribe(data => {
+              this.caas_Deployments = data.items;
+              this.caas_Deployments_length = data.items.length;
             });
 
-            this.dashboardService.getCaasAPI(codedata.list[0].value, "namespaces/"+ r.caasNamespace+"/replicaSets").subscribe(data => {
-              this.caas_replicaSets = data.items.length;
+            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/replicaSets").subscribe(data => {
+              this.caas_ReplicaSets_length = data.items.length;
+              this.caas_ReplicaSets= data.items;
             });
 
-            this.dashboardService.getCaasAPI(codedata.list[0].value, "namespaces/"+ r.caasNamespace+"/services").subscribe(data => {
-              this.caas_services = data.items.length;
+            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/services").subscribe(data => {
+              this.caas_Services_length = data.items.length;
             });
 
         }});
     });
-  });
   }
 
   int_Change(used : String ) : number{
@@ -915,6 +921,16 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       _used = (+used.substring(0, used.length - 2))/1024 ;
     }
     return _used;
+  }
+
+  getPaasTaRefresh(value: string){
+    this.showLoading();
+    this.getAppSummary(value);
+    this.getOrgSummary();
+  }
+
+  getCaasRefresh(){
+    this.cass_common_api();
   }
 
 

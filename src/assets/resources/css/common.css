@@ -1319,7 +1319,7 @@ body.email h4{color:#293133;}
 .monitor_tabs_right{background:#fff;;border-top:1px solid #e6e6e6;border-right:1px solid #e6e6e6}
 .monitor_tabs_left{background:#fff;;border-top:1px solid #e6e6e6;border-left:1px solid #e6e6e6}
 .monitor_tabs_line{border-top:2px solid #357f94;position:absolute;top:51px;left:0;width:100%;z-index:-1}
-.monitor_content02,.monitor_content03{display:none}
+.monitor_content02,.monitor_content03,.monitor_content04,.monitor_content05{display:none}
 .monitor_sel_container{width:462px}
 .monitor_sel_wrap{width:calc(100% - 60px);margin:0 auto}
 .monitor_sel_container{float:left;width:50%}

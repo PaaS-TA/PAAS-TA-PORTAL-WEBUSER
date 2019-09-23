@@ -61,7 +61,7 @@
       <!-- CF -->
       <div class="col-in col-d1" id="mgnB30">
         <ul class="colright_btn">
-          <li class="rot_deg"><i class="rot fas fa-sync-alt"></i></li>
+          <li class="rot_deg"><i class="rot fas fa-sync-alt" (click)="getPaasTaRefresh(currentSpace)"></i></li>
         </ul>
         <div class="colorchip mgn030">
           <h1 class="headTH2">PAAS-TA</h1>
@@ -105,31 +105,31 @@
       </div>
       <!-- K8S -->
       <ng-container *ngIf="caas_on_off">
-      <div class="col-in col-d1" id="mgnB30">
+      <div class="col-in col-d1" id="mgnB31">
         <ul class="colright_btn">
-          <li class="rot_deg"><i class="rot fas fa-sync-alt"></i></li>
+          <li class="rot_deg"><i class="rot fas fa-sync-alt" (click)="getCaasRefresh()"></i></li>
         </ul>
         <div class="colorchip mgn030">
           <h1 class="headTH2">K8S</h1>
           <ul class="clearfix">
             <li>
               <div class="K8S_Pods">
-                <p>{{cass_Pods}}</p>Pods
+                <p>{{caas_Pods_length}}</p>Pods
               </div>
             </li>
             <li>
               <div class="K8S_Deployments">
-                <p>{{caas_Deployments}}</p>Deployments
+                <p>{{caas_Deployments_length}}</p>Deployments
               </div>
             </li>
             <li>
               <div class="K8S_ReplicaSets">
-                <p>{{caas_replicaSets}}</p>Replica Sets
+                <p>{{caas_ReplicaSets_length}}</p>Replica Sets
               </div>
             </li>
             <li>
               <div class="K8S_Services">
-                <p>{{caas_services}}</p>Services
+                <p>{{caas_Services_length}}</p>Services
               </div>
             </li>
             <li>
@@ -152,10 +152,10 @@
         <div class="tab_space_lft">
           <div class="space_title03">PAAS-TA</div>
           <ul>
-            <li name="tab01" class="monitor_tabs_on">{{'dashboard.titleApp' |
+            <li name="tab01" class="monitor_tabs_on" (click)="dashTabClick('dashTab_1')">{{'dashboard.titleApp' |
                 translate}}
             </li>
-            <li name="tab02" class="monitor_tabs_right">{{'dashboard.titleServices'
+            <li name="tab02" class="monitor_tabs_right" (click)="dashTabClick('dashTab_2')" >{{'dashboard.titleServices'
                 | translate}}
             </li>
           </ul>
@@ -164,9 +164,9 @@
         <div class="tab_space_lft">
           <div class="space_title03">CONTAINER SERVICE</div>
           <ul>
-            <li name="tab03" class="monitor_tabs_right">Deployments</li>
-            <li name="tab04" class="monitor_tabs_right">Pods</li>
-            <li name="tab05" class="monitor_tabs_right">Replica Sets</li>
+            <li name="tab03" class="monitor_tabs_right" (click)="dashTabClick('dashTab_3')">Deployments</li>
+            <li name="tab04" class="monitor_tabs_right" (click)="dashTabClick('dashTab_4')">Pods</li>
+            <li name="tab05" class="monitor_tabs_right" (click)="dashTabClick('dashTab_5')">Replica Sets</li>
           </ul>
         </div>
         </ng-container>
@@ -530,117 +530,145 @@
         </ul>
       </div>
       <div id="dashTab_3" class="monitor_content03 row two_line two_view new_view clearfix">
-        <ul class="maT30" *ngIf='isMessage'>
-          <li>
-            <div class="sortable_wrap space_box2">
-                <span class="space_txt"><i class="fas fa-exclamation-circle"></i> {{'dashboard.explan.appMsg1' | translate}}< <em><a
-                  [routerLink]="['/catalog']">{{'dashboard.catalog' | translate}}</a></em>{{'dashboard.explan.appMsg2' | translate}}</span>
-            </div>
-          </li>
-        </ul>
-        <ul class="maT30 space_list ">
-          <li *ngFor="let item of appEntities; let i = index">
-            <div class="sortable_wrap">
-              <!-- 애플리케이션 영역 시작 -->
-              <div class="space_pop_container">
-                <div class="space_pop_menu">
-                  <i class="fas fa-ellipsis-v" (click)="popclick('apopmenu_'+i,'app',item.guid,item.name, false)"></i>
-                  <ol class="space_pop_submenu" id="apopmenu_{{i}}">
-                    <li><a class="fas fa-edit" (click)="renamefocus()">{{'dashboard.app.changeAppMame'
-                        | translate}}</a></li>
-                    <!--<li><a class="fas fa-play" (click)="startAppClick(itme.guid)"> 실행</a></li>-->
-                    <li *ngIf="item.state == 'STARTED'"><a class="fas fa-stop" (click)="showPopAppStopClick()">{{'dashboard.app.stop'
-                        | translate}}</a>
-                    </li>
-                    <li *ngIf="item.state != 'STARTED'"><a class="fas fa-play" (click)="showPopAppStartClick()">
-                      {{'dashboard.app.execution' | translate}}</a></li>
-                    <li data-target="#layerpop2" data-toggle="modal"><a class="fas fa-trash-alt">{{'dashboard.app.delete'
-                        | translate}}</a></li>
-                  </ol>
-                </div>
-                <!--<a [routerLink]="['../appMain']">-->
-                <!--<div (click)="moveAppMain()">-->
-                <div class="app_title" (click)="moveDashboard(item.name,item.guid)">
-                  <div class="app_img"><img src="{{item.thumbImgPath}}" alt="" style="width: 56px; height: 56px"
-                                            onError="this.src='../../assets/resources/images/catalog/자바8.png'"/></div>
-                  <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: 260px;">
-                    <a href="javascript:void(0);" class="title_anchor">
-                      {{item.name.trim()}}</a></span>
-                </div>
+        <ul class="maT10 space_list space_list_small">
 
-                <div class="app_per clearfix">
-                  <ul>
-                    <li>
-                      <div>{{'dashboard.app.instance' | translate}}</div>
-                      <div>:</div>
-                      <div>{{item.instances}}</div>
-                    </li>
-                    <li>
-                      <div>{{'dashboard.app.disk' | translate}}</div>
-                      <div>:</div>
-                      <div>{{ (item.disk_quota >= 1024) ? ((item.disk_quota % 1024 == 0 || item.disk_quota % 1024 < 11) ?
-                          (item.disk_quota / 1024).toFixed(0) : (item.disk_quota / 1024).toFixed(2)) : (item.disk_quota) }}
-                        {{(item.disk_quota >= 1024) ? 'GB' : 'MB' }}
-                      </div>
-                    </li>
-                    <li>
-                      <div>{{'dashboard.app.memory' | translate}}</div>
-                      <div>:</div>
-                      <div>{{ (item.memory >= 1024) ? ((item.memory % 1024 == 0 || item.memory % 1024 < 11) ?
-                          (item.memory / 1024).toFixed(0) : (item.memory / 1024).toFixed(2)) : (item.memory) }}
-                        {{(item.memory >= 1024) ? 'GB' : 'MB' }}
+          <ng-container *ngFor="let deployment of caas_Deployments;  let i = index">
+            <li>
+              <div class="sortable_wrap" style="max-height: 342px">
+                <!-- 서비스 영역 시작 -->
+                <div class="space_pop_container space_list_small" >
 
-                      </div>
-                    </li>
-                    <!--{{item.memory}}-->
-                  </ul>
-                </div>
-                <div class="clear"></div>
-                <div class="app_btn" [ngSwitch]="item.state">
-                  <button class="btns colors1" *ngSwitchCase="'STARTED'"><img
-                    src="../../../assets/resources/images/main/RUNNING.svg" alt=""/>STARTED
-                  </button>
-                  <button class="btns colors2" *ngSwitchCase="'DOWNED'"><img
-                    src="../../../assets/resources/images/main/energy.svg" alt=""/>DOWN
-                  </button>
-                  <button class="btns colors2" *ngSwitchCase="'CRASHED'"><img
-                    src="../../../assets/resources/images/main/energy.svg" alt=""/>CRASHED
-                  </button>
-                  <button class="btns colors3" *ngSwitchDefault><img
-                    src="../../../assets/resources/images/main/moon.svg" alt=""/>STOP
-                  </button>
-                </div>
-                <div class="app_graph clearfix">
-                  <div>Disk</div>
-                  <div><span>{{item.diskPer}}</span><i>%</i></div>
-                  <div class="space_bar1">
-                    <div class="progress">
-                      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                           aria-valuemax="100" [ngStyle]="{'width': '' + item.diskPer + '%'}"></div>
-                    </div>
+                  <div class="app_title">
+                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: -webkit-fill-available">
+                    &nbsp;{{deployment.metadata.name}} </span>
                   </div>
-                  <div>Memory</div>
-                  <div><span>{{item.memPer}}</span><i>%</i></div>
-                  <div class="space_bar2">
-                    <div class="progress">
-                      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                           aria-valuemax="100" [ngStyle]="{'width': '' + item.memPer + '%'}"></div>
+                    <div class="app_per clearfix">
+                      <ul>
+                        <li>
+                          <div>Pods</div>
+                          <div>:</div>
+                          <div class="serviceTitle">{{deployment.status.availableReplicas}}/{{deployment.spec.replicas}}</div>
+                        </li>
+                        <li>
+                          <div>Images</div>
+                        </li>
+                        <ng-container *ngFor="let container of deployment.spec.template.spec.containers">
+                        <li>
+                          <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: -webkit-fill-available" >&nbsp;&nbsp;&nbsp;{{container.image}}</div>
+                        </li>
+                        </ng-container>
+                      </ul>
                     </div>
-                  </div>
+                  <div class="clear"></div>
                 </div>
               </div>
               <!-- 애플리케이션 영역 끝 -->
-            </div>
-          </li>
+            </li>
+          </ng-container>
+
           <!-- 애플리케이션 영역 이동 -->
           <li>
             <div class="sortable_wrap"><a [routerLink]="['/catalog']">
-              <div class="space_empty"></div>
+              <div class="space_empty2"></div>
             </a></div>
           </li>
-          <!-- 애플리케이션 영역 이동 끝-->
+          <!-- 애플리케이션 영역 이동 끝 -->
         </ul>
-      </div>
+      </div> <!-- caas deployments -->
+      <div id="dashTab_4" class="monitor_content04 row two_line two_view new_view clearfix">
+        <ul class="maT10 space_list space_list_small">
+
+          <ng-container *ngFor="let pod of caas_Pods;  let i = index">
+            <li>
+              <div class="sortable_wrap" style="max-height: 342px">
+                <!-- 서비스 영역 시작 -->
+                <div class="space_pop_container space_list_small" >
+
+                  <div class="app_title">
+                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: -webkit-fill-available">
+                    &nbsp;{{pod.metadata.name}} </span>
+                  </div>
+                  <div class="app_per clearfix">
+                    <ul>
+                      <li>
+                        <div>Node</div>
+                        <div>:</div>
+                        <div class="serviceTitle" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: -webkit-fill-available">{{pod.spec.nodeName}}</div>
+                      </li>
+                      <li>
+                        <div>Status</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{pod.status.phase}}</div>
+                      </li>
+                      <li>
+                        <div>Restarts</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{pod.status.containerStatuses[0].restartCount}}</div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+              <!-- 애플리케이션 영역 끝 -->
+            </li>
+          </ng-container>
+
+          <!-- 애플리케이션 영역 이동 -->
+          <li>
+            <div class="sortable_wrap"><a [routerLink]="['/catalog']">
+              <div class="space_empty2"></div>
+            </a></div>
+          </li>
+          <!-- 애플리케이션 영역 이동 끝 -->
+        </ul>
+      </div> <!-- caas pods -->
+      <div id="dashTab_5" class="monitor_content05 row two_line two_view new_view clearfix">
+        <ul class="maT10 space_list space_list_small">
+
+          <ng-container *ngFor="let replicaSets of caas_ReplicaSets">
+            <li>
+              <div class="sortable_wrap" style="max-height: 342px">
+                <!-- 서비스 영역 시작 -->
+                <div class="space_pop_container space_list_small" >
+
+                  <div class="app_title">
+                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: -webkit-fill-available">
+                    &nbsp;{{replicaSets.metadata.name}} </span>
+                  </div>
+                  <div class="app_per clearfix">
+                    <ul>
+                      <li>
+                        <div>Pods</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{replicaSets.status.availableReplicas}}/{{replicaSets.spec.replicas}}</div>
+                      </li>
+                      <li>
+                        <div>Images</div>
+                      </li>
+                      <ng-container *ngFor="let container of replicaSets.spec.template.spec.containers">
+                        <li>
+                          <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: -webkit-fill-available" >&nbsp;&nbsp;&nbsp;{{container.image}}</div>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+              <!-- 애플리케이션 영역 끝 -->
+            </li>
+          </ng-container>
+
+          <!-- 애플리케이션 영역 이동 -->
+          <li>
+            <div class="sortable_wrap"><a [routerLink]="['/catalog']">
+              <div class="space_empty2"></div>
+            </a></div>
+          </li>
+          <!-- 애플리케이션 영역 이동 끝 -->
+        </ul>
+      </div> <!-- caas deployments -->
     </div>
   </div>
   </div>
