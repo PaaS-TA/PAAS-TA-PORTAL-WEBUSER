@@ -224,6 +224,11 @@ export class CommonService {
     window.sessionStorage.setItem('authorization', authorization);
   }
 
+  public setCaaSInfo(cass_api_uri: any,cass_authorization :any) {
+    window.sessionStorage.setItem('cass_api_uri', cass_api_uri);
+    window.sessionStorage.setItem('cass_authorization', cass_authorization);
+  }
+
   getSeq(): any {
     return window.sessionStorage.getItem('seq');
   }
@@ -239,6 +244,15 @@ export class CommonService {
   getAuthorization(): any {
     return window.sessionStorage.getItem('authorization');
   }
+
+  getCaaSApiUri(): any {
+    return window.sessionStorage.getItem('cass_api_uri');
+  }
+
+  getCaaSAuthorization(): any {
+    return window.sessionStorage.getItem('cass_authorization');
+  }
+
 
   private removeItems() {
     window.sessionStorage.removeItem('cf_token_type');

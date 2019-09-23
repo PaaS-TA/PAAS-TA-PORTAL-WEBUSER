@@ -95,6 +95,7 @@ export class SecurityService {
       this.common.saveToken(data['token_type'], data['access_token'], data['refresh_token'], data['expires_in'], data['scope'], 'OAUTH');
       this.common.getInfra(this.common.getSeq()).subscribe(data =>{
         this.common.setAuthorization(data["authorization"]);
+        this.common.setCaaSInfo(data["caas_apiUri"],data["caas_authorization"]);
         this.doCheckToken();
       });
     }, error => {
