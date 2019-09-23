@@ -133,14 +133,14 @@ export class DashboardService {
     });
   }
 
-  getCaasCommonUser(url : string){
-    return this.commonService.doGetCaas("http://"+ url+":3334/users").map((res: any) => {
+  getCaasCommonUser(){
+    return this.commonService.doGetCaas(":3334/users").map((res: any) => {
       return res;
     });
   }
 
-  getCaasAPI(url : string, rest: string){
-    return this.commonService.doGetCaas("http://"+ url+":3333/" + rest).map((res: any) => {
+  getCaasAPI(rest: string){
+    return this.commonService.doGetCaas(":3333/" + rest).map((res: any) => {
       return res;
     });
   }

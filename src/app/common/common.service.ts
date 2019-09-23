@@ -69,12 +69,10 @@ export class CommonService {
   }
 
 
-  doGetCaas(url: string){
+  doGetCaas(sub_url: string){
     var _headers = new HttpHeaders();
-    var setting = "Basic YWRtaW46UGFhUy1UQQ==";
-    console.log(setting);
-    return this.http.get(url, {
-      headers: _headers.set('Authorization', "Basic YWRtaW46UGFhUy1UQQ==").set("Content-Type","application/json")
+    return this.http.get(this.getCaaSApiUri()+sub_url, {
+      headers: _headers.set('Authorization', this.getCaaSAuthorization()).set("Content-Type","application/json")
     });
   }
 
@@ -246,10 +244,12 @@ export class CommonService {
   }
 
   getCaaSApiUri(): any {
+    console.log(window.sessionStorage.getItem('cass_api_uri'));
     return window.sessionStorage.getItem('cass_api_uri');
   }
 
   getCaaSAuthorization(): any {
+    console.log(window.sessionStorage.getItem('cass_authorization'));
     return window.sessionStorage.getItem('cass_authorization');
   }
 

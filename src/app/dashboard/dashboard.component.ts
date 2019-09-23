@@ -104,6 +104,9 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   public caas_ReplicaSets_length = 0;
   public caas_Services_length = 0;
 
+  private caas_loading = false;
+  private caas_countdown = 0;
+
   public placeholder = "credentialsStr:{'username':'admin','password':'password';}";
 
   constructor(private translate: TranslateService, private commonService: CommonService, private dashboardService: DashboardService, private log: NGXLogger,
@@ -874,40 +877,56 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   cass_common_api(){
-    //codedata.list[0].value
-      this.dashboardService.getCaasCommonUser("115.68.46.186").subscribe(caasuser=>{
+    if(this.caas_loading){ this.commonService.isLoading = true; }
+      this.dashboardService.getCaasCommonUser().subscribe(caasuser=>{
         caasuser.forEach(r => {
           if(this.commonService.getCurrentOrgGuid() === r.organizationGuid){
             this.caas_on_off = true;
             //네임스페이스 메모리, 디스크 현재, 최대 사용량
-            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/resourceQuotas").subscribe(data=>{
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/resourceQuotas").subscribe(data=>{
               this.caas_Limit_M = this.int_Change(data.items[0].status.hard["limits.memory"]);
               this.caas_Limit_D = this.int_Change(data.items[0].status.hard["requests.storage"]);
               this.caas_Use_M = this.int_Change(data.items[0].status.used["limits.memory"]);
               this.caas_Use_D = this.int_Change(data.items[0].status.used["requests.storage"]);
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
             });
 
-            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/pods").subscribe(data => {
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/pods").subscribe(data => {
               this.caas_Pods_length = data.items.length;
               this.caas_Pods = data.items;
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
             });
 
-            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/deployments").subscribe(data => {
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/deployments").subscribe(data => {
               this.caas_Deployments = data.items;
               this.caas_Deployments_length = data.items.length;
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
             });
 
-            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/replicaSets").subscribe(data => {
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/replicaSets").subscribe(data => {
               this.caas_ReplicaSets_length = data.items.length;
               this.caas_ReplicaSets= data.items;
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
             });
 
-            this.dashboardService.getCaasAPI("115.68.46.186", "namespaces/"+ r.caasNamespace+"/services").subscribe(data => {
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/services").subscribe(data => {
               this.caas_Services_length = data.items.length;
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
             });
-
         }});
-    });
+    }, error1 => {
+        this.commonService.isLoading = false;
+      });
   }
 
   int_Change(used : String ) : number{
@@ -930,7 +949,17 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   getCaasRefresh(){
+    this.caas_loading = true;
+    this.caas_countdown = 0;
     this.cass_common_api();
+  }
+
+  getCaasOffLoading(){
+    this.caas_countdown++;
+    if(this.caas_countdown == 5){
+      this.caas_loading = false;
+      this.commonService.isLoading = false;
+    }
   }
 
 
