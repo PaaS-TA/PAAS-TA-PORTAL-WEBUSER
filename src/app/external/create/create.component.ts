@@ -145,7 +145,6 @@ export class CreateComponent implements OnInit {
         let size = data.length;
         let createSuccess = 0; // 성공여부 확인
         let forEachCount = 0;  // apiUrl 개수 확인
-        console.log(data);
         data.forEach(data => {
           if (size > 0) {
             let result = data['apiUri'];

@@ -244,12 +244,10 @@ export class CommonService {
   }
 
   getCaaSApiUri(): any {
-    console.log(window.sessionStorage.getItem('cass_api_uri'));
     return window.sessionStorage.getItem('cass_api_uri');
   }
 
   getCaaSAuthorization(): any {
-    console.log(window.sessionStorage.getItem('cass_authorization'));
     return window.sessionStorage.getItem('cass_authorization');
   }
 

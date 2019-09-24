@@ -255,6 +255,8 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   getOrg(value: string, type: string) {
+    this.caas_on_off = false;
+    this.cass_common_api();
     if (type == 'select') {
       this.appEntities = null;
       this.servicesEntities;
@@ -311,8 +313,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   getSpaces(value: string) {
-    this.caas_on_off = false;
-    this.cass_common_api();
+
     this.showLoading();
     if (value != '') {
       this.isEmpty = false;
@@ -826,12 +827,10 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   serviceDashbaordlenght(data : any){
-    console.log("여기왔다감");
     return data.toString().split("|").length;
   }
 
   serviceDashbaordArray(data : any, number : number){
-    console.log("Index ::: " + number);
     return data.toString().split("|");
   }
 
@@ -877,8 +876,10 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   cass_common_api(){
+    if(isNullOrUndefined(this.commonService.getCaaSApiUri()) || this.commonService.getCaaSApiUri() === '') return;
     if(this.caas_loading){ this.commonService.isLoading = true; }
       this.dashboardService.getCaasCommonUser().subscribe(caasuser=>{
+        if(caasuser === null) {return ;}
         caasuser.forEach(r => {
           if(this.commonService.getCurrentOrgGuid() === r.organizationGuid){
             this.caas_on_off = true;
@@ -961,7 +962,6 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       this.commonService.isLoading = false;
     }
   }
-
 
   SETTTING_SCRIPTS(){
 
