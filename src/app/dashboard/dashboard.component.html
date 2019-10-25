@@ -167,6 +167,7 @@
             <li name="tab03" class="monitor_tabs_right" (click)="dashTabClick('dashTab_3')">Deployments</li>
             <li name="tab04" class="monitor_tabs_right" (click)="dashTabClick('dashTab_4')">Pods</li>
             <li name="tab05" class="monitor_tabs_right" (click)="dashTabClick('dashTab_5')">Replica Sets</li>
+            <li name="tab06" class="monitor_tabs_right" (click)="dashTabClick('dashTab_6')">Pvc</li>
           </ul>
         </div>
         </ng-container>
@@ -634,6 +635,56 @@
                           <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: -webkit-fill-available" >&nbsp;&nbsp;&nbsp;{{container.image}}</div>
                         </li>
                       </ng-container>
+                    </ul>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+              <!-- 애플리케이션 영역 끝 -->
+            </li>
+          </ng-container>
+        </ul>
+      </div> <!-- caas deployments -->
+      <div id="dashTab_6" class="monitor_content06 row two_line two_view new_view clearfix">
+        <ul class="maT30 space_list ">
+
+          <ng-container *ngFor="let Pvc of caas_Pvc">
+            <li>
+              <div class="sortable_wrap" style="max-height: 342px">
+                <!-- 서비스 영역 시작 -->
+                <div class="space_pop_container">
+
+                  <div class="app_title">
+                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; width: -webkit-fill-available">
+                    &nbsp;{{Pvc.metadata.name}} </span>
+                  </div>
+                  <div class="app_per clearfix">
+                    <ul>
+                      <li>
+                        <div style="width: 170px;">accessModes</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{Pvc.spec.accessModes}}</div>
+                      </li>
+                      <li>
+                        <div style="width: 170px;">resources</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{Pvc.spec.resources.requests.storage}}</div>
+                      </li>
+                      <li>
+                        <div style="width: 170px;">volumeMode</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{Pvc.spec.volumeMode}}</div>
+                      </li>
+                      <li>
+                        <div style="width: 170px;">storageClassName</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{Pvc.spec.storageClassName}}</div>
+                      </li>
+                      <li>
+                        <div style="width: 170px;">capacity</div>
+                        <div>:</div>
+                        <div class="serviceTitle">{{Pvc.status.capacity.storage}}</div>
+                      </li>
                     </ul>
                   </div>
                   <div class="clear"></div>

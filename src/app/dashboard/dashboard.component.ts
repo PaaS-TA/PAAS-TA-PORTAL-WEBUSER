@@ -103,6 +103,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   public caas_Deployments_length = 0;
   public caas_ReplicaSets_length = 0;
   public caas_Services_length = 0;
+  public caas_Pvc = 0;
 
   private caas_loading = false;
   private caas_countdown = 0;
@@ -924,6 +925,14 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
             }, error1 => {
               this.commonService.isLoading = false;
             });
+
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/persistentVolumeClaims").subscribe(data => {
+              this.caas_Pvc = data.items;
+              this.getCaasOffLoading();
+              console.log(data);
+            }, error1 => {
+              this.commonService.isLoading = false;
+            });
         }});
     }, error1 => {
         this.commonService.isLoading = false;
@@ -957,7 +966,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
 
   getCaasOffLoading(){
     this.caas_countdown++;
-    if(this.caas_countdown == 5){
+    if(this.caas_countdown == 6){
       this.caas_loading = false;
       this.commonService.isLoading = false;
     }
@@ -974,39 +983,51 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       var content = tab_c.substr(4, 1);
       if(tab_c == 'tab01'){
 
-        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');;
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
         $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
 
       } else if(tab_c == 'tab02'){
-        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');;
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
         $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
 
       } else if(tab_c == 'tab03'){
-        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');;
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
         $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
 
       } else if(tab_c == 'tab04'){
-        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');;
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
         $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
 
       } else if(tab_c == 'tab05'){
-        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');;
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
         $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+      } else if(tab_c == 'tab06'){
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
       }
       var i = 0;
       for (i=0; i<4; i++)
@@ -1019,4 +1040,5 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
 }
+
 
