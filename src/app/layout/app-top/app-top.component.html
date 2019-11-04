@@ -113,6 +113,8 @@
       </div>
     </li>
 
+
+
     <!--레기온 추가 -->
     <li *ngIf="!isLogin" style="padding-right: 100px;">
       <div id="globes" class="btn-group">
@@ -126,6 +128,19 @@
       </div>
     </li>
     <!--    <li *ngIf="!isLogin && !isRegion" style="width: 75px"><a href="javascript:void(0);">Error</a></li>-->
+    <li *ngIf="ISmarketplace_URL">
+      <div id="market" class="btn-group">
+        <button href="#" class="dropdown-toggle arrow" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false"><i class="fas fa-caret-down"></i></button>
+        <ul class="dropdown-menu">
+          <li class="cur" *ngFor="let marketplace of marketplace_URL">
+            <ng-container *ngIf='marketplace.useYn==="Y"'>
+            <a  href="javascript:void(0);" (click)="new_tap_window_marketplace(marketplace.value)">{{marketplace.key}}</a>
+            </ng-container>
+          </li>
+        </ul>
+      </div>
+    </li>
     <!--레기온 추가 끝 -->
     <li>
       <div id="globes" class="btn-group">
@@ -137,6 +152,8 @@
         </ul>
       </div>
     </li>
+
+
   </ul>
   <ng-container *ngIf="isDashboardApp && isAppView; else catalog">
     <div class="header_bottom">

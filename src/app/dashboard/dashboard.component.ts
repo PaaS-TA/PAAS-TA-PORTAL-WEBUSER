@@ -828,10 +828,12 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   serviceDashbaordlenght(data : any){
+    console.log(data.toString().split("|").length);
     return data.toString().split("|").length;
   }
 
   serviceDashbaordArray(data : any, number : number){
+    console.log(data.toString().split("|"));
     return data.toString().split("|");
   }
 

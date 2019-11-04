@@ -427,17 +427,18 @@
                             </li>
                           </ng-container>
                           <ng-template #MutiDashboard>
-                            <ng-container *ngFor="let url of serviceDashbaordArray(item.dashboard_url);  let i = index">
-                              <li *ngIf="i % 2 === 0">
-                                <div style="white-space: nowrap; overflow: hidden">{{url}}</div>
+                              <li>
+                                <div>{{'dashboard.service.dashboard' | translate}}</div>
                                 <div>:</div>
                                 <div class="serviceTitle" style="white-space: nowrap; overflow: hidden">
-                                  <a class="dashboard_link" href="{{serviceDashbaordArray(item.dashboard_url, i)[i+1]}}" target="_blank">
-                                    {{serviceDashbaordArray(item.dashboard_url, i)[i+1]}}
-                                  </a>
+                                    <ng-container *ngFor="let url of serviceDashbaordArray(item.dashboard_url);  let i = index">
+                                      <a class="dashboard_link" href="{{serviceDashbaordArray(item.dashboard_url, i)[i]}}" target="_blank">
+                                        {{serviceDashbaordArray(item.dashboard_url, i)[i]}}
+                                      </a>
+                                      <br *ngIf="i !== serviceDashbaordlenght(item.dashboard_url)">
+                                    </ng-container>
                                 </div>
                               </li>
-                            </ng-container>
                           </ng-template>
                         </ng-container>
                       </ul>
@@ -482,7 +483,7 @@
                           </ng-container>
                           <ng-template #MutiDashboard>
                             <ng-container *ngFor="let url of serviceDashbaordArray(item.dashboard_url);  let i = index">
-                              <li *ngIf="i / 2 === 0">
+                              <li>
                                 <div>url</div>
                                 <div>:</div>
                                 <div class="serviceTitle">

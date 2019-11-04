@@ -33,6 +33,7 @@ export class AppTopComponent implements OnInit {
   mySign: string;
   orgMng: string;
   viewusage: any;
+  public marketplace_URL: any = [];
   translateEntities: any;
   // regions: Array<any>;
   public regions: any = [];
@@ -48,6 +49,7 @@ export class AppTopComponent implements OnInit {
       this.isAppView = false;
     if (this.isCatalogView == null)
       this.isCatalogView = false;
+    this.marketplaceUrl();
   }
 
   ngOnInit() {
@@ -55,6 +57,7 @@ export class AppTopComponent implements OnInit {
     // if (this.regions.length > 0){
     //   this.isRegion = true;
     // }
+
 
     this.common.getInfras().subscribe(data => {
       var regionsObj = [];
@@ -81,7 +84,6 @@ export class AppTopComponent implements OnInit {
         this.regions = regionsObj;
       }
     });
-
     this.allMenuCursorIds.forEach(id => $('#' + id).removeClass('cur'));
     $('#' + this.cursorId).addClass('cur');
     const url = this.router['url'].split("/")[1];
@@ -170,6 +172,12 @@ export class AppTopComponent implements OnInit {
     this.catalogservice.viewPacks(true, true, true);
   }
 
+  getCode(groudid: string) {
+    return this.common.doGet('/commonapi/v2/' + groudid + '/codedetail', this.common.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
   get isDashboardApp() {
     return this.cursorId === 'cur_dashboard_app';
   }
@@ -220,6 +228,16 @@ export class AppTopComponent implements OnInit {
     return this.common.getImagePath();
   }
 
+  marketplaceUrl() {
+    if(!isNullOrUndefined(this.common.getToken()))
+    {
+      this.getCode('MARKET_PLACE_URL').subscribe(data => {
+          this.marketplace_URL = data.list;
+          console.log(this.marketplace_URL);
+        });
+    }
+  }
+
   get notifications(): String[] {
     // TODO request get notification of PaaS-TA
 
@@ -233,5 +251,16 @@ export class AppTopComponent implements OnInit {
 
   public alertMsg(msg: string) {
     window.alert(msg);
+  }
+
+  get ISmarketplace_URL(): boolean{
+    if(this.marketplace_URL !== []){
+      return true;
+    }
+    return false;
+  }
+
+  public new_tap_window_marketplace(url : string){
+    window.open(url);
   }
 }
