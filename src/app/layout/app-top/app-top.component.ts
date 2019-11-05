@@ -34,6 +34,7 @@ export class AppTopComponent implements OnInit {
   orgMng: string;
   viewusage: any;
   public marketplace_URL: any = [];
+  public ismarketplace: boolean = false;
   translateEntities: any;
   // regions: Array<any>;
   public regions: any = [];
@@ -232,8 +233,14 @@ export class AppTopComponent implements OnInit {
     if(!isNullOrUndefined(this.common.getToken()))
     {
       this.getCode('MARKET_PLACE_URL').subscribe(data => {
-          this.marketplace_URL = data.list;
-          console.log(this.marketplace_URL);
+        data.list.forEach(r => {
+          if(r.useYn==="Y"){
+            this.marketplace_URL.push(r);
+          }
+        });
+        if(this.marketplace_URL.length > 0){
+        this.ismarketplace = true;
+        }
         });
     }
   }
@@ -251,13 +258,6 @@ export class AppTopComponent implements OnInit {
 
   public alertMsg(msg: string) {
     window.alert(msg);
-  }
-
-  get ISmarketplace_URL(): boolean{
-    if(this.marketplace_URL !== []){
-      return true;
-    }
-    return false;
   }
 
   public new_tap_window_marketplace(url : string){
