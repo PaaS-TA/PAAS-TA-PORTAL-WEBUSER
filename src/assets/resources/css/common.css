@@ -324,7 +324,6 @@ header.account{height:76px;}
 .right_nav > li .dropdown-toggle.globe:before{content:"\f0ac";}
 .right_nav > li .dropdown-toggle.arrow:before{content:"\f218";}
 .right_nav > li .dropdown-toggle.empty:before{content:"";}
-
 .right_nav > li .dropdown-toggle.bell .dropdown-menu{top:65px;}
 .right_nav > li .dropdown-menu{min-width:80px; right:0px; top:74px; left:auto; border-radius: 0; background: #2d3c40; font-size: 16px; /*border: 1px solid #263336;*/}
 .right_nav > li .dropdown-menu > div{position: relative; min-width:253px; line-height: 57px;}
@@ -1439,7 +1438,7 @@ body.email h4{color:#293133;}
 .app_per li:after{display:table;clear:both;content:'';overflow:hidden;visibility:hidden;height:0;width:0;}
 .app_per div:nth-child(1){padding-left:10px;width:105px}
 .app_per div:nth-child(2){width:20px}
-.app_per div:nth-child(3){min-width:80px;color:#737580;width:auto;word-break:break-all;max-width:calc(100% - 150px);max-height:60px;}/*180621 스타일 수정*/
+.app_per div:nth-child(3){min-width:80px;color:#737580;width:auto;word-break:break-all;max-width:calc(100% - 150px);max-height:90px;}/*180621 스타일 수정*/
 .app_btn{clear:both;margin:15px 0}/*180621 스타일 수정*/
 .app_graph{background:#f0f2f2;box-sizing:border-box;padding:15px 25px 0px 25px;}
 .app_graph div:nth-child(1),.app_graph div:nth-child(4){clear:both;float:left;font-size:15px;font-weight:bold}

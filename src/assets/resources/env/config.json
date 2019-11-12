@@ -16,5 +16,5 @@
   "quantity": false,
   "automaticApproval": true,
   "apiversion": "v3",
-  "webadminUri": "http://localhost:8090"
+  "webadminUri": "http://210.220.151.165:8090"
 }
