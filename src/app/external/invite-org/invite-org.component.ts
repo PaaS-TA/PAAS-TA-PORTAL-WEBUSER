@@ -27,6 +27,7 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
+
     // last
     if (this.common.isLoading === false) {
       this.common.isLoading = true;

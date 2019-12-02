@@ -384,7 +384,7 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
   position: relative;
   border-bottom:solid 1px #e0e0e0;
   text-align: center;
-  background:#fff url('../../resources/images/main/lnb_over.png') -42px 42px no-repeat;
+  background:#fff -42px 42px no-repeat;
 }
 .nav_1d li dl{padding-top: 25px;}
 .nav_1d li dl dd p{margin-top:10px; padding-bottom:24px;}

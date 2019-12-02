@@ -828,12 +828,10 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   serviceDashbaordlenght(data : any){
-    console.log(data.toString().split("|").length);
     return data.toString().split("|").length;
   }
 
   serviceDashbaordArray(data : any, number : number){
-    console.log(data.toString().split("|"));
     return data.toString().split("|");
   }
 
@@ -881,6 +879,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   cass_common_api(){
     if(isNullOrUndefined(this.commonService.getCaaSApiUri()) || this.commonService.getCaaSApiUri() === '') return;
     if(this.caas_loading){ this.commonService.isLoading = true; }
+    try{
       this.dashboardService.getCaasCommonUser().subscribe(caasuser=>{
         if(caasuser === null) {return ;}
         caasuser.forEach(r => {
@@ -931,7 +930,6 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
             this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/persistentVolumeClaims").subscribe(data => {
               this.caas_Pvc = data.items;
               this.getCaasOffLoading();
-              console.log(data);
             }, error1 => {
               this.commonService.isLoading = false;
             });
@@ -939,6 +937,11 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
     }, error1 => {
         this.commonService.isLoading = false;
       });
+    }
+    catch (e) {
+      console.error("CaaS Domain Error");
+      this.commonService.isLoading = false;
+    }
   }
 
   int_Change(used : String ) : number{
