@@ -1,0 +1,80 @@
+﻿@charset "utf-8";
+/* 180830 메인 */
+#fullpage{}
+#fullpage #section0,
+#fullpage #section1,
+#fullpage #section2,
+#fullpage #section3{background-size: cover; background-attachment: fixed;}
+#fullpage #section0{background-image: url('../images/main/main_bg01.png');}
+#fullpage #section1{background-image: url('../images/main/main_bg02.png');}
+#fullpage #section2{background-image: url('../images/main/main_bg03.png');}
+#fullpage #section3{background-image: url('../images/main/main_bg04.png');}
+
+#fullpage .container {width:1140px; padding: 0 20px; margin-right: auto; margin-left: auto; text-align: center; font-family: NanumGothic; margin-top:76px; letter-spacing: -1px;}
+
+/* 제목 */
+#fullpage .container > h1 {color:#ffffff; font-size:70px; margin: 0 0 10px 0;}
+#fullpage .container > h2 {color:#ffffff; font-size:40px; margin: 0 0 70px 0;}
+#fullpage .container > p {color:#ffffff; font-size:20px; margin: 0 0 70px 0;}
+/* 높이 700 이하에서 제목 숨김 */
+@media  screen and (max-height:700px){
+	#fullpage .container > h1 {display:none;}
+	#fullpage .container > h2 {display:none;}
+	#fullpage .container > p {display:none;}
+}
+/* 네번쨰 화면은 길어서 높이 900 이하에서 제목  숨김 */
+@media  screen and (max-height:900px){
+	#fullpage #section3 .container > h1 {display:none;}
+	#fullpage #section3 .container > h2 {display:none;}
+	#fullpage #section3 .container > p {display:none;}
+}
+
+/* 리스트 */
+#fullpage .list {width:1100px; margin:0;}
+#fullpage .list.third li{width:348px;}
+#fullpage .list.quarter li{width:254px;}
+#fullpage .list > li {float: left; margin-left: 26px;}
+#fullpage .list > li:first-child {margin-left:0;}
+#fullpage .list > li > img{border:5px solid #ffffff; margin-bottom : 25px;}
+#fullpage .list > li > strong {color:#ffffff; text-align: left; font-size:20px; line-height: 30px; min-height: 60px; margin-bottom : 25px; display:block;}
+#fullpage .list > li > p{color:#ffffff; text-align: left; font-size:18px; line-height: 30px;}
+#fullpage .list > li > .box-black {padding: 25px; background-image: url('../images/main/bg_black.png'); margin-bottom:26px;}
+#fullpage .list > li > .box-black > strong {color:#ffffff; text-align: left; font-size:20px; line-height: 30px; margin-bottom : 25px; display:block;  opacity: 1;}
+#fullpage .list > li > .box-black > p{color:#ffffff; text-align: left; font-size:18px; line-height: 30px; min-height: 90px; opacity: 0.6;}
+#fullpage .list > li > .box-black:last-child {margin-bottom:0;}
+
+/* 마우스를 스크롤해주세요 */
+.scroll {display: inline-block; position: fixed; bottom: 40px; left: 0; right: 0; width: 170px; margin-left: auto; margin-right: auto; text-align: center; letter-spacing: -1px;}
+.scroll .inner {width: 24px; height: 36px; margin: 0 auto 10px; border: 3px solid #ffffff; border-radius: 12px; opacity: 0.9;}
+.scroll .inner i {display: block; position: relative;top: 6px; left: 8px; z-index: 2; width: 2px;height: 6px;background: #fff;}
+.scroll p {font-size:16px;  color: #ffffff;}
+/* 높이 1000 이하에세 마우스를 스크롤해주세요 숨김 */
+@media  screen and (max-height:1000px){
+	.scroll {display:none;}
+}
+
+/* 네비게이션 */
+#fp-nav{ letter-spacing: -1px;}
+/* 넓이 1500 이하에세 Paas-TA 글자 숨김 */
+@media  screen and (max-width:1500px){
+	#fp-nav ul>li:first-of-type:before{
+	    content:"소개";
+	    left: -50px;
+	    width: 50px;
+	}
+	#fp-nav ul>li:nth-of-type(2):before{
+	    content:"특징";
+	    left: -50px;
+	    width: 50px;
+	}
+	#fp-nav ul>li:nth-of-type(3):before{
+	    content:"지원";
+	    left: -50px;
+	    width: 50px;
+	}
+	#fp-nav ul>li:nth-of-type(4):before{
+	    content:"기능";
+	    left: -50px;
+	    width: 50px;
+	}
+}

@@ -1,0 +1,7 @@
+---
+applications:
+- name: paas-ta-portal-webuser
+  buildpacks: 
+   - https://github.com/cloudfoundry/staticfile-buildpack
+  path: ./dist/paas-ta-portal-webuser
+  command: "$HOME/boot.sh"

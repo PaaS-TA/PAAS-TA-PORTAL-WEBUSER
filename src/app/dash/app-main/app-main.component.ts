@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppMainService} from './app-main.service';
 import {Observable} from 'rxjs/Observable';
@@ -19,7 +19,7 @@ let appConfig = require('assets/resources/env/config.json');
   templateUrl: './app-main.component.html',
   styleUrls: ['./app-main.component.css'],
 })
-export class AppMainComponent implements OnInit {
+export class AppMainComponent implements OnInit, OnDestroy {
 
   apiversion = appConfig['apiversion'];
 
@@ -146,6 +146,8 @@ export class AppMainComponent implements OnInit {
   public mem_DirectInputClick : boolean = true;
   public disk_DirectInputClick : boolean= true;
 
+  public interval : any;
+
   alive = true;
 
   isLodingNums = 0;
@@ -159,7 +161,9 @@ export class AppMainComponent implements OnInit {
     //     this.ngOnInit();
     //   });
 
-    setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
+    //setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
+
+    this.interval = setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
 
     this.translate.get('appMain').subscribe((res: string) => {
       this.translateEntities = res;
@@ -173,6 +177,7 @@ export class AppMainComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    clearInterval(this.interval);
     this.alive = false; // switches your IntervalObservable off
   }
 
