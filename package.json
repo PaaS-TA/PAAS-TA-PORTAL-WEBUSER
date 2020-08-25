@@ -33,7 +33,7 @@
     "core-js": "^2.6.9",
     "express-jwt": "^5.3.1",
     "fstream": ">=1.0.12",
-    "handlebars": "^4.2.0",
+    "handlebars": "^4.3.0",
     "js-yaml": ">=3.13.1",
     "jwks-rsa": "^1.6.0",
     "lodash.mergewith": ">=4.6.2",
