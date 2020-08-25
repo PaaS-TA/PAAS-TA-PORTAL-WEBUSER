@@ -581,7 +581,6 @@ Color.prototype = {
 				} else if (type === '[object Number]') {
 					target[prop] = value;
 				} else {
-					console.error('unexpected color value:', value);
 				}
 			}
 		}

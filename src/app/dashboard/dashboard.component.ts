@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, Input, OnInit} from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -21,7 +21,7 @@ declare var jQuery: any;
   styleUrls: ['./dashboard.component.css']
 })
 
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit,  AfterViewChecked{
 
   public isEmpty: boolean;
   public isSpace: boolean = false;
@@ -63,8 +63,8 @@ export class DashboardComponent implements OnInit {
   public buildpacks: Array<any>;
   public starterpacks: Array<any>;
 
-  public appEntities: Observable<any[]>;
-  public servicesEntities: Observable<any[]>;
+  public appEntities: any;
+  public servicesEntities: any;
   public appSummaryEntities: Observable<any[]>;
   public translateEntities: any = [];
 
@@ -78,19 +78,41 @@ export class DashboardComponent implements OnInit {
   public userProvideType: string;
   public userProvideRouteServiceUrl : string;
 
-  public orgMemoryDevelopmentTotal: string;
+  public orgMemoryDevelopmentTotal: number;
   public orgMemoryProductionTotal: string;
   public orgServiceTotal: string;
-  public orgQuotaMemoryLimit: string;
+  public orgQuotaMemoryLimit: number;
   public orgTotalRoutes: string;
   public orgTotalServiceKeys: string;
   public orgTotalServices: string;
   public selectedBinding : boolean;
 
+  public caas_on_off = false;
+
+  public caas_Limit_M = 0;
+  public caas_Limit_D = 0;
+  public caas_Use_M = 0;
+  public caas_Use_D = 0;
+
+  public caas_Pods : any;
+  public caas_Deployments : any;
+  public caas_ReplicaSets  : any;
+  public caas_Services  : any;
+
+  public caas_Pods_length = 0;
+  public caas_Deployments_length = 0;
+  public caas_ReplicaSets_length = 0;
+  public caas_Services_length = 0;
+  public caas_Pvc = 0;
+
+  private caas_loading = false;
+  private caas_countdown = 0;
+
   public placeholder = "credentialsStr:{'username':'admin','password':'password';}";
 
   constructor(private translate: TranslateService, private commonService: CommonService, private dashboardService: DashboardService, private log: NGXLogger,
               private appMainService: AppMainService, private catalogService: CatalogService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
+
     if (commonService.getToken() == null) {
       router.navigate(['/']);
     }
@@ -132,10 +154,10 @@ export class DashboardComponent implements OnInit {
     this.userProvideSyslogDrainUrl = '';
     this.userProvideType = '';
 
-    this.orgMemoryDevelopmentTotal = '';
+    this.orgMemoryDevelopmentTotal = 0;
     this.orgMemoryProductionTotal = '';
     this.orgServiceTotal = '';
-    this.orgQuotaMemoryLimit = '';
+    this.orgQuotaMemoryLimit = 0;
     this.orgTotalRoutes = '';
     this.orgTotalServiceKeys = '';
     this.orgTotalServices = '';
@@ -172,7 +194,9 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     $("[id^='apopmenu_']").hide();
     $("[id^='layerpop']").modal("hide");
-
+  }
+  ngAfterViewChecked(){
+    this.SETTTING_SCRIPTS();
   }
 
   getOrgList() {
@@ -232,9 +256,11 @@ export class DashboardComponent implements OnInit {
   }
 
   getOrg(value: string, type: string) {
+    this.caas_on_off = false;
+    this.cass_common_api();
     if (type == 'select') {
       this.appEntities = null;
-      this.servicesEntities = null;
+      this.servicesEntities;
       this.spaces = [];
       this.currentSpace = null;
     } else if(type === 'first'){
@@ -288,8 +314,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getSpaces(value: string) {
+
     this.showLoading();
-    this.log.debug("::::2.getSpaces:::: " + "  " + value);
     if (value != '') {
       this.isEmpty = false;
       this.isSpace = true;
@@ -315,10 +341,12 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+
+
   getOrgSummary() {
     this.dashboardService.getOrgSummary(this.org.guid).subscribe(data => {
 
-      this.orgMemoryDevelopmentTotal = data["all_memoryDevelopmentTotal"];
+      this.orgMemoryDevelopmentTotal = parseInt(data["all_memoryDevelopmentTotal"],10) ;
       this.orgMemoryProductionTotal = data["all_memoryProductionTotal"];
       this.orgServiceTotal = data["all_serviceTotal"];
       this.orgQuotaMemoryLimit = data.quota["memoryLimit"];
@@ -353,7 +381,6 @@ export class DashboardComponent implements OnInit {
       this.servicesEntities.forEach(service => {
         service['binding'] = false;
       })
-      console.log(this.servicesEntities);
       this.thumnail();
     }, () => {
       this.commonService.isLoading = false;
@@ -743,14 +770,14 @@ export class DashboardComponent implements OnInit {
   dashTabClick(id: string) {
     $("[id^='dashTab_']").hide();
     $("#" + id).show();
-    if (id == "dashTab_1") {
-      $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
-      $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
-    } else if (id == "dashTab_2") {
-      $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
-      $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
-      $("[id^='popclick_01']").hide();
-    }
+    // if (id == "dashTab_1") {
+    //   $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+    //   $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+    // } else if (id == "dashTab_2") {
+    //   $('.monitor_tabs li:nth-child(1)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+    //   $('.monitor_tabs li:nth-child(2)').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+    //   $("[id^='popclick_01']").hide();
+    // }
   }
 
   popclick(id: string, type: string, guid: string, name: string, binding: boolean) {
@@ -799,5 +826,224 @@ export class DashboardComponent implements OnInit {
       });
     }, 300)
   }
+
+  serviceDashbaordlenght(data : any){
+    return data.toString().split("|").length;
+  }
+
+  serviceDashbaordArray(data : any, number : number){
+    return data.toString().split("|");
+  }
+
+  app_started() : number {
+    if(isNullOrUndefined(this.appEntities)) return 0;
+    var started_app = [];
+
+    this.appEntities.forEach(entity => {
+      if(entity.state === "STARTED"){
+        started_app.push(entity);
+      }
+    });
+    return started_app.length;
+  }
+
+  app_stoped() : number{
+    if(isNullOrUndefined(this.appEntities)) return 0;
+    var stoped_app = [];
+    this.appEntities.forEach(entity => {
+      if(entity.state === "STOPPED"){
+        stoped_app.push(entity);
+      }
+    });
+    return stoped_app.length;
+  }
+
+  app_instances()  : number {
+    if(isNullOrUndefined(this.appEntities)) return 0;
+    var instances = 0;
+    this.appEntities.forEach(entity => {
+      instances += entity.instances;
+    });
+    return instances;
+  }
+
+  app_disk_quota() : number{
+    if(isNullOrUndefined(this.appEntities)) return 0;
+    var disk_quota = 0;
+    this.appEntities.forEach(entity => {
+      disk_quota += entity.disk_quota;
+    });
+    return disk_quota;
+  }
+
+  cass_common_api(){
+    if(isNullOrUndefined(this.commonService.getCaaSApiUri()) || this.commonService.getCaaSApiUri() === '') return;
+    if(this.caas_loading){ this.commonService.isLoading = true; }
+    try{
+      this.dashboardService.getCaasCommonUser().subscribe(caasuser=>{
+        if(caasuser === null) {return ;}
+        caasuser.forEach(r => {
+          if(this.commonService.getCurrentOrgGuid() === r.organizationGuid){
+            this.caas_on_off = true;
+            //네임스페이스 메모리, 디스크 현재, 최대 사용량
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/resourceQuotas").subscribe(data=>{
+              this.caas_Limit_M = this.int_Change(data.items[0].status.hard["limits.memory"]);
+              this.caas_Limit_D = this.int_Change(data.items[0].status.hard["requests.storage"]);
+              this.caas_Use_M = this.int_Change(data.items[0].status.used["limits.memory"]);
+              this.caas_Use_D = this.int_Change(data.items[0].status.used["requests.storage"]);
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
+            });
+
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/pods").subscribe(data => {
+              this.caas_Pods_length = data.items.length;
+              this.caas_Pods = data.items;
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
+            });
+
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/deployments").subscribe(data => {
+              this.caas_Deployments = data.items;
+              this.caas_Deployments_length = data.items.length;
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
+            });
+
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/replicaSets").subscribe(data => {
+              this.caas_ReplicaSets_length = data.items.length;
+              this.caas_ReplicaSets= data.items;
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
+            });
+
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/services").subscribe(data => {
+              this.caas_Services_length = data.items.length;
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
+            });
+
+            this.dashboardService.getCaasAPI("namespaces/"+ r.caasNamespace+"/persistentVolumeClaims").subscribe(data => {
+              this.caas_Pvc = data.items;
+              this.getCaasOffLoading();
+            }, error1 => {
+              this.commonService.isLoading = false;
+            });
+        }});
+    }, error1 => {
+        this.commonService.isLoading = false;
+      });
+    }
+    catch (e) {
+      console.error("CaaS Domain Error");
+      this.commonService.isLoading = false;
+    }
+  }
+
+  int_Change(used : String ) : number{
+    if(used === "0"){
+      return 0;
+    }
+    var _used = 0;
+    if(used.indexOf("G") > 0){
+      _used = +used.substring(0, used.length - 2);
+    } else if(used.indexOf("M") > 0){
+      _used = (+used.substring(0, used.length - 2))/1024 ;
+    }
+    return _used;
+  }
+
+  getPaasTaRefresh(value: string){
+    this.showLoading();
+    this.getAppSummary(value);
+    this.getOrgSummary();
+  }
+
+  getCaasRefresh(){
+    this.caas_loading = true;
+    this.caas_countdown = 0;
+    this.cass_common_api();
+  }
+
+  getCaasOffLoading(){
+    this.caas_countdown++;
+    if(this.caas_countdown == 6){
+      this.caas_loading = false;
+      this.commonService.isLoading = false;
+    }
+  }
+
+  SETTTING_SCRIPTS(){
+
+    // console.log(this.appEntities);
+    //
+    // console.log(this.appSummaryEntities);
+    // console.log(this.servicesEntities);
+    $('.monitor_tabs li').click(function(){
+      var tab_c = $(this).attr('name');
+      var content = tab_c.substr(4, 1);
+      if(tab_c == 'tab01'){
+
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+        $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+
+      } else if(tab_c == 'tab02'){
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+        $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+
+      } else if(tab_c == 'tab03'){
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+        $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+
+      } else if(tab_c == 'tab04'){
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+        $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+
+      } else if(tab_c == 'tab05'){
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+      } else if(tab_c == 'tab06'){
+        $('[name="tab01"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab02"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab03"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab04"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab05"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_right');
+        $('[name="tab06"]').removeClass('monitor_tabs_on monitor_tabs_right monitor_tabs_left').addClass('monitor_tabs_on');
+      }
+      var i = 0;
+      for (i=0; i<4; i++)
+      {
+        $('.monitor_content0'+i).hide();
+      }
+      $('.monitor_content0'+content).show();
+      $('.service_only').hide();
+    });
+  }
+
 }
+
 

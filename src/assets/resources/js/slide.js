@@ -9,7 +9,6 @@ $(document).ready(function() {
     $('.sidebar-toggle').on('click', function(){
         setTimeout(function(){
             slResize();
-            console.log("클릭");
         }, 300);
     });
     function slResize(){

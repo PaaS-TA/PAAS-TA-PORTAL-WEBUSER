@@ -21,13 +21,13 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
   private _userId: string;
   private _orgName: string;
   private refreshToken: string;
+  private seq : string;
 
-  constructor(private common: CommonService, private orgService: OrgMainService,
-              private router: Router, private logger: NGXLogger) {
-
+  constructor(private common: CommonService, private orgService: OrgMainService, private router: Router, private logger: NGXLogger) {
   }
 
   ngOnInit() {
+
     // last
     if (this.common.isLoading === false) {
       this.common.isLoading = true;
@@ -38,7 +38,7 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
     this.userId = parser.get('userId');
     this.orgName = parser.get('orgName');
     this.refreshToken = parser.get('refreshToken');
-
+    this.seq = parser.get('seq');
     // remove parameters
     //location.hash = '';
     //location.search = '';
@@ -57,29 +57,35 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
       token: this.refreshToken
     };
 
-    this.orgService.userInviteAccept(params).subscribe(data => {
-      if(!data){
-        this.common.isLoading = false;
-        this.router.navigate(['error']);
-      } else {
-        $("#html1").show();
-        $("#html2").show();
+    this.common.getInfra(this.seq).subscribe(infra => {
+      this.orgService.userInviteAcceptSend(infra['apiUri'], infra['authorization'], params).subscribe(data => {
 
-        if(data != null) {
-          $("[id^='layerpop']").modal("hide");
+        if(!data){
           this.common.isLoading = false;
-        }
+          this.router.navigate(['error']);
+        } else {
+          $("#html1").show();
+          $("#html2").show();
 
-        setTimeout(() => {
-          const current = new Date().getTime();
-          this.logger.debug('auto-navigate organization... ');
-          this.logger.debug('userId : ', this.userId, ' / orgName : ', this.orgName, ' / refreshToken : ', this.refreshToken);
-          this.logger.debug('start : ', this.timestamp, 'want to wait time : ', this.waitTime, 'real wait time : ', (current - this.timestamp), 'ms');
-          this.router.navigate(['/']);
-        }, this.waitTime);
-      }
+          if(data != null) {
+            $("[id^='layerpop']").modal("hide");
+            this.common.isLoading = false;
+          }
+
+          setTimeout(() => {
+            const current = new Date().getTime();
+            this.logger.debug('auto-navigate organization... ');
+            this.logger.debug('userId : ', this.userId, ' / orgName : ', this.orgName, ' / refreshToken : ', this.refreshToken, ' / seq : ', this.common.getSeq());
+            this.logger.debug('start : ', this.timestamp, 'want to wait time : ', this.waitTime, 'real wait time : ', (current - this.timestamp), 'ms');
+            this.router.navigate(['/']);
+          }, this.waitTime);
+        }
+      });
+
     });
+
   }
+
 
   ngAfterViewChecked() {
     /*

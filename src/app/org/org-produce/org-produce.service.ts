@@ -41,6 +41,6 @@ export class OrgProduceService {
   }
 
   public getuserId() : string{
-    return this.common.getUserid()
+    return this.common.getUserGuid()
   }
 }

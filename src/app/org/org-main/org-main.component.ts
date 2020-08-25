@@ -72,10 +72,8 @@ export class OrgMainComponent implements OnInit {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
         .done(function (script, textStatus) {
-          //console.log( textStatus );
         })
         .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
         });
     });
     $("[id^='layerpop']").modal("hide");
@@ -306,11 +304,13 @@ export class OrgMainComponent implements OnInit {
   deleteOrg() {
     $("[id^='layerpop']").modal("hide");
     this.common.isLoading = true;
-
     this.orgMainService.deleteOrg(this.sltOrgGuid, true).subscribe(data => {
       if (data.result) {
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteSuccess, true);
-        setTimeout(()=>this.ngOnInit(), 1500);
+        setTimeout(()=>this.ngOnInit(), 3500);
+        $("#detailBtn_close" + "_" + this.sltOrgGuid).parents($(".organization_wrap")).toggleClass("on");
+        $("#detailBtn_close_" + this.sltOrgGuid).hide();
+        $("#detailBtn_view_" + this.sltOrgGuid).show();
       } else {
         this.common.isLoading = false;
         this.common.alertMessage(this.translateEntities.alertLayer.orgDeleteFail + "<br><br>" + data.msg.description, false);

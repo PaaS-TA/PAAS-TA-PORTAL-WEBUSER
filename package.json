@@ -4,9 +4,9 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0 --aot=true",
-    "start-prod": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0 --prod --base-href / --aot=true",
-    "build": "ng build --prod --base-href / --aot=true",
+    "start": "ng serve --port 8080 --aot=true",
+    "start-prod": "ng serve --port 8080 --proxy-config proxy.config.json --host 0.0.0.0 --prod --base-href / --aot=true ",
+    "build": "ng build --prod=true --base-href / --aot=true --outputHashing=bundles",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -26,28 +26,37 @@
     "@angular/router": "^5.2.11",
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^3.0.1",
-    "bootstrap": "^4.1.3",
+    "axios": ">=0.18.1",
+    "bootstrap": "^4.3.1",
+    "braces": ">=2.3.1",
     "classlist.js": "1.1.20150312",
-    "core-js": "^2.5.7",
+    "core-js": "^2.6.9",
     "express-jwt": "^5.3.1",
-    "jwks-rsa": "^1.3.0",
-    "ng2-logger": "^2.0.35",
+    "fstream": ">=1.0.12",
+    "handlebars": "^4.2.0",
+    "js-yaml": ">=3.13.1",
+    "jwks-rsa": "^1.6.0",
+    "lodash.mergewith": ">=4.6.2",
+    "mem": ">=4.0.0",
+    "ng2-logger": "^2.0.48",
     "ngx-loading": "^1.0.15",
     "ngx-logger": "^2.2.4",
     "rxjs": "^5.5.12",
-    "socket.io-client": "^2.1.1",
-    "zone.js": "^0.8.26"
+    "socket.io-client": "^2.2.0",
+    "tar": ">=2.2.2",
+    "tar-fs": ">=1.16.2",
+    "zone.js": "^0.8.29"
   },
   "devDependencies": {
     "@angular/cli": "^1.7.4",
     "@angular/compiler-cli": "^5.2.11",
     "@angular/language-service": "^5.2.11",
-    "@types/jasmine": "^2.8.8",
-    "@types/jasminewd2": "~2.0.2",
-    "@types/node": "^6.0.117",
+    "@types/jasmine": "^2.8.16",
+    "@types/jasminewd2": "^2.0.6",
+    "@types/node": "^6.14.7",
     "@types/socket.io-client": "^1.4.32",
-    "angular-ide": "^0.9.47",
-    "codelyzer": "^4.4.4",
+    "angular-ide": "^0.9.66",
+    "codelyzer": "^4.5.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^2.0.5",
@@ -55,13 +64,10 @@
     "karma-coverage-istanbul-reporter": "^1.4.3",
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "protractor": "^5.4.1",
+    "mixin-deep": "^2.0.1",
+    "protractor": "^5.4.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "~2.5.3"
   }
 }
-
-
-
-

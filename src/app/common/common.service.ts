@@ -1,19 +1,16 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
-import {reject} from 'q';
-import {logger} from 'codelyzer/util/logger';
+
 import {NGXLogger} from 'ngx-logger';
 import {Param} from "../index/login/login.component";
 import {Router} from "@angular/router";
-
-import {ResponseContentType, ResponseOptions} from "@angular/http";
-import {CATALOGURLConstant} from "../catalog/common/catalog.constant";
 import {isNullOrUndefined} from "util";
-declare  var require : any;
+
+declare var require: any;
 let appConfig = require('assets/resources/env/config.json');
 declare var $: any;
 
@@ -30,15 +27,15 @@ export class CommonService {
   constructor(public http: HttpClient, public router: Router, public log: NGXLogger) {
     this.headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==')
       .set('X-Broker-Api-Version', '2.4')
-      .set('X-Requested-With', 'XMLHttpRequest');
+      .set('X-Requested-With', 'XMLHttpRequest')
+
+    this.gateway = this.getApiUri();
   }
 
 
   extractData(res: Response) {
     let body = res.json();
-    console.log(body);
     return body || {};
   }
 
@@ -47,20 +44,54 @@ export class CommonService {
       token = '';
     }
     let storageheader = new HttpHeaders()
-      .set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==')
+      .set('Authorization', this.getAuthorization());
     return this.http.get(this.gateway + url, {
-      headers: storageheader.set('cf-Authorization', token),
+      headers: storageheader.set('cf-Authorization', token).set('Authorization', this.getAuthorization()),
       responseType: "blob"
     });
   }
 
+  getInfras() {
+    return this.http.get(appConfig["webadminUri"] + "/external/configs", {}).map((res: any) => {
+      return res;
+    });
+  }
+
+  getInfrasAll() {
+    return this.http.get(appConfig["webadminUri"] + "/external/configs/all", {}).map((res: any) => {
+      return res;
+    });
+  }
+
+  getInfra(guid: string) {
+    // this.log.debug("getInrfra :" + guid);
+    return this.http.get(appConfig["webadminUri"] + "/external/configs/" + guid + "/auth", {});
+  }
+
+
+  doGetCaas(sub_url: string){
+    var _headers = new HttpHeaders();
+    return this.http.get(this.getCaaSApiUri()+sub_url, {
+      headers: _headers.set('Authorization', this.getCaaSAuthorization()).set("Content-Type","application/json")
+    });
+  }
 
   doGet(url: string, token: string) {
     if (token == null) {
       token = '';
     }
     return this.http.get(this.gateway + url, {
-      headers: this.headers.set('cf-Authorization', token)
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
+    });
+  }
+
+
+  doGetMulti(url: string, authorization: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.get(url, {
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
     });
   }
 
@@ -70,19 +101,28 @@ export class CommonService {
       token = '';
     }
     return this.http.post(this.gateway + url, body, {
-      headers: this.headers.set('cf-Authorization', token)
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
   }
 
+  doPostMulti(url: string, authorization: any, param: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.post(url, param, {
+      //auth set 기본제공
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
 
   doFilePost(url: string, body: any, token: string) {
     if (token == null) {
       token = '';
     }
     this.fileheaders = new HttpHeaders();
-    this.fileheaders.set('Content-Type', 'multipart/form-data').set('Authorization', 'Basic YWRtaW46b3BlbnBhYXN0YQ==');
+    this.fileheaders.set('Content-Type', 'multipart/form-data');
     return this.http.post(this.gateway + url, body, {
-      headers: this.fileheaders.set('cf-Authorization', token)
+      headers: this.fileheaders.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
   }
 
@@ -97,9 +137,28 @@ export class CommonService {
       token = '';
     }
     return this.http.put(this.gateway + url, body, {
-      headers: this.headers.set('cf-Authorization', token)
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
   }
+
+  doPutMulti(url: string, authorization: any, param: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.put(url, param, {
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
+
+  doPutMail(url: string, authorization, params: any, token) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.put(url, params, {
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
+
 
   doDelete(url: string, params: any, token: string) {
     if (token == null) {
@@ -107,23 +166,91 @@ export class CommonService {
     }
     return this.http.delete(this.gateway + url, {
       params: params,
-      headers: this.headers.set('cf-Authorization', token)
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
   }
+
+
+  doDeleteMulti(url: string, authorization: any, body: any, token: string) {
+    if (token == null) {
+      token = '';
+    }
+    return this.http.delete(url, {
+      params: body,
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+    });
+  }
+
 
   doDeleteNoParams(url: string, token: string) {
     if (token == null) {
       token = '';
     }
     return this.http.delete(this.gateway + url, {
-      headers: this.headers.set('cf-Authorization', token)
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
     });
   }
 
   signOut() {
-    window.sessionStorage.clear();
+    // window.sessionStorage.clear();
     this.removeItems();
+    setTimeout(()=>{
+      this.router.navigate(['/']);
+    },2000)
   }
+
+  public setInfra(seq: any, apiUrl: any, uaaUrl: any, authorization: any) {
+    window.sessionStorage.setItem('seq', seq);
+    window.sessionStorage.setItem('uaaUri', uaaUrl);
+    window.sessionStorage.setItem('apiUri', apiUrl);
+    window.sessionStorage.setItem('authorization', authorization);
+  }
+
+  public setUaaUri(uaaUri: any) {
+    window.sessionStorage.setItem('uaaUri', uaaUri);
+  }
+
+  public setSeq(seq: any) {
+    window.sessionStorage.setItem('seq', seq);
+  }
+
+  public setApiUri(apiUri: any) {
+    window.sessionStorage.setItem('seq', apiUri);
+  }
+
+  public setAuthorization(authorization: any) {
+    window.sessionStorage.setItem('authorization', authorization);
+  }
+
+  public setCaaSInfo(cass_api_uri: any,cass_authorization :any) {
+    window.sessionStorage.setItem('cass_api_uri', cass_api_uri);
+    window.sessionStorage.setItem('cass_authorization', cass_authorization);
+  }
+
+  getSeq(): any {
+    return window.sessionStorage.getItem('seq');
+  }
+
+  getUaaUri(): any {
+    return window.sessionStorage.getItem('uaaUri');
+  }
+
+  getApiUri(): any {
+    return window.sessionStorage.getItem('apiUri');
+  }
+
+  getAuthorization(): any {
+    return window.sessionStorage.getItem('authorization');
+  }
+
+  getCaaSApiUri(): any {
+    return window.sessionStorage.getItem('cass_api_uri');
+  }
+
+  getCaaSAuthorization(): any {
+    return window.sessionStorage.getItem('cass_authorization');
+  }
+
 
   private removeItems() {
     window.sessionStorage.removeItem('cf_token_type');
@@ -261,22 +388,19 @@ export class CommonService {
     if (img_path == null) {
       img_path = '';
     }
-
-    try{
-      if(isNullOrUndefined(img_path.lastIndexOf("/")) || img_path === ''){
-        return '';
-      }
+    try {
       var pathHeader = img_path.lastIndexOf("/");
       var pathEnd = img_path.length;
       var fileName = img_path.substring(pathHeader + 1, pathEnd);
-      this.doStorageGet('/storageapi/v2/swift/'+fileName, this.getToken()).subscribe(data => {
+      this.doStorageGet('/storageapi/v2/swift/' + fileName, this.getToken()).subscribe(data => {
         let reader = new FileReader();
         reader.addEventListener("load", () => {
           window.sessionStorage.setItem('img_path', reader.result);
         }, false);
         if (data) {
           reader.readAsDataURL(data);
-        }}, error=> {
+        }
+      }, error => {
       });
     } catch (e) {
     }
@@ -307,6 +431,7 @@ export class CommonService {
   }
 
   public getToken(): string {
+
     const cf_expires = sessionStorage.getItem('expire_date');
     const cf_token = this.getTokenWithoutRefresh();
 
@@ -317,7 +442,7 @@ export class CommonService {
       } else {
         this.doTokenRefreshOauth();
       }
-    } else if (cf_token == null){
+    } else if (cf_token == null) {
       return null;
     }
     return cf_token;
@@ -345,18 +470,18 @@ export class CommonService {
   }
 
   public getImagePath(): string {
-    try{
-    let imgPath: string = sessionStorage.getItem('img_path');
-    if(isNullOrUndefined(imgPath)){
-      return '/assets/resources/images/account/profile-thumbnail-sample.png';
-    }
-    let index = imgPath.indexOf('data:application/json;base64');
-    if (isNullOrUndefined(imgPath) || imgPath.trim() === ""|| index !== -1) {
-      imgPath = '/assets/resources/images/account/profile-thumbnail-sample.png';
-      this.log.trace('Header img path is empty string. So, image url set default.');
-    }
-    return imgPath;
-    }catch (e) {
+    try {
+      let imgPath: string = sessionStorage.getItem('img_path');
+      if (isNullOrUndefined(imgPath)) {
+        return '/assets/resources/images/account/profile-thumbnail-sample.png';
+      }
+      let index = imgPath.indexOf('data:application/json;base64');
+      if (isNullOrUndefined(imgPath) || imgPath.trim() === "" || index !== -1) {
+        imgPath = '/assets/resources/images/account/profile-thumbnail-sample.png';
+        this.log.trace('Header img path is empty string. So, image url set default.');
+      }
+      return imgPath;
+    } catch (e) {
       return '/assets/resources/images/account/profile-thumbnail-sample.png';
     }
   }
@@ -406,7 +531,7 @@ export class CommonService {
       '&client_secret=' + appConfig['clientSecret'] +
       '&redirect_uri=' + window.location.origin + appConfig['redirectUri'] +
       '&grant_type=refresh_token' +
-      '&code=' + appConfig['code']+
+      '&code=' + appConfig['code'] +
       '&refresh_token=' + this.getRefreshToken();
 
     return this.http.post(refreshUrl, null, {
@@ -430,7 +555,7 @@ export class CommonService {
    */
   doTokenRefreshAPI() {
     const headers = new HttpHeaders()
-      .append('Content-Type', 'application/x-www-form-urlencoded');
+    // .append('Content-Type', 'application/x-www-form-urlencoded');
 
     let param = {'token': sessionStorage.getItem('cf_token'), 'refresh_token': this.getRefreshToken()};
     return this.doPost('/portalapi/token/refresh', param, sessionStorage.getItem('cf_token')).retryWhen(error => {
@@ -485,11 +610,11 @@ export class CommonService {
     window.sessionStorage.setItem('catalog_number', value);
   }
 
-  setImagePath(value : any) {
+  setImagePath(value: any) {
     window.sessionStorage.setItem('img_path', value);
   }
 
-  setUserName(value : any) {
+  setUserName(value: any) {
     return sessionStorage.setItem('user_name', value);
   }
 
@@ -526,15 +651,15 @@ export class CommonService {
     return window.sessionStorage.getItem('catalog_number');
   }
 
-  getMonitoring() : boolean {
+  getMonitoring(): boolean {
     return appConfig['monitoring'];
   }
 
-  getQuantity() : boolean {
+  getQuantity(): boolean {
     return appConfig['quantity'];
   }
 
-  getAutomaticApproval() : boolean {
+  getAutomaticApproval(): boolean {
     return !appConfig['automaticApproval'];
   }
 
@@ -542,16 +667,10 @@ export class CommonService {
     $(".alertLayer .in").html(value);
     if (result) {
       $(".alertLayer").css('border-left', '4px solid #3d10ef');
-    }
-    else {
+    } else {
       $(".alertLayer").css('border-left', '4px solid #cb3d4a');
     }
     $(".alertLayer").addClass("moveAlert");
-
     setTimeout(() => $(".alertLayer").removeClass("moveAlert"), 3000);
-
-    // setInterval(function(){
-    //   $(".alertLayer").removeClass("moveAlert");
-    // }, 5000);
   }
 }

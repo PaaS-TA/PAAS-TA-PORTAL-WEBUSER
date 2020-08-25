@@ -5,18 +5,23 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
-import {cataloghistroy} from "../model/cataloghistory";
-import {CatalogComponent} from "../main/catalog.component";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {isNullOrUndefined, isUndefined} from "util";
 declare var $: any;
 declare var jQuery: any;
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Component({
   selector: 'app-catalog-development',
   templateUrl: './catalog-development.component.html',
   styleUrls: ['./catalog-development.component.css']
 })
 export class CatalogDevelopmentComponent implements OnInit {
+
+  apiversion = appConfig['apiversion'];
+
   catalogcontans = CATALOGURLConstant;
   translateEntities : any;
   namecheck : number = 0;
@@ -125,10 +130,8 @@ export class CatalogDevelopmentComponent implements OnInit {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
         .done(function (script, textStatus) {
-          //console.log( textStatus );
         })
         .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
         });
 
     });
@@ -137,7 +140,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   activatedRouteInit(){
     const orgname = this.catalogService.getOrgName();
     if(orgname !== null){
-      this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+this.catalogService.getOrgGuid()+'/domains').subscribe(data =>{
+      this.catalogService.getOrgPrivateDomain('/portalapi/' + this.apiversion + '/'+this.catalogService.getOrgGuid()+'/domains').subscribe(data =>{
         data.resources.forEach(domain => {
           this.domainList.push(domain);
         });
@@ -151,7 +154,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   shareDomainInit(){
-    this.catalogService.getDomain('/portalapi/v2/domains/shared').subscribe(data => {
+    this.catalogService.getDomain('/portalapi/' + this.apiversion + '/domains/shared').subscribe(data => {
       this.sharedomain = data['resources'][0];
       this.currentdomain = this.sharedomain;
       this.domainList.unshift(this.sharedomain);
@@ -159,7 +162,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   privateDomainInit(value){
-    this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+value+'/domains').subscribe(data =>{
+    this.catalogService.getOrgPrivateDomain('/portalapi/' + this.apiversion + '/'+value+'/domains').subscribe(data =>{
       this.domainList = new Array<any>();
       this.domainList.unshift(this.sharedomain);
       this.currentdomain = this.sharedomain;
@@ -214,7 +217,7 @@ export class CatalogDevelopmentComponent implements OnInit {
   }
 
   getAppNames(){
-    this.catalogService.getAppNames(CATALOGURLConstant.GETLISTAPP+this.org.guid+'/'+this.space.guid).subscribe(data => {
+    this.catalogService.getAppNames('/portalapi/'+this.apiversion+'/catalogs/apps/'+this.org.guid+'/'+this.space.guid).subscribe(data => {
       this.appnames = new Array<string>();
       data['resources'].forEach(res => {
         this.appnames.push(res['entity']['name']);
@@ -333,7 +336,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.pattenTest();
     this.routepattenTest();
     this.catalogService.isLoading(true);
-    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
+    this.catalogService.getNameCheck('/portalapi/'+this.apiversion+'/catalogs/apps/'+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
           let appSampleFilePath = this.buildpack['appSampleFilePath'];
@@ -357,7 +360,7 @@ export class CatalogDevelopmentComponent implements OnInit {
             catalogNo : this.buildpack.no,
             userId : this.catalogService.getUserid()
           };
-          this.catalogService.postApp(CATALOGURLConstant.CREATEAPP, params).subscribe(data => {
+          this.catalogService.postApp('/portalapi/'+this.apiversion+'/catalogs/app', params).subscribe(data => {
             if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
               this.successMsg(this.translateEntities.result.buildPackSusses);
               this.router.navigate(['dashboard']);

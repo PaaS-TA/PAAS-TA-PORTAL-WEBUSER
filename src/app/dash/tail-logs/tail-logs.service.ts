@@ -19,9 +19,5 @@ export class TailLogsService {
 
   getTailLogs(param: string) {
     this.messages.next(param);
-
-    // return this.commonService.doGet('/portalapi/v2/apps/'+guid+'/taillogs', '').map((res: Response) => {
-    //   return res;
-    // }).do(console.log);
   }
 }

@@ -6,20 +6,28 @@ import {Organization} from "../../model/organization";
 import {Space} from "../../model/space";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {TranslateService, LangChangeEvent} from "@ngx-translate/core";
-import {isNullOrUndefined} from "util";
+import {isNullOrUndefined, isUndefined} from "util";
 
 declare var $: any;
 declare var jQuery: any;
+
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Component({
   selector: 'app-catalog-detail',
   templateUrl: './catalog-detail.component.html',
   styleUrls: ['./catalog-detail.component.css']
 })
 export class CatalogDetailComponent implements OnInit {
+
+  apiversion = appConfig['apiversion'];
+
   catalogcontans = CATALOGURLConstant;
 
-  template: any;
+  public template: any;
   public translateEntities: any = [];
+  public tmpOpen : boolean = false;
   trans : string;
 
 
@@ -77,7 +85,7 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.navInit();
+     this.navInit();
     this.domainList = new Array<any>();
     this.shareDomainInit();
 
@@ -147,7 +155,7 @@ export class CatalogDetailComponent implements OnInit {
 
   //공용 도메인 가져오기
   shareDomainInit(){
-    this.catalogService.getDomain('/portalapi/v2/domains/shared').subscribe(data => {
+    this.catalogService.getDomain('/portalapi/' + this.apiversion + '/domains/shared').subscribe(data => {
       this.sharedomain = data['resources'][0];
       this.currentdomain = this.sharedomain;
       this.domainList.unshift(this.sharedomain);
@@ -158,7 +166,7 @@ export class CatalogDetailComponent implements OnInit {
 
   //프라이빗 도메인 가져오기(org 선택시)
   privateDomainInit(value){
-    this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+value+'/domains').subscribe(data =>{
+    this.catalogService.getOrgPrivateDomain('/portalapi/' + this.apiversion + '/'+value+'/domains').subscribe(data =>{
       this.domainList = new Array<any>();
       this.domainList.unshift(this.sharedomain);
       this.currentdomain = this.sharedomain;
@@ -174,7 +182,7 @@ export class CatalogDetailComponent implements OnInit {
   activatedRouteInit(){
     const orgname = this.catalogService.getOrgName();
     if(orgname !== null){
-      this.catalogService.getOrgPrivateDomain('/portalapi/v2/'+this.catalogService.getOrgGuid()+'/domains').subscribe(data =>{
+      this.catalogService.getOrgPrivateDomain('/portalapi/' + this.apiversion + '/'+this.catalogService.getOrgGuid()+'/domains').subscribe(data =>{
         data.resources.forEach(domain => {
           this.domainList.push(domain);
         });
@@ -204,7 +212,7 @@ export class CatalogDetailComponent implements OnInit {
       this.apptemplate.push(data['Buildpack']);
       data['Servicepack'].forEach(data => {
         this.apptemplate.push(data);
-        this.catalogService.getServicePlan(CATALOGURLConstant.GETSERVICEPLAN + data.servicePackName).subscribe(list => {
+        this.catalogService.getServicePlan('/portalapi/'+this.apiversion+'/catalogs/serviceplan/' + data.servicePackName).subscribe(list => {
           let planlist = data;
           planlist.appbind = planlist.appBindYn==='Y' ? true : false;
           planlist.servicename = '';
@@ -303,7 +311,7 @@ export class CatalogDetailComponent implements OnInit {
 
 
   getAppNames(){
-    this.catalogService.getAppNames(CATALOGURLConstant.GETLISTAPP+this.org.guid+'/'+this.space.guid).subscribe(data => {
+    this.catalogService.getAppNames('/portalapi/'+this.apiversion+'/catalogs/apps/'+this.org.guid+'/'+this.space.guid).subscribe(data => {
       this.appnames = new Array<string>();
       data['resources'].forEach(res => {
         this.appnames.push(res['entity']['name']);
@@ -315,12 +323,13 @@ export class CatalogDetailComponent implements OnInit {
 
   serviceInstanceList() {
     this.servicenamelist = new Array<string>();
-    this.catalogService.getServiceInstance(CATALOGURLConstant.GETSERVICEINSTANCE + this.org.guid + '/' + this.space.guid).subscribe(data => {
+    this.catalogService.getServiceInstance('/portalapi/'+this.apiversion+'/catalogs/servicepack/' + this.org.guid + '/' + this.space.guid).subscribe(data => {
       data['resources'].forEach(resources => {
         this.servicenamelist.push(resources['entity']['name']);
       });
 //      this.serviceNameCheck();
       this.catalogService.isLoading(false);
+      this.tmpOpen = true;
     });
   }
 
@@ -329,10 +338,8 @@ export class CatalogDetailComponent implements OnInit {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common2.js")
         .done(function (script, textStatus) {
-          //console.log( textStatus );
         })
         .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
         });
     });
   }
@@ -552,10 +559,10 @@ export class CatalogDetailComponent implements OnInit {
      return;
    }
     this.catalogService.isLoading(true);
-    this.catalogService.getNameCheck(CATALOGURLConstant.NAMECHECK+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
+    this.catalogService.getNameCheck('/portalapi/'+this.apiversion+'/catalogs/apps/'+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
-          const url = CATALOGURLConstant.CREATEAPPTEMPLATE+'';
+          const url = '/portalapi/'+this.apiversion+'/catalogs/apptemplate';
           let appSampleFilePath = this.apptemplate[0]['appSampleFilePath'];
           if(appSampleFilePath ==='' || appSampleFilePath === null)
             appSampleFilePath = 'N';
@@ -564,9 +571,10 @@ export class CatalogDetailComponent implements OnInit {
             let serviceparam = {
               name: plan.servicename,
               servicePlan: plan.plan.metadata.guid,
-              parameter: this.setParmeterData(plan.serviceparameter, plan.hiddenserviceparameter),
+              parameter: plan.onDemandYn === "Y" ? this.setParmeterData(plan.appparameter, plan.hiddenappparameter) : this.setParmeterData(plan.parameter, plan.hiddenparameter),
               app_bind_parameter: this.setParmeterData(plan.appparameter, plan.hiddenappparameter),
               appGuid : plan.appbind ? '' : '(id_dummy)',
+              onDemandYn: plan.onDemandYn
             };
             paramlist.push(serviceparam);
           });

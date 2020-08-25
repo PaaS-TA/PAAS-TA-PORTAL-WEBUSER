@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import * as Rx from 'rxjs/Rx';
 import {Observable} from 'rxjs/Rx';
+import {CommonService} from "../../common/common.service";
 
 @Injectable()
 export class WebsocketService {
@@ -9,26 +10,35 @@ export class WebsocketService {
   // Our socket connection
   private socket;
 
-  constructor() {
+
+  private apiUri;
+  private authorization;
+  private point: number;
+  private endpoint: number;
+
+  constructor(private commonService: CommonService) {
+    this.apiUri = commonService.getApiUri();
+    this.point = this.apiUri.lastIndexOf('/');
+    this.endpoint = this.apiUri.lastIndexOf(':');
+    this.apiUri = this.apiUri.substring(this.point + 1, this.endpoint);
+    this.authorization = commonService.getAuthorization();
   }
 
   connect(): Rx.Subject<MessageEvent> {
-    this.socket = io({
-      path: "/ws/tailLog",
+    this.socket = io('ws://'+this.apiUri+':5555', {
+      path: "/tailLog",
       transportOptions: {
         polling: {
-          'Authorization': "Basic YWRtaW46b3BlbnBhYXN0YQ=="
+          'Authorization': this.authorization
         }
       }
     });
 
     let observable = new Observable(observer => {
       this.socket.on('event', event => {
-        console.log(event);
       });
 
       this.socket.on('message', (data) => {
-        console.log("Received message from Websocket Server")
         observer.next(data);
       });
 

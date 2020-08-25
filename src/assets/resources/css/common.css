@@ -322,6 +322,8 @@ header.account{height:76px;}
 .right_nav > li .dropdown-toggle:before{font-family:'Font Awesome 5 Free'; content:"\f007";font-size:18px;background:transparent; font-weight: 900;}
 .right_nav > li .dropdown-toggle.bell:before{content:"\f0f3";}
 .right_nav > li .dropdown-toggle.globe:before{content:"\f0ac";}
+.right_nav > li .dropdown-toggle.arrow:before{content:"\f218";}
+.right_nav > li .dropdown-toggle.empty:before{content:"";}
 .right_nav > li .dropdown-toggle.bell .dropdown-menu{top:65px;}
 .right_nav > li .dropdown-menu{min-width:80px; right:0px; top:74px; left:auto; border-radius: 0; background: #2d3c40; font-size: 16px; /*border: 1px solid #263336;*/}
 .right_nav > li .dropdown-menu > div{position: relative; min-width:253px; line-height: 57px;}
@@ -382,7 +384,7 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
   position: relative;
   border-bottom:solid 1px #e0e0e0;
   text-align: center;
-  background:#fff url('../../resources/images/main/lnb_over.png') -42px 42px no-repeat;
+  background:#fff -42px 42px no-repeat;
 }
 .nav_1d li dl{padding-top: 25px;}
 .nav_1d li dl dd p{margin-top:10px; padding-bottom:24px;}
@@ -1318,7 +1320,7 @@ body.email h4{color:#293133;}
 .monitor_tabs_right{background:#fff;;border-top:1px solid #e6e6e6;border-right:1px solid #e6e6e6}
 .monitor_tabs_left{background:#fff;;border-top:1px solid #e6e6e6;border-left:1px solid #e6e6e6}
 .monitor_tabs_line{border-top:2px solid #357f94;position:absolute;top:51px;left:0;width:100%;z-index:-1}
-.monitor_content02,.monitor_content03{display:none}
+.monitor_content02,.monitor_content03,.monitor_content04,.monitor_content05, .monitor_content06{display:none}
 .monitor_sel_container{width:462px}
 .monitor_sel_wrap{width:calc(100% - 60px);margin:0 auto}
 .monitor_sel_container{float:left;width:50%}
@@ -1436,7 +1438,7 @@ body.email h4{color:#293133;}
 .app_per li:after{display:table;clear:both;content:'';overflow:hidden;visibility:hidden;height:0;width:0;}
 .app_per div:nth-child(1){padding-left:10px;width:105px}
 .app_per div:nth-child(2){width:20px}
-.app_per div:nth-child(3){min-width:80px;color:#737580;width:auto;word-break:break-all;max-width:calc(100% - 150px);max-height:60px;}/*180621 스타일 수정*/
+.app_per div:nth-child(3){min-width:80px;color:#737580;width:auto;word-break:break-all;max-width:calc(100% - 150px);max-height:90px;}/*180621 스타일 수정*/
 .app_btn{clear:both;margin:15px 0}/*180621 스타일 수정*/
 .app_graph{background:#f0f2f2;box-sizing:border-box;padding:15px 25px 0px 25px;}
 .app_graph div:nth-child(1),.app_graph div:nth-child(4){clear:both;float:left;font-size:15px;font-weight:bold}
@@ -1493,5 +1495,47 @@ body.error_b{background:#f0f2f2;}
 .custom_url_2{width:calc(70% - 10px);padding:0 5px;height:32px;}
 
 .org_add{width:100%; text-align:center; color: #23527c; padding-left: -50px}
+.dashboard_link{font-weight: bold;border-bottom: 1px solid #4c5667;}
+
+/* 190917 수정 */
+.colorchip ul {margin-bottom:0px}
+.colorchip ul li {width:calc(16.6% - 25px); height:140px; float:left; margin:0 30px 30px 0px}
+.colorchip ul li:last-child {margin:0 0px 30px 0px}
+.colorchip ul li>div {width:100%; height:140px; text-align:center; vertical-align:middle; color:#fff; font-size:16px; font-weight:bold; border-radius:5px}
+.colorchip ul li>div p {font-size:30px; line-height:60px; font-weight:bold; padding:25px 0 5px 0}
+.cf_AppsStarted {background-color:#40c294}
+.cf_AppsStopped {background-color:#93ca4f}
+.cf_Services {background-color:#00aacc}
+.cf_Instances {background-color:#5599f2}
+.cf_Memory {background-color:#ad6de8}
+.cf_Storage {background-color:#4d627b}
+.K8S_Pods {background-color:#f26f18}
+.K8S_Deployments {background-color:#ec866f}
+.K8S_ReplicaSets {background-color:#f0a141}
+.K8S_Services {background-color:#e66b6b}
+.K8S_Memory {background-color:#ad6de8}
+.K8S_Storage {background-color:#4d627b}
 
 
+@media all and (max-width: 990px) {
+  .colorchip ul li {width:calc(33.3% - 25px); height:140px; float:left; margin:0 30px 30px 0px}
+  .colorchip ul li:nth-child(3) {margin:0 0px 30px 0px}
+  .colorchip ul li>div p {font-size:36px; line-height:60px; font-weight:bold; padding:25px 0 5px 0}
+}
+
+.tab_space_lft {float:left; width:50%;}
+.monitor_tabs_line2 {border-top:2px solid #357f94;position:absolute;bottom:0px;left:0;width:100%;z-index:-1}
+.mgn030 {margin:0 30px}
+.space_title03 {font-size:36px;color:#293133;font-weight:bold;margin:30px 0px 10px 0px;}
+#mgnB30 {margin-bottom:30px}
+
+@media  screen and (min-width:1339px){
+  .tab_space_lft li{width:206px !important;}
+}
+
+@media  screen and (max-width:1340px){
+  .tab_space_lft li{width:33.33333333333333% !important}
+  .space_title03 {font-size:24px;color:#293133;font-weight:bold;margin:30px 0px 10px 0px;}
+  .tab_space_lft li{width:30% !important; font-size:14px}
+}
+/* 190917 수정 끝 */

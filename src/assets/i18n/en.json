@@ -478,12 +478,15 @@
       "layerpop4": {
         "title": "Invite a user",
         "explanation": "* You can continue adding email addresses using a comma.",
+        "succeed" : "* You can send an invitation message to the user.",
+        "unSucceed" : "* There are no users for this email.",
         "org": "Organization",
         "assignedOrg": "Assigned Organization",
         "orgAdmin" : "Org Administrator",
         "orgBillingManager" : "Org Billing Manager",
         "orgObserver" : "Org observer",
         "selectAll" : "Select All",
+        "space" : "Space",
         "user" : "user",
         "roleGiveSpace" : "Role to give space",
         "btn1": "invite",
@@ -513,8 +516,10 @@
       "changeQuotaFail": "Quota modification failed.",
       "memberCancelSuccess": "Unsubscribing is complete.",
       "memberCancelFail": "Failed to cancel the member.",
+      "memberCancelFail2": "You can not cancel a member because there is no member in the ORG. Remove the ORG.",
       "sendEmailSuccess": "You have successfully invited people.",
-      "sendEmailFail": "User invitation failed."
+      "sendEmailFail": "User invitation failed.",
+      "checkEmail" : "Please check user invitation email."
     }
   },
   "orgProduce" : {
@@ -565,7 +570,7 @@
     "myAccount" : "My Account",
     "explan" : {
       "check1" : "only enter without spaces within 6-20 characters by mixing English and numbers.",
-      "check2" : "only enter numbers.",
+      "check2" : "Only numbers with a length of less than 11 characters can be entered.",
       "check3" : "only 15 characters numbers and English are allowed.",
       "check4" : "only 256 characters or less is allowed.",
       "check5" : "It is different from the password you entered.",
@@ -625,12 +630,17 @@
       "ChangeSuccess": "The change is complete.",
       "ChangeSuccessFail": "Please re-enter.",
       "passwordSuccess": "Successfully changed.",
+      "sameAsPasswordFail" : "Same as current password.",
+      "passwordFailNotFound": "Password change failed",
       "newPasswordFail": "Please re-enter your new password.",
       "passwordFail": "Please re-enter your password.",
       "orgDeleteSuccess": "Organization withdrawal is complete.",
+      "orgDeleteFeedback" : "Remove organization and space",
       "orgDeleteFail": "Organization withdrawal is failed.",
+      "accountDelete": "Account deletion is failed.",
       "accountDeleteSuccess": "Account deletion is complete.",
-      "accountDeleteFail": "Account deletion is failed."
+      "memberCancelFail2": "You can not cancel a member because there is no member in the ORG. Remove the ORG.",
+      "accountDeleteFail": "Org deletion is failed."
     }
   },
   "dashboard": {
@@ -704,6 +714,11 @@
       "appstopSuccess": "Stopped the app.",
       "appstopFail": "App suspension failed.",
       "bindingService": "Cannot delete service instance, service keys and bindings must first be deleted."
+    },
+    "external": {
+      "systemerror" : "A system error has occurred. Please try again."
+
     }
+
   }
 }

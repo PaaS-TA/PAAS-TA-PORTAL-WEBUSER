@@ -480,6 +480,8 @@
       "layerpop4": {
         "title": "사용자 초대",
         "explanation": "* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.",
+        "succeed" : "* 사용자 에게 초대메세지를 보낼 수 있습니다.",
+        "unSucceed" : "* 이메일에 해당하는 사용자가 없습니다.",
         "org": "조직",
         "assignedOrg": "할당된 조직",
         "orgAdmin": "조직 관리자",
@@ -487,6 +489,7 @@
         "orgObserver": "조직 참관인",
         "selectAll": "전체선택",
         "user": "사용자",
+        "space": "공간",
         "roleGiveSpace": "부여할 공간 역할",
         "btn1": "초대",
         "btn2": "취소",
@@ -515,8 +518,10 @@
       "changeQuotaFail": "할당량 수정이 실패 하였습니다.",
       "memberCancelSuccess": "맴버 취소가 완료되었습니다.",
       "memberCancelFail": "맴버 취소를 실패 하였습니다.",
+      "memberCancelFail2": "ORG에 멤버가 없는 관계로 멤버취소를 할 수 없습니다. ORG를 삭제하세요.",
       "sendEmailSuccess": "사용자를 초대완료 하였습니다.",
-      "sendEmailFail": "사용자 초대가 실패 하였습니다."
+      "sendEmailFail": "사용자 초대가 실패 하였습니다.",
+      "checkEmail" : "사용자 초대 이메일을 확인하시길 바랍니다."
     }
   },
   "orgProduce": {
@@ -567,7 +572,7 @@
     "myAccount" : "내 계정",
     "explan" : {
       "check1" : "영문,숫자를 혼합하여 6~20자 이내 공백 미포함 입력만 가능합니다.",
-      "check2" : "숫자 입력만 가능합니다.",
+      "check2" : "11 자 이하의 숫자 입력만 가능합니다.",
       "check3" : "15 자 이하의 숫자와 영문 입력만 가능합니다.",
       "check4" : "256 자 이하만 가능합니다.",
       "check5" : "입력한 비밀 번호와 다릅니다.",
@@ -628,12 +633,17 @@
       "ChangeSuccess": "변경 되었습니다.",
       "ChangeSuccessFail": "재 입력 하세요.",
       "passwordSuccess": "성공적으로 변경되었습니다.",
+      "sameAsPasswordFail" : "현재 비밀번호와 동일합니다.",
+      "passwordFailNotFound": "비밀번호 변경에 실패하였습니다.",
       "newPasswordFail": "새 비밀번호를 다시 입력하세요.",
       "passwordFail": "비밀번호를 다시 입력하세요.",
       "orgDeleteSuccess": "조직탈퇴 완료 되었습니다.",
-      "orgDeleteFail": "조직 틸퇴 실패 하였습니다.",
+      "orgDeleteFeedback" : "계정 삭제 전 모든 조직 및 공간 제거하세요.",
+      "orgDeleteFail": "조직 탈퇴 실패 하였습니다.",
+      "accountDelete": "계정삭제가 실패 하였습니다.",
       "accountDeleteSuccess": "계정삭제가 완료 되었습니다.",
-      "accountDeleteFail": "조직 틸퇴 실패 하였습니다."
+      "memberCancelFail2": "ORG에 멤버가 없는 관계로 멤버취소를 할 수 없습니다. ORG를 삭제하세요.",
+      "accountDeleteFail": "조직 탈퇴 실패 하였습니다."
     }
 
   },
@@ -707,6 +717,10 @@
       "appstopSuccess": "App을 정지 하였습니다.",
       "appstopFail": "App 정지가 실패하였습니다.",
       "bindingService": "이 서비스는 현재 어플리케이션과 연결되어있는 상태입니다. 연결 해제를 해야 삭제가 가능합니다."
+    },
+    "external": {
+      "systemerror" : "시스템 에러가 발생하였습니다. 다시 시도 바랍니다."
+
     }
   }
 }

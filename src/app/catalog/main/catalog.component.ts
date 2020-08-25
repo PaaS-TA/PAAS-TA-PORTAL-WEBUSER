@@ -31,7 +31,6 @@ export class CatalogComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log("실행");
     let name = this.catalogService.classname;
     let check = this.catalogService.check;
     let service = this.catalogService;
@@ -39,7 +38,6 @@ export class CatalogComponent implements OnInit {
       //TODO 임시로...
       $.getScript("../../assets/resources/js/common.js")
         .done(function (script, textStatus) {
-          //console.log( textStatus );
           $('#nav_first').attr('class','');
           $('#nav_second').attr('class','');
           $('#nav_third ').attr('class','');
@@ -53,7 +51,6 @@ export class CatalogComponent implements OnInit {
           }
         })
         .fail(function (jqxhr, settings, exception) {
-          console.log(exception);
         });
     });
     if(check){

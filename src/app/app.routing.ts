@@ -4,7 +4,6 @@ import {CfAppComponent} from './cf-app/cf-app.component';
 import {CatalogComponent} from './catalog/main/catalog.component';
 import {DomainComponent} from './domain/domain.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {WebIdeUserComponent} from './web-ide-user/web-ide-user.component';
 import {UserComponent} from './user/user.component';
 import {UsageComponent} from './usage/usage.component';
 import {ServiceComponent} from './service/service.component';
@@ -52,7 +51,6 @@ const routes: Routes = [
   {path: 'usage', component: UsageComponent, canActivate: [AuthGuard]},
   {path: 'user', component: UserComponent, canActivate: [AuthGuard]},
   {path: 'usermgmt', component: UsermgmtComponent, canActivate: [AuthGuard]},
-  {path: 'webideuser', component: WebIdeUserComponent, canActivate: [AuthGuard]},
   {path: 'catalogdetail', component: CatalogDetailComponent, canActivate: [AuthGuard]},
   {path: 'catalogdevelopment', component: CatalogDevelopmentComponent, canActivate: [AuthGuard]},
   {path: 'catalogservice', component: CatalogServiceComponent, canActivate: [AuthGuard]},
