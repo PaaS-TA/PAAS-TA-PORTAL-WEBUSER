@@ -31,7 +31,7 @@
     "braces": ">=2.3.1",
     "classlist.js": "1.1.20150312",
     "core-js": "^2.6.9",
-    "express-jwt": "^5.3.1",
+    "express-jwt": "^6.0.0",
     "fstream": ">=1.0.12",
     "handlebars": "^4.2.0",
     "js-yaml": ">=3.13.1",
