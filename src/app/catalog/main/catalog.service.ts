@@ -284,6 +284,18 @@ export class CatalogService {
       return res;
     });
   }
+  
+  userAppRegistration(params: any) {
+  	return this.common.doFilePost('/storageapi/v2/swift/', params, '').map((res: any) => {
+      return res;
+    });
+  }
+  
+  userAppDelete(name : String) {
+  	return this.common.doDelete('/storageapi/v2/swift/' + name, name, '').map((res: any) => {
+      return res;
+    });
+  }
 
   upload(){
     return this.common.doGet('/commonapi/v2/app/uploadsfile', this.common.getToken()).map((res: Response) => {

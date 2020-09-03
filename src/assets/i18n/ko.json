@@ -320,10 +320,13 @@
       "space": "공간",
       "appName": "앱 이름",
       "appURL": "앱 URL",
+      "userApp": "사용자 앱",
       "memory": "메모리",
       "disk": "디스크",
       "domain": "도메인",
       "whetherTheAppIsStarted": "앱 시작 여부",
+      "createUserApp" : "사용자 앱 생성",
+      "createSampleApp" : "샘플 앱 생성",
       "produce": "생성",
       "cancel": "취소"
     },
@@ -370,7 +373,8 @@
       "selectOrgAndSpace": "조직과 공간을 선택해 주십시오.",
       "inputAppName": "앱 이름을 입력하여 주십시오.",
       "inputHostName": "호스트를 입력하여 주십시오.",
-      "inputService": "서비스 이름을 입력하여 주십시오."
+      "inputService": "서비스 이름을 입력하여 주십시오.",
+      "notSelectUserApp": "사용자 앱을 선택 해 주십시오."
     },
     "result": {
       "appNameError": "현재 입력한 앱 이름으로 생성할 수 없습니다.",
@@ -380,7 +384,8 @@
       "buildPackSusses": "빌드팩 생성을 성공했습니다.",
       "buildPackError": "빌드팩 생성을 실패했습니다.",
       "serviceSusses": "서비스 생성을 성공했습니다.",
-      "serviceError": "서비스 생성을 실패했습니다."
+      "serviceError": "서비스 생성을 실패했습니다.",
+      "appUploadError": "사용자 앱 업로드에 실패했습니다."
     }
   },
   "orgMain": {

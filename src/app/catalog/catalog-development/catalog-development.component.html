@@ -159,12 +159,36 @@
                   </select>
                 </th>
               </tr>
+              <tr>
+                <th colspan="3">
+                  <p>{{ 'catalog.appDevelopment.userApp' | translate }}</p>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="3" style="position:relative;">
+					<div class="form-group">
+					    <div>
+					        <input type="file" id="userapp" name="userapp" data-buttontext="" tabindex="-1" style="position: absolute; clip: rect(0px, 0px, 0px, 0px);" (change)="onAppFileChanged_click($event)">
+					       	<div class="input-group-file">
+					       		<input type="text" class="form-control" disabled id="dispFileName"> 
+					       		<span class="input-group-btn" tabindex="0">
+					       			<label for="userapp" class="btn btn-default ">
+					       				<span class="icon-span-filestyle glyphicon glyphicon-folder-open"></span> 
+					       				<span class="buttonText"></span>
+					       			</label>
+					       		</span>
+					       	</div>
+					    </div>
+					</div>
+                </th>
+              </tr>
               </tbody>
             </table>
           </div>
           <div class="clear"></div>
           <div class="cWrap_btn">
-            <button id="createApp" class="btns2 btns2_1 colors4" (click)="createApp()">{{ 'catalog.appDevelopment.produce' | translate }}</button>
+          	<button id="registUserApp" class="btns2 btns2_1 colors4" (click)="registUserApp()">{{ 'catalog.appDevelopment.createUserApp' | translate }}</button>
+            <button id="createApp" class="btns2 btns2_1 colors4" (click)="createApp()">{{ 'catalog.appDevelopment.createSampleApp' | translate }}</button>
             <button class="btns2 btns2_1 colors5" [routerLink]="['/catalog']">{{ 'catalog.appDevelopment.cancel' | translate }}</button>
           </div>
         </div>

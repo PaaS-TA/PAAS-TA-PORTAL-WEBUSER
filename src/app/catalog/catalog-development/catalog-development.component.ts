@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {CommonService} from '../../common/common.service';
 import {NGXLogger} from "ngx-logger";
 import {CatalogService} from "../main/catalog.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -49,8 +50,14 @@ export class CatalogDevelopmentComponent implements OnInit {
   memory: number; // 메모리
   disk: number; // 디스크
   appStart : boolean = true; // 앱 시작 여부
+  
+  userAppStoredName: String;
+  userAppFileName: String;
+  userAppFilePath: String;
+  
+  public appFileToUpload: File = null;
 
-  constructor(private translate: TranslateService,private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+  constructor(private translate: TranslateService, private common: CommonService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
     this.catalogService.isLoading(false);
     this.translate.get('catalog').subscribe((res: string) => {
       this.translateEntities = res;
@@ -80,7 +87,7 @@ export class CatalogDevelopmentComponent implements OnInit {
     setTimeout(() => this.keyPressInit(), 1000);
 
   }
-
+  
   navInit(){
     $('#nav_first').attr('class','');
     $('#nav_second').attr('class','');
@@ -328,7 +335,64 @@ export class CatalogDevelopmentComponent implements OnInit {
       return true;
     } return false;
   }
+  
+  onAppFileChanged_click(event) {
+  	let appFile = event.target.files[0];
+  	if (isNullOrUndefined(appFile)) {
+      return;
+    }
+    
+    this.appFileToUpload = appFile;
+    $("#dispFileName").val(appFile.name);
+  }
+  
+  deleteUserApp() {
+  	if (isNullOrUndefined(this.userAppStoredName)) {
+      return;
+    }
+    
+    this.catalogService.userAppDelete(this.userAppStoredName).subscribe(data => {
+    	console.log("APP FILE DELETE SUCCESS");
+    	
+    	this.resetUserAppInfo();
+    }, error => {
+    	console.log("APP FILE DELETE FAIL");
+    });
+    
+    
+  }
+  
+  registUserApp() {
+  	if (isNullOrUndefined(this.appFileToUpload)) {
+  	  this.catalogService.alertMessage(this.translateEntities.contants.notSelectUserApp, false);
+      return;
+    }
+    
+    this.catalogService.isLoading(true);
+    
+    let formData = new FormData();
+    formData.append('file', this.appFileToUpload, this.appFileToUpload.name);
+    
+    this.catalogService.userAppRegistration(formData).subscribe(data => {
 
+    	this.userAppStoredName = data.storedFilename;
+    	this.userAppFileName = data.filename;
+    	this.userAppFilePath = data.fileURL;
+	    
+	    this.createApp();
+    }, error => {
+    	this.catalogService.alertMessage(this.translateEntities.result.appUploadError, false);
+    	this.resetUserAppInfo();
+    });
+    
+  }
+  
+  resetUserAppInfo() {
+  	this.userAppFileName = '';
+  	this.userAppStoredName = '';
+    this.userAppFilePath = '';
+  }
+  
   createApp() {
     if(this.errorCheck()){
       return;
@@ -338,13 +402,17 @@ export class CatalogDevelopmentComponent implements OnInit {
     this.catalogService.isLoading(true);
     this.catalogService.getNameCheck('/portalapi/'+this.apiversion+'/catalogs/apps/'+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
+      	let isUserApp = isNullOrUndefined(this.userAppFilePath) ? false : true;
+      
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
           let appSampleFilePath = this.buildpack['appSampleFilePath'];
+          
           if(appSampleFilePath ==='' || appSampleFilePath === null)
             appSampleFilePath = 'N';
+            
           let params = {
             appSampleStartYn : this.appStart ? 'Y' : 'N',
-            appSampleFileName: this.buildpack['appSampleFileName'],
+            appSampleFileName: isUserApp ? this.userAppFileName : this.buildpack['appSampleFileName'],
             spaceId: this.space.guid,
             spaceName: this.space.name,
             orgName: this.org.name,
@@ -355,11 +423,13 @@ export class CatalogDevelopmentComponent implements OnInit {
             memorySize : this.memory,
             diskSize : this.disk,
             buildPackName: this.buildpack['buildPackName'],
-            appSampleFilePath : appSampleFilePath,
+            appSampleFilePath : isUserApp ? this.userAppFilePath : appSampleFilePath,
             catalogType : CATALOGURLConstant.BUILDPACK,
             catalogNo : this.buildpack.no,
-            userId : this.catalogService.getUserid()
+            userId : this.catalogService.getUserid(),
+            appStoredName : isUserApp ? this.userAppStoredName : ""
           };
+      	
           this.catalogService.postApp('/portalapi/'+this.apiversion+'/catalogs/app', params).subscribe(data => {
             if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
               this.successMsg(this.translateEntities.result.buildPackSusses);
@@ -367,8 +437,11 @@ export class CatalogDevelopmentComponent implements OnInit {
             }else {
               this.errorMsg(data['msg']);
             }
+            
+            this.deleteUserApp();
           }, error =>{
             this.errorMsg(this.translateEntities.result.buildPackError);
+            this.deleteUserApp();
           });
         }
         else if (data['RESULT']===CATALOGURLConstant.FAIL){
@@ -380,11 +453,13 @@ export class CatalogDevelopmentComponent implements OnInit {
         this.errorMsg(this.translateEntities.result.routeNameError);
         this.getRoutes();
         this.routecheck = CATALOGURLConstant.NO;
+        this.deleteUserApp();
       });
     }, error => {
       this.errorMsg(this.translateEntities.result.appNameError);
       this.getAppNames();
       this.namecheck = CATALOGURLConstant.NO;
+      this.deleteUserApp();
     });
 
   }
