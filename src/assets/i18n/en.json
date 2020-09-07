@@ -383,7 +383,8 @@
       "buildPackSusses" : "Build pack creation succeeded.",
       "serviceSusses" : "Service creation succeeded.",
       "serviceError" : "Service creation failed.",
-      "appUploadError": "User app upload failed."
+      "appUploadError": "User app upload failed.",
+      "appFileSizeError": "The file size cannot exceed {{fileSize}} MB."
     }
   },
   "orgMain" : {

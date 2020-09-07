@@ -16,5 +16,6 @@
   "quantity": false,
   "automaticApproval": true,
   "apiversion": "v3",
-  "webadminUri": "http://paas-ta-portal-webadmin.galaxycloud.kr/"
+  "webadminUri": "http://paas-ta-portal-webadmin.galaxycloud.kr/",
+  "userAppSizeMb": "0"
 }

@@ -362,29 +362,60 @@ export class CatalogDevelopmentComponent implements OnInit {
     
   }
   
+  checkUserAppSize() {
+  	let isValid = true;
+  	
+  	if (!isNullOrUndefined(appConfig['userAppSizeMb'])) {
+  		let userAppSize = parseInt(appConfig['userAppSizeMb']);
+  		if(userAppSize > 0) {
+	    	let uploadFileSize = this.appFileToUpload.size;
+	    	if((userAppSize << 20) < uploadFileSize) {
+	    		
+	    		this.translate.get('catalog.result.appFileSizeError', {fileSize: userAppSize}).subscribe((fileSizeErrorMessage: string) => {
+				    this.catalogService.alertMessage(fileSizeErrorMessage, false);
+				    isValid = false;
+				});
+	    	}
+	    }
+  	}
+  	
+	return isValid;  	
+  }
+  
   registUserApp() {
   	if (isNullOrUndefined(this.appFileToUpload)) {
   	  this.catalogService.alertMessage(this.translateEntities.contants.notSelectUserApp, false);
       return;
     }
     
-    this.catalogService.isLoading(true);
+    let isFileValid = this.checkUserAppSize();
     
-    let formData = new FormData();
-    formData.append('file', this.appFileToUpload, this.appFileToUpload.name);
-    
-    this.catalogService.userAppRegistration(formData).subscribe(data => {
-
-    	this.userAppStoredName = data.storedFilename;
-    	this.userAppFileName = data.filename;
-    	this.userAppFilePath = data.fileURL;
+    if(isFileValid) {
+	    this.catalogService.isLoading(true);
 	    
-	    this.createApp();
-    }, error => {
-    	this.catalogService.alertMessage(this.translateEntities.result.appUploadError, false);
-    	this.resetUserAppInfo();
-    });
-    
+	    let formData = new FormData();
+	    formData.append('file', this.appFileToUpload, this.appFileToUpload.name);
+	    formData.append('isUserApp' , 'true');
+	    
+	    this.catalogService.userAppRegistration(formData).subscribe(data => {
+	
+	    	this.userAppStoredName = data.storedFilename;
+	    	this.userAppFileName = data.filename;
+	    	this.userAppFilePath = data.fileURL;
+		    
+		    this.createApp();
+	    }, error => {
+		    if(error.status == 413) {
+		    	this.translate.get('catalog.result.appFileSizeError', {fileSize: error.error.FILE_MAX_SIZE}).subscribe((fileSizeErrorMessage: string) => {
+				    this.catalogService.alertMessage(fileSizeErrorMessage, false);
+				});
+				this.catalogService.isLoading(false);
+		    } else {
+		    	this.catalogService.alertMessage(this.translateEntities.result.appUploadError, false);
+		    }
+	    	this.resetUserAppInfo();
+	    });
+    }
   }
   
   resetUserAppInfo() {
@@ -431,6 +462,7 @@ export class CatalogDevelopmentComponent implements OnInit {
           };
       	
           this.catalogService.postApp('/portalapi/'+this.apiversion+'/catalogs/app', params).subscribe(data => {
+          
             if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
               this.successMsg(this.translateEntities.result.buildPackSusses);
               this.router.navigate(['dashboard']);

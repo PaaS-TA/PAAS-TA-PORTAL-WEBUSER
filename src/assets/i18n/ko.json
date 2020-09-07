@@ -385,7 +385,8 @@
       "buildPackError": "빌드팩 생성을 실패했습니다.",
       "serviceSusses": "서비스 생성을 성공했습니다.",
       "serviceError": "서비스 생성을 실패했습니다.",
-      "appUploadError": "사용자 앱 업로드에 실패했습니다."
+      "appUploadError": "사용자 앱 업로드에 실패했습니다.",
+      "appFileSizeError": "파일 크기는 {{fileSize}} MB 를 넘을 수 없습니다."
     }
   },
   "orgMain": {
