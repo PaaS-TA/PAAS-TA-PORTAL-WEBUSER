@@ -488,6 +488,11 @@ nav .tit{ height: 61px; line-height: 61px; text-align: center; color:#454545; fo
 .input-group .input-group-btn button{min-width:16px; border:none; box-shadow:none; padding:0 1px; color:#6e7272; background: transparent; }
 .input-group .input-group-btn button i{font-size: 20px; vertical-align: top; display: table-cell;}
 
+.input-group-file{border-bottom: solid 0px #6e7272; background: transparent; width:99.5%; display:table;}
+.input-group-file input{border:none; box-shadow:none; font-size: 16px; color:#3d4342; background: transparent;}
+.input-group-file .input-group-btn button{min-width:16px; border:none; box-shadow:none; padding:0 1px; color:#6e7272; background: transparent; }
+.input-group-file .input-group-btn button i{font-size: 20px; vertical-align: top; display: table-cell;}
+
 .catalog > div > ul > li:hover,
 .sortable_line > li.on,
 .col-d1:hover,
