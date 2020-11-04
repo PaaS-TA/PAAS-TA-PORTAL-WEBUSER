@@ -1,7 +1,7 @@
----
 applications:
-- name: paas-ta-portal-webuser
-  buildpacks: 
-   - https://github.com/cloudfoundry/staticfile-buildpack
+- name: portal-web-user
+  memory: 1G
+  instances: 1
+  buildpacks:
+    - staticfile_buildpack
   path: ./dist/paas-ta-portal-webuser
-  command: "$HOME/boot.sh"

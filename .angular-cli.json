@@ -6,9 +6,10 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "paas-ta-portal-webuser",
+      "outDir": "./dist/paas-ta-portal-webuser",
       "assets": [
         "assets",
+        "nginx.conf",
         "favicon.ico"
       ],
       "index": "index.html",
