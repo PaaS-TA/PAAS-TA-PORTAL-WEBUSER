@@ -10,5 +10,7 @@ PORTAL WEBUSER는 이종클라우드를 지원한다. 마스터 사용자 포털
 ## 유의사항
 개발 정보
 - Angular 5.2.9
-- Gradle 4.4.1
-
+- node 9.11.1
+- npm 5.10.0
+- Angular CLI 1.7.4
+- App outDir :: ./dist/paas-ta-portal-webuser 
