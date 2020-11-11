@@ -22,7 +22,10 @@
     },
     "stats": {
       "title": "상태",
-      "more": "더보기"
+      "more": "더보기",
+      "ssh": "SSH",
+      "connect": "Connect",
+      "connectContainer": "컨테이너에 접속 중 입니다..."
     },
     "route": {
       "title": "라우트",
@@ -220,7 +223,8 @@
       "bindServiceSuccess": "서비스를 연결 하였습니다.",
       "bindServiceFail": "서비스 연결이 실패하였습니다.",
       "unbindServiceSuccess": "서비스를 연결해제 하였습니다.",
-      "unbindServiceFail": "서비스 연결해제가 실패하였습니다."
+      "unbindServiceFail": "서비스 연결해제가 실패하였습니다.",
+      "sshUrlEmpty": "등록된 SSH 접속 URL 이 없습니다."
     },
     "nav": {
       "summary": "개요",

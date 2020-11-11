@@ -508,6 +508,7 @@
                     <col style='*'>
                     <col style='*'>
                     <col style='*'>
+                    <col style='*'>
                   </colgroup>
                   <thead>
                     <tr>
@@ -518,6 +519,7 @@
                       <td>Disk</td>
                       <td>UPTIME</td>
                       <td>RESTART</td>
+                      <td>{{ 'appMain.stats.ssh' | translate }}</td>
                     </tr>
                   </thead>
                   <tbody *ngFor="let item of appStatusEntities; let i = index">
@@ -529,6 +531,7 @@
                       <td>{{item.disk}}</td>
                       <td>{{item.uptime}} (min)</td>
                       <th><a (click)="showPopStatsRestartClick(item.key)"><span class="BGcolors5 btn_bg_change2">RESTART</span></a></th>
+                      <th><a (click)="connectSSH(item.key)"><span class="BGcolors5 btn_bg_change2">{{ 'appMain.stats.connect' | translate }}</span></a></th>
                     </tr>
                   </tbody>
                   <tfoot>
@@ -797,8 +800,11 @@
                 <p>SSH</p>
                 <ul class="sortable_right">
                   <li>
-                    <select>
+                    <select id="selectSshInstance" (change)="connectSSH($event.target.value)">
                       <option>인스턴스 선택</option>
+                      <option *ngFor='let key of [].constructor(sshConnectInfo.instances); let i = index' [value]="i">
+                      	#{{i}}
+                      </option>
                     </select>
                   </li>
                   <li (click)="tabShowClick('tabContent_all')"><i class="fas fa-compress"></i></li>

@@ -16,6 +16,7 @@
   "quantity": false,
   "automaticApproval": true,
   "apiversion": "v3",
-  "webadminUri": "http://paas-ta-portal-webadmin.galaxycloud.kr/",
+  "webadminUri": "http://portal-web-admin.galaxycloud.kr/",
+  "sshUri": "http://ssh-app.galaxycloud.kr/",
   "userAppSizeMb": "0"
 }
