@@ -78,10 +78,13 @@
             </li>
             <li>
               <div class="cf_Services">
-                <ng-container *ngIf="servicesEntities !== undefined && servicesEntities.length !== null">
+                <ng-container *ngIf="servicesEntities !== undefined && servicesEntities.length !== null; else elseCase">
                 <p>{{servicesEntities.length}}
                 </p>
                 </ng-container>
+                <ng-template #elseCase>
+                  <p>0</p>
+                </ng-template>
                 Services
               </div>
             </li>
@@ -197,8 +200,7 @@
                     <li *ngIf="item.state == 'STARTED'"><a class="fas fa-stop" (click)="showPopAppStopClick()">{{'dashboard.app.stop'
                         | translate}}</a>
                     </li>
-                    <li *ngIf="item.state != 'STARTED'"><a class="fas fa-play" (click)="showPopAppStartClick()">
-                      {{'dashboard.app.execution' | translate}}</a></li>
+                    <li *ngIf="item.state != 'STARTED'"><a class="fas fa-play" (click)="showPopAppStartClick()">{{'dashboard.app.execution' | translate}}</a></li>
                     <li data-target="#layerpop2" data-toggle="modal"><a class="fas fa-trash-alt">{{'dashboard.app.delete'
                         | translate}}</a></li>
                   </ol>
@@ -242,16 +244,16 @@
                 </div>
                 <div class="clear"></div>
                 <div class="app_btn" [ngSwitch]="item.state">
-                  <button class="btns colors1" *ngSwitchCase="'STARTED'"><img
+                  <button class="btns colors1" *ngSwitchCase="'STARTED'" style="cursor:default"><img
                     src="../../../assets/resources/images/main/RUNNING.svg" alt=""/>STARTED
                   </button>
-                  <button class="btns colors2" *ngSwitchCase="'DOWNED'"><img
+                  <button class="btns colors2" *ngSwitchCase="'DOWNED'" style="cursor:default"><img
                     src="../../../assets/resources/images/main/energy.svg" alt=""/>DOWN
                   </button>
-                  <button class="btns colors2" *ngSwitchCase="'CRASHED'"><img
+                  <button class="btns colors2" *ngSwitchCase="'CRASHED'" style="cursor:default"><img
                     src="../../../assets/resources/images/main/energy.svg" alt=""/>CRASHED
                   </button>
-                  <button class="btns colors3" *ngSwitchDefault><img
+                  <button class="btns colors3" *ngSwitchDefault style="cursor:default"><img
                     src="../../../assets/resources/images/main/moon.svg" alt=""/>STOP
                   </button>
                 </div>
@@ -850,6 +852,14 @@
 
               </div>
             </li>
+            <li>
+              <div>Tags</div>
+              <div><input type="text" id="userProvideTags" [(ngModel)]="userProvideTags"
+                          class="space_input"
+                          placeholder=""/>
+
+              </div>
+            </li>
           </ul>
           <span class="red" use-form-error="isNotSame" *ngIf="!isLength" style="padding-left: 150px"><i
             class="fas fa-exclamation-circle"></i>{{'dashboard.service.isNotSame' | translate}}</span>
@@ -905,6 +915,12 @@
                           class="space_input"
                           placeholder="EXAMPLE:https://xxx.xxx.xxx"/></div>
 
+            </li>
+            <li>
+              <div>Tags</div>
+              <div><input type="text" name="userProvideTags" [(ngModel)]="userProvideTags"
+                          class="space_input"
+                          placeholder=""/></div>
             </li>
           </ul>
           <span class="red" use-form-error="isNotSame" *ngIf="!isLength" style="padding-left: 150px"><i

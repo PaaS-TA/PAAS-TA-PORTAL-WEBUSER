@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, destroyPlatform, OnInit} from '@angular/core';
 import {CommonService} from '../common/common.service';
 import {User, UsermgmtService} from './usermgmt.service';
 import {HttpClient} from '@angular/common/http';
@@ -11,6 +11,7 @@ import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {isNullOrUndefined} from 'util';
 import {ExternalcommonService} from '../external/common/externalcommon.service';
 import {stringify} from 'querystring';
+import {delay} from 'rxjs/operators';
 
 
 declare var $: any;
@@ -65,7 +66,9 @@ export class UsermgmtComponent implements OnInit {
 
   constructor(private httpClient: HttpClient, private common: CommonService, private userMgmtService: UsermgmtService, private translate: TranslateService,
               private externalService: ExternalcommonService, private router: Router, private activeRoute: ActivatedRoute, private sec: SecurityService, private log: NGXLogger) {
-
+    if (common.getToken() == null) {
+      router.navigate(['/']);
+    }
 
     this.user = new Observable<User>();
     this.orgs = new Array<Organization>();
@@ -227,8 +230,16 @@ export class UsermgmtComponent implements OnInit {
 
   checkTellPhone() {
     // this.log.debug(this.tellPhone + ' :::: ' + this.tellPhone_pattenTest());
+    const tellPatten = /^(?:(010\d{4})|(01[1|6|7|8|9]\d{3,4})|(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]))(\d{3,4}))(\d{4})$/g;
+    if (!tellPatten.test($('#tellPhone').val())) {
+      //this.isTellPhone = false;
+      return false;
+    }
+
+
+
     if (this.tellPhone_pattenTest()) {
-      this.isTellPhone == true;
+      this.isTellPhone = true;
       $('#tellPhone').val(this.user['tellPhone']);
       this.userSave();
     } else {
@@ -416,11 +427,15 @@ export class UsermgmtComponent implements OnInit {
     const reg_alpha = /^[A-Za-z]*$/;
     const regExpBlankPattern = /[\s]/g;
     const reg_koreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+    //const tellPatten = /^(?:(010\d{4})|(01[1|6|7|8|9]\d{3,4})|(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]))(\d{3,4}))(\d{4})$/g;
+
+
 
     if (this.tellPhone.length > 11) {
       this.isTellPhone = false;
       return false;
     }
+
 
     if (!reg_alpha.test(value) && !reg_koreanPatten.test(value) && !regExpBlankPattern.test(value) && this.isNumber(value)) {
       this.isTellPhone = true;
