@@ -1,0 +1,7 @@
+applications:
+- name: portal-web-user
+  memory: 1G
+  instances: 1
+  buildpacks:
+  - staticfile_buildpack
+  path: ./dist/paas-ta-portal-webuser
