@@ -77,6 +77,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   public userProvideSyslogDrainUrl: string;
   public userProvideType: string;
   public userProvideRouteServiceUrl : string;
+  public userProvideTags : string;
 
   public orgMemoryDevelopmentTotal: number;
   public orgMemoryProductionTotal: string;
@@ -579,6 +580,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       this.userProvideSyslogDrainUrl = data.entity["syslog_drain_url"];
       this.userProvideType = data.entity["type"];
       this.userProvideRouteServiceUrl = data.entity['route_service_url'];
+      this.userProvideTags = data.entity['tags'];
       return data;
     });
   }
@@ -594,7 +596,8 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       serviceInstanceName: this.userProvideName,
       credentials: this.userProvideCredentials,
       syslogDrainUrl: this.userProvideSyslogDrainUrl,
-     routeServiceUrl : this.userProvideRouteServiceUrl
+     routeServiceUrl : this.userProvideRouteServiceUrl,
+     tags : this.userProvideTags
     };
     this.commonService.isLoading = true;
     this.dashboardService.createUserProvided(params).subscribe(data => {
@@ -629,6 +632,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
     this.userProvideName = '';
     this.userProvideSyslogDrainUrl = '';
     this.userProvideRouteServiceUrl = '';
+    this.userProvideTags = '';
   }
 
 
@@ -672,7 +676,8 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       serviceInstanceName: this.userProvideName,
       credentials: this.userProvideCredentials,
       syslogDrainUrl: this.userProvideSyslogDrainUrl,
-      routeServiceUrl : this.userProvideRouteServiceUrl
+      routeServiceUrl : this.userProvideRouteServiceUrl,
+      tags : this.userProvideTags
     };
     this.commonService.isLoading = true;
     this.dashboardService.updateUserProvided(params).subscribe(data => {
