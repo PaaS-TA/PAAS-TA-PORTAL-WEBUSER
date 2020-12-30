@@ -22,7 +22,10 @@
     },
     "stats": {
       "title": "상태",
-      "more": "더보기"
+      "more": "더보기",
+      "ssh": "SSH",
+      "connect": "Connect",
+      "connectContainer": "컨테이너에 접속 중 입니다..."
     },
     "route": {
       "title": "라우트",
@@ -220,7 +223,8 @@
       "bindServiceSuccess": "서비스를 연결 하였습니다.",
       "bindServiceFail": "서비스 연결이 실패하였습니다.",
       "unbindServiceSuccess": "서비스를 연결해제 하였습니다.",
-      "unbindServiceFail": "서비스 연결해제가 실패하였습니다."
+      "unbindServiceFail": "서비스 연결해제가 실패하였습니다.",
+      "sshUrlEmpty": "등록된 SSH 접속 URL 이 없습니다."
     },
     "nav": {
       "summary": "개요",
@@ -320,10 +324,13 @@
       "space": "공간",
       "appName": "앱 이름",
       "appURL": "앱 URL",
+      "userApp": "사용자 앱",
       "memory": "메모리",
       "disk": "디스크",
       "domain": "도메인",
       "whetherTheAppIsStarted": "앱 시작 여부",
+      "createUserApp" : "사용자 앱 생성",
+      "createSampleApp" : "샘플 앱 생성",
       "produce": "생성",
       "cancel": "취소"
     },
@@ -370,7 +377,8 @@
       "selectOrgAndSpace": "조직과 공간을 선택해 주십시오.",
       "inputAppName": "앱 이름을 입력하여 주십시오.",
       "inputHostName": "호스트를 입력하여 주십시오.",
-      "inputService": "서비스 이름을 입력하여 주십시오."
+      "inputService": "서비스 이름을 입력하여 주십시오.",
+      "notSelectUserApp": "사용자 앱을 선택 해 주십시오."
     },
     "result": {
       "appNameError": "현재 입력한 앱 이름으로 생성할 수 없습니다.",
@@ -380,7 +388,9 @@
       "buildPackSusses": "빌드팩 생성을 성공했습니다.",
       "buildPackError": "빌드팩 생성을 실패했습니다.",
       "serviceSusses": "서비스 생성을 성공했습니다.",
-      "serviceError": "서비스 생성을 실패했습니다."
+      "serviceError": "서비스 생성을 실패했습니다.",
+      "appUploadError": "사용자 앱 업로드에 실패했습니다.",
+      "appFileSizeError": "파일 크기는 {{fileSize}} MB 를 넘을 수 없습니다."
     }
   },
   "orgMain": {

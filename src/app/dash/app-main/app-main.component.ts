@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppMainService} from './app-main.service';
 import {Observable} from 'rxjs/Observable';
@@ -19,7 +19,7 @@ let appConfig = require('assets/resources/env/config.json');
   templateUrl: './app-main.component.html',
   styleUrls: ['./app-main.component.css'],
 })
-export class AppMainComponent implements OnInit {
+export class AppMainComponent implements OnInit, OnDestroy {
 
   apiversion = appConfig['apiversion'];
 
@@ -146,9 +146,17 @@ export class AppMainComponent implements OnInit {
   public mem_DirectInputClick : boolean = true;
   public disk_DirectInputClick : boolean= true;
 
+  public interval : any;
+
   alive = true;
 
   isLodingNums = 0;
+  
+  // SSH Connect Info
+  public sshConnectInfo ={
+  	instances: 0,
+    guid: ''
+  };
 
   constructor(public route: ActivatedRoute, public router: Router, public translate: TranslateService, public appMainService: AppMainService, public common: CommonService) {
     this.common.isLoading = false;
@@ -159,7 +167,9 @@ export class AppMainComponent implements OnInit {
     //     this.ngOnInit();
     //   });
 
-    setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
+    //setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
+
+    this.interval = setInterval(() => { this.ngOnInit(); }, 1000 * 60 * 2);
 
     this.translate.get('appMain').subscribe((res: string) => {
       this.translateEntities = res;
@@ -173,6 +183,7 @@ export class AppMainComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    clearInterval(this.interval);
     this.alive = false; // switches your IntervalObservable off
   }
 
@@ -274,6 +285,12 @@ export class AppMainComponent implements OnInit {
   getAppSummary(guid: any) {
     this.isLoading = true;
     this.appMainService.getAppSummary(guid).subscribe(data => {
+    
+      this.sshConnectInfo = {
+      	instances: data.instances,
+      	guid: data.guid
+      }
+      
       if (isUndefined(data.routes)) {
         this.router.navigate(['dashboard']);
       }
@@ -2347,6 +2364,51 @@ export class AppMainComponent implements OnInit {
     this.getCpuChart();
     this.getMemoryChart();
     this.getNetworkByte();
+  }
+  
+  connectSSH(instance: string) {
+  	if(isUndefined(appConfig["sshUri"]) || appConfig["sshUri"].length <= 0) {
+  		this.common.alertMessage(this.translateEntities.alertLayer.sshUrlEmpty, true);
+  		return;
+  	}
+  	
+  	let popHtml = [];
+  	popHtml.push("<html>");
+  	popHtml.push("    <head></head>");
+  	popHtml.push("    <body>");
+  	popHtml.push("        <div style='text-align:center; margin-top: 20%;'>");
+  	popHtml.push("            <b>" + this.translateEntities.stats.connectContainer + "</b>");
+  	popHtml.push("        </div>");
+  	popHtml.push("    </body>");
+  	popHtml.push("</html>");
+  	
+  	let sshPop = window.open('', '_blank', 'location=no, directories=no width=1000, height=700');
+    sshPop.document.write(popHtml.join(""));
+    sshPop.document.close();
+    
+    var sshUrl = "";
+  	
+  	this.appMainService.getSshV2Info().subscribe(infoData => {
+  		let appSshEndpoint = "";
+  		$.each(infoData, function (key, dataobj) {
+  			if("app_ssh_endpoint" == key) {
+  				appSshEndpoint = dataobj;
+  			}
+  		});
+  		
+  		var arrHost = appSshEndpoint.split(":");
+  		this.appMainService.getSshCode().subscribe(sshCodeData => {
+  			let sshCode = "";
+  			$.each(sshCodeData, function (key, dataobj) {
+	  			if("sshCode" == key) {
+	  				sshCode = dataobj;
+	  			}
+	  		});
+	  		
+			sshPop.location.href = appConfig["sshUri"] + "ssh/" + this.sshConnectInfo.guid + "/" + instance + "/" + arrHost[0] + "/" + arrHost[1] + "/" + sshCode;
+  		});
+  	});
+  	
   }
 
   chartTimeClick(defaultTimeRange: number, groupBy: number) {

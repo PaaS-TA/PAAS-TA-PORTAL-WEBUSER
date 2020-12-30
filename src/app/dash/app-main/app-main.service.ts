@@ -213,4 +213,16 @@ export class AppMainService {
       return res;
     });
   }
+  
+  getSshV2Info(){
+    return this.commonService.doGet('/portalapi/ssh/v2/Info', this.commonService.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
+  
+  getSshCode(){
+    return this.commonService.doGet('/portalapi/ssh/ssh-code', this.commonService.getToken()).map((res: Response) => {
+      return res;
+    });
+  }
 }
