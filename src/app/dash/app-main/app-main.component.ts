@@ -461,7 +461,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
             }
             return true;
           }
-          this.appSummaryInstanceMax = 7;
+          this.appSummaryInstanceMax = 100;
         })
       });
     });
@@ -811,13 +811,30 @@ export class AppMainComponent implements OnInit, OnDestroy {
       $("#instanceS2").show();
       $("#instance_in").focus();
     } else {
-      $("#instance_in").val(this.appSummaryInstance);
+      this.appSummaryInstance = $("#instance_in").val();
       $("#instanceS2").hide();
       $("#instanceS1").show();
+    }
+    if (this.appSummaryInstanceMax < (Number(this.appSummaryInstance))) {
+      this.appSummaryInstance = this.appSummaryInstanceMax;
+      $("#instance_in").val(this.appSummaryInstance);
+    }
+    if (1 > (Number(this.appSummaryInstance))) {
+      this.appSummaryInstance = 1;
+      $("#instance_in").val(this.appSummaryInstance);
     }
   }
 
   showPopInstanceSaveClick() {
+    this.appSummaryInstance = $("#instance_in").val();
+    if (this.appSummaryInstanceMax < (Number(this.appSummaryInstance))) {
+      this.appSummaryInstance = this.appSummaryInstanceMax;
+      $("#instance_in").val(this.appSummaryInstance);
+    }
+    if (1 > (Number(this.appSummaryInstance))) {
+      this.appSummaryInstance = 1;
+      $("#instance_in").val(this.appSummaryInstance);
+    }
     $("#layerpop_app_save").modal("show");
   }
 
@@ -836,14 +853,15 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   memDirectInputClick() {
-    this.mem_DirectInputClick = !this.mem_DirectInputClick;
+    //this.mem_DirectInputClick = !this.mem_DirectInputClick;
     if ($("#memS2").css("display") == "none") {
       this.appSummaryMemory = $("#mem_in").val();
-
+      this.mem_DirectInputClick=false;
       $("#memS1").hide();
       $("#memS2").show();
       $("#mem_in").focus();
     } else {
+      this.mem_DirectInputClick=true;
       this.appSummaryMemory = $("#mem_in").val();
       if (this.appSummaryMemory >= 1024) {
 
@@ -853,9 +871,26 @@ export class AppMainComponent implements OnInit, OnDestroy {
       $("#memS2").hide();
       $("#memS1").show();
     }
+    if ((this.appSummaryMemoryMax * 1024) < (Number(this.appSummaryMemory))) {
+      this.appSummaryMemory = this.appSummaryMemoryMax*1024;
+      $("#mem_in").val(this.appSummaryMemory);
+    }
+    if (1 > (Number(this.appSummaryMemory))) {
+      this.appSummaryMemory = 1;
+      $("#mem_in").val(this.appSummaryMemory);
+    }
   }
 
   showPopMemSaveClick() {
+    this.appSummaryMemory = $("#mem_in").val();
+    if ((this.appSummaryMemoryMax * 1024) < (Number(this.appSummaryMemory))) {
+      this.appSummaryMemory = this.appSummaryMemoryMax*1024;
+      $("#mem_in").val(this.appSummaryMemory);
+    }
+    if (1 > (Number(this.appSummaryMemory))) {
+      this.appSummaryMemory = 1;
+      $("#mem_in").val(this.appSummaryMemory);
+    }
     $("#layerpop_app_save").modal("show");
   }
 
@@ -874,14 +909,15 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   diskDirectInputClick() {
-    this.disk_DirectInputClick = !this.disk_DirectInputClick;
+    //this.disk_DirectInputClick = !this.disk_DirectInputClick;
     if ($("#diskS2").css("display") == "none") {
+      this.disk_DirectInputClick=false;
       this.appSummaryDisk = $("#disk_in").val();
-
       $("#diskS1").hide();
       $("#diskS2").show();
       $("#disk_in").focus();
     } else {
+      this.disk_DirectInputClick=true;
       this.appSummaryDisk = $("#disk_in").val();
       if (this.appSummaryDisk >= 1024) {
 
@@ -890,14 +926,34 @@ export class AppMainComponent implements OnInit, OnDestroy {
       }
       $("#diskS2").hide();
       $("#diskS1").show();
+      if ((this.appSummaryDiskMax * 1024) < (Number(this.appSummaryDisk))) {
+        this.appSummaryDisk = this.appSummaryDiskMax*1024;
+        $("#disk_in").val(this.appSummaryDisk);
+      }
+      if (1 > (Number(this.appSummaryDisk))) {
+        this.appSummaryDisk = 1;
+        $("#disk_in").val(this.appSummaryDisk);
+      }
     }
   }
 
   showPopDiskSaveClick() {
+    this.appSummaryDisk = $("#disk_in").val();
+
+    if ((this.appSummaryDiskMax * 1024) < (Number(this.appSummaryDisk))) {
+      this.appSummaryDisk = this.appSummaryDiskMax*1024;
+      $("#disk_in").val(this.appSummaryDisk);
+    }
+    if (1 > (Number(this.appSummaryDisk))) {
+      this.appSummaryDisk = 1;
+      $("#disk_in").val(this.appSummaryDisk);
+    }
     $("#layerpop_app_save").modal("show");
   }
 
   appSaveClick() {
+    this.mem_DirectInputClick = true;
+    this.disk_DirectInputClick = true;
     $("[id^='layerpop']").modal("hide");
     $("#layerpop_app_save").modal("hide");
     this.common.isLoading = true;

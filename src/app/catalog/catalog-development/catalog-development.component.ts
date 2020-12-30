@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {CommonService} from '../../common/common.service';
 import {NGXLogger} from "ngx-logger";
 import {CatalogService} from "../main/catalog.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -8,6 +7,7 @@ import {Space} from "../../model/space";
 import {Organization} from "../../model/organization";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {isNullOrUndefined, isUndefined} from "util";
+import {CommonService} from '../../common/common.service';
 declare var $: any;
 declare var jQuery: any;
 
@@ -50,29 +50,33 @@ export class CatalogDevelopmentComponent implements OnInit {
   memory: number; // 메모리
   disk: number; // 디스크
   appStart : boolean = true; // 앱 시작 여부
-  
+
   userAppStoredName: String;
   userAppFileName: String;
   userAppFilePath: String;
   
   public appFileToUpload: File = null;
 
-  constructor(private translate: TranslateService, private common: CommonService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
-    this.catalogService.isLoading(false);
-    this.translate.get('catalog').subscribe((res: string) => {
-      this.translateEntities = res;
-      this.orgsFirst();
-      this.spacesFirst();
-      this.activatedRouteInit();
-    });
-    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.translateEntities = event.translations.catalog;
-      if(this.orgs.length > 1){
-      this.orgs[0].name = event.translations.catalog.nav.org_name;
-      this.spaces[0].name = event.translations.catalog.nav.space_name;
-      }
-    });
-    this.catalogService.navView = 'appDevelopment';
+  constructor(private common: CommonService, private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
+    if (common.getToken() == null) {
+      router.navigate(['/']);
+    }else{
+      this.catalogService.isLoading(false);
+      this.translate.get('catalog').subscribe((res: string) => {
+        this.translateEntities = res;
+        this.orgsFirst();
+        this.spacesFirst();
+        this.activatedRouteInit();
+      });
+      this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+        this.translateEntities = event.translations.catalog;
+        if(this.orgs.length > 1){
+          this.orgs[0].name = event.translations.catalog.nav.org_name;
+          this.spaces[0].name = event.translations.catalog.nav.space_name;
+        }
+      });
+      this.catalogService.navView = 'appDevelopment';
+    }
   }
 
   ngOnInit() {

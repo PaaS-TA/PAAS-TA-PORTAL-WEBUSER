@@ -41,10 +41,10 @@
               </h1>
               <p class="copy">{{ 'appMain.app.summary' | translate : {appSummaryName: appSummaryName} }}</p>
               <div [ngSwitch]="appSummaryState">
-                <button class="btns colors1" *ngSwitchCase="'STARTED'"><img src="/assets/resources/images/main/RUNNING.svg" alt=""/>STARTED</button>
-                <button class="btns colors2" *ngSwitchCase="'DOWNED'"><img src="/assets/resources/images/main/energy.svg" alt=""/>DOWN</button>
-                <button class="btns colors2"*ngSwitchCase="'CRASHED'"><img src="/assets/resources/images/main/energy.svg" alt=""/>CRASHED</button>
-                <button class="btns colors3" *ngSwitchDefault><img src="/assets/resources/images/main/moon.svg" alt=""/>STOP</button>
+                <button class="btns colors1" *ngSwitchCase="'STARTED'" style="cursor:default"><img src="/assets/resources/images/main/RUNNING.svg" alt=""/>STARTED</button>
+                <button class="btns colors2" *ngSwitchCase="'DOWNED'" style="cursor:default"><img src="/assets/resources/images/main/energy.svg" alt=""/>DOWN</button>
+                <button class="btns colors2"*ngSwitchCase="'CRASHED'" style="cursor:default"><img src="/assets/resources/images/main/energy.svg" alt=""/>CRASHED</button>
+                <button class="btns colors3" *ngSwitchDefault style="cursor:default"><img src="/assets/resources/images/main/moon.svg" alt=""/>STOP</button>
               </div>
             </div>
             <div class="maT30">
@@ -108,7 +108,7 @@
                   </div>
                   <div class="BG_wrap">
                     <img src="/assets/resources/images/main/ico_bg.png" alt="" />
-                    <input id="instancePer" value="0"/>
+                    <input id="instancePer" value="0" HIDDEN/>
                   </div>
                 </div>
               </dd>
@@ -140,7 +140,7 @@
                   </div>
                   <div class="BG_wrap">
                     <img src="/assets/resources/images/main/ico_bg.png" alt="" />
-                    <input id="cpuPer" value="0"/>
+                    <input id="cpuPer" value="0" HIDDEN/>
                   </div>
                 </div>
               </dd>
@@ -167,7 +167,7 @@
                   </div>
                   <div class="BG_wrap">
                     <img src="/assets/resources/images/main/ico_bg.png" alt="" />
-                    <input id="memoryPer" value="0"/>
+                    <input id="memoryPer" value="0" HIDDEN/>
                   </div>
                 </div>
               </dd>
@@ -202,7 +202,7 @@
                   </div>
                   <div class="BG_wrap">
                     <img src="/assets/resources/images/main/ico_bg.png" alt="" />
-                    <input id="diskPer" value="0"/>
+                    <input id="diskPer" value="0" HIDDEN/>
                   </div>
                 </div>
               </dd>

@@ -284,7 +284,7 @@
       "appTemplate" : "App Template",
       "appDevelopment" : "App Development",
       "service" : "Service",
-      "paasta" : "PaaS-TA",
+      "paas-ta" : "PaaS-TA",
       "community" : "Community",
       "free" : "Free",
       "pay" : "Pay"

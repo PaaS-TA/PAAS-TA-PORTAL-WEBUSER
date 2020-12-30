@@ -4,6 +4,7 @@ import {NGXLogger} from 'ngx-logger';
 import {Router} from "@angular/router";
 import {CATALOGURLConstant} from "../common/catalog.constant";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {CommonService} from '../../common/common.service';
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -19,7 +20,10 @@ export class CatalogComponent implements OnInit {
   recentpacks : Array<any> = Array<any>();
   translateEntities : any;
   views : string = '';
-  constructor(public translate: TranslateService, public catalogService: CatalogService, public logger: NGXLogger,public router: Router) {
+  constructor(private common: CommonService, public translate: TranslateService, public catalogService: CatalogService, public logger: NGXLogger,public router: Router) {
+    if (common.getToken() == null) {
+      router.navigate(['/']);
+    }
     this.userid = catalogService.getUserid();
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
