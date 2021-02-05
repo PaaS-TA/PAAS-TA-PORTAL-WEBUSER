@@ -4,6 +4,9 @@ import * as Rx from 'rxjs/Rx';
 import {Observable} from 'rxjs/Rx';
 import {CommonService} from "../../common/common.service";
 
+declare var require: any;
+let appConfig = require('assets/resources/env/config.json');
+
 @Injectable()
 export class WebsocketService {
 
@@ -18,15 +21,39 @@ export class WebsocketService {
 
   constructor(private commonService: CommonService) {
     this.apiUri = commonService.getApiUri();
+    console.log("commonService.getApiUri()="+commonService.getApiUri());
     this.point = this.apiUri.lastIndexOf('/');
     this.endpoint = this.apiUri.lastIndexOf(':');
-    this.apiUri = this.apiUri.substring(this.point + 1, this.endpoint);
+    //this.apiUri = this.apiUri.substring(this.point + 1, this.endpoint);
     this.authorization = commonService.getAuthorization();
   }
 
   connect(): Rx.Subject<MessageEvent> {
-    this.socket = io('ws://'+this.apiUri+':5555', {
-      path: "/tailLog",
+    
+    var apiTarget = document.createElement('a');
+    apiTarget.href = this.apiUri;
+    console.log("apiTarget.hostname="+apiTarget.hostname);    
+    var socketUri="ws://"+ apiTarget.hostname +":1024";
+
+    var socketPath="/tailLog";
+    var socketParams="";
+
+    if(location.href.indexOf("?") > -1){
+      socketParams = location.href.substr(location.href.indexOf("?") + 1);
+    }
+
+    if(appConfig.tailLogUri.length > 0){
+      if(appConfig.tailLogUri.lastIndexOf("/") + 1 == appConfig.tailLogUri.length){
+        socketUri=appConfig.tailLogUri.substr(0,appConfig.tailLogUri.lastIndexOf("/"));  
+      }else{
+        socketUri=appConfig.tailLogUri;
+      }
+      socketPath="/tailLog/";
+    }
+
+    this.socket = io(socketUri, {
+      path: socketPath,
+      query: socketParams,
       transportOptions: {
         polling: {
           'Authorization': this.authorization
