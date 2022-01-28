@@ -431,12 +431,12 @@
             <!-- 닫기(x) 버튼 -->
             <button type="button" class="close" data-dismiss="modal">×</button>
             <!-- header title -->
-            <h4 class="modal-title">초대 취소</h4>
+            <h4 class="modal-title">Cancel invitation</h4>
           </div>
           <!-- body -->
           <div class="modal-body">
             <div class="">
-              <p class="account_modal_p"><span>{{sltMemberName}}</span>님의 <span>{{orgsDetailName}}</span>조직의 초대를 취소하시겠습니까?
+              <p class="account_modal_p">Are you sure you want to cancel your invitation to <span>{{sltMemberName}}</span>'s <span>{{orgsDetailName}}</span> organization?
               </p>
             </div>
           </div>
@@ -460,7 +460,7 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">사용자 재초대</h4>
+          <h4 class="modal-title">User Reinvitation</h4>
         </div>
         <!-- body -->
         <ng-container *ngIf="sltEntity">
@@ -560,7 +560,7 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">{{sltSpaceName}} 권한부여</h4>
+          <h4 class="modal-title">{{sltSpaceName}} Authorization</h4>
         </div>
         <!-- body -->
         <ng-container *ngIf="sltEntity">
@@ -618,8 +618,8 @@
           <div class="modal-body">
             <input class="w100" placeholder="sample@test.com" id="userEmail" [(ngModel)]="invite_name" (keyup.enter)="userInvite()" (keyup)="usercheck()" />
             <ng-container *ngIf="invite_name === ''"><span class="red">{{ 'orgMain.layerpop.layerpop4.explanation' | translate }}</span></ng-container>
-            <ng-container *ngIf="invite_name !== '' && usercheck()"><span class="blue">* 사용자 에게 초대메세지를 보낼 수 있습니다.</span></ng-container>
-            <ng-container *ngIf="invite_name !== '' && !usercheck()"><span class="red">* 이메일에 해당하는 사용자가 없습니다.</span></ng-container>
+            <ng-container *ngIf="invite_name !== '' && usercheck()"><span class="blue">* You can send invitation messages to users.</span></ng-container>
+            <ng-container *ngIf="invite_name !== '' && !usercheck()"><span class="red">* There is no user corresponding to the email.</span></ng-container>
             <table class="maT30">
               <colgroup>
                 <col style=''>

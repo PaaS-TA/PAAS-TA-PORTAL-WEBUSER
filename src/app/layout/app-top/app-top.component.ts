@@ -249,9 +249,9 @@ export class AppTopComponent implements OnInit {
     // TODO request get notification of PaaS-TA
 
     let notis = [
-      '파스타 공지사항-1-테스트1234',
-      '파스타 공지사항-2-테스트4567',
-      '파스타 공지사항-3-테스트8901'
+      'PaaS-TA Notice-1-Test1234',
+      'PaaS-TA Notice-2-Test4567',
+      'PaaS-TA Notice-3-Test8901'
     ];
     return notis;
   }

@@ -98,7 +98,7 @@ export class OrgQuota {
     // TODO Globalization of returning value
     const value = this.entity.app_instance_limit;
     if (value === -1)
-      return '무제한';
+      return 'Unlimited';
     else
       return value;
   }
@@ -107,7 +107,7 @@ export class OrgQuota {
     // TODO Globalization of returning value
     const value = this.entity.app_task_limit;
     if (value === -1)
-      return '무제한';
+      return 'Unlimited';
     else
       return value;
   }
@@ -116,7 +116,7 @@ export class OrgQuota {
     // TODO Globalization of returning value
     const value = this.entity.instance_memory_limit;
     if (value === -1)
-      return '무제한';
+      return 'Unlimited';
     else
       return value;
   }
@@ -125,7 +125,7 @@ export class OrgQuota {
     // TODO Globalization of returning value
     const value = this.entity.memory_limit;
     if (value === -1)
-      return '무제한';
+      return 'Unlimited';
     else
       return value;
   }
@@ -186,11 +186,11 @@ export class OrgQuota {
     // TODO Globalization of returning value
     switch(this.price) {
       case this.pricePolicy:
-        return '유료';
+        return 'Paid';
       case this.pricelessPolicy:
-        return '무료';
+        return 'Free';
       default:
-        return '무료';
+        return 'Free';
     }
   }
 

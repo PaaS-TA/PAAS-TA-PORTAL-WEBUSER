@@ -1302,7 +1302,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
       return;
     }
     if ($('#appAlarmEmail').css("color") == "rgb(255, 0, 0)") {
-      alert("Email 형식이 잘못 되었습니다.");
+      alert("Invalid email format.");
       return false;
     }
 
@@ -1679,7 +1679,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
   showPopServiceBindClick() {
     if ($("#selectBoxService").val() == "") {
-      alert("서비스를 선택 하세요.");
+      alert("Please select a service.");
       return false;
     }
 

@@ -41,6 +41,7 @@
     "ng2-logger": "^2.0.48",
     "ngx-loading": "^1.0.15",
     "ngx-logger": "^2.2.4",
+    "npm": "^5.10.0",
     "rxjs": "^5.5.12",
     "socket.io-client": "^2.2.0",
     "tar": ">=2.2.2",

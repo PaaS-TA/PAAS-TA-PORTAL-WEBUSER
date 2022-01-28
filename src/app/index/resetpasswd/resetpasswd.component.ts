@@ -43,7 +43,7 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
 
     if (this.isSendEmail) {
       this.isSendEmail = false;
-      this.indexCommonService.alertMessage('메일 발송에 성공하였습니다.', true);
+      this.indexCommonService.alertMessage('Email sending was successful.', true);
       this.router.navigate(['/']);
     }
   }
@@ -74,7 +74,7 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
 
             if(forEachCount == size){
               if(usedCount == 0){
-                this.common.alertMessage("계정이 존재하지 않습니다.", false);
+                this.common.alertMessage("The account does not exist.", false);
               }else{
                 if(this.email != null){
                   this.multiCheckUsedReset();
@@ -84,7 +84,7 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
           });
         });
       },error=> {
-        this.common.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요.',false);
+        this.common.alertMessage('A system error has occurred. Please try again.',false);
       });
 
     }

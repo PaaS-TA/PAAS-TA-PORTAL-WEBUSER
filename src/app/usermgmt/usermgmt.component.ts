@@ -317,7 +317,7 @@ export class UsermgmtComponent implements OnInit {
           this.common.doPost('/portalapi/login', param, '').subscribe(data => { //1)로그인
             this.regionPassword();
           }, error => {
-            this.common.alertMessage('변경하는데 실패하였습니다.', false);
+            this.common.alertMessage('Failed to change.', false);
             this.common.isLoading = false;
             $('#password_now').val('');
             $('#password_new').val('');
@@ -426,7 +426,7 @@ export class UsermgmtComponent implements OnInit {
 
     const reg_alpha = /^[A-Za-z]*$/;
     const regExpBlankPattern = /[\s]/g;
-    const reg_koreanPatten = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+    const reg_koreanPatten = /[[A-Za-z]-ㅎ|ㅏ-ㅣ|가-힣]/g;
     //const tellPatten = /^(?:(010\d{4})|(01[1|6|7|8|9]\d{3,4})|(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]))(\d{3,4}))(\d{4})$/g;
 
 
@@ -451,7 +451,7 @@ export class UsermgmtComponent implements OnInit {
   zipCode_pattenTest() {
     let value = this.zipCode;
 
-    const reg_koreanPatten = /^[가-힣]+$/;
+    const reg_koreanPatten = /^[A-Za-z]+$/;
     const regExpBlankPattern = /[\s]/g;
     const reg_zip = /^[A-Za-z0-9]{0,1000}$/;
 
@@ -553,7 +553,7 @@ export class UsermgmtComponent implements OnInit {
       return data;
     }, error => {
       this.common.isLoading = false;
-      this.common.alertMessage('비밀번호를 다시 입력하세요.', false);
+      this.common.alertMessage('Please re-enter your password.', false);
       this.common.alertMessage(this.translateEntities.alertLayer.passwordFail, false);
     });
   }

@@ -62,10 +62,10 @@ export class LoginComponent implements OnInit {
     this.common.signOut();
     this.common.isLoading = false;
     if (msg == '') {
-      this.errorMsg = '사용자 계정 또는 비밀번호가 틀렸습니다.';
+      this.errorMsg = 'The user account or password is incorrect.';
     }
     else if (msg == '1') {
-      this.errorMsg = '로그인 과정에 문제가 발생하였습니다. 관리자에게 문의 하시길 바랍니다.';
+      this.errorMsg = 'There was a problem with the login process. Please contact the administrator.';
     } else {
       this.errorMsg = msg;
     }

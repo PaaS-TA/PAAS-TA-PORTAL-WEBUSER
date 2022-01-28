@@ -801,7 +801,7 @@
                 <ul class="sortable_right">
                   <li>
                     <select id="selectSshInstance" (change)="connectSSH($event.target.value)">
-                      <option>인스턴스 선택</option>
+                      <option>Instance selection</option>
                       <option *ngFor='let key of [].constructor(sshConnectInfo.instances); let i = index' [value]="i">
                       	#{{i}}
                       </option>
@@ -1099,10 +1099,10 @@
               <div class="view_table_wrap service_wrap">
                 <div class="maT20 service_in">
                   <dl class="service_dl">
-                    <dt><p>연결 할 서비스</p>
+                    <dt><p>Service to connect to</p>
                     <select>
                       <option>
-                        서비스 선택
+                        Select service
                       </option>
                     </select>
                     </dt>
@@ -1111,10 +1111,10 @@
                       <input type="text" />
                     </dd>
                     <dt>
-                    <p>파라미터 값</p>
+                    <p>Parameter value</p>
                     <input type="text" />
-                    <button class="btns6 colors4"><i class="fas fa-plus"></i> 연결</button>
-                    <button class="btns6 colors5 serviceOn">취소</button>
+                    <button class="btns6 colors4"><i class="fas fa-plus"></i> Connect</button>
+                    <button class="btns6 colors5 serviceOn">Cancle</button>
                     </dt>
                   </dl>
 

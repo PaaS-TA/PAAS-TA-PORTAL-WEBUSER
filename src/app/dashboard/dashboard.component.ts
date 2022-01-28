@@ -210,7 +210,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       });
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage("The server is unstable.", false);
     }, () => {
       if (this.currentOrg != '') {
         this.commonService.isLoading = false;
@@ -246,7 +246,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage("The server is unstable.", false);
     }, () => {
       if (this.currentSpace != null) {
         this.commonService.isLoading = false;
@@ -358,7 +358,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage("The server is unstable.", false);
     }, () => {
     });
   }
@@ -385,7 +385,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       this.thumnail();
     }, () => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage("The server is unstable.", false);
     });
   }
 
@@ -427,7 +427,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage("The server is unstable.", false);
     }, () => {
       this.commonService.isLoading = false;
     });
@@ -468,7 +468,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage("The server is unstable.", false);
     }, () => {
       // this.log.debug('END');
       // this.log.debug(this.appEntities);
@@ -644,23 +644,23 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
           JSON.parse(this.userProvideCredentials);
           return true;
         }else {
-          this.commonService.alertMessage("Credential 작성 형식이 맞지 않습니다.", false);
+          this.commonService.alertMessage("Credentials are not formatted correctly.", false);
           return false;
         }
         }
         if( this.userProvideRouteServiceUrl !== '' ){
           if(this.userProvideRouteServiceUrl.indexOf("https://") === -1){
-            this.commonService.alertMessage("Route Service Url 작성 형식이 맞지 않습니다.", false);
+            this.commonService.alertMessage("The route service URL is not formatted correctly.", false);
             return false;
           }
         }
         return true;
       } catch (e) {
-        this.commonService.alertMessage("Credential 작성 형식이 맞지 않습니다.", false);
+        this.commonService.alertMessage("Credentials are not formatted correctly.", false);
         return false;
       }
     } else {
-      this.commonService.alertMessage("userProvideName을 입력해주십시오", false);
+      this.commonService.alertMessage("Please enter userProvideName", false);
       return false;
     }
   }

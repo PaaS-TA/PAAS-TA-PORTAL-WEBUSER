@@ -16,8 +16,8 @@
   "quantity": false,
   "automaticApproval": true,
   "apiversion": "v3",
-  "webadminUri": "http://portal-web-admin.galaxycloud.kr/",
-  "sshUri": "http://ssh-app.galaxycloud.kr/",
+  "webadminUri": "http://portal-web-admin.10.0.1.221.nip.io",
+  "sshUri": "http://ssh-app.10.0.1.221.nip.io/",
   "userAppSizeMb": "0",
-  "tailLogUri": "http://tail-log.15.165.167.51.galaxycloud.kr:1024/"
+  "tailLogUri": "http://tail-log.10.0.1.221.nip.io:1024/"
 }

@@ -346,10 +346,10 @@ $(document).ready(function() {
         var updown = $(this).children("i").attr('class');
         if( updown == 'fas fa-chevron-down' ){
             $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            $(this).html("<i class='fas fa-chevron-up'></i> 세부사항 닫기");
+            $(this).html("<i class='fas fa-chevron-up'></i> Close details");
         } else {
             $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-            $(this).html("<i class='fas fa-chevron-down'></i> 세부사항 보기");
+            $(this).html("<i class='fas fa-chevron-down'></i> View details");
         }
     });
 

@@ -39,9 +39,9 @@ export class QuantityMainService {
       // chart 1
       {
         data: {
-          labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+          labels: ["1Month", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
           datasets: [{
-            label: "사용량(GB)",
+            label: "Usage (GB)",
             backgroundColor: 'rgba(78, 174, 197, 0.5)',
             //borderColor: 'rgb(78, 174, 197)',
             borderWidth: 0,
@@ -53,7 +53,7 @@ export class QuantityMainService {
         options: {
           /* title:{
                display:true,   //title 표시 설정
-               text:"월별 매입 매출 비교"  //title 명칭
+               text:"Compare monthly purchase sales"  //title 명칭
           },*/
           scales: { yAxes: [{ ticks: { beginAtZero:true } }]
           }   // 데이터값 시작을 0부터시작
@@ -61,9 +61,9 @@ export class QuantityMainService {
       },
       {
         data: {
-          labels: ["앱 이름1", "앱 이름2", "앱 이름3", "앱 이름4", "앱 이름5", "앱 이름6", "앱 이름7", "앱 이름8" ,"","","",""],
+          labels: ["App name1", "앱 이름2", "앱 이름3", "앱 이름4", "앱 이름5", "앱 이름6", "앱 이름7", "앱 이름8" ,"","","",""],
           datasets: [{
-            label: "사용량(GB)",
+            label: "Usage (GB)",
             backgroundColor: 'rgba(127, 205, 188, 0.5)',
             //borderColor: 'rgb(78, 174, 197)',
             borderWidth: 0,

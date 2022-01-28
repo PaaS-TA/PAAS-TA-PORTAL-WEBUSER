@@ -26,7 +26,7 @@ export enum CATALOGURLConstant {
   SERVICEPACK = 'servicePack',
   BUILDPACK = 'buildPack',
   STARTERPACK = 'starter',
-  NOTAPPBINDING='연결없이 시작',
+  NOTAPPBINDING='Start without a connection',
   FAIL = 'FAIL',
   SUCCESS ='SUCCESS',
   OK=1,

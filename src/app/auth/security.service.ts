@@ -229,7 +229,7 @@ export class SecurityService {
             invite_user += info.inviteName
           }
         });
-        this.common.alertMessage(invite_user + " 님에게 조직 초대를 받았습니다. 메일 확인 바랍니다.", true);
+        this.common.alertMessage("You have been invited to an organization by "+ invite_user + ". Please check your email.", true);
       });
       return true;
     }, error => {

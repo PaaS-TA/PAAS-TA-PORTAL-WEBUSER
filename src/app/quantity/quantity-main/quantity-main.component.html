@@ -3,7 +3,7 @@
 <div class="contain">
   <div class="content">
     <div class="row one_line">
-      <h1>사용량조회 <small>사용중인 앱의 메모리 사용량을 조회합니다.</small>
+      <h1>Usage inquiry <small>Query the memory usage of the app you are using.</small>
       </h1>
       <div class="col-md-12">
         <div class="organizations_wrap">
@@ -11,9 +11,9 @@
             <div>
               <dl>
                 <dt>
-                  <p>조직
+                  <p>Organization
                   </p>
-                  <p>공간
+                  <p>Space
                   </p>
                 </dt>
                 <dd>
@@ -30,34 +30,34 @@
               <dl id="dl2">
                 <dt>
                   <p>
-                    조회월
+                    View month
                   </p>
                 </dt>
                 <dd>
-                  <button class="btns2 colors4 pull-right" (click)="getQuantity()">조회</button>
+                  <button class="btns2 colors4 pull-right" (click)="getQuantity()">Lookup</button>
                   <select>
                     <option>2016
                     </option>
-                  </select> 년
+                  </select> Year
                   <select>
                     <option>12
                     </option>
-                  </select> 월 ~
+                  </select> Month ~
                   <select>
                     <option>2017
                     </option>
-                  </select> 년
+                  </select> Year
                   <select>
                     <option>6
                     </option>
-                  </select> 월
+                  </select> Month
                   <div class="quantity_ra">
                     <input id="ra1" type="radio" name="ra1" />
-                    <label for="ra1"> 1개월</label>
+                    <label for="ra1"> 1 month</label>
                     <input id="ra2" type="radio" name="ra1" />
-                    <label for="ra2"> 2개월</label>
+                    <label for="ra2"> 2 months</label>
                     <input id="ra3" type="radio" name="ra1" />
-                    <label for="ra3"> 3개월</label>
+                    <label for="ra3"> 3 months</label>
                   </div>
                 </dd>
               </dl>
@@ -69,7 +69,7 @@
         <div class="organizations_wrap maT30" *ngFor="let chart of charts">
           <div class="organizations_table">
             <table>
-              <caption>전체 사용량 GB-시간 <i class="fas fa-exclamation-circle"></i>
+              <caption>Total Usage GB-Hours <i class="fas fa-exclamation-circle"></i>
               </caption>
               <tr>
                 <td>
@@ -93,7 +93,7 @@
         <div class="organizations_wrap maT30 last">
           <div class="organizations_table">
             <table>
-              <caption>앱별 사용량 GB-시간</caption>
+              <caption>GB-hours of usage per app</caption>
               <tr>
                 <td>
                   <div class="asdasd">

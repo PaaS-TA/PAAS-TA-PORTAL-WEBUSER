@@ -48,7 +48,7 @@ export class CreateuserComponent implements OnInit, DoCheck {
 
     if (this.isSendEmail) {
       this.isSendEmail = false;
-      this.indexCommonService.alertMessage('성공적으로 메일 발송하였습니다.', true);
+      this.indexCommonService.alertMessage('Mail sent successfully.', true);
       this.router.navigate(['/']);
     }
   }
@@ -82,18 +82,18 @@ export class CreateuserComponent implements OnInit, DoCheck {
                 this.multiUsedCreate();
               }
               if (usedCount == 1) {
-                this.common.alertMessage('다른 계정으로 생성하세요.', false);
+                this.common.alertMessage('Please create a different account.', false);
               }
               if (usedCount == size) {
-                this.common.alertMessage('사용자 정보가 존재합니다.', false);
+                this.common.alertMessage('User information exists.', false);
               }
             }
           }, error => {
-            this.common.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
+            this.common.alertMessage('A system error has occurred. Please try again. ', false);
           });
         });
       }, error => {
-        this.common.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
+        this.common.alertMessage('A system error has occurred. Please try again. ', false);
       });
     }
   }

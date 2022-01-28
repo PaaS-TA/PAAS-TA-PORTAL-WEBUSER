@@ -171,7 +171,7 @@ export class OrgProduceComponent implements OnInit {
 
   memoryQuota(value){
     if(value == -1)
-      return '무제한';
+      return 'Unlimited';
     else {
       if (value >= 1024) {
         return  Math.round(value/1024) + 'G';
@@ -184,11 +184,11 @@ export class OrgProduceComponent implements OnInit {
   }
 
   limitvalue(value) : any{
-    return value === -1 ? '무제한' : value;
+    return value === -1 ? 'Unlimited' : value;
   }
 
   quotaFree(value) : any{
-    return value ? '무료' : '유료';
+    return value ? 'Free' : 'Paid';
   }
 
   changeQuota(value){

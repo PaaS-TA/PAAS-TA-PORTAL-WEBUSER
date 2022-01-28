@@ -149,7 +149,7 @@ html.fp-enabled,
 
 
 #fp-nav ul>li:first-of-type:before{
-    content:"Paas-TA 소개";
+    content:"About Paas-TA";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -161,7 +161,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul>li:nth-of-type(2):before{
-    content:"Paas-TA 특징";
+    content:"Paas-TA Features";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -173,7 +173,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul>li:nth-of-type(3):before{
-    content:"Paas-TA 지원";
+    content:"Paas-TA support";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -185,7 +185,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul>li:nth-of-type(4):before{
-    content:"Paas-TA 기능";
+    content:"Paas-TA function";
     position: absolute;
     top: 0px;
     left: -120px;

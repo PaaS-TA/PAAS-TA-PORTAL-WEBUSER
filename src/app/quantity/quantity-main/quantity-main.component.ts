@@ -33,7 +33,7 @@ export class QuantityMainComponent implements OnInit, AfterContentChecked {
   }
 
   getQuantity() {
-    this.alertMsg('준비 중입니다.');
+    this.alertMsg('Coming soon.');
   }
 
   getCharts() {

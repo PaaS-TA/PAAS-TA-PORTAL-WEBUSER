@@ -175,17 +175,17 @@ export class CreateComponent implements OnInit {
                 if (createSuccess == size) {
                   if (userInfo['active'] == 'Y') {
                     this.commonService.isLoading = false;
-                    this.commonService.alertMessage('회원가입 완료, 로그인이 가능합니다.', true);
+                    this.commonService.alertMessage('Membership registration is complete, you can log in.', true);
                   } else {
                     this.commonService.isLoading = false;
-                    this.commonService.alertMessage('회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.', true);
+                    this.commonService.alertMessage('You can log in only after membership registration is complete and the operator approves.', true);
                   }
                   setTimeout(() => {
                     this.commonService.isLoading = false;
                     this.router.navigate(['/']);
                   }, 2000);
                 } else {
-                  this.commonService.alertMessage('회원가입 실패, 다시 시도하세요.', false);
+                  this.commonService.alertMessage('Login failed, please try again.', false);
                   this.commonService.isLoading = false;
                   this.commonService.getInfra(data['key']).subscribe(data => {
                     this.commonService.setAuthorization(data['authorization']);
@@ -196,7 +196,7 @@ export class CreateComponent implements OnInit {
           }
         });
       }, error => {
-        this.commonService.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
+        this.commonService.alertMessage('A system error has occurred. Please try again. ', false);
       });
     }
   }

@@ -60,14 +60,14 @@ export class IndexCommonService {
         this.log.debug("ERR");
         this.commonService.doDelete(url + '/commonapi/v2/user/' + email, param, '').subscribe();
         this.commonService.doDeleteMulti(url + '/portalapi/v2/users/' + email, authorization, param, '').subscribe();
-        this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
+        this.commonService.alertMessage('Failed to send mail.', false);
         this.isSendEmail = false;
       }
       this.commonService.isLoading = false;
     }, error => {
       this.commonService.doDelete(url + '/commonapi/v2/users/' + email, param, '').subscribe();
       this.commonService.doDeleteMulti(url + '/portalapi/v2/users/' + email, authorization, param, '').subscribe();
-      this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
+      this.commonService.alertMessage('Failed to send mail.', false);
       this.isSendEmail = false;
       this.commonService.isLoading = false;
     });
@@ -86,7 +86,7 @@ export class IndexCommonService {
       }
       this.commonService.isLoading = false;
     }, error => {
-      this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
+      this.commonService.alertMessage('Failed to send mail.', false);
       this.isSendEmail = false;
       this.commonService.isLoading = false;
     });
