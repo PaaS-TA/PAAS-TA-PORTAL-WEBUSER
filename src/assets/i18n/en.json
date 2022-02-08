@@ -339,6 +339,7 @@
       "summary" : "Summary",
       "description" : "Description",
       "region" : "Region",
+      "viewDocument" : "View Document",
       "organization" : "Organization",
       "space" : "Space",
       "createService" : "Create Service",
