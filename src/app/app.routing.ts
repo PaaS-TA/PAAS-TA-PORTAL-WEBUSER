@@ -28,7 +28,7 @@ import {CatalogServiceComponent} from "./catalog/catalog-service/catalog-service
 import {CreateComponent} from "./external/create/create.component";
 import {ResetComponent} from "./external/reset/reset.component";
 import {InviteOrgComponent} from "./external/invite-org/invite-org.component";
-import {QuantityMainComponent} from "./quantity/quantity-main/quantity-main.component";
+// import {QuantityMainComponent} from "./quantity/quantity-main/quantity-main.component";
 import {OrgProduceComponent} from "./org/org-produce/org-produce.component";
 
 /*
@@ -58,7 +58,7 @@ const routes: Routes = [
   {path: 'dashMain', component: DashMainComponent, canActivate: [AuthGuard]},
   {path: 'appMain', component: AppMainComponent, canActivate: [AuthGuard]},
   {path: 'tailLogs', component: TailLogsComponent, canActivate: [AuthGuard]},
-  {path: 'quantity', component: QuantityMainComponent, canActivate: [AuthGuard]},
+  // {path: 'quantity', component: QuantityMainComponent, canActivate: [AuthGuard]},
   {path: 'createuser', component: CreateuserComponent},
   {path: 'resetpasswd', component: ResetpasswdComponent},
   {path: 'authcreate', component: CreateComponent},

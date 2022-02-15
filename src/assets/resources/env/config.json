@@ -13,7 +13,6 @@
   "code": "code",
   "sessionTimeout": "10",
   "monitoring": false,
-  "quantity": false,
   "automaticApproval": true,
   "apiversion": "v3",
   "webadminUri": "http://portal-web-admin.galaxycloud.kr/",

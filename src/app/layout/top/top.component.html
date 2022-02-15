@@ -34,11 +34,11 @@
             <li id="cur_org">
               <a [routerLink]="['/org']">{{ 'common.top.user.linkTextOrgManage' | translate }}</a>
             </li>
-            <ng-container *ngIf="common.getQuantity()">
+            <!-- <ng-container *ngIf="common.getQuantity()">
               <li id="cur_quantity">
                 <a [routerLink]="['/quantity']">{{ 'common.top.user.linkTextViewUsage' | translate }}</a>
               </li>
-            </ng-container>
+            </ng-container> -->
           </ul>
           <p class="log_out" [routerLink]="['/logout']">{{ 'common.top.user.linkTextLogOut' | translate }}</p>
         </div>
