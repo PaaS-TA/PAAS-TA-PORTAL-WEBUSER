@@ -100,7 +100,7 @@ export function createTranslateLoader(http: HttpClient) {
     SecurityService,
     DashboardService,
     UsermgmtService,
-    CatalogService,
+    CatalogService
   ],
   bootstrap: [AppComponent],
   exports: [],
