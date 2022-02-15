@@ -811,11 +811,17 @@
             }
         }
 
+
         /**
         * Creates a vertical navigation bar.
         */
         function addVerticalNavigation(){
-            $body.append('<div id="' + SECTION_NAV + '"><ul></ul></div>');
+
+            if($.cookie('useLang') == 'en') {
+                $body.append('<div id="' + SECTION_NAV + '"><ul class="item"></ul></div>');
+            } else {
+                $body.append('<div id="' + SECTION_NAV + '"><ul></ul></div>');
+            }
             var nav = $(SECTION_NAV_SEL);
 
             nav.addClass(function() {

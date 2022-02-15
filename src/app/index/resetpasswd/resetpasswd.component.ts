@@ -5,6 +5,8 @@ import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {isNullOrUndefined} from "util";
 import {UsermgmtService} from "../../usermgmt/usermgmt.service";
+import {HttpClient} from '@angular/common/http';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-resetpasswd',
@@ -18,7 +20,10 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
   public isUsed: boolean;
   public isSendEmail: boolean;
 
-  constructor(private indexCommonService: IndexCommonService, private common: CommonService, private usermgmtService: UsermgmtService, private router: Router, private log: NGXLogger) {
+  public translateEntities: any = [];
+
+  constructor(private httpClient: HttpClient, private indexCommonService: IndexCommonService, private common: CommonService, private usermgmtService: UsermgmtService,
+    private translate: TranslateService, private router: Router, private log: NGXLogger) {
     this.email = '';
     this.isValidation = true;
     this.isUsed = true;
@@ -26,6 +31,14 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
     if(this.common.getSeq() == null || this.common.getSeq() === ''){
       this.router.navigate(['/']);
     }
+
+    this.translate.get('indexMain').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.indexMain;
+    });
 
   }
 
@@ -43,7 +56,7 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
 
     if (this.isSendEmail) {
       this.isSendEmail = false;
-      this.indexCommonService.alertMessage('메일 발송에 성공하였습니다.', true);
+      this.indexCommonService.alertMessage(this.translateEntities.alertLayer.mailSendSuccess, true);
       this.router.navigate(['/']);
     }
   }
@@ -74,7 +87,7 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
 
             if(forEachCount == size){
               if(usedCount == 0){
-                this.common.alertMessage("계정이 존재하지 않습니다.", false);
+                this.common.alertMessage(this.translateEntities.alertLayer.accountNotExist, false);
               }else{
                 if(this.email != null){
                   this.multiCheckUsedReset();
@@ -84,7 +97,7 @@ export class ResetpasswdComponent implements OnInit, DoCheck{
           });
         });
       },error=> {
-        this.common.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요.',false);
+        this.common.alertMessage(this.translateEntities.alertLayer.systemError,false);
       });
 
     }

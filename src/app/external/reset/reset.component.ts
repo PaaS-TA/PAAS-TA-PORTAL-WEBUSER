@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {ExternalcommonService} from "../common/externalcommon.service";
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {error} from "util";
 
 declare var $: any;
@@ -17,6 +18,8 @@ let appConfig = require('assets/resources/env/config.json');
 })
 export class ResetComponent implements OnInit {
 
+  public translateEntities: any = [];
+
   public seq: string;
   public token: string;
   public userId: string;
@@ -30,7 +33,8 @@ export class ResetComponent implements OnInit {
   public regions: string[];
 
 
-  constructor(private commonService: CommonService, private externalService: ExternalcommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
+  constructor(private commonService: CommonService, private externalService: ExternalcommonService, private translate: TranslateService,
+              private router: Router, private route: ActivatedRoute, private log: NGXLogger) {
     this.seq = '';
     this.userId = '';
     this.username = '';
@@ -74,6 +78,14 @@ export class ResetComponent implements OnInit {
       } else {
         this.router.navigate(['error'], {queryParams: {error: '1'}});
       }
+
+      this.translate.get('external').subscribe((res: string) => {
+        this.translateEntities = res;
+      });
+  
+      this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+        this.translateEntities = event.translations.external;
+      });
     });
 
   }
@@ -118,34 +130,36 @@ export class ResetComponent implements OnInit {
         let size = data.length;
         let success = 0; // 성공여부 확인
         let forEachCount = 0; //apiUrl 개수 확인
+        
         data.forEach(data => {
-          if (data.length > 0) {
-          let result = data['apiUri'];
-          this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
-            forEachCount++;
-            this.commonService.isLoading = false;
-            if (region['result'] == true) {
-              success++;
-            }
-            if (forEachCount == size) {
-              if (success == size) {
-                this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
-                setTimeout(()=>{
-                  this.commonService.isLoading = false;
-                  this.router.navigate(['/']);
-                },2000)
-              } else {
-                this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
-                this.commonService.isLoading = false;
+          // if (data.length > 0) {
+          if(Object.keys(data).length > 0) {
+            let result = data['apiUri'];
+            this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
+              forEachCount++;
+              this.commonService.isLoading = false;
+              if (region['result'] == true) {
+                success++;
               }
-            }
-          });
+              if (forEachCount == size) {
+                if (success == size) {
+                  this.commonService.alertMessage(this.translateEntities.alertLayer.changeSuccess, true);
+                  setTimeout(()=>{
+                    this.commonService.isLoading = false;
+                    this.router.navigate(['/']);
+                  },2000)
+                } else {
+                  this.commonService.alertMessage(this.translateEntities.alertLayer.changeFail, false);
+                  this.commonService.isLoading = false;
+                }
+              }
+            });
           }else{
             this.defaultPassword();
           }
         });
       }, error => {
-        this.commonService.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.systemError, false);
       });
     }
   }
@@ -158,20 +172,20 @@ export class ResetComponent implements OnInit {
         data.forEach(data => {
             let result = data['apiUri'];
             this.externalService.reset_external(result, data["authorization"], param).subscribe(region => {
-              this.commonService.alertMessage('성공적으로 변경되었습니다.', true);
+              this.commonService.alertMessage(this.translateEntities.alertLayer.changeSuccess, true);
               setTimeout(()=>{
                 this.commonService.isLoading = false;
                 this.router.navigate(['/']);
               },2000)
             },error =>{
-              this.commonService.alertMessage('변경하는데 실패하였습니다.', false);
+              this.commonService.alertMessage(this.translateEntities.alertLayer.changeFail, false);
               this.commonService.isLoading = false;
             });
         });
       }, error => {
-        this.commonService.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.systemError, false);
       });
     }
-  }//
+  }
 
 }

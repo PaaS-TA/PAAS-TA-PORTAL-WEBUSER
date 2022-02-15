@@ -10,10 +10,11 @@
 </div>
 <div id="html2" style="display:none;">
   <div class="email_wrap">
-    <h3 class="maT50">안녕하세요?</h3>
-    <p class="maT20">개방형 클라우드 플랫폼 파스-타 입니다.</p>
-    <p><span>{{userId}}</span>님은 이제 파스-타의 <span>{{orgName}}</span> 조직에 접근이 가능합니다.</p>
-    <p class="maT50">잠시 후 홈페이지로 이동합니다.</p>
+    <h3 class="maT50">{{'external.inviteOrg.acceptMsg1' | translate}}</h3>
+    <p class="maT20">{{'external.inviteOrg.acceptMsg2' | translate}}</p>
+    <p><span>{{userId}}</span>{{ 'external.inviteOrg.acceptMsg3-1' | translate }}
+      <span>{{orgName}}</span>{{ 'external.inviteOrg.acceptMsg3-2' | translate }}</p>
+    <p class="maT50">{{'external.inviteOrg.acceptMsg4' | translate}}</p>
   </div>
 </div>
 <div class="footer">Copyright © 2018 PaaS-TA. All rights reserved</div>

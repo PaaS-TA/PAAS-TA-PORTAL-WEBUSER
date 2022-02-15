@@ -3,7 +3,7 @@ import {CommonService} from '../common/common.service';
 import {NGXLogger} from 'ngx-logger';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {DashboardService, Service} from './dashboard.service';
 import {Organization} from "../model/organization";
 import {Space} from '../model/space';
@@ -210,7 +210,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       });
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.serverError, false);
     }, () => {
       if (this.currentOrg != '') {
         this.commonService.isLoading = false;
@@ -246,7 +246,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.serverError, false);
     }, () => {
       if (this.currentSpace != null) {
         this.commonService.isLoading = false;
@@ -358,7 +358,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.serverError, false);
     }, () => {
     });
   }
@@ -385,7 +385,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       this.thumnail();
     }, () => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.serverError, false);
     });
   }
 
@@ -427,7 +427,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.serverError, false);
     }, () => {
       this.commonService.isLoading = false;
     });
@@ -468,7 +468,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
       return data;
     }, error => {
       this.commonService.isLoading = false;
-      this.commonService.alertMessage("서버가 불안정합니다.", false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.serverError, false);
     }, () => {
       // this.log.debug('END');
       // this.log.debug(this.appEntities);
@@ -644,23 +644,23 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
           JSON.parse(this.userProvideCredentials);
           return true;
         }else {
-          this.commonService.alertMessage("Credential 작성 형식이 맞지 않습니다.", false);
+          this.commonService.alertMessage(this.translateEntities.alertLayer.credentailInvalid, false);
           return false;
         }
         }
         if( this.userProvideRouteServiceUrl !== '' ){
           if(this.userProvideRouteServiceUrl.indexOf("https://") === -1){
-            this.commonService.alertMessage("Route Service Url 작성 형식이 맞지 않습니다.", false);
+            this.commonService.alertMessage(this.translateEntities.alertLayer.routeServiceUrlInvalid, false);
             return false;
           }
         }
         return true;
       } catch (e) {
-        this.commonService.alertMessage("Credential 작성 형식이 맞지 않습니다.", false);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.credentailInvalid, false);
         return false;
       }
     } else {
-      this.commonService.alertMessage("userProvideName을 입력해주십시오", false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.emptyValue, false);
       return false;
     }
   }

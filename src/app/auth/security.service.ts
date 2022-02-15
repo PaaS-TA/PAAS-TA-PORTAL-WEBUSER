@@ -5,6 +5,7 @@ import {NGXLogger} from 'ngx-logger';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {CommonService} from '../common/common.service';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
 declare var require: any;
 let appConfig = require('assets/resources/env/config.json');
@@ -18,9 +19,20 @@ export class SecurityService {
   uaaUri: string;
   apiUri: string;
 
-  constructor(private common: CommonService, private http: HttpClient, private router: Router, private activeRoute: ActivatedRoute, private log: NGXLogger) {
+  public translateEntities: any = [];
+
+  constructor(private common: CommonService, private http: HttpClient, private translate: TranslateService,
+    private router: Router, private activeRoute: ActivatedRoute, private log: NGXLogger) {
     this.uaaUri = common.getUaaUri();
     this.apiUri = common.getApiUri();
+
+    this.translate.get('auth').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.auth;
+    });
   }
 
   /*
@@ -229,7 +241,7 @@ export class SecurityService {
             invite_user += info.inviteName
           }
         });
-        this.common.alertMessage(invite_user + " 님에게 조직 초대를 받았습니다. 메일 확인 바랍니다.", true);
+        this.common.alertMessage(invite_user + this.translateEntities.alertLayer.orgInviteReq, true);
       });
       return true;
     }, error => {

@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ExternalcommonService} from '../common/externalcommon.service';
 import {User, UsermgmtService} from '../../usermgmt/usermgmt.service';
 import {Observable} from 'rxjs';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {consoleLog} from 'ng2-logger/backend-logging';
 
 declare var $: any;
@@ -21,6 +22,7 @@ export class CreateComponent implements OnInit {
 
   apiversion = appConfig['apiversion'];
   public user: Observable<User>;
+  public translateEntities: any = [];
 
   public seq: string;
   public token: string;
@@ -41,7 +43,7 @@ export class CreateComponent implements OnInit {
 
 
   constructor(private commonService: CommonService, private userMgmtService: UsermgmtService, private externalService: ExternalcommonService,
-              private activeRoute: ActivatedRoute, private router: Router, private route: ActivatedRoute) {
+              private translate: TranslateService, private activeRoute: ActivatedRoute, private router: Router, private route: ActivatedRoute) {
 
     this.seq = '';
     this.userId = '';
@@ -86,6 +88,14 @@ export class CreateComponent implements OnInit {
       } else {
         this.router.navigate(['error'], {queryParams: {error: '1'}});
       }
+    });
+
+    this.translate.get('external').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.external;
     });
   }
 
@@ -170,22 +180,21 @@ export class CreateComponent implements OnInit {
                 this.externalService.updateInfo_external(this.userId, result, data['authorization'], userInfo);
               }
 
-
               if (forEachCount == size) {
                 if (createSuccess == size) {
                   if (userInfo['active'] == 'Y') {
                     this.commonService.isLoading = false;
-                    this.commonService.alertMessage('회원가입 완료, 로그인이 가능합니다.', true);
+                    this.commonService.alertMessage(this.translateEntities.alertLayer.createSuccess1, true);
                   } else {
                     this.commonService.isLoading = false;
-                    this.commonService.alertMessage('회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.', true);
+                    this.commonService.alertMessage(this.translateEntities.alertLayer.createSuccess2, true);
                   }
                   setTimeout(() => {
                     this.commonService.isLoading = false;
                     this.router.navigate(['/']);
                   }, 2000);
                 } else {
-                  this.commonService.alertMessage('회원가입 실패, 다시 시도하세요.', false);
+                  this.commonService.alertMessage(this.translateEntities.alertLayer.createFail, false);
                   this.commonService.isLoading = false;
                   this.commonService.getInfra(data['key']).subscribe(data => {
                     this.commonService.setAuthorization(data['authorization']);
@@ -196,7 +205,7 @@ export class CreateComponent implements OnInit {
           }
         });
       }, error => {
-        this.commonService.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.systemError, false);
       });
     }
   }

@@ -63,22 +63,22 @@ export class CatalogComponent implements OnInit {
       this.catalogService.getStarterPacks(CATALOGURLConstant.GETSTARTERPACKS_Y).subscribe(data => {
       this.StarterInit(data['list']);
     },error=>{
-        this.catalogService.alertMessage("서버가 불안정합니다.",false);
+        this.catalogService.alertMessage(this.translateEntities.alertLayer.serverError,false);
       });
     this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS_Y).subscribe(data => {
       this.BuildInit(data['list']);
     },error=>{
-      this.catalogService.alertMessage("서버가 불안정합니다.",false);
+      this.catalogService.alertMessage(this.translateEntities.alertLayer.serverError,false);
     });
     this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS_Y).subscribe(data => {
       this.ServiceInit(data['list']);
     },error=>{
-      this.catalogService.alertMessage("서버가 불안정합니다.",false);
+      this.catalogService.alertMessage(this.translateEntities.alertLayer.serverError,false);
     });
     this.catalogService.getRecentPacks('/commonapi/v2/'+this.userid+'/history').subscribe(data => {
       this.RecentInit(data['list']);
     },error=>{
-      this.catalogService.alertMessage("서버가 불안정합니다.",false);
+      this.catalogService.alertMessage(this.translateEntities.alertLayer.serverError,false);
     });
     this.catalogService.check = true;
   }

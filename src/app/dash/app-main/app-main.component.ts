@@ -158,7 +158,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
     guid: ''
   };
 
-  constructor(public route: ActivatedRoute, public router: Router, public translate: TranslateService, public appMainService: AppMainService, public common: CommonService) {
+  constructor(public route: ActivatedRoute, public router: Router, public translate: TranslateService,
+              public appMainService: AppMainService, public common: CommonService) {
     this.common.isLoading = false;
     // Observable.timer(0,1000 * 60 * 2)
     // Observable.timer(10000)
@@ -1302,7 +1303,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
       return;
     }
     if ($('#appAlarmEmail').css("color") == "rgb(255, 0, 0)") {
-      alert("Email 형식이 잘못 되었습니다.");
+      alert(this.translateEntities.alertLayer.emailCheckError);
       return false;
     }
 
@@ -1679,7 +1680,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
   showPopServiceBindClick() {
     if ($("#selectBoxService").val() == "") {
-      alert("서비스를 선택 하세요.");
+      alert(this.translateEntities.alertLayer.selectServiceCheck);
       return false;
     }
 

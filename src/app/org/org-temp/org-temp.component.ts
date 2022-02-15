@@ -175,7 +175,7 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
 
   instanceMemoryLimit(instance_memory_limit) {
     if (instance_memory_limit === -1)
-      return '무제한';
+      return this.translateEntities.etc.unlimited;
     else {
       if (instance_memory_limit >= 1024) {
         return  Math.round(instance_memory_limit/1024) + 'G';
@@ -189,15 +189,15 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
 
   priceKorean(price : boolean): String {
     if(price){
-      return '무료';
+      return this.translateEntities.etc.free;
     } else {
-      return '유료';
+      return this.translateEntities.etc.pay;
     }
   }
 
   applicationInstanceLimit(app_instance_limit) {
     if (app_instance_limit === -1)
-      return '무제한';
+      return this.translateEntities.etc.unlimited;
     else
       return app_instance_limit;
   }
@@ -501,13 +501,13 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
     this.common.isLoading = true;
     this.orgMainService.delInviteCancle(this.sltOrgGuid, this.sltInvite.userId).subscribe(data => {
       if (data) {
-        this.common.alertMessage("초대 취소 성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.inviteCancleSuccess, true);
       }
       else {
-        this.common.alertMessage("초대 취소 실패", false);
+        this.common.alertMessage(this.translateEntities.alertLayer.inviteCancleFail, false);
       }
     }, error => {
-      this.common.alertMessage("서버 오류", false);
+      this.common.alertMessage(this.translateEntities.alertLayer.serverError, false);
     }, () => {
       this.getInviteOrg();
     });
@@ -606,9 +606,9 @@ export class OrgTempComponent implements OnInit, AfterViewChecked {
     this.common.isLoading = true;
     this.orgMainService.updateUserSpaceRole(this.sltSpaceGuid, params).subscribe(data => {
       if(data){
-        this.common.alertMessage("변경 성공", true);
+        this.common.alertMessage(this.translateEntities.alertLayer.changeSuccess, true);
       }}, error => {
-      this.common.alertMessage("변경 실패", false);
+      this.common.alertMessage(this.translateEntities.alertLayer.changeFail, false);
     },() => {
       this.common.isLoading = false;
     });

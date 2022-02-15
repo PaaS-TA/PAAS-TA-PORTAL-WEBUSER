@@ -197,6 +197,55 @@ html.fp-enabled,
     color: #fff;    
 }
 
+#fp-nav ul.item>li:first-of-type:before {
+    content:"About PaaS-TA";
+    position: absolute;
+    top: 0px;
+    left: -120px;
+    width: 120px;
+    height: 16px;
+    font-size: 16px;
+    font-family: jeju, sans-serif;
+    line-height: 16px;
+    color: #fff;    
+}
+#fp-nav ul.item>li:nth-of-type(2):before {
+    content:"Paas-TA Features";
+    position: absolute;
+    top: 0px;
+    left: -120px;
+    width: 120px;
+    height: 16px;
+    font-size: 16px;
+    font-family: jeju, sans-serif;
+    line-height: 16px;
+    color: #fff;    
+}
+#fp-nav ul.item>li:nth-of-type(3):before{
+    content:"Paas-TA Support";
+    position: absolute;
+    top: 0px;
+    left: -120px;
+    width: 120px;
+    height: 16px;
+    font-size: 16px;
+    font-family: jeju, sans-serif;
+    line-height: 16px;
+    color: #fff;    
+}
+#fp-nav ul.item>li:nth-of-type(4):before{
+    content:"Paas-TA Fuction";
+    position: absolute;
+    top: 0px;
+    left: -120px;
+    width: 120px;
+    height: 16px;
+    font-size: 16px;
+    font-family: jeju, sans-serif;
+    line-height: 16px;
+    color: #fff;    
+}
+
 #fp-nav ul li a,
 .fp-slidesNav ul li a {
     display: block;

@@ -4,6 +4,7 @@ import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "./login.service";
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -17,8 +18,10 @@ export class LoginComponent implements OnInit {
   public username: string;
   public password: string;
 
+  public translateEntities: any = [];
 
-  constructor(public common: CommonService, private router: Router, private route: ActivatedRoute, private log: NGXLogger, private loginService: LoginService) {
+
+  constructor(public common: CommonService, private translate: TranslateService, private router: Router, private route: ActivatedRoute, private log: NGXLogger, private loginService: LoginService) {
     this.log.debug("login()");
     this.error = false;
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -33,6 +36,14 @@ export class LoginComponent implements OnInit {
     if (err != null) {
       this.showMsg(err);
     }
+
+    this.translate.get('indexMain').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.indexMain;
+    });
   }
 
   ngOnInit() {
@@ -62,10 +73,10 @@ export class LoginComponent implements OnInit {
     this.common.signOut();
     this.common.isLoading = false;
     if (msg == '') {
-      this.errorMsg = '사용자 계정 또는 비밀번호가 틀렸습니다.';
+      this.errorMsg = this.translateEntities.login.notMatchMemberInfo;
     }
     else if (msg == '1') {
-      this.errorMsg = '로그인 과정에 문제가 발생하였습니다. 관리자에게 문의 하시길 바랍니다.';
+      this.errorMsg = this.translateEntities.login.loginError;
     } else {
       this.errorMsg = msg;
     }
