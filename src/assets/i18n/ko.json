@@ -59,7 +59,7 @@
     "scroll": "마우스를 스크롤해주세요",
     "modal": {
       "header": "브라우져 지원",
-      "body1": "<span style='color:blue; font-weight: bold;>Google Chrome</span>, <span style='color:blue; font-weight: bold;>Microsoft Edge</span> 이외의 브라우져 에서는 정상작동 하지 않을 수 있습니다.",
+      "body1": "<span class='apply'>Google Chrome</span>, <span class='apply'>Microsoft Edge</span> 이외의 브라우져 에서는 정상작동 하지 않을 수 있습니다.",
       "body2": "Internet Explorer 설정 사항",
       "body3": "인터넷 옵션 > 보안 탭 > 신뢰할 수 있는 사이트에 해당 주소 추가"
     },

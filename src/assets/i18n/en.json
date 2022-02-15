@@ -59,7 +59,7 @@
     "scroll": "Please scroll your mouse",
     "modal": {
       "header": "Browser support",
-      "body1": "Browsers other than <span style='color:blue; font-weight: bold;'>Google Chrome</span>, <span style='color:blue; font-weight: bold;'>Microsoft Edge</span> may not work properly.",
+      "body1": "Browsers other than <span class='apply'>Google Chrome</span>, <span class='apply'>Microsoft Edge</span> may not work properly.",
       "body2": "Internet Explorer Settings",
       "body3": "Internet Options > Security tab > Add the address to trusted sites"
     },

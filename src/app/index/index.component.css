@@ -1,1 +1,4 @@
-
+.apply {
+    color: blue !important;
+    font-weight: bold;
+  }

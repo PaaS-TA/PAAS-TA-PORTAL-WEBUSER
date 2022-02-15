@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
 declare var $: any;
@@ -7,7 +7,8 @@ declare var jQuery: any;
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.css']
+  styleUrls: ['./index.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class IndexComponent implements OnInit, OnDestroy {
 
