@@ -123,6 +123,15 @@ export class AppTopComponent implements OnInit {
     $("#lang_" + lang + "").addClass("cur");
 
     $.cookie("useLang", this.common.useLang);
+
+    if(location.pathname == '/') {
+      if (self.name != 'reload') {
+        self.name = 'reload';
+        self.location.reload();
+      }
+      else self.name = '';
+    } 
+
   }
 
   
