@@ -431,19 +431,19 @@
             <!-- 닫기(x) 버튼 -->
             <button type="button" class="close" data-dismiss="modal">×</button>
             <!-- header title -->
-            <h4 class="modal-title">초대 취소</h4>
+            <h4 class="modal-title">{{ 'orgMain.layerpop.inviteCancel.title' | translate }}</h4>
           </div>
           <!-- body -->
           <div class="modal-body">
             <div class="">
-              <p class="account_modal_p"><span>{{sltMemberName}}</span>님의 <span>{{orgsDetailName}}</span>조직의 초대를 취소하시겠습니까?
+              <p class="account_modal_p" [innerHTML]="'orgMain.layerpop.inviteCancel.bodyText' | translate  : {sltMemberName: sltMemberName, orgsDetailName: orgsDetailName}">
               </p>
             </div>
           </div>
           <!-- Footer -->
           <div class="modal-footer">
-            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="inviteCancel()">{{ 'orgMain.layerpop.orgSetRole.btn1' | translate }}</button>
-            <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.orgSetRole.btn2' | translate }}</button>
+            <button type="button" class="btns2 colors4" data-dismiss="modal" (click)="inviteCancel()">{{ 'orgMain.layerpop.inviteCancel.btn1' | translate }}</button>
+            <button type="button" class="btns2 colors5" data-dismiss="modal">{{ 'orgMain.layerpop.inviteCancel.btn2' | translate }}</button>
           </div>
         </div>
       </div>
@@ -460,7 +460,7 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">사용자 재초대</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.layerpop4.reInviteTitle' | translate }}</h4>
         </div>
         <!-- body -->
         <ng-container *ngIf="sltEntity">
@@ -560,7 +560,7 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">{{sltSpaceName}} 권한부여</h4>
+          <h4 class="modal-title">{{sltSpaceName}} {{ 'orgMain.layerpop4.roleSetTitle' | translate }}</h4>
         </div>
         <!-- body -->
         <ng-container *ngIf="sltEntity">
@@ -611,15 +611,15 @@
           <!-- 닫기(x) 버튼 -->
           <button type="button" class="close" data-dismiss="modal">×</button>
           <!-- header title -->
-          <h4 class="modal-title">{{ 'orgMain.layerpop.layerpop4.title' | translate }}</h4>
+          <h4 class="modal-title">{{ 'orgMain.layerpop.layerpop4.inviteTitle' | translate }}</h4>
         </div>
         <!-- body -->
         <ng-container *ngIf="sltEntity">
           <div class="modal-body">
             <input class="w100" placeholder="sample@test.com" id="userEmail" [(ngModel)]="invite_name" (keyup.enter)="userInvite()" (keyup)="usercheck()" />
             <ng-container *ngIf="invite_name === ''"><span class="red">{{ 'orgMain.layerpop.layerpop4.explanation' | translate }}</span></ng-container>
-            <ng-container *ngIf="invite_name !== '' && usercheck()"><span class="blue">* 사용자 에게 초대메세지를 보낼 수 있습니다.</span></ng-container>
-            <ng-container *ngIf="invite_name !== '' && !usercheck()"><span class="red">* 이메일에 해당하는 사용자가 없습니다.</span></ng-container>
+            <ng-container *ngIf="invite_name !== '' && usercheck()"><span class="blue">{{ 'orgMain.layerpop.layerpop4.succeed' | translate }}</span></ng-container>
+            <ng-container *ngIf="invite_name !== '' && !usercheck()"><span class="red">{{ 'orgMain.layerpop.layerpop4.unSucceed' | translate }}</span></ng-container>
             <table class="maT30">
               <colgroup>
                 <col style=''>

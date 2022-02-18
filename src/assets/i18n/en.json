@@ -1,4 +1,99 @@
 {
+  "indexMain": {
+    "section0": {
+      "title": "Open Cloud Platform!",
+      "explain": "Give your app wings with PaaS-TA",
+      "text1": "PaaS-TA is an open cloud platform that anyone can use freely because it is developed using globally proven open sources and is fully open under the Apache license, which is an open license.",
+      "text2": "Cloud infrastructure (IaaS) providers use PaaS-TA to provide platform services as well, and cloud SW (SaaS) providers provide services quickly and easily without overlapping development for each platform by developing SaaS based on PaaS-TA that supports various infrastructures. It can be developed and operated.",
+      "text3": "PaaS-TA is a compound word of PaaS and TA. In English, it means PaaS and thanks (TA, Thanks colloquially), and in Korean, it has a double meaning of pasette (boarding)."
+    },
+    "section1": {
+      "title": "PaaS-TA Features",
+      "explain": "The execution environment is configured based on Cloud Foundry open source.",
+      "subTitle1": "Eliminate dependency with 7 or more types of various infrastructure (IaaS) support",
+      "text1": "Continuous support for new versions of OpenStack (Ocata, Pike, etc.) and global leading IaaS support for AWS, Vagant, VMWare, CloudStack, Google Cloud Platform, and Azure",
+      "subTitle2": "Provide rich development / operating environment",
+      "text2": "8 types (Java, NodeJS, PHP, etc.) development language, 10 types (e-government standard framework, etc.) framework, domestic SW (Tibero, Cubrid, Altibase, Arcus, etc.) service support and integrated control from IaaS to PaaS and SaaS support",
+      "subTitle3": "Provides step-by-step detailed guide documentation",
+      "text3": "23 types of Korean documents such as platform installation, service installation, platform expansion, application development, etc. and continuous update by version",
+      "subTitle4": "Revitalize the domestic cloud industry and create a domain platform ecosystem",
+      "text4": "Stable technical support and developer development support to enhance the global competitiveness of the domestic cloud industry and lead the 4th industry"
+    },
+    "section2": {
+      "title": "PaaS-TA open ecosystem",
+      "explain": "We establish a plan for the PaaS-TA introduction project and provide systematic technical support.",
+      "subTitle1": "open cooperation",
+      "text1": "Open cooperation by sector such as cloud infrastructure/SW/middleware development companies and research institutes/schools",
+      "subTitle2": "Platform utilization expert",
+      "text2": "Promotion of regular education on the process of using PaaS-TA through cooperation with the developer community",
+      "subTitle3": "Regular technology seminar",
+      "text3": "Held public seminars for cloud platform developers (cloud PUB)",
+      "subTitle4": "Technical and consulting support",
+      "text4": "Technical support for the entire range of PaaS-TA introduction review, installation, and operation",
+      "subTitle5": "Intensive development of professional developers",
+      "text5": "Provide intensive training programs for PaaS-TA professional developers (resident/non-resident)",
+      "subTitle6": "University education support",
+      "text6": "PaaS-TA-based IT education and practice environment provided"
+    },
+    "section3": {
+      "title": "PaaS-TA function",
+      "explain": "PaaS-TA consists of infrastructure control and management environment, execution environment, development environment, service environment, and operation environment.",
+      "subTitle1": "DevOps support through convenient environment setting",
+      "text1": "Provides a standardized development/production environment such as frameworks, middleware, and OS required for application development, DevOps through build, test, and deployment automation, Source Control Management service",
+      "subTitle2": "Platform installation automation and IaaS dashboard support",
+      "text2": "Provides installation automation that automates the complex process of installing PaaS on IaaS, integrated management of various IaaS",
+      "subTitle3-1": "Convenient and expandable",
+      "subTitle3-2": "UI support",
+      "text3": "Provides developer UI that supports convenient one-click deployment based on templates and operator UI for integrated operation and management",
+      "subTitle4-1": "Hybrid Cloud",
+      "subTitle4-2": "Support",
+      "text4": "Supports hybrid cloud configuration that allows internal and external service movement and interworking",
+      "subTitle5-1": "IaaS/VM/Container",
+      "subTitle5-2": "Monitoring",
+      "text5": "CPU, Memory, Provides integrated monitoring and analysis functions for all layers of cloud services from cloud infrastructure to platforms and software such as disk usage, CPU, memory, disk I/O, and network traffic",
+      "subTitle6": "Kubernetes Support",
+      "text6": "Container control management that combines PaaS-TA and Kubernetes",
+      "subTitle7": "Auto Scaling",
+      "text7": "Advanced auto-scaling and failure recovery based on resource usage in all areas ranging from virtual machines, containers, applications, and services"
+    },
+    "scroll": "Please scroll your mouse",
+    "modal": {
+      "header": "Browser support",
+      "body1": "Browsers other than <span class='apply'>Google Chrome</span>, <span class='apply'>Microsoft Edge</span> may not work properly.",
+      "body2": "Internet Explorer Settings",
+      "body3": "Internet Options > Security tab > Add the address to trusted sites"
+    },
+    "createuser": {
+      "title": "Create an account",
+      "explain-1": "Please enter the email you want to use as your account.",
+      "explain-2": "You can create an account after verification is complete.",
+      "emailCheck": "Invalid email format",
+      "overLapAccount": "I already have an account!"
+    },
+    "resetPasswd": {
+      "title": "Reset password",
+      "explain": "Request to reset the password of the registered account.",
+      "emailCheck": "Invalid email format",
+      "accountNotExist": "You do not have an active email account."
+
+    },
+    "login": {
+      "notMatchMemberInfo": "The user account or password is incorrect.",
+      "loginError": "There was a problem with the login process. Please contact the administrator."
+    },
+    "button": {
+      "sendmail": "Send verification mail",
+      "reset": "Reset password"
+    },
+    "alertLayer": {
+      "mailSendSuccess": "Mail sent successfully.",
+      "mailSendFail": "Failed to send mail.",
+      "accountCreateFail": "Please create a different account.",
+      "accountNotExist": "The account does not exist.",
+      "memberInfoExist": "User information exists.",
+      "systemError": "A system error has occurred. Please try again."
+    }
+  },
   "appMain": {
     "app": {
       "rename": "Rename",
@@ -88,11 +183,16 @@
       },
       "notificationHistoryTab": {
         "title": "Notification history",
+        "item1": "Service to connect to",
+        "selectService": "Select service",
+        "item2": "Parameter value",
         "resourceType": "Resource type",
         "alarmRating": "Alarm rating",
         "date": "Date",
         "message": "Message",
-        "more": "More"
+        "more": "More",
+        "connect": "Connect",
+        "cancel": "Cancle"
       }
     },
     "layerpop": {
@@ -224,7 +324,9 @@
       "bindServiceFail": "Service connection failed.",
       "unbindServiceSuccess": "You have disconnected the service.",
       "unbindServiceFail": "Service connection failed.",
-      "sshUrlEmpty": "SSH URL is Empty."
+      "sshUrlEmpty": "SSH URL is Empty.",
+      "emailCheckError": "Invalid email format.",
+      "selectServiceCheck": "Please select a service."
     },
     "nav": {
       "summary": "summary",
@@ -364,7 +466,7 @@
       "createSuccessApp" : "You can create an app with your current name.",
       "createFalseApp" : "You can not create an app with the current name.",
       "createSuccessRoute": "You can create a route to the current host.",
-      "createFasleRoute" : "You can not create routes to the current host.",
+      "createFalseRoute" : "You can not create routes to the current host.",
       "createSuccessService" : "You can create a service by its current name.",
       "createFalseService" : "Can not create service with current name.",
       "overLapService" : "Some of the services you are trying to create have the same name.",
@@ -390,6 +492,9 @@
       "serviceError" : "Service creation failed.",
       "appUploadError": "User app upload failed.",
       "appFileSizeError": "The file size cannot exceed {{fileSize}} MB."
+    },
+    "alertLayer": {
+      "serverError": "The server is unstable."
     }
   },
   "orgMain" : {
@@ -399,6 +504,7 @@
     "cancel" : "cancel",
     "viewDetail" : "View details",
     "closeDetail" : "Close details",
+    "more": "More",
     "reName" : "Rename",
     "delete" : "delete",
     "space" : "space",
@@ -486,11 +592,19 @@
         "btn1": "confirm",
         "btn2": "cancel"
       },
+      "inviteCancel": {
+        "title": "Cancel invitation",
+        "bodyText": "Are you sure you want to cancel your invitation to <span>{{sltMemberName}}</span>'s <span>{{orgsDetailName}}</span> organization?",
+        "btn1": "confirm",
+        "btn2": "cancel"
+      },
       "layerpop4": {
-        "title": "Invite a user",
+        "inviteTitle": "Invite a user",
+        "reInviteTitle": "User Reinvitation",
+        "roleSetTitle": "Authorization",
         "explanation": "* You can continue adding email addresses using a comma.",
-        "succeed" : "* You can send an invitation message to the user.",
-        "unSucceed" : "* There are no users for this email.",
+        "succeed" : "*  You can send invitation messages to users.",
+        "unSucceed" : "* There is no user corresponding to the email.",
         "org": "Organization",
         "assignedOrg": "Assigned Organization",
         "orgAdmin" : "Org Administrator",
@@ -530,7 +644,17 @@
       "memberCancelFail2": "You can not cancel a member because there is no member in the ORG. Remove the ORG.",
       "sendEmailSuccess": "You have successfully invited people.",
       "sendEmailFail": "User invitation failed.",
-      "checkEmail" : "Please check user invitation email."
+      "checkEmail" : "Please check user invitation email.",
+      "inviteCancleSuccess": "Invitation Cancellation Success",
+      "inviteCancleFail": "Failed to cancel invitation",
+      "serverError": "Server error",
+      "changeSuccess": "Changed",
+      "changeFail": "Failed"
+    },
+    "etc": {
+      "unlimited": "Unlimited",
+      "free": "Free",
+      "pay": "Paid"
     }
   },
   "orgProduce" : {
@@ -564,6 +688,11 @@
         "bodyText": "<span>{{orgname}}</span> You have successfully created your organization.<br/>Press the Go button to go to Organization Management.",
         "btn1": "move",
         "btn2": "cancel"
+      },
+      "fail": {
+        "title": "Organization creation failed",
+        "bodyText": "<span>{{orgname}}</span> Failed to create portal organization.<br/>",
+        "btn": "Confirm"
       }
     },
     "alertLayer": {
@@ -574,7 +703,9 @@
       "orgNameCheck4": "Invalid request. Please contact your administrator."
     },
     "etc": {
-      "unlimited": "unlimited"
+      "unlimited": "Unlimited",
+      "free": "Free",
+      "pay": "Paid"
     }
   },
   "usermgmt": {
@@ -648,10 +779,16 @@
       "orgDeleteSuccess": "Organization withdrawal is complete.",
       "orgDeleteFeedback" : "Remove organization and space",
       "orgDeleteFail": "Organization withdrawal is failed.",
-      "accountDelete": "Account deletion is failed.",
+      "accountDeleteFail": "Account deletion is failed.",
       "accountDeleteSuccess": "Account deletion is complete.",
       "memberCancelFail2": "You can not cancel a member because there is no member in the ORG. Remove the ORG.",
-      "accountDeleteFail": "Org deletion is failed."
+      "accountDuplicateFail": "Please create a different account.",
+      "memberInfoExist": "User information exists.",
+      "mailSuccess": "Mail sent successfully.",
+      "mailFail": "Failed to send mail.",
+      "accountCancelFail": "The account does not exist.",
+      "serverError": "The server is unstable.",
+      "systemError": "A system error has occurred. Please try again."
     }
   },
   "dashboard": {
@@ -724,12 +861,70 @@
       "appstartFail": "App startup failed.",
       "appstopSuccess": "Stopped the app.",
       "appstopFail": "App suspension failed.",
-      "bindingService": "Cannot delete service instance, service keys and bindings must first be deleted."
+      "bindingService": "Cannot delete service instance, service keys and bindings must first be deleted.",
+      "credentialInvalid": "Credentials are not formatted correctly.",
+      "routeServiceUrlInvalid": "The route service URL is not formatted correctly.",
+      "emptyValue": "Please enter userProvideName",
+      "serverError": "The server is unstable."
     },
     "external": {
       "systemerror" : "A system error has occurred. Please try again."
 
     }
-
+  },
+  "auth" : {
+    "alertLayer": {
+      "orgInviteReq": "You have been invited to an organization by {{invite_user}}. Please check your email."
+    }
+  },
+  "external" : {
+    "inviteOrg": {
+      "acceptMsg1": "Hello?",
+      "acceptMsg2": "It is an open cloud platform PaaS-TA.",
+      "acceptMsg3-1": "can now access",
+      "acceptMsg3-2": "organizations in PaaS-TA.",
+      "acceptMsg4": "After a while, you will be taken to the homepage."
+    },
+    "active": {
+      "denyMsg1": "Sorry. The user portal is currently unavailable.",
+      "denyMsg2": "You must obtain login approval from the administrator to use it.",
+      "prePage": "Previous page"
+    },
+    "create": {
+      "title": "Create an accoun",
+      "explain": "Please enter your user information",
+      "placeholderText1": "Name",
+      "check1": "Please enter your name.",
+      "placeholderText2": "Password",
+      "check2": "6 to 20 characters with a mixture of alphanumeric characters, no spaces",
+      "placeholderText3": "Verify password",
+      "check3": "The passwords are different."
+    },
+    "reset": {
+      "title": "Change password",
+      "explain": "Please enter your password",
+      "placeholderText1": "Password",
+      "check1": "6 to 20 characters with a mixture of alphanumeric characters, no spaces",
+      "placeholderText2": "Verify password",
+      "check2": "The passwords are different."
+    },
+    "button": {
+      "create": "Creat account",
+      "change": "Change"
+    },
+    "alertLayer": {
+      "createSuccess1": "Membership registration is complete, you can log in.",
+      "createSuccess2": "You can log in only after membership registration is complete and the operator approves.",
+      "createFail": "Login failed, please try again.",
+      "changeSuccess": "Changed successfully.",
+      "changeFail": "Failed to change.",
+      "systemError": "A system error has occurred. Please try again."
+    }
+  },
+  "error" : {
+    "title": "sorry. You requested a page that cannot currently be found.",
+    "explain-1": "You entered an address that does not exist,",
+    "explain-2": "or the address of the page you requested has been changed or deleted and cannot be found.",
+    "btn": "Previous page"
   }
 }

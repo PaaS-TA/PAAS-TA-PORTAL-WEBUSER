@@ -15,7 +15,7 @@ import { SharedModule } from '../shared/shared.module';
   ],
   declarations: [QuantityMainComponent],
   providers: [
-    QuantityMainService,
+    QuantityMainService
   ],
   exports: [SharedModule]
 })

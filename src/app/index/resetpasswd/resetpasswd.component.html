@@ -4,29 +4,29 @@
 <div class="loginWrap">
   <div class="text_center" style="padding-top: 15%">
     <a href="#"><img class="logo_login" src="/assets/resources/images/login/login_logo.png" alt="logo"/></a>
-    <p>비밀번호 재설정</p>
-    <p class="copy">등록된 계정의 비밀번호 재설정을 요청합니다.</p>
+    <p>{{'indexMain.resetPasswd.title' | translate}}</p>
+    <p class="copy">{{'indexMain.resetPasswd.explain' | translate}}</p>
   </div>
   <form class="form-horizontal maT30" action="">
     <div class="form-group">
       <div class="col-xs-12">
         <input class="form-control" type="text" required="" placeholder="E-mail" name="email" [(ngModel)]="email" (keyup)="checkValidation()">
-        <div *ngIf="isValidation"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> 이메일 형식이 아닙니다
+        <div *ngIf="isValidation"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{'indexMain.resetPasswd.emailCheck' | translate}}
         </p></div>
       </div>
     </div>
     <div class="form-group maT30">
       <div class="col-xs-12">
         <button class="btns colors4" (click)="checkUser()">
-          비밀번호 재설정
+          {{'indexMain.button.reset' | translate}}
         </button>
       </div>
     </div>
     <div class="form-group maT30">
-      <div class="col-xs-6 text-left">
-        <a href="#" class="text-muted" *ngIf="isUsed">사용중인 이메일 계정이 없습니다.</a>
-      </div>
-      <div class="col-xs-6 text-right">
+      <!-- <div class="col-xs-6 text-left">
+        <a href="#" class="text-muted" *ngIf="isUsed">{{'indexMain.resetPasswd.accountNotExist' | translate}}</a>
+      </div> -->
+      <div class="col-xs-6 col-xs-offset-6 text-right">
         <a href="/" class="locolor">Login</a>
       </div>
     </div>

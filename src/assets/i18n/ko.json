@@ -1,4 +1,99 @@
 {
+  "indexMain": {
+    "section0": {
+      "title": "개방형 클라우드 플랫폼!",
+      "explain": "파스-타와 함께 당신의 앱에 날개를 달아보세요",
+      "text1": "파스-타는 글로벌하게 검증된 오픈소스를 활용하여 개발되고,전체가 오픈 라이선스인 아파치 라이선스로 개방되므로 누구나 자유롭게 활용 가능한 개방형 클라우드 플랫폼입니다.",
+      "text2": "클라우드 인프라(IaaS) 제공자는 파스-타를 활용하여 플랫폼 서비스까지 제공하며, 클라우드 SW(SaaS) 제공자는 다양한 인프라를 지원하는 파스-타 기반에서의 SaaS 개발로 플랫폼 별 중복 개발 없이, 쉽고 빠르게 서비스를 개발·운영할 수 있습니다.",
+      "text3": "파스-타는 파스(PaaS)와 타(TA)의 합성어로, 영어로는 파스(PaaS), 고마워(TA, Thanks 구어체)의 의미를, 한글로는 파스에타(탑승)라는 중의적 의미입니다."
+    },
+    "section1": {
+      "title": "파스-타(PaaS-TA) 특징",
+      "explain": "실행환경은 Cloud Foundry 오픈 소스를 기반으로 구성됩니다.",
+      "subTitle1": "7종 이상 다양한 인프라(IaaS) 지원으로 종속성 해소",
+      "text1": "OpenStack 신규버전(Ocata, Pike등) 지속 지원 및 AWS, Vagant, VMWare, CloudStack, Google Cloud Platform, Azure 글로벌 선도 IaaS지원",
+      "subTitle2": "풍부한 개발 / 운영환경 제공",
+      "text2": "8종(Java, NodeJS, PHP 등) 개발언어, 10종(전자정부표준 프레임워크 등)의 프레임워크, 국산 SW(Tibero, Cubrid, Altibase, Arcus 등) 서비스 지원 및 IaaS에서 PaaS, SaaS까지 통합 관제 지원",
+      "subTitle3": "단계별 상세 가이드 문서 제공",
+      "text3": "플랫폼 설치, 서비스 설치, 플랫폼 확장, 어플리케이션 개발 등 23종 한글 문서 제공 및 버전 별 지속 업데이트",
+      "subTitle4": "국내 클라우드 산업 활성화 및 도메인 플랫폼 생태계 조성",
+      "text4": "국내 클라우드 산업의 글로벌 경쟁력 제고 및 4차 산업형명 선도를 위한 안정적 기술지원과 개발자 육성지원"
+    },
+    "section2": {
+      "title": "파스-타(PaaS-TA) 개방형 생태계",
+      "explain": "PaaS-TA 도입 프로젝트에 대해 플랜을 수립하고 체계적인 기술지원을 수행하고 있습니다.",
+      "subTitle1": "개방형 협력",
+      "text1": "클라우드인프라/SW/미들웨어 개발 기업 및 연구소/학교 등 부문별 열린 협력 추진",
+      "subTitle2": "플랫폼 활용 전문가",
+      "text2": "개발자 커뮤니티 협력을 통한 파스-타 활용 과정의 정기적인 교육 추진",
+      "subTitle3": "정기기술 세미나",
+      "text3": "클라우드 플랫폼 개발자 대상 공개 세미나(클라우드 PUB) 개최",
+      "subTitle4": "기술ㆍ컨설팅 지원",
+      "text4": "파스-타 도입 검토ㆍ설치ㆍ운영 전 범위에 걸친 기술지원",
+      "subTitle5": "전문개발자 집중 육성",
+      "text5": "파스-타 전문 개발자 집중 육성 프로그램(상주/비상주)제공",
+      "subTitle6": "대학교육 지원",
+      "text6": "파스-타 기반 IT교육 및 실습환경 제공"
+    },
+    "section3": {
+      "title": "파스-타(PaaS-TA) 기능",
+      "explain": "PaaS-TA는 인프라 제어 및 관리환경, 실행환경, 개발환경, 서비스환경, 운영환경으로 구성됩니다.",
+      "subTitle1": "편리한 환경설정을 통한 데브옵스 지원",
+      "text1": "어플리케이션 개발에 필요한 프레임워크, 미들웨어, OS등 표준화된 개발, 운영 환경 구성 및 빌드, 테스트, 배포 자동화를 통한 데이옵스 지원과 형상 관리 서비스 제공",
+      "subTitle2": "플랫폼 설치 자동화 및 IaaS 대시보드 지원",
+      "text2": "IaaS에 PaaS 설치하는 복잡한 과정을 자동화하는 설치 자동화 및 다양한 IaaS의 통합 관리기능 제공",
+      "subTitle3-1": "편리하고 확장가능한",
+      "subTitle3-2": "UI지원",
+      "text3": "템플릿 기반으로 클릭 한번에 편리한 개발을 지원하는 개발자 UI와 통합 운영, 관리를 위한 운영자 UI제공",
+      "subTitle4-1": "하이브리드",
+      "subTitle4-2": "클라우드 지원",
+      "text4": "내ㆍ외부 간 서비스 이동ㆍ연동이 가능한 하이브리드 클라우드 구성 지원",
+      "subTitle5-1": "IaaS/VM/컨테이너",
+      "subTitle5-2": "모니터링 지원",
+      "text5": "CPU, Memory, Disk 사용량, CPU, Memory, Disk I/O, Network Traffic 등 클라우드 인프라부터 플랫폼, 소프트웨어에 이르는 클라우드 서비스 전계층 통합 모니터링ㆍ분석 기능 제공",
+      "subTitle6": "Kubernetes 지원",
+      "text6": "파스-타와 쿠버네티스를 결합한 컨테이너 제어 관리",
+      "subTitle7": "자동화된 서비스 확장 (Auto Scaling)",
+      "text7": "가상머신과 컨테이너, 어플리케이션, 서비스에 이르는 전 영역의 자원사용량에 기반한 첨단화된 자동확장 및 장애복구"
+    },
+    "scroll": "마우스를 스크롤해주세요",
+    "modal": {
+      "header": "브라우져 지원",
+      "body1": "<span class='apply'>Google Chrome</span>, <span class='apply'>Microsoft Edge</span> 이외의 브라우져 에서는 정상작동 하지 않을 수 있습니다.",
+      "body2": "Internet Explorer 설정 사항",
+      "body3": "인터넷 옵션 > 보안 탭 > 신뢰할 수 있는 사이트에 해당 주소 추가"
+    },
+    "createuser": {
+      "title": "계정을 생성하세요",
+      "explain-1": "계정으로 사용할 이메일을 입력하세요",
+      "explain-2": "인증 완료 후 계정을 생성 할 수 있습니다",
+      "emailCheck": "이메일 형식이 아닙니다",
+      "overLapAccount": "계정이 이미 있습니다!"
+    },
+    "resetPasswd": {
+      "title": "비밀번호 재설정",
+      "explain": "등록된 계정의 비밀번호 재설정을 요청합니다.",
+      "emailCheck": "이메일 형식이 아닙니다",
+      "accountNotExist": "사용중인 이메일 계정이 없습니다."
+
+    },
+    "login": {
+      "notMatchMemberInfo": "사용자 계정 또는 비밀번호가 틀렸습니다.",
+      "loginError": "로그인 과정에 문제가 발생하였습니다. 관리자에게 문의 하시길 바랍니다."
+    },
+    "button": {
+      "sendmail": "인증 메일 보내기",
+      "reset": "비밀번호 재설정"
+    },
+    "alertLayer": {
+      "mailSendSuccess": "메일 발송에 성공하였습니다.",
+      "mailSendFail": "메일 발송에 실패하였습니다.",
+      "accountCreateFail": "다른 계정으로 생성하세요.",
+      "accountNotExist": "계정이 존재하지 않습니다.",
+      "memberInfoExist": "사용자 정보가 존재합니다.",
+      "systemError": "시스템 에러가 발생하였습니다. 다시 시도하세요."
+    }
+  },
   "appMain": {
     "app": {
       "rename": "이름변경",
@@ -88,11 +183,16 @@
       },
       "notificationHistoryTab": {
         "title": "알림 발생 이력",
+        "item1": "연결 할 서비스",
+        "selectService": "서비스 선택",
+        "item2": "파라미터 값",
         "resourceType": "자원유형",
         "alarmRating": "Alram 등급",
         "date": "Date",
         "message": "Message",
-        "more": "더보기"
+        "more": "더보기",
+        "connect": "연결",
+        "cancel": "취소"
       }
     },
     "layerpop": {
@@ -224,7 +324,9 @@
       "bindServiceFail": "서비스 연결이 실패하였습니다.",
       "unbindServiceSuccess": "서비스를 연결해제 하였습니다.",
       "unbindServiceFail": "서비스 연결해제가 실패하였습니다.",
-      "sshUrlEmpty": "등록된 SSH 접속 URL 이 없습니다."
+      "sshUrlEmpty": "등록된 SSH 접속 URL 이 없습니다.",
+      "emailCheckError": "Email 형식이 잘못 되었습니다.",
+      "selectServiceCheck": "서비스를 선택 하세요."
     },
     "nav": {
       "summary": "개요",
@@ -234,7 +336,8 @@
       "env": "환경변수",
       "route": "라우트",
       "logs": "로그",
-      "viewchart": "모니터링"
+      "viewchart": "모니터링",
+      "ssh": "SSH"
     }
   },
   "common": {
@@ -337,7 +440,6 @@
     "service": {
       "summary": "요약",
       "description": "설명",
-      "viewDocument": "문서보기",
       "region": "지역",
       "organization": "조직",
       "space": "공간",
@@ -365,7 +467,7 @@
       "createSuccessApp": "현재 이름으로 앱을 생성할수 있습니다.",
       "createFalseApp": "현재 이름으로 앱을 생성할수 없습니다.",
       "createSuccessRoute": "현재 호스트로 라우트를 생성할수 있습니다.",
-      "createFasleRoute": "현재 호스트로 라우트를 생성할수 없습니다.",
+      "createFalseRoute": "현재 호스트로 라우트를 생성할수 없습니다.",
       "createSuccessService": "현재 이름으로 서비스를 생성할수 있습니다.",
       "createFalseService": "현재 이름으로 서비스를 생성할수 없습니다.",
       "overLapService": "만들려고 하는 서비스 중에 이름이 같은 것이 있습니다.",
@@ -391,6 +493,9 @@
       "serviceError": "서비스 생성을 실패했습니다.",
       "appUploadError": "사용자 앱 업로드에 실패했습니다.",
       "appFileSizeError": "파일 크기는 {{fileSize}} MB 를 넘을 수 없습니다."
+    },
+    "alertLayer": {
+      "serverError": "서버가 불안정합니다."
     }
   },
   "orgMain": {
@@ -400,6 +505,7 @@
     "cancel": "취소",
     "viewDetail": "세부사항 보기",
     "closeDetail": "세부사항 닫기",
+    "more": "더보기",
     "reName": "이름변경",
     "delete": "삭제",
     "space": "공간",
@@ -487,8 +593,16 @@
         "btn1": "확인",
         "btn2": "취소"
       },
+      "inviteCancel": {
+        "title": "초대 취소",
+        "bodyText": "<span>{{sltMemberName}}</span>님의 <span>{{orgsDetailName}}</span>조직의 초대를 취소하시겠습니까?",
+        "btn1": "확인",
+        "btn2": "취소"
+      },
       "layerpop4": {
-        "title": "사용자 초대",
+        "inviteTitle": "사용자 초대",
+        "reInviteTitle": "사용자 재초대",
+        "roleSetTitle": "권한부여",
         "explanation": "* 콤마를 사용하여 이메일 주소를 계속 추가 할 수 있습니다.",
         "succeed" : "* 사용자 에게 초대메세지를 보낼 수 있습니다.",
         "unSucceed" : "* 이메일에 해당하는 사용자가 없습니다.",
@@ -531,7 +645,17 @@
       "memberCancelFail2": "ORG에 멤버가 없는 관계로 멤버취소를 할 수 없습니다. ORG를 삭제하세요.",
       "sendEmailSuccess": "사용자를 초대완료 하였습니다.",
       "sendEmailFail": "사용자 초대가 실패 하였습니다.",
-      "checkEmail" : "사용자 초대 이메일을 확인하시길 바랍니다."
+      "checkEmail" : "사용자 초대 이메일을 확인하시길 바랍니다.",
+      "inviteCancleSuccess": "초대 취소 성공",
+      "inviteCancleFail": "초대 취소 실패",
+      "serverError": "서버 오류",
+      "changeSuccess": "변경 성공",
+      "changeFail": "변경 실패"
+    },
+    "etc": {
+      "unlimited": "무제한",
+      "free": "무료",
+      "pay": "유료"
     }
   },
   "orgProduce": {
@@ -541,7 +665,7 @@
     },
     "org": {
       "title": "조직명",
-      "explan": "조직은 컴퓨팅 리소스, 애플리케이션 및 서비스를 포괄하는 개발 계정입니다.<br>개인이나 다수의 공동 작업자가 소유 하거나 사용 할 수 있습니다.<br>프로젝트의 이름이나 팀의 이름으로 조직의 조직의 이름을 설정하세요."
+      "explan": "조직은 컴퓨팅 리소스, 애플리케이션 및 서비스를 포괄하는 개발 계정입니다.<br>개인이나 다수의 공동 작업자가 소유 하거나 사용 할 수 있습니다.<br>프로젝트의 이름이나 팀의 이름으로 조직의 이름을 설정하세요."
     },
     "quota": {
       "title": "할당량",
@@ -565,6 +689,11 @@
         "bodyText": "<span>{{orgname}}</span> 조직 생성을 완료했습니다. <br/>이동 버튼을 누르면 조직관리로 이동합니다.",
         "btn1": "이동",
         "btn2": "취소"
+      },
+      "fail": {
+        "title": "조직 생성 실패",
+        "bodyText": "<span>{{orgname}}</span> 조직 생성에 실패했습니다.<br/>",
+        "btn": "확인"
       }
     },
     "alertLayer": {
@@ -575,7 +704,9 @@
       "orgNameCheck4": "잘못된 요청입니다. 관리자에게 문의하십시오."
     },
     "etc": {
-      "unlimited": "무제한"
+      "unlimited": "무제한",
+      "free": "무료",
+      "pay": "유료"
     }
   },
   "usermgmt": {
@@ -650,10 +781,16 @@
       "orgDeleteSuccess": "조직탈퇴 완료 되었습니다.",
       "orgDeleteFeedback" : "계정 삭제 전 모든 조직 및 공간 제거하세요.",
       "orgDeleteFail": "조직 탈퇴 실패 하였습니다.",
-      "accountDelete": "계정삭제가 실패 하였습니다.",
+      "accountDeleteFail": "계정삭제가 실패 하였습니다.",
       "accountDeleteSuccess": "계정삭제가 완료 되었습니다.",
       "memberCancelFail2": "ORG에 멤버가 없는 관계로 멤버취소를 할 수 없습니다. ORG를 삭제하세요.",
-      "accountDeleteFail": "조직 탈퇴 실패 하였습니다."
+      "accountDuplicateFail": "다른 계정으로 생성하세요",
+      "memberInfoExist": "사용자 정보가 존재합니다",
+      "mailSuccess": "메일 발송에 성공하였습니다.",
+      "mailFail": "메일 발송에 실패하였습니다",
+      "accountCancelFail": "계정이 존재하지 않습니다.",
+      "serverError": "서버가 불안정합니다.",
+      "systemError": "시스템 에러가 발생하였습니다. 다시 시도하세요."
     }
 
   },
@@ -726,11 +863,70 @@
       "appstartFail": "App 시작이 실패하였습니다.",
       "appstopSuccess": "App을 정지 하였습니다.",
       "appstopFail": "App 정지가 실패하였습니다.",
-      "bindingService": "이 서비스는 현재 어플리케이션과 연결되어있는 상태입니다. 연결 해제를 해야 삭제가 가능합니다."
+      "bindingService": "이 서비스는 현재 어플리케이션과 연결되어있는 상태입니다. 연결 해제를 해야 삭제가 가능합니다.",
+      "credentialInvalid": "Credential 작성 형식이 맞지 않습니다.",
+      "routeServiceUrlInvalid": "Route Service Url 작성 형식이 맞지 않습니다.",
+      "emptyValue": "userProvideName을 입력해주십시오.",
+      "serverError": "서버가 불안정합니다."
     },
     "external": {
       "systemerror" : "시스템 에러가 발생하였습니다. 다시 시도 바랍니다."
 
     }
+  },
+  "auth" : {
+    "alertLayer": {
+      "orgInviteReq": " 님에게 조직 초대를 받았습니다. 메일 확인 바랍니다."
+    }
+  },
+  "external" : {
+    "inviteOrg": {
+      "acceptMsg1": "안녕하세요?",
+      "acceptMsg2": "개방형 클라우드 플랫폼 파스-타 입니다.",
+      "acceptMsg3-1": "님은 이제 파스-타의",
+      "acceptMsg3-2": "조직에 접근이 가능합니다.",
+      "acceptMsg4": "잠시 후 홈페이지로 이동합니다."
+    },
+    "active": {
+      "denyMsg1": "죄송합니다. 현재 사용자 포탈을 사용하실수 없습니다.",
+      "denyMsg2": "관리자에게 로그인 승인을 받으셔야 이용하실수 있습니다.",
+      "prePage": "이전 페이지"
+    },
+    "create": {
+      "title": "계정을 생성하세요",
+      "explain": "사용자 정보를 입력하세요",
+      "placeholderText1": "이름",
+      "check1": "이름을 입력하세요.",
+      "placeholderText2": "비밀번호",
+      "check2": "영문,숫자를 혼합하여 6~20자 이내 공백 미포함",
+      "placeholderText3": "비밀번호 확인",
+      "check3": "패스워드가 서로 다릅니다."
+    },
+    "reset": {
+      "title": "패스워드 변경",
+      "explain": "패스워드를 입력하세요",
+      "placeholderText1": "비밀번호",
+      "check1": "영문,숫자를 혼합하여 6~20자 이내 공백 미포함",
+      "placeholderText2": "비밀번호 확인",
+      "check2": "패스워드가 서로 다릅니다."
+    },
+    "button": {
+      "create": "계정생성",
+      "change": "변경"
+    },
+    "alertLayer": {
+      "createSuccess1": "회원가입 완료, 로그인이 가능합니다.",
+      "createSuccess2": "회원가입 완료, 운영자가 승인을 해야 로그인 할 수 있습니다.",
+      "createFail": "회원가입 실패, 다시 시도하세요.",
+      "changeSuccess": "성공적으로 변경되었습니다.",
+      "changeFail": "변경하는데 실패하였습니다.",
+      "systemError": "시스템 에러가 발생하였습니다. 다시 시도하세요."
+    }
+  },
+  "error" : {
+    "title": "죄송합니다. 현재 찾을 수 없는 페이지를 요청하셨습니다.",
+    "explain-1": "존재하지 않는 주소를 입력하셨거나,",
+    "explain-2": "요청하신 페이지의 주소가 변경, 삭제되어 찾을 수 없습니다.",
+    "btn": "이전 페이지"
   }
 }

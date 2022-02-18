@@ -340,18 +340,20 @@ $(document).ready(function() {
     });
 
     // 20180313 세부사항 보기,닫기
-    $(".organization_sw").on("click" , function(){
-        var wrap_line = $(".organization_wrap");
-        $(this).parents(wrap_line).toggleClass("on");
-        var updown = $(this).children("i").attr('class');
-        if( updown == 'fas fa-chevron-down' ){
-            $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            $(this).html("<i class='fas fa-chevron-up'></i> 세부사항 닫기");
-        } else {
-            $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-            $(this).html("<i class='fas fa-chevron-down'></i> 세부사항 보기");
-        }
-    });
+    // $(".organization_sw").on("click" , function(){
+    //     var wrap_line = $(".organization_wrap");
+    //     $(this).parents(wrap_line).toggleClass("on");
+    //     var updown = $(this).children("i").attr('class');
+    //     if( updown == 'fas fa-chevron-down' ){
+    //         $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+    //         // $(this).html("<i class='fas fa-chevron-up'></i> 세부사항 닫기");
+    //         $(this).html("<i class='fas fa-chevron-up'></i> <%= __('resources.common.detail1') %>");
+    //     } else {
+    //         $(this).toggleClass("colors5");//.children("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+    //         // $(this).html("<i class='fas fa-chevron-down'></i> 세부사항 보기");
+    //         $(this).html("<i class='fas fa-chevron-down'></i> <%= __('resources.common.detail1') %>");
+    //     }
+    // });
 
     $(".weekday li").on("mouseenter", function(){
         $(this).addClass("on");

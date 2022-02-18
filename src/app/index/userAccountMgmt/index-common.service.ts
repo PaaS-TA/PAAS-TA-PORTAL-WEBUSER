@@ -4,6 +4,7 @@ import {NGXLogger} from 'ngx-logger';
 import {User, UsermgmtService} from '../../usermgmt/usermgmt.service';
 import {error} from 'util';
 import {Observable} from 'rxjs';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {forEach} from '@angular/router/src/utils/collection';
 
 @Injectable()
@@ -14,13 +15,23 @@ export class IndexCommonService {
   isUsed: boolean;
   isSendEmail: boolean;
 
+  public translateEntities: any = [];
+
   /*사용자 정보*/
   public userName: string;
   public userGuid: string;
 
-  constructor(private usermgmtService: UsermgmtService, private commonService: CommonService, private log: NGXLogger) {
+  constructor(private usermgmtService: UsermgmtService, private commonService: CommonService, public translate: TranslateService, private log: NGXLogger) {
     this.isSendEmail = false;
     this.isUsed = false;
+
+    this.translate.get('indexMain').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.indexMain;
+    });
   }
 
 
@@ -58,16 +69,17 @@ export class IndexCommonService {
         this.isSendEmail = true;
       } else {
         this.log.debug("ERR");
+
         this.commonService.doDelete(url + '/commonapi/v2/user/' + email, param, '').subscribe();
         this.commonService.doDeleteMulti(url + '/portalapi/v2/users/' + email, authorization, param, '').subscribe();
-        this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
+        this.commonService.alertMessage(this.translateEntities.alertLayer.mailSendFail, false);
         this.isSendEmail = false;
       }
       this.commonService.isLoading = false;
     }, error => {
       this.commonService.doDelete(url + '/commonapi/v2/users/' + email, param, '').subscribe();
       this.commonService.doDeleteMulti(url + '/portalapi/v2/users/' + email, authorization, param, '').subscribe();
-      this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.mailSendFail, false);
       this.isSendEmail = false;
       this.commonService.isLoading = false;
     });
@@ -86,7 +98,7 @@ export class IndexCommonService {
       }
       this.commonService.isLoading = false;
     }, error => {
-      this.commonService.alertMessage('메일 발송에 실패하였습니다.', false);
+      this.commonService.alertMessage(this.translateEntities.alertLayer.mailSendFail, false);
       this.isSendEmail = false;
       this.commonService.isLoading = false;
     });

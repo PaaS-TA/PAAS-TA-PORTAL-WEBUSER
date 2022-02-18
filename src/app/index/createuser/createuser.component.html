@@ -4,31 +4,30 @@
 <div class="loginWrap">
   <div class="text_center" style="padding-top: 15%">
     <a href="#"><img class="logo_login" src="/assets/resources/images/login/login_logo.png" alt="logo"/></a>
-    <p>계정을 생성하세요</p>
-    <p class="copy">계정으로 사용할 이메일을 입력하세요<br/>인증 완료 후 계정을 생성 할 수 있습니다</p>
+    <p>{{'indexMain.createuser.title' | translate}}</p>
+    <p class="copy">{{'indexMain.createuser.explain-1' | translate}}<br>{{'indexMain.createuser.explain-2' | translate}}</p>
   </div>
   <form class="form-horizontal maT30" action="">
     <div class="form-group">
       <div class="col-xs-12">
         <input class="form-control" type="text" required="" placeholder="E-mail" name="email" [(ngModel)]="email"
                (change)="checkValidation()">
-        <div *ngIf="isValidation"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> 이메일 형식이
-          아닙니다
+        <div *ngIf="isValidation"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{'indexMain.createuser.emailCheck' | translate}}
         </p></div>
       </div>
     </div>
     <div class="form-group maT30">
       <div class="col-xs-12">
         <button class="btns colors4" (click)="checkUser()">
-          인증 메일 보내기
+          {{'indexMain.button.sendmail' | translate}}
         </button>
       </div>
     </div>
     <div class="form-group maT30">
-      <div class="col-xs-6 text-left">
-        <a href="#" class="text-muted" *ngIf="isUsed">계정이 이미 있습니다!</a>
-      </div>
-      <div class="col-xs-6 text-right">
+      <!-- <div class="col-xs-6 text-left">
+        <a href="#" class="text-muted" *ngIf="isUsed">{{'indexMain.createuser.overLapAccount' | translate}}</a>
+      </div> -->
+      <div class="col-xs-6 col-xs-offset-6 text-right">
         <a href="/" class="locolor">Login</a>
       </div>
     </div>

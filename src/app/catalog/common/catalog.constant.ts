@@ -15,7 +15,7 @@ export enum CATALOGURLConstant {
   GETBUILDPACKS_Y = '/commonapi/v2/Y/developpacks',
   GETSERVICEPACKS_Y = '/commonapi/v2/Y/servicepacks',
   GETSTARTERPACKS = '/commonapi/v2/starterpacks',
-  GETBUILDPACKS = '/commonapi/v2/developpacks',
+  GETBUILDPACKS = '/commonapi/v2/developpacks', 
   GETSERVICEPACKS = '/commonapi/v2/servicepacks',
   GETSEARCH = '/commonapi/v2/packs',
 
@@ -26,7 +26,7 @@ export enum CATALOGURLConstant {
   SERVICEPACK = 'servicePack',
   BUILDPACK = 'buildPack',
   STARTERPACK = 'starter',
-  NOTAPPBINDING='연결없이 시작',
+  // NOTAPPBINDING='연결없이 시작',   // 미사용
   FAIL = 'FAIL',
   SUCCESS ='SUCCESS',
   OK=1,

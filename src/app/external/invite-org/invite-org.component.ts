@@ -4,6 +4,7 @@ import {CommonService} from "../../common/common.service";
 import {NGXLogger} from "ngx-logger";
 import {Observable} from "rxjs/Observable";
 import {OrgMainService} from "../../org/org-main/org-main.service";
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
 
 declare var $: any;
@@ -15,6 +16,7 @@ declare var jQuery: any;
   styleUrls: ['./invite-org.component.css']
 })
 export class InviteOrgComponent implements OnInit, AfterViewChecked {
+  
   private waitTime: number = 5 * 1000;
   private timestamp: number;
 
@@ -23,7 +25,10 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
   private refreshToken: string;
   private seq : string;
 
-  constructor(private common: CommonService, private orgService: OrgMainService, private router: Router, private logger: NGXLogger) {
+  public translateEntities: any = [];
+
+  constructor(private common: CommonService, private orgService: OrgMainService, private translate: TranslateService,
+              private router: Router, private logger: NGXLogger) {
   }
 
   ngOnInit() {
@@ -39,6 +44,14 @@ export class InviteOrgComponent implements OnInit, AfterViewChecked {
     this.orgName = parser.get('orgName');
     this.refreshToken = parser.get('refreshToken');
     this.seq = parser.get('seq');
+
+    this.translate.get('external').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.external;
+    });
     // remove parameters
     //location.hash = '';
     //location.search = '';

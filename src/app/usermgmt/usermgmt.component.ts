@@ -317,7 +317,7 @@ export class UsermgmtComponent implements OnInit {
           this.common.doPost('/portalapi/login', param, '').subscribe(data => { //1)로그인
             this.regionPassword();
           }, error => {
-            this.common.alertMessage('변경하는데 실패하였습니다.', false);
+            this.common.alertMessage(this.translateEntities.alertLayer.passwordFailNotFound, false);
             this.common.isLoading = false;
             $('#password_now').val('');
             $('#password_new').val('');
@@ -553,7 +553,6 @@ export class UsermgmtComponent implements OnInit {
       return data;
     }, error => {
       this.common.isLoading = false;
-      this.common.alertMessage('비밀번호를 다시 입력하세요.', false);
       this.common.alertMessage(this.translateEntities.alertLayer.passwordFail, false);
     });
   }

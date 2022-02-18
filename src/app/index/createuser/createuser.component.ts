@@ -3,8 +3,10 @@ import {NGXLogger} from 'ngx-logger';
 import {Router} from '@angular/router';
 import {IndexCommonService} from '../userAccountMgmt/index-common.service';
 import {CommonService} from '../../common/common.service';
+import {HttpClient} from '@angular/common/http';
 import {User, UsermgmtService} from '../../usermgmt/usermgmt.service';
 import {Observable} from 'rxjs';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {error} from 'util';
 import {forEach} from '@angular/router/src/utils/collection';
 import {CATALOGURLConstant} from '../../catalog/common/catalog.constant';
@@ -23,7 +25,10 @@ export class CreateuserComponent implements OnInit, DoCheck {
   public isUsed: boolean;
   public isSendEmail: boolean;
 
-  constructor(public indexCommonService: IndexCommonService, private common: CommonService, private usermgmtService: UsermgmtService, private router: Router, private log: NGXLogger) {
+  public translateEntities: any = [];
+
+  constructor(private httpClient: HttpClient, public indexCommonService: IndexCommonService, private common: CommonService, private usermgmtService: UsermgmtService, 
+              private translate: TranslateService, private router: Router, private log: NGXLogger) {
     this.email = '';
     this.isValidation = true;
     this.isUsed = false;
@@ -31,6 +36,14 @@ export class CreateuserComponent implements OnInit, DoCheck {
     if(this.common.getSeq() == null || this.common.getSeq() === ''){
       this.router.navigate(['/']);
     }
+
+    this.translate.get('indexMain').subscribe((res: string) => {
+      this.translateEntities = res;
+    });
+
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.indexMain;
+    });
 
   }
 
@@ -48,7 +61,7 @@ export class CreateuserComponent implements OnInit, DoCheck {
 
     if (this.isSendEmail) {
       this.isSendEmail = false;
-      this.indexCommonService.alertMessage('성공적으로 메일 발송하였습니다.', true);
+      this.indexCommonService.alertMessage(this.translateEntities.alertLayer.mailSendSuccess, true);
       this.router.navigate(['/']);
     }
   }
@@ -82,18 +95,18 @@ export class CreateuserComponent implements OnInit, DoCheck {
                 this.multiUsedCreate();
               }
               if (usedCount == 1) {
-                this.common.alertMessage('다른 계정으로 생성하세요.', false);
+                this.common.alertMessage(this.translateEntities.alertLayer.accountCreateFail, false);
               }
               if (usedCount == size) {
-                this.common.alertMessage('사용자 정보가 존재합니다.', false);
+                this.common.alertMessage(this.translateEntities.alertLayer.memberInfoExist, false);
               }
             }
           }, error => {
-            this.common.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
+            this.common.alertMessage(this.translateEntities.alertLayer.systemError, false);
           });
         });
       }, error => {
-        this.common.alertMessage('시스템 에러가 발생하였습니다. 다시 시도하세요. ', false);
+        this.common.alertMessage(this.translateEntities.alertLayer.systemError, false);
       });
     }
   }
