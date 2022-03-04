@@ -393,6 +393,7 @@
     },
     "appTemplate" : {
       "configureAppTemplates" : "Configure App Templates",
+      "viewDocument" : "View Document",
       "createanApp" : "Create an App",
       "region" : "Region",
       "organization" : "Organization",
@@ -440,6 +441,7 @@
     "service" : {
       "summary" : "Summary",
       "description" : "Description",
+      "viewDocument" : "View Document",
       "region" : "Region",
       "organization" : "Organization",
       "space" : "Space",
