@@ -94,7 +94,7 @@
 	    width: 50px;
 	}
 	#fp-nav ul.item>li:nth-of-type(4):before{
-	    content:"Fuction";
+	    content:"Function";
 	    left: -50px;
 	    width: 50px;
 	}

@@ -234,7 +234,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul.item>li:nth-of-type(4):before{
-    content:"Paas-TA Fuction";
+    content:"Paas-TA Function";
     position: absolute;
     top: 0px;
     left: -120px;
