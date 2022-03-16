@@ -101,11 +101,7 @@ export class CommonService {
       token = '';
     }
 
-    var lang = "ko";
-
-    if($.cookie('useLang') != null && $.cookie('useLang') != undefined && $.cookie('useLang') != "") {
-      lang = $.cookie('useLang');
-    }
+    var lang = $.cookie('useLang');
 
     return this.http.post(this.gateway + url, body, {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization()).set('useLang', lang)
@@ -117,11 +113,7 @@ export class CommonService {
       token = '';
     }
 
-    var lang = "ko";
-
-    if($.cookie('useLang') != null && $.cookie('useLang') != undefined && $.cookie('useLang') != "") {
-      lang = $.cookie('useLang');
-    }
+    var lang = $.cookie('useLang');
 
     return this.http.post(url, param, {
       //auth set 기본제공
