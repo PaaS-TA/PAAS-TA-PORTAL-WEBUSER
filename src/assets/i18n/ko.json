@@ -360,6 +360,10 @@
       "orgManage": "조직관리",
       "viewUsage": "사용량조회",
       "logOut": "로그아웃"
+    },
+    "lang": {
+      "ko": "한국어",
+      "en": "영어"
     }
   },
   "catalog": {

@@ -147,8 +147,13 @@
         <button href="#" class="dropdown-toggle globe" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false"><i class="fas fa-caret-down"></i></button>
         <ul class="dropdown-menu">
-          <li id="lang_ko" class="cur"><a href="javascript:void(0);" (click)="changeLangClick('ko');">Korean</a></li>
-          <li id="lang_en"><a href="javascript:void(0);" (click)="changeLangClick('en');">English</a></li>
+          <ng-container *ngFor="let key of languageList.keys()">
+            <li id="{{'lang_' + key}}" [ngClass]="curLang == key ? 'cur' : ''">
+              <a href="javascript:void(0);" (click)="changeLangClick(key);">{{languageList.get(key)}}</a>
+            </li>
+          </ng-container>
+          <!-- <li id="lang_ko" class="cur"><a href="javascript:void(0);" (click)="changeLangClick('ko');">Korean</a></li>
+          <li id="lang_en"><a href="javascript:void(0);" (click)="changeLangClick('en');">English</a></li> -->
         </ul>
       </div>
     </li>
