@@ -100,8 +100,8 @@ export class AppTopComponent implements OnInit {
       this.viewusage = this.translateEntities.nav.viewUsage;
       this.orgMng = this.translateEntities.nav.orgManage;
       this.mySign = this.translateEntities.nav.myAccount;
-      for (let i=0; i<appConfig['language'].length; i++) {
-        this.languageList.set(appConfig['language'][i], this.switchLang(appConfig['language'][i]));
+      for (let i=0; i<appConfig['languageList'].length; i++) {
+        this.languageList.set(appConfig['languageList'][i], this.switchLang(appConfig['languageList'][i]));
       } 
     });
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -109,8 +109,8 @@ export class AppTopComponent implements OnInit {
       this.viewusage = this.translateEntities.nav.viewUsage;
       this.orgMng = this.translateEntities.nav.orgManage;
       this.mySign = this.translateEntities.nav.myAccount;
-      for (let i=0; i<appConfig['language'].length; i++) {
-        this.languageList.set(appConfig['language'][i], this.switchLang(appConfig['language'][i]));
+      for (let i=0; i<appConfig['languageList'].length; i++) {
+        this.languageList.set(appConfig['languageList'][i], this.switchLang(appConfig['languageList'][i]));
       }
     });
 

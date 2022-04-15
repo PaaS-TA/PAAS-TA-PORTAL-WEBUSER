@@ -20,8 +20,8 @@ export class CommonService {
   headers: HttpHeaders;
   fileheaders: HttpHeaders;
   private gateway = '';
-  defaultLang = 'ko';
-  useLang = 'ko';
+  defaultLang = appConfig['languageList'][0];
+  useLang = appConfig['languageList'][0];
 
 
   constructor(public http: HttpClient, public router: Router, public log: NGXLogger) {
