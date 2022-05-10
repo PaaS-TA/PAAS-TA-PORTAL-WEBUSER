@@ -3,5 +3,5 @@ applications:
   memory: 1G
   instances: 1
   buildpacks:
-    - staticfile_buildpack
+    - paketo-buildpacks/nginx
   path: ./dist/paas-ta-portal-webuser
