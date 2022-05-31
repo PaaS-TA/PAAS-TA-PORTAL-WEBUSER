@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 import {NGXLogger} from 'ngx-logger';
 import {Param} from "../index/login/login.component";
@@ -80,8 +80,11 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
+
+    var lang = $.cookie('useLang');
+
     return this.http.get(this.gateway + url, {
-      headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization())
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', this.getAuthorization()).set('useLang', lang)
     });
   }
 
@@ -90,13 +93,16 @@ export class CommonService {
     if (token == null) {
       token = '';
     }
+
+    var lang = $.cookie('useLang');
+
     return this.http.get(url, {
-      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization)
+      headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization).set('useLang', lang)
     });
   }
 
 
-  doPost(url: string, body: any, token: string) {
+    doPost(url: string, body: any, token: string) {
     if (token == null) {
       token = '';
     }
@@ -108,6 +114,7 @@ export class CommonService {
     });
   }
 
+  
   doPostMulti(url: string, authorization: any, param: any, token: string) {
     if (token == null) {
       token = '';
@@ -120,6 +127,7 @@ export class CommonService {
       headers: this.headers.set('cf-Authorization', token).set('Authorization', authorization).set('useLang', lang)
     });
   }
+
 
   doFilePost(url: string, body: any, token: string) {
     if (token == null) {
@@ -654,7 +662,7 @@ export class CommonService {
   }
 
   getCurrentCatalogNumber(): any {
-    return window.sessionStorage.getItem('catalog_number');
+   return window.sessionStorage.getItem('catalog_number');
   }
 
   getMonitoring(): boolean {

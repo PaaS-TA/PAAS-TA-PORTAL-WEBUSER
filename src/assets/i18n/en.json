@@ -836,7 +836,7 @@
       "delete": "Delete",
       "deleteApp": "DeleteApp",
       "explan1": "If you delete an app, you can not reverse it",
-      "explan2": "want to delete?",
+      "explan2": " want to delete?",
       "placeholder" : "Enter app name to change."
     },
     "service": {
@@ -850,7 +850,7 @@
       "web-ide": "WEB-IDE Application",
       "userProvidedCreate": "User Provided Create",
       "explan1": "If you delete a service, you can not reverse it.",
-      "explan2": "want to delete?",
+      "explan2": " want to delete?",
       "placeholder":"Enter service name to change.",
       "isNotSame" : "Enter all values"
     },

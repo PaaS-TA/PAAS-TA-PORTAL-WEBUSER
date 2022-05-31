@@ -128,7 +128,7 @@ export class AppTopComponent implements OnInit {
     }
   }
 
-
+  // 언어 추가시 수정 필요
   switchLang(lang: string) {
     let curLang;
 
@@ -157,14 +157,14 @@ export class AppTopComponent implements OnInit {
 
     $.cookie("useLang", this.common.useLang);
 
-    if(location.pathname == '/') {
+    var locationPath = location.pathname;
+    if(locationPath == '/' || locationPath.indexOf("catalog") != -1) {
       if (self.name != 'reload') {
         self.name = 'reload';
         self.location.reload();
       }
       else self.name = '';
     } 
-
   }
   
 
