@@ -221,6 +221,7 @@ export class CatalogDetailComponent implements OnInit {
       // this.template = data['Starter'];
       this.templatelist = data['Starter'];
 
+
       // 템플릿 셋팅
       var curLang = $.cookie("useLang");
       this.templatelangList = new Array<any>();
@@ -236,8 +237,13 @@ export class CatalogDetailComponent implements OnInit {
         }
       });
 
-      if(typeof this.template === "undefined" || this.template.length == 0 || this.templatelangList.indexOf(curLang) < 0) {
+      if(typeof this.template === "undefined" || this.template === null || this.templatelangList.indexOf(curLang) < 0) {
         this.template = this.origTemplate;
+      }
+
+      if(this.origTemplate.buildPackCategoryNo == 0) {
+        this.catalogService.alertMessage(this.translateEntities.contants.notSelectBuildpack, true);
+        this.router.navigate(['catalog']);
       }
 
 
@@ -256,7 +262,7 @@ export class CatalogDetailComponent implements OnInit {
       });
 
       
-      if(typeof this.buildpack === "undefined" || this.buildpack.length == 0 || this.templatelangList.indexOf(curLang) < 0) {
+      if(typeof this.buildpack === "undefined" || this.buildpack === null || this.templatelangList.indexOf(curLang) < 0) {
         this.buildpack = this.origBuildpack;
       }
 
@@ -283,8 +289,6 @@ export class CatalogDetailComponent implements OnInit {
       if(this.servicepacklist.length < 1) {
         this.servicepacklist = this.origServicepackList;
       }
-
-      console.log("현재 servicedpacklist 확인 --> " + JSON.stringify(this.servicepacklist));
 
       this.apptemplate.push(this.buildpack);
       // data['Servicepack'].forEach(data => {

@@ -486,7 +486,8 @@
       "inputAppName": "앱 이름을 입력하여 주십시오.",
       "inputHostName": "호스트를 입력하여 주십시오.",
       "inputService": "서비스 이름을 입력하여 주십시오.",
-      "notSelectUserApp": "사용자 앱을 선택 해 주십시오."
+      "notSelectUserApp": "사용자 앱을 선택 해 주십시오.",
+      "notSelectBuildpack": "사용중인 빌드팩이 없습니다."
     },
     "result": {
       "appNameError": "현재 입력한 앱 이름으로 생성할 수 없습니다.",

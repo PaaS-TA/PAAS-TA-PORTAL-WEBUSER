@@ -485,7 +485,8 @@
       "inputAppName" :"Please enter an app name.",
       "inputHostName":"Please enter host.",
       "inputService":"Please enter a service name.",
-      "notSelectUserApp": "Please select user app."
+      "notSelectUserApp": "Please select user app.",
+      "notSelectBuildpack": "There is no using buildpack."
     },
     "result" : {
       "appNameError" : "The name of the app you just entered is not created.",
