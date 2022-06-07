@@ -4,3 +4,4 @@ applications:
   instances: 1
   buildpacks:
     - paketo-buildpacks/nginx
+  path: ./src
