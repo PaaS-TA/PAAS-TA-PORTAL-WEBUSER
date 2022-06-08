@@ -13,10 +13,6 @@ nvm use 9.11.1
 npm install
 npm run build
 ```
-### MIME.TYPES COPY
-```
-cp src/mime.types dist/paas-ta-portal-webuser/ 
-```
 
 
 ## PORTAL WEBUSER
