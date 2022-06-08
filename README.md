@@ -1,6 +1,7 @@
 # PAAS-TA-PORTAL-WEBUSER
- 
-## NPM을 통한 빌드 과정
+
+## Sidecar 
+### NPM을 통한 빌드 과정
 ```
 # NPM 설치
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -11,6 +12,10 @@ nvm use 9.11.1
 # NPM 빌드
 npm install
 npm run build
+```
+### MIME.TYPES COPY
+```
+cp src/mime.types dist/paas-ta-portal-webuser/ 
 ```
 
 
