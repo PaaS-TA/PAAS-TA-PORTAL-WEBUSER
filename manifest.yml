@@ -4,4 +4,4 @@ applications:
   instances: 1
   buildpacks:
     - paketo-buildpacks/nginx
-  path: ./src
+  path: ./dist/paas-ta-portal-webuser
