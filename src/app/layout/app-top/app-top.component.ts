@@ -57,6 +57,7 @@ export class AppTopComponent implements OnInit {
       this.isCatalogView = false;
     this.marketplaceUrl();
     this.languageList = new Map<string, string>();
+    this.curLang = this.common.defaultLang;
   }
 
   ngOnInit() {
@@ -115,7 +116,7 @@ export class AppTopComponent implements OnInit {
     });
 
     this.curLang = this.common.useLang;
-    this.changeLangClick(this.common.useLang);
+    this.changeLangClick(this.curLang);
 
     if (!isNullOrUndefined(this.common.getCurrentAppGuid)) {
       this.location = this.common.getCurrentLocation();
