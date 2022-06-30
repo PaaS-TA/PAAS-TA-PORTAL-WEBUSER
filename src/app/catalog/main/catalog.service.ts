@@ -179,7 +179,7 @@ export class CatalogService {
   }
 
   CatalogDetailInit(no : number){
-    return this.common.doGet(CATALOGURLConstant.GETSTARTERRELATION +no ,this.common.getToken()).map((res: Response) => {
+    return this.common.doGet(CATALOGURLConstant.GETSTARTERRELATION + no + '?isRequired=yes',this.common.getToken()).map((res: Response) => {
       return res;
     });
   }

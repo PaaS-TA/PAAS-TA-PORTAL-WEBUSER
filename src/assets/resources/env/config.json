@@ -18,5 +18,6 @@
   "webadminUri": "http://portal-web-admin.galaxycloud.kr/",
   "sshUri": "http://ssh-app.galaxycloud.kr/",
   "userAppSizeMb": "0",
-  "tailLogUri": "http://tail-log.15.165.167.51.galaxycloud.kr:1024/"
+  "tailLogUri": "http://tail-log.15.165.167.51.galaxycloud.kr:1024/",
+  "languageList": ["ko", "en"]
 }

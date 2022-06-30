@@ -7,6 +7,8 @@ import {CatalogService} from "../../catalog/main/catalog.service";
 import {isNullOrUndefined} from "util";
 import {SecurityService} from "../../auth/security.service";
 import {Organization} from "../../model/organization";
+import { l, t } from '@angular/core/src/render3';
+import { map } from 'rxjs/operator/map';
 
 
 declare var $: any;
@@ -43,6 +45,9 @@ export class AppTopComponent implements OnInit {
     'cur_dashboard', 'cur_dashboard_app', 'cur_catalog', 'cur_paasta-doc',
     'cur_usermgmt', 'cur_org', 'cur_org2', 'cur_quantity', 'cur_login',
   ];
+  public languageList: any;
+  public curLang: any;
+  
 
   constructor(private translate: TranslateService, private common: CommonService,
               private router: Router, private logger: NGXLogger, private catalogservice: CatalogService, private sec: SecurityService) {
@@ -51,6 +56,8 @@ export class AppTopComponent implements OnInit {
     if (this.isCatalogView == null)
       this.isCatalogView = false;
     this.marketplaceUrl();
+    this.languageList = new Map<string, string>();
+    this.curLang = this.common.defaultLang;
   }
 
   ngOnInit() {
@@ -89,7 +96,27 @@ export class AppTopComponent implements OnInit {
     $('#' + this.cursorId).addClass('cur');
     const url = this.router['url'].split("/")[1];
 
-    this.changeLangClick(this.common.useLang);
+    this.translate.get('common').subscribe((res: string) => {
+      this.translateEntities = res;
+      this.viewusage = this.translateEntities.nav.viewUsage;
+      this.orgMng = this.translateEntities.nav.orgManage;
+      this.mySign = this.translateEntities.nav.myAccount;
+      for (let i=0; i<appConfig['languageList'].length; i++) {
+        this.languageList.set(appConfig['languageList'][i], this.switchLang(appConfig['languageList'][i]));
+      } 
+    });
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.translateEntities = event.translations.common;
+      this.viewusage = this.translateEntities.nav.viewUsage;
+      this.orgMng = this.translateEntities.nav.orgManage;
+      this.mySign = this.translateEntities.nav.myAccount;
+      for (let i=0; i<appConfig['languageList'].length; i++) {
+        this.languageList.set(appConfig['languageList'][i], this.switchLang(appConfig['languageList'][i]));
+      }
+    });
+
+    this.curLang = this.common.useLang;
+    this.changeLangClick(this.curLang);
 
     if (!isNullOrUndefined(this.common.getCurrentAppGuid)) {
       this.location = this.common.getCurrentLocation();
@@ -100,40 +127,46 @@ export class AppTopComponent implements OnInit {
       this.appName = this.common.getCurrentAppName();
       this.appGuid = this.common.getCurrentAppGuid();
     }
+  }
 
-    this.translate.get('common').subscribe((res: string) => {
-      this.translateEntities = res;
-      this.viewusage = this.translateEntities.nav.viewUsage;
-      this.orgMng = this.translateEntities.nav.orgManage;
-      this.mySign = this.translateEntities.nav.myAccount;
-    });
-    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.translateEntities = event.translations;
-      this.viewusage = this.translateEntities.common.nav.viewUsage;
-      this.orgMng = this.translateEntities.common.nav.orgManage;
-      this.mySign = this.translateEntities.common.nav.myAccount;
-    })
+  // 언어 추가시 수정 필요
+  switchLang(lang: string) {
+    let curLang;
+
+    switch(lang) {
+      case 'en':
+        curLang = this.translateEntities.lang.en;
+        break;
+      case 'ja':
+        curLang = this.translateEntities.lang.ja;
+        break;
+      case 'zh':
+        curLang = this.translateEntities.lang.zh;
+        break;
+      default:
+        curLang = this.translateEntities.lang.ko;
+        break;
+    }
+
+    return curLang;
   }
 
   changeLangClick(lang: string) {
     this.translate.use(lang);
     this.common.useLang = lang;
-
-    $("li[id^='lang_']").removeClass("cur");
-    $("#lang_" + lang + "").addClass("cur");
+    this.curLang = this.common.useLang;
 
     $.cookie("useLang", this.common.useLang);
 
-    if(location.pathname == '/') {
+    var locationPath = location.pathname;
+    if(locationPath == '/' || locationPath.indexOf("catalog") != -1) {
       if (self.name != 'reload') {
         self.name = 'reload';
         self.location.reload();
       }
       else self.name = '';
     } 
-
   }
-
   
 
   loginClick() {

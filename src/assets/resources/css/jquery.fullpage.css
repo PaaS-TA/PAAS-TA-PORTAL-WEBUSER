@@ -148,7 +148,7 @@ html.fp-enabled,
 }
 
 
-#fp-nav ul>li:first-of-type:before{
+#fp-nav ul.ko>li:first-of-type:before{
     content:"Paas-TA 소개";
     position: absolute;
     top: 0px;
@@ -160,7 +160,7 @@ html.fp-enabled,
     line-height: 16px;
     color: #fff;    
 }
-#fp-nav ul>li:nth-of-type(2):before{
+#fp-nav ul.ko>li:nth-of-type(2):before{
     content:"Paas-TA 특징";
     position: absolute;
     top: 0px;
@@ -172,7 +172,7 @@ html.fp-enabled,
     line-height: 16px;
     color: #fff;    
 }
-#fp-nav ul>li:nth-of-type(3):before{
+#fp-nav ul.ko>li:nth-of-type(3):before{
     content:"Paas-TA 지원";
     position: absolute;
     top: 0px;
@@ -184,7 +184,7 @@ html.fp-enabled,
     line-height: 16px;
     color: #fff;    
 }
-#fp-nav ul>li:nth-of-type(4):before{
+#fp-nav ul.ko>li:nth-of-type(4):before{
     content:"Paas-TA 기능";
     position: absolute;
     top: 0px;
@@ -197,7 +197,7 @@ html.fp-enabled,
     color: #fff;    
 }
 
-#fp-nav ul.item>li:first-of-type:before {
+#fp-nav ul.en>li:first-of-type:before {
     content:"About PaaS-TA";
     position: absolute;
     top: 0px;
@@ -209,7 +209,7 @@ html.fp-enabled,
     line-height: 16px;
     color: #fff;    
 }
-#fp-nav ul.item>li:nth-of-type(2):before {
+#fp-nav ul.en>li:nth-of-type(2):before {
     content:"Paas-TA Features";
     position: absolute;
     top: 0px;
@@ -221,7 +221,7 @@ html.fp-enabled,
     line-height: 16px;
     color: #fff;    
 }
-#fp-nav ul.item>li:nth-of-type(3):before{
+#fp-nav ul.en>li:nth-of-type(3):before{
     content:"Paas-TA Support";
     position: absolute;
     top: 0px;
@@ -233,8 +233,8 @@ html.fp-enabled,
     line-height: 16px;
     color: #fff;    
 }
-#fp-nav ul.item>li:nth-of-type(4):before{
-    content:"Paas-TA Fuction";
+#fp-nav ul.en>li:nth-of-type(4):before{
+    content:"Paas-TA Function";
     position: absolute;
     top: 0px;
     left: -120px;

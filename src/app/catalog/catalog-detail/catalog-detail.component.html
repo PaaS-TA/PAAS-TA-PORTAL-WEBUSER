@@ -9,7 +9,8 @@
             <dl>
               <dt>
               <h1>{{template.name}}</h1>
-              <p class="copy">{{template.description}}</p>
+              <!-- <p class="copy">{{template.description}}</p> -->
+              <p [innerHTML]="template.description"></p>
               <button class="btn"  onclick="history.back()">
                 <img src="../../assets/resources/images/catalog/back.svg"  alt=""/>Back
               </button>
@@ -130,7 +131,7 @@
                       <td colspan="1" style="position:relative;">
                         <input name="route" id="routename" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}" (keyup)="checkHostName()" maxlength="50" style="width:98%"/>
                         <div *ngIf="(routecheck === 1 && hostname.length > 0)" style="position:absolute; bottom:-22px; left:0;"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
-                        <div *ngIf="(routecheck === -1  && hostname.length > 0)" style="position:absolute; bottom:-22px; left:0;"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
+                        <div *ngIf="(routecheck === -1  && hostname.length > 0)" style="position:absolute; bottom:-22px; left:0;"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseRoute' | translate }}</p></div>
                       </td>
                       <td colspan="1">
                         <select [(ngModel)]="currentdomain">

@@ -360,6 +360,10 @@
       "orgManage": "조직관리",
       "viewUsage": "사용량조회",
       "logOut": "로그아웃"
+    },
+    "lang": {
+      "ko": "한국어",
+      "en": "영어"
     }
   },
   "catalog": {
@@ -393,6 +397,7 @@
     },
     "appTemplate": {
       "configureAppTemplates": "앱 템플릿 구성",
+      "viewDocument": "문서보기",
       "createanApp": "앱 생성",
       "region": "지역",
       "organization": "조직",
@@ -440,6 +445,7 @@
     "service": {
       "summary": "요약",
       "description": "설명",
+      "viewDocument": "문서보기",
       "region": "지역",
       "organization": "조직",
       "space": "공간",
@@ -480,7 +486,8 @@
       "inputAppName": "앱 이름을 입력하여 주십시오.",
       "inputHostName": "호스트를 입력하여 주십시오.",
       "inputService": "서비스 이름을 입력하여 주십시오.",
-      "notSelectUserApp": "사용자 앱을 선택 해 주십시오."
+      "notSelectUserApp": "사용자 앱을 선택 해 주십시오.",
+      "notSelectBuildpack": "사용중인 빌드팩이 없습니다."
     },
     "result": {
       "appNameError": "현재 입력한 앱 이름으로 생성할 수 없습니다.",

@@ -45,6 +45,9 @@ export class CatalogDevelopmentComponent implements OnInit {
   currentdomain : any;
   domainList : Array<any>;
   buildpack : any; //빌드팩 정보
+  buildpackList : Array<any> = new Array<any>(); //빌드팩 리스트
+  buildpacklangList : Array<any>;
+  origBuildpack : any;
   appname: string = ''; //앱 이름
   hostname: string =''; // 앱 호스트
   memory: number; // 메모리
@@ -56,6 +59,8 @@ export class CatalogDevelopmentComponent implements OnInit {
   userAppFilePath: String;
   
   public appFileToUpload: File = null;
+  appSampleExist : boolean = true;
+  origLang : String; //현재 사용중인 언어
 
   constructor(private common: CommonService, private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
     if (common.getToken() == null) {
@@ -76,6 +81,7 @@ export class CatalogDevelopmentComponent implements OnInit {
         }
       });
       this.catalogService.navView = 'appDevelopment';
+      this.origLang = $.cookie("useLang");
     }
   }
 
@@ -190,13 +196,42 @@ export class CatalogDevelopmentComponent implements OnInit {
       this.router.navigate(['catalog']);
       return;
     }
-    this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
+
+    var curCatalogNo = this.catalogService.getCurrentCatalogNumber();
+    this.catalogService.getBuildPacks(CATALOGURLConstant.GETBUILDPACKS+'/'+curCatalogNo+'?isRequiredList=yes').subscribe(data => {
       try {
-      this.buildpack =  data['list'][0];
-      var pathHeader = this.buildpack.thumbImgPath.lastIndexOf("/");
-      var pathEnd = this.buildpack.thumbImgPath.length;
-      var fileName = this.buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
-      this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
+        // this.buildpack =  data['list'];
+        this.buildpackList = data['list'];
+
+        var curLang = $.cookie("useLang");
+        this.buildpacklangList = new Array<string>();
+        this.buildpackList.forEach(buildpack => {
+          if(curCatalogNo == buildpack.no || this.origLang === buildpack.language) {
+            this.origBuildpack = buildpack;
+          }
+
+          this.buildpacklangList.push(buildpack.language);
+          if(curLang === buildpack.language) {
+            this.buildpack = buildpack;
+            return false;
+          }
+        });
+        
+        if(typeof this.buildpack === "undefined" || this.buildpack.length == 0 || this.buildpacklangList.indexOf(curLang) < 0) {
+            this.buildpack = this.origBuildpack;
+        }
+        
+        // 앱샘플 존재여부 확인
+        this.appSampleExist = true;
+        var appSampleFileName = this.buildpack.appSampleFileName;
+        if(typeof appSampleFileName === 'undefined' || appSampleFileName === null) {
+          this.appSampleExist = false;
+        }
+        
+        var pathHeader = this.buildpack.thumbImgPath.lastIndexOf("/");
+        var pathEnd = this.buildpack.thumbImgPath.length;
+        var fileName = this.buildpack.thumbImgPath.substring(pathHeader + 1, pathEnd);
+        this.catalogService.getImg(CATALOGURLConstant.GETIMG+fileName).subscribe(data => {
 
           let reader = new FileReader();
           reader.addEventListener("load", () => {
@@ -427,8 +462,8 @@ export class CatalogDevelopmentComponent implements OnInit {
   	this.userAppStoredName = '';
     this.userAppFilePath = '';
   }
-  
-  createApp() {
+
+createApp() {
     if(this.errorCheck()){
       return;
     }
@@ -440,11 +475,19 @@ export class CatalogDevelopmentComponent implements OnInit {
       	let isUserApp = isNullOrUndefined(this.userAppFilePath) ? false : true;
       
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
+          console.log("getRouteCheck success!");
           let appSampleFilePath = this.buildpack['appSampleFilePath'];
-          
           if(appSampleFilePath ==='' || appSampleFilePath === null)
             appSampleFilePath = 'N';
-            
+
+          let curCatalogNo = this.catalogService.getCurrentCatalogNumber();
+          this.buildpackList.forEach(buildpack => {
+            if(curCatalogNo == buildpack.no) {
+              this.origBuildpack = buildpack;
+              return false;
+            }
+          });
+          
           let params = {
             appSampleStartYn : this.appStart ? 'Y' : 'N',
             appSampleFileName: isUserApp ? this.userAppFileName : this.buildpack['appSampleFileName'],
@@ -460,17 +503,17 @@ export class CatalogDevelopmentComponent implements OnInit {
             buildPackName: this.buildpack['buildPackName'],
             appSampleFilePath : isUserApp ? this.userAppFilePath : appSampleFilePath,
             catalogType : CATALOGURLConstant.BUILDPACK,
-            catalogNo : this.buildpack.no,
+            catalogNo : this.origBuildpack.no,
             userId : this.catalogService.getUserid(),
             appStoredName : isUserApp ? this.userAppStoredName : ""
           };
       	
           this.catalogService.postApp('/portalapi/'+this.apiversion+'/catalogs/app', params).subscribe(data => {
-          
+
             if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
               this.successMsg(this.translateEntities.result.buildPackSusses);
               this.router.navigate(['dashboard']);
-            }else {
+	      }else {
               this.errorMsg(data['msg']);
             }
             
@@ -498,7 +541,7 @@ export class CatalogDevelopmentComponent implements OnInit {
       this.deleteUserApp();
     });
 
-  }
+  }  
 
   nameCheck() {
     this.namecheck = CATALOGURLConstant.OK;

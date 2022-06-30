@@ -150,7 +150,7 @@
                 <th colspan="2" style="position:relative;">
                   <input name="route" id="routename" type="text" placeholder="{{ 'catalog.contants.inputHostName' | translate }}" (keyup)="checkHostName()" maxlength="50"/>
                   <div *ngIf="(routecheck === 1 && hostname.length > 0)" style="position:absolute; left:0;"><p class="blue text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createSuccessRoute' | translate }}</p></div>
-                  <div *ngIf="(routecheck === -1  && hostname.length > 0)" style="position:absolute; left:0;"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFasleRoute' | translate }}</p></div>
+                  <div *ngIf="(routecheck === -1  && hostname.length > 0)" style="position:absolute; left:0;"><p class="red text-left login_red"><i class="fas fa-exclamation-circle"></i> {{ 'catalog.contants.createFalseRoute' | translate }}</p></div>
                 </th>
                 <th colspan="1">
                   <select [(ngModel)]="currentdomain">
@@ -188,7 +188,12 @@
           <div class="clear"></div>
           <div class="cWrap_btn">
           	<button id="registUserApp" class="btns2 btns2_1 colors4" (click)="registUserApp()">{{ 'catalog.appDevelopment.createUserApp' | translate }}</button>
-            <button id="createApp" class="btns2 btns2_1 colors4" (click)="createApp()">{{ 'catalog.appDevelopment.createSampleApp' | translate }}</button>
+            <ng-container *ngIf="appSampleExist">
+              <button id="createApp" class="btns2 btns2_1 colors4" (click)="createApp()">{{ 'catalog.appDevelopment.createSampleApp' | translate }}</button>
+            </ng-container>
+            <ng-container *ngIf="!appSampleExist">
+              <button id="createApp" class="btns2 btns2_1 colors3" [disabled]="!appSampleExist"(click)="createApp()">{{ 'catalog.appDevelopment.createSampleApp' | translate }}</button>
+            </ng-container>
             <button class="btns2 btns2_1 colors5" [routerLink]="['/catalog']">{{ 'catalog.appDevelopment.cancel' | translate }}</button>
           </div>
         </div>
