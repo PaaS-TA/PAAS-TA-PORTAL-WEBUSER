@@ -57,6 +57,7 @@ export class AppTopComponent implements OnInit {
       this.isCatalogView = false;
     this.marketplaceUrl();
     this.languageList = new Map<string, string>();
+    this.curLang = this.common.defaultLang;
   }
 
   ngOnInit() {
@@ -103,7 +104,8 @@ export class AppTopComponent implements OnInit {
       for (let i=0; i<appConfig['languageList'].length; i++) {
         this.languageList.set(appConfig['languageList'][i], this.switchLang(appConfig['languageList'][i]));
       } 
-    });
+      });
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.common;
       this.viewusage = this.translateEntities.nav.viewUsage;
@@ -115,7 +117,7 @@ export class AppTopComponent implements OnInit {
     });
 
     this.curLang = this.common.useLang;
-    this.changeLangClick(this.common.useLang);
+    this.changeLangClick(this.curLang);
 
     if (!isNullOrUndefined(this.common.getCurrentAppGuid)) {
       this.location = this.common.getCurrentLocation();
