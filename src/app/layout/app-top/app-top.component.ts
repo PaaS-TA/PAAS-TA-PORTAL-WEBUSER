@@ -104,7 +104,8 @@ export class AppTopComponent implements OnInit {
       for (let i=0; i<appConfig['languageList'].length; i++) {
         this.languageList.set(appConfig['languageList'][i], this.switchLang(appConfig['languageList'][i]));
       } 
-    });
+      });
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.common;
       this.viewusage = this.translateEntities.nav.viewUsage;
