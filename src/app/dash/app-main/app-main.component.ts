@@ -1231,8 +1231,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
   getAppRecentLogs(guid: any) {
     this.appMainService.getAppRecentLogs(guid).subscribe(data => {
       var str = "";
-      $.each(data.log, function (key, dataobj) {
-        str += dataobj.logMessage.message + '<br>';
+      $.each(data.log.batch, function (key, dataobj) {
+        str += dataobj.log.payload + '<br>';
       });
       this.appRecentLogs = str;
 
