@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 
-import {WebsocketService} from './websocket.service';
 import { Observable, Subject } from 'rxjs/Rx';
 
 import {CommonService} from '../../common/common.service';
