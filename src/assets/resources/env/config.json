@@ -15,8 +15,9 @@
   "monitoring": false,
   "automaticApproval": true,
   "apiversion": "v3",
-  "webadminUri": "http://portal-web-admin.galaxycloud.kr/",
-  "sshUri": "http://ssh-app.galaxycloud.kr/",
+  "webadminUri": "http://portal-web-admin.apps.paastacloud.shop/",
+  "sshUri": "http://ssh-app.apps.paastacloud.shop/",
   "userAppSizeMb": "0",
-  "tailLogUri": "http://tail-log.15.165.167.51.galaxycloud.kr:1024/"
+  "tailLogUri": "http://tail-log.apps.paastacloud.shop/",
+  "tailLogIntervalMillisecond": "250"
 }

@@ -5,3 +5,4 @@ applications:
   buildpacks:
     - paketo-buildpacks/nginx
   path: ./dist/paas-ta-portal-webuser
+  #path: ./src
