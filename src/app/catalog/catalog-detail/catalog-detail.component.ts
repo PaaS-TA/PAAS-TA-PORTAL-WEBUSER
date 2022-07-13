@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CatalogService} from "../main/catalog.service";
 import {NGXLogger} from "ngx-logger";
@@ -20,16 +20,22 @@ let appConfig = require('assets/resources/env/config.json');
   styleUrls: ['./catalog-detail.component.css']
 })
 export class CatalogDetailComponent implements OnInit {
-
   apiversion = appConfig['apiversion'];
 
   catalogcontans = CATALOGURLConstant;
 
+  public origTemplate: any;
   public template: any;
+  public templatelist: Array<any> = new Array<any>(); // 앱템플릿 카탈로그 리스트 목록
+  public templatelangList: Array<any> = new Array<any>();
+  public origBuildpack: any;
+  public buildpack: any;
+  public servicepacks: Array<any> = new Array<any>();
+  public origServicepackList: Array<any> = new Array<any>();
+  public servicepacklist: Array<any> = new Array<any>();
   public translateEntities: any = [];
   public tmpOpen : boolean = false;
   trans : string;
-
 
   diskoption : any = [];
   memoryoption : any = [];
@@ -62,6 +68,7 @@ export class CatalogDetailComponent implements OnInit {
   buttonid : number = 0;
   switchid : number = 3;
   radioid : number = 0;
+  origLang : String;
 
 
   constructor(private translate: TranslateService, private router : Router, private route: ActivatedRoute, private catalogService: CatalogService, private log: NGXLogger) {
@@ -73,6 +80,7 @@ export class CatalogDetailComponent implements OnInit {
       this.activatedRouteInit();
       this.buildAndServiceInit();
     });
+
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translateEntities = event.translations.catalog;
       if(this.orgs.length > 1) {
@@ -82,6 +90,7 @@ export class CatalogDetailComponent implements OnInit {
     });
 
     this.catalogService.navView = 'appTemplate';
+    this.origLang = $.cookie("useLang");
   }
 
   ngOnInit() {
@@ -207,10 +216,83 @@ export class CatalogDetailComponent implements OnInit {
   }
 
   buildAndServiceInit(){
-    this.catalogService.CatalogDetailInit(this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
-      this.template = data['Starter'];
-      this.apptemplate.push(data['Buildpack']);
-      data['Servicepack'].forEach(data => {
+    var curCatalogNo = this.catalogService.getCurrentCatalogNumber();
+    this.catalogService.CatalogDetailInit(curCatalogNo).subscribe(data => {
+      // this.template = data['Starter'];
+      this.templatelist = data['Starter'];
+
+
+      // 템플릿 셋팅
+      var curLang = $.cookie("useLang");
+      this.templatelangList = new Array<any>();
+      this.templatelist.forEach(template => {
+        if(curCatalogNo == template.no || this.origLang === template.language) {
+          this.origTemplate = template;
+        }
+
+        this.templatelangList.push(template.language);
+        if(curLang === template.language) {
+          this.template = template;
+          return false;
+        }
+      });
+
+      if(typeof this.template === "undefined" || this.template === null || this.templatelangList.indexOf(curLang) < 0) {
+        this.template = this.origTemplate;
+      }
+
+      if(this.origTemplate.buildPackCategoryNo == 0) {
+        this.catalogService.alertMessage(this.translateEntities.contants.notSelectBuildpack, true);
+        this.router.navigate(['catalog']);
+      }
+
+
+
+      // 빌드팩 셋팅
+      var buildpackMap = new Map(Object.entries(data['Buildpack']));
+      buildpackMap.forEach((val: any, key) => {
+        if(curCatalogNo == key || this.origLang === val.language) {
+          this.origBuildpack = val;
+        }
+
+        if(curLang === val.language) {
+          this.buildpack = val;
+          return false;
+        }
+      });
+
+      
+      if(typeof this.buildpack === "undefined" || this.buildpack === null || this.templatelangList.indexOf(curLang) < 0) {
+        this.buildpack = this.origBuildpack;
+      }
+
+
+      // 서비스팩 셋팅
+      var servicepackMap = new Map<any, any[]>(Object.entries(data['Servicepack']));
+      servicepackMap.forEach((val, key) => {
+          val.forEach(data => {
+            this.servicepacks.push(data);
+
+            if (curCatalogNo == key) {
+              this.origServicepackList.push(data);
+            }
+          });
+      });
+
+      this.servicepacks.forEach(servicepack => {
+        if(curLang === servicepack.language) {
+          this.servicepacklist.push(servicepack);
+          return false;
+        }
+      })
+
+      if(this.servicepacklist.length < 1) {
+        this.servicepacklist = this.origServicepackList;
+      }
+
+      this.apptemplate.push(this.buildpack);
+      // data['Servicepack'].forEach(data => {
+      this.servicepacklist.forEach(data => {
         this.apptemplate.push(data);
         this.catalogService.getServicePlan('/portalapi/'+this.apiversion+'/catalogs/serviceplan/' + data.servicePackName).subscribe(list => {
           let planlist = data;
@@ -559,6 +641,16 @@ export class CatalogDetailComponent implements OnInit {
      return;
    }
     this.catalogService.isLoading(true);
+
+    let curCatalogNo = this.catalogService.getCurrentCatalogNumber();
+    this.templatelist.forEach(template => {
+      if(curCatalogNo == template.no) {
+        this.origTemplate = template;
+        return false;
+      }
+    });
+
+
     this.catalogService.getNameCheck('/portalapi/'+this.apiversion+'/catalogs/apps/'+this.appname+'/?orgid='+this.org.guid+'&spaceid='+this.space.guid).subscribe(data => {
       this.catalogService.getRouteCheck(CATALOGURLConstant.ROUTECHECK+this.hostname).subscribe(data => {
         if(data['RESULT']===CATALOGURLConstant.SUCCESS) {
@@ -594,7 +686,7 @@ export class CatalogDetailComponent implements OnInit {
             appSampleFilePath : appSampleFilePath,
             servicePlanList : paramlist,
             catalogType : CATALOGURLConstant.STARTERPACK,
-            catalogNo : this.template.no,
+            catalogNo : this.origTemplate.no,
             userId : this.catalogService.getUserid()
           };
           this.catalogService.postApp(url, param).subscribe(data => {

@@ -32,7 +32,9 @@ export class CatalogServiceComponent implements OnInit {
   spacename:string;
 
   servicenamelist:Array<string>;
+  origServicepack:any;
   servicepack:any;
+  servicepackList : Array<any> = new Array<any>(); //서비스팩 리스트
   space:Space;
   org:Organization;
   orgs:Array<Organization> = new Array<Organization>(); // 조직 정보
@@ -48,7 +50,8 @@ export class CatalogServiceComponent implements OnInit {
   hiddenparameter:Array<Parameter>;
   hiddenappparameter:Array<Parameter>;
   servicename:string = '';
-
+  servicepacklangList:Array<any>;
+  origLang:String;
 
 
 
@@ -71,6 +74,7 @@ export class CatalogServiceComponent implements OnInit {
       }
     });
     this.catalogService.navView = 'service';
+    this.origLang = $.cookie("useLang");
   }
 
   ngOnInit() {
@@ -164,9 +168,32 @@ export class CatalogServiceComponent implements OnInit {
       this.router.navigate(['catalog']);
       return;
     }
-    this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.catalogService.getCurrentCatalogNumber()).subscribe(data => {
+
+    var curCatalogNo = this.catalogService.getCurrentCatalogNumber();
+    this.catalogService.getServicePacks(CATALOGURLConstant.GETSERVICEPACKS + '/' + this.catalogService.getCurrentCatalogNumber() + '?isRequiredList=yes').subscribe(data => {
       try{
-      this.servicepack = data['list'][0];
+      // this.servicepack = data['list'][0];
+      this.servicepackList = data['list'];
+      
+      var curLang = $.cookie("useLang");
+      this.servicepacklangList = new Array<string>();
+      this.servicepackList.forEach(servicepack => {
+        if(curCatalogNo == servicepack.no || this.origLang === servicepack.language) {
+          this.origServicepack = servicepack;
+        }
+
+        this.servicepacklangList.push(servicepack.language);
+        if(curLang === servicepack.language) {
+          this.servicepack = servicepack;
+          return false;
+        }
+
+      });
+      
+      if(typeof this.servicepack === "undefined" || this.servicepack.length == 0 || this.servicepacklangList.indexOf(curLang) < 0) {
+        this.servicepack = this.origServicepack;
+      }
+
       var pathHeader = this.servicepack.thumbImgPath.lastIndexOf("/");
       var pathEnd = this.servicepack.thumbImgPath.length;
       var fileName = this.servicepack.thumbImgPath.substring(pathHeader + 1, pathEnd);
@@ -362,17 +389,26 @@ export class CatalogServiceComponent implements OnInit {
       return;
     }
     this.catalogService.isLoading(true);
+
+    let curCatalogNo = this.catalogService.getCurrentCatalogNumber();
+    this.servicepackList.forEach(servicepack => {
+      if(curCatalogNo == servicepack.no) {
+        this.origServicepack = servicepack;
+        return false;
+      }
+    });
+
     let params = {
       name: this.servicename,
       spaceId: this.space.guid,
       servicePlan: this.plan.guid,
       appGuid: this.app.guid,
-      parameter: this.servicepack.onDemandYn === "Y" ? this.setParmeterData(this.appparameter, this.hiddenappparameter) : this.setParmeterData(this.parameter, this.hiddenparameter),
+      parameter: this.origServicepack.onDemandYn === "Y" ? this.setParmeterData(this.appparameter, this.hiddenappparameter) : this.setParmeterData(this.parameter, this.hiddenparameter),
       app_bind_parameter: this.setParmeterData(this.appparameter, this.hiddenappparameter),
       catalogType : CATALOGURLConstant.SERVICEPACK,
-      catalogNo : this.servicepack.no,
+      catalogNo : this.origServicepack.no,
       userId : this.catalogService.getUserid(),
-      onDemandYn : this.servicepack.onDemandYn
+      onDemandYn : this.origServicepack.onDemandYn
     };
     this.catalogService.postCreateService('/portalapi/'+this.apiversion+'/catalogs/serviceinstances', params).subscribe(data =>
     {

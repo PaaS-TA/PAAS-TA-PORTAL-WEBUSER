@@ -816,12 +816,10 @@
         * Creates a vertical navigation bar.
         */
         function addVerticalNavigation(){
+            var className = $.cookie('useLang');
 
-            if($.cookie('useLang') == 'en') {
-                $body.append('<div id="' + SECTION_NAV + '"><ul class="item"></ul></div>');
-            } else {
-                $body.append('<div id="' + SECTION_NAV + '"><ul></ul></div>');
-            }
+            $body.append('<div id="' + SECTION_NAV + '"><ul class="' + className + '"></ul></div>');
+
             var nav = $(SECTION_NAV_SEL);
 
             nav.addClass(function() {
