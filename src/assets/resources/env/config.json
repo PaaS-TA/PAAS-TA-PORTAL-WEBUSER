@@ -19,5 +19,6 @@
   "sshUri": "http://ssh-app.apps.paastacloud.shop/",
   "userAppSizeMb": "0",
   "tailLogUri": "http://tail-log.apps.paastacloud.shop/",
+  "languageList": ["ko", "en"],
   "tailLogIntervalMillisecond": "250"
 }
