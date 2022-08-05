@@ -586,8 +586,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
   getAppStats(guid: string) {
     this.appMainService.getAppStats(guid).subscribe(data => {
-      if (data) {
-        this.appStatsEntities = data.instances;
+    if (data) {
+    this.appStatsEntities = data.resources;
 
         var cpu = 0;
         var mem = 0;
@@ -597,10 +597,10 @@ export class AppMainComponent implements OnInit, OnDestroy {
         let maxdisk = this.appSummaryDiskMax;
 
         $.each(data.instances, function (key, dataobj) {
-          if (dataobj.stats != null) {
-            if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
-            if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + (dataobj.stats.usage.mem) / (maxmem * 1024 * 1024 * 1024) * 100;
-            if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + (dataobj.stats.usage.disk) / (maxdisk * 1024 * 1024 * 1024) * 100;
+          if (dataobj != null) {
+            if (!(null == dataobj.usage.cpu || '' == dataobj.usage.cpu)) cpu = cpu + dataobj.usage.cpu * 100;
+            if (!(null == dataobj.usage.mem || '' == dataobj.usage.mem)) mem = mem + (dataobj.usage.mem) / (maxmem * 1024 * 1024 * 1024) * 100;
+            if (!(null == dataobj.usage.disk || '' == dataobj.usage.disk)) disk = disk + (dataobj.usage.disk) / (maxdisk * 1024 * 1024 * 1024) * 100;
             cnt++;
           }
         });
@@ -636,7 +636,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   procSetAppStatusTab() {
-    var appStatus = [];
+  var appStatus = [];
     $.each(this.appStatsEntities, function (key, dataobj) {
       var statusClass;
       var statusText;
@@ -664,12 +664,12 @@ export class AppMainComponent implements OnInit, OnDestroy {
         disk = 0;
         uptime = 0;
       } else {
-        cpu = (Math.round((dataobj.stats.usage.cpu * 100) * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
-        // memory = dataobj.stats.usage.mem.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        // disk = dataobj.stats.usage.disk.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        memory = dataobj.stats.usage.mem.toString();
-        disk = dataobj.stats.usage.disk.toString();
-        uptime = (Math.round((dataobj.stats.uptime / 60) * Math.pow(10, 0)) / Math.pow(10, 0)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        cpu = (Math.round((dataobj.usage.cpu * 100) * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
+        // memory = dataobj.usage.mem.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // disk = dataobj.usage.disk.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        memory = dataobj.usage.mem.toString();
+        disk = dataobj.usage.disk.toString();
+        uptime = (Math.round((dataobj.uptime / 60) * Math.pow(10, 0)) / Math.pow(10, 0)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
 
       var memoryBytes = parseInt(memory);
@@ -700,7 +700,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
         uptime: uptime
       };
       appStatus.push(obj);
-    });
+      });
     this.appStatusEntities = appStatus;
 
     setTimeout(() =>
