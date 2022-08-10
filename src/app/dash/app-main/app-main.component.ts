@@ -285,6 +285,11 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
   getAppSummary(guid: any) {
     this.isLoading = true;
+    this.appMainService.getAppBuildpack(guid).subscribe(buildpack => {
+      this.appSummaryBuildPackName = buildpack.buildpacks[0];
+      this.appSummaryBuildpack = buildpack.buildpacks[0];
+    });
+
     this.appMainService.getAppSummary(guid).subscribe(data => {
     
       this.sshConnectInfo = {
@@ -350,22 +355,6 @@ export class AppMainComponent implements OnInit, OnDestroy {
         this.appSummaryPackageUpdatedAt = data.package_updated_at.replace('T', '  ').replace('Z', ' ');
       }
 
-      if (data.detected_buildpack != null && data.detected_buildpack != "") {
-        if (data.detected_buildpack.length > 40) {
-          this.appSummaryBuildpack = data.detected_buildpack.substring(0, 40) + "..";
-        } else {
-          this.appSummaryBuildpack = data.detected_buildpack;
-        }
-      } else if (data.buildpack != null) {
-        if (data.buildpack.length > 40) {
-          this.appSummaryBuildpack = data.buildpack.substring(0, 40) + "..";
-        } else {
-          this.appSummaryBuildpack = data.buildpack;
-        }
-      }
-
-      this.appSummaryBuildPackName = data.buildpack;
-
       this.appSummaryInstance = data.instances;
       this.appSummaryInstancePer = Math.round((this.appSummaryInstance * 100) / this.appSummaryInstanceMax);
 
@@ -398,7 +387,10 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
       this.initRouteTab();
       // this.getSpaceSummary();
-      this.getServicepacks();
+      setTimeout(() => {
+        this.getServicepacks();
+      }, 1000);
+
       // this.getServicesInstances();
       this.getBuildPacks();
     }, error => {

@@ -225,4 +225,11 @@ export class AppMainService {
       return res;
     });
   }
+
+  getAppBuildpack(guid: string) {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/apps/' + guid + '/buildpack', this.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
 }

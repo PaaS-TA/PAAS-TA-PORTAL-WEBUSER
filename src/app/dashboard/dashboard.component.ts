@@ -436,12 +436,17 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
 
   thumnailApp(): void {
     let catalog = this.catalogService;
+    let dashboard = this.dashboardService
     this.dashboardService.getBuildPacks().subscribe(data => {
       $.each(this.appEntities, function (skey, appEntitie) {
         let cnt = 0;
-        $.each(data['list'], function (dkey, buildpack) {
-          if (appEntitie['buildpack'] != null) {
-            if (appEntitie['buildpack'] === buildpack['buildPackName']) {
+	$.each(data['list'], function (dkey, buildpack) {
+	  let buildpackname = buildpack['buildPackName'];
+	  let appBuildpack;
+	  dashboard.getAppBuildpack(appEntitie.guid).subscribe(lifecycle => {
+	  appBuildpack = lifecycle.buildpacks[0];
+          if (appBuildpack != null) {
+            if (appBuildpack === buildpack['buildPackName']) {
               try{
               var pathHeader = buildpack['thumbImgPath'].lastIndexOf("/");
               var pathEnd = buildpack['thumbImgPath'].length;
@@ -460,6 +465,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
               cnt++
             }
           }
+	});
         })
         if (cnt == 0) {
           appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
