@@ -2568,11 +2568,13 @@ export class AppMainComponent implements OnInit, OnDestroy {
       let start = obj.getElementById('sTime') as HTMLInputElement;
       let end = obj.getElementById('eTime') as HTMLInputElement;
       let msg = obj.getElementById('message') as HTMLInputElement;
+      let msgValid = obj.getElementById('valid') as HTMLInputElement;
       
       date.value = year + "-" + month + "-" + day;
       start.value = sHours + ":" + minutes + ":" + seconds;
       end.value = eHours + ":" + minutes + ":" + seconds;
       msg.value = "";
+      msgValid.style.display = "none"; 
     });
   }
 
