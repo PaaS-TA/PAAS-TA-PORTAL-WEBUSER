@@ -2502,22 +2502,31 @@ export class AppMainComponent implements OnInit, OnDestroy {
       list.forEach(data => {
         let dbDate = data[0];
         
-        // message 내의 time 추출
-        let msgObj = JSON.parse(data[1]);
-        let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
+        let msgObjToStr = JSON.stringify(data[1]);
+        let lastStr = msgObjToStr.charAt(msgObjToStr.length-2);
 
-        let startIdx = msgDateTime.indexOf("T");
-        let endIdx = msgDateTime.indexOf("+");
-        let msgDate = msgDateTime.substring(0, startIdx);
-        let msgTime = msgDateTime.substring(startIdx+1, endIdx);
-        let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
+        if(lastStr != '}') {
+          let convertMsg =  msgObjToStr.replace(/\\\"/gi, "\"").replace(/\"{/, "{");
+          popHtml.push("                    <li>" + dbDate + "<br>" + convertMsg + "</li>");
+        } else {
+          let msgObj = JSON.parse(data[1]);
 
-        // 시작 및 종료 시간 추출
-        let msgStart = new Date(date + " " + start).getTime();
-        let msgEnd = new Date(date + " " + end).getTime();
-
-        if(convertMsgTime >= msgStart && convertMsgTime <= msgEnd) {
-          popHtml.push("                    <li>" + dbDate + "<br>" + data[1] + "</li>");
+          // message 내의 time 추출
+          let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
+  
+          let startIdx = msgDateTime.indexOf("T");
+          let endIdx = msgDateTime.indexOf("+");
+          let msgDate = msgDateTime.substring(0, startIdx);
+          let msgTime = msgDateTime.substring(startIdx+1, endIdx);
+          let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
+  
+          // 시작 및 종료 시간 추출
+          let msgStart = new Date(date + " " + start).getTime();
+          let msgEnd = new Date(date + " " + end).getTime();
+  
+          if(convertMsgTime >= msgStart && convertMsgTime <= msgEnd) {
+            popHtml.push("                    <li>" + dbDate + "<br>" + data[1] + "</li>");
+          }
         }
       });
     }
@@ -2647,19 +2656,28 @@ export class AppMainComponent implements OnInit, OnDestroy {
                 } else {
                   dataList.forEach(data => {
                     let dbDate = data[0];
-                    
-                    // message 내의 time 추출
-                    let msgObj = JSON.parse(data[1]);
-                    let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
 
-                    let startIdx = msgDateTime.indexOf("T");
-                    let endIdx = msgDateTime.indexOf("+");
-                    let msgDate = msgDateTime.substring(0, startIdx);
-                    let msgTime = msgDateTime.substring(startIdx+1, endIdx);
-                    let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
+                    let msgObjToStr = JSON.stringify(data[1]);
+                    let lastStr = msgObjToStr.charAt(msgObjToStr.length-2);
 
-                    if(convertMsgTime >= startMs && convertMsgTime <= endMs) {
-                      newHtml.push("                    <li>" + dbDate + "<br>" + data[1] + "</li>");
+                    if(lastStr != '}') {
+                      let convertMsg =  msgObjToStr.replace(/\\\"/gi, "\"").replace(/\"{/, "{");
+                      newHtml.push("                    <li>" + dbDate + "<br>" + convertMsg + "</li>");
+                    } else {
+                      let msgObj = JSON.parse(data[1]);
+
+                      // message 내의 time 추출
+                      let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
+
+                      let startIdx = msgDateTime.indexOf("T");
+                      let endIdx = msgDateTime.indexOf("+");
+                      let msgDate = msgDateTime.substring(0, startIdx);
+                      let msgTime = msgDateTime.substring(startIdx+1, endIdx);
+                      let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
+
+                      if(convertMsgTime >= startMs && convertMsgTime <= endMs) {
+                        newHtml.push("                    <li>" + dbDate + "<br>" + data[1] + "</li>");
+                      }
                     }
                   });
                 }
