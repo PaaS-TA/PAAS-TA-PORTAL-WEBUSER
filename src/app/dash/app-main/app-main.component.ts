@@ -2492,7 +2492,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
     popHtml.push("                        <label id='valid' style='display:none;'>" + this.translateEntities.logs.logging.invalidKeyword + "</label>");
     popHtml.push("                    </div>");
     popHtml.push("                    <div>");
-    popHtml.push("                        <span style='color:#ff0000; font-weight: bold;'>" + this.translateEntities.logs.logging.explain + "</span>");
+    //popHtml.push("                        <span style='color:#ff0000; font-weight: bold;'>" + this.translateEntities.logs.logging.explain + "</span>");
     popHtml.push("                    </div>");
     popHtml.push("                    <button class='logging' id='search'>SEARCH</button>");
     popHtml.push("                </fieldset>");
