@@ -2431,12 +2431,13 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   showWindowLogging() {
-    let date = this.getCurrentDate();
+    let sDate = this.getCurrentDate("start");
+    let eDate = this.getCurrentDate("end");
     let start = this.getCurrentTime("start");
     let end = this.getCurrentTime("end");
 
-    let sTime = date + "T" + start + "Z";
-    let eTime = date + "T" + end + "Z";
+    let sTime = sDate + "T" + start + "Z";
+    let eTime = eDate + "T" + end + "Z";
     let message = "";
 
     this.appMainService.getLogData(this.appName, this.orgName, sTime, eTime, message).subscribe(list => {
@@ -2458,7 +2459,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   InitLogPopView(list: any) {
-    let date = this.getCurrentDate();
+    let sDate = this.getCurrentDate("start");
+    let eDate = this.getCurrentDate("end");
     let start = this.getCurrentTime("start");
     let end = this.getCurrentTime("end");
 
@@ -2477,7 +2479,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
     popHtml.push("                <fieldset>");
     popHtml.push("                    <div class='condition'>");
     popHtml.push("                        <label>Date</label>");
-    popHtml.push("                        <Input type='date' id='date' value='" + date + "' style='width:220px;'/>");
+    popHtml.push("                        <Input type='date' id='date' value='" + eDate + "' style='width:220px;'/>");
     popHtml.push("                        <label>Time</label>");
     popHtml.push("                        <Input type='time' id='sTime' value='" + start + "' step='1' style='width:180px;'/>");
     popHtml.push("                        <em>~</em>");
@@ -2521,8 +2523,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
           let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
   
           // 시작 및 종료 시간 추출
-          let msgStart = new Date(date + " " + start).getTime();
-          let msgEnd = new Date(date + " " + end).getTime();
+          let msgStart = new Date(sDate + " " + start).getTime();
+          let msgEnd = new Date(eDate + " " + end).getTime();
   
           if(convertMsgTime >= msgStart && convertMsgTime <= msgEnd) {
             popHtml.push("                    <li>" + dbDate + "<br>" + data[1] + "</li>");
@@ -2698,14 +2700,23 @@ export class AppMainComponent implements OnInit, OnDestroy {
     });
   }
 
-  getCurrentDate() {
+  getCurrentDate(flag: string) {
     let today = new Date();
     let yyyy = today.getFullYear();
     let mm = ("00" + (today.getMonth()+1).toString()).slice(-2);
     let dd = ("00" + today.getDate().toString()).slice(-2);
 
-    let date = yyyy + "-" + mm + "-" + dd;
+    if(flag == "start") {
+      let sDate = new Date(
+        today.getFullYear(), today.getMonth(), today.getDate(),
+        today.getHours()-1, today.getMinutes(), today.getSeconds()
+      );
+      yyyy = sDate.getFullYear();
+      mm = ("00" + (sDate.getMonth()+1).toString()).slice(-2);
+      dd = ("00" + sDate.getDate().toString()).slice(-2);
+    } 
 
+    let date = yyyy + "-" + mm + "-" + dd;
     return date;
   }
 
@@ -2714,20 +2725,19 @@ export class AppMainComponent implements OnInit, OnDestroy {
     let hh = ("00" + today.getHours().toString()).slice(-2);
     let mm = ("00" + today.getMinutes().toString()).slice(-2);
     let ss = ("00" + today.getSeconds().toString()).slice(-2);
-
+    
     if(flag == "start") {
       let sDate = new Date(
-        today.getFullYear(), today.getMonth()+1, today.getDate(),
+        today.getFullYear(), today.getMonth(), today.getDate(),
         today.getHours()-1, today.getMinutes(), today.getSeconds()
       );
       hh = ("00" + sDate.getHours().toString()).slice(-2);
       mm = ("00" + sDate.getMinutes().toString()).slice(-2);
       ss = ("00" + sDate.getSeconds().toString()).slice(-2);
-    } 
+    }
 
-    let converTime = hh + ":" + mm + ":" + ss;
-
-    return converTime;
+    let convertTime = hh + ":" + mm + ":" + ss;
+    return convertTime;
   }
   
   // 2022.10.19 deprecated
