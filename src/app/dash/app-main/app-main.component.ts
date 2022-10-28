@@ -2450,7 +2450,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
     
       // event handler 구현
       this.addResetEventHandler(logPop.document);
-      this.addSearchEventHandler(logPop.document);
+      this.addSearchEventHandler(logPop.document, 'search', 'click');
+      this.addSearchEventHandler(logPop.document, 'message', 'keypress');
       this.checkValidKeyword(logPop.document, 'keypress');
       this.checkValidKeyword(logPop.document, 'keyup');
 
@@ -2589,65 +2590,66 @@ export class AppMainComponent implements OnInit, OnDestroy {
     });
   }
 
-  addSearchEventHandler(obj: any) {
+  addSearchEventHandler(obj: any, id: string, eventName: string) {
     let alertCheck = this.translateEntities.logs.logging.invalidTime;
+    
+    obj.getElementById(id).addEventListener(eventName, function(e) {
+      if (eventName == "click" || e.keyCode == 13) {
+        let date = obj.getElementById('date') as HTMLInputElement;
+        let start = obj.getElementById('sTime') as HTMLInputElement;
+        let end = obj.getElementById('eTime') as HTMLInputElement;
 
-    obj.getElementById('search').addEventListener('click', function() {
-      let date = obj.getElementById('date') as HTMLInputElement;
-      let start = obj.getElementById('sTime') as HTMLInputElement;
-      let end = obj.getElementById('eTime') as HTMLInputElement;
+        let startDateTime = new Date(date.value + " " + start.value);
+        let endDateTime = new Date(date.value + " " + end.value);
 
-      let startDateTime = new Date(date.value + " " + start.value);
-      let endDateTime = new Date(date.value + " " + end.value);
+        let startMs = startDateTime.getTime();
+        let endMs = endDateTime.getTime();
 
-      let startMs = startDateTime.getTime();
-      let endMs = endDateTime.getTime();
+        // 시작시간 및 종료시간 범위 확인
+        let alertLayer = obj.querySelector('.alertLayer') as HTMLParagraphElement;
+        let timeValid = true;
 
-      // 시작시간 및 종료시간 범위 확인
-      let alertLayer = obj.querySelector('.alertLayer') as HTMLParagraphElement;
-      let timeValid = true;
+        if(startDateTime.getTime() > endDateTime.getTime()) {
+          alertLayer.innerHTML = "          <div class='in'>" + alertCheck + "</div>";
+          alertLayer.classList.add('moveAlert');
+          alertLayer.style.borderLeft = "4px solid #cb3d4a";
+          setTimeout(() => alertLayer.classList.remove('moveAlert'), 3000);
+          timeValid = false;
+        }
 
-      if(startDateTime.getTime() > endDateTime.getTime()) {
-        alertLayer.innerHTML = "          <div class='in'>" + alertCheck + "</div>";
-        alertLayer.classList.add('moveAlert');
-        alertLayer.style.borderLeft = "4px solid #cb3d4a";
-        setTimeout(() => alertLayer.classList.remove('moveAlert'), 3000);
-        timeValid = false;
-      }
+        if(!timeValid) {
+          return;
+        }
 
-      if(!timeValid) {
-        return;
-      }
+        // 시간 조정
+        startDateTime.setSeconds(startDateTime.getSeconds()-1);
+        endDateTime.setSeconds(endDateTime.getSeconds()-1);
 
-      // 시간 조정
-      startDateTime.setSeconds(startDateTime.getSeconds()-1);
-      endDateTime.setSeconds(endDateTime.getSeconds()-1);
+        let sDate = startDateTime.getFullYear() + "-" + ("00" + (startDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + startDateTime.getDate().toString()).slice(-2);
+        let sTime = ("00" + startDateTime.getHours().toString()).slice(-2) + ":" + ("00" + startDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + startDateTime.getSeconds().toString()).slice(-2);
 
-      let sDate = startDateTime.getFullYear() + "-" + ("00" + (startDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + startDateTime.getDate().toString()).slice(-2);
-      let sTime = ("00" + startDateTime.getHours().toString()).slice(-2) + ":" + ("00" + startDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + startDateTime.getSeconds().toString()).slice(-2);
+        let eDate = endDateTime.getFullYear() + "-" + ("00" + (endDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + endDateTime.getDate().toString()).slice(-2);
+        let eTime = ("00" + endDateTime.getHours().toString()).slice(-2) + ":" + ("00" + endDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + endDateTime.getSeconds().toString()).slice(-2);
 
-      let eDate = endDateTime.getFullYear() + "-" + ("00" + (endDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + endDateTime.getDate().toString()).slice(-2);
-      let eTime = ("00" + endDateTime.getHours().toString()).slice(-2) + ":" + ("00" + endDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + endDateTime.getSeconds().toString()).slice(-2);
+        let dbStartDateTime = sDate + "T" + sTime + "Z";
+        let dbEndDateTime = eDate + "T" + eTime + "Z";
+        let keyword = obj.getElementById('message') as HTMLInputElement;
 
-      let dbStartDateTime = sDate + "T" + sTime + "Z";
-      let dbEndDateTime = eDate + "T" + eTime + "Z";
-      let keyword = obj.getElementById('message') as HTMLInputElement;
+        let apiUri = window.sessionStorage.getItem('apiUri');
+        let appName = window.sessionStorage.getItem('_currentAppName');
+        let orgName = window.sessionStorage.getItem('_currentOrgName');
+        let authorization = window.sessionStorage.getItem('authorization');
 
-      let apiUri = window.sessionStorage.getItem('apiUri');
-      let appName = window.sessionStorage.getItem('_currentAppName');
-      let orgName = window.sessionStorage.getItem('_currentOrgName');
-      let authorization = window.sessionStorage.getItem('authorization');
+        let regExp = new RegExp(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/);
+        let isInvalidMsg = regExp.test(keyword.value);
+        if(isInvalidMsg) {
+          return;
+        }
 
-      let regExp = new RegExp(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/);
-      let isInvalidMsg = regExp.test(keyword.value);
-      if(isInvalidMsg) {
-        return;
-      }
+        let xmlHttp = new XMLHttpRequest();
 
-      let xmlHttp = new XMLHttpRequest();
-
-      xmlHttp.onreadystatechange = function(){
-        if(xmlHttp.readyState == XMLHttpRequest.DONE){
+        xmlHttp.onreadystatechange = function(){
+          if(xmlHttp.readyState == XMLHttpRequest.DONE){
             if(xmlHttp.status == 200) {
                 let dataList = JSON.parse(xmlHttp.responseText);
                 let logResult = obj.getElementById('logResult') as HTMLInputElement;
@@ -2689,14 +2691,15 @@ export class AppMainComponent implements OnInit, OnDestroy {
             else {
                 console.log("Error : " + xmlHttp.status);
             }
+          }
         }
+        xmlHttp.open("GET", apiUri + '/logapi/log?name=' + appName + '&org=' + orgName + '&stime=' + dbStartDateTime + '&etime=' + dbEndDateTime + '&keyword=' + keyword.value);
+        xmlHttp.setRequestHeader('Content-Type', 'application/json');
+        xmlHttp.setRequestHeader('X-Broker-Api-Version', '2.4');
+        xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xmlHttp.setRequestHeader('Authorization', authorization);
+        xmlHttp.send();
       }
-      xmlHttp.open("GET", apiUri + '/logapi/log?name=' + appName + '&org=' + orgName + '&stime=' + dbStartDateTime + '&etime=' + dbEndDateTime + '&keyword=' + keyword.value);
-      xmlHttp.setRequestHeader('Content-Type', 'application/json');
-      xmlHttp.setRequestHeader('X-Broker-Api-Version', '2.4');
-      xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-      xmlHttp.setRequestHeader('Authorization', authorization);
-      xmlHttp.send();
     });
   }
 
