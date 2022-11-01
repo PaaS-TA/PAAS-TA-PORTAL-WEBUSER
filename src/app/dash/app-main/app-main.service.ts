@@ -123,6 +123,20 @@ export class AppMainService {
     });
   }
 
+  getAppServiceList(guid: string) {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/apps/' + guid + '/services', this.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
+  getSpaceServiceList(guid: string) {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/spaces/' + guid + '/services', this.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
+
+
   getServicesInstances(guid: string) {
     return this.commonService.doGet('/portalapi/' + this.apiversion + '/service-instances/space/' + guid + '', this.getToken()).map((res: any) => {
       return res;

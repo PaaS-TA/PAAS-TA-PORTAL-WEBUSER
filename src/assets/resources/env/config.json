@@ -15,10 +15,11 @@
   "monitoring": false,
   "automaticApproval": true,
   "apiversion": "v3",
-  "webadminUri": "http://portal-web-admin.apps.paastacloud.shop/",
-  "sshUri": "http://ssh-app.apps.paastacloud.shop/",
+  "webadminUri": "http://portal-web-admin.3.36.168.88.nip.io/",
+  "sshUri": "http://ssh-app.3.36.168.88.nip.io/",
   "userAppSizeMb": "0",
-  "tailLogUri": "http://tail-log.apps.paastacloud.shop/",
-  "languageList": ["ko", "en"],
-  "tailLogIntervalMillisecond": "250"
+  "tailLogUri": "http://tail-log.3.36.168.88.nip.io/",
+  "sshEnable": "true",
+  "tailLogIntervalMillisecond": "250",
+  "languageList": ["ko", "en"]
 }

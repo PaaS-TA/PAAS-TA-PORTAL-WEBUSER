@@ -22,6 +22,7 @@ let appConfig = require('assets/resources/env/config.json');
 export class AppMainComponent implements OnInit, OnDestroy {
 
   apiversion = appConfig['apiversion'];
+  sshEnable = appConfig['sshEnable'];
 
   private jquerySetting: boolean;
   public location: string;
@@ -309,7 +310,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
       var apmAppName = "";
       var appServices = [];
       var appServiceDashboardUri = "";
-      $.each(data.services, function (key, serviceObj) {
+      $.each(this.appServicesEntities, function (key, serviceObj) {
         if (serviceObj.service_plan != undefined) {
           if (serviceObj.service_plan.service != undefined && serviceObj.service_plan.service.label == "Pinpoint") {
             // $("#apmBtn").attr("disabled", false);
@@ -461,11 +462,11 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   getSpaceSummary() {
-    this.appMainService.getSpaceSummary(this.appSummarySpaceGuid).subscribe(data => {
+    this.appMainService.getSpaceServiceList(this.appSummarySpaceGuid).subscribe(data => {
       var servicepacks = this.servicepacksEntities;
       var servicepacksRe = [];
       var useServices = this.appServicesEntities;
-      $.each(data.services, function (key, dataobj) {
+      $.each(data, function (key, dataobj) {
         $.each(servicepacks, function (key2, dataobj2) {
           if (!isNullOrUndefined(dataobj.service_plan)) {
             if ((dataobj.service_plan.service.label === dataobj2.servicePackName) && (dataobj2.appBindYn === 'Y') && (dataobj2.useYn === 'Y')) {
