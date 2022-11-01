@@ -2443,7 +2443,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
     this.appMainService.getLogData(this.appName, this.orgName, sTime, eTime, message).subscribe(list => {
       let logDataList = list;
   
-      let logPop = window.open('', '_blank', 'location=no, directories=no width=1300, height=900');
+      let logPop = window.open('', '_blank', 'location=no, directories=no, width=1300, height=900');
 
       // view 초기화
       logPop.document.write(this.InitLogPopView(logDataList));
@@ -2469,6 +2469,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
     popHtml.push("<html>");
     popHtml.push("    <head>");
+    popHtml.push("      <title>PaaS-TA</title>");
     popHtml.push("      <link rel='stylesheet' href='/assets/resources/css/logging-service.css' type='text/css'>");
     popHtml.push("    </head>");
     popHtml.push("    <body>");
