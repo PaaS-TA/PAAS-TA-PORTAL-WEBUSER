@@ -141,7 +141,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
   public sltChartDefaultTimeRange: number;
   public sltChartGroupBy: number;
 
-  loggingView = appConfig['logging'];
+  public loggingView: boolean = false;
 
   // public sltLaaSView: boolean = false;
   // public sltLaaSUrl: string = '';
@@ -246,6 +246,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
       this.getAlarm(this.appGuid);
       this.getAutoscaling(this.appGuid);
       this.getMaxDisk();
+
+      this.initLoggingView();
       // this.InitLaaSView();
     } else {
       this.common.isLoading = true;
@@ -2744,6 +2746,17 @@ export class AppMainComponent implements OnInit, OnDestroy {
     return convertTime;
   }
   
+  initLoggingView() {
+    this.appMainService.getCodeMax('LOGGING').subscribe(data => {
+      data.list.some(r => {
+        if (r.key === 'enable_logging') {
+          this.loggingView = r.useYn == 'Y' ? true : false;
+          return true;
+        }
+      });
+    });
+  }
+
   // 2022.10.19 deprecated
   // InitLaaSView() {
   //   this.appMainService.getCodeMax('LAAS').subscribe(data => {

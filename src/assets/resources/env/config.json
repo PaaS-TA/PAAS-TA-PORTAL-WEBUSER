@@ -14,7 +14,6 @@
   "sessionTimeout": "10",
   "monitoring": false,
   "automaticApproval": true,
-  "logging": false,
   "apiversion": "v3",
   "webadminUri": "http://portal-web-admin.galaxycloud.kr/",
   "sshUri": "http://ssh-app.galaxycloud.kr/",
