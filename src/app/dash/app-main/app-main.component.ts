@@ -2435,8 +2435,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
   showWindowLogging() {
     let sDate = this.getCurrentDate("start");
     let eDate = this.getCurrentDate("end");
-    let start = this.getCurrentTime("start");
-    let end = this.getCurrentTime("end");
+    let start = this.getCurrentTime("start", "request");
+    let end = this.getCurrentTime("end", "request");
 
     let sTime = sDate + "T" + start + "Z";
     let eTime = eDate + "T" + end + "Z";
@@ -2464,8 +2464,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
   InitLogPopView(list: any) {
     let sDate = this.getCurrentDate("start");
     let eDate = this.getCurrentDate("end");
-    let start = this.getCurrentTime("start");
-    let end = this.getCurrentTime("end");
+    let start = this.getCurrentTime("start", "init");
+    let end = this.getCurrentTime("end", "init");
 
     let popHtml = [];
 
@@ -2625,11 +2625,20 @@ export class AppMainComponent implements OnInit, OnDestroy {
         }
 
         // 시간 조정
+        let now = new Date();
+        let endSs = endDateTime.getSeconds();
+        let diffDateTime = endDateTime;
+        diffDateTime.setSeconds(diffDateTime.getSeconds()+1);
+
+        if(diffDateTime.getTime() <= now.getTime()){
+          endSs++;
+        }
+
         startDateTime.setSeconds(startDateTime.getSeconds()-1);
-        endDateTime.setSeconds(endDateTime.getSeconds()-1);
+        endDateTime.setSeconds(endSs);
 
         let sDate = startDateTime.getFullYear() + "-" + ("00" + (startDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + startDateTime.getDate().toString()).slice(-2);
-        let sTime = ("00" + startDateTime.getHours().toString()).slice(-2) + ":" + ("00" + startDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + startDateTime.getSeconds().toString()).slice(-2);
+        let sTime = ("00" + startDateTime.getHours().toString()).slice(-2) + ":" + ("00" + startDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + (startDateTime.getSeconds()-1).toString()).slice(-2);
 
         let eDate = endDateTime.getFullYear() + "-" + ("00" + (endDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + endDateTime.getDate().toString()).slice(-2);
         let eTime = ("00" + endDateTime.getHours().toString()).slice(-2) + ":" + ("00" + endDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + endDateTime.getSeconds().toString()).slice(-2);
@@ -2726,7 +2735,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
     return date;
   }
 
-  getCurrentTime(flag: string) {
+  getCurrentTime(flag: string, purpose: string) {
     let today = new Date();
     let hh = ("00" + today.getHours().toString()).slice(-2);
     let mm = ("00" + today.getMinutes().toString()).slice(-2);
@@ -2739,7 +2748,11 @@ export class AppMainComponent implements OnInit, OnDestroy {
       );
       hh = ("00" + sDate.getHours().toString()).slice(-2);
       mm = ("00" + sDate.getMinutes().toString()).slice(-2);
-      ss = ("00" + sDate.getSeconds().toString()).slice(-2);
+      if(purpose == "request") {
+        ss = ("00" + (sDate.getSeconds()-1).toString()).slice(-2);
+      } else {
+        ss = ("00" + sDate.getSeconds().toString()).slice(-2);
+      }
     }
 
     let convertTime = hh + ":" + mm + ":" + ss;
@@ -2749,7 +2762,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
   initLoggingView() {
     this.appMainService.getCodeMax('LOGGING').subscribe(data => {
       data.list.some(r => {
-        if (r.key === 'enable_logging') {
+        if (r.key === 'enable_logging_service') {
           this.loggingView = r.useYn == 'Y' ? true : false;
           return true;
         }
