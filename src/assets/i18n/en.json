@@ -159,9 +159,9 @@
       "title": "Logs",
       "recentLogs": "Recent Logs",
       "logging": {
-        "explain": "로그타임과 실제시간과는 9시간의 시차가 존재하오니, 참고하시기 바랍니다.",
-        "invalidTime": "검색할 시작시간이 종료시간보다 큽니다.",
-        "invalidKeyword": "특수문자는 입력할 수 없습니다."
+        "explain": "Please be noted that there is a 9 hour time diefference between log time and the actual time.",
+        "invalidTime": "Start time to search is greater than the end time.",
+        "invalidKeyword": "Special character cannot be entered."
       }
     },
     "viewchart": {
