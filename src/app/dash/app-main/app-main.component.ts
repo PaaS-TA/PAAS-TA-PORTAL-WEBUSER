@@ -2762,8 +2762,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
   initLoggingView() {
     this.appMainService.getCodeMax('LOGGING').subscribe(data => {
       data.list.some(r => {
-        if (r.key === 'enable_logging_service') {
-          this.loggingView = r.useYn == 'Y' ? true : false;
+        if (r.key === 'enable_logging_service' && r.useYn === 'Y') {
+          this.loggingView = JSON.parse(r.value);
           return true;
         }
       });
