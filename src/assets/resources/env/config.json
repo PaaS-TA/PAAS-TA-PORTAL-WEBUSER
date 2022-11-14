@@ -19,7 +19,7 @@
   "sshUri": "http://ssh-app.3.36.168.88.nip.io/",
   "userAppSizeMb": "0",
   "tailLogUri": "http://tail-log.3.36.168.88.nip.io/",
-  "sshEnable": "true",
+  "sshEnable": true,
   "tailLogIntervalMillisecond": "250",
   "languageList": ["ko", "en"]
 }

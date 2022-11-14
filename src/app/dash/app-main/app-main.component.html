@@ -519,7 +519,7 @@
                       <td>Disk</td>
                       <td>UPTIME</td>
                       <td>RESTART</td>
-                      <td *ngIf="sshEnable == 'true'">{{ 'appMain.stats.ssh' | translate }}</td>
+                      <td *ngIf="sshEnable == true">{{ 'appMain.stats.ssh' | translate }}</td>
                     </tr>
                   </thead>
                   <tbody *ngFor="let item of appStatusEntities; let i = index">
@@ -531,7 +531,7 @@
                       <td>{{item.disk}}</td>
                       <td>{{item.uptime}} (min)</td>
                       <th><a (click)="showPopStatsRestartClick(item.key)"><span class="BGcolors5 btn_bg_change2">RESTART</span></a></th>
-                      <th *ngIf="sshEnable == 'true'"><a (click)="connectSSH(item.key)"><span class="BGcolors5 btn_bg_change2">{{ 'appMain.stats.connect' | translate }}</span></a></th>
+                      <th *ngIf="sshEnable == true"><a (click)="connectSSH(item.key)"><span class="BGcolors5 btn_bg_change2">{{ 'appMain.stats.connect' | translate }}</span></a></th>
                     </tr>
                   </tbody>
                   <tfoot>
