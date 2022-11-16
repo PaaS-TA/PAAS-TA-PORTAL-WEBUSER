@@ -22,6 +22,7 @@ let appConfig = require('assets/resources/env/config.json');
 export class AppMainComponent implements OnInit, OnDestroy {
 
   apiversion = appConfig['apiversion'];
+  sshEnable = appConfig['sshEnable'];
 
   private jquerySetting: boolean;
   public location: string;
@@ -289,6 +290,11 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
   getAppSummary(guid: any) {
     this.isLoading = true;
+    this.appMainService.getAppBuildpack(guid).subscribe(buildpack => {
+      this.appSummaryBuildPackName = buildpack.buildpacks[0];
+      this.appSummaryBuildpack = buildpack.buildpacks[0];
+    });
+
     this.appMainService.getAppSummary(guid).subscribe(data => {
     
       this.sshConnectInfo = {
@@ -308,7 +314,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
       var apmAppName = "";
       var appServices = [];
       var appServiceDashboardUri = "";
-      $.each(data.services, function (key, serviceObj) {
+      $.each(this.appServicesEntities, function (key, serviceObj) {
         if (serviceObj.service_plan != undefined) {
           if (serviceObj.service_plan.service != undefined && serviceObj.service_plan.service.label == "Pinpoint") {
             // $("#apmBtn").attr("disabled", false);
@@ -354,22 +360,6 @@ export class AppMainComponent implements OnInit, OnDestroy {
         this.appSummaryPackageUpdatedAt = data.package_updated_at.replace('T', '  ').replace('Z', ' ');
       }
 
-      if (data.detected_buildpack != null && data.detected_buildpack != "") {
-        if (data.detected_buildpack.length > 40) {
-          this.appSummaryBuildpack = data.detected_buildpack.substring(0, 40) + "..";
-        } else {
-          this.appSummaryBuildpack = data.detected_buildpack;
-        }
-      } else if (data.buildpack != null) {
-        if (data.buildpack.length > 40) {
-          this.appSummaryBuildpack = data.buildpack.substring(0, 40) + "..";
-        } else {
-          this.appSummaryBuildpack = data.buildpack;
-        }
-      }
-
-      this.appSummaryBuildPackName = data.buildpack;
-
       this.appSummaryInstance = data.instances;
       this.appSummaryInstancePer = Math.round((this.appSummaryInstance * 100) / this.appSummaryInstanceMax);
 
@@ -402,7 +392,10 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
       this.initRouteTab();
       // this.getSpaceSummary();
-      this.getServicepacks();
+      setTimeout(() => {
+        this.getServicepacks();
+      }, 1000);
+
       // this.getServicesInstances();
       this.getBuildPacks();
     }, error => {
@@ -473,11 +466,11 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   getSpaceSummary() {
-    this.appMainService.getSpaceSummary(this.appSummarySpaceGuid).subscribe(data => {
+    this.appMainService.getSpaceServiceList(this.appSummarySpaceGuid).subscribe(data => {
       var servicepacks = this.servicepacksEntities;
       var servicepacksRe = [];
       var useServices = this.appServicesEntities;
-      $.each(data.services, function (key, dataobj) {
+      $.each(data, function (key, dataobj) {
         $.each(servicepacks, function (key2, dataobj2) {
           if (!isNullOrUndefined(dataobj.service_plan)) {
             if ((dataobj.service_plan.service.label === dataobj2.servicePackName) && (dataobj2.appBindYn === 'Y') && (dataobj2.useYn === 'Y')) {
@@ -590,8 +583,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
   getAppStats(guid: string) {
     this.appMainService.getAppStats(guid).subscribe(data => {
-      if (data) {
-        this.appStatsEntities = data.instances;
+    if (data) {
+    this.appStatsEntities = data.resources;
 
         var cpu = 0;
         var mem = 0;
@@ -601,10 +594,10 @@ export class AppMainComponent implements OnInit, OnDestroy {
         let maxdisk = this.appSummaryDiskMax;
 
         $.each(data.instances, function (key, dataobj) {
-          if (dataobj.stats != null) {
-            if (!(null == dataobj.stats.usage.cpu || '' == dataobj.stats.usage.cpu)) cpu = cpu + dataobj.stats.usage.cpu * 100;
-            if (!(null == dataobj.stats.usage.mem || '' == dataobj.stats.usage.mem)) mem = mem + (dataobj.stats.usage.mem) / (maxmem * 1024 * 1024 * 1024) * 100;
-            if (!(null == dataobj.stats.usage.disk || '' == dataobj.stats.usage.disk)) disk = disk + (dataobj.stats.usage.disk) / (maxdisk * 1024 * 1024 * 1024) * 100;
+          if (dataobj != null) {
+            if (!(null == dataobj.usage.cpu || '' == dataobj.usage.cpu)) cpu = cpu + dataobj.usage.cpu * 100;
+            if (!(null == dataobj.usage.mem || '' == dataobj.usage.mem)) mem = mem + (dataobj.usage.mem) / (maxmem * 1024 * 1024 * 1024) * 100;
+            if (!(null == dataobj.usage.disk || '' == dataobj.usage.disk)) disk = disk + (dataobj.usage.disk) / (maxdisk * 1024 * 1024 * 1024) * 100;
             cnt++;
           }
         });
@@ -640,7 +633,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   procSetAppStatusTab() {
-    var appStatus = [];
+  var appStatus = [];
     $.each(this.appStatsEntities, function (key, dataobj) {
       var statusClass;
       var statusText;
@@ -668,12 +661,12 @@ export class AppMainComponent implements OnInit, OnDestroy {
         disk = 0;
         uptime = 0;
       } else {
-        cpu = (Math.round((dataobj.stats.usage.cpu * 100) * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
-        // memory = dataobj.stats.usage.mem.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        // disk = dataobj.stats.usage.disk.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        memory = dataobj.stats.usage.mem.toString();
-        disk = dataobj.stats.usage.disk.toString();
-        uptime = (Math.round((dataobj.stats.uptime / 60) * Math.pow(10, 0)) / Math.pow(10, 0)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        cpu = (Math.round((dataobj.usage.cpu * 100) * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
+        // memory = dataobj.usage.mem.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // disk = dataobj.usage.disk.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        memory = dataobj.usage.mem.toString();
+        disk = dataobj.usage.disk.toString();
+        uptime = (Math.round((dataobj.uptime / 60) * Math.pow(10, 0)) / Math.pow(10, 0)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
 
       var memoryBytes = parseInt(memory);
@@ -704,7 +697,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
         uptime: uptime
       };
       appStatus.push(obj);
-    });
+      });
     this.appStatusEntities = appStatus;
 
     setTimeout(() =>
@@ -1235,8 +1228,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
   getAppRecentLogs(guid: any) {
     this.appMainService.getAppRecentLogs(guid).subscribe(data => {
       var str = "";
-      $.each(data.log, function (key, dataobj) {
-        str += dataobj.logMessage.message + '<br>';
+      $.each(data.log.batch, function (key, dataobj) {
+        str += dataobj.log.payload + '<br>';
       });
       this.appRecentLogs = str;
 

@@ -123,6 +123,20 @@ export class AppMainService {
     });
   }
 
+  getAppServiceList(guid: string) {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/apps/' + guid + '/services', this.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
+  getSpaceServiceList(guid: string) {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/spaces/' + guid + '/services', this.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
+
+
   getServicesInstances(guid: string) {
     return this.commonService.doGet('/portalapi/' + this.apiversion + '/service-instances/space/' + guid + '', this.getToken()).map((res: any) => {
       return res;
@@ -226,6 +240,12 @@ export class AppMainService {
     });
   }
 
+  getAppBuildpack(guid: string) {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/apps/' + guid + '/buildpack', this.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+  
   getLogData(name: string, org: string, sTime: string, eTime: string, keyword: string){
     return this.commonService.doGet('/logapi/log?name=' + name + '&org=' + org + '&stime=' + sTime + '&etime=' + eTime + '&keyword=' + keyword, this.getToken()).map((res: any) => {
       return res;
