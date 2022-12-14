@@ -141,8 +141,10 @@ export class AppMainComponent implements OnInit, OnDestroy {
   public sltChartDefaultTimeRange: number;
   public sltChartGroupBy: number;
 
-  public sltLaaSView: boolean = false;
-  public sltLaaSUrl: string = '';
+  public loggingView: boolean = false;
+
+  // public sltLaaSView: boolean = false;
+  // public sltLaaSUrl: string = '';
   public mem_DirectInputClick : boolean = true;
   public disk_DirectInputClick : boolean= true;
 
@@ -151,7 +153,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
   alive = true;
 
   isLodingNums = 0;
-  
+
   // SSH Connect Info
   public sshConnectInfo ={
   	instances: 0,
@@ -244,7 +246,9 @@ export class AppMainComponent implements OnInit, OnDestroy {
       this.getAlarm(this.appGuid);
       this.getAutoscaling(this.appGuid);
       this.getMaxDisk();
-      this.InitLaaSView();
+
+      this.initLoggingView();
+      // this.InitLaaSView();
     } else {
       this.common.isLoading = true;
       this.common.alertMessage("Application Fail.", false);
@@ -2428,21 +2432,360 @@ export class AppMainComponent implements OnInit, OnDestroy {
     window.open('/tailLogs?name=' + this.appName + '&org=' + this.orgName + '&space=' + this.spaceName + '&guid=' + this.appGuid + '', '_blank', 'location=no, directories=no width=1000, height=700');
   }
 
-  InitLaaSView() {
-    this.appMainService.getCodeMax('LAAS').subscribe(data => {
+  showWindowLogging() {
+    let sDate = this.getCurrentDate("start");
+    let eDate = this.getCurrentDate("end");
+    let start = this.getCurrentTime("start", "request");
+    let end = this.getCurrentTime("end", "request");
+
+    let sTime = sDate + "T" + start + "Z";
+    let eTime = eDate + "T" + end + "Z";
+    let message = "";
+
+    this.appMainService.getLogData(this.appName, this.orgName, sTime, eTime, message).subscribe(list => {
+      let logDataList = list;
+  
+      let logPop = window.open('', '_blank', 'location=no, directories=no, width=1300, height=900');
+
+      // view 초기화
+      logPop.document.write(this.InitLogPopView(logDataList));
+    
+      // event handler 구현
+      this.addResetEventHandler(logPop.document);
+      this.addSearchEventHandler(logPop.document, 'search', 'click');
+      this.addSearchEventHandler(logPop.document, 'message', 'keypress');
+      this.checkValidKeyword(logPop.document, 'keypress');
+      this.checkValidKeyword(logPop.document, 'keyup');
+
+      logPop.document.close();
+    });
+  }
+
+  InitLogPopView(list: any) {
+    let sDate = this.getCurrentDate("start");
+    let eDate = this.getCurrentDate("end");
+    let start = this.getCurrentTime("start", "init");
+    let end = this.getCurrentTime("end", "init");
+
+    let popHtml = [];
+
+    popHtml.push("<html>");
+    popHtml.push("    <head>");
+    popHtml.push("      <title>PaaS-TA</title>");
+    popHtml.push("      <link rel='stylesheet' href='/assets/resources/css/logging-service.css' type='text/css'>");
+    popHtml.push("    </head>");
+    popHtml.push("    <body>");
+    popHtml.push("        <div id='logPopWrap'>");
+    popHtml.push("            <h4>");
+    popHtml.push("                <span class='title'>" + this.appName + "</span>");
+    popHtml.push("            </h4>");
+    popHtml.push("            <div class='logs'>");
+    popHtml.push("                <fieldset>");
+    popHtml.push("                    <div class='condition'>");
+    popHtml.push("                        <label>Date</label>");
+    popHtml.push("                        <Input type='date' id='date' value='" + eDate + "' style='width:220px;'/>");
+    popHtml.push("                        <label>Time</label>");
+    popHtml.push("                        <Input type='time' id='sTime' value='" + start + "' step='1' style='width:180px;'/>");
+    popHtml.push("                        <em>~</em>");
+    popHtml.push("                        <Input type='time' id='eTime' value='" + end + "' step='1' style='width:180px;'/>");
+    popHtml.push("                        <button class='reset' id='reset'>RESET</button>");
+    popHtml.push("                    </div>");
+    popHtml.push("                    <div>");
+    popHtml.push("                        <label>Message</label>");
+    popHtml.push("                        <Input type='text' id='message' style='width:800px;' />");
+    popHtml.push("                        <label id='valid' style='display:none;'>" + this.translateEntities.logs.logging.invalidKeyword + "</label>");
+    popHtml.push("                    </div>");
+    popHtml.push("                    <div>");
+    //popHtml.push("                        <span style='color:#ff0000; font-weight: bold;'>" + this.translateEntities.logs.logging.explain + "</span>");
+    popHtml.push("                    </div>");
+    popHtml.push("                    <button class='logging' id='search'>SEARCH</button>");
+    popHtml.push("                </fieldset>");
+    popHtml.push("                <ul class='preText' id='logResult'>");
+  
+    if(list.length == 0) {
+      popHtml.push("No Log Data");
+    } else {
+      list.forEach(data => {
+        let dbDate = data[0];
+        
+        let msgObjToStr = JSON.stringify(data[1]);
+        let lastStr = msgObjToStr.charAt(msgObjToStr.length-2);
+
+        if(lastStr != '}') {
+          let convertMsg =  msgObjToStr.replace(/\\\"/gi, "\"").replace(/\"{/, "{");
+          popHtml.push("                    <li>" + dbDate + "<br>" + convertMsg + "</li>");
+        } else {
+          let msgObj = JSON.parse(data[1]);
+
+          // message 내의 time 추출
+          let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
+  
+          let startIdx = msgDateTime.indexOf("T");
+          let endIdx = msgDateTime.indexOf("+");
+          let msgDate = msgDateTime.substring(0, startIdx);
+          let msgTime = msgDateTime.substring(startIdx+1, endIdx);
+          let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
+  
+          // 시작 및 종료 시간 추출
+          let msgStart = new Date(sDate + " " + start).getTime();
+          let msgEnd = new Date(eDate + " " + end).getTime();
+  
+          if(convertMsgTime >= msgStart && convertMsgTime <= msgEnd) {
+            popHtml.push("                    <li>" + dbDate + "<br>" + data[1] + "</li>");
+          }
+        }
+      });
+    }
+      
+    popHtml.push("                </ul>");
+    popHtml.push("            </div>");
+    popHtml.push("        </div>");
+    popHtml.push("        <div class='alertLayer' role='alert'>");
+    popHtml.push("          <div class='in'>");
+    popHtml.push("            Alert! PaasTA Alert Example!<span class='alertClose'>x</span>");
+    popHtml.push("          </div>");
+    popHtml.push("        </div>");
+    popHtml.push("    </body>");
+    popHtml.push("</html>");
+
+    let result = popHtml.join("");
+    return result;
+  }
+
+  checkValidKeyword(obj: any, eventName: string) {
+    obj.getElementById('message').addEventListener(eventName, function(e) {
+      let keyword = obj.getElementById('message') as HTMLInputElement;
+      let valid = obj.getElementById('valid') as HTMLInputElement;
+      let regExp = new RegExp(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g);
+
+      if(regExp.test(keyword.value)) {
+        valid.style.display = "block";
+      } else {
+        valid.style.display = "none";
+      }
+      
+    });
+  }
+
+  addResetEventHandler(obj: any) {
+    obj.getElementById('reset').addEventListener('click', function() {
+      let today = new Date();
+      let year = today.getFullYear();
+      let month = ("00" + (today.getMonth()+1).toString()).slice(-2);
+      let day =  ("00" + today.getDate().toString()).slice(-2);
+
+      let sHours = ("00" + (today.getHours()-1).toString()).slice(-2);
+      let eHours =  ("00" + today.getHours().toString()).slice(-2);
+      let minutes =  ("00" + today.getMinutes().toString()).slice(-2);
+      let seconds = ("00" + today.getSeconds().toString()).slice(-2);
+
+      let date = obj.getElementById('date') as HTMLInputElement;
+      let start = obj.getElementById('sTime') as HTMLInputElement;
+      let end = obj.getElementById('eTime') as HTMLInputElement;
+      let msg = obj.getElementById('message') as HTMLInputElement;
+      let msgValid = obj.getElementById('valid') as HTMLInputElement;
+      
+      date.value = year + "-" + month + "-" + day;
+      start.value = sHours + ":" + minutes + ":" + seconds;
+      end.value = eHours + ":" + minutes + ":" + seconds;
+      msg.value = "";
+      msgValid.style.display = "none"; 
+    });
+  }
+
+  addSearchEventHandler(obj: any, id: string, eventName: string) {
+    let alertCheck = this.translateEntities.logs.logging.invalidTime;
+    
+    obj.getElementById(id).addEventListener(eventName, function(e) {
+      if (eventName == "click" || e.keyCode == 13) {
+        let date = obj.getElementById('date') as HTMLInputElement;
+        let start = obj.getElementById('sTime') as HTMLInputElement;
+        let end = obj.getElementById('eTime') as HTMLInputElement;
+
+        let startDateTime = new Date(date.value + " " + start.value);
+        let endDateTime = new Date(date.value + " " + end.value);
+
+        let startMs = startDateTime.getTime();
+        let endMs = endDateTime.getTime();
+
+        // 시작시간 및 종료시간 범위 확인
+        let alertLayer = obj.querySelector('.alertLayer') as HTMLParagraphElement;
+        let timeValid = true;
+
+        if(startDateTime.getTime() > endDateTime.getTime()) {
+          alertLayer.innerHTML = "          <div class='in'>" + alertCheck + "</div>";
+          alertLayer.classList.add('moveAlert');
+          alertLayer.style.borderLeft = "4px solid #cb3d4a";
+          setTimeout(() => alertLayer.classList.remove('moveAlert'), 3000);
+          timeValid = false;
+        }
+
+        if(!timeValid) {
+          return;
+        }
+
+        // 시간 조정
+        let now = new Date();
+        let endSs = endDateTime.getSeconds();
+        let diffDateTime = endDateTime;
+        diffDateTime.setSeconds(diffDateTime.getSeconds()+1);
+
+        if(diffDateTime.getTime() <= now.getTime()){
+          endSs++;
+        }
+
+        startDateTime.setSeconds(startDateTime.getSeconds()-1);
+        endDateTime.setSeconds(endSs);
+
+        let sDate = startDateTime.getFullYear() + "-" + ("00" + (startDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + startDateTime.getDate().toString()).slice(-2);
+        let sTime = ("00" + startDateTime.getHours().toString()).slice(-2) + ":" + ("00" + startDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + (startDateTime.getSeconds()-1).toString()).slice(-2);
+
+        let eDate = endDateTime.getFullYear() + "-" + ("00" + (endDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + endDateTime.getDate().toString()).slice(-2);
+        let eTime = ("00" + endDateTime.getHours().toString()).slice(-2) + ":" + ("00" + endDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + endDateTime.getSeconds().toString()).slice(-2);
+
+        let dbStartDateTime = sDate + "T" + sTime + "Z";
+        let dbEndDateTime = eDate + "T" + eTime + "Z";
+        let keyword = obj.getElementById('message') as HTMLInputElement;
+
+        let apiUri = window.sessionStorage.getItem('apiUri');
+        let appName = window.sessionStorage.getItem('_currentAppName');
+        let orgName = window.sessionStorage.getItem('_currentOrgName');
+        let authorization = window.sessionStorage.getItem('authorization');
+
+        let regExp = new RegExp(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/);
+        let isInvalidMsg = regExp.test(keyword.value);
+        if(isInvalidMsg) {
+          return;
+        }
+
+        let xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.onreadystatechange = function(){
+          if(xmlHttp.readyState == XMLHttpRequest.DONE){
+            if(xmlHttp.status == 200) {
+                let dataList = JSON.parse(xmlHttp.responseText);
+                let logResult = obj.getElementById('logResult') as HTMLInputElement;
+                let newHtml = [];
+
+                if(dataList.length == 0) {
+                  newHtml.push("No Log Data");
+                } else {
+                  dataList.forEach(data => {
+                    let dbDate = data[0];
+
+                    let msgObjToStr = JSON.stringify(data[1]);
+                    let lastStr = msgObjToStr.charAt(msgObjToStr.length-2);
+
+                    if(lastStr != '}') {
+                      let convertMsg =  msgObjToStr.replace(/\\\"/gi, "\"").replace(/\"{/, "{");
+                      newHtml.push("                    <li>" + dbDate + "<br>" + convertMsg + "</li>");
+                    } else {
+                      let msgObj = JSON.parse(data[1]);
+
+                      // message 내의 time 추출
+                      let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
+
+                      let startIdx = msgDateTime.indexOf("T");
+                      let endIdx = msgDateTime.indexOf("+");
+                      let msgDate = msgDateTime.substring(0, startIdx);
+                      let msgTime = msgDateTime.substring(startIdx+1, endIdx);
+                      let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
+
+                      if(convertMsgTime >= startMs && convertMsgTime <= endMs) {
+                        newHtml.push("                    <li>" + dbDate + "<br>" + data[1] + "</li>");
+                      }
+                    }
+                  });
+                }
+
+                logResult.innerHTML = newHtml.join("");
+            }
+            else {
+                console.log("Error : " + xmlHttp.status);
+            }
+          }
+        }
+        xmlHttp.open("GET", apiUri + '/logapi/log?name=' + appName + '&org=' + orgName + '&stime=' + dbStartDateTime + '&etime=' + dbEndDateTime + '&keyword=' + keyword.value);
+        xmlHttp.setRequestHeader('Content-Type', 'application/json');
+        xmlHttp.setRequestHeader('X-Broker-Api-Version', '2.4');
+        xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xmlHttp.setRequestHeader('Authorization', authorization);
+        xmlHttp.send();
+      }
+    });
+  }
+
+  getCurrentDate(flag: string) {
+    let today = new Date();
+    let yyyy = today.getFullYear();
+    let mm = ("00" + (today.getMonth()+1).toString()).slice(-2);
+    let dd = ("00" + today.getDate().toString()).slice(-2);
+
+    if(flag == "start") {
+      let sDate = new Date(
+        today.getFullYear(), today.getMonth(), today.getDate(),
+        today.getHours()-1, today.getMinutes(), today.getSeconds()
+      );
+      yyyy = sDate.getFullYear();
+      mm = ("00" + (sDate.getMonth()+1).toString()).slice(-2);
+      dd = ("00" + sDate.getDate().toString()).slice(-2);
+    } 
+
+    let date = yyyy + "-" + mm + "-" + dd;
+    return date;
+  }
+
+  getCurrentTime(flag: string, purpose: string) {
+    let today = new Date();
+    let hh = ("00" + today.getHours().toString()).slice(-2);
+    let mm = ("00" + today.getMinutes().toString()).slice(-2);
+    let ss = ("00" + today.getSeconds().toString()).slice(-2);
+    
+    if(flag == "start") {
+      let sDate = new Date(
+        today.getFullYear(), today.getMonth(), today.getDate(),
+        today.getHours()-1, today.getMinutes(), today.getSeconds()
+      );
+      hh = ("00" + sDate.getHours().toString()).slice(-2);
+      mm = ("00" + sDate.getMinutes().toString()).slice(-2);
+      if(purpose == "request") {
+        ss = ("00" + (sDate.getSeconds()-1).toString()).slice(-2);
+      } else {
+        ss = ("00" + sDate.getSeconds().toString()).slice(-2);
+      }
+    }
+
+    let convertTime = hh + ":" + mm + ":" + ss;
+    return convertTime;
+  }
+  
+  initLoggingView() {
+    this.appMainService.getCodeMax('LOGGING').subscribe(data => {
       data.list.some(r => {
-        if (r.key === 'laas_base_url') {
-          this.sltLaaSView = r.useYn == 'Y' ? true : false;
-          this.sltLaaSUrl = r.value;
+        if (r.key === 'enable_logging_service' && r.useYn === 'Y') {
+          this.loggingView = JSON.parse(r.value);
           return true;
         }
       });
     });
   }
 
-  showWindowLaaS() {
-    window.open(this.sltLaaSUrl + '/' + this.appGuid, '_blank', 'location=no, directories=no width=1000, height=700');
-  }
+  // 2022.10.19 deprecated
+  // InitLaaSView() {
+  //   this.appMainService.getCodeMax('LAAS').subscribe(data => {
+  //     data.list.some(r => {
+  //       if (r.key === 'laas_base_url') {
+  //         this.sltLaaSView = r.useYn == 'Y' ? true : false;
+  //         this.sltLaaSUrl = r.value;
+  //         return true;
+  //       }
+  //     });
+  //   });
+  // }
+
+  // showWindowLaaS() {
+  //   window.open(this.sltLaaSUrl + '/' + this.appGuid, '_blank', 'location=no, directories=no width=1000, height=700');
+  // }
 
   showWindowAppLink(urlLink: string) {
     window.open('http://' + urlLink + '', 'aaa');

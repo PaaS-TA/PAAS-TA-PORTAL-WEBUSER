@@ -157,7 +157,12 @@
     },
     "logs": {
       "title": "Logs",
-      "recentLogs": "Recent Logs"
+      "recentLogs": "Recent Logs",
+      "logging": {
+        "explain": "Please be noted that there is a 9 hour time diefference between log time and the actual time.",
+        "invalidTime": "Start time to search is greater than the end time.",
+        "invalidKeyword": "Special character cannot be entered."
+      }
     },
     "viewchart": {
       "tab1": "Trend chart",

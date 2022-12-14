@@ -225,4 +225,10 @@ export class AppMainService {
       return res;
     });
   }
+
+  getLogData(name: string, org: string, sTime: string, eTime: string, keyword: string){
+    return this.commonService.doGet('/logapi/log?name=' + name + '&org=' + org + '&stime=' + sTime + '&etime=' + eTime + '&keyword=' + keyword, this.getToken()).map((res: any) => {
+      return res;
+    })
+  }
 }
