@@ -220,24 +220,44 @@
                     <li>
                       <div>{{'dashboard.app.instance' | translate}}</div>
                       <div>:</div>
-                      <div>{{item.instances}}</div>
+                      <ng-container *ngIf="apiType === 'AP'">
+                        <div>{{item.instances}}</div>
+                      </ng-container>
+                      <ng-container *ngIf="apiType === 'SIDECAR'">
+                        <div>{{appProcessList[i][0].instances}}</div>
+                      </ng-container>
                     </li>
                     <li>
                       <div>{{'dashboard.app.disk' | translate}}</div>
                       <div>:</div>
-                      <div>{{ (item.disk_quota >= 1024) ? ((item.disk_quota % 1024 == 0 || item.disk_quota % 1024 < 11) ?
-                          (item.disk_quota / 1024).toFixed(0) : (item.disk_quota / 1024).toFixed(2)) : (item.disk_quota) }}
-                        {{(item.disk_quota >= 1024) ? 'GB' : 'MB' }}
-                      </div>
+                      <ng-container *ngIf="apiType === 'AP'">
+                        <div>{{ (item.disk_quota >= 1024) ? ((item.disk_quota % 1024 == 0 || item.disk_quota % 1024 < 11) ?
+                            (item.disk_quota / 1024).toFixed(0) : (item.disk_quota / 1024).toFixed(2)) : (item.disk_quota) }}
+                          {{(item.disk_quota >= 1024) ? 'GB' : 'MB' }}
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="apiType === 'SIDECAR'">
+                        <div>{{ (appProcessList[i][0].disk_in_mb >= 1024) ? ((appProcessList[i][0].disk_in_mb % 1024 == 0 || appProcessList[i][0].disk_in_mb % 1024 < 11) ?
+                            (appProcessList[i][0].disk_in_mb / 1024).toFixed(0) : (appProcessList[i][0].disk_in_mb / 1024).toFixed(2)) : (appProcessList[i][0].disk_in_mb) }}
+                          {{(appProcessList[i][0].disk_in_mb >= 1024) ? 'GB' : 'MB' }}
+                        </div>
+                      </ng-container>
                     </li>
                     <li>
                       <div>{{'dashboard.app.memory' | translate}}</div>
                       <div>:</div>
-                      <div>{{ (item.memory >= 1024) ? ((item.memory % 1024 == 0 || item.memory % 1024 < 11) ?
-                          (item.memory / 1024).toFixed(0) : (item.memory / 1024).toFixed(2)) : (item.memory) }}
-                        {{(item.memory >= 1024) ? 'GB' : 'MB' }}
-
-                      </div>
+                      <ng-container *ngIf="apiType === 'AP'">
+                        <div>{{ (item.memory >= 1024) ? ((item.memory % 1024 == 0 || item.memory % 1024 < 11) ?
+                            (item.memory / 1024).toFixed(0) : (item.memory / 1024).toFixed(2)) : (item.memory) }}
+                          {{(item.memory >= 1024) ? 'GB' : 'MB' }}
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="apiType === 'SIDECAR'">
+                        <div>{{ (appProcessList[i][0].memory_in_mb >= 1024) ? ((appProcessList[i][0].memory_in_mb % 1024 == 0 || appProcessList[i][0].memory_in_mb % 1024 < 11) ?
+                            (appProcessList[i][0].memory_in_mb / 1024).toFixed(0) : (appProcessList[i][0].memory_in_mb / 1024).toFixed(2)) : (appProcessList[i][0].memory_in_mb) }}
+                          {{(appProcessList[i][0].memory_in_mb >= 1024) ? 'GB' : 'MB' }}
+                        </div>
+                      </ng-container>
                     </li>
                     <!--{{item.memory}}-->
                   </ul>
@@ -360,6 +380,8 @@
                           <div>:</div>
                           <div class="serviceTitle">{{item.service_plan.name}}</div>
                         </li>
+
+                      <ng-container *ngIf="apiType === 'AP'">
                         <li *ngIf="item.bound_app_count > 0">
                           <div>{{'dashboard.service.connectApp' | translate}}</div>
                           <div>:</div>
@@ -371,7 +393,17 @@
                             </ng-container>
                           </ng-container>
                         </li>
-                        <!--<ng-container *ngIf-->
+                      </ng-container>
+                      <ng-container *ngIf="apiType === 'SIDECAR'">
+                        <li *ngIf="item.binding_app_names?.length > 0">
+                          <div>{{'dashboard.service.connectApp' | translate}}</div>
+                          <div>:</div>
+                          <ng-container *ngFor="let binding_app_name of item.binding_app_names;">
+                                <div class="serviceTitle">{{binding_app_name}}{{setAppBinding(item)}}</div>
+                          </ng-container>
+                        </li>
+                      </ng-container>
+			<!--<ng-container *ngIf-->
                         <ng-container *ngIf="item.dashboardUseYn =='Y' && item.appBindYn=='N'">
                           <li *ngIf="item.dashboard_url != null">
                             <div>{{'dashboard.service.dashboard' | translate}}</div>
@@ -404,6 +436,8 @@
                           <div>:</div>
                           <div class="serviceTitle">{{item.service_plan.name}}</div>
                         </li>
+
+                      <ng-container *ngIf="apiType === 'AP'">
                         <li *ngIf="item.bound_app_count > 0">
                           <div>{{'dashboard.service.connectApp' | translate}}</div>
                           <div>:</div>
@@ -415,7 +449,18 @@
                             </ng-container>
                           </ng-container>
                         </li>
-                        <!--<ng-container *ngIf-->
+                      </ng-container>
+                      <ng-container *ngIf="apiType === 'SIDECAR'">
+                        <li *ngIf="item.binding_app_names?.length > 0">
+                          <div>{{'dashboard.service.connectApp' | translate}}</div>
+                          <div>:</div>
+                          <ng-container *ngFor="let binding_app_name of item.binding_app_names;">
+                                <div class="serviceTitle">{{binding_app_name}}{{setAppBinding(item)}}</div>
+                          </ng-container>
+                        </li>
+                      </ng-container>
+
+			<!--<ng-container *ngIf-->
                         <ng-container *ngIf="item.dashboardUseYn =='Y' && item.appBindYn=='N'">
                           <ng-container *ngIf="serviceDashbaordlenght(item.dashboard_url) === 1; else MutiDashboard">
                             <li>
@@ -459,6 +504,8 @@
                           <div>:</div>
                           <div class="serviceTitle">{{item.service_plan.name}}</div>
                         </li>
+
+                      <ng-container *ngIf="apiType === 'AP'">
                         <li *ngIf="item.bound_app_count > 0">
                           <div>{{'dashboard.service.connectApp' | translate}}</div>
                           <div>:</div>
@@ -470,7 +517,18 @@
                             </ng-container>
                           </ng-container>
                         </li>
-                        <!--<ng-container *ngIf-->
+                      </ng-container>
+                      <ng-container *ngIf="apiType === 'SIDECAR'">
+                        <li *ngIf="item.binding_app_names?.length > 0">
+                          <div>{{'dashboard.service.connectApp' | translate}}</div>
+                          <div>:</div>
+                          <ng-container *ngFor="let binding_app_name of item.binding_app_names;">
+                                <div class="serviceTitle">{{binding_app_name}}{{setAppBinding(item)}}</div>
+                          </ng-container>
+                        </li>
+                      </ng-container>
+
+			<!--<ng-container *ngIf-->
                         <ng-container *ngIf="item.dashboardUseYn =='Y' && item.appBindYn=='N'">
                           <ng-container *ngIf="serviceDashbaordlenght(item.dashboard_url) === 1; else MutiDashboard">
                             <li>

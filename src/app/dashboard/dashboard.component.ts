@@ -64,6 +64,7 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   public starterpacks: Array<any>;
 
   public appEntities: any;
+  public appProcessList: any;
   public servicesEntities: any;
   public appSummaryEntities: Observable<any[]>;
   public translateEntities: any = [];
@@ -110,6 +111,8 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   private caas_countdown = 0;
 
   public placeholder = "credentialsStr:{'username':'admin','password':'password';}";
+
+  public apiType : string;
 
   constructor(private translate: TranslateService, private commonService: CommonService, private dashboardService: DashboardService, private log: NGXLogger,
               private appMainService: AppMainService, private catalogService: CatalogService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
@@ -376,7 +379,9 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
           }
         });
       });
+      this.apiType = data.apiType.toUpperCase();
       this.appEntities = data.apps;
+      this.appProcessList = data.appProcessList;
       this.thumnailApp();
       this.servicesEntities = data.services;
       this.servicesEntities.forEach(service => {
@@ -389,15 +394,19 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
     });
   }
 
+
+
   thumnail(): void {
     let catalog = this.catalogService;
+    let apiType = this.apiType;
     this.dashboardService.getServicePacks().subscribe(data => {
-
       $.each(this.servicesEntities, function (skey, servicesEntitie) {
         let cnt = 0;
         $.each(data['list'], function (dkey, servicepack) {
-          if (servicesEntitie['service_plan'] != null) {
-            if (servicesEntitie['service_plan']['service']['label'] === servicepack['servicePackName']) {
+          let serviceOfferingName;
+          serviceOfferingName = servicesEntitie['service_plan']['service']['label'];
+          if (serviceOfferingName != null) {
+            if (serviceOfferingName === servicepack['servicePackName']) {
               servicesEntitie['dashboardUseYn'] = servicepack['dashboardUseYn'];
               servicesEntitie['appBindYn'] = servicepack['appBindYn'];
               try{
@@ -436,33 +445,72 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
 
   thumnailApp(): void {
     let catalog = this.catalogService;
+    let dashboard = this.dashboardService;
+    let apiType = this.apiType;
     this.dashboardService.getBuildPacks().subscribe(data => {
       $.each(this.appEntities, function (skey, appEntitie) {
         let cnt = 0;
-        $.each(data['list'], function (dkey, buildpack) {
-          if (appEntitie['buildpack'] != null) {
-            if (appEntitie['buildpack'] === buildpack['buildPackName']) {
-              try{
-              var pathHeader = buildpack['thumbImgPath'].lastIndexOf("/");
-              var pathEnd = buildpack['thumbImgPath'].length;
-              var fileName = buildpack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
-              catalog.getImg('/storageapi/v2/swift/' + fileName).subscribe(data => {
-                let reader = new FileReader();
-                reader.addEventListener("load", () => {
-                  appEntitie['thumbImgPath'] = reader.result;
-                }, false);
-                if (data) {
-                  reader.readAsDataURL(data);
-                }});}
-              catch (e) {
-                appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
+        let appBuildpack;
+        if(apiType === "AP"){
+          $.each(data['list'], function (dkey, buildpack) {
+            if (appEntitie['buildpack'] != null) {
+              if (appEntitie['buildpack'] === buildpack['buildPackName']) {
+                try{
+                  var pathHeader = buildpack['thumbImgPath'].lastIndexOf("/");
+                  var pathEnd = buildpack['thumbImgPath'].length;
+                  var fileName = buildpack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
+                  catalog.getImg('/storageapi/v2/swift/' + fileName).subscribe(data => {
+                    let reader = new FileReader();
+                    reader.addEventListener("load", () => {
+                      appEntitie['thumbImgPath'] = reader.result;
+                    }, false);
+                    if (data) {
+                      reader.readAsDataURL(data);
+                    }
+                  });
+                }
+                catch (e) {
+                  appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
+                }
+                cnt++;
               }
-              cnt++
             }
+          })
+          if (cnt == 0) {
+            appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
           }
-        })
-        if (cnt == 0) {
-          appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
+        }
+        else if(apiType === "SIDECAR"){
+          dashboard.getAppBuildpack(appEntitie.guid).subscribe(lifecycle => {
+            appBuildpack = lifecycle.buildpacks[0];
+            $.each(data['list'], function (dkey, buildpack) {
+              if (appBuildpack != null) {
+                if (appBuildpack === buildpack['buildPackName']) {
+                  try{
+                    var pathHeader = buildpack['thumbImgPath'].lastIndexOf("/");
+                    var pathEnd = buildpack['thumbImgPath'].length;
+                    var fileName = buildpack['thumbImgPath'].substring(pathHeader + 1, pathEnd);
+                    catalog.getImg('/storageapi/v2/swift/' + fileName).subscribe(data => {
+                      let reader = new FileReader();
+                      reader.addEventListener("load", () => {
+                        appEntitie['thumbImgPath'] = reader.result;
+                      }, false);
+                      if (data) {
+                        reader.readAsDataURL(data);
+                      }
+                    });
+                  }
+                  catch (e) {
+                    appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
+                  }
+                  cnt++;
+                }
+              }
+            });
+          })
+          if (cnt == 0) {
+            appEntitie['thumbImgPath'] = '../../assets/resources/images/catalog/catalog_3.png';
+          }
         }
       });
       return data;
@@ -864,20 +912,36 @@ export class DashboardComponent implements OnInit,  AfterViewChecked{
   }
 
   app_instances()  : number {
-    if(isNullOrUndefined(this.appEntities)) return 0;
     var instances = 0;
-    this.appEntities.forEach(entity => {
-      instances += entity.instances;
-    });
+    if(this.apiType === "AP"){
+      if(isNullOrUndefined(this.appEntities)) return 0;
+      this.appEntities.forEach(entity => {
+        instances += entity.instances;
+      });
+    }
+    else if(this.apiType === "SIDECAR"){
+      if(isNullOrUndefined(this.appProcessList)) return 0;
+      this.appProcessList.forEach(entity => {
+            instances += entity[0].instances;
+      });
+    }
     return instances;
   }
 
   app_disk_quota() : number{
-    if(isNullOrUndefined(this.appEntities)) return 0;
     var disk_quota = 0;
-    this.appEntities.forEach(entity => {
-      disk_quota += entity.disk_quota;
-    });
+    if(this.apiType === "AP"){
+      if(isNullOrUndefined(this.appEntities)) return 0;
+      this.appEntities.forEach(entity => {
+        disk_quota += entity.disk_quota;
+      });
+    }
+    else if(this.apiType === "SIDECAR"){
+      if(isNullOrUndefined(this.appProcessList)) return 0;
+      this.appProcessList.forEach(entity => {
+        disk_quota += entity[0].disk_in_mb
+      });
+    }
     return disk_quota;
   }
 

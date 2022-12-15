@@ -145,6 +145,13 @@ export class DashboardService {
     });
   }
 
+  getAppBuildpack(guid: string) {
+    return this.commonService.doGet('/portalapi/' + this.apiversion + '/apps/' + guid + '/buildpack', this.commonService.getToken()).map((res: any) => {
+      return res;
+    });
+  }
+
+
 }//
 
 export class Service {
