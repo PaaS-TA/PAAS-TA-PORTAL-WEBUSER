@@ -587,17 +587,18 @@ export class AppMainComponent implements OnInit, OnDestroy {
     this.appStatsEntities = data.resources;
 
         var cpu = 0;
-        var mem = 0;
-        var disk = 0;
+        //var mem = 0;
+        //var disk = 0;
         var cnt = 0;
         let maxmem = this.appSummaryMemoryMax;
         let maxdisk = this.appSummaryDiskMax;
 
-        $.each(data.instances, function (key, dataobj) {
+        $.each(data.resources, function (key, dataobj) {
           if (dataobj != null) {
             if (!(null == dataobj.usage.cpu || '' == dataobj.usage.cpu)) cpu = cpu + dataobj.usage.cpu * 100;
-            if (!(null == dataobj.usage.mem || '' == dataobj.usage.mem)) mem = mem + (dataobj.usage.mem) / (maxmem * 1024 * 1024 * 1024) * 100;
-            if (!(null == dataobj.usage.disk || '' == dataobj.usage.disk)) disk = disk + (dataobj.usage.disk) / (maxdisk * 1024 * 1024 * 1024) * 100;
+	    // unused script delete - mem, disk (2023. 02.15)
+	    //if (!(null == dataobj.usage.mem || '' == dataobj.usage.mem)) mem = mem + (dataobj.usage.mem) / (maxmem * 1024 * 1024 * 1024) * 100;
+            //if (!(null == dataobj.usage.disk || '' == dataobj.usage.disk)) disk = disk + (dataobj.usage.disk) / (maxdisk * 1024 * 1024 * 1024) * 100;
             cnt++;
           }
         });
@@ -611,6 +612,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
           this.appStatsCpuPer = 0;
         }
 
+	/*
         if (mem > 0) {
           this.appStatsMemoryPer = Math.round(mem / cnt);
         } else {
@@ -626,6 +628,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
         $("#cpuPer").val(this.appStatsCpuPer);
         $("#memoryPer").val(this.appStatsMemoryPer);
         $("#diskPer").val(this.appStatsDiskPer);
+        */
 
         this.procSetAppStatusTab();
       }
