@@ -296,12 +296,12 @@ export class AppMainComponent implements OnInit, OnDestroy {
     });
 
     this.appMainService.getAppSummary(guid).subscribe(data => {
-    
+
       this.sshConnectInfo = {
       	instances: data.instances,
       	guid: data.guid
       }
-      
+
       if (isUndefined(data.routes)) {
         this.router.navigate(['dashboard']);
       }
@@ -587,18 +587,17 @@ export class AppMainComponent implements OnInit, OnDestroy {
     this.appStatsEntities = data.resources;
 
         var cpu = 0;
-        //var mem = 0;
-        //var disk = 0;
+        var mem = 0;
+        var disk = 0;
         var cnt = 0;
         let maxmem = this.appSummaryMemoryMax;
         let maxdisk = this.appSummaryDiskMax;
 
-        $.each(data.resources, function (key, dataobj) {
+        $.each(data.instances, function (key, dataobj) {
           if (dataobj != null) {
             if (!(null == dataobj.usage.cpu || '' == dataobj.usage.cpu)) cpu = cpu + dataobj.usage.cpu * 100;
-	    // unused script delete - mem, disk (2023. 02.15)
-	    //if (!(null == dataobj.usage.mem || '' == dataobj.usage.mem)) mem = mem + (dataobj.usage.mem) / (maxmem * 1024 * 1024 * 1024) * 100;
-            //if (!(null == dataobj.usage.disk || '' == dataobj.usage.disk)) disk = disk + (dataobj.usage.disk) / (maxdisk * 1024 * 1024 * 1024) * 100;
+            if (!(null == dataobj.usage.mem || '' == dataobj.usage.mem)) mem = mem + (dataobj.usage.mem) / (maxmem * 1024 * 1024 * 1024) * 100;
+            if (!(null == dataobj.usage.disk || '' == dataobj.usage.disk)) disk = disk + (dataobj.usage.disk) / (maxdisk * 1024 * 1024 * 1024) * 100;
             cnt++;
           }
         });
@@ -612,7 +611,6 @@ export class AppMainComponent implements OnInit, OnDestroy {
           this.appStatsCpuPer = 0;
         }
 
-	/*
         if (mem > 0) {
           this.appStatsMemoryPer = Math.round(mem / cnt);
         } else {
@@ -628,7 +626,6 @@ export class AppMainComponent implements OnInit, OnDestroy {
         $("#cpuPer").val(this.appStatsCpuPer);
         $("#memoryPer").val(this.appStatsMemoryPer);
         $("#diskPer").val(this.appStatsDiskPer);
-        */
 
         this.procSetAppStatusTab();
       }
@@ -2366,13 +2363,13 @@ export class AppMainComponent implements OnInit, OnDestroy {
     this.getMemoryChart();
     this.getNetworkByte();
   }
-  
+
   connectSSH(instance: string) {
   	if(isUndefined(appConfig["sshUri"]) || appConfig["sshUri"].length <= 0) {
   		this.common.alertMessage(this.translateEntities.alertLayer.sshUrlEmpty, true);
   		return;
   	}
-  	
+
   	let popHtml = [];
   	popHtml.push("<html>");
   	popHtml.push("    <head></head>");
@@ -2382,13 +2379,13 @@ export class AppMainComponent implements OnInit, OnDestroy {
   	popHtml.push("        </div>");
   	popHtml.push("    </body>");
   	popHtml.push("</html>");
-  	
+
   	let sshPop = window.open('', '_blank', 'location=no, directories=no width=1000, height=700');
     sshPop.document.write(popHtml.join(""));
     sshPop.document.close();
-    
+
     var sshUrl = "";
-  	
+
   	this.appMainService.getSshV2Info().subscribe(infoData => {
   		let appSshEndpoint = "";
   		$.each(infoData, function (key, dataobj) {
@@ -2396,7 +2393,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
   				appSshEndpoint = dataobj;
   			}
   		});
-  		
+
   		var arrHost = appSshEndpoint.split(":");
   		this.appMainService.getSshCode().subscribe(sshCodeData => {
   			let sshCode = "";
@@ -2405,11 +2402,11 @@ export class AppMainComponent implements OnInit, OnDestroy {
 	  				sshCode = dataobj;
 	  			}
 	  		});
-	  		
+
 			sshPop.location.href = appConfig["sshUri"] + "ssh/" + this.sshConnectInfo.guid + "/" + instance + "/" + arrHost[0] + "/" + arrHost[1] + "/" + sshCode;
   		});
   	});
-  	
+
   }
 
   chartTimeClick(defaultTimeRange: number, groupBy: number) {
@@ -2429,23 +2426,22 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   showWindowLogging() {
-    let sDate = this.getCurrentDate("start");
-    let eDate = this.getCurrentDate("end");
+    let sDate = this.getCurrentDate("start", "request");
+    let eDate = this.getCurrentDate("end", "request");
     let start = this.getCurrentTime("start", "request");
     let end = this.getCurrentTime("end", "request");
 
     let sTime = sDate + "T" + start + "Z";
     let eTime = eDate + "T" + end + "Z";
+
     let message = "";
 
-    this.appMainService.getLogData(this.appName, this.orgName, sTime, eTime, message).subscribe(list => {
-      let logDataList = list;
-  
+    this.appMainService.getLogData(this.appGuid, sTime, eTime, message).subscribe(list => {
       let logPop = window.open('', '_blank', 'location=no, directories=no, width=1300, height=900');
 
       // view 초기화
-      logPop.document.write(this.InitLogPopView(logDataList));
-    
+      logPop.document.write(this.InitLogPopView(list));
+
       // event handler 구현
       this.addResetEventHandler(logPop.document);
       this.addSearchEventHandler(logPop.document, 'search', 'click');
@@ -2458,8 +2454,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   InitLogPopView(list: any) {
-    let sDate = this.getCurrentDate("start");
-    let eDate = this.getCurrentDate("end");
+    let sDate = this.getCurrentDate("start", "init");
+    let eDate = this.getCurrentDate("end", "init");
     let start = this.getCurrentTime("start", "init");
     let end = this.getCurrentTime("end", "init");
 
@@ -2492,47 +2488,60 @@ export class AppMainComponent implements OnInit, OnDestroy {
     popHtml.push("                        <label id='valid' style='display:none;'>" + this.translateEntities.logs.logging.invalidKeyword + "</label>");
     popHtml.push("                    </div>");
     popHtml.push("                    <div>");
-    //popHtml.push("                        <span style='color:#ff0000; font-weight: bold;'>" + this.translateEntities.logs.logging.explain + "</span>");
+    if(appConfig["paastaType"] == "sidecar") {
+      popHtml.push("                        <span style='color:#ff0000; font-weight: bold;'>" + this.translateEntities.logs.logging.explain + "</span>");
+    }
     popHtml.push("                    </div>");
     popHtml.push("                    <button class='logging' id='search'>SEARCH</button>");
     popHtml.push("                </fieldset>");
     popHtml.push("                <ul class='preText' id='logResult'>");
-  
+
     if(list.length == 0) {
       popHtml.push("No Log Data");
     } else {
       list.forEach(data => {
         let dbDate = data[0];
-        
-        let msgObjToStr = JSON.stringify(data[1]);
-        let lastStr = msgObjToStr.charAt(msgObjToStr.length-2);
+        let dbMsg = data[1];
+        let logMsg = dbMsg;
+        let msgObjToStr = JSON.stringify(dbMsg);
 
-        if(lastStr != '}') {
-          let convertMsg =  msgObjToStr.replace(/\\\"/gi, "\"").replace(/\"{/, "{");
-          popHtml.push("                    <li>" + dbDate + "<br>" + convertMsg + "</li>");
+        if(appConfig["paastaType"] == "sidecar") {
+          if(msgObjToStr.indexOf('\\') != -1) {
+            msgObjToStr = msgObjToStr.replace(/\\/g, "");
+            logMsg = msgObjToStr.substring(1, msgObjToStr.length-1);
+          }
+
+          popHtml.push("                    <li>" + dbDate + "<br>" + logMsg + "</li>");
         } else {
-          let msgObj = JSON.parse(data[1]);
+          let lastStr = msgObjToStr.charAt(msgObjToStr.length-2);
 
-          // message 내의 time 추출
-          let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
-  
-          let startIdx = msgDateTime.indexOf("T");
-          let endIdx = msgDateTime.indexOf("+");
-          let msgDate = msgDateTime.substring(0, startIdx);
-          let msgTime = msgDateTime.substring(startIdx+1, endIdx);
-          let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
-  
-          // 시작 및 종료 시간 추출
-          let msgStart = new Date(sDate + " " + start).getTime();
-          let msgEnd = new Date(eDate + " " + end).getTime();
-  
-          if(convertMsgTime >= msgStart && convertMsgTime <= msgEnd) {
-            popHtml.push("                    <li>" + dbDate + "<br>" + data[1] + "</li>");
+          if(lastStr != '}') {
+            logMsg =  msgObjToStr.replace(/\\\"/gi, "\"").replace(/\"{/, "{");
+            popHtml.push("                    <li>" + dbDate + "<br>" + logMsg + "</li>");
+          } else {
+            let msgObj = JSON.parse(dbMsg);
+
+            // message 내의 time 추출
+            let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
+
+            let startIdx = msgDateTime.indexOf("T");
+            let endIdx = msgDateTime.indexOf("+");
+            let msgDate = msgDateTime.substring(0, startIdx);
+            let msgTime = msgDateTime.substring(startIdx+1, endIdx);
+            let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
+
+            // 시작 및 종료 시간 추출
+            let msgStart = new Date(sDate + " " + start).getTime();
+            let msgEnd = new Date(eDate + " " + end).getTime();
+
+            if(convertMsgTime >= msgStart && convertMsgTime <= msgEnd) {
+              popHtml.push("                    <li>" + dbDate + "<br>" + logMsg + "</li>");
+            }
           }
         }
       });
     }
-      
+
     popHtml.push("                </ul>");
     popHtml.push("            </div>");
     popHtml.push("        </div>");
@@ -2559,39 +2568,50 @@ export class AppMainComponent implements OnInit, OnDestroy {
       } else {
         valid.style.display = "none";
       }
-      
+
     });
   }
 
   addResetEventHandler(obj: any) {
     obj.getElementById('reset').addEventListener('click', function() {
       let today = new Date();
+      let sDate = new Date(today);
       let year = today.getFullYear();
       let month = ("00" + (today.getMonth()+1).toString()).slice(-2);
       let day =  ("00" + today.getDate().toString()).slice(-2);
 
-      let sHours = ("00" + (today.getHours()-1).toString()).slice(-2);
+      sDate.setHours(sDate.getHours()-1);
+      let sHours = ("00" + (sDate.getHours()).toString()).slice(-2);
+      let startMs = ("00" + (sDate.getMinutes()).toString()).slice(-2);
+      let startSs = ("00" + (sDate.getSeconds()).toString()).slice(-2);
       let eHours =  ("00" + today.getHours().toString()).slice(-2);
-      let minutes =  ("00" + today.getMinutes().toString()).slice(-2);
-      let seconds = ("00" + today.getSeconds().toString()).slice(-2);
+      let endMs =  ("00" + today.getMinutes().toString()).slice(-2);
+      let endSs = ("00" + today.getSeconds().toString()).slice(-2);
+
+      // 00 - 01시 사이
+      if(sDate.getDate() != today.getDate()) {
+        sHours = eHours;
+        startMs = "00";
+        startSs = "00";
+      }
 
       let date = obj.getElementById('date') as HTMLInputElement;
       let start = obj.getElementById('sTime') as HTMLInputElement;
       let end = obj.getElementById('eTime') as HTMLInputElement;
       let msg = obj.getElementById('message') as HTMLInputElement;
       let msgValid = obj.getElementById('valid') as HTMLInputElement;
-      
+
       date.value = year + "-" + month + "-" + day;
-      start.value = sHours + ":" + minutes + ":" + seconds;
-      end.value = eHours + ":" + minutes + ":" + seconds;
+      start.value = sHours + ":" + startMs + ":" + startSs;
+      end.value = eHours + ":" + endMs + ":" + endSs;
       msg.value = "";
-      msgValid.style.display = "none"; 
+      msgValid.style.display = "none";
     });
   }
 
   addSearchEventHandler(obj: any, id: string, eventName: string) {
     let alertCheck = this.translateEntities.logs.logging.invalidTime;
-    
+
     obj.getElementById(id).addEventListener(eventName, function(e) {
       if (eventName == "click" || e.keyCode == 13) {
         let date = obj.getElementById('date') as HTMLInputElement;
@@ -2622,30 +2642,33 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
         // 시간 조정
         let now = new Date();
-        let endSs = endDateTime.getSeconds();
-        let diffDateTime = endDateTime;
-        diffDateTime.setSeconds(diffDateTime.getSeconds()+1);
 
-        if(diffDateTime.getTime() <= now.getTime()){
-          endSs++;
+        if(appConfig["paastaType"] == "sidecar") {
+          startDateTime.setHours(startDateTime.getHours()-9);
+          endDateTime.setHours(endDateTime.getHours()-9);
+        } else {
+          let diffDateTime = new Date(endDateTime);
+          diffDateTime.setSeconds(diffDateTime.getSeconds()+1);
+
+          if(diffDateTime.getTime() <= now.getTime()){
+            endDateTime.setSeconds(endDateTime.getSeconds()+1);
+          }
+          startDateTime.setSeconds(startDateTime.getSeconds()-1);
         }
 
-        startDateTime.setSeconds(startDateTime.getSeconds()-1);
-        endDateTime.setSeconds(endSs);
-
         let sDate = startDateTime.getFullYear() + "-" + ("00" + (startDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + startDateTime.getDate().toString()).slice(-2);
-        let sTime = ("00" + startDateTime.getHours().toString()).slice(-2) + ":" + ("00" + startDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + (startDateTime.getSeconds()-1).toString()).slice(-2);
+        let sTime = ("00" + startDateTime.getHours().toString()).slice(-2) + ":" + ("00" + startDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + startDateTime.getSeconds().toString()).slice(-2);
 
         let eDate = endDateTime.getFullYear() + "-" + ("00" + (endDateTime.getMonth()+1).toString()).slice(-2) + "-" + ("00" + endDateTime.getDate().toString()).slice(-2);
         let eTime = ("00" + endDateTime.getHours().toString()).slice(-2) + ":" + ("00" + endDateTime.getMinutes().toString()).slice(-2) + ":" + ("00" + endDateTime.getSeconds().toString()).slice(-2);
 
         let dbStartDateTime = sDate + "T" + sTime + "Z";
         let dbEndDateTime = eDate + "T" + eTime + "Z";
+
         let keyword = obj.getElementById('message') as HTMLInputElement;
 
         let apiUri = window.sessionStorage.getItem('apiUri');
-        let appName = window.sessionStorage.getItem('_currentAppName');
-        let orgName = window.sessionStorage.getItem('_currentOrgName');
+        let appGuid = window.sessionStorage.getItem('_currentAppGuid');
         let authorization = window.sessionStorage.getItem('authorization');
 
         let regExp = new RegExp(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/);
@@ -2668,27 +2691,39 @@ export class AppMainComponent implements OnInit, OnDestroy {
                 } else {
                   dataList.forEach(data => {
                     let dbDate = data[0];
+                    let dbMsg = data[1];
+                    let logMsg = dbMsg;
+                    let msgObjToStr = JSON.stringify(dbMsg);
 
-                    let msgObjToStr = JSON.stringify(data[1]);
-                    let lastStr = msgObjToStr.charAt(msgObjToStr.length-2);
+                    if(appConfig["paastaType"] == "sidecar") {
+                      if(msgObjToStr.indexOf('\\') != -1) {
+                        msgObjToStr = msgObjToStr.replace(/\\/g, "");
+                        logMsg = msgObjToStr.substring(1, msgObjToStr.length-1);
+                      }
 
-                    if(lastStr != '}') {
-                      let convertMsg =  msgObjToStr.replace(/\\\"/gi, "\"").replace(/\"{/, "{");
-                      newHtml.push("                    <li>" + dbDate + "<br>" + convertMsg + "</li>");
+                      newHtml.push("                    <li>" + dbDate + "<br>" + logMsg + "</li>");
                     } else {
-                      let msgObj = JSON.parse(data[1]);
+                      let msgObjToStr = JSON.stringify(dbMsg);
+                      let lastStr = msgObjToStr.charAt(msgObjToStr.length-2);
 
-                      // message 내의 time 추출
-                      let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
+                      if(lastStr != '}') {
+                        logMsg =  msgObjToStr.replace(/\\\"/gi, "\"").replace(/\"{/, "{");
+                        newHtml.push("                    <li>" + dbDate + "<br>" + logMsg + "</li>");
+                      } else {
+                        let msgObj = JSON.parse(dbMsg);
 
-                      let startIdx = msgDateTime.indexOf("T");
-                      let endIdx = msgDateTime.indexOf("+");
-                      let msgDate = msgDateTime.substring(0, startIdx);
-                      let msgTime = msgDateTime.substring(startIdx+1, endIdx);
-                      let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
+                        // message 내의 time 추출
+                        let msgDateTime = JSON.stringify(msgObj.time).replace(/\"/gi, "");
 
-                      if(convertMsgTime >= startMs && convertMsgTime <= endMs) {
-                        newHtml.push("                    <li>" + dbDate + "<br>" + data[1] + "</li>");
+                        let startIdx = msgDateTime.indexOf("T");
+                        let endIdx = msgDateTime.indexOf("+");
+                        let msgDate = msgDateTime.substring(0, startIdx);
+                        let msgTime = msgDateTime.substring(startIdx+1, endIdx);
+                        let convertMsgTime = new Date(msgDate + " " + msgTime).getTime();
+
+                        if(convertMsgTime >= startMs && convertMsgTime <= endMs) {
+                          newHtml.push("                    <li>" + dbDate + "<br>" + logMsg + "</li>");
+                        }
                       }
                     }
                   });
@@ -2701,7 +2736,8 @@ export class AppMainComponent implements OnInit, OnDestroy {
             }
           }
         }
-        xmlHttp.open("GET", apiUri + '/logapi/log?name=' + appName + '&org=' + orgName + '&stime=' + dbStartDateTime + '&etime=' + dbEndDateTime + '&keyword=' + keyword.value);
+        // xmlHttp.open("GET", apiUri + '/logapi/logs?app=' + appName + '&org=' + orgName + '&stime=' + dbStartDateTime + '&etime=' + dbEndDateTime + '&keyword=' + keyword.value);
+        xmlHttp.open("GET", apiUri + '/logapi/logs/app/' + appGuid + '?stime=' + dbStartDateTime + '&etime=' + dbEndDateTime + '&keyword=' + keyword.value);
         xmlHttp.setRequestHeader('Content-Type', 'application/json');
         xmlHttp.setRequestHeader('X-Broker-Api-Version', '2.4');
         xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -2711,21 +2747,22 @@ export class AppMainComponent implements OnInit, OnDestroy {
     });
   }
 
-  getCurrentDate(flag: string) {
+  getCurrentDate(flag: string, purpose: string) {
     let today = new Date();
+    if(purpose == "request" && appConfig["paastaType"] == "sidecar") {
+      today.setHours(today.getHours()-9);
+    }
+    let sDate = new Date(today);
     let yyyy = today.getFullYear();
     let mm = ("00" + (today.getMonth()+1).toString()).slice(-2);
     let dd = ("00" + today.getDate().toString()).slice(-2);
 
     if(flag == "start") {
-      let sDate = new Date(
-        today.getFullYear(), today.getMonth(), today.getDate(),
-        today.getHours()-1, today.getMinutes(), today.getSeconds()
-      );
+      sDate.setHours(sDate.getHours()-1);
       yyyy = sDate.getFullYear();
       mm = ("00" + (sDate.getMonth()+1).toString()).slice(-2);
       dd = ("00" + sDate.getDate().toString()).slice(-2);
-    } 
+    }
 
     let date = yyyy + "-" + mm + "-" + dd;
     return date;
@@ -2733,28 +2770,28 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
   getCurrentTime(flag: string, purpose: string) {
     let today = new Date();
+    if(purpose == "request" && appConfig["paastaType"] == "sidecar") {
+      today.setHours(today.getHours()-9);
+    }
+    let sDate = new Date(today);
     let hh = ("00" + today.getHours().toString()).slice(-2);
     let mm = ("00" + today.getMinutes().toString()).slice(-2);
     let ss = ("00" + today.getSeconds().toString()).slice(-2);
-    
+
     if(flag == "start") {
-      let sDate = new Date(
-        today.getFullYear(), today.getMonth(), today.getDate(),
-        today.getHours()-1, today.getMinutes(), today.getSeconds()
-      );
+      sDate.setHours(sDate.getHours()-1);
       hh = ("00" + sDate.getHours().toString()).slice(-2);
       mm = ("00" + sDate.getMinutes().toString()).slice(-2);
-      if(purpose == "request") {
-        ss = ("00" + (sDate.getSeconds()-1).toString()).slice(-2);
-      } else {
-        ss = ("00" + sDate.getSeconds().toString()).slice(-2);
+      if(purpose == "request" && appConfig["paastaType"] != "sidecar") {
+        sDate.setSeconds(sDate.getSeconds()-1);
       }
+      ss = ("00" + sDate.getSeconds().toString()).slice(-2);
     }
 
     let convertTime = hh + ":" + mm + ":" + ss;
     return convertTime;
   }
-  
+
   initLoggingView() {
     this.appMainService.getCodeMax('LOGGING').subscribe(data => {
       data.list.some(r => {

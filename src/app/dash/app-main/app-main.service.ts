@@ -227,13 +227,13 @@ export class AppMainService {
       return res;
     });
   }
-  
+
   getSshV2Info(){
     return this.commonService.doGet('/portalapi/ssh/v2/Info', this.commonService.getToken()).map((res: Response) => {
       return res;
     });
   }
-  
+
   getSshCode(){
     return this.commonService.doGet('/portalapi/ssh/ssh-code', this.commonService.getToken()).map((res: Response) => {
       return res;
@@ -245,9 +245,9 @@ export class AppMainService {
       return res;
     });
   }
-  
-  getLogData(name: string, org: string, sTime: string, eTime: string, keyword: string){
-    return this.commonService.doGet('/logapi/log?name=' + name + '&org=' + org + '&stime=' + sTime + '&etime=' + eTime + '&keyword=' + keyword, this.getToken()).map((res: any) => {
+
+  getLogData(guid: string, sTime: string, eTime: string, keyword: string){
+    return this.commonService.doGet('/logapi/logs/app/' + guid + '?stime=' + sTime + '&etime=' + eTime + '&keyword=' + keyword, this.getToken()).map((res: any) => {
       return res;
     })
   }
