@@ -21,5 +21,6 @@
   "tailLogUri": "http://tail-log.3.36.168.88.nip.io/",
   "sshEnable": true,
   "tailLogIntervalMillisecond": "250",
+  "paastaType": "ap",
   "languageList": ["ko", "en"]
 }
