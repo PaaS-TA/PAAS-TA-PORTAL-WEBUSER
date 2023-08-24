@@ -2,13 +2,13 @@
   "indexMain": {
     "section0": {
       "title": "Open Cloud Platform!",
-      "explain": "Give your app wings with PaaS-TA",
-      "text1": "PaaS-TA is an open cloud platform that anyone can use freely because it is developed using globally proven open sources and is fully open under the Apache license, which is an open license.",
-      "text2": "Cloud infrastructure (IaaS) providers use PaaS-TA to provide platform services as well, and cloud SW (SaaS) providers provide services quickly and easily without overlapping development for each platform by developing SaaS based on PaaS-TA that supports various infrastructures. It can be developed and operated.",
-      "text3": "PaaS-TA is a compound word of PaaS and TA. In English, it means PaaS and thanks (TA, Thanks colloquially), and in Korean, it has a double meaning of pasette (boarding)."
+      "explain": "Give your app wings with K-PaaS",
+      "text1": "K-PaaS is an open cloud platform that anyone can use freely because it is developed using globally proven open sources and is fully open under the Apache license, which is an open license.",
+      "text2": "Cloud infrastructure (IaaS) providers use K-PaaS to provide platform services as well, and cloud SW (SaaS) providers provide services quickly and easily without overlapping development for each platform by developing SaaS based on K-PaaS that supports various infrastructures. It can be developed and operated.",
+      "text3": "K-PaaS is a compound word of PaaS and TA. In English, it means PaaS and thanks (TA, Thanks colloquially), and in Korean, it has a double meaning of pasette (boarding)."
     },
     "section1": {
-      "title": "PaaS-TA Features",
+      "title": "K-PaaS Features",
       "explain": "The execution environment is configured based on Cloud Foundry open source.",
       "subTitle1": "Eliminate dependency with 7 or more types of various infrastructure (IaaS) support",
       "text1": "Continuous support for new versions of OpenStack (Ocata, Pike, etc.) and global leading IaaS support for AWS, Vagant, VMWare, CloudStack, Google Cloud Platform, and Azure",
@@ -20,24 +20,24 @@
       "text4": "Stable technical support and developer development support to enhance the global competitiveness of the domestic cloud industry and lead the 4th industry"
     },
     "section2": {
-      "title": "PaaS-TA open ecosystem",
-      "explain": "We establish a plan for the PaaS-TA introduction project and provide systematic technical support.",
+      "title": "K-PaaS open ecosystem",
+      "explain": "We establish a plan for the K-PaaS introduction project and provide systematic technical support.",
       "subTitle1": "open cooperation",
       "text1": "Open cooperation by sector such as cloud infrastructure/SW/middleware development companies and research institutes/schools",
       "subTitle2": "Platform utilization expert",
-      "text2": "Promotion of regular education on the process of using PaaS-TA through cooperation with the developer community",
+      "text2": "Promotion of regular education on the process of using K-PaaS through cooperation with the developer community",
       "subTitle3": "Regular technology seminar",
       "text3": "Held public seminars for cloud platform developers (cloud PUB)",
       "subTitle4": "Technical and consulting support",
-      "text4": "Technical support for the entire range of PaaS-TA introduction review, installation, and operation",
+      "text4": "Technical support for the entire range of K-PaaS introduction review, installation, and operation",
       "subTitle5": "Intensive development of professional developers",
-      "text5": "Provide intensive training programs for PaaS-TA professional developers (resident/non-resident)",
+      "text5": "Provide intensive training programs for K-PaaS professional developers (resident/non-resident)",
       "subTitle6": "University education support",
-      "text6": "PaaS-TA-based IT education and practice environment provided"
+      "text6": "K-PaaS-based IT education and practice environment provided"
     },
     "section3": {
-      "title": "PaaS-TA function",
-      "explain": "PaaS-TA consists of infrastructure control and management environment, execution environment, development environment, service environment, and operation environment.",
+      "title": "K-PaaS function",
+      "explain": "K-PaaS consists of infrastructure control and management environment, execution environment, development environment, service environment, and operation environment.",
       "subTitle1": "DevOps support through convenient environment setting",
       "text1": "Provides a standardized development/production environment such as frameworks, middleware, and OS required for application development, DevOps through build, test, and deployment automation, Source Control Management service",
       "subTitle2": "Platform installation automation and IaaS dashboard support",
@@ -52,7 +52,7 @@
       "subTitle5-2": "Monitoring",
       "text5": "CPU, Memory, Provides integrated monitoring and analysis functions for all layers of cloud services from cloud infrastructure to platforms and software such as disk usage, CPU, memory, disk I/O, and network traffic",
       "subTitle6": "Kubernetes Support",
-      "text6": "Container control management that combines PaaS-TA and Kubernetes",
+      "text6": "Container control management that combines K-PaaS and Kubernetes",
       "subTitle7": "Auto Scaling",
       "text7": "Advanced auto-scaling and failure recovery based on resource usage in all areas ranging from virtual machines, containers, applications, and services"
     },
@@ -395,7 +395,7 @@
       "appTemplate" : "App Template",
       "appDevelopment" : "App Development",
       "service" : "Service",
-      "paas-ta" : "PaaS-TA",
+      "paas-ta" : "K-PaaS",
       "community" : "Community",
       "free" : "Free",
       "pay" : "Pay"
@@ -892,9 +892,9 @@
   "external" : {
     "inviteOrg": {
       "acceptMsg1": "Hello?",
-      "acceptMsg2": "It is an open cloud platform PaaS-TA.",
+      "acceptMsg2": "It is an open cloud platform K-PaaS.",
       "acceptMsg3-1": "can now access",
-      "acceptMsg3-2": "organizations in PaaS-TA.",
+      "acceptMsg3-2": "organizations in K-PaaS.",
       "acceptMsg4": "After a while, you will be taken to the homepage."
     },
     "active": {

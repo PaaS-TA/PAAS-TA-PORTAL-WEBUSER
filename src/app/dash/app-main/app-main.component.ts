@@ -2463,7 +2463,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
 
     popHtml.push("<html>");
     popHtml.push("    <head>");
-    popHtml.push("      <title>PaaS-TA</title>");
+    popHtml.push("      <title>K-PaaS</title>");
     popHtml.push("      <link rel='stylesheet' href='/assets/resources/css/logging-service.css' type='text/css'>");
     popHtml.push("    </head>");
     popHtml.push("    <body>");
@@ -2547,7 +2547,7 @@ export class AppMainComponent implements OnInit, OnDestroy {
     popHtml.push("        </div>");
     popHtml.push("        <div class='alertLayer' role='alert'>");
     popHtml.push("          <div class='in'>");
-    popHtml.push("            Alert! PaasTA Alert Example!<span class='alertClose'>x</span>");
+    popHtml.push("            Alert! K-PaaS Alert Example!<span class='alertClose'>x</span>");
     popHtml.push("          </div>");
     popHtml.push("        </div>");
     popHtml.push("    </body>");

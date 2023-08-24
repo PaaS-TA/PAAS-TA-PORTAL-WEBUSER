@@ -158,17 +158,6 @@ export class TopComponent implements OnInit {
     return this.common.getImagePath();
   }
 
-  // get notifications(): String[] {
-  //   // TODO request get notification of PaaS-TA
-
-  //   let notis = [
-  //     '파스타 공지사항-1-테스트1234',
-  //     '파스타 공지사항-2-테스트4567',
-  //     '파스타 공지사항-3-테스트8901'
-  //   ];
-  //   return notis;
-  // }
-
   public alertMsg(msg: string) {
     window.alert(msg);
   }

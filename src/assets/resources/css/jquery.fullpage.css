@@ -149,7 +149,7 @@ html.fp-enabled,
 
 
 #fp-nav ul.ko>li:first-of-type:before{
-    content:"Paas-TA 소개";
+    content:"K-PaaS 소개";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -161,7 +161,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul.ko>li:nth-of-type(2):before{
-    content:"Paas-TA 특징";
+    content:"K-PaaS 특징";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -173,7 +173,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul.ko>li:nth-of-type(3):before{
-    content:"Paas-TA 지원";
+    content:"K-PaaS 지원";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -185,7 +185,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul.ko>li:nth-of-type(4):before{
-    content:"Paas-TA 기능";
+    content:"K-PaaS 기능";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -198,7 +198,7 @@ html.fp-enabled,
 }
 
 #fp-nav ul.en>li:first-of-type:before {
-    content:"About PaaS-TA";
+    content:"About K-PaaS";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -210,7 +210,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul.en>li:nth-of-type(2):before {
-    content:"Paas-TA Features";
+    content:"K-PaaS Features";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -222,7 +222,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul.en>li:nth-of-type(3):before{
-    content:"Paas-TA Support";
+    content:"K-PaaS Support";
     position: absolute;
     top: 0px;
     left: -120px;
@@ -234,7 +234,7 @@ html.fp-enabled,
     color: #fff;    
 }
 #fp-nav ul.en>li:nth-of-type(4):before{
-    content:"Paas-TA Function";
+    content:"K-PaaS Function";
     position: absolute;
     top: 0px;
     left: -120px;
